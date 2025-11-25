@@ -1,0 +1,45 @@
+.section {
+    padding: var(--space-240) 0;
+    background-color: var(--backgroud-neutral--neutral-faint);
+}
+
+.sectionTitleWrapper {
+    padding: var(--padding-md);
+}
+
+.sectionTitle {
+    color: var(--content-neutral--title);
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--padding-md);
+}
+
+.cardTitle {
+    color: var(--content-neutral--title);
+    margin-bottom: var(--gap-md);
+}
+
+.cardDescription {
+    color: var(--content-neutral--caption);
+    margin-bottom: var(--gap-sm);
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Mobile spacing adjustment */
+@media (max-width: 480px) {
+    .card {
+        margin-bottom: var(--space-140);
+    }
+
+    .card:last-child {
+        margin-bottom: 0;
+    }
+}
