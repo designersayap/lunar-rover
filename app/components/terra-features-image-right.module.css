@@ -6,7 +6,7 @@
     display: flex;
     align-items: center;
     padding: 0 var(--padding-md);
-    order: 1;
+    order: 2;
 }
 
 .imagePlaceholder {
@@ -22,7 +22,7 @@
     justify-content: center;
     align-items: flex-start;
     padding: var(--padding-md);
-    order: 2;
+    order: 1;
 }
 
 .title {
