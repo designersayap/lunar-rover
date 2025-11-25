@@ -1,20 +1,19 @@
 .section {
     padding-top: var(--padding-2xl);
-    padding-bottom: var(--padding-2xl);
-    background-color: var(--background-neutral--default);
+    padding-bottom: var(--padding-lg);
 }
 
 .brandColumn {
     display: flex;
     flex-direction: column;
-    gap: var(--space-80);
+    gap: var(--gap-lg);
     padding: var(--padding-md);
 }
 
 .linksColumn {
     display: flex;
     flex-direction: column;
-    gap: var(--space-80);
+    gap: var(--gap-sm);
     padding: var(--padding-md);
 }
 
@@ -33,13 +32,13 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--padding-sm);
+    gap: var(--gap-sm);
 }
 
 .linkItem {
     display: flex;
     align-items: center;
-    gap: var(--space-60);
+    gap: var(--gap-sm);
     color: var(--content-neutral--body);
     text-decoration: none;
     transition: color 0.2s;
@@ -56,14 +55,14 @@
 }
 
 .bottomBar {
-    margin-top: var(--space-180);
-    padding-top: var(--space-100);
+    margin-top: var(--padding-2xl);
+    padding-top: var(--padding-lg);
     border-top: 1px solid var(--stroke-neutral--neutral);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: var(--space-80);
+    gap: var(--gap-lg);
 }
 
 .copyright {
@@ -72,7 +71,7 @@
 
 .legalLinks {
     display: flex;
-    gap: var(--space-100);
+    gap: var(--gap-lg);
 }
 
 .legalLink {

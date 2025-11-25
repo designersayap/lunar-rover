@@ -1,5 +1,5 @@
 .section {
-    padding: var(--space-240) 0;
+    padding: var(--padding-2xl) 0;
 }
 
 .sectionTitleWrapper {

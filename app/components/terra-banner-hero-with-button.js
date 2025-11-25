@@ -7,7 +7,7 @@ import styles from "./terra-banner-hero-with-button.module.css";
  */
 export default function TerraBannerHeroWithButton() {
     return (
-        <main className={styles.hero}>
+        <main className={`${styles.hero} imagePlaceholder-5-4`}>
             {/* Grid Container */}
             <div className="container-grid">
                 <div className="grid">
@@ -16,18 +16,12 @@ export default function TerraBannerHeroWithButton() {
 
                         {/* Hero Title */}
                         <h1 className={`h1 ${styles.heroTitle}`}>
-                            Elevate your
-                            <br />
-                            product's modern
-                            <br />
-                            appeal
+                            Title
                         </h1>
 
                         {/* Hero Subtitle */}
                         <p className={`subheader-h1 ${styles.heroSubtitle}`}>
-                            Build your website with Staples into a lot more minimalist
-                            <br />
-                            and modern with ease and speed
+                            Description
                         </p>
 
                         {/* CTA Button */}
