@@ -1,11 +1,11 @@
 import { ArrowLongRightIcon, SparklesIcon } from "@heroicons/react/20/solid";
-import styles from "./terra-cta-centered.module.css";
+import styles from "./global-header-title-button-description.module.css";
 
 /**
- * Centered CTA Section
+ * Centered Header Section
  * Displays a centered section with title, subtitle, and CTA button
  */
-export default function TerraCtaCentered() {
+export default function GlobalHeaderTitleButtonDescription() {
     return (
         <section className={styles.section}>
             <div className="container-grid">

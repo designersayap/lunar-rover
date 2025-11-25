@@ -5,32 +5,15 @@ import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
  * TerraUsp4col Component
  * 
  * A 4-column Unique Selling Point (USP) section.
- * Displays a section title ("Why Choose Us") and 3 feature cards.
- * 
- * Layout:
- * - Desktop: 3 columns per card (4 items total including title = 12 cols)
- * - Tablet: 4 columns per card
- * - Mobile: Full width (2 columns)
+ * Displays a section title and 3 feature cards.
  * 
  * @component
+ * @param {Object} props
+ * @param {string} props.title - The section title
+ * @param {Array} props.features - Array of feature objects {title, description}
  * @returns {JSX.Element} The rendered USP section
  */
-export default function TerraUsp4col() {
-    const features = [
-        {
-            title: "Title",
-            description: "Description",
-        },
-        {
-            title: "Title",
-            description: "Description",
-        },
-        {
-            title: "Title",
-            description: "Description",
-        },
-    ];
-
+export default function TerraUsp4col({ title, features }) {
     return (
         <section className={styles.section}>
             <div className="container-grid">
@@ -39,13 +22,13 @@ export default function TerraUsp4col() {
                     <div className="col-mobile-2 col-tablet-4 col-desktop-3">
                         <div className={styles.sectionTitleWrapper}>
                             <h2 className={`h3 ${styles.sectionTitle}`}>
-                                Why Choose Us
+                                {title}
                             </h2>
                         </div>
                     </div>
 
                     {/* Feature Cards */}
-                    {features.map((feature, index) => (
+                    {features && features.map((feature, index) => (
                         <div
                             key={index}
                             className="col-mobile-2 col-tablet-4 col-desktop-3"

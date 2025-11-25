@@ -1,10 +1,10 @@
-import styles from "./terra-cta-centered.module.css";
+import styles from "./global-header-title-description.module.css";
 
 /**
- * Centered CTA Section - Title and Subtitle Only
+ * Centered Header Section - Title and Subtitle Only
  * Displays a centered section with title and subtitle, but no button
  */
-export default function TerraCtaCenteredTitleWithoutButton() {
+export default function GlobalHeaderTitleDescription() {
     return (
         <section className={styles.section}>
             <div className="container-grid">

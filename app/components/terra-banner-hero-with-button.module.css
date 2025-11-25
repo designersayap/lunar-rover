@@ -44,7 +44,6 @@
 .ctaButton {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-70);
 }
 
 .iconLeft {

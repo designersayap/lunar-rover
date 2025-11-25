@@ -8,25 +8,25 @@
 
     /* Neutral Backgrounds */
     --scrim: var(--base-black);
-    --backgroud-neutral--default: var(--base-white);
-    --backgroud-neutral--neutral-strong: var(--base-black);
-    --backgroud-neutral--neutral-mute: var(--grey-300);
-    --backgroud-neutral--neutral-subtle: var(--grey-100);
-    --backgroud-neutral--neutral-faint: var(--grey-50);
+    --background-neutral--default: var(--base-white);
+    --background-neutral--neutral-strong: var(--base-black);
+    --background-neutral--neutral-mute: var(--grey-300);
+    --background-neutral--neutral-subtle: var(--grey-100);
+    --background-neutral--neutral-faint: var(--grey-50);
 
     /* Neutral Button Backgrounds */
-    --backgroud-neutral--button--neutral-default: var(--grey-500);
-    --backgroud-neutral--button--neutral-hover: var(--base-black);
-    --backgroud-neutral--button--invert-default: var(--base-white);
-    --backgroud-neutral--button--invert-hover: var(--grey-50);
+    --background-neutral--button--neutral-default: var(--grey-500);
+    --background-neutral--button--neutral-hover: var(--base-black);
+    --background-neutral--button--invert-default: var(--base-white);
+    --background-neutral--button--invert-hover: var(--grey-50);
 
     /* Neutral Alpha Backgrounds */
-    --backgroud-neutral--alpha--black-75: var(--alpha-black-75);
-    --backgroud-neutral--alpha--black-50: var(--alpha-black-50);
-    --backgroud-neutral--alpha--black-25: var(--alpha-black-25);
-    --backgroud-neutral--alpha--white-75: var(--alpha-white-75);
-    --backgroud-neutral--alpha--white-50: var(--alpha-white-50);
-    --backgroud-neutral--alpha--white-25: var(--alpha-white-25);
+    --background-neutral--alpha--black-75: var(--alpha-black-75);
+    --background-neutral--alpha--black-50: var(--alpha-black-50);
+    --background-neutral--alpha--black-25: var(--alpha-black-25);
+    --background-neutral--alpha--white-75: var(--alpha-white-75);
+    --background-neutral--alpha--white-50: var(--alpha-white-50);
+    --background-neutral--alpha--white-25: var(--alpha-white-25);
 
     /* Brand Backgrounds */
     --background-brand--brand-strong: var(--brand-color-300);

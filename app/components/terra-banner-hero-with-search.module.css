@@ -51,8 +51,8 @@
     width: 100%;
     padding: var(--space-70) var(--space-180) var(--space-70) var(--space-100);
     border-radius: var(--border-radius-button);
-    border: 1px solid var(--backgroud-neutral--alpha--white-25);
-    background-color: var(--backgroud-neutral--alpha--white-25);
+    border: 1px solid var(--background-neutral--alpha--white-25);
+    background-color: var(--background-neutral--alpha--white-25);
     color: var(--content-neutral--body-invert);
     font-size: var(--typography-font-size-100);
     outline: none;
@@ -64,7 +64,7 @@
 }
 
 .searchInput:focus {
-    border-color: var(--backgroud-neutral--alpha--white-50);
+    border-color: var(--background-neutral--alpha--white-50);
 }
 
 .searchButton {

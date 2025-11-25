@@ -1,10 +1,10 @@
-import styles from "./terra-cta-centered.module.css";
+import styles from "./global-header-title.module.css";
 
 /**
- * Centered CTA Section - Title Only
+ * Centered Header Section - Title Only
  * Displays a centered section with only a title
  */
-export default function TerraCtaCenteredTitleOnly() {
+export default function GlobalHeaderTitle() {
     return (
         <section className={styles.section}>
             <div className="container-grid">

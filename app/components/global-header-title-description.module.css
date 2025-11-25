@@ -1,6 +1,5 @@
 .section {
     padding-top: var(--padding-2xl);
-    padding-bottom: var(--padding-2xl);
 }
 
 .content {
@@ -12,17 +11,13 @@
 
 .title {
     color: var(--content-neutral--title);
-    margin-bottom: var(--space-70);
+    margin-bottom: var(--gap-md);
 }
 
 .subtitle {
     color: var(--content-neutral--caption);
-    margin-bottom: var(--space-100);
 }
 
-.button {
-    gap: var(--space-60);
-}
 
 .icon {
     width: 20px;

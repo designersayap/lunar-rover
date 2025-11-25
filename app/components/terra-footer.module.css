@@ -1,7 +1,7 @@
 .section {
     padding-top: var(--padding-2xl);
     padding-bottom: var(--padding-2xl);
-    background-color: var(--backgroud-neutral--default);
+    background-color: var(--background-neutral--default);
 }
 
 .brandColumn {
