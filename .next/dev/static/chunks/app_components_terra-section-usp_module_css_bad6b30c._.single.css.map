@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/components/terra-section-usp.module.css"],"sourcesContent":[".section {\n    padding: var(--space-240) 0;\n}\n\n.sectionTitleWrapper {\n    padding: var(--padding-md);\n}\n\n.sectionTitle {\n    color: var(--content-neutral--title);\n}\n\n.card {\n    display: flex;\n    flex-direction: column;\n    align-items: flex-start;\n    padding: var(--padding-md);\n}\n\n.cardTitle {\n    color: var(--content-neutral--title);\n    margin-bottom: var(--gap-md);\n}\n\n.cardDescription {\n    color: var(--content-neutral--caption);\n    margin-bottom: var(--gap-sm);\n}\n\n.icon {\n    width: 16px;\n    height: 16px;\n}\n\n/* Mobile spacing adjustment */\n@media (max-width: 480px) {\n    .card {\n        margin-bottom: var(--space-140);\n    }\n\n    .card:last-child {\n        margin-bottom: 0;\n    }\n}"],"names":[],"mappings":"AAAA;;;;AAIA;;;;AAIA;;;;AAIA;;;;;;;AAOA;;;;;AAKA;;;;;AAKA;;;;;AAMA;EACI;;;;EAIA"}}]
-}
