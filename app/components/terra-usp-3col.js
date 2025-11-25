@@ -1,17 +1,12 @@
-import { ArrowRightIcon } from "@heroicons/react/20/solid";
-import styles from "./terra-section-usp.module.css";
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
+import styles from "./terra-usp-3col.module.css";
 
 /**
- * USP Section (Unique Selling Points)
- * Displays a section with title and feature cards in a responsive grid
+ * USP Section 3 Column Variant
+ * Displays a section with title and 2 feature cards in a responsive grid (4 columns each on desktop)
  */
-export default function TerraSectionUsp() {
+export default function TerraUsp3col() {
     const features = [
-        {
-            title: "Title",
-            description: "Description",
-        },
         {
             title: "Title",
             description: "Description",
@@ -27,7 +22,7 @@ export default function TerraSectionUsp() {
             <div className="container-grid">
                 <div className="grid align-center">
                     {/* Section Title */}
-                    <div className="col-mobile-2 col-tablet-4 col-desktop-3">
+                    <div className="col-mobile-2 col-tablet-8 col-desktop-4">
                         <div className={styles.sectionTitleWrapper}>
                             <h2 className={`h3 ${styles.sectionTitle}`}>
                                 Why Choose Us
@@ -39,7 +34,7 @@ export default function TerraSectionUsp() {
                     {features.map((feature, index) => (
                         <div
                             key={index}
-                            className="col-mobile-2 col-tablet-4 col-desktop-3"
+                            className="col-mobile-2 col-tablet-8 col-desktop-4"
                         >
                             <div className={styles.card}>
                                 <h3 className={`h3 ${styles.cardTitle}`}>
