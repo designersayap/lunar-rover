@@ -1,0 +1,51 @@
+[00:00:02.325] Server  LOG      ✓ Ready in 2.1s
+[00:00:04.972] Browser ERROR   Failed to fetch RSC payload for http://localhost:3000/. Falling back to browser navigation. {}
+[00:00:04.972] Browser ERROR   Failed to fetch RSC payload for http://localhost:3000/. Falling back to browser navigation. {}
+[00:06:22.732] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:21:16.934] Browser ERROR   ./app/components/terra-features-image-left.js:10:38
+Parsing ecmascript source code failed
+   8 |                 <div className="grid">
+   9 |                     {/* Image Section */}
+> 10 |                     <div className={`col - 2 col - tablet - 8 col - desktop - 6 ${ styles.imageWrapper } `}>
+     |                                      ^^^
+  11 |                         <div className={styles.imagePlaceholder}>
+  12 |                             {/* Placeholder for image */}
+  13 |                         </div>
+
+Expected ';', '}' or <eof>
+
+Import trace:
+  Server Component:
+    ./app/components/terra-features-image-left.js
+    ./app/page.js
+[00:21:18.037] Server  LOG      ✓ Compiled in 4ms
+[00:21:18.935] Browser ERROR   ./app/components/terra-features-image-left.js:10:38
+Parsing ecmascript source code failed
+   8 |                 <div className="grid">
+   9 |                     {/* Image Section */}
+> 10 |                     <div className={`col - 2 col - tablet - 8 col - desktop - 6 ${ styles.imageWrapper } `}>
+     |                                      ^^^
+  11 |                         <div className={styles.imagePlaceholder}>
+  12 |                             {/* Placeholder for image */}
+  13 |                         </div>
+
+Expected ';', '}' or <eof>
+
+Import trace:
+  Server Component:
+    ./app/components/terra-features-image-left.js
+    ./app/page.js
+[00:23:00.130] Server  LOG      ✓ Compiled in 8ms
+[00:23:03.363] Server  LOG      ✓ Compiled in 3ms
+[00:24:15.290] Server  LOG      ✓ Compiled in 6ms
+[00:25:09.059] Server  LOG      ✓ Compiled in 4ms
+[00:26:01.276] Server  LOG      ✓ Compiled in 2ms
+[00:29:35.782] Server  ERROR    ⨯ ReferenceError: ArrowLongRightIcon is not defined
+[00:29:35.933] Browser ERROR   uncaughtError: ReferenceError: ArrowLongRightIcon is not defined
+[00:29:44.867] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:30:36.744] Server  ERROR    ⨯ ReferenceError: ArrowLongRightIcon is not defined
+[00:30:36.934] Browser ERROR   uncaughtError: ReferenceError: ArrowLongRightIcon is not defined
+[00:30:57.282] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:31:49.867] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:34:37.663] Server  LOG      ✓ Compiled in 5ms
+[00:38:04.482] Server  LOG      ✓ Compiled in 20ms

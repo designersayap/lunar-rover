@@ -1,6 +1,5 @@
 .section {
     padding: var(--space-240) 0;
-    background-color: var(--backgroud-neutral--neutral-faint);
 }
 
 .sectionTitleWrapper {

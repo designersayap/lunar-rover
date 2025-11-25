@@ -1,0 +1,53 @@
+/* [project]/app/components/terra-banner-hero-with-button.module.css [app-client] (css) */
+.terra-banner-hero-with-button-module__D9c7DG__hero {
+  text-align: center;
+  background-image: url("/images/hero-banner.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  display: flex;
+  position: relative;
+}
+
+.terra-banner-hero-with-button-module__D9c7DG__hero:before {
+  content: "";
+  z-index: 0;
+  position: absolute;
+  inset: 0;
+}
+
+.terra-banner-hero-with-button-module__D9c7DG__hero > * {
+  z-index: 1;
+  position: relative;
+}
+
+.terra-banner-hero-with-button-module__D9c7DG__content {
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+}
+
+.terra-banner-hero-with-button-module__D9c7DG__heroTitle {
+  margin-bottom: var(--space-100);
+}
+
+.terra-banner-hero-with-button-module__D9c7DG__heroSubtitle {
+  color: var(--grey-200);
+  margin-bottom: var(--space-180);
+}
+
+.terra-banner-hero-with-button-module__D9c7DG__ctaButton {
+  align-items: center;
+  gap: var(--space-70);
+  display: inline-flex;
+}
+
+.terra-banner-hero-with-button-module__D9c7DG__iconLeft, .terra-banner-hero-with-button-module__D9c7DG__iconRight {
+  width: 20px;
+  height: 20px;
+}
+
+/*# sourceMappingURL=app_components_terra-banner-hero-with-button_module_css_bad6b30c._.single.css.map*/

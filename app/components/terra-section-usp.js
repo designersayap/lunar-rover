@@ -1,5 +1,6 @@
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import styles from "./terra-section-usp.module.css";
+import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 
 /**
  * USP Section (Unique Selling Points)
@@ -49,7 +50,7 @@ export default function TerraSectionUsp() {
                                 </p>
                                 <button className="btn btn-ghost btn-md">
                                     More Info
-                                    <ArrowRightIcon className={styles.icon} />
+                                    <ArrowLongRightIcon className={styles.icon} />
                                 </button>
                             </div>
                         </div>
