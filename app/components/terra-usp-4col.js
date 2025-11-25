@@ -1,10 +1,19 @@
-import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import styles from "./terra-usp-4col.module.css";
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 
 /**
- * USP Section 4 Column (Unique Selling Points)
- * Displays a section with title and 3 feature cards in a responsive grid (3 columns each on desktop)
+ * TerraUsp4col Component
+ * 
+ * A 4-column Unique Selling Point (USP) section.
+ * Displays a section title ("Why Choose Us") and 3 feature cards.
+ * 
+ * Layout:
+ * - Desktop: 3 columns per card (4 items total including title = 12 cols)
+ * - Tablet: 4 columns per card
+ * - Mobile: Full width (2 columns)
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered USP section
  */
 export default function TerraUsp4col() {
     const features = [

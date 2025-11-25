@@ -2,8 +2,18 @@ import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 import styles from "./terra-usp-3col.module.css";
 
 /**
- * USP Section 3 Column Variant
- * Displays a section with title and 2 feature cards in a responsive grid (4 columns each on desktop)
+ * TerraUsp3col Component
+ * 
+ * A 3-column Unique Selling Point (USP) variant.
+ * Displays a section title ("Why Choose Us") and 2 feature cards.
+ * 
+ * Layout:
+ * - Desktop: 4 columns per card (3 items total including title = 12 cols)
+ * - Tablet: 8 columns per card
+ * - Mobile: Full width (2 columns)
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered USP section
  */
 export default function TerraUsp3col() {
     const features = [

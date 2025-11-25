@@ -105,6 +105,52 @@ A responsive hero section with:
 - Search input with integrated button
 - Fully responsive layout
 
+### TerraUsp4col
+
+A 4-column USP (Unique Selling Point) section featuring:
+- Section title ("Why Choose Us")
+- 3 feature cards
+- Responsive grid: 3 columns each on desktop, 4 on tablet, full width on mobile
+
+### TerraUsp3col
+
+A 3-column USP variant featuring:
+- Section title ("Why Choose Us")
+- 2 feature cards
+- Responsive grid: 4 columns each on desktop, 8 on tablet, full width on mobile
+
+### TerraFeaturesImageLeft
+
+A feature section with:
+- Image on the left (6 columns)
+- Text content on the right (6 columns)
+- Responsive behavior: Text appears above image on mobile/tablet
+
+### TerraFeaturesImageRight
+
+A feature section with:
+- Text content on the left (6 columns)
+- Image on the right (6 columns)
+- Responsive behavior: Text appears above image on mobile/tablet
+
+## 🛠️ Utilities
+
+### Global Image Placeholder
+
+A flexible, reusable image placeholder system available in `global.css`.
+
+**Usage:**
+```jsx
+<div className="imagePlaceholder-1-1"></div>
+```
+
+**Available Variants:**
+- `.imagePlaceholder-1-1` (Square - 1:1)
+- `.imagePlaceholder-4-5` (Portrait - 4:5)
+- `.imagePlaceholder-5-4` (Landscape - 5:4)
+- `.imagePlaceholder-16-9` (Widescreen - 16:9)
+- `.imagePlaceholder-21-9` (Ultra-wide - 21:9)
+
 ## 🎯 Features
 
 - ✅ Comprehensive design system with primitives and tokens

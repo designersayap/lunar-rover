@@ -1,6 +1,18 @@
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 import styles from "./terra-features-image-right.module.css";
 
+/**
+ * TerraFeaturesImageRight Component
+ * 
+ * A feature section displaying text on the left and an image on the right.
+ * 
+ * Layout:
+ * - Desktop: Text (left, 6 cols) | Image (right, 6 cols)
+ * - Tablet/Mobile: Text (top) | Image (bottom) - via CSS order
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered feature section
+ */
 export default function TerraFeaturesImageRight() {
     return (
         <section className={styles.section}>
