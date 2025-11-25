@@ -8,7 +8,7 @@ export default function TerraFeaturesImageLeft() {
                 <div className="grid">
                     {/* Image Section */}
                     <div className={`col-2 col-tablet-8 col-desktop-6 ${styles.imageWrapper}`}>
-                        <div className="imagePlaceholder">
+                        <div className="imagePlaceholder-1-1">
                             {/* Placeholder for image */}
                         </div>
                     </div>

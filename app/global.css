@@ -276,9 +276,33 @@ body {
    IMAGE PLACEHOLDER
    ============================================ */
 
-.imagePlaceholder {
+/* Image Placeholder Aspect Ratio Variants */
+.imagePlaceholder-1-1 {
   width: 100%;
   aspect-ratio: 1 / 1;
   background: repeating-conic-gradient(#e0e0e0 0% 25%, #f5f5f5 0% 50%) 50% / 20px 20px;
-  border-radius: var(--border-radius-md);
+}
+
+.imagePlaceholder-4-5 {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background: repeating-conic-gradient(#e0e0e0 0% 25%, #f5f5f5 0% 50%) 50% / 20px 20px;
+}
+
+.imagePlaceholder-5-4 {
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  background: repeating-conic-gradient(#e0e0e0 0% 25%, #f5f5f5 0% 50%) 50% / 20px 20px;
+}
+
+.imagePlaceholder-16-9 {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: repeating-conic-gradient(#e0e0e0 0% 25%, #f5f5f5 0% 50%) 50% / 20px 20px;
+}
+
+.imagePlaceholder-21-9 {
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  background: repeating-conic-gradient(#e0e0e0 0% 25%, #f5f5f5 0% 50%) 50% / 20px 20px;
 }
