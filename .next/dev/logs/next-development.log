@@ -1,51 +1,57 @@
-[00:00:02.325] Server  LOG      ✓ Ready in 2.1s
-[00:00:04.972] Browser ERROR   Failed to fetch RSC payload for http://localhost:3000/. Falling back to browser navigation. {}
-[00:00:04.972] Browser ERROR   Failed to fetch RSC payload for http://localhost:3000/. Falling back to browser navigation. {}
-[00:06:22.732] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:21:16.934] Browser ERROR   ./app/components/terra-features-image-left.js:10:38
-Parsing ecmascript source code failed
-   8 |                 <div className="grid">
-   9 |                     {/* Image Section */}
-> 10 |                     <div className={`col - 2 col - tablet - 8 col - desktop - 6 ${ styles.imageWrapper } `}>
-     |                                      ^^^
-  11 |                         <div className={styles.imagePlaceholder}>
-  12 |                             {/* Placeholder for image */}
-  13 |                         </div>
-
-Expected ';', '}' or <eof>
-
-Import trace:
-  Server Component:
-    ./app/components/terra-features-image-left.js
-    ./app/page.js
-[00:21:18.037] Server  LOG      ✓ Compiled in 4ms
-[00:21:18.935] Browser ERROR   ./app/components/terra-features-image-left.js:10:38
-Parsing ecmascript source code failed
-   8 |                 <div className="grid">
-   9 |                     {/* Image Section */}
-> 10 |                     <div className={`col - 2 col - tablet - 8 col - desktop - 6 ${ styles.imageWrapper } `}>
-     |                                      ^^^
-  11 |                         <div className={styles.imagePlaceholder}>
-  12 |                             {/* Placeholder for image */}
-  13 |                         </div>
-
-Expected ';', '}' or <eof>
-
-Import trace:
-  Server Component:
-    ./app/components/terra-features-image-left.js
-    ./app/page.js
-[00:23:00.130] Server  LOG      ✓ Compiled in 8ms
-[00:23:03.363] Server  LOG      ✓ Compiled in 3ms
-[00:24:15.290] Server  LOG      ✓ Compiled in 6ms
-[00:25:09.059] Server  LOG      ✓ Compiled in 4ms
-[00:26:01.276] Server  LOG      ✓ Compiled in 2ms
-[00:29:35.782] Server  ERROR    ⨯ ReferenceError: ArrowLongRightIcon is not defined
-[00:29:35.933] Browser ERROR   uncaughtError: ReferenceError: ArrowLongRightIcon is not defined
-[00:29:44.867] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:30:36.744] Server  ERROR    ⨯ ReferenceError: ArrowLongRightIcon is not defined
-[00:30:36.934] Browser ERROR   uncaughtError: ReferenceError: ArrowLongRightIcon is not defined
-[00:30:57.282] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:31:49.867] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:34:37.663] Server  LOG      ✓ Compiled in 5ms
-[00:38:04.482] Server  LOG      ✓ Compiled in 20ms
+[00:00:00.536] Server  LOG      ✓ Ready in 378ms
+[00:28:01.711] Server  LOG      ✓ Compiled in 55ms
+[00:43:55.657] Server  LOG      ✓ Compiled in 55ms
+[00:28:12.843] Browser ERROR   Failed to fetch RSC payload for http://localhost:3001/. Falling back to browser navigation. {}
+[00:28:12.843] Browser ERROR   unhandledRejection: undefined
+[00:39:38.291] Server  LOG      ✓ Compiled in 13ms
+[00:55:32.239] Server  LOG      ✓ Compiled in 13ms
+[00:41:18.661] Server  LOG      ✓ Compiled in 9ms
+[00:57:12.612] Server  LOG      ✓ Compiled in 10ms
+[01:00:20.611] Server  LOG      ✓ Compiled in 71ms
+[00:44:26.667] Server  LOG      ✓ Compiled in 71ms
+[01:00:50.462] Server  LOG      ✓ Compiled in 4ms
+[00:52:27.370] Server  WARN     ⚠ Cross origin request detected from 172.20.68.112 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+[00:59:00.701] Server  LOG      ✓ Compiled in 69ms
+[01:14:54.648] Server  LOG      ✓ Compiled in 70ms
+[00:59:52.648] Browser ERROR   Failed to fetch RSC payload for http://localhost:3001/. Falling back to browser navigation. {}
+[01:15:59.080] Server  LOG      ✓ Compiled in 57ms
+[01:16:56.258] Server  LOG      ✓ Compiled in 17ms
+[01:17:20.938] Server  LOG      ✓ Compiled in 10ms
+[01:01:26.992] Server  LOG      ✓ Compiled in 10ms
+[01:07:07.072] Server  LOG      ✓ Compiled in 79ms
+[01:23:01.019] Server  LOG      ✓ Compiled in 81ms
+[01:23:06.467] Server  LOG      ✓ Compiled in 13ms
+[01:23:19.606] Server  LOG      ✓ Compiled in 28ms
+[01:26:30.786] Server  LOG      ✓ Compiled in 101ms
+[01:42:24.732] Server  LOG      ✓ Compiled in 103ms
+[01:43:17.643] Server  LOG      ✓ Compiled in 47ms
+[01:35:09.397] Server  LOG      ✓ Compiled in 40ms
+[01:51:03.344] Server  LOG      ✓ Compiled in 42ms
+[02:00:56.497] Server  LOG      ✓ Compiled in 81ms
+[02:16:50.443] Server  LOG      ✓ Compiled in 81ms
+[02:01:07.951] Browser ERROR   Failed to fetch RSC payload for http://localhost:3001/. Falling back to browser navigation. {}
+[02:01:07.951] Browser ERROR   unhandledRejection: undefined
+[02:25:09.095] Server  LOG      ✓ Compiled in 48ms
+[02:26:47.506] Server  LOG      ✓ Compiled in 15ms
+[02:48:33.518] Server  LOG      ✓ Compiled in 17ms
+[03:04:27.464] Server  LOG      ✓ Compiled in 22ms
+[02:51:44.571] Browser ERROR   unhandledRejection: undefined
+[02:54:26.242] Server  LOG      ✓ Compiled in 8ms
+[03:10:20.189] Server  LOG      ✓ Compiled in 9ms
+[03:12:39.692] Server  LOG      ✓ Compiled in 10ms
+[02:56:45.748] Server  LOG      ✓ Compiled in 9ms
+[02:58:01.529] Server  LOG      ✓ Compiled in 16ms
+[03:13:55.476] Server  LOG      ✓ Compiled in 19ms
+[03:14:16.632] Server  LOG      ✓ Compiled in 4ms
+[02:58:22.686] Server  LOG      ✓ Compiled in 3ms
+[03:00:28.407] Server  LOG      ✓ Compiled in 18ms
+[03:16:22.354] Server  LOG      ✓ Compiled in 48ms
+[03:03:50.150] Server  LOG      ✓ Compiled in 10ms
+[03:19:44.096] Server  LOG      ✓ Compiled in 11ms
+[03:04:18.912] Server  LOG      ✓ Compiled in 7ms
+[03:20:12.859] Server  LOG      ✓ Compiled in 9ms
+[03:06:30.599] Server  LOG      ✓ Compiled in 65ms
+[03:22:24.545] Server  LOG      ✓ Compiled in 66ms
+[03:08:48.008] Server  LOG      ✓ Compiled in 23ms
+[03:24:41.953] Server  LOG      ✓ Compiled in 25ms

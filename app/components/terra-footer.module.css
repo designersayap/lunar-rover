@@ -1,0 +1,81 @@
+.section {
+    padding-top: var(--padding-2xl);
+    padding-bottom: var(--padding-2xl);
+    background-color: var(--backgroud-neutral--default);
+}
+
+.brandColumn {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-80);
+    padding: var(--padding-md);
+}
+
+.linksColumn {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-80);
+    padding: var(--padding-md);
+}
+
+.title {
+    color: var(--content-brand--brand);
+}
+
+.description {
+    color: var(--content-neutral--body);
+    max-width: 400px;
+}
+
+.linkList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-sm);
+}
+
+.linkItem {
+    display: flex;
+    align-items: center;
+    gap: var(--space-60);
+    color: var(--content-neutral--body);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.linkItem:hover {
+    color: var(--content-brand--brand);
+}
+
+.socialIcon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.bottomBar {
+    margin-top: var(--space-180);
+    padding-top: var(--space-100);
+    border-top: 1px solid var(--stroke-neutral--neutral);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-80);
+}
+
+.copyright {
+    color: var(--content-neutral--caption);
+}
+
+.legalLinks {
+    display: flex;
+    gap: var(--space-100);
+}
+
+.legalLink {
+    color: var(--content-neutral--caption);
+    text-decoration: none;
+}
