@@ -1,0 +1,168 @@
+.section {
+    padding-top: var(--padding-xl);
+    padding-bottom: var(--padding-xl);
+    position: relative;
+    overflow: hidden;
+}
+
+.container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardContainer {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    display: flex;
+    gap: 0;
+}
+
+.cardContainer::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}
+
+/* Desktop: Single row with horizontal scroll */
+@media (min-width: 1024px) {
+    .cardContainer {
+        overflow-x: auto;
+    }
+}
+
+.terraTestimoniContent {
+    padding: var(--padding-md);
+    scroll-snap-align: start;
+    flex: 0 0 auto;
+}
+
+/* Mobile & Tablet: Full width cards */
+@media (max-width: 1023px) {
+    .terraTestimoniContent {
+        flex: 0 0 100%;
+        min-width: 100%;
+    }
+}
+
+/* Desktop: Fixed width for 3 cards visible */
+@media (min-width: 1024px) {
+    .terraTestimoniContent {
+        flex: 0 0 calc(100% / 3);
+        min-width: calc(100% / 3);
+    }
+}
+
+.cardWrapper {
+    position: relative;
+    border-radius: var(--round-120);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: var(--padding-md);
+}
+
+.cardContent {
+    background-color: var(--base-white);
+    border-radius: var(--round-100);
+    padding: var(--padding-sm);
+    text-align: center;
+    width: 100%;
+    position: relative;
+    margin-bottom: var(--space-60);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-60);
+}
+
+.profileImageWrapper {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 4px solid var(--base-white);
+    overflow: hidden;
+    background-color: var(--grey-100);
+}
+
+.profileImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.name {
+    margin-top: var(--space-100);
+    color: var(--content-neutral--title);
+}
+
+.role {
+    color: var(--content-neutral--caption);
+}
+
+.description {
+    color: var(--content-neutral--body);
+}
+
+.stars {
+    display: flex;
+    gap: 4px;
+    color: #F97316;
+}
+
+.starIcon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+/* Navigation Buttons */
+.navButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background-color: var(--base-white);
+    border: 1px solid var(--grey-200);
+    color: var(--grey-500);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.navButton:hover {
+    background-color: var(--grey-50);
+    border-color: var(--grey-300);
+}
+
+.navButtonLeft {
+    left: -24px;
+}
+
+.navButtonRight {
+    right: -24px;
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+}

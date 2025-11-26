@@ -10,7 +10,6 @@ import TerraBannerHeroWithSearch from "./components/terra-banner-hero-with-searc
 import TerraFeaturesImageLeft from "./components/terra-features-image-left";
 import TerraFeaturesImageRight from "./components/terra-features-image-right";
 import TerraUsp3col from "./components/terra-usp-3col";
-import TerraUsp4col from "./components/terra-usp-4col";
 import TerraFooter from "./components/terra-footer";
 import { uspData, footerData } from "./content/data";
 import styles from "./page.module.css";
@@ -43,6 +42,12 @@ export default function TemplateGeneratorPage() {
     "USP": [
       { id: "usp-3col", name: "Terra - USP 3 Column", component: TerraUsp3col, thumbnail: "/images/thumbnails/terra-USP-3col.svg" },
       { id: "usp-4col", name: "Terra - USP 4 Column", component: TerraUsp4col, thumbnail: "/images/thumbnails/terra-USP-4col.svg" },
+    ],
+    "Testimonial": [
+      { id: "testimony", name: "Terra - Testimony", component: TerraTestimony, thumbnail: "Testimony" },
+    ],
+    "Footer": [
+      { id: "footer", name: "Terra - Footer", component: TerraFooter, thumbnail: "Footer" },
     ],
   };
 
