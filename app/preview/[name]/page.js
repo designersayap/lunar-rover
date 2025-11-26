@@ -15,6 +15,8 @@ import TerraFeaturesImageRight from "../../components/terra-features-image-right
 import TerraUsp3col from "../../components/terra-usp-3col";
 import TerraUsp4col from "../../components/terra-usp-4col";
 import TerraFooter from "../../components/terra-footer";
+import TerraTestimony from "../../components/terra-testimony";
+import TerraProductCarousel4Products from "../../components/terra-product-carousel-4-products";
 
 // Data
 import { uspData, footerData } from "../../content/data";
@@ -31,6 +33,8 @@ export default function ComponentPreviewPage() {
         "global-header-title-button-description": GlobalHeaderTitleButtonDescription,
         "terra-banner-hero-with-button": TerraBannerHeroWithButton,
         "terra-banner-hero-with-search": TerraBannerHeroWithSearch,
+        "terra-testimony": TerraTestimony,
+        "terra-product-carousel-4-products": TerraProductCarousel4Products,
         "terra-features-image-left": TerraFeaturesImageLeft,
         "terra-features-image-right": TerraFeaturesImageRight,
         "terra-usp-3col": TerraUsp3col,

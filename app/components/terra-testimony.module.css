@@ -62,7 +62,7 @@
 
 .cardWrapper {
     position: relative;
-    border-radius: var(--round-120);
+    border-radius: var(--border-radius-lg);
     background-size: cover;
     background-position: center;
     display: flex;
@@ -73,17 +73,17 @@
 
 .cardContent {
     background-color: var(--base-white);
-    border-radius: var(--round-100);
+    border-radius: var(--border-radius-md);
     padding: var(--padding-sm);
     text-align: center;
     width: 100%;
     position: relative;
-    margin-bottom: var(--space-60);
+    margin-bottom: var(--gap-xs);
     box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-60);
+    gap: var(--gap-xs);
 }
 
 .profileImageWrapper {
@@ -106,12 +106,16 @@
 }
 
 .name {
-    margin-top: var(--space-100);
+    margin-top: var(--gap-lg);
     color: var(--content-neutral--title);
 }
 
 .role {
     color: var(--content-neutral--caption);
+}
+
+.titleheader {
+    margin-bottom: var(--gap-sm);
 }
 
 .description {
@@ -120,8 +124,9 @@
 
 .stars {
     display: flex;
-    gap: 4px;
-    color: #F97316;
+    gap: var(--gap-xs);
+    color: var(--content-brand--warning);
+    margin-bottom: var(--gap-md);
 }
 
 .starIcon {
@@ -131,27 +136,12 @@
 }
 
 /* Navigation Buttons */
+/* Navigation Buttons */
 .navButton {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
-    background-color: var(--base-white);
-    border: 1px solid var(--grey-200);
-    color: var(--grey-500);
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.navButton:hover {
-    background-color: var(--grey-50);
-    border-color: var(--grey-300);
 }
 
 .navButtonLeft {
@@ -160,9 +150,4 @@
 
 .navButtonRight {
     right: -24px;
-}
-
-.icon {
-    width: 20px;
-    height: 20px;
 }

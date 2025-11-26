@@ -20,7 +20,7 @@ export default function TerraTestimony() {
         {
             name: "Cecily Garcia",
             role: "Project Manager",
-            quote: "This one is top-notch! Our customers love the modern designs especially the illustrations",
+            quote: "This one is top-notch! Our customers love the modern designs",
         },
         {
             name: "Maja Nash",
@@ -35,7 +35,7 @@ export default function TerraTestimony() {
         {
             name: "Michael Chen",
             role: "Product Designer",
-            quote: "Beautiful components that are easy to customize. Saved us weeks of development time.",
+            quote: "Beautiful components that are easy to customize. Saved us weeks.",
         },
         {
             name: "Emma Williams",
@@ -73,22 +73,22 @@ export default function TerraTestimony() {
 
                         {/* Navigation Buttons */}
                         <button
-                            className={`${styles.navButton} ${styles.navButtonLeft}`}
+                            className={`btn btn-outline btn-icon btn-md ${styles.navButton} ${styles.navButtonLeft}`}
                             onClick={scrollLeft}
                             aria-label="Previous testimonial"
                         >
-                            <ChevronLeftIcon className={styles.icon} />
+                            <ChevronLeftIcon />
                         </button>
                         <button
-                            className={`${styles.navButton} ${styles.navButtonRight}`}
+                            className={`btn btn-outline btn-icon btn-md ${styles.navButton} ${styles.navButtonRight}`}
                             onClick={scrollRight}
                             aria-label="Next testimonial"
                         >
-                            <ChevronRightIcon className={styles.icon} />
+                            <ChevronRightIcon />
                         </button>
 
                         {/* Cards Grid */}
-                        <div ref={scrollContainerRef} className={`grid ${styles.cardContainer}`}>
+                        <div ref={scrollContainerRef} className={styles.cardContainer}>
                             {testimonials.map((item, index) => (
                                 <div key={index} className={`col-mobile-2 col-tablet-8 col-desktop-4 ${styles.terraTestimoniContent}`}>
                                     <div className={`imagePlaceholder-4-5 ${styles.cardWrapper}`}>
@@ -99,9 +99,9 @@ export default function TerraTestimony() {
                                             </div>
 
                                             {/* Text Content */}
-                                            <h5 className={`h5 ${styles.name}`}>{item.name}</h5>
-                                            <p className={`caption-regular ${styles.role}`}>{item.role}</p>
-                                            <p className={`caption-regular ${styles.description}`}>"{item.quote}"</p>
+                                            <div className={'titleheader'}><h5 className={`h5 truncate-1-line ${styles.name}`}>{item.name}</h5>
+                                                <p className={`caption-regular truncate-1-lines ${styles.role}`}>{item.role}</p></div>
+                                            <p className={`caption-regular truncate-2-lines ${styles.description}`}>"{item.quote}"</p>
 
                                             {/* Stars */}
                                             <div className={styles.stars}>

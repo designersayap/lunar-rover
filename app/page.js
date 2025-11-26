@@ -10,6 +10,9 @@ import TerraBannerHeroWithSearch from "./components/terra-banner-hero-with-searc
 import TerraFeaturesImageLeft from "./components/terra-features-image-left";
 import TerraFeaturesImageRight from "./components/terra-features-image-right";
 import TerraUsp3col from "./components/terra-usp-3col";
+import TerraUsp4col from "./components/terra-usp-4col";
+import TerraTestimony from "./components/terra-testimony";
+import TerraProductCarousel4Products from "./components/terra-product-carousel-4-products";
 import TerraFooter from "./components/terra-footer";
 import { uspData, footerData } from "./content/data";
 import styles from "./page.module.css";
@@ -43,6 +46,9 @@ export default function TemplateGeneratorPage() {
     ],
     "Testimonial": [
       { id: "testimony", name: "Terra - Testimony", component: TerraTestimony, thumbnail: "Testimony" },
+    ],
+    "Product": [
+      { id: "product-carousel-4", name: "Terra - Product Carousel 4", component: TerraProductCarousel4Products, thumbnail: "Product\nCarousel" },
     ],
     "Footer": [
       { id: "footer", name: "Terra - Footer", component: TerraFooter, thumbnail: "Footer" },
@@ -373,18 +379,325 @@ ${finalHtmlContent}
   };
 
   return (
-    <>
-      <TerraBannerHeroWithSearch />
-      <TerraBannerHeroWithButton />
-      <TerraUsp4col title={uspData.title} features={uspData.features} />
-      <TerraUsp3col />
-      <TerraFeaturesImageLeft />
-      <TerraFeaturesImageRight />
-      <GlobalHeaderTitle />
-      <GlobalHeaderTitleButton />
-      <GlobalHeaderTitleDescription />
-      <GlobalHeaderTitleButtonDescription />
-      <TerraFooter {...footerData} />
-    </>
+    <div className={styles.container}>
+      {/* Top Bar - Full Width */}
+      <div className={styles.topBar}>
+        <div className={styles.topBarLeft}>
+          <h1 className={`h5 ${styles.logo}`}>Lunar</h1>
+        </div>
+        <div className={styles.topBarRight}>
+          <button
+            onClick={() => setIsSidebarVisible(!isSidebarVisible)}
+            className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}
+          >
+            <span className="material-icons-round" style={{ fontSize: "16px", color: "#475E75" }}>
+              {isSidebarVisible ? "keyboard_double_arrow_right" : "keyboard_double_arrow_left"}
+            </span>
+          </button>
+          <button className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}>
+            <span className="material-icons-round" style={{ fontSize: "16px", color: "#475E75" }}>download</span>
+          </button>
+          <button className={styles.topBarButtonWide}>
+            <span className="material-icons-round" style={{ fontSize: "16px" }}>code</span>
+            Import JSON
+          </button>
+          <button className={styles.topBarButtonExport} onClick={handleExport}>
+            <span className="material-icons-round" style={{ fontSize: "16px" }}>rocket_launch</span>
+            Export
+          </button>
+        </div>
+      </div>
+
+      {/* Main Content Area */}
+      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+        {/* Canvas Area */}
+        <div style={{
+          flex: 1,
+          overflowY: "auto",
+          backgroundColor: "var(--base-white)",
+          position: "relative"
+        }}>
+          {/* Canvas Content */}
+          <div style={{ padding: "var(--space-100)" }}>
+            {selectedComponents.length === 0 ? (
+              <div style={{
+                minHeight: "60vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "var(--base-white)",
+                borderRadius: "var(--round-80)",
+                border: "1px dashed var(--grey-200)"
+              }}>
+                <div style={{ textAlign: "center" }}>
+                  <p className="body-regular" style={{ color: "var(--grey-300)" }}>
+                    Select components from the sidebar to build your template
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div data-canvas="true">
+                {selectedComponents.map((item, index) => {
+                  const Component = item.component;
+                  return (
+                    <div
+                      key={item.uniqueId}
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, index, item.name || "Section", item.thumbnail)}
+                      onDragEnd={() => setDraggedItemIndex(null)}
+                      onDragOver={(e) => handleDragOver(e, index)}
+                      onDrop={(e) => handleDrop(e, index)}
+                      className={`${styles.componentWrapper} ${draggedItemIndex === index ? styles.componentWrapperDragging : ''}`}
+                      style={{
+                        marginTop: dropTargetIndex === index && draggedItemIndex !== index ? "var(--space-80)" : "0"
+                      }}
+                    >
+                      {/* Drop Indicator */}
+                      {dropTargetIndex === index && draggedItemIndex !== index && (
+                        <div className={styles.dropIndicator}>
+                          <div className={styles.dropIndicatorCircle} />
+                        </div>
+                      )}
+                      {/* Grouped Control Buttons */}
+                      <div className={styles.controlButtons}>
+                        <button
+                          onClick={() => moveDown(index)}
+                          disabled={index === selectedComponents.length - 1}
+                          className={`${styles.controlButton} ${styles.controlButtonBordered}`}
+                          style={{
+                            color: index === selectedComponents.length - 1 ? "var(--grey-200)" : "#475E75",
+                            cursor: index === selectedComponents.length - 1 ? "not-allowed" : "pointer"
+                          }}
+                        >
+                          <span className="material-icons-round" style={{ fontSize: "16px" }}>keyboard_arrow_down</span>
+                        </button>
+                        <button
+                          onClick={() => moveUp(index)}
+                          disabled={index === 0}
+                          className={`${styles.controlButton} ${styles.controlButtonBordered}`}
+                          style={{
+                            color: index === 0 ? "var(--grey-200)" : "#475E75",
+                            cursor: index === 0 ? "not-allowed" : "pointer"
+                          }}
+                        >
+                          <span className="material-icons-round" style={{ fontSize: "16px" }}>keyboard_arrow_up</span>
+                        </button>
+                        <button
+                          onClick={() => removeComponent(item.uniqueId)}
+                          className={`${styles.controlButton} ${styles.controlButtonDelete}`}
+                        >
+                          <span className="material-icons-round" style={{ fontSize: "16px" }}>delete</span>
+                        </button>
+                      </div>
+
+                      {/* Render Component */}
+                      {item.id === "usp-3col" || item.id === "usp-4col" ? (
+                        <Component title={uspData.title} features={uspData.features} />
+                      ) : item.id === "footer" ? (
+                        <Component {...footerData} />
+                      ) : (
+                        <Component />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        {isSidebarVisible && (
+          <div style={{
+            width: "300px",
+            backgroundColor: "#F5F6F7",
+            borderLeft: "1px solid var(--grey-100)",
+            overflowY: "auto",
+            padding: "var(--space-80)"
+          }}>
+            <div style={{ marginBottom: "var(--space-80)" }}>
+              <h2 className="h5" style={{ marginBottom: "var(--space-80)", color: "var(--content-neutral--title)" }}>Configuration</h2>
+              <div style={{
+                display: "flex",
+                gap: "0",
+                borderBottom: "1px solid #D5DADD",
+                margin: "0 calc(-1 * var(--space-80))",
+                padding: "0"
+              }}>
+                <button style={{
+                  padding: "var(--space-60) var(--space-80)",
+                  border: "none",
+                  borderBottom: "1px solid var(--content-neutral--title)",
+                  backgroundColor: "transparent",
+                  color: "var(--content-neutral--title)",
+                  fontWeight: "var(--font-weight-regular)",
+                  fontSize: "var(--typography-font-size-90)",
+                  cursor: "pointer",
+                  marginBottom: "-1px"
+                }}>
+                  Elements
+                </button>
+                <button style={{
+                  padding: "var(--space-60) var(--space-80)",
+                  border: "none",
+                  borderBottom: "1px solid transparent",
+                  backgroundColor: "transparent",
+                  color: "var(--grey-300)",
+                  fontWeight: "var(--font-weight-regular)",
+                  fontSize: "var(--typography-font-size-90)",
+                  cursor: "pointer",
+                  marginBottom: "-1px"
+                }}>
+                  Analytics
+                </button>
+              </div>
+            </div>
+
+            {/* Search */}
+            <input
+              className="sidebar-search-input"
+              type="text"
+              placeholder="Search elements"
+              style={{
+                width: "100%",
+                padding: "0 var(--space-70)",
+                border: "1px solid #D5DADD",
+                borderRadius: "8px",
+                height: "36px",
+                marginBottom: "var(--space-80)",
+                fontSize: "var(--typography-font-size-90)",
+                outline: "none",
+                transition: "border-color 0.2s"
+              }}
+              onFocus={(e) => e.target.style.borderColor = "#006532"}
+              onBlur={(e) => e.target.style.borderColor = "#D5DADD"}
+            />
+
+            <div style={{
+              borderBottom: "1px solid #D5DADD",
+              margin: "0 calc(-1 * var(--space-80))",
+              marginBottom: "var(--space-80)"
+            }} />
+
+            {/* Component Categories */}
+            {Object.entries(componentLibrary).map(([category, components]) => (
+              <div key={category} style={{ marginBottom: "var(--space-100)" }}>
+                <details open>
+                  <summary style={{
+                    cursor: "pointer",
+                    padding: "var(--space-60) 0",
+                    fontWeight: "var(--font-weight-bold)",
+                    fontSize: "var(--typography-font-size-90)",
+                    listStyle: "none",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    color: "var(--content-neutral--body)"
+                  }}>
+                    {category}
+                    <span className="material-icons-round" style={{ color: "var(--grey-400)" }}>arrow_drop_down</span>
+                  </summary>
+                  <div style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "var(--space-60)",
+                    marginTop: "var(--space-60)"
+                  }}>
+                    {components.map((comp) => (
+                      <button
+                        key={comp.id}
+                        onClick={() => addComponent(comp)}
+                        style={{
+                          padding: "var(--space-60)",
+                          border: "1px solid var(--grey-200)",
+                          borderRadius: "var(--round-80)",
+                          backgroundColor: "var(--grey-50)",
+                          cursor: "pointer",
+                          textAlign: "center",
+                          transition: "all 0.2s"
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.borderColor = "var(--brand-color-300)";
+                          e.currentTarget.style.backgroundColor = "var(--brand-color-50)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.borderColor = "var(--grey-200)";
+                          e.currentTarget.style.backgroundColor = "var(--grey-50)";
+                        }}
+                      >
+                        <div style={{
+                          height: "60px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginBottom: "var(--space-60)",
+                          fontSize: "10px",
+                          color: "var(--grey-400)",
+                          whiteSpace: "pre-line",
+                          lineHeight: "1.4"
+                        }}>
+                          {comp.thumbnail}
+                        </div>
+                        <p className="caption-regular" style={{
+                          fontSize: "11px",
+                          color: "var(--grey-500)"
+                        }}>
+                          {comp.name}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                </details>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Custom Drag Image (Hidden) */}
+      <div
+        id="custom-drag-image"
+        style={{
+          position: "absolute",
+          top: "-1000px",
+          left: "-1000px",
+          backgroundColor: "var(--base-white)",
+          padding: "var(--space-60)",
+          borderRadius: "var(--round-80)",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          border: "1px solid var(--grey-200)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "var(--space-40)",
+          width: "100px",
+          zIndex: -1
+        }}
+      >
+        <div style={{
+          height: "60px",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "var(--grey-50)",
+          borderRadius: "var(--round-80)",
+          border: "1px solid var(--grey-200)"
+        }}>
+          <span id="drag-thumbnail-content" style={{
+            fontSize: "10px",
+            color: "var(--grey-400)",
+            whiteSpace: "pre-line",
+            textAlign: "center",
+            lineHeight: "1.4"
+          }}></span>
+        </div>
+        <span id="drag-name-content" style={{
+          fontSize: "11px",
+          fontWeight: "var(--font-weight-bold)",
+          color: "var(--content-neutral--title)"
+        }}></span>
+      </div>
+    </div>
   );
 }
