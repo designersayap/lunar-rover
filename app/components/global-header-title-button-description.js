@@ -2,8 +2,7 @@ import { ArrowLongRightIcon, SparklesIcon } from "@heroicons/react/20/solid";
 import styles from "./global-header-title-button-description.module.css";
 
 /**
- * Centered Header Section
- * Displays a centered section with title, subtitle, and CTA button
+ * Centered Header Section - Title with Button
  */
 export default function GlobalHeaderTitleButtonDescription() {
     return (

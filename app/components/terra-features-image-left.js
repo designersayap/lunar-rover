@@ -3,15 +3,6 @@ import styles from "./terra-features-image-left.module.css";
 
 /**
  * TerraFeaturesImageLeft Component
- * 
- * A feature section displaying an image on the left and text on the right.
- * 
- * Layout:
- * - Desktop: Image (left, 6 cols) | Text (right, 6 cols)
- * - Tablet/Mobile: Text (top) | Image (bottom) - via CSS order
- * 
- * @component
- * @returns {JSX.Element} The rendered feature section
  */
 export default function TerraFeaturesImageLeft() {
     return (

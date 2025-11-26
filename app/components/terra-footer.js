@@ -2,17 +2,6 @@ import styles from "./terra-footer.module.css";
 
 /**
  * Footer Component
- * Displays brand info, product links, and social media links
- */
-/**
- * Footer Component
- * Displays brand info, product links, and social media links
- * 
- * @param {Object} props
- * @param {Object} props.brand - Brand info {title, description}
- * @param {Object} props.products - Product links {title, links: [{label, href}]}
- * @param {Object} props.social - Social links {title, links: [{label, href}]}
- * @param {Object} props.bottomBar - Bottom bar info {copyright, legalLinks: [{label, href}]}
  */
 export default function TerraFooter({ brand, products, social, bottomBar }) {
     const getSocialIcon = (label) => {
@@ -44,7 +33,7 @@ export default function TerraFooter({ brand, products, social, bottomBar }) {
         <footer className={styles.section}>
             <div className="container-grid">
                 <div className="grid">
-                    {/* Brand Column (col-8) */}
+                    {/* Brand Column */}
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-8 ${styles.brandColumn}`}>
                         <h4 className={`h4 ${styles.title}`}>{brand?.title}</h4>
                         <p className={`body-regular ${styles.description}`}>
@@ -52,7 +41,7 @@ export default function TerraFooter({ brand, products, social, bottomBar }) {
                         </p>
                     </div>
 
-                    {/* Products Column (col-2) */}
+                    {/* Products Column */}
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-2 ${styles.linksColumn}`}>
                         <h4 className={`body-regular ${styles.title}`}>{products?.title}</h4>
                         <ul className={styles.linkList}>
@@ -62,7 +51,7 @@ export default function TerraFooter({ brand, products, social, bottomBar }) {
                         </ul>
                     </div>
 
-                    {/* Follow Us Column (col-2) */}
+                    {/* Follow Us Column */}
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-2 ${styles.linksColumn}`}>
                         <h4 className={`body-regular ${styles.title}`}>{social?.title}</h4>
                         <ul className={styles.linkList}>

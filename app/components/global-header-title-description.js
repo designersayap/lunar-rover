@@ -2,7 +2,6 @@ import styles from "./global-header-title-description.module.css";
 
 /**
  * Centered Header Section - Title and Subtitle Only
- * Displays a centered section with title and subtitle, but no button
  */
 export default function GlobalHeaderTitleDescription() {
     return (

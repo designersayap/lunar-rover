@@ -13,12 +13,6 @@
     color: var(--content-neutral--title);
 }
 
-.subtitle {
-    color: var(--content-neutral--caption);
-    margin-bottom: var(--space-100);
-}
-
-
 .icon {
     width: 20px;
     height: 20px;

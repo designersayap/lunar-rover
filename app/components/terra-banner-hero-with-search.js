@@ -1,8 +1,8 @@
 import styles from "./terra-banner-hero-with-search.module.css";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 /**
  * Hero Banner Component with Search
- * Displays a centered hero section with title, subtitle, and search input
  */
 export default function TerraBannerHeroWithSearch() {
     return (
@@ -10,7 +10,7 @@ export default function TerraBannerHeroWithSearch() {
             {/* Grid Container */}
             <div className="container-grid">
                 <div className="grid">
-                    {/* Content Column - Centered on desktop */}
+                    {/* Content Column */}
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
 
                         {/* Hero Title */}
@@ -34,7 +34,7 @@ export default function TerraBannerHeroWithSearch() {
                                 type="submit"
                                 className={`btn btn-primary btn-icon btn-sm ${styles.searchButton}`}
                             >
-                                <span className="material-icons-round" style={{ fontSize: "20px" }}>search</span>
+                                <MagnifyingGlassIcon width={20} height={20} />
                             </button>
                         </form>
                     </div>

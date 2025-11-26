@@ -2,7 +2,6 @@ import styles from "./global-header-title.module.css";
 
 /**
  * Centered Header Section - Title Only
- * Displays a centered section with only a title
  */
 export default function GlobalHeaderTitle() {
     return (
