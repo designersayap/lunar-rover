@@ -12,6 +12,7 @@ import TerraFeaturesImageRight from "./components/terra-features-image-right";
 import TerraUsp3col from "./components/terra-usp-3col";
 import TerraUsp4col from "./components/terra-usp-4col";
 import TerraTestimony from "./components/terra-testimony";
+import TerraProductCarousel4Products from "./components/terra-product-carousel-4-products";
 import TerraFooter from "./components/terra-footer";
 import { uspData, footerData } from "./content/data";
 import styles from "./page.module.css";
@@ -91,6 +92,9 @@ export default function TemplateGeneratorPage() {
     ],
     "Testimonial": [
       { id: "testimony", name: "Terra - Testimony", component: TerraTestimony, thumbnail: "/images/thumbnails/terra-testimony.svg" },
+    ],
+    "Product": [
+      { id: "product-carousel-4", name: "Terra - Product Carousel 4", component: TerraProductCarousel4Products, thumbnail: "/images/thumbnails/terra-product-carouse.svg" },
     ],
     "Footer": [
       { id: "footer", name: "Terra - Footer", component: TerraFooter, thumbnail: "/images/thumbnails/terra-footer.svg" },

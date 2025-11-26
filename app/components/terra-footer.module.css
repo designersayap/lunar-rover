@@ -49,8 +49,8 @@
 }
 
 .socialIcon {
-    width: 20px;
-    height: 20px;
+    width: var(--space-100);
+    height: var(--space-100);
     fill: currentColor;
 }
 

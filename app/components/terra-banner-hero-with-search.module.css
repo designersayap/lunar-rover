@@ -72,6 +72,6 @@
 }
 
 .icon {
-    width: 18px;
-    height: 18px;
+    width: var(--space-100);
+    height: var(--space-100);
 }
