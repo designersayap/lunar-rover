@@ -22,10 +22,7 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
           rel="stylesheet"
         />
-        <link
-          href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Round"
-          rel="stylesheet"
-        />
+
       </head>
       <body>{children}</body>
     </html>

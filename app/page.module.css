@@ -570,7 +570,7 @@
     border-color: var(--brand-color-300);
 }
 
-/* Dropdown arrow using Material Icons */
+/* Dropdown arrow */
 .popoverProperties {
     position: relative;
 }
