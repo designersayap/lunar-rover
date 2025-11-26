@@ -24,7 +24,7 @@ export default function TerraFeaturesImageRight() {
                         <p className={`subheader-h2 ${styles.description}`}>Description</p>
                         <button className="btn btn-ghost btn-md">
                             More Info
-                            <ArrowLongRightIcon className={styles.icon} />
+                            <ArrowLongRightIcon />
                         </button>
                     </div>
 

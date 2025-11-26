@@ -1,4 +1,3 @@
-import { ArrowLongRightIcon, SparklesIcon } from "@heroicons/react/20/solid";
 import styles from "./terra-banner-hero-with-button.module.css";
 
 /**
@@ -25,10 +24,10 @@ export default function TerraBannerHeroWithButton() {
                         </p>
 
                         {/* CTA Button */}
-                        <button className={`btn btn-brand-solid btn-md ${styles.ctaButton}`}>
-                            <SparklesIcon className={styles.iconLeft} />
+                        <button className={`btn btn-primary btn-md ${styles.ctaButton}`}>
+                            <span className="material-icons-round" style={{ fontSize: "20px" }}>auto_awesome</span>
                             Get Started
-                            <ArrowLongRightIcon className={styles.iconRight} />
+                            <span className="material-icons-round" style={{ fontSize: "20px" }}>arrow_right_alt</span>
                         </button>
                     </div>
                 </div>
