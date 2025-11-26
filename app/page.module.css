@@ -622,6 +622,11 @@
     gap: 12px;
 }
 
+.toasterDelete {
+    background-color: var(--background-brand--danger-strong);
+    color: var(--content-neutral--body-invert);
+}
+
 .toasterIcon {
     width: 16px;
     height: 16px;

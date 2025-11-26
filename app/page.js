@@ -3,7 +3,6 @@
 
 import { useState, useEffect } from "react";
 import {
-  BellAlertIcon,
   RocketLaunchIcon,
   CodeBracketIcon,
   ArrowDownTrayIcon,
@@ -11,8 +10,15 @@ import {
   ChevronDoubleLeftIcon,
   ChevronUpIcon,
   ChevronDownIcon,
-  XMarkIcon
+  XMarkIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
+  TrashIcon as TrashIconOutline
 } from "@heroicons/react/24/outline";
+import {
+  BellAlertIcon,
+  TrashIcon
+} from "@heroicons/react/24/solid";
 import GlobalHeaderTitle from "./components/global-header-title";
 import GlobalHeaderTitleButton from "./components/global-header-title-button";
 import GlobalHeaderTitleDescription from "./components/global-header-title-description";
@@ -37,6 +43,7 @@ export default function TemplateGeneratorPage() {
   const [selectedComponents, setSelectedComponents] = useState([]);
   const [showToaster, setShowToaster] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterType, setToasterType] = useState("success"); // success | delete
 
   useEffect(() => {
     if (showToaster) {
@@ -237,12 +244,20 @@ export default function TemplateGeneratorPage() {
     }]);
 
     setSelectedComponentForConfig(null);
+    setSelectedComponentForConfig(null);
     setToasterMessage(`${selectedComponentForConfig.name} added`);
+    setToasterType("success");
     setShowToaster(true);
   };
 
   const removeComponent = (uniqueId) => {
-    setSelectedComponents(selectedComponents.filter(c => c.uniqueId !== uniqueId));
+    const componentToRemove = selectedComponents.find(c => c.uniqueId === uniqueId);
+    if (componentToRemove) {
+      setToasterMessage(`${componentToRemove.name} deleted`);
+      setToasterType("delete");
+      setShowToaster(true);
+      setSelectedComponents(selectedComponents.filter(c => c.uniqueId !== uniqueId));
+    }
   };
 
   const moveUp = (index) => {
@@ -556,39 +571,33 @@ ${finalHtmlContent}
                       )}
                       {/* Grouped Control Buttons */}
                       <div className={styles.controlButtons}>
-                        <button
-                          onClick={() => moveDown(index)}
-                          disabled={index === selectedComponents.length - 1}
-                          className={`${styles.controlButton} ${styles.controlButtonBordered}`}
-                          style={{
-                            color: index === selectedComponents.length - 1 ? "var(--content-neutral--body)" : "var(--content-neutral--title)",
-                            cursor: index === selectedComponents.length - 1 ? "not-allowed" : "pointer"
-                          }}
-                          data-tooltip="Move Down"
-                          data-tooltip-position="top"
-                        >
-                          <span className="material-icons-round" style={{ fontSize: "16px" }}>keyboard_arrow_down</span>
-                        </button>
-                        <button
-                          onClick={() => moveUp(index)}
-                          disabled={index === 0}
-                          className={`${styles.controlButton} ${styles.controlButtonBordered}`}
-                          style={{
-                            color: index === 0 ? "var(--content-neutral--body)" : "var(--content-neutral--title)",
-                            cursor: index === 0 ? "not-allowed" : "pointer"
-                          }}
-                          data-tooltip="Move Up"
-                          data-tooltip-position="top"
-                        >
-                          <span className="material-icons-round" style={{ fontSize: "16px" }}>keyboard_arrow_up</span>
-                        </button>
+                        {index < selectedComponents.length - 1 && (
+                          <button
+                            onClick={() => moveDown(index)}
+                            className={`${styles.controlButton} ${styles.controlButtonBordered}`}
+                            data-tooltip="Move Down"
+                            data-tooltip-position="top"
+                          >
+                            <ArrowDownIcon style={{ width: "16px", height: "16px" }} />
+                          </button>
+                        )}
+                        {index > 0 && (
+                          <button
+                            onClick={() => moveUp(index)}
+                            className={`${styles.controlButton} ${styles.controlButtonBordered}`}
+                            data-tooltip="Move Up"
+                            data-tooltip-position="top"
+                          >
+                            <ArrowUpIcon style={{ width: "16px", height: "16px" }} />
+                          </button>
+                        )}
                         <button
                           onClick={() => removeComponent(item.uniqueId)}
                           className={`${styles.controlButton} ${styles.controlButtonDelete}`}
                           data-tooltip="Delete Section"
                           data-tooltip-position="top"
                         >
-                          <span className="material-icons-round" style={{ fontSize: "16px" }}>delete</span>
+                          <TrashIconOutline style={{ width: "16px", height: "16px" }} />
                         </button>
                       </div>
 
@@ -839,8 +848,12 @@ ${finalHtmlContent}
       )}
       {/* Toaster Notification */}
       {showToaster && (
-        <div className={styles.toaster}>
-          <BellAlertIcon className={styles.toasterIcon} />
+        <div className={`${styles.toaster} ${toasterType === "delete" ? styles.toasterDelete : ""}`}>
+          {toasterType === "delete" ? (
+            <TrashIcon className={styles.toasterIcon} />
+          ) : (
+            <BellAlertIcon className={styles.toasterIcon} />
+          )}
           {toasterMessage}
         </div>
       )}
