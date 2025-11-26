@@ -30,8 +30,8 @@ export default function TemplateGeneratorPage() {
       { id: "header-title-desc-button", name: "Title, Desc, Button", component: GlobalHeaderTitleButtonDescription, thumbnail: "Title\nDesc\nButton" },
     ],
     "Hero Banner": [
-      { id: "hero-button", name: "Terra - Search", component: TerraBannerHeroWithButton, thumbnail: "Hero\nButton" },
-      { id: "hero-search", name: "Terra - Button", component: TerraBannerHeroWithSearch, thumbnail: "Hero\nSearch" },
+      { id: "hero-button", name: "Terra - Button", component: TerraBannerHeroWithButton, thumbnail: "Hero\nButton" },
+      { id: "hero-search", name: "Terra - Search", component: TerraBannerHeroWithSearch, thumbnail: "Hero\nSearch" },
     ],
     "Feature - Split": [
       { id: "feature-left", name: "Terra - Image Left", component: TerraFeaturesImageLeft, thumbnail: "Image\nLeft" },
@@ -40,6 +40,12 @@ export default function TemplateGeneratorPage() {
     "USP": [
       { id: "usp-3col", name: "Terra - 3 Column", component: TerraUsp3col, thumbnail: "3 Col\nUSP" },
       { id: "usp-4col", name: "Terra - 4 Column", component: TerraUsp4col, thumbnail: "4 Col\nUSP" },
+    ],
+    "Testimonial": [
+      { id: "testimony", name: "Terra - Testimony", component: TerraTestimony, thumbnail: "Testimony" },
+    ],
+    "Footer": [
+      { id: "footer", name: "Terra - Footer", component: TerraFooter, thumbnail: "Footer" },
     ],
   };
 
