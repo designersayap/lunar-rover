@@ -13,10 +13,10 @@ export default function GlobalHeaderTitleButtonDescription() {
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
                         <h2 className={`h2 ${styles.title}`}>Title</h2>
                         <p className={`subheader-h1 ${styles.subtitle}`}>Subtitle</p>
-                        <button className={`btn btn-brand-solid btn-lg ${styles.button}`}>
-                            <SparklesIcon className={styles.icon} />
+                        <button className={`btn btn-primary btn-lg ${styles.button}`}>
+                            <SparklesIcon />
                             Label
-                            <ArrowLongRightIcon className={styles.icon} />
+                            <ArrowLongRightIcon />
                         </button>
                     </div>
                 </div>

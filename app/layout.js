@@ -4,8 +4,8 @@ import "./global.css";
 import "./grid.css";
 
 export const metadata = {
-  title: "Lunar Design System",
-  description: "Modern design system with Next.js",
+  title: "Lunar: Template Generator",
+  description: "Crafting perfection, ready to deploy",
 };
 
 export default function RootLayout({ children }) {
@@ -16,6 +16,14 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@600&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Round"
           rel="stylesheet"
         />
       </head>

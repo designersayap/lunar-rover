@@ -55,7 +55,7 @@ export default function TerraUsp3col() {
                                 </p>
                                 <button className="btn btn-ghost btn-md">
                                     More Info
-                                    <ArrowLongRightIcon className={styles.icon} />
+                                    <ArrowLongRightIcon />
                                 </button>
                             </div>
                         </div>

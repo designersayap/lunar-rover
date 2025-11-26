@@ -1,0 +1,413 @@
+/* Template Generator Styles */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Top Bar */
+.topBar {
+    background-color: var(--base-white);
+    border-bottom: 1px solid var(--grey-100);
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 36px;
+    z-index: 10;
+}
+
+.topBarLeft {
+    display: flex;
+    align-items: center;
+    gap: var(--space-60);
+}
+
+.topBarRight {
+    display: flex;
+    gap: 0;
+}
+
+.logo {
+    padding: 0 var(--space-100);
+    color: var(--content-neutral--title);
+}
+
+/* Top Bar Buttons */
+.topBarButton {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.topBarButton:hover {
+    background-color: #F5F6F7;
+}
+
+.topBarButtonBordered {
+    border-left: 1px solid var(--grey-100);
+    border-right: 1px solid var(--grey-100);
+}
+
+.topBarButtonWide {
+    width: 134px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-right: 1px solid var(--grey-100);
+    background-color: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-60);
+    font-size: var(--typography-font-size-90);
+    color: var(--content-neutral--title);
+    transition: background-color 0.2s;
+}
+
+.topBarButtonWide:hover {
+    background-color: #F5F6F7;
+}
+
+.topBarButtonExport {
+    width: 94px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-40);
+    font-size: var(--typography-font-size-90);
+    color: var(--content-neutral--title);
+    transition: background-color 0.2s;
+}
+
+.topBarButtonExport:hover {
+    background-color: #F5F6F7;
+}
+
+
+
+/* Main Content Area */
+.mainContent {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Canvas Area */
+.canvas {
+    flex: 1;
+    overflow-y: auto;
+    background-color: var(--base-white);
+    position: relative;
+}
+
+.canvasInner {
+    padding: var(--space-100);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.emptyState {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--base-white);
+    border-radius: var(--round-80);
+    border: 1px dashed var(--grey-200);
+}
+
+.emptyStateText {
+    text-align: center;
+}
+
+/* Component List */
+.componentList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-60);
+}
+
+.componentWrapper {
+    position: relative;
+    margin-bottom: var(--space-60);
+    border: 1px dashed var(--grey-200);
+    border-radius: var(--round-80);
+    background-color: var(--base-white);
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: grab;
+    border-top: 1px dashed var(--grey-200);
+}
+
+.componentWrapper:hover {
+    border-color: #D5DADD;
+}
+
+.componentWrapperDragging {
+    opacity: 0;
+}
+
+/* Drop Indicator */
+.dropIndicator {
+    position: absolute;
+    top: -12px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--brand-color-300);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.dropIndicatorCircle {
+    position: absolute;
+    left: -6px;
+    top: -5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--brand-color-300);
+    background-color: var(--base-white);
+}
+
+/* Control Buttons */
+.controlButtons {
+    position: absolute;
+    top: var(--space-60);
+    right: var(--space-60);
+    display: flex;
+    gap: 0;
+    background-color: var(--base-white);
+    border-radius: var(--round-80);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 5;
+}
+
+.componentWrapper:hover .controlButtons {
+    opacity: 1;
+}
+
+.controlButton {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: background-color 0.2s;
+}
+
+.controlButton:hover {
+    background-color: #F5F6F7;
+}
+
+.controlButton:disabled {
+    cursor: not-allowed;
+}
+
+.controlButtonBordered {
+    border-right: 1px solid var(--grey-100);
+}
+
+.controlButtonDelete {
+    color: #475E75;
+}
+
+.controlButtonDelete:hover {
+    color: var(--system-color-red-300);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 300px;
+    background-color: #F5F6F7;
+    border-left: 1px solid var(--grey-100);
+    overflow-y: auto;
+    padding: var(--space-80);
+}
+
+.sidebarSection {
+    margin-bottom: var(--space-80);
+}
+
+.sidebarTitle {
+    margin-bottom: var(--space-80);
+    color: var(--content-neutral--title);
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid #D5DADD;
+    margin: 0 calc(-1 * var(--space-80));
+    padding: 0;
+}
+
+.tab {
+    padding: var(--space-60) var(--space-80);
+    border: none;
+    background-color: transparent;
+    font-weight: var(--font-weight-regular);
+    font-size: var(--typography-font-size-90);
+    cursor: pointer;
+    margin-bottom: -1px;
+    border-bottom: 1px solid transparent;
+}
+
+.tabActive {
+    color: var(--content-neutral--title);
+    border-bottom-color: var(--content-neutral--title);
+}
+
+.tabInactive {
+    color: var(--grey-300);
+}
+
+/* Search Bar */
+.searchBar {
+    width: 100%;
+    padding: 0 var(--space-70);
+    border: 1px solid #D5DADD;
+    border-radius: 8px;
+    height: 36px;
+    margin-bottom: var(--space-80);
+    font-size: var(--typography-font-size-90);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.searchBar:focus {
+    border-color: #006532;
+}
+
+/* Separator */
+.separator {
+    border-bottom: 1px solid #D5DADD;
+    margin: 0 calc(-1 * var(--space-80));
+    margin-bottom: var(--space-80);
+}
+
+/* Component Categories */
+.categoryWrapper {
+    margin-bottom: var(--space-100);
+}
+
+.categorySummary {
+    cursor: pointer;
+    padding: var(--space-60) 0;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--typography-font-size-90);
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--content-neutral--body);
+}
+
+.componentGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-60);
+    margin-top: var(--space-60);
+}
+
+.componentButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-60);
+    padding: var(--space-60);
+    border: 1px solid var(--grey-200);
+    border-radius: var(--round-80);
+    background-color: var(--grey-50);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.componentButton:hover {
+    border-color: var(--brand-color-300);
+    background-color: var(--brand-color-50);
+}
+
+.componentThumbnail {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-60);
+    font-size: 10px;
+    color: var(--grey-400);
+    white-space: pre-line;
+    line-height: 1.4;
+}
+
+.componentName {
+    font-size: 11px;
+    color: var(--grey-500);
+}
+
+/* Custom Drag Image */
+.customDragImage {
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+    background-color: var(--base-white);
+    padding: var(--space-60);
+    border-radius: var(--round-80);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--grey-200);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-40);
+    width: 100px;
+    z-index: -1;
+}
+
+.dragThumbnailWrapper {
+    height: 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--grey-50);
+    border-radius: var(--round-80);
+    border: 1px solid var(--grey-200);
+}
+
+.dragThumbnailContent {
+    font-size: 10px;
+    color: var(--grey-400);
+    white-space: pre-line;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.dragNameContent {
+    font-size: 11px;
+    font-weight: var(--font-weight-bold);
+    color: var(--content-neutral--title);
+}

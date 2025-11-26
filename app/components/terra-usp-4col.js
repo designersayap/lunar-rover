@@ -42,7 +42,7 @@ export default function TerraUsp4col({ title, features }) {
                                 </p>
                                 <button className="btn btn-ghost btn-md">
                                     More Info
-                                    <ArrowLongRightIcon className={styles.icon} />
+                                    <ArrowLongRightIcon />
                                 </button>
                             </div>
                         </div>

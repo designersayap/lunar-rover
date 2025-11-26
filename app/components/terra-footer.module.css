@@ -18,7 +18,7 @@
 }
 
 .title {
-    color: var(--content-brand--brand);
+    color: var(--content-neutral--title);
 }
 
 .description {
@@ -45,7 +45,7 @@
 }
 
 .linkItem:hover {
-    color: var(--content-brand--brand);
+    color: var(--content-neutral--title);
 }
 
 .socialIcon {

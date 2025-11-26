@@ -1,4 +1,3 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import styles from "./terra-banner-hero-with-search.module.css";
 
 /**
@@ -33,9 +32,9 @@ export default function TerraBannerHeroWithSearch() {
                             />
                             <button
                                 type="submit"
-                                className={`btn btn-brand-solid btn-icon btn-sm ${styles.searchButton}`}
+                                className={`btn btn-primary btn-icon btn-sm ${styles.searchButton}`}
                             >
-                                <MagnifyingGlassIcon className={styles.icon} />
+                                <span className="material-icons-round" style={{ fontSize: "20px" }}>search</span>
                             </button>
                         </form>
                     </div>
