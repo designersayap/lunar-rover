@@ -1,10 +1,7 @@
 :root {
-    /* ============================================
-       SEMANTIC TOKENS
-       Maps primitive values to semantic usage
-       ============================================ */
+    /* Semantic Tokens */
 
-    /* --- Background Tokens --- */
+    /* Backgrounds */
 
     /* Neutral Backgrounds */
     --scrim: var(--base-black);
@@ -44,7 +41,7 @@
     --background-brand--button--primary-default: var(--brand-color-300);
     --background-brand--button--primary-hover: var(--brand-color-400);
 
-    /* --- Content (Text) Tokens --- */
+    /* Content */
 
     /* Neutral Content */
     --content-neutral--title: var(--grey-500);
@@ -70,7 +67,7 @@
     --content-brand--danger-strong: var(--system-color-red-500);
     --content-brand--danger: var(--system-color-red-300);
 
-    /* --- Stroke (Border) Tokens --- */
+    /* Borders */
 
     /* Brand Strokes */
     --stroke-brand--brand-strong: var(--brand-color-500);
@@ -88,7 +85,7 @@
     --stroke-neutral--neutral: var(--grey-200);
     --stroke-neutral--invert: var(--base-white);
 
-    /* --- Shadow Tokens --- */
+    /* Shadows */
     --shadow--button: var(--shadow-x-button) var(--shadow-y-button) var(--shadow-blur-button) var(--shadow-spread-button) var(--shadow-color-button);
     --shadow--md: var(--shadow-x-md) var(--shadow-y-md) var(--shadow-blur-md) var(--shadow-spread-md) var(--shadow-color-md);
 }

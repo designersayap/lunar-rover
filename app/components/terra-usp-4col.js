@@ -3,15 +3,6 @@ import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 
 /**
  * TerraUsp4col Component
- * 
- * A 4-column Unique Selling Point (USP) section.
- * Displays a section title and 3 feature cards.
- * 
- * @component
- * @param {Object} props
- * @param {string} props.title - The section title
- * @param {Array} props.features - Array of feature objects {title, description}
- * @returns {JSX.Element} The rendered USP section
  */
 export default function TerraUsp4col({ title, features }) {
     return (

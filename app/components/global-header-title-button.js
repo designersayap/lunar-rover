@@ -3,7 +3,6 @@ import styles from "./global-header-title-button.module.css";
 
 /**
  * Centered Header Section - Title with Button
- * Displays a centered section with title, subtitle, and CTA button
  */
 export default function GlobalHeaderTitleButton() {
     return (

@@ -14,10 +14,6 @@
     margin-bottom: var(--gap-lg);
 }
 
-.subtitle {
-    color: var(--content-neutral--caption);
-    margin-bottom: var(--space-100);
-}
 
 .icon {
     width: 20px;

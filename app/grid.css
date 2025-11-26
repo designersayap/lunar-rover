@@ -1,8 +1,6 @@
-/* ============================================
-   GRID SYSTEM
-   ============================================ */
+/* Grid System */
 
-/* Container with responsive margins */
+/* Container */
 .container-grid {
     width: 100%;
     max-width: 1440px;
@@ -12,7 +10,7 @@
     padding-right: var(--grid-margin);
 }
 
-/* Grid wrapper */
+/* Grid Wrapper */
 .grid {
     display: grid;
     grid-template-columns: repeat(var(--grid-columns), 1fr);
@@ -21,7 +19,7 @@
     justify-content: center;
 }
 
-/* Grid column spans */
+/* Column Spans */
 .col-1 {
     grid-column: auto / span 1;
 }
@@ -70,7 +68,7 @@
     grid-column: auto / span 12;
 }
 
-/* Mobile: 2 columns, 16px margin, 0 gutter (max-width: 480px) */
+/* Mobile (2 cols) */
 :root {
     --grid-columns: 2;
     --grid-margin: 16px;
@@ -113,7 +111,7 @@
     --size-margin-md: 16px;
 }
 
-/* Tablet: 8 columns, 40px margin, 0 gutter (481px - 767px) */
+/* Tablet (8 cols) */
 @media (min-width: 481px) and (max-width: 767px) {
     :root {
         --grid-columns: 8;
@@ -159,7 +157,7 @@
     }
 }
 
-/* Desktop: 12 columns, 120px margin, 0 gutter (768px+) */
+/* Desktop (12 cols) */
 @media (min-width: 768px) {
     :root {
         --grid-columns: 12;
@@ -205,7 +203,7 @@
     }
 }
 
-/* Responsive column classes for tablet */
+/* Tablet Columns */
 @media (min-width: 481px) and (max-width: 767px) {
     .col-tablet-1 {
         grid-column: auto / span 1;
@@ -261,7 +259,7 @@
     }
 }
 
-/* Responsive column classes for desktop */
+/* Desktop Columns */
 @media (min-width: 768px) {
     .col-desktop-1 {
         grid-column: auto / span 1;
@@ -341,7 +339,7 @@
     }
 }
 
-/* Responsive column classes for mobile */
+/* Mobile Columns */
 @media (max-width: 480px) {
     .col-mobile-1 {
         grid-column: auto / span 1;
@@ -361,7 +359,7 @@
     }
 }
 
-/* Grid Alignment Utilities */
+/* Alignment */
 .justify-center {
     justify-content: center;
 }
@@ -386,7 +384,7 @@
     align-items: end;
 }
 
-/* Grid debug mode - shows grid columns (optional) */
+/* Debug Grid */
 .grid-debug {
     position: relative;
 }

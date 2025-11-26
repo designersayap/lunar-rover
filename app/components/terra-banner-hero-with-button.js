@@ -1,8 +1,8 @@
 import styles from "./terra-banner-hero-with-button.module.css";
+import { SparklesIcon, ArrowLongRightIcon } from "@heroicons/react/24/outline";
 
 /**
  * Hero Banner Component with Button
- * Displays a centered hero section with title, subtitle, and CTA button
  */
 export default function TerraBannerHeroWithButton() {
     return (
@@ -10,7 +10,7 @@ export default function TerraBannerHeroWithButton() {
             {/* Grid Container */}
             <div className="container-grid">
                 <div className="grid">
-                    {/* Content Column - Centered on desktop */}
+                    {/* Content Column */}
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
 
                         {/* Hero Title */}
@@ -25,9 +25,9 @@ export default function TerraBannerHeroWithButton() {
 
                         {/* CTA Button */}
                         <button className={`btn btn-primary btn-md ${styles.ctaButton}`}>
-                            <span className="material-icons-round" style={{ fontSize: "20px" }}>auto_awesome</span>
+                            <SparklesIcon width={20} height={20} />
                             Get Started
-                            <span className="material-icons-round" style={{ fontSize: "20px" }}>arrow_right_alt</span>
+                            <ArrowLongRightIcon width={20} height={20} />
                         </button>
                     </div>
                 </div>

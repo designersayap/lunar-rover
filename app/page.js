@@ -23,24 +23,26 @@ export default function TemplateGeneratorPage() {
   const [selectedComponents, setSelectedComponents] = useState([]);
 
   // Component library organized by category
+
+  // Component Configuration
   const componentLibrary = {
     "Header": [
-      { id: "header-title", name: "Title", component: GlobalHeaderTitle, thumbnail: "Title" },
-      { id: "header-title-desc", name: "Title, Desc", component: GlobalHeaderTitleDescription, thumbnail: "Title\nDesc" },
-      { id: "header-title-button", name: "Title, Button", component: GlobalHeaderTitleButton, thumbnail: "Title\nButton" },
-      { id: "header-title-desc-button", name: "Title, Desc, Button", component: GlobalHeaderTitleButtonDescription, thumbnail: "Title\nDesc\nButton" },
+      { id: "header-title", name: "Title", component: GlobalHeaderTitle, thumbnail: "/images/thumbnails/header-title.svg" },
+      { id: "header-title-desc", name: "Title, Desc", component: GlobalHeaderTitleDescription, thumbnail: "/images/thumbnails/header-title-desc.svg" },
+      { id: "header-title-button", name: "Title, Button", component: GlobalHeaderTitleButton, thumbnail: "/images/thumbnails/header-title-button.svg" },
+      { id: "header-title-desc-button", name: "Title, Desc, Button", component: GlobalHeaderTitleButtonDescription, thumbnail: "/images/thumbnails/header-title-desc-button.svg" },
     ],
     "Hero Banner": [
-      { id: "hero-button", name: "Terra - Search", component: TerraBannerHeroWithButton, thumbnail: "Hero\nButton" },
-      { id: "hero-search", name: "Terra - Button", component: TerraBannerHeroWithSearch, thumbnail: "Hero\nSearch" },
+      { id: "hero-button", name: "Terra - Search", component: TerraBannerHeroWithButton, thumbnail: "/images/thumbnails/terra-search.svg" },
+      { id: "hero-search", name: "Terra - CTA", component: TerraBannerHeroWithSearch, thumbnail: "/images/thumbnails/terra-cta.svg" },
     ],
     "Feature - Split": [
-      { id: "feature-left", name: "Terra - Image Left", component: TerraFeaturesImageLeft, thumbnail: "Image\nLeft" },
-      { id: "feature-right", name: "Terra - Image Right", component: TerraFeaturesImageRight, thumbnail: "Image\nRight" },
+      { id: "feature-left", name: "Terra - Image Left", component: TerraFeaturesImageLeft, thumbnail: "/images/thumbnails/terra-image-left.svg" },
+      { id: "feature-right", name: "Terra - Image Right", component: TerraFeaturesImageRight, thumbnail: "/images/thumbnails/terra-image-right.svg" },
     ],
     "USP": [
-      { id: "usp-3col", name: "Terra - 3 Column", component: TerraUsp3col, thumbnail: "3 Col\nUSP" },
-      { id: "usp-4col", name: "Terra - 4 Column", component: TerraUsp4col, thumbnail: "4 Col\nUSP" },
+      { id: "usp-3col", name: "Terra - USP 3 Column", component: TerraUsp3col, thumbnail: "/images/thumbnails/terra-USP-3col.svg" },
+      { id: "usp-4col", name: "Terra - USP 4 Column", component: TerraUsp4col, thumbnail: "/images/thumbnails/terra-USP-4col.svg" },
     ],
   };
 
@@ -68,13 +70,13 @@ export default function TemplateGeneratorPage() {
     setDraggedItemIndex(index);
     e.dataTransfer.effectAllowed = "move";
 
-    // Custom Drag Image
+    // Drag Preview
     const dragImage = document.getElementById("custom-drag-image");
     if (dragImage) {
-      const thumbnailEl = document.getElementById("drag-thumbnail-content");
+      const thumbnailEl = document.getElementById("drag-thumbnail-image");
       const nameEl = document.getElementById("drag-name-content");
 
-      if (thumbnailEl) thumbnailEl.innerText = thumbnail || "";
+      if (thumbnailEl) thumbnailEl.src = thumbnail || "";
       if (nameEl) nameEl.innerText = componentName || "Section";
 
       e.dataTransfer.setDragImage(dragImage, 0, 0);
@@ -145,31 +147,21 @@ export default function TemplateGeneratorPage() {
       return;
     }
 
-    // 1. Extract Clean HTML
-    // We need to get the HTML of the components WITHOUT the editor wrappers and controls
+    // 1. Extract Clean HTML (remove editor UI)
     let cleanHtmlContent = "";
-
-    // Get all component wrappers
-    // Since we're using CSS modules, we can use the class from the styles object
-    // We handle potential multiple classes by taking the first one if it's a space-separated string
     const wrapperClass = styles.componentWrapper.split(' ')[0];
-    // We need to find elements that have this class. 
-    // Note: querySelectorAll with a class that contains spaces (if any) might fail, but module classes are usually single strings.
     const componentWrappers = canvasElement.querySelectorAll(`.${wrapperClass}`);
 
     Array.from(componentWrappers).forEach(wrapper => {
-      // Clone the wrapper to manipulate it without affecting the DOM
       const clone = wrapper.cloneNode(true);
 
-      // Remove control buttons
+      // Remove editor controls
       const controlButtons = clone.querySelector(`.${styles.controlButtons}`);
       if (controlButtons) controlButtons.remove();
 
-      // Remove drop indicators
       const dropIndicator = clone.querySelector(`.${styles.dropIndicator}`);
       if (dropIndicator) dropIndicator.remove();
 
-      // The actual component content is what remains inside the wrapper after removing editor UI.
       cleanHtmlContent += clone.innerHTML + "\n";
     });
 
@@ -180,17 +172,14 @@ export default function TemplateGeneratorPage() {
     // Helper to process rules
     const processRule = (rule) => {
       if (rule.type === 1) { // CSSStyleRule
-        // Check if selector matches any element in canvas
-        // We use a try-catch because some selectors might be invalid or complex
         try {
-          // Clean selector for checking (remove pseudo-elements/classes)
           const cleanSelector = rule.selectorText.split(':')[0];
 
-          // Always include :root, html, body for variables and global resets
+          // Include globals and used selectors
           if (rule.selectorText === ":root" || rule.selectorText === "html" || rule.selectorText === "body" ||
             (cleanSelector && (canvasElement.querySelector(cleanSelector) || canvasElement.matches(cleanSelector)))) {
 
-            // Exclude editor-specific styles
+            // Exclude editor styles
             if (rule.selectorText.includes(wrapperClass)) return;
             if (rule.selectorText.includes(styles.controlButtons)) return;
             if (rule.selectorText.includes(styles.dropIndicator)) return;
@@ -200,9 +189,7 @@ export default function TemplateGeneratorPage() {
               usedSelectors.add(rule.selectorText);
             }
           }
-        } catch (e) {
-          // Ignore invalid selectors
-        }
+        } catch (e) { }
       } else if (rule.type === 4) { // CSSMediaRule
         // For media queries, we check if any rule inside matches
         let mediaCss = "";
@@ -241,7 +228,6 @@ export default function TemplateGeneratorPage() {
     });
 
     // 3. Resolve CSS Variables
-    // We need to replace all var(--variable-name) with their computed values
     const computedStyle = getComputedStyle(document.documentElement);
 
     const resolveVariables = (cssText) => {
@@ -249,7 +235,7 @@ export default function TemplateGeneratorPage() {
         const value = computedStyle.getPropertyValue(variable).trim();
         if (value) return value;
         if (fallback) return fallback;
-        return match; // Keep if not found
+        return match;
       });
     };
 
@@ -264,42 +250,25 @@ export default function TemplateGeneratorPage() {
       passes++;
     }
 
-    // 4. Clean Class Names
-    // We want to replace Next.js hashed classes (e.g. TerraFooter_container__abc12) 
-    // with clean names (e.g. terra-footer-container)
-
-    // Map to store class mappings to ensure consistency
+    // 4. Clean Class Names (remove hashes)
     const classMap = new Map();
 
     const cleanClassName = (className) => {
       if (classMap.has(className)) return classMap.get(className);
 
-      // Pattern: [Component]_[Class]__[Hash] or similar
-      // We want to convert to kebab-case
-      // Example: TerraFooter_container__abc12 -> terra-footer-container
-
-      // Remove hash part (after double underscore)
+      // Convert to kebab-case
       let clean = className.split('__')[0];
-
-      // Convert camelCase or PascalCase to kebab-case
       clean = clean.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
-
-      // Replace underscores with hyphens
       clean = clean.replace(/_/g, '-');
-
-      // Remove leading hyphens if any
       clean = clean.replace(/^-+/, '');
 
       classMap.set(className, clean);
       return clean;
     };
 
-    // Replace classes in HTML
-    // We use a regex to find class="..." attributes
+    // Update HTML classes
     let finalHtmlContent = cleanHtmlContent.replace(/class="([^"]+)"/g, (match, classNames) => {
       const cleanedClasses = classNames.split(' ').map(cls => {
-        // Only clean classes that look like modules (contain underscores or mixed case)
-        // Simple utility classes might be preserved or cleaned too
         if (cls.includes('_') || cls.includes('__')) {
           return cleanClassName(cls);
         }
@@ -308,27 +277,18 @@ export default function TemplateGeneratorPage() {
       return `class="${cleanedClasses}"`;
     });
 
-    // Replace classes in CSS
-    // We iterate through the map to replace in CSS content
-    // This is safer than regexing the whole CSS which might match non-class strings
-    // However, we need to be careful about selector specificity and structure
-    // A simple string replace for each mapped class should work for most cases
-
-    // Sort keys by length descending to avoid partial replacements
+    // Update CSS classes
     const sortedClasses = Array.from(classMap.keys()).sort((a, b) => b.length - a.length);
 
     let finalCssContent = resolvedCssContent;
     sortedClasses.forEach(originalClass => {
       const cleanClass = classMap.get(originalClass);
-      // Replace .OriginalClass with .clean-class
-      // We use a global regex with word boundaries to avoid partial matches
-      // Escaping the original class for regex
       const escapedOriginal = originalClass.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const regex = new RegExp(`\\.${escapedOriginal}(?![\\w-])`, 'g');
       finalCssContent = finalCssContent.replace(regex, `.${cleanClass}`);
     });
 
-    // 5. Create full HTML document with embedded CSS
+    // 5. Generate Final HTML
     const fullHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -342,7 +302,7 @@ export default function TemplateGeneratorPage() {
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Round" rel="stylesheet">
     <style>
         /* Reset & Base Styles */
-        body { margin: 0; padding: 0; background-color: #ffffff; font-family: 'Lato', sans-serif; }
+        body { margin: 0; padding: 0; background-color: var(--base-white); font-family: 'Lato', sans-serif; }
         
         /* Extracted Styles */
         ${finalCssContent}
@@ -353,7 +313,7 @@ ${finalHtmlContent}
 </body>
 </html>`;
 
-    // 6. Download Single File
+    // 6. Download File
     const htmlBlob = new Blob([fullHTML], { type: 'text/html' });
     const htmlUrl = URL.createObjectURL(htmlBlob);
     const htmlLink = document.createElement('a');
@@ -379,12 +339,12 @@ ${finalHtmlContent}
             onClick={() => setIsSidebarVisible(!isSidebarVisible)}
             className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}
           >
-            <span className="material-icons-round" style={{ fontSize: "16px", color: "#475E75" }}>
+            <span className="material-icons-round" style={{ fontSize: "16px", color: "var(--content-neutral--body)" }}>
               {isSidebarVisible ? "keyboard_double_arrow_right" : "keyboard_double_arrow_left"}
             </span>
           </button>
           <button className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}>
-            <span className="material-icons-round" style={{ fontSize: "16px", color: "#475E75" }}>download</span>
+            <span className="material-icons-round" style={{ fontSize: "16px", color: "var(--content-neutral--body)" }}>download</span>
           </button>
           <button className={styles.topBarButtonWide}>
             <span className="material-icons-round" style={{ fontSize: "16px" }}>code</span>
@@ -420,7 +380,7 @@ ${finalHtmlContent}
                 border: "1px dashed var(--grey-200)"
               }}>
                 <div style={{ textAlign: "center" }}>
-                  <p className="body-regular" style={{ color: "var(--grey-300)" }}>
+                  <p className="body-regular" style={{ color: "var(--content-neutral--caption)" }}>
                     Select components from the sidebar to build your template
                   </p>
                 </div>
@@ -455,7 +415,7 @@ ${finalHtmlContent}
                           disabled={index === selectedComponents.length - 1}
                           className={`${styles.controlButton} ${styles.controlButtonBordered}`}
                           style={{
-                            color: index === selectedComponents.length - 1 ? "var(--grey-200)" : "#475E75",
+                            color: index === selectedComponents.length - 1 ? "var(--content-neutral--body)" : "var(--content-neutral--title)",
                             cursor: index === selectedComponents.length - 1 ? "not-allowed" : "pointer"
                           }}
                         >
@@ -466,7 +426,7 @@ ${finalHtmlContent}
                           disabled={index === 0}
                           className={`${styles.controlButton} ${styles.controlButtonBordered}`}
                           style={{
-                            color: index === 0 ? "var(--grey-200)" : "#475E75",
+                            color: index === 0 ? "var(--content-neutral--body)" : "var(--content-neutral--title)",
                             cursor: index === 0 ? "not-allowed" : "pointer"
                           }}
                         >
@@ -498,46 +458,14 @@ ${finalHtmlContent}
 
         {/* Sidebar */}
         {isSidebarVisible && (
-          <div style={{
-            width: "300px",
-            backgroundColor: "#F5F6F7",
-            borderLeft: "1px solid var(--grey-100)",
-            overflowY: "auto",
-            padding: "var(--space-80)"
-          }}>
-            <div style={{ marginBottom: "var(--space-80)" }}>
-              <h2 className="h5" style={{ marginBottom: "var(--space-80)", color: "var(--content-neutral--title)" }}>Configuration</h2>
-              <div style={{
-                display: "flex",
-                gap: "0",
-                borderBottom: "1px solid #D5DADD",
-                margin: "0 calc(-1 * var(--space-80))",
-                padding: "0"
-              }}>
-                <button style={{
-                  padding: "var(--space-60) var(--space-80)",
-                  border: "none",
-                  borderBottom: "1px solid var(--content-neutral--title)",
-                  backgroundColor: "transparent",
-                  color: "var(--content-neutral--title)",
-                  fontWeight: "var(--font-weight-regular)",
-                  fontSize: "var(--typography-font-size-90)",
-                  cursor: "pointer",
-                  marginBottom: "-1px"
-                }}>
+          <div className={styles.sidebar}>
+            <div className={styles.sidebarSection}>
+              <h2 className={`h5 ${styles.sidebarTitle}`}>Configuration</h2>
+              <div className={styles.tabs}>
+                <button className={`${styles.tab} ${styles.tabActive}`}>
                   Elements
                 </button>
-                <button style={{
-                  padding: "var(--space-60) var(--space-80)",
-                  border: "none",
-                  borderBottom: "1px solid transparent",
-                  backgroundColor: "transparent",
-                  color: "var(--grey-300)",
-                  fontWeight: "var(--font-weight-regular)",
-                  fontSize: "var(--typography-font-size-90)",
-                  cursor: "pointer",
-                  marginBottom: "-1px"
-                }}>
+                <button className={`${styles.tab} ${styles.tabInactive}`}>
                   Analytics
                 </button>
               </div>
@@ -545,92 +473,42 @@ ${finalHtmlContent}
 
             {/* Search */}
             <input
-              className="sidebar-search-input"
+              className={styles.searchBar}
               type="text"
               placeholder="Search elements"
-              style={{
-                width: "100%",
-                padding: "0 var(--space-70)",
-                border: "1px solid #D5DADD",
-                borderRadius: "8px",
-                height: "36px",
-                marginBottom: "var(--space-80)",
-                fontSize: "var(--typography-font-size-90)",
-                outline: "none",
-                transition: "border-color 0.2s"
-              }}
-              onFocus={(e) => e.target.style.borderColor = "#006532"}
-              onBlur={(e) => e.target.style.borderColor = "#D5DADD"}
             />
 
-            <div style={{
-              borderBottom: "1px solid #D5DADD",
-              margin: "0 calc(-1 * var(--space-80))",
-              marginBottom: "var(--space-80)"
-            }} />
+            <div className={styles.separator} />
 
             {/* Component Categories */}
-            {Object.entries(componentLibrary).map(([category, components]) => (
-              <div key={category} style={{ marginBottom: "var(--space-100)" }}>
+            {Object.entries(componentLibrary).map(([category, components], index, array) => (
+              <div key={category} className={styles.categoryWrapper}>
                 <details open>
-                  <summary style={{
-                    cursor: "pointer",
-                    padding: "var(--space-60) 0",
-                    fontWeight: "var(--font-weight-bold)",
-                    fontSize: "var(--typography-font-size-90)",
-                    listStyle: "none",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    color: "var(--content-neutral--body)"
-                  }}>
+                  <summary className={styles.categorySummary}>
                     {category}
-                    <span className="material-icons-round" style={{ color: "var(--grey-400)" }}>arrow_drop_down</span>
+                    <span className="material-icons-round" style={{ color: "var(--content-neutral--body)" }}>arrow_drop_down</span>
                   </summary>
-                  <div style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: "var(--space-60)",
-                    marginTop: "var(--space-60)"
-                  }}>
+                  <div className={styles.componentGrid}>
                     {components.map((comp) => (
                       <button
                         key={comp.id}
                         onClick={() => addComponent(comp)}
-                        style={{
-                          padding: "var(--space-60)",
-                          border: "1px solid var(--grey-200)",
-                          borderRadius: "var(--round-80)",
-                          backgroundColor: "var(--grey-50)",
-                          cursor: "pointer",
-                          textAlign: "center",
-                          transition: "all 0.2s"
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.borderColor = "var(--brand-color-300)";
-                          e.currentTarget.style.backgroundColor = "var(--brand-color-50)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.borderColor = "var(--grey-200)";
-                          e.currentTarget.style.backgroundColor = "var(--grey-50)";
-                        }}
+                        className={styles.sidebarButton}
                       >
-                        <div style={{
-                          height: "60px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          marginBottom: "var(--space-60)",
-                          fontSize: "10px",
-                          color: "var(--grey-400)",
-                          whiteSpace: "pre-line",
-                          lineHeight: "1.4"
-                        }}>
-                          {comp.thumbnail}
+                        <div className={styles.sidebarButtonImageWrapper}>
+                          <img
+                            src={comp.thumbnail}
+                            alt={comp.name}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover"
+                            }}
+                          />
                         </div>
                         <p className="caption-regular" style={{
-                          fontSize: "11px",
-                          color: "var(--grey-500)"
+                          fontSize: "var(--typography-font-size-80)",
+                          color: "var(--content-neutral--caption)"
                         }}>
                           {comp.name}
                         </p>
@@ -638,6 +516,9 @@ ${finalHtmlContent}
                     ))}
                   </div>
                 </details>
+                {index < array.length - 1 && (
+                  <div className={styles.separator} style={{ marginTop: "var(--space-100)", marginBottom: "0" }} />
+                )}
               </div>
             ))}
           </div>
@@ -647,22 +528,7 @@ ${finalHtmlContent}
       {/* Custom Drag Image (Hidden) */}
       <div
         id="custom-drag-image"
-        style={{
-          position: "absolute",
-          top: "-1000px",
-          left: "-1000px",
-          backgroundColor: "var(--base-white)",
-          padding: "var(--space-60)",
-          borderRadius: "var(--round-80)",
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-          border: "1px solid var(--grey-200)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "var(--space-40)",
-          width: "100px",
-          zIndex: -1
-        }}
+        className={styles.customDragImage}
       >
         <div style={{
           height: "60px",
@@ -672,18 +538,22 @@ ${finalHtmlContent}
           justifyContent: "center",
           backgroundColor: "var(--grey-50)",
           borderRadius: "var(--round-80)",
-          border: "1px solid var(--grey-200)"
+          border: "1px solid var(--grey-200)",
+          overflow: "hidden"
         }}>
-          <span id="drag-thumbnail-content" style={{
-            fontSize: "10px",
-            color: "var(--grey-400)",
-            whiteSpace: "pre-line",
-            textAlign: "center",
-            lineHeight: "1.4"
-          }}></span>
+          <img
+            id="drag-thumbnail-image"
+            src={null}
+            alt="Preview"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover"
+            }}
+          />
         </div>
         <span id="drag-name-content" style={{
-          fontSize: "11px",
+          fontSize: "var(--typography-font-size-80)",
           fontWeight: "var(--font-weight-bold)",
           color: "var(--content-neutral--title)"
         }}></span>
