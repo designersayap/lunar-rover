@@ -8,15 +8,15 @@ import GlobalHeaderTitle from "../../components/global-header-title";
 import GlobalHeaderTitleButton from "../../components/global-header-title-button";
 import GlobalHeaderTitleDescription from "../../components/global-header-title-description";
 import GlobalHeaderTitleButtonDescription from "../../components/global-header-title-button-description";
-import TerraBannerHeroWithButton from "../../components/terra-banner-hero-with-button";
-import TerraBannerHeroWithSearch from "../../components/terra-banner-hero-with-search";
-import TerraFeaturesImageLeft from "../../components/terra-features-image-left";
-import TerraFeaturesImageRight from "../../components/terra-features-image-right";
-import TerraUsp3col from "../../components/terra-usp-3col";
-import TerraUsp4col from "../../components/terra-usp-4col";
-import TerraFooter from "../../components/terra-footer";
-import TerraTestimony from "../../components/terra-testimony";
-import TerraProductCarousel4Products from "../../components/terra-product-carousel-4-products";
+import TerraBannerHeroWithButton from "@/app/components/terra/terra-banner-hero-with-button";
+import TerraBannerHeroWithSearch from "@/app/components/terra/terra-banner-hero-with-search";
+import TerraFeaturesImageLeft from "@/app/components/terra/terra-features-image-left";
+import TerraFeaturesImageRight from "@/app/components/terra/terra-features-image-right";
+import TerraUsp3col from "@/app/components/terra/terra-usp-3col";
+import TerraUsp4col from "@/app/components/terra/terra-usp-4col";
+import TerraFooter from "@/app/components/terra/terra-footer";
+import TerraTestimony from "@/app/components/terra/terra-testimony";
+import TerraProductCarousel4Products from "@/app/components/terra/terra-product-carousel-4-products";
 
 // Data
 import { uspData, footerData } from "../../content/data";

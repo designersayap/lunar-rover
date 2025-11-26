@@ -311,19 +311,16 @@
 /* Separator */
 .separator {
     border-bottom: 1px solid var(--grey-100);
-    margin: 0 calc(-1 * var(--space-80));
-    margin-bottom: var(--space-80);
+    margin: var(--space-40) calc(-1 * var(--space-80));
 }
 
 /* Categories */
-.categoryWrapper {
-    margin-bottom: var(--space-100);
-}
+
 
 .categorySummary {
     cursor: pointer;
     padding: var(--space-60) 0;
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-regular);
     font-size: var(--typography-font-size-90);
     list-style: none;
     display: flex;
@@ -335,7 +332,7 @@
 .componentGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-60);
+    gap: var(--gap-sm);
     margin-top: var(--space-60);
 }
 
@@ -445,7 +442,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--content-neutral--body);
+    color: var(--content-neutral--caption);
     padding: 0;
     display: flex;
     align-items: center;
@@ -587,15 +584,21 @@
 }
 
 .propertyRow:has(select)::after {
-    content: 'arrow_drop_down';
-    font-family: 'Material Icons Round';
+    content: '';
     position: absolute;
     right: 12px;
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
-    color: var(--content-neutral--title);
-    font-size: 20px;
+    width: 16px;
+    height: 16px;
+    background-color: var(--content-neutral--title);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9' /%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9' /%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
 }
 
 /* Toaster Notification */
@@ -614,6 +617,14 @@
     font-size: 14px;
     font-weight: 500;
     animation: slideUpFadeIn 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.toasterIcon {
+    width: 16px;
+    height: 16px;
 }
 
 @keyframes slideUpFadeIn {

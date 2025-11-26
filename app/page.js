@@ -1,19 +1,31 @@
 "use client";
 
+
 import { useState, useEffect } from "react";
+import {
+  BellAlertIcon,
+  RocketLaunchIcon,
+  CodeBracketIcon,
+  ArrowDownTrayIcon,
+  ChevronDoubleRightIcon,
+  ChevronDoubleLeftIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+  XMarkIcon
+} from "@heroicons/react/24/outline";
 import GlobalHeaderTitle from "./components/global-header-title";
 import GlobalHeaderTitleButton from "./components/global-header-title-button";
 import GlobalHeaderTitleDescription from "./components/global-header-title-description";
 import GlobalHeaderTitleButtonDescription from "./components/global-header-title-button-description";
-import TerraBannerHeroWithButton from "./components/terra-banner-hero-with-button";
-import TerraBannerHeroWithSearch from "./components/terra-banner-hero-with-search";
-import TerraFeaturesImageLeft from "./components/terra-features-image-left";
-import TerraFeaturesImageRight from "./components/terra-features-image-right";
-import TerraUsp3col from "./components/terra-usp-3col";
-import TerraUsp4col from "./components/terra-usp-4col";
-import TerraTestimony from "./components/terra-testimony";
-import TerraProductCarousel4Products from "./components/terra-product-carousel-4-products";
-import TerraFooter from "./components/terra-footer";
+import TerraBannerHeroWithButton from "@/app/components/terra/terra-banner-hero-with-button";
+import TerraBannerHeroWithSearch from "@/app/components/terra/terra-banner-hero-with-search";
+import TerraFeaturesImageLeft from "@/app/components/terra/terra-features-image-left";
+import TerraFeaturesImageRight from "@/app/components/terra/terra-features-image-right";
+import TerraUsp3col from "@/app/components/terra/terra-usp-3col";
+import TerraUsp4col from "@/app/components/terra/terra-usp-4col";
+import TerraTestimony from "@/app/components/terra/terra-testimony";
+import TerraProductCarousel4Products from "@/app/components/terra/terra-product-carousel-4-products";
+import TerraFooter from "@/app/components/terra/terra-footer";
 import { uspData, footerData } from "./content/data";
 import styles from "./page.module.css";
 
@@ -453,21 +465,23 @@ ${finalHtmlContent}
             className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}
             data-tooltip={isSidebarVisible ? "Collapse Sidebar" : "Expand Sidebar"}
           >
-            <span className="material-icons-round" style={{ fontSize: "16px", color: "var(--content-neutral--body)" }}>
-              {isSidebarVisible ? "keyboard_double_arrow_right" : "keyboard_double_arrow_left"}
-            </span>
+            {isSidebarVisible ? (
+              <ChevronDoubleRightIcon style={{ width: "16px", height: "16px", color: "var(--content-neutral--body)" }} />
+            ) : (
+              <ChevronDoubleLeftIcon style={{ width: "16px", height: "16px", color: "var(--content-neutral--body)" }} />
+            )}
           </button>
           <button
             className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}
             data-tooltip="Download Code"
           >
-            <span className="material-icons-round" style={{ fontSize: "16px", color: "var(--content-neutral--body)" }}>download</span>
+            <ArrowDownTrayIcon style={{ width: "16px", height: "16px", color: "var(--content-neutral--body)" }} />
           </button>
           <button
             className={styles.topBarButtonWide}
             data-tooltip="Import JSON"
           >
-            <span className="material-icons-round" style={{ fontSize: "16px" }}>code</span>
+            <CodeBracketIcon style={{ width: "16px", height: "16px" }} />
             Import JSON
           </button>
           <button
@@ -475,7 +489,7 @@ ${finalHtmlContent}
             onClick={handleExport}
             data-tooltip="Export Template"
           >
-            <span className="material-icons-round" style={{ fontSize: "16px" }}>rocket_launch</span>
+            <RocketLaunchIcon style={{ width: "16px", height: "16px" }} />
             Export
           </button>
 
@@ -626,11 +640,21 @@ ${finalHtmlContent}
                   onClick={() => toggleCategory(category)}
                 >
                   {category}
-                  <span className="material-icons-round" style={{
-                    color: "var(--content-neutral--body)",
-                    transform: openCategories[category] ? "rotate(180deg)" : "rotate(0deg)",
-                    transition: "transform 0.2s"
-                  }}>arrow_drop_down</span>
+                  {openCategories[category] ? (
+                    <ChevronUpIcon style={{
+                      width: "16px",
+                      height: "16px",
+                      color: "var(--content-neutral--body)",
+                      transition: "transform 0.2s"
+                    }} />
+                  ) : (
+                    <ChevronDownIcon style={{
+                      width: "16px",
+                      height: "16px",
+                      color: "var(--content-neutral--body)",
+                      transition: "transform 0.2s"
+                    }} />
+                  )}
                 </div>
                 <div className={`${styles.accordionContent} ${openCategories[category] ? styles.accordionContentOpen : ''}`}>
                   <div className={styles.accordionInner}>
@@ -664,7 +688,7 @@ ${finalHtmlContent}
                   </div>
                 </div>
                 {index < array.length - 1 && (
-                  <div className={styles.separator} style={{ marginTop: "var(--space-100)", marginBottom: "0" }} />
+                  <div className={styles.separator} />
                 )}
               </div>
             ))}
@@ -728,7 +752,7 @@ ${finalHtmlContent}
                 className={styles.popoverClose}
                 onClick={() => setSelectedComponentForConfig(null)}
               >
-                <span className="material-icons-round">close</span>
+                <XMarkIcon style={{ width: "20px", height: "20px" }} />
               </button>
             </div>
 
@@ -816,6 +840,7 @@ ${finalHtmlContent}
       {/* Toaster Notification */}
       {showToaster && (
         <div className={styles.toaster}>
+          <BellAlertIcon className={styles.toasterIcon} />
           {toasterMessage}
         </div>
       )}
