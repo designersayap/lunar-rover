@@ -1,15 +1,16 @@
-.section {
+.container {
     padding: var(--padding-2xl) 0;
 }
 
 .imageWrapper {
     display: flex;
     align-items: center;
+    width: 100%;
     padding: 0 var(--padding-md);
     order: 1;
 }
 
-.textWrapper {
+.content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -40,7 +41,7 @@
         order: 2;
     }
 
-    .textWrapper {
+    .content {
         order: 1;
     }
 }

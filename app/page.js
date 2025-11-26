@@ -34,12 +34,56 @@ export default function TemplateGeneratorPage() {
       { id: "header-title-desc-button", name: "Title, Desc, Button", component: GlobalHeaderTitleButtonDescription, thumbnail: "/images/thumbnails/header-title-desc-button.svg" },
     ],
     "Hero Banner": [
-      { id: "hero-button", name: "Terra - Search", component: TerraBannerHeroWithButton, thumbnail: "/images/thumbnails/terra-search.svg" },
-      { id: "hero-search", name: "Terra - CTA", component: TerraBannerHeroWithSearch, thumbnail: "/images/thumbnails/terra-cta.svg" },
+      {
+        id: "hero-button",
+        name: "Terra - CTA",
+        component: TerraBannerHeroWithButton,
+        thumbnail: "/images/thumbnails/terra-cta.svg",
+        config: [
+          { name: "showButton", label: "Button", type: "boolean", default: true }
+        ]
+      },
+      {
+        id: "hero-search",
+        name: "Terra - Search",
+        component: TerraBannerHeroWithSearch,
+        thumbnail: "/images/thumbnails/terra-search.svg",
+        config: [
+          { name: "showSearchBar", label: "Search", type: "boolean", default: true }
+        ]
+      },
     ],
     "Feature - Split": [
-      { id: "feature-left", name: "Terra - Image Left", component: TerraFeaturesImageLeft, thumbnail: "/images/thumbnails/terra-image-left.svg" },
-      { id: "feature-right", name: "Terra - Image Right", component: TerraFeaturesImageRight, thumbnail: "/images/thumbnails/terra-image-right.svg" },
+      {
+        id: "feature-left",
+        name: "Terra - Image Left",
+        component: TerraFeaturesImageLeft,
+        thumbnail: "/images/thumbnails/terra-image-left.svg",
+        config: [
+          {
+            name: "buttonStyle",
+            label: "Button Style",
+            type: "select",
+            options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
+            default: "primary"
+          }
+        ]
+      },
+      {
+        id: "feature-right",
+        name: "Terra - Image Right",
+        component: TerraFeaturesImageRight,
+        thumbnail: "/images/thumbnails/terra-image-right.svg",
+        config: [
+          {
+            name: "buttonStyle",
+            label: "Button Style",
+            type: "select",
+            options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
+            default: "primary"
+          }
+        ]
+      },
     ],
     "USP": [
       { id: "usp-3col", name: "Terra - USP 3 Column", component: TerraUsp3col, thumbnail: "/images/thumbnails/terra-USP-3col.svg" },
@@ -56,7 +100,14 @@ export default function TemplateGeneratorPage() {
   const [draggedItemIndex, setDraggedItemIndex] = useState(null);
   const [dropTargetIndex, setDropTargetIndex] = useState(null);
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+
   const [openCategories, setOpenCategories] = useState({ "Hero Banner": true });
+
+  // Popover State
+  const [selectedComponentForConfig, setSelectedComponentForConfig] = useState(null);
+  const [configProps, setConfigProps] = useState({ showDescription: true });
+  const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
+  const [zoomState, setZoomState] = useState({ x: 0, y: 0, isHovering: false });
 
   const toggleCategory = (category) => {
     setOpenCategories(prev => {
@@ -129,8 +180,36 @@ export default function TemplateGeneratorPage() {
 
 
 
-  const addComponent = (componentData) => {
-    setSelectedComponents([...selectedComponents, { ...componentData, uniqueId: Date.now() }]);
+  const addComponent = (componentData, event) => {
+    // Calculate position based on clicked element
+    const rect = event.currentTarget.getBoundingClientRect();
+    setPopoverPosition({
+      top: rect.top,
+      left: rect.left - 362 - 10 // Width of popover (362px) + 10px spacing
+    });
+
+    setSelectedComponentForConfig({ ...componentData, selected: true });
+
+    // Initialize config props based on component definition
+    const initialProps = {};
+    if (componentData.config) {
+      componentData.config.forEach(prop => {
+        initialProps[prop.name] = prop.default;
+      });
+    }
+    setConfigProps(initialProps);
+  };
+
+  const insertComponent = () => {
+    if (!selectedComponentForConfig) return;
+
+    setSelectedComponents([...selectedComponents, {
+      ...selectedComponentForConfig,
+      uniqueId: Date.now(),
+      props: { ...configProps }
+    }]);
+
+    setSelectedComponentForConfig(null);
   };
 
   const removeComponent = (uniqueId) => {
@@ -475,11 +554,11 @@ ${finalHtmlContent}
 
                       {/* Render Component */}
                       {item.id === "usp-3col" || item.id === "usp-4col" ? (
-                        <Component title={uspData.title} features={uspData.features} />
+                        <Component title={uspData.title} features={uspData.features} {...item.props} />
                       ) : item.id === "footer" ? (
-                        <Component {...footerData} />
+                        <Component {...footerData} {...item.props} />
                       ) : (
-                        <Component />
+                        <Component {...item.props} />
                       )}
                     </div>
                   );
@@ -533,8 +612,8 @@ ${finalHtmlContent}
                       {components.map((comp) => (
                         <button
                           key={comp.id}
-                          onClick={() => addComponent(comp)}
-                          className={styles.sidebarButton}
+                          onClick={(e) => addComponent(comp, e)}
+                          className={`${styles.sidebarButton} ${selectedComponentForConfig?.id === comp.id ? styles.sidebarButtonSelected : ''}`}
                         >
                           <div className={styles.sidebarButtonImageWrapper}>
                             <img
@@ -600,6 +679,114 @@ ${finalHtmlContent}
           color: "var(--content-neutral--title)"
         }}></span>
       </div>
+      {/* Configuration Popover */}
+      {selectedComponentForConfig && (
+        <div className={styles.popoverOverlay} onClick={() => setSelectedComponentForConfig(null)}>
+          <div
+            className={styles.popoverContainer}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: "absolute",
+              top: popoverPosition.top,
+              left: popoverPosition.left,
+              transform: "translateY(-50%)", // Center vertically relative to button
+              margin: 0
+            }}
+          >
+            {/* Header */}
+            <div className={styles.popoverHeader}>
+              <h3 className={`body-bold ${styles.popoverTitle}`}>
+                {selectedComponentForConfig.name}
+              </h3>
+              <button
+                className={styles.popoverClose}
+                onClick={() => setSelectedComponentForConfig(null)}
+              >
+                <span className="material-icons-round">close</span>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className={styles.popoverContent}>
+              {/* Preview */}
+              <div
+                className={styles.popoverPreview}
+                onMouseMove={(e) => {
+                  const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+                  const x = ((e.clientX - left) / width) * 100;
+                  const y = ((e.clientY - top) / height) * 100;
+                  setZoomState(prev => ({ ...prev, x, y }));
+                }}
+                onMouseEnter={() => setZoomState(prev => ({ ...prev, isHovering: true }))}
+                onMouseLeave={() => setZoomState(prev => ({ ...prev, isHovering: false }))}
+              >
+                <img
+                  src={selectedComponentForConfig.thumbnail}
+                  alt="Preview"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    transformOrigin: `${zoomState.x}% ${zoomState.y}%`,
+                    transform: zoomState.isHovering ? "scale(2)" : "scale(1)",
+                    transition: "transform 0.1s ease-out"
+                  }}
+                />
+              </div>
+
+              {/* Properties */}
+              {selectedComponentForConfig.config && selectedComponentForConfig.config.length > 0 && (
+                <div className={styles.popoverProperties}>
+                  <h4 className="body-bold">Properties</h4>
+
+                  {selectedComponentForConfig.config.map(prop => (
+                    <div key={prop.name} className={styles.propertyRow}>
+                      <span className={styles.propertyLabel}>{prop.label}</span>
+
+                      {prop.type === "boolean" && (
+                        <label className={styles.toggleSwitch}>
+                          <input
+                            type="checkbox"
+                            className={styles.toggleInput}
+                            checked={configProps[prop.name] || false}
+                            onChange={(e) => setConfigProps({ ...configProps, [prop.name]: e.target.checked })}
+                          />
+                          <span className={styles.toggleSlider}></span>
+                        </label>
+                      )}
+
+                      {prop.type === "select" && (
+                        <select
+                          className={`caption-regular ${styles.propertySelect}`}
+                          value={configProps[prop.name]}
+                          onChange={(e) => setConfigProps({ ...configProps, [prop.name]: e.target.value })}
+                        >
+                          {prop.options.map(option => (
+                            <option key={option} value={option}>
+                              {option.charAt(0).toUpperCase() + option.slice(1)}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className={styles.popoverFooter}>
+              <button
+                className="btn btn-primary btn-sm"
+                style={{ width: "100%" }}
+                onClick={insertComponent}
+              >
+                Insert Section
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div >
   );
 }

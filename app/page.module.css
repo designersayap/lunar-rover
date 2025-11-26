@@ -399,6 +399,200 @@
     transition: box-shadow 0.2s;
 }
 
-.sidebarButton:hover .sidebarButtonImageWrapper {
+.sidebarButton:hover .sidebarButtonImageWrapper,
+.sidebarButtonSelected .sidebarButtonImageWrapper {
     box-shadow: 0 1px 3px rgba(38, 38, 38, 0.12);
+}
+
+/* Popover */
+.popoverOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    /* Transparent overlay to catch clicks outside */
+}
+
+.popoverContainer {
+    background-color: var(--base-white);
+    border-radius: var(--round-100);
+    width: 362px;
+    max-width: 90%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.popoverHeader {
+    padding: var(--padding-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--grey-100);
+}
+
+.popoverTitle {
+    color: var(--content-neutral--title);
+    margin: 0;
+}
+
+.popoverClose {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--content-neutral--body);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popoverContent {
+    padding: var(--padding-sm);
+    overflow-y: auto;
+    flex: 1;
+}
+
+.popoverPreview {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--round-80);
+    overflow: hidden;
+    margin-bottom: var(--padding-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popoverProperties {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+    color: var(--content-neutral--title);
+}
+
+.propertyRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.propertyLabel {
+    color: var(--content-neutral--body);
+    font-size: var(--typography-font-size-90);
+}
+
+.popoverFooter {
+    padding: var(--padding-sm);
+}
+
+.insertButton {
+    width: 100%;
+    background-color: var(--brand-color-300);
+    color: var(--base-white);
+    border: none;
+    padding: var(--space-80);
+    border-radius: var(--round-80);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--typography-font-size-90);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.insertButton:hover {
+    background-color: var(--brand-color-400);
+}
+
+/* Toggle Switch */
+.toggleSwitch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.toggleInput {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggleSlider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--grey-200);
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.toggleSlider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.toggleInput:checked+.toggleSlider {
+    background-color: var(--brand-color-300);
+}
+
+.toggleInput:checked+.toggleSlider:before {
+    transform: translateX(20px);
+}
+
+/* Dropdown Select */
+.propertySelect {
+    padding: 8px 12px;
+    border: 1px solid var(--grey-100);
+    border-radius: 8px;
+    min-width: 120px;
+    cursor: pointer;
+    appearance: none;
+    background-color: var(--base-white);
+    padding-right: 2.5em;
+    transition: border-color 0.2s;
+    position: relative;
+}
+
+.propertySelect:focus {
+    outline: none;
+    border-color: var(--brand-color-300);
+}
+
+/* Dropdown arrow using Material Icons */
+.popoverProperties {
+    position: relative;
+}
+
+.popoverProperties .propertySelect {
+    background-image: none;
+}
+
+.propertyRow:has(select) {
+    position: relative;
+}
+
+.propertyRow:has(select)::after {
+    content: 'arrow_drop_down';
+    font-family: 'Material Icons Round';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--content-neutral--title);
+    font-size: 20px;
 }

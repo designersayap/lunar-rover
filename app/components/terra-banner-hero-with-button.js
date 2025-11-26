@@ -1,10 +1,7 @@
 import styles from "./terra-banner-hero-with-button.module.css";
-import { SparklesIcon, ArrowLongRightIcon } from "@heroicons/react/24/outline";
+import { SparklesIcon } from "@heroicons/react/24/outline";
 
-/**
- * Hero Banner Component with Button
- */
-export default function TerraBannerHeroWithButton() {
+export default function TerraBannerHeroWithButton({ showButton = true }) {
     return (
         <main className={`${styles.hero} imagePlaceholder-5-4`}>
             {/* Grid Container */}
@@ -24,11 +21,12 @@ export default function TerraBannerHeroWithButton() {
                         </p>
 
                         {/* CTA Button */}
-                        <button className={`btn btn-primary btn-md ${styles.ctaButton}`}>
-                            <SparklesIcon width={20} height={20} />
-                            Get Started
-                            <ArrowLongRightIcon width={20} height={20} />
-                        </button>
+                        {showButton && (
+                            <button className={`btn btn-primary btn-md ${styles.ctaButton}`}>
+                                <SparklesIcon width={20} height={20} />
+                                Button
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

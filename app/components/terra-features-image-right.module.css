@@ -1,4 +1,4 @@
-.section {
+.container {
     padding: var(--padding-2xl) 0;
 }
 
@@ -6,10 +6,11 @@
     display: flex;
     align-items: center;
     padding: 0 var(--padding-md);
+    width: 100%;
     order: 2;
 }
 
-.textWrapper {
+.content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -39,7 +40,7 @@
         order: 2;
     }
 
-    .textWrapper {
+    .content {
         order: 1;
     }
 }

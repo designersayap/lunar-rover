@@ -4,25 +4,28 @@ import styles from "./terra-features-image-left.module.css";
 /**
  * TerraFeaturesImageLeft Component
  */
-export default function TerraFeaturesImageLeft() {
+export default function TerraFeaturesImageLeft({ buttonStyle = "primary" }) {
     return (
-        <section className={styles.section}>
+        <section className={styles.container}>
             <div className="container-grid">
-                <div className="grid">
-                    {/* Image Section */}
-                    <div className={`col-2 col-tablet-8 col-desktop-6 ${styles.imageWrapper}`}>
+                <div className="grid align-center">
+                    {/* Image Column */}
+                    <div className={`${styles.imageWrapper} col-mobile-2 col-tablet-8 col-desktop-6`}>
                         <div className="imagePlaceholder-1-1">
-                            {/* Placeholder for image */}
+                            {/* Placeholder for Image */}
                         </div>
                     </div>
 
-                    {/* Text Section */}
-                    <div className={`col-2 col-tablet-8 col-desktop-6 ${styles.textWrapper}`}>
-                        <h2 className={`h2 ${styles.title}`}>Title</h2>
-                        <p className={`subheader-h2 ${styles.description}`}>Description</p>
-                        <button className="btn btn-ghost btn-md">
-                            More Info
-                            <ArrowLongRightIcon />
+                    {/* Content Column */}
+                    <div className={`${styles.content} col-mobile-2 col-tablet-8 col-desktop-6`}>
+                        <h2 className={`h2 ${styles.title}`} style={{ marginBottom: "var(--gap-lg)" }}>
+                            Feature Title
+                        </h2>
+                        <p className="subheader-h2" style={{ color: "var(--content-neutral--caption)", marginBottom: "var(--gap-sm)" }}>
+                            Detailed description of the feature goes here. Explain the benefits and how it helps the user.
+                        </p>
+                        <button className={`btn btn-${buttonStyle} btn-md`}>
+                            Label
                         </button>
                     </div>
                 </div>
