@@ -194,11 +194,12 @@
     display: flex;
     gap: 0;
     background-color: var(--base-white);
-    border-radius: var(--round-80);
+    border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     opacity: 0;
     transition: opacity 0.2s;
     z-index: 5;
+    overflow: hidden;
 }
 
 .componentWrapper:hover .controlButtons {
@@ -214,7 +215,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 16px;
     transition: background-color 0.2s;
 }
 
@@ -290,7 +291,7 @@
     width: 100%;
     padding: 0 var(--space-70);
     border: 1px solid var(--grey-100);
-    border-radius: var(--round-80);
+    border-radius: 8px;
     height: 36px;
     margin-bottom: var(--space-80);
     font-size: var(--typography-font-size-90);
@@ -595,4 +596,34 @@
     pointer-events: none;
     color: var(--content-neutral--title);
     font-size: 20px;
+}
+
+/* Toaster Notification */
+.toaster {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--background-neutral--neutral-strong);
+    color: var(--content-neutral--body-invert);
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    font-family: var(--font-family-body);
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideUpFadeIn 0.3s ease-out;
+}
+
+@keyframes slideUpFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
 }

@@ -23,6 +23,17 @@ import styles from "./page.module.css";
  */
 export default function TemplateGeneratorPage() {
   const [selectedComponents, setSelectedComponents] = useState([]);
+  const [showToaster, setShowToaster] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState("");
+
+  useEffect(() => {
+    if (showToaster) {
+      const timer = setTimeout(() => {
+        setShowToaster(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToaster]);
 
   // Component library organized by category
 
@@ -214,6 +225,8 @@ export default function TemplateGeneratorPage() {
     }]);
 
     setSelectedComponentForConfig(null);
+    setToasterMessage(`${selectedComponentForConfig.name} added`);
+    setShowToaster(true);
   };
 
   const removeComponent = (uniqueId) => {
@@ -482,7 +495,7 @@ ${finalHtmlContent}
           <div style={{ padding: "var(--space-100)" }}>
             {selectedComponents.length === 0 ? (
               <div style={{
-                minHeight: "60vh",
+                minHeight: "80vh",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -490,6 +503,15 @@ ${finalHtmlContent}
                 borderRadius: "var(--round-80)"
               }}>
                 <div style={{ textAlign: "center" }}>
+                  <img
+                    src="/images/empty-state.svg"
+                    alt="Empty state illustration"
+                    style={{
+                      width: "200px",
+                      height: "auto",
+                      marginBottom: "var(--space-100)"
+                    }}
+                  />
                   <p className="body-regular" style={{ color: "var(--content-neutral--caption)" }}>
                     Select components from the sidebar to build your template
                   </p>
@@ -789,6 +811,12 @@ ${finalHtmlContent}
               </button>
             </div>
           </div>
+        </div>
+      )}
+      {/* Toaster Notification */}
+      {showToaster && (
+        <div className={styles.toaster}>
+          {toasterMessage}
         </div>
       )}
     </div >

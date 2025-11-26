@@ -6,7 +6,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
  */
 export default function TerraBannerHeroWithSearch({ showSearchBar = true }) {
     return (
-        <main className={`${styles.hero} imagePlaceholder-5-4`}>
+        <main className={styles.hero}>
             {/* Grid Container */}
             <div className="container-grid">
                 <div className="grid">
@@ -28,11 +28,11 @@ export default function TerraBannerHeroWithSearch({ showSearchBar = true }) {
                             <div className={styles.searchContainer}>
                                 <input
                                     type="text"
-                                    className={styles.searchInput}
+                                    className={`body-regular ${styles.searchInput}`}
                                     placeholder="Search product"
                                 />
-                                <button className={styles.searchButton}>
-                                    <span className="material-icons-round" style={{ fontSize: "20px", color: "var(--base-white)" }}>search</span>
+                                <button className={`btn btn-primary btn-icon btn-md ${styles.searchButton}`}>
+                                    <MagnifyingGlassIcon className="icon" />
                                 </button>
                             </div>
                         )}
