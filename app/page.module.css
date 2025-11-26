@@ -8,6 +8,8 @@
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
+
+
 /* Top Bar */
 .topBar {
     background-color: var(--background-neutral--default);
@@ -288,7 +290,7 @@
 .searchBar {
     width: 100%;
     padding: 0 var(--space-70);
-    border: 1px solid var(--grey-200);
+    border: 1px solid var(--grey-100);
     border-radius: var(--round-80);
     height: 36px;
     margin-bottom: var(--space-80);

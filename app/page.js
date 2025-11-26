@@ -10,6 +10,8 @@ import TerraBannerHeroWithSearch from "./components/terra-banner-hero-with-searc
 import TerraFeaturesImageLeft from "./components/terra-features-image-left";
 import TerraFeaturesImageRight from "./components/terra-features-image-right";
 import TerraUsp3col from "./components/terra-usp-3col";
+import TerraUsp4col from "./components/terra-usp-4col";
+import TerraTestimony from "./components/terra-testimony";
 import TerraFooter from "./components/terra-footer";
 import { uspData, footerData } from "./content/data";
 import styles from "./page.module.css";
@@ -44,10 +46,10 @@ export default function TemplateGeneratorPage() {
       { id: "usp-4col", name: "Terra - USP 4 Column", component: TerraUsp4col, thumbnail: "/images/thumbnails/terra-USP-4col.svg" },
     ],
     "Testimonial": [
-      { id: "testimony", name: "Terra - Testimony", component: TerraTestimony, thumbnail: "Testimony" },
+      { id: "testimony", name: "Terra - Testimony", component: TerraTestimony, thumbnail: "/images/thumbnails/terra-testimony.svg" },
     ],
     "Footer": [
-      { id: "footer", name: "Terra - Footer", component: TerraFooter, thumbnail: "Footer" },
+      { id: "footer", name: "Terra - Footer", component: TerraFooter, thumbnail: "/images/thumbnails/terra-footer.svg" },
     ],
   };
 
@@ -337,25 +339,36 @@ ${finalHtmlContent}
       {/* Top Bar - Full Width */}
       <div className={styles.topBar}>
         <div className={styles.topBarLeft}>
-          <h1 className={`h5 ${styles.logo}`}>Lunar</h1>
+          <h1 className={`body-bold ${styles.logo}`}>Lunar</h1>
         </div>
         <div className={styles.topBarRight}>
           <button
             onClick={() => setIsSidebarVisible(!isSidebarVisible)}
             className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}
+            data-tooltip={isSidebarVisible ? "Collapse Sidebar" : "Expand Sidebar"}
           >
             <span className="material-icons-round" style={{ fontSize: "16px", color: "var(--content-neutral--body)" }}>
               {isSidebarVisible ? "keyboard_double_arrow_right" : "keyboard_double_arrow_left"}
             </span>
           </button>
-          <button className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}>
+          <button
+            className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}
+            data-tooltip="Download Code"
+          >
             <span className="material-icons-round" style={{ fontSize: "16px", color: "var(--content-neutral--body)" }}>download</span>
           </button>
-          <button className={styles.topBarButtonWide}>
+          <button
+            className={styles.topBarButtonWide}
+            data-tooltip="Import JSON"
+          >
             <span className="material-icons-round" style={{ fontSize: "16px" }}>code</span>
             Import JSON
           </button>
-          <button className={styles.topBarButtonExport} onClick={handleExport}>
+          <button
+            className={styles.topBarButtonExport}
+            onClick={handleExport}
+            data-tooltip="Export Template"
+          >
             <span className="material-icons-round" style={{ fontSize: "16px" }}>rocket_launch</span>
             Export
           </button>
@@ -380,9 +393,8 @@ ${finalHtmlContent}
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "var(--base-white)",
-                borderRadius: "var(--round-80)",
-                border: "1px dashed var(--grey-200)"
+                backgroundColor: "var(--background-neutral--default)",
+                borderRadius: "var(--round-80)"
               }}>
                 <div style={{ textAlign: "center" }}>
                   <p className="body-regular" style={{ color: "var(--content-neutral--caption)" }}>
@@ -423,6 +435,8 @@ ${finalHtmlContent}
                             color: index === selectedComponents.length - 1 ? "var(--content-neutral--body)" : "var(--content-neutral--title)",
                             cursor: index === selectedComponents.length - 1 ? "not-allowed" : "pointer"
                           }}
+                          data-tooltip="Move Down"
+                          data-tooltip-position="top"
                         >
                           <span className="material-icons-round" style={{ fontSize: "16px" }}>keyboard_arrow_down</span>
                         </button>
@@ -434,12 +448,16 @@ ${finalHtmlContent}
                             color: index === 0 ? "var(--content-neutral--body)" : "var(--content-neutral--title)",
                             cursor: index === 0 ? "not-allowed" : "pointer"
                           }}
+                          data-tooltip="Move Up"
+                          data-tooltip-position="top"
                         >
                           <span className="material-icons-round" style={{ fontSize: "16px" }}>keyboard_arrow_up</span>
                         </button>
                         <button
                           onClick={() => removeComponent(item.uniqueId)}
                           className={`${styles.controlButton} ${styles.controlButtonDelete}`}
+                          data-tooltip="Delete Section"
+                          data-tooltip-position="top"
                         >
                           <span className="material-icons-round" style={{ fontSize: "16px" }}>delete</span>
                         </button>
