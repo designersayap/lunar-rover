@@ -108,17 +108,18 @@
 }
 
 /* Add to Cart Button */
+/* Add to Cart Button */
 .addButton {
     position: absolute;
     top: var(--gap-xs);
     right: var(--gap-xs);
-    width: 40px;
-    height: 40px;
+    width: var(--size-button-md);
+    height: var(--size-button-md);
 }
 
 .arrowIcon {
-    width: 40px;
-    height: 40px;
+    width: var(--size-button-md);
+    height: var(--size-button-md);
 }
 
 /* Card Content */
@@ -156,8 +157,8 @@
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
-    width: 48px;
-    height: 48px;
+    width: var(--size-button-lg);
+    height: var(--size-button-lg);
     padding: 0;
     display: flex;
     align-items: center;
