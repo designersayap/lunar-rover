@@ -148,7 +148,6 @@
 
 .componentWrapper {
     position: relative;
-    margin-bottom: var(--space-60);
     border: 1px dashed transparent;
     border-radius: var(--round-80);
     background-color: var(--background-neutral--default);
@@ -303,6 +302,11 @@
     border-color: var(--brand-color-300);
 }
 
+.searchBar::placeholder {
+    color: var(--content-neutral--body-subtle);
+    opacity: 1;
+}
+
 /* Separator */
 .separator {
     border-bottom: 1px solid var(--grey-100);
@@ -332,6 +336,20 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--space-60);
     margin-top: var(--space-60);
+}
+
+.accordionContent {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease-out;
+}
+
+.accordionContentOpen {
+    grid-template-rows: 1fr;
+}
+
+.accordionInner {
+    overflow: hidden;
 }
 
 

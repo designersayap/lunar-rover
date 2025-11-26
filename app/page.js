@@ -56,6 +56,16 @@ export default function TemplateGeneratorPage() {
   const [draggedItemIndex, setDraggedItemIndex] = useState(null);
   const [dropTargetIndex, setDropTargetIndex] = useState(null);
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+  const [openCategories, setOpenCategories] = useState({ "Hero Banner": true });
+
+  const toggleCategory = (category) => {
+    setOpenCategories(prev => {
+      if (prev[category]) {
+        return {};
+      }
+      return { [category]: true };
+    });
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -506,39 +516,48 @@ ${finalHtmlContent}
             {/* Component Categories */}
             {Object.entries(componentLibrary).map(([category, components], index, array) => (
               <div key={category} className={styles.categoryWrapper}>
-                <details open>
-                  <summary className={styles.categorySummary}>
-                    {category}
-                    <span className="material-icons-round" style={{ color: "var(--content-neutral--body)" }}>arrow_drop_down</span>
-                  </summary>
-                  <div className={styles.componentGrid}>
-                    {components.map((comp) => (
-                      <button
-                        key={comp.id}
-                        onClick={() => addComponent(comp)}
-                        className={styles.sidebarButton}
-                      >
-                        <div className={styles.sidebarButtonImageWrapper}>
-                          <img
-                            src={comp.thumbnail}
-                            alt={comp.name}
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              objectFit: "cover"
-                            }}
-                          />
-                        </div>
-                        <p className="caption-regular" style={{
-                          fontSize: "var(--typography-font-size-80)",
-                          color: "var(--content-neutral--caption)"
-                        }}>
-                          {comp.name}
-                        </p>
-                      </button>
-                    ))}
+                <div
+                  className={styles.categorySummary}
+                  onClick={() => toggleCategory(category)}
+                >
+                  {category}
+                  <span className="material-icons-round" style={{
+                    color: "var(--content-neutral--body)",
+                    transform: openCategories[category] ? "rotate(180deg)" : "rotate(0deg)",
+                    transition: "transform 0.2s"
+                  }}>arrow_drop_down</span>
+                </div>
+                <div className={`${styles.accordionContent} ${openCategories[category] ? styles.accordionContentOpen : ''}`}>
+                  <div className={styles.accordionInner}>
+                    <div className={styles.componentGrid}>
+                      {components.map((comp) => (
+                        <button
+                          key={comp.id}
+                          onClick={() => addComponent(comp)}
+                          className={styles.sidebarButton}
+                        >
+                          <div className={styles.sidebarButtonImageWrapper}>
+                            <img
+                              src={comp.thumbnail}
+                              alt={comp.name}
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover"
+                              }}
+                            />
+                          </div>
+                          <p className="caption-regular" style={{
+                            fontSize: "var(--typography-font-size-80)",
+                            color: "var(--content-neutral--caption)"
+                          }}>
+                            {comp.name}
+                          </p>
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </details>
+                </div>
                 {index < array.length - 1 && (
                   <div className={styles.separator} style={{ marginTop: "var(--space-100)", marginBottom: "0" }} />
                 )}
