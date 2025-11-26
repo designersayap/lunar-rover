@@ -8,6 +8,7 @@ import TerraUsp4col from "./components/terra-usp-4col";
 import TerraFeaturesImageLeft from "./components/terra-features-image-left";
 import TerraFeaturesImageRight from "./components/terra-features-image-right";
 import TerraUsp3col from "./components/terra-usp-3col";
+import TerraTestimony from "./components/terra-testimony";
 import TerraFooter from "./components/terra-footer";
 import TerraBannerHeroWithButton from "./components/terra-banner-hero-with-button";
 import { uspData, footerData } from "./content/data";
@@ -26,6 +27,7 @@ export default function Home() {
       <GlobalHeaderTitleButton />
       <GlobalHeaderTitleDescription />
       <GlobalHeaderTitleButtonDescription />
+      <TerraTestimony />
       <TerraFooter {...footerData} />
     </>
   );
