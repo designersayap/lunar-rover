@@ -293,7 +293,7 @@
     border: 1px solid var(--grey-100);
     border-radius: 8px;
     height: 36px;
-    margin-bottom: var(--space-70);
+    margin-bottom: var(--space-60);
     font-size: var(--typography-font-size-90);
     outline: none;
     transition: border-color 0.2s;
@@ -311,7 +311,11 @@
 /* Separator */
 .separator {
     border-bottom: 1px solid var(--grey-100);
-    margin: var(--space-40) calc(-1 * var(--space-80));
+    margin-top: var(--space-60);
+    margin-bottom: var(--space-60);
+    margin-left: calc(-1 * var(--space-80));
+    margin-right: calc(-1 * var(--space-80));
+    width: calc(100% + (2 * var(--space-80)));
 }
 
 /* Categories */
@@ -377,13 +381,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-60);
+    gap: var(--gap-xs);
     padding: 0;
     border: none;
     background-color: transparent;
     cursor: pointer;
     text-align: center;
     transition: all 0.2s;
+    margin-bottom: var(--padding-sm);
 }
 
 .sidebarButtonImageWrapper {
