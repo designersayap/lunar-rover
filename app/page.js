@@ -1,6 +1,7 @@
 "use client";
 
 
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import {
   RocketLaunchIcon,
@@ -472,6 +473,12 @@ ${finalHtmlContent}
       {/* Top Bar - Full Width */}
       <div className={styles.topBar}>
         <div className={styles.topBarLeft}>
+          <Image
+            src="/logo.svg"
+            alt="Lunar Logo"
+            width={24}
+            height={24}
+          />
           <h1 className={`body-bold ${styles.logo}`}>Lunar</h1>
         </div>
         <div className={styles.topBarRight}>
