@@ -4,6 +4,7 @@ const GlobalHeaderTitle = dynamic(() => import("../../components/global-header-t
 const GlobalHeaderTitleButton = dynamic(() => import("../../components/global-header-title-button"));
 const GlobalHeaderTitleDescription = dynamic(() => import("../../components/global-header-title-description"));
 const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../components/global-header-title-button-description"));
+const TerraNavigation = dynamic(() => import("@/app/components/terra/terra-navigation"));
 const TerraBannerHeroWithButton = dynamic(() => import("@/app/components/terra/terra-banner-hero-with-button"));
 const TerraBannerHeroWithSearch = dynamic(() => import("@/app/components/terra/terra-banner-hero-with-search"));
 const TerraFeaturesImageLeft = dynamic(() => import("@/app/components/terra/terra-features-image-left"));
@@ -15,6 +16,9 @@ const TerraProductCarousel4Products = dynamic(() => import("@/app/components/ter
 const TerraFooter = dynamic(() => import("@/app/components/terra/terra-footer"));
 
 export const componentLibrary = {
+    "Navigation": [
+        { id: "terra-navigation", name: "Terra - Navigation", component: TerraNavigation, thumbnail: "/images/thumbnails/terra-navigation.svg" },
+    ],
     "Header": [
         { id: "header-title", name: "Title", component: GlobalHeaderTitle, thumbnail: "/images/thumbnails/header-title.svg" },
         { id: "header-title-desc", name: "Title, Desc", component: GlobalHeaderTitleDescription, thumbnail: "/images/thumbnails/header-title-desc.svg" },
