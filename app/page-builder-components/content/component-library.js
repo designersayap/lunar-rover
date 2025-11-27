@@ -1,18 +1,18 @@
 import dynamic from "next/dynamic";
 
-const GlobalHeaderTitle = dynamic(() => import("../../components/global-header-title"));
-const GlobalHeaderTitleButton = dynamic(() => import("../../components/global-header-title-button"));
-const GlobalHeaderTitleDescription = dynamic(() => import("../../components/global-header-title-description"));
-const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../components/global-header-title-button-description"));
-const TerraBannerHeroWithButton = dynamic(() => import("@/app/components/terra/terra-banner-hero-with-button"));
-const TerraBannerHeroWithSearch = dynamic(() => import("@/app/components/terra/terra-banner-hero-with-search"));
-const TerraFeaturesImageLeft = dynamic(() => import("@/app/components/terra/terra-features-image-left"));
-const TerraFeaturesImageRight = dynamic(() => import("@/app/components/terra/terra-features-image-right"));
-const TerraUsp3col = dynamic(() => import("@/app/components/terra/terra-usp-3col"));
-const TerraUsp4col = dynamic(() => import("@/app/components/terra/terra-usp-4col"));
-const TerraTestimony = dynamic(() => import("@/app/components/terra/terra-testimony"));
-const TerraProductCarousel4Products = dynamic(() => import("@/app/components/terra/terra-product-carousel-4-products"));
-const TerraFooter = dynamic(() => import("@/app/components/terra/terra-footer"));
+const GlobalHeaderTitle = dynamic(() => import("../../template-components/global-header-title"));
+const GlobalHeaderTitleButton = dynamic(() => import("../../template-components/global-header-title-button"));
+const GlobalHeaderTitleDescription = dynamic(() => import("../../template-components/global-header-title-description"));
+const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../template-components/global-header-title-button-description"));
+const TerraBannerHeroWithButton = dynamic(() => import("@/app/template-components/terra/terra-banner-hero-with-button"));
+const TerraBannerHeroWithSearch = dynamic(() => import("@/app/template-components/terra/terra-banner-hero-with-search"));
+const TerraFeaturesImageLeft = dynamic(() => import("@/app/template-components/terra/terra-features-image-left"));
+const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/terra/terra-features-image-right"));
+const TerraUsp3col = dynamic(() => import("@/app/template-components/terra/terra-usp-3col"));
+const TerraUsp4col = dynamic(() => import("@/app/template-components/terra/terra-usp-4col"));
+const TerraTestimony = dynamic(() => import("@/app/template-components/terra/terra-testimony"));
+const TerraProductCarousel4Products = dynamic(() => import("@/app/template-components/terra/terra-product-carousel-4-products"));
+const TerraFooter = dynamic(() => import("@/app/template-components/terra/terra-footer"));
 
 export const componentLibrary = {
     "Header": [

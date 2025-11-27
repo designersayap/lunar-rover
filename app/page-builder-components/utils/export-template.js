@@ -1,4 +1,4 @@
-import styles from "../page.module.css";
+import styles from "../../page.module.css";
 
 /**
  * Exports the current canvas content as a downloadable HTML file.

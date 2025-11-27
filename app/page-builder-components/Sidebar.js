@@ -3,7 +3,7 @@ import {
     ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 import {
-    QuestionMarkCircleIcon
+    LightBulbIcon,
 } from "@heroicons/react/24/solid";
 import styles from "../page.module.css";
 
@@ -139,7 +139,7 @@ export default function Sidebar({
                                 data-tooltip-position="top"
                                 data-tooltip-align="right"
                             >
-                                <QuestionMarkCircleIcon className={styles.helpIcon} />
+                                <LightBulbIcon className={styles.helpIcon} />
                             </div>
                         </div>
                         <input
