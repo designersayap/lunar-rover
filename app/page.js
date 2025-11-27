@@ -1,7 +1,9 @@
 "use client";
 
 
-import { useState, useEffect } from "react";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+import { useState, useEffect, useCallback } from "react";
 import {
   RocketLaunchIcon,
   CodeBracketIcon,
@@ -19,22 +21,101 @@ import {
   BellAlertIcon,
   TrashIcon
 } from "@heroicons/react/24/solid";
-import GlobalHeaderTitle from "./components/global-header-title";
-import GlobalHeaderTitleButton from "./components/global-header-title-button";
-import GlobalHeaderTitleDescription from "./components/global-header-title-description";
-import GlobalHeaderTitleButtonDescription from "./components/global-header-title-button-description";
-import TerraBannerHeroWithButton from "@/app/components/terra/terra-banner-hero-with-button";
-import TerraBannerHeroWithSearch from "@/app/components/terra/terra-banner-hero-with-search";
-import TerraFeaturesImageLeft from "@/app/components/terra/terra-features-image-left";
-import TerraFeaturesImageRight from "@/app/components/terra/terra-features-image-right";
-import TerraUsp3col from "@/app/components/terra/terra-usp-3col";
-import TerraUsp4col from "@/app/components/terra/terra-usp-4col";
-import TerraTestimony from "@/app/components/terra/terra-testimony";
-import TerraProductCarousel4Products from "@/app/components/terra/terra-product-carousel-4-products";
-import TerraNavigation from "@/app/components/terra/terra-navigation";
-import TerraFooter from "@/app/components/terra/terra-footer";
+const GlobalHeaderTitle = dynamic(() => import("./components/global-header-title"));
+const GlobalHeaderTitleButton = dynamic(() => import("./components/global-header-title-button"));
+const GlobalHeaderTitleDescription = dynamic(() => import("./components/global-header-title-description"));
+const GlobalHeaderTitleButtonDescription = dynamic(() => import("./components/global-header-title-button-description"));
+const TerraBannerHeroWithButton = dynamic(() => import("@/app/components/terra/terra-banner-hero-with-button"));
+const TerraBannerHeroWithSearch = dynamic(() => import("@/app/components/terra/terra-banner-hero-with-search"));
+const TerraFeaturesImageLeft = dynamic(() => import("@/app/components/terra/terra-features-image-left"));
+const TerraFeaturesImageRight = dynamic(() => import("@/app/components/terra/terra-features-image-right"));
+const TerraUsp3col = dynamic(() => import("@/app/components/terra/terra-usp-3col"));
+const TerraUsp4col = dynamic(() => import("@/app/components/terra/terra-usp-4col"));
+const TerraTestimony = dynamic(() => import("@/app/components/terra/terra-testimony"));
+const TerraProductCarousel4Products = dynamic(() => import("@/app/components/terra/terra-product-carousel-4-products"));
+const TerraNavigation = dynamic(() => import("@/app/components/terra/terra-navigation"));
+const TerraFooter = dynamic(() => import("@/app/components/terra/terra-footer"));
 import { uspData, footerData } from "./content/data";
 import styles from "./page.module.css";
+import { handleExportTemplate } from "@/app/utils/export-template";
+
+// Component Configuration
+const componentLibrary = {
+  "Navigation": [
+    { id: "terra-navigation", name: "Terra - Navigation", component: TerraNavigation, thumbnail: "/images/thumbnails/terra-navigation.svg" },
+  ],
+  "Header": [
+    { id: "header-title", name: "Title", component: GlobalHeaderTitle, thumbnail: "/images/thumbnails/header-title.svg" },
+    { id: "header-title-desc", name: "Title, Desc", component: GlobalHeaderTitleDescription, thumbnail: "/images/thumbnails/header-title-desc.svg" },
+    { id: "header-title-button", name: "Title, Button", component: GlobalHeaderTitleButton, thumbnail: "/images/thumbnails/header-title-button.svg" },
+    { id: "header-title-desc-button", name: "Title, Desc, Button", component: GlobalHeaderTitleButtonDescription, thumbnail: "/images/thumbnails/header-title-desc-button.svg" },
+  ],
+  "Hero Banner": [
+    {
+      id: "hero-button",
+      name: "Terra - CTA",
+      component: TerraBannerHeroWithButton,
+      thumbnail: "/images/thumbnails/terra-cta.svg",
+      config: [
+        { name: "showButton", label: "Button", type: "boolean", default: true }
+      ]
+    },
+    {
+      id: "hero-search",
+      name: "Terra - Search",
+      component: TerraBannerHeroWithSearch,
+      thumbnail: "/images/thumbnails/terra-search.svg",
+      config: [
+        { name: "showSearchBar", label: "Search", type: "boolean", default: true }
+      ]
+    },
+  ],
+  "Feature - Split": [
+    {
+      id: "feature-left",
+      name: "Terra - Image Left",
+      component: TerraFeaturesImageLeft,
+      thumbnail: "/images/thumbnails/terra-image-left.svg",
+      config: [
+        {
+          name: "buttonStyle",
+          label: "Button Style",
+          type: "select",
+          options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
+          default: "primary"
+        }
+      ]
+    },
+    {
+      id: "feature-right",
+      name: "Terra - Image Right",
+      component: TerraFeaturesImageRight,
+      thumbnail: "/images/thumbnails/terra-image-right.svg",
+      config: [
+        {
+          name: "buttonStyle",
+          label: "Button Style",
+          type: "select",
+          options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
+          default: "primary"
+        }
+      ]
+    },
+  ],
+  "USP": [
+    { id: "usp-3col", name: "Terra - USP 3 Column", component: TerraUsp3col, thumbnail: "/images/thumbnails/terra-USP-3col.svg" },
+    { id: "usp-4col", name: "Terra - USP 4 Column", component: TerraUsp4col, thumbnail: "/images/thumbnails/terra-USP-4col.svg" },
+  ],
+  "Testimonial": [
+    { id: "testimony", name: "Terra - Testimony", component: TerraTestimony, thumbnail: "/images/thumbnails/terra-testimony.svg" },
+  ],
+  "Product": [
+    { id: "product-carousel-4", name: "Terra - Product Carousel 4", component: TerraProductCarousel4Products, thumbnail: "/images/thumbnails/terra-product-carouse.svg" },
+  ],
+  "Footer": [
+    { id: "footer", name: "Terra - Footer", component: TerraFooter, thumbnail: "/images/thumbnails/terra-footer.svg" },
+  ],
+};
 
 /**
  * Template Generator Page
@@ -55,86 +136,6 @@ export default function TemplateGeneratorPage() {
     }
   }, [showToaster]);
 
-  // Component library organized by category
-
-  // Component Configuration
-  const componentLibrary = {
-    "Navigation": [
-      { id: "terra-navigation", name: "Terra - Navigation", component: TerraNavigation, thumbnail: "/images/thumbnails/terra-navigation.svg" },
-    ],
-    "Header": [
-      { id: "header-title", name: "Title", component: GlobalHeaderTitle, thumbnail: "/images/thumbnails/header-title.svg" },
-      { id: "header-title-desc", name: "Title, Desc", component: GlobalHeaderTitleDescription, thumbnail: "/images/thumbnails/header-title-desc.svg" },
-      { id: "header-title-button", name: "Title, Button", component: GlobalHeaderTitleButton, thumbnail: "/images/thumbnails/header-title-button.svg" },
-      { id: "header-title-desc-button", name: "Title, Desc, Button", component: GlobalHeaderTitleButtonDescription, thumbnail: "/images/thumbnails/header-title-desc-button.svg" },
-    ],
-    "Hero Banner": [
-      {
-        id: "hero-button",
-        name: "Terra - CTA",
-        component: TerraBannerHeroWithButton,
-        thumbnail: "/images/thumbnails/terra-cta.svg",
-        config: [
-          { name: "showButton", label: "Button", type: "boolean", default: true }
-        ]
-      },
-      {
-        id: "hero-search",
-        name: "Terra - Search",
-        component: TerraBannerHeroWithSearch,
-        thumbnail: "/images/thumbnails/terra-search.svg",
-        config: [
-          { name: "showSearchBar", label: "Search", type: "boolean", default: true }
-        ]
-      },
-    ],
-    "Feature - Split": [
-      {
-        id: "feature-left",
-        name: "Terra - Image Left",
-        component: TerraFeaturesImageLeft,
-        thumbnail: "/images/thumbnails/terra-image-left.svg",
-        config: [
-          {
-            name: "buttonStyle",
-            label: "Button Style",
-            type: "select",
-            options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-            default: "primary"
-          }
-        ]
-      },
-      {
-        id: "feature-right",
-        name: "Terra - Image Right",
-        component: TerraFeaturesImageRight,
-        thumbnail: "/images/thumbnails/terra-image-right.svg",
-        config: [
-          {
-            name: "buttonStyle",
-            label: "Button Style",
-            type: "select",
-            options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-            default: "primary"
-          }
-        ]
-      },
-    ],
-    "USP": [
-      { id: "usp-3col", name: "Terra - USP 3 Column", component: TerraUsp3col, thumbnail: "/images/thumbnails/terra-USP-3col.svg" },
-      { id: "usp-4col", name: "Terra - USP 4 Column", component: TerraUsp4col, thumbnail: "/images/thumbnails/terra-USP-4col.svg" },
-    ],
-    "Testimonial": [
-      { id: "testimony", name: "Terra - Testimony", component: TerraTestimony, thumbnail: "/images/thumbnails/terra-testimony.svg" },
-    ],
-    "Product": [
-      { id: "product-carousel-4", name: "Terra - Product Carousel 4", component: TerraProductCarousel4Products, thumbnail: "/images/thumbnails/terra-product-carouse.svg" },
-    ],
-    "Footer": [
-      { id: "footer", name: "Terra - Footer", component: TerraFooter, thumbnail: "/images/thumbnails/terra-footer.svg" },
-    ],
-  };
-
   const [draggedItemIndex, setDraggedItemIndex] = useState(null);
   const [dropTargetIndex, setDropTargetIndex] = useState(null);
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
@@ -147,14 +148,14 @@ export default function TemplateGeneratorPage() {
   const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
   const [zoomState, setZoomState] = useState({ x: 0, y: 0, isHovering: false });
 
-  const toggleCategory = (category) => {
+  const toggleCategory = useCallback((category) => {
     setOpenCategories(prev => {
       if (prev[category]) {
         return {};
       }
       return { [category]: true };
     });
-  };
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -172,7 +173,7 @@ export default function TemplateGeneratorPage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleDragStart = (e, index, componentName, thumbnail) => {
+  const handleDragStart = useCallback((e, index, componentName, thumbnail) => {
     setDraggedItemIndex(index);
     e.dataTransfer.effectAllowed = "move";
 
@@ -187,22 +188,22 @@ export default function TemplateGeneratorPage() {
 
       e.dataTransfer.setDragImage(dragImage, 0, 0);
     }
-  };
+  }, []);
 
-  const handleDragOver = (e, index) => {
+  const handleDragOver = useCallback((e, index) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
     if (draggedItemIndex !== index) {
       setDropTargetIndex(index);
     }
-  };
+  }, [draggedItemIndex]);
 
-  const handleDragLeave = (e) => {
+  const handleDragLeave = useCallback((e) => {
     // Optional: clear drop target if leaving the container, but might be tricky with child elements
     // For now, we rely on drop or drag end to clear it
-  };
+  }, []);
 
-  const handleDrop = (e, index) => {
+  const handleDrop = useCallback((e, index) => {
     e.preventDefault();
     setDropTargetIndex(null);
     if (draggedItemIndex === null || draggedItemIndex === index) return;
@@ -214,16 +215,23 @@ export default function TemplateGeneratorPage() {
 
     setSelectedComponents(newComponents);
     setDraggedItemIndex(null);
-  };
+  }, [draggedItemIndex, selectedComponents]);
 
 
 
-  const addComponent = (componentData, event) => {
+  const addComponent = useCallback((componentData, event) => {
     // Calculate position based on clicked element
     const rect = event.currentTarget.getBoundingClientRect();
+
+    // Get popover width from CSS variable or fallback
+    const container = document.querySelector(`.${styles.container}`);
+    const popoverWidth = container ?
+      parseInt(getComputedStyle(container).getPropertyValue('--popover-width')) || 362
+      : 362;
+
     setPopoverPosition({
       top: rect.top,
-      left: rect.left - 362 - 10 // Width of popover (362px) + 10px spacing
+      left: rect.left - popoverWidth - 10 // Width of popover + 10px spacing
     });
 
     setSelectedComponentForConfig({ ...componentData, selected: true });
@@ -236,246 +244,66 @@ export default function TemplateGeneratorPage() {
       });
     }
     setConfigProps(initialProps);
-  };
+  }, []);
 
-  const insertComponent = () => {
+  const insertComponent = useCallback(() => {
     if (!selectedComponentForConfig) return;
 
-    setSelectedComponents([...selectedComponents, {
+    setSelectedComponents(prev => [...prev, {
       ...selectedComponentForConfig,
       uniqueId: Date.now(),
       props: { ...configProps }
     }]);
 
     setSelectedComponentForConfig(null);
-    setSelectedComponentForConfig(null);
     setToasterMessage(`${selectedComponentForConfig.name} added`);
     setToasterType("success");
     setShowToaster(true);
-  };
+  }, [selectedComponentForConfig, configProps]);
 
-  const removeComponent = (uniqueId) => {
+  const removeComponent = useCallback((uniqueId) => {
     const componentToRemove = selectedComponents.find(c => c.uniqueId === uniqueId);
     if (componentToRemove) {
       setToasterMessage(`${componentToRemove.name} deleted`);
       setToasterType("delete");
       setShowToaster(true);
-      setSelectedComponents(selectedComponents.filter(c => c.uniqueId !== uniqueId));
+      setSelectedComponents(prev => prev.filter(c => c.uniqueId !== uniqueId));
     }
-  };
+  }, [selectedComponents]);
 
-  const moveUp = (index) => {
+  const moveUp = useCallback((index) => {
     if (index === 0) return;
-    const newComponents = [...selectedComponents];
-    [newComponents[index - 1], newComponents[index]] = [newComponents[index], newComponents[index - 1]];
-    setSelectedComponents(newComponents);
-  };
+    setSelectedComponents(prev => {
+      const newComponents = [...prev];
+      [newComponents[index - 1], newComponents[index]] = [newComponents[index], newComponents[index - 1]];
+      return newComponents;
+    });
+  }, []);
 
-  const moveDown = (index) => {
+  const moveDown = useCallback((index) => {
     if (index === selectedComponents.length - 1) return;
-    const newComponents = [...selectedComponents];
-    [newComponents[index], newComponents[index + 1]] = [newComponents[index + 1], newComponents[index]];
-    setSelectedComponents(newComponents);
-  };
-
-  const handleExport = () => {
-    if (selectedComponents.length === 0) {
-      alert("No components to export. Please add components to the canvas first.");
-      return;
-    }
-
-    // Get the canvas content
-    const canvasElement = document.querySelector('[data-canvas="true"]');
-    if (!canvasElement) {
-      alert("Canvas not found");
-      return;
-    }
-
-    // 1. Extract Clean HTML (remove editor UI)
-    let cleanHtmlContent = "";
-    const wrapperClass = styles.componentWrapper.split(' ')[0];
-    const componentWrappers = canvasElement.querySelectorAll(`.${wrapperClass}`);
-
-    Array.from(componentWrappers).forEach(wrapper => {
-      const clone = wrapper.cloneNode(true);
-
-      // Remove editor controls
-      const controlButtons = clone.querySelector(`.${styles.controlButtons}`);
-      if (controlButtons) controlButtons.remove();
-
-      const dropIndicator = clone.querySelector(`.${styles.dropIndicator}`);
-      if (dropIndicator) dropIndicator.remove();
-
-      cleanHtmlContent += clone.innerHTML + "\n";
+    setSelectedComponents(prev => {
+      const newComponents = [...prev];
+      [newComponents[index], newComponents[index + 1]] = [newComponents[index + 1], newComponents[index]];
+      return newComponents;
     });
+  }, [selectedComponents.length]);
 
-    // 2. Extract CSS
-    let cssContent = "/* Exported Styles */\n\n";
-    const usedSelectors = new Set();
-
-    // Helper to process rules
-    const processRule = (rule) => {
-      if (rule.type === 1) { // CSSStyleRule
-        try {
-          const cleanSelector = rule.selectorText.split(':')[0];
-
-          // Include globals and used selectors
-          if (rule.selectorText === ":root" || rule.selectorText === "html" || rule.selectorText === "body" ||
-            (cleanSelector && (canvasElement.querySelector(cleanSelector) || canvasElement.matches(cleanSelector)))) {
-
-            // Exclude editor styles
-            if (rule.selectorText.includes(wrapperClass)) return;
-            if (rule.selectorText.includes(styles.controlButtons)) return;
-            if (rule.selectorText.includes(styles.dropIndicator)) return;
-
-            if (!usedSelectors.has(rule.selectorText)) {
-              cssContent += rule.cssText + "\n";
-              usedSelectors.add(rule.selectorText);
-            }
-          }
-        } catch (e) { }
-      } else if (rule.type === 4) { // CSSMediaRule
-        // For media queries, we check if any rule inside matches
-        let mediaCss = "";
-        let hasMatch = false;
-        for (const subRule of rule.cssRules) {
-          if (subRule.type === 1) {
-            try {
-              const cleanSelector = subRule.selectorText.split(':')[0];
-              if (canvasElement.querySelector(cleanSelector) || canvasElement.matches(cleanSelector)) {
-                mediaCss += subRule.cssText + "\n";
-                hasMatch = true;
-              }
-            } catch (e) { }
-          }
-        }
-        if (hasMatch) {
-          cssContent += `@media ${rule.media.mediaText} {\n${mediaCss}}\n`;
-        }
-      } else if (rule.type === 5) { // CSSFontFaceRule
-        cssContent += rule.cssText + "\n";
-      } else if (rule.type === 7) { // CSSKeyframesRule
-        cssContent += rule.cssText + "\n";
-      }
-    };
-
-    // Iterate through all stylesheets
-    Array.from(document.styleSheets).forEach(sheet => {
-      try {
-        const rules = sheet.cssRules || sheet.rules;
-        if (rules) {
-          Array.from(rules).forEach(processRule);
-        }
-      } catch (e) {
-        console.warn("Could not access stylesheet rules", e);
-      }
-    });
-
-    // 3. Resolve CSS Variables
-    const computedStyle = getComputedStyle(document.documentElement);
-
-    const resolveVariables = (cssText) => {
-      return cssText.replace(/var\((--[^,)]+)(?:,\s*([^)]+))?\)/g, (match, variable, fallback) => {
-        const value = computedStyle.getPropertyValue(variable).trim();
-        if (value) return value;
-        if (fallback) return fallback;
-        return match;
-      });
-    };
-
-    // Resolve variables in CSS content
-    // We might need multiple passes for nested variables
-    let resolvedCssContent = cssContent;
-    let previousContent = "";
-    let passes = 0;
-    while (resolvedCssContent !== previousContent && passes < 5) {
-      previousContent = resolvedCssContent;
-      resolvedCssContent = resolveVariables(resolvedCssContent);
-      passes++;
-    }
-
-    // 4. Clean Class Names (remove hashes)
-    const classMap = new Map();
-
-    const cleanClassName = (className) => {
-      if (classMap.has(className)) return classMap.get(className);
-
-      // Convert to kebab-case
-      let clean = className.split('__')[0];
-      clean = clean.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
-      clean = clean.replace(/_/g, '-');
-      clean = clean.replace(/^-+/, '');
-
-      classMap.set(className, clean);
-      return clean;
-    };
-
-    // Update HTML classes
-    let finalHtmlContent = cleanHtmlContent.replace(/class="([^"]+)"/g, (match, classNames) => {
-      const cleanedClasses = classNames.split(' ').map(cls => {
-        if (cls.includes('_') || cls.includes('__')) {
-          return cleanClassName(cls);
-        }
-        return cls;
-      }).join(' ');
-      return `class="${cleanedClasses}"`;
-    });
-
-    // Update CSS classes
-    const sortedClasses = Array.from(classMap.keys()).sort((a, b) => b.length - a.length);
-
-    let finalCssContent = resolvedCssContent;
-    sortedClasses.forEach(originalClass => {
-      const cleanClass = classMap.get(originalClass);
-      const escapedOriginal = originalClass.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const regex = new RegExp(`\\.${escapedOriginal}(?![\\w-])`, 'g');
-      finalCssContent = finalCssContent.replace(regex, `.${cleanClass}`);
-    });
-
-    // 5. Generate Final HTML
-    const fullHTML = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exported Template</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Round" rel="stylesheet">
-    <style>
-        /* Reset & Base Styles */
-        body { margin: 0; padding: 0; background-color: var(--base-white); font-family: 'Lato', sans-serif; }
-        
-        /* Extracted Styles */
-        ${finalCssContent}
-    </style>
-</head>
-<body>
-${finalHtmlContent}
-</body>
-</html>`;
-
-    // 6. Download File
-    const htmlBlob = new Blob([fullHTML], { type: 'text/html' });
-    const htmlUrl = URL.createObjectURL(htmlBlob);
-    const htmlLink = document.createElement('a');
-    htmlLink.href = htmlUrl;
-    htmlLink.download = 'template.html';
-    document.body.appendChild(htmlLink);
-    htmlLink.click();
-    document.body.removeChild(htmlLink);
-    URL.revokeObjectURL(htmlUrl);
-
-    alert('Export complete! Downloaded template.html');
-  };
+  const handleExport = useCallback(() => {
+    handleExportTemplate(selectedComponents);
+  }, [selectedComponents]);
 
   return (
     <div className={styles.container}>
       {/* Top Bar - Full Width */}
       <div className={styles.topBar}>
         <div className={styles.topBarLeft}>
+          <Image
+            src="/logo.svg"
+            alt="Lunar Logo"
+            width={24}
+            height={24}
+          />
           <h1 className={`body-bold ${styles.logo}`}>Lunar</h1>
         </div>
         <div className={styles.topBarRight}>
@@ -516,26 +344,14 @@ ${finalHtmlContent}
       </div>
 
       {/* Main Content Area */}
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+      <div className={styles.mainContent}>
         {/* Canvas Area */}
-        <div style={{
-          flex: 1,
-          overflowY: "auto",
-          backgroundColor: "var(--base-white)",
-          position: "relative"
-        }}>
+        <div className={styles.canvas}>
           {/* Canvas Content */}
-          <div style={{ padding: "var(--space-100)" }}>
+          <div className={styles.canvasInner}>
             {selectedComponents.length === 0 ? (
-              <div style={{
-                minHeight: "80vh",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "var(--background-neutral--default)",
-                borderRadius: "var(--round-80)"
-              }}>
-                <div style={{ textAlign: "center" }}>
+              <div className={styles.emptyState}>
+                <div className={styles.emptyStateText}>
                   <img
                     src="/images/empty-state.svg"
                     alt="Empty state illustration"
@@ -651,19 +467,27 @@ ${finalHtmlContent}
                 <div
                   className={styles.categorySummary}
                   onClick={() => toggleCategory(category)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      toggleCategory(category);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
                 >
                   {category}
                   {openCategories[category] ? (
                     <ChevronUpIcon style={{
-                      width: "16px",
-                      height: "16px",
+                      width: "12px",
+                      height: "12px",
                       color: "var(--content-neutral--body)",
                       transition: "transform 0.2s"
                     }} />
                   ) : (
                     <ChevronDownIcon style={{
-                      width: "16px",
-                      height: "16px",
+                      width: "12px",
+                      height: "12px",
                       color: "var(--content-neutral--body)",
                       transition: "transform 0.2s"
                     }} />
