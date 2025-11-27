@@ -22,121 +22,105 @@ body {
    ============================================ */
 
 /* Heading Classes */
-.h1 {
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   font-family: var(--font-family-heading);
-  font-size: var(--typography-font-size-heading-xl);
   font-weight: var(--font-weight-bold);
-  line-height: var(--typography-line-height-heading-xl);
   word-wrap: break-word;
+}
+
+.h1 {
+  font-size: var(--typography-font-size-heading-xl);
+  line-height: var(--typography-line-height-heading-xl);
 }
 
 .h2 {
-  font-family: var(--font-family-heading);
   font-size: var(--typography-font-size-heading-lg);
-  font-weight: var(--font-weight-bold);
   line-height: var(--typography-line-height-heading-lg);
-  word-wrap: break-word;
 }
 
 .h3 {
-  font-family: var(--font-family-heading);
   font-size: var(--typography-font-size-heading-md);
-  font-weight: var(--font-weight-bold);
   line-height: var(--typography-line-height-heading-md);
-  word-wrap: break-word;
 }
 
 .h4 {
-  font-family: var(--font-family-heading);
   font-size: var(--typography-font-size-heading-sm);
-  font-weight: var(--font-weight-bold);
   line-height: var(--typography-line-height-heading-sm);
-  word-wrap: break-word;
 }
 
-.h5 {
-  font-family: var(--font-family-heading);
-  font-size: var(--typography-font-size-heading-xs);
-  font-weight: var(--font-weight-bold);
-  line-height: var(--typography-line-height-heading-xs);
-  word-wrap: break-word;
-}
-
+.h5,
 .h6 {
-  font-family: var(--font-family-heading);
   font-size: var(--typography-font-size-heading-xs);
-  font-weight: var(--font-weight-bold);
   line-height: var(--typography-line-height-heading-xs);
-  word-wrap: break-word;
 }
 
 /* Subheader Classes */
-.subheader-h1 {
+.subheader-h1,
+.subheader-h2 {
   font-family: var(--font-family-body);
-  font-size: var(--typography-font-size-heading-sm);
   font-weight: var(--font-weight-regular);
-  line-height: var(--typography-line-height-heading-sm);
   word-wrap: break-word;
+}
+
+.subheader-h1 {
+  font-size: var(--typography-font-size-heading-sm);
+  line-height: var(--typography-line-height-heading-sm);
 }
 
 .subheader-h2 {
-  font-family: var(--font-family-body);
   font-size: var(--typography-font-size-heading-xs);
-  font-weight: var(--font-weight-regular);
   line-height: var(--typography-line-height-heading-xs);
-  word-wrap: break-word;
 }
 
 /* Body Classes */
-.body-bold {
-  font-family: var(--font-family-body);
-  font-size: var(--typography-font-size-paragraph-md);
-  font-weight: var(--font-weight-bold);
-  line-height: var(--typography-line-height-paragraph-md);
-  word-wrap: break-word;
-}
-
-.body-regular {
-  font-family: var(--font-family-body);
-  font-size: var(--typography-font-size-paragraph-md);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--typography-line-height-paragraph-md);
-  word-wrap: break-word;
-}
-
+.body-bold,
+.body-regular,
 .body-link {
   font-family: var(--font-family-body);
   font-size: var(--typography-font-size-paragraph-md);
-  font-weight: var(--font-weight-bold);
   line-height: var(--typography-line-height-paragraph-md);
-  text-decoration: underline;
   word-wrap: break-word;
+}
+
+.body-bold,
+.body-link {
+  font-weight: var(--font-weight-bold);
+}
+
+.body-regular {
+  font-weight: var(--font-weight-regular);
+}
+
+.body-link {
+  text-decoration: underline;
 }
 
 /* Caption Classes */
-.caption-bold {
-  font-family: var(--font-family-caption);
-  font-size: var(--typography-font-size-caption-md);
-  font-weight: var(--font-weight-bold);
-  line-height: var(--typography-line-height-caption-md);
-  word-wrap: break-word;
-}
-
-.caption-regular {
-  font-family: var(--font-family-caption);
-  font-size: var(--typography-font-size-caption-md);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--typography-line-height-caption-md);
-  word-wrap: break-word;
-}
-
+.caption-bold,
+.caption-regular,
 .caption-link {
   font-family: var(--font-family-caption);
   font-size: var(--typography-font-size-caption-md);
-  font-weight: var(--font-weight-bold);
   line-height: var(--typography-line-height-caption-md);
-  text-decoration: underline;
   word-wrap: break-word;
+}
+
+.caption-bold,
+.caption-link {
+  font-weight: var(--font-weight-bold);
+}
+
+.caption-regular {
+  font-weight: var(--font-weight-regular);
+}
+
+.caption-link {
+  text-decoration: underline;
 }
 
 /* Button Text Classes */
@@ -284,11 +268,6 @@ body {
   height: 24px;
 }
 
-/* Deprecated/Legacy Button Classes */
-.btn-primary {
-  background-color: var(--background-brand--button--primary-default);
-  color: var(--content-neutral--button--primary);
-}
 
 .btn-link {
   background-color: transparent;
@@ -303,40 +282,38 @@ body {
    ============================================ */
 
 /* Image Placeholder Aspect Ratio Variants */
-.imagePlaceholder-1-1 {
+.imagePlaceholder-1-1,
+.imagePlaceholder-4-5,
+.imagePlaceholder-5-4,
+.imagePlaceholder-4-3,
+.imagePlaceholder-16-9,
+.imagePlaceholder-21-9 {
   width: 100%;
-  aspect-ratio: 1 / 1;
   background: repeating-conic-gradient(#e0e0e0 0% 25%, #f5f5f5 0% 50%) 50% / 20px 20px;
+}
+
+.imagePlaceholder-1-1 {
+  aspect-ratio: 1 / 1;
 }
 
 .imagePlaceholder-4-5 {
-  width: 100%;
   aspect-ratio: 4 / 5;
-  background: repeating-conic-gradient(#e0e0e0 0% 25%, #f5f5f5 0% 50%) 50% / 20px 20px;
 }
 
 .imagePlaceholder-5-4 {
-  width: 100%;
   aspect-ratio: 5 / 4;
-  background: repeating-conic-gradient(#e0e0e0 0% 25%, #f5f5f5 0% 50%) 50% / 20px 20px;
 }
 
 .imagePlaceholder-4-3 {
-  width: 100%;
   aspect-ratio: 4 / 3;
-  background: repeating-conic-gradient(#e0e0e0 0% 25%, #f5f5f5 0% 50%) 50% / 20px 20px;
 }
 
 .imagePlaceholder-16-9 {
-  width: 100%;
   aspect-ratio: 16 / 9;
-  background: repeating-conic-gradient(#e0e0e0 0% 25%, #f5f5f5 0% 50%) 50% / 20px 20px;
 }
 
 .imagePlaceholder-21-9 {
-  width: 100%;
   aspect-ratio: 21 / 9;
-  background: repeating-conic-gradient(#e0e0e0 0% 25%, #f5f5f5 0% 50%) 50% / 20px 20px;
 }
 
 /* ============================================
@@ -433,7 +410,10 @@ body {
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
-  white-space: nowrap;
+  white-space: normal;
+  width: max-content;
+  max-width: 240px;
+  text-align: center;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s;
@@ -449,8 +429,9 @@ body {
 }
 
 [data-tooltip-position="top"]::after {
-  bottom: auto;
-  top: -32px;
+  bottom: 100%;
+  top: auto;
+  margin-bottom: 8px;
 }
 
 [data-tooltip-position="left"]::after {
@@ -460,6 +441,12 @@ body {
   top: 50%;
   transform: translateY(-50%);
   margin-right: 8px;
+}
+
+[data-tooltip-align="right"]::after {
+  left: auto;
+  right: 0;
+  transform: translateX(0);
 }
 
 /* Truncate Text */
