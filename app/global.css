@@ -332,14 +332,13 @@ body {
 
 /* Tab Container */
 .tabs {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   background-color: var(--background-neutral--neutral-subtle);
   border-radius: var(--border-radius-round);
   padding: var(--padding-xs);
   gap: var(--gap-xs);
   width: fit-content;
-  height: fit-content;
 }
 
 /* Tab Button Base */

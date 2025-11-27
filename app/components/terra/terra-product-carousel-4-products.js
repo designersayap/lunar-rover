@@ -83,7 +83,7 @@ export default function TerraProductCarousel4Products() {
                         {/* Tabs */}
                         <div className={styles.tabsWrapper}>
                             <div className="tabs">
-                                {tabs.map((tab) => (
+                                {tabs.map((tab, index) => (
                                     <button
                                         key={tab.id}
                                         className={`tabs-button ${activeTab === tab.id ? 'tabs-button-active' : ''}`}
@@ -133,8 +133,8 @@ export default function TerraProductCarousel4Products() {
 
                                             {/* Product Info */}
                                             <div className={styles.cardContent}>
-                                                <h3 className={styles.productName}>{product.name}</h3>
-                                                <p className={styles.productDescription}>{product.description}</p>
+                                                <h3 className={`${styles.productName} truncate-1-line`}>{product.name}</h3>
+                                                <p className={`${styles.productDescription} truncate-2-lines`}>{product.description}</p>
                                             </div>
                                         </div>
                                     </div>

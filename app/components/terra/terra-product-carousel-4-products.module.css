@@ -10,7 +10,58 @@
 .tabsWrapper {
     display: flex;
     justify-content: center;
-    margin-bottom: var(--gap-lg);
+    margin-bottom: var(--gap-xs);
+    width: 100%;
+}
+
+/* Override global .tabs to ensure proper containment */
+.tabsWrapper :global(.tabs) {
+    width: auto;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    flex-wrap: nowrap;
+}
+
+.tabsWrapper :global(.tabs)::-webkit-scrollbar {
+    display: none;
+}
+
+/* Ensure tabs-button stays within container */
+.tabsWrapper :global(.tabs-button) {
+    flex-shrink: 0;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* Desktop: tabs centered */
+@media (min-width: 1024px) {
+    .tabsWrapper :global(.tabs) {
+        overflow-x: auto;
+        width: fit-content;
+        max-width: 90%;
+    }
+}
+
+/* Tablet: constrain width and enable scrolling */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .tabsWrapper :global(.tabs) {
+        width: fit-content;
+        max-width: 80%;
+        overflow-x: auto;
+    }
+}
+
+/* Mobile: Enable scrolling on tabs */
+@media (max-width: 767px) {
+    .tabsWrapper :global(.tabs) {
+        width: fit-content;
+        max-width: 90%;
+        overflow-x: auto;
+    }
 }
 
 /* Carousel Container */
@@ -108,7 +159,6 @@
 }
 
 /* Add to Cart Button */
-/* Add to Cart Button */
 .addButton {
     position: absolute;
     top: var(--gap-xs);
@@ -171,13 +221,6 @@
 
 .navButtonRight {
     right: calc(-1 * var(--gap-lg));
-}
-
-/* Hide navigation on mobile/tablet */
-@media (max-width: 767px) {
-    .navButton {
-        display: none;
-    }
 }
 
 /* Icon */
