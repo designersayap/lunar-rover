@@ -31,6 +31,7 @@ import TerraUsp3col from "@/app/components/terra/terra-usp-3col";
 import TerraUsp4col from "@/app/components/terra/terra-usp-4col";
 import TerraTestimony from "@/app/components/terra/terra-testimony";
 import TerraProductCarousel4Products from "@/app/components/terra/terra-product-carousel-4-products";
+import TerraNavigation from "@/app/components/terra/terra-navigation";
 import TerraFooter from "@/app/components/terra/terra-footer";
 import { uspData, footerData } from "./content/data";
 import styles from "./page.module.css";
@@ -58,6 +59,9 @@ export default function TemplateGeneratorPage() {
 
   // Component Configuration
   const componentLibrary = {
+    "Navigation": [
+      { id: "terra-navigation", name: "Terra - Navigation", component: TerraNavigation, thumbnail: "/images/thumbnails/terra-navigation.svg" },
+    ],
     "Header": [
       { id: "header-title", name: "Title", component: GlobalHeaderTitle, thumbnail: "/images/thumbnails/header-title.svg" },
       { id: "header-title-desc", name: "Title, Desc", component: GlobalHeaderTitleDescription, thumbnail: "/images/thumbnails/header-title-desc.svg" },

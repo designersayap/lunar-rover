@@ -17,6 +17,7 @@ import TerraUsp4col from "@/app/components/terra/terra-usp-4col";
 import TerraFooter from "@/app/components/terra/terra-footer";
 import TerraTestimony from "@/app/components/terra/terra-testimony";
 import TerraProductCarousel4Products from "@/app/components/terra/terra-product-carousel-4-products";
+import TerraNavigation from "@/app/components/terra/terra-navigation";
 
 // Data
 import { uspData, footerData } from "../../content/data";
@@ -27,6 +28,7 @@ export default function ComponentPreviewPage() {
 
     // Component Mapping
     const components = {
+        "terra-navigation": TerraNavigation,
         "global-header-title": GlobalHeaderTitle,
         "global-header-title-button": GlobalHeaderTitleButton,
         "global-header-title-description": GlobalHeaderTitleDescription,

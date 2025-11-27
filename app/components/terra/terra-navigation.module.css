@@ -1,0 +1,140 @@
+.navContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--padding-md) 0;
+    width: 100%;
+}
+
+/* 1.1 Logo */
+.logoContainer {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs);
+}
+
+.logoIconWrapper {
+    width: var(--size-button-md);
+    height: var(--size-button-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logoIcon {
+    width: 100%;
+    height: 100%;
+    color: var(--content-brand--brand);
+}
+
+.brandName {
+    font-family: var(--font-family-heading);
+    font-size: var(--typography-font-size-heading-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--content-neutral--title);
+}
+
+/* 1.2 Menu */
+.menuContainer {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xl);
+}
+
+.menuItem {
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s;
+    color: var(--content-neutral--body);
+}
+
+.menuItemWithArrow {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-sm);
+    cursor: pointer;
+    color: var(--content-neutral--body);
+}
+
+.arrowIcon {
+    width: 16px;
+    height: 16px;
+    color: var(--content-neutral--body);
+}
+
+/* Mobile/Tablet Toggle */
+.mobileToggle {
+    display: none;
+    color: var(--content-neutral--title);
+}
+
+/* Responsive Utilities */
+.desktopOnly {
+    display: flex;
+}
+
+.mobileOnly {
+    display: none;
+}
+
+.mobileMenu {
+    display: none;
+}
+
+/* Tablet & Mobile Styles */
+@media (max-width: 767px) {
+    .navContainer {
+        position: relative;
+        justify-content: space-between;
+    }
+
+    .logoContainer {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1;
+    }
+
+    .actionsContainer {
+        z-index: 2;
+    }
+
+    .desktopOnly {
+        display: none;
+    }
+
+    .mobileOnly {
+        display: flex;
+    }
+
+    .mobileToggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mobileMenu {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap-md);
+        padding: var(--padding-md) 0;
+        border-top: 1px solid var(--stroke-neutral--neutral-subtle);
+        margin-top: var(--gap-xs);
+    }
+
+    .mobileMenuItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 var(--padding-sm);
+    }
+
+    .mobileMenuBuy {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: fit-content;
+        padding: 0 var(--padding-sm);
+    }
+}
