@@ -475,15 +475,15 @@ export default function TemplateGeneratorPage() {
                   {category}
                   {openCategories[category] ? (
                     <ChevronUpIcon style={{
-                      width: "16px",
-                      height: "16px",
+                      width: "12px",
+                      height: "12px",
                       color: "var(--content-neutral--body)",
                       transition: "transform 0.2s"
                     }} />
                   ) : (
                     <ChevronDownIcon style={{
-                      width: "16px",
-                      height: "16px",
+                      width: "12px",
+                      height: "12px",
                       color: "var(--content-neutral--body)",
                       transition: "transform 0.2s"
                     }} />
