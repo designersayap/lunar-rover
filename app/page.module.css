@@ -6,6 +6,7 @@
     height: 100vh;
     overflow: hidden;
     font-family: 'Plus Jakarta Sans', sans-serif;
+    --popover-width: 362px;
 }
 
 
@@ -40,8 +41,10 @@
 }
 
 /* Top Bar Buttons */
-.topBarButton {
-    width: 36px;
+/* Top Bar Buttons */
+.topBarButton,
+.topBarButtonWide,
+.topBarButtonExport {
     height: 36px;
     padding: 0;
     border: none;
@@ -51,54 +54,30 @@
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s;
-}
-
-.topBarButton:hover {
-    background-color: var(--grey-100);
-}
-
-.topBarButtonBordered {
     border-left: 1px solid var(--grey-100);
-    border-right: 1px solid var(--grey-100);
+}
+
+.topBarButton {
+    width: 36px;
+}
+
+.topBarButtonWide,
+.topBarButtonExport {
+    gap: var(--space-60);
+    font-size: var(--typography-font-size-90);
+    color: var(--content-neutral--title);
 }
 
 .topBarButtonWide {
     width: 134px;
-    height: 36px;
-    padding: 0;
-    border: none;
-    border-right: 1px solid var(--grey-100);
-    background-color: transparent;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-60);
-    font-size: var(--typography-font-size-90);
-    color: var(--content-neutral--title);
-    transition: background-color 0.2s;
-}
-
-.topBarButtonWide:hover {
-    background-color: var(--grey-100);
 }
 
 .topBarButtonExport {
     width: 94px;
-    height: 36px;
-    padding: 0;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-60);
-    font-size: var(--typography-font-size-90);
-    color: var(--content-neutral--title);
-    transition: background-color 0.2s;
 }
 
+.topBarButton:hover,
+.topBarButtonWide:hover,
 .topBarButtonExport:hover {
     background-color: var(--grey-100);
 }
@@ -122,8 +101,6 @@
 
 .canvasInner {
     padding: var(--space-100);
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
 .emptyState {
@@ -133,19 +110,12 @@
     justify-content: center;
     background-color: var(--background-neutral--default);
     border-radius: 10px;
-    border: 1px dashed var(--grey-200);
 }
 
 .emptyStateText {
     text-align: center;
 }
 
-/* Component List */
-.componentList {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-60);
-}
 
 .componentWrapper {
     position: relative;
@@ -320,7 +290,10 @@
 }
 
 /* Categories */
-
+.categoryWrapper {
+    display: flex;
+    flex-direction: column;
+}
 
 .categorySummary {
     cursor: pointer;
@@ -422,7 +395,7 @@
 .popoverContainer {
     background-color: var(--base-white);
     border-radius: 10px;
-    width: 362px;
+    width: var(--popover-width);
     max-width: 90%;
     max-height: 90vh;
     display: flex;
@@ -494,22 +467,6 @@
     padding: var(--padding-sm);
 }
 
-.insertButton {
-    width: 100%;
-    background-color: var(--brand-color-300);
-    color: var(--base-white);
-    border: none;
-    padding: var(--space-80);
-    border-radius: 8px;
-    font-weight: var(--font-weight-bold);
-    font-size: var(--typography-font-size-90);
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.insertButton:hover {
-    background-color: var(--brand-color-400);
-}
 
 /* Toggle Switch */
 .toggleSwitch {
