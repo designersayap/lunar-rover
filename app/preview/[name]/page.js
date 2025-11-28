@@ -4,25 +4,6 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 
 // Components
-<<<<<<< HEAD
-import GlobalHeaderTitle from "../../components/global-header-title";
-import GlobalHeaderTitleButton from "../../components/global-header-title-button";
-import GlobalHeaderTitleDescription from "../../components/global-header-title-description";
-import GlobalHeaderTitleButtonDescription from "../../components/global-header-title-button-description";
-import TerraBannerHeroWithButton from "@/app/components/terra/terra-banner-hero-with-button";
-import TerraBannerHeroWithSearch from "@/app/components/terra/terra-banner-hero-with-search";
-import TerraFeaturesImageLeft from "@/app/components/terra/terra-features-image-left";
-import TerraFeaturesImageRight from "@/app/components/terra/terra-features-image-right";
-import TerraUsp3col from "@/app/components/terra/terra-usp-3col";
-import TerraUsp4col from "@/app/components/terra/terra-usp-4col";
-import TerraFooter from "@/app/components/terra/terra-footer";
-import TerraTestimony from "@/app/components/terra/terra-testimony";
-import TerraProductCarousel4Products from "@/app/components/terra/terra-product-carousel-4-products";
-import TerraNavigation from "@/app/components/terra/terra-navigation";
-import LactoNavigation from "@/app/components/lacto/lacto-navigation";
-import LactoFeaturesStacked from "@/app/components/lacto/lacto-features-stacked";
-import LactoMedia from "@/app/components/lacto/lacto-media";
-=======
 import GlobalHeaderTitle from "../../template-components/global-header-title";
 import GlobalHeaderTitleButton from "../../template-components/global-header-title-button";
 import GlobalHeaderTitleDescription from "../../template-components/global-header-title-description";
@@ -37,7 +18,9 @@ import TerraFooter from "@/app/template-components/terra/terra-footer";
 import TerraTestimony from "@/app/template-components/terra/terra-testimony";
 import TerraProductCarousel4Products from "@/app/template-components/terra/terra-product-carousel-4-products";
 import TerraNavigation from "@/app/template-components/terra/terra-navigation";
->>>>>>> e8e7f89cabd4fa57657ce154abc686ea4df96b54
+import LactoNavigation from "@/app/components/lacto/lacto-navigation";
+import LactoFeaturesStacked from "@/app/components/lacto/lacto-features-stacked";
+import LactoMedia from "@/app/components/lacto/lacto-media";
 
 // Data
 import { uspData, footerData } from "../../template-components/content/data";
