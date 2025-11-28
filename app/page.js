@@ -39,7 +39,7 @@ export default function TemplateGeneratorPage() {
 
   // Theme State
   const [isThemePickerOpen, setIsThemePickerOpen] = useState(false);
-  const [selectedThemeId, setSelectedThemeId] = useState("primitives");
+  const [selectedThemeId, setSelectedThemeId] = useState("theme");
   const [themes, setThemes] = useState([]);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function TemplateGeneratorPage() {
     const themeLink = document.getElementById("theme-stylesheet");
     if (themeLink && themes.length > 0) {
       const selectedTheme = themes.find(t => t.id === selectedThemeId);
-      const newThemeHref = selectedTheme ? selectedTheme.path : "/themes/primitives.css";
+      const newThemeHref = selectedTheme ? selectedTheme.path : "/themes/theme.css";
       themeLink.href = newThemeHref;
     }
   }, [selectedThemeId, themes]);
