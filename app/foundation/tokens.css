@@ -91,12 +91,12 @@
     --shadow--md: 0px 8px 20px 0px rgba(0, 0, 0, 0.08);
 
     /* Z-Index (Material Design Elevation Levels) */
-    --z-index-sm: 100;
+    --z-index-sm: 0;
     /* Level 1: Drawer, Sheet, Banner */
-    --z-index-md: 200;
+    --z-index-md: 2;
     /* Level 2: */
-    --z-index-lg: 300;
+    --z-index-lg: 4;
     /* Level 3: App Bar, Menu */
-    --z-index-xl: 400;
+    --z-index-xl: 8;
     /* Level 4: Toast, Dragged, Dialog, Picker */
 }
