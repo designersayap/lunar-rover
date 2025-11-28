@@ -1,4 +1,4 @@
-import "./foundation/themes/primitives.css";
+
 import "./foundation/tokens.css";
 import "./foundation/global.css";
 import "./foundation/grid.css";
@@ -23,6 +23,7 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
           rel="stylesheet"
         />
+        <link id="theme-stylesheet" rel="stylesheet" href="/themes/primitives.css" />
 
       </head>
       <body>{children}</body>

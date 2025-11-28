@@ -2,25 +2,21 @@ import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
 
-const THEMES = [
-    { id: "milku", name: "Milku" },
-    { id: "bumbu-sedaap", name: "Bumbu Sedaap" },
-    { id: "isoplus", name: "Isoplus" },
-    { id: "botanical-essentials", name: "Botanical Essentials" }
-];
+
 
 export default function ThemePickerPopover({
     isOpen,
     onClose,
     onSelectTheme,
-    currentTheme
+    currentTheme,
+    themes = []
 }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedThemeId, setSelectedThemeId] = useState(currentTheme || "milku");
 
     if (!isOpen) return null;
 
-    const filteredThemes = THEMES.filter(theme =>
+    const filteredThemes = themes.filter(theme =>
         theme.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 

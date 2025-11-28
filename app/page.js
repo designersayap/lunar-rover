@@ -10,6 +10,7 @@ import TopBar from "@/app/page-builder-components/TopBar";
 import Canvas from "@/app/page-builder-components/Canvas";
 import ConfigPopover from "@/app/page-builder-components/ConfigPopover";
 import ThemePickerPopover from "@/app/page-builder-components/ThemePickerPopover";
+import { getThemes } from "@/app/actions/get-themes";
 
 /**
  * Template Generator Page
@@ -38,16 +39,33 @@ export default function TemplateGeneratorPage() {
 
   // Theme State
   const [isThemePickerOpen, setIsThemePickerOpen] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState("milku");
+  const [selectedThemeId, setSelectedThemeId] = useState("milku");
+  const [themes, setThemes] = useState([]);
+
+  useEffect(() => {
+    const loadThemes = async () => {
+      const loadedThemes = await getThemes();
+      setThemes(loadedThemes);
+    };
+    loadThemes();
+  }, []);
 
   const handleThemeSelect = useCallback((themeId) => {
-    setCurrentTheme(themeId);
-    // Here you would typically update a CSS variable or context to apply the theme
-    console.log("Selected theme:", themeId);
+    setSelectedThemeId(themeId);
     setToasterMessage(`Theme switched to ${themeId}`);
     setToasterType("success");
     setShowToaster(true);
   }, []);
+
+  // Theme Switching Effect
+  useEffect(() => {
+    const themeLink = document.getElementById("theme-stylesheet");
+    if (themeLink && themes.length > 0) {
+      const selectedTheme = themes.find(t => t.id === selectedThemeId);
+      const newThemeHref = selectedTheme ? selectedTheme.path : "/themes/primitives.css";
+      themeLink.href = newThemeHref;
+    }
+  }, [selectedThemeId, themes]);
 
   // Load saved template from localStorage on mount
   useEffect(() => {
@@ -257,6 +275,8 @@ export default function TemplateGeneratorPage() {
         handleExport={handleExport}
         onThemeClick={() => setIsThemePickerOpen(true)}
         isThemePickerOpen={isThemePickerOpen}
+        selectedThemeId={selectedThemeId}
+        themes={themes}
       />
 
       <div className={styles.mainContent}>
@@ -330,15 +350,15 @@ export default function TemplateGeneratorPage() {
         onClose={() => setSelectedComponentForConfig(null)}
         onInsert={insertComponent}
       />
-
-      <ThemePickerPopover
-        isOpen={isThemePickerOpen}
-        onClose={() => setIsThemePickerOpen(false)}
-        onSelectTheme={handleThemeSelect}
-        currentTheme={currentTheme}
-      />
-
-      {/* Toaster Notification */}
+      {isThemePickerOpen && (
+        <ThemePickerPopover
+          isOpen={isThemePickerOpen}
+          onClose={() => setIsThemePickerOpen(false)}
+          onSelectTheme={handleThemeSelect}
+          currentTheme={selectedThemeId}
+          themes={themes}
+        />
+      )} {/* Toaster Notification */}
       {showToaster && (
         <div className={`${styles.toaster} ${toasterType === "delete" ? styles.toasterDelete : ""}`}>
           {toasterType === "delete" ? (

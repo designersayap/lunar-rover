@@ -70,6 +70,16 @@
 
 .topBarButtonWide {
     width: 134px;
+    justify-content: flex-start;
+    padding: 0 var(--space-60);
+}
+
+.topBarButtonText {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    text-align: left;
 }
 
 .topBarButtonExport {

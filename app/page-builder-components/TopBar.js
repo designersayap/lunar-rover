@@ -13,8 +13,13 @@ export default function TopBar({
     setIsSidebarVisible,
     handleExport,
     onThemeClick,
-    isThemePickerOpen
+    isThemePickerOpen,
+    selectedThemeId,
+    themes = []
 }) {
+    const selectedTheme = themes.find(t => t.id === selectedThemeId);
+    const selectedThemeName = selectedTheme ? selectedTheme.name : "Themes";
+
     return (
         <div className={styles.topBar}>
             <div className={styles.topBarLeft}>
@@ -46,16 +51,15 @@ export default function TopBar({
                 </button>
                 <button
                     className={`${styles.topBarButtonWide} ${isThemePickerOpen ? styles.topBarButtonActive : ''}`}
-                    data-tooltip="Switch Themes"
+                    data-tooltip={selectedThemeName}
                     onClick={onThemeClick}
                 >
-                    <SwatchIcon style={{ width: "16px", height: "16px" }} />
-                    Themes
+                    <SwatchIcon style={{ width: "16px", height: "16px", flexShrink: 0 }} />
+                    <span className={styles.topBarButtonText}>{selectedThemeName}</span>
                 </button>
                 <button
                     className={styles.topBarButtonExport}
                     onClick={handleExport}
-                    data-tooltip="Export Template"
                 >
                     <RocketLaunchIcon style={{ width: "16px", height: "16px" }} />
                     Export
