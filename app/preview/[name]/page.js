@@ -18,9 +18,9 @@ import TerraFooter from "@/app/template-components/terra/terra-footer";
 import TerraTestimony from "@/app/template-components/terra/terra-testimony";
 import TerraProductCarousel4Products from "@/app/template-components/terra/terra-product-carousel-4-products";
 import TerraNavigation from "@/app/template-components/terra/terra-navigation";
-import LactoNavigation from "@/app/components/lacto/lacto-navigation";
-import LactoFeaturesStacked from "@/app/components/lacto/lacto-features-stacked";
-import LactoMedia from "@/app/components/lacto/lacto-media";
+import LactoNavigation from "@/app/template-components/lacto/lacto-navigation";
+import LactoFeaturesStacked from "@/app/template-components/lacto/lacto-features-stacked";
+import LactoMedia from "@/app/template-components/lacto/lacto-media";
 
 // Data
 import { uspData, footerData } from "../../template-components/content/data";

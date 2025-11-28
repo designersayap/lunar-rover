@@ -5,9 +5,9 @@ const GlobalHeaderTitleButton = dynamic(() => import("../../template-components/
 const GlobalHeaderTitleDescription = dynamic(() => import("../../template-components/global-header-title-description"));
 const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../template-components/global-header-title-button-description"));
 const TerraNavigation = dynamic(() => import("@/app/template-components/terra/terra-navigation"));
-const LactoNavigation = dynamic(() => import("@/app/components/lacto/lacto-navigation"));
-const LactoFeaturesStacked = dynamic(() => import("@/app/components/lacto/lacto-features-stacked"));
-const LactoMedia = dynamic(() => import("@/app/components/lacto/lacto-media"));
+const LactoNavigation = dynamic(() => import("@/app/template-components/lacto/lacto-navigation"));
+const LactoFeaturesStacked = dynamic(() => import("@/app/template-components/lacto/lacto-features-stacked"));
+const LactoMedia = dynamic(() => import("@/app/template-components/lacto/lacto-media"));
 const TerraBannerHeroWithButton = dynamic(() => import("@/app/template-components/terra/terra-banner-hero-with-button"));
 const TerraBannerHeroWithSearch = dynamic(() => import("@/app/template-components/terra/terra-banner-hero-with-search"));
 const TerraFeaturesImageLeft = dynamic(() => import("@/app/template-components/terra/terra-features-image-left"));
