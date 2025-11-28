@@ -2,6 +2,7 @@ import "./foundation/primitives.css";
 import "./foundation/tokens.css";
 import "./foundation/global.css";
 import "./foundation/grid.css";
+import "./foundation/accent-color.css";
 
 export const metadata = {
   title: "Lunar: Template Generator",

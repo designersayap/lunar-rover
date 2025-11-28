@@ -94,8 +94,11 @@ export default function TemplateGeneratorPage() {
     }
   }, [showToaster]);
 
-  const toggleCategory = useCallback((category) => {
+  const toggleCategory = useCallback((category, forceOpen = false) => {
     setOpenCategories(prev => {
+      if (forceOpen) {
+        return { [category]: true };
+      }
       if (prev[category]) {
         return {};
       }

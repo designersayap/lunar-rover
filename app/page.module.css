@@ -682,3 +682,10 @@
 .analyticsTextarea::placeholder {
     color: var(--content-neutral--body-subtle);
 }
+
+.sidebarEmptyState {
+    padding: var(--space-80) 0;
+    text-align: center;
+    color: var(--content-neutral--body-subtle);
+    font-size: var(--typography-font-size-90);
+}
