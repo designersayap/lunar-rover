@@ -1,4 +1,4 @@
-import "./foundation/primitives.css";
+import "./foundation/themes/primitives.css";
 import "./foundation/tokens.css";
 import "./foundation/global.css";
 import "./foundation/grid.css";
