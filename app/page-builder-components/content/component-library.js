@@ -8,6 +8,8 @@ const TerraNavigation = dynamic(() => import("@/app/template-components/terra/te
 const LactoNavigation = dynamic(() => import("@/app/template-components/lacto/lacto-navigation"));
 const LactoFeaturesStacked = dynamic(() => import("@/app/template-components/lacto/lacto-features-stacked"));
 const LactoMedia = dynamic(() => import("@/app/template-components/lacto/lacto-media"));
+const LactoProductCarousel = dynamic(() => import("@/app/template-components/lacto/lacto-product-carousel"));
+const LactoMessageBox = dynamic(() => import("@/app/template-components/lacto/lacto-message-box"));
 const TerraBannerHeroWithButton = dynamic(() => import("@/app/template-components/terra/terra-banner-hero-with-button"));
 const TerraBannerHeroWithSearch = dynamic(() => import("@/app/template-components/terra/terra-banner-hero-with-search"));
 const TerraFeaturesImageLeft = dynamic(() => import("@/app/template-components/terra/terra-features-image-left"));
@@ -96,6 +98,10 @@ export const componentLibrary = {
     ],
     "Product": [
         { id: "product-carousel-4", name: "Terra - Product Carousel 4", component: TerraProductCarousel4Products, thumbnail: "/images/thumbnails/terra-product-carouse.svg" },
+        { id: "lacto-product-carousel", name: "Lacto - Product Carousel", component: LactoProductCarousel, thumbnail: "/images/thumbnails/lacto-product-carousel.svg" },
+    ],
+    "Content": [
+        { id: "lacto-message-box", name: "Lacto - Message Box", component: LactoMessageBox, thumbnail: "/images/thumbnails/lacto-message-box.svg" },
     ],
     "Footer": [
         { id: "footer", name: "Terra - Footer", component: TerraFooter, thumbnail: "/images/thumbnails/terra-footer.svg" },

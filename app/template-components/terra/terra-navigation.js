@@ -13,7 +13,7 @@ export default function TerraNavigation() {
     };
 
     return (
-        <nav className="container-grid">
+        <nav className="container-grid z-lg">
             <div className="grid">
                 <div className="col-mobile-2 col-tablet-8 col-desktop-12">
                     <div className={styles.navContainer}>

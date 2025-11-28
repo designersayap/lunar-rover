@@ -366,7 +366,7 @@ body {
   background-color: var(--base-white);
   color: var(--content-neutral--title);
   font-weight: var(--font-weight-bold);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow--md);
   border-radius: var(--border-radius-round);
 }
 
@@ -462,4 +462,30 @@ body {
   -webkit-line-clamp: 2;
   line-clamp: 2;
   -webkit-box-orient: vertical;
+}
+
+/* Shadows */
+.shadow-md {
+  box-shadow: var(--shadow--md);
+}
+
+.shadow-sm {
+  box-shadow: var(--shadow--sm);
+}
+
+/* Z-Index */
+.z-sm {
+  z-index: var(--z-index-sm);
+}
+
+.z-md {
+  z-index: var(--z-index-md);
+}
+
+.z-lg {
+  z-index: var(--z-index-lg);
+}
+
+.z-xl {
+  z-index: var(--z-index-xl);
 }

@@ -16,7 +16,7 @@ export default function LactoNavigation() {
     };
 
     return (
-        <nav className={styles.navigation}>
+        <nav className={`${styles.navigation} z-lg`}>
             <div className="container-grid">
                 <div className="grid">
                     <div className="col-mobile-2 col-tablet-8 col-desktop-12">

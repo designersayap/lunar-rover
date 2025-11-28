@@ -21,6 +21,8 @@ import TerraNavigation from "@/app/template-components/terra/terra-navigation";
 import LactoNavigation from "@/app/template-components/lacto/lacto-navigation";
 import LactoFeaturesStacked from "@/app/template-components/lacto/lacto-features-stacked";
 import LactoMedia from "@/app/template-components/lacto/lacto-media";
+import LactoProductCarousel from "@/app/template-components/lacto/lacto-product-carousel";
+import LactoMessageBox from "@/app/template-components/lacto/lacto-message-box";
 
 // Data
 import { uspData, footerData } from "../../template-components/content/data";
@@ -48,6 +50,8 @@ export default function ComponentPreviewPage() {
         "lacto-navigation": LactoNavigation,
         "lacto-features-stacked": LactoFeaturesStacked,
         "lacto-media": LactoMedia,
+        "lacto-product-carousel": LactoProductCarousel,
+        "lacto-message-box": LactoMessageBox,
     };
 
     const Component = components[name];
