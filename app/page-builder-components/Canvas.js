@@ -3,7 +3,7 @@ import {
     ArrowDownIcon,
     TrashIcon as TrashIconOutline,
 } from "@heroicons/react/24/outline";
-import { uspData, footerData } from "../content/data";
+import { uspData, footerData } from "../template-components/content/data";
 import styles from "../page.module.css";
 
 export default function Canvas({

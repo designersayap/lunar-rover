@@ -3,8 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { BellAlertIcon, TrashIcon } from "@heroicons/react/24/solid";
 import styles from "./page.module.css";
-import { handleExportTemplate } from "@/app/utils/export-template";
-import { componentLibrary } from "@/app/page-builder-components/config/component-library";
+import { handleExportTemplate } from "@/app/page-builder-components/utils/export-template";
+import { componentLibrary } from "@/app/page-builder-components/content/component-library";
 import Sidebar from "@/app/page-builder-components/Sidebar";
 import TopBar from "@/app/page-builder-components/TopBar";
 import Canvas from "@/app/page-builder-components/Canvas";

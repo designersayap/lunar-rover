@@ -1,7 +1,7 @@
-import "./primitives.css";
-import "./tokens.css";
-import "./global.css";
-import "./grid.css";
+import "./foundation/primitives.css";
+import "./foundation/tokens.css";
+import "./foundation/global.css";
+import "./foundation/grid.css";
 
 export const metadata = {
   title: "Lunar: Template Generator",
