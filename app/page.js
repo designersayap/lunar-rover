@@ -10,7 +10,7 @@ import TopBar from "@/app/page-builder-components/TopBar";
 import Canvas from "@/app/page-builder-components/Canvas";
 import ConfigPopover from "@/app/page-builder-components/ConfigPopover";
 import ThemePickerPopover from "@/app/page-builder-components/ThemePickerPopover";
-import { getThemes } from "@/app/actions/get-themes";
+import { getThemes } from "@/app/page-builder-components/utils/get-themes";
 
 /**
  * Template Generator Page
@@ -39,7 +39,7 @@ export default function TemplateGeneratorPage() {
 
   // Theme State
   const [isThemePickerOpen, setIsThemePickerOpen] = useState(false);
-  const [selectedThemeId, setSelectedThemeId] = useState("milku");
+  const [selectedThemeId, setSelectedThemeId] = useState("primitives");
   const [themes, setThemes] = useState([]);
 
   useEffect(() => {
