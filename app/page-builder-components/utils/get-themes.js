@@ -10,7 +10,7 @@ export async function getThemes() {
         const files = await fs.promises.readdir(themesDir);
 
         const themes = files
-            .filter(file => file.endsWith(".css"))
+            .filter(file => file.endsWith(".css") && file !== "theme.css")
             .map(file => {
                 const id = file.replace(".css", "");
                 // Convert kebab-case to Title Case
