@@ -55,7 +55,7 @@ export default function TopBar({
                     onClick={onThemeClick}
                 >
                     <SwatchIcon style={{ width: "16px", height: "16px", flexShrink: 0 }} />
-                    <span className={styles.topBarButtonText}>{selectedThemeName}</span>
+                    <span className={`${styles.topBarButtonText} truncate-1-line`}>{selectedThemeName}</span>
                 </button>
                 <button
                     className={styles.topBarButtonExport}
