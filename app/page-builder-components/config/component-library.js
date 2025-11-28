@@ -5,6 +5,9 @@ const GlobalHeaderTitleButton = dynamic(() => import("../../components/global-he
 const GlobalHeaderTitleDescription = dynamic(() => import("../../components/global-header-title-description"));
 const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../components/global-header-title-button-description"));
 const TerraNavigation = dynamic(() => import("@/app/components/terra/terra-navigation"));
+const LactoNavigation = dynamic(() => import("@/app/components/lacto/lacto-navigation"));
+const LactoFeaturesStacked = dynamic(() => import("@/app/components/lacto/lacto-features-stacked"));
+const LactoMedia = dynamic(() => import("@/app/components/lacto/lacto-media"));
 const TerraBannerHeroWithButton = dynamic(() => import("@/app/components/terra/terra-banner-hero-with-button"));
 const TerraBannerHeroWithSearch = dynamic(() => import("@/app/components/terra/terra-banner-hero-with-search"));
 const TerraFeaturesImageLeft = dynamic(() => import("@/app/components/terra/terra-features-image-left"));
@@ -18,6 +21,7 @@ const TerraFooter = dynamic(() => import("@/app/components/terra/terra-footer"))
 export const componentLibrary = {
     "Navigation": [
         { id: "terra-navigation", name: "Terra - Navigation", component: TerraNavigation, thumbnail: "/images/thumbnails/terra-navigation.svg" },
+        { id: "lacto-navigation", name: "Lacto - Navigation", component: LactoNavigation, thumbnail: "/images/thumbnails/lacto-navigation.svg" },
     ],
     "Header": [
         { id: "header-title", name: "Title", component: GlobalHeaderTitle, thumbnail: "/images/thumbnails/header-title.svg" },
@@ -76,6 +80,12 @@ export const componentLibrary = {
                 }
             ]
         },
+    ],
+    "Feature - Stacked": [
+        { id: "lacto-features-stacked", name: "Lacto - Image Top", component: LactoFeaturesStacked, thumbnail: "/images/thumbnails/lacto-features-stacked.svg" },
+    ],
+    "Media": [
+        { id: "lacto-media", name: "Lacto - Media 21:9", component: LactoMedia, thumbnail: "/images/thumbnails/lacto-media.svg" },
     ],
     "USP": [
         { id: "usp-3col", name: "Terra - USP 3 Column", component: TerraUsp3col, thumbnail: "/images/thumbnails/terra-USP-3col.svg" },

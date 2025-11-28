@@ -1,0 +1,13 @@
+/* Section Spacing */
+.section {
+    padding-top: var(--padding-sm);
+    padding-bottom: var(--padding-sm);
+}
+
+/* Media Styling */
+.media {
+    width: 100%;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    /* Ensure content respects border radius */
+}

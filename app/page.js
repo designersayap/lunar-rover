@@ -15,20 +15,11 @@ import ConfigPopover from "@/app/page-builder-components/ConfigPopover";
  * Allows users to select and preview section components
  */
 export default function TemplateGeneratorPage() {
+  // All state declarations first
   const [selectedComponents, setSelectedComponents] = useState([]);
   const [showToaster, setShowToaster] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterType, setToasterType] = useState("success"); // success | delete
-
-  useEffect(() => {
-    if (showToaster) {
-      const timer = setTimeout(() => {
-        setShowToaster(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [showToaster]);
-
   const [draggedItemIndex, setDraggedItemIndex] = useState(null);
   const [dropTargetIndex, setDropTargetIndex] = useState(null);
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
@@ -39,13 +30,69 @@ export default function TemplateGeneratorPage() {
     metaPixel: "",
     hotjarId: ""
   });
-
   const [openCategories, setOpenCategories] = useState({ "Hero Banner": true });
-
-  // Popover State
   const [selectedComponentForConfig, setSelectedComponentForConfig] = useState(null);
   const [configProps, setConfigProps] = useState({ showDescription: true });
   const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
+
+  // Load saved template from localStorage on mount
+  useEffect(() => {
+    const savedTemplate = localStorage.getItem('lunar-template-builder');
+    if (savedTemplate) {
+      try {
+        const parsed = JSON.parse(savedTemplate);
+
+        // Rehydrate components (restore the component function reference)
+        const rehydratedComponents = (parsed.components || []).map(savedComp => {
+          // Find the original component definition in the library
+          let originalComp = null;
+          Object.values(componentLibrary).forEach(category => {
+            const found = category.find(c => c.id === savedComp.id);
+            if (found) originalComp = found;
+          });
+
+          if (originalComp) {
+            return {
+              ...savedComp,
+              component: originalComp.component // Restore the React component function
+            };
+          }
+          return null;
+        }).filter(Boolean); // Remove any components that couldn't be found
+
+        setSelectedComponents(rehydratedComponents);
+        setAnalyticsData(parsed.analytics || {
+          googleAnalyticsId: "",
+          tikTokPixel: "",
+          metaPixel: "",
+          hotjarId: ""
+        });
+      } catch (error) {
+        console.error('Error loading saved template:', error);
+      }
+    }
+  }, []);
+
+  // Auto-save to localStorage whenever components or analytics change
+  useEffect(() => {
+    if (selectedComponents.length > 0 || analyticsData.googleAnalyticsId || analyticsData.tikTokPixel || analyticsData.metaPixel || analyticsData.hotjarId) {
+      const dataToSave = {
+        components: selectedComponents,
+        analytics: analyticsData,
+        lastSaved: new Date().toISOString()
+      };
+      localStorage.setItem('lunar-template-builder', JSON.stringify(dataToSave));
+    }
+  }, [selectedComponents, analyticsData]);
+
+  useEffect(() => {
+    if (showToaster) {
+      const timer = setTimeout(() => {
+        setShowToaster(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToaster]);
 
   const toggleCategory = useCallback((category) => {
     setOpenCategories(prev => {

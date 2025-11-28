@@ -18,6 +18,9 @@ import TerraFooter from "@/app/components/terra/terra-footer";
 import TerraTestimony from "@/app/components/terra/terra-testimony";
 import TerraProductCarousel4Products from "@/app/components/terra/terra-product-carousel-4-products";
 import TerraNavigation from "@/app/components/terra/terra-navigation";
+import LactoNavigation from "@/app/components/lacto/lacto-navigation";
+import LactoFeaturesStacked from "@/app/components/lacto/lacto-features-stacked";
+import LactoMedia from "@/app/components/lacto/lacto-media";
 
 // Data
 import { uspData, footerData } from "../../content/data";
@@ -42,6 +45,9 @@ export default function ComponentPreviewPage() {
         "terra-usp-3col": TerraUsp3col,
         "terra-usp-4col": TerraUsp4col,
         "terra-footer": TerraFooter,
+        "lacto-navigation": LactoNavigation,
+        "lacto-features-stacked": LactoFeaturesStacked,
+        "lacto-media": LactoMedia,
     };
 
     const Component = components[name];
