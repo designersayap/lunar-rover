@@ -9,6 +9,7 @@ import Sidebar from "@/app/page-builder-components/Sidebar";
 import TopBar from "@/app/page-builder-components/TopBar";
 import Canvas from "@/app/page-builder-components/Canvas";
 import ConfigPopover from "@/app/page-builder-components/ConfigPopover";
+import ThemePickerPopover from "@/app/page-builder-components/ThemePickerPopover";
 
 /**
  * Template Generator Page
@@ -34,6 +35,19 @@ export default function TemplateGeneratorPage() {
   const [selectedComponentForConfig, setSelectedComponentForConfig] = useState(null);
   const [configProps, setConfigProps] = useState({ showDescription: true });
   const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
+
+  // Theme State
+  const [isThemePickerOpen, setIsThemePickerOpen] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState("milku");
+
+  const handleThemeSelect = useCallback((themeId) => {
+    setCurrentTheme(themeId);
+    // Here you would typically update a CSS variable or context to apply the theme
+    console.log("Selected theme:", themeId);
+    setToasterMessage(`Theme switched to ${themeId}`);
+    setToasterType("success");
+    setShowToaster(true);
+  }, []);
 
   // Load saved template from localStorage on mount
   useEffect(() => {
@@ -241,6 +255,8 @@ export default function TemplateGeneratorPage() {
         isSidebarVisible={isSidebarVisible}
         setIsSidebarVisible={setIsSidebarVisible}
         handleExport={handleExport}
+        onThemeClick={() => setIsThemePickerOpen(true)}
+        isThemePickerOpen={isThemePickerOpen}
       />
 
       <div className={styles.mainContent}>
@@ -313,6 +329,13 @@ export default function TemplateGeneratorPage() {
         setConfigProps={setConfigProps}
         onClose={() => setSelectedComponentForConfig(null)}
         onInsert={insertComponent}
+      />
+
+      <ThemePickerPopover
+        isOpen={isThemePickerOpen}
+        onClose={() => setIsThemePickerOpen(false)}
+        onSelectTheme={handleThemeSelect}
+        currentTheme={currentTheme}
       />
 
       {/* Toaster Notification */}

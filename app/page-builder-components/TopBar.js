@@ -2,7 +2,7 @@ import Image from "next/image";
 import {
     ChevronDoubleRightIcon,
     ChevronDoubleLeftIcon,
-    ArrowDownTrayIcon,
+    SwatchIcon,
     CodeBracketIcon,
     RocketLaunchIcon,
 } from "@heroicons/react/24/outline";
@@ -11,7 +11,9 @@ import styles from "../page.module.css";
 export default function TopBar({
     isSidebarVisible,
     setIsSidebarVisible,
-    handleExport
+    handleExport,
+    onThemeClick,
+    isThemePickerOpen
 }) {
     return (
         <div className={styles.topBar}>
@@ -38,16 +40,17 @@ export default function TopBar({
                 </button>
                 <button
                     className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}
-                    data-tooltip="Download Code"
-                >
-                    <ArrowDownTrayIcon style={{ width: "16px", height: "16px", color: "var(--content-neutral--body)" }} />
-                </button>
-                <button
-                    className={styles.topBarButtonWide}
                     data-tooltip="Import JSON"
                 >
-                    <CodeBracketIcon style={{ width: "16px", height: "16px" }} />
-                    Import JSON
+                    <CodeBracketIcon style={{ width: "16px", height: "16px", color: "var(--content-neutral--body)" }} />
+                </button>
+                <button
+                    className={`${styles.topBarButtonWide} ${isThemePickerOpen ? styles.topBarButtonActive : ''}`}
+                    data-tooltip="Switch Themes"
+                    onClick={onThemeClick}
+                >
+                    <SwatchIcon style={{ width: "16px", height: "16px" }} />
+                    Themes
                 </button>
                 <button
                     className={styles.topBarButtonExport}

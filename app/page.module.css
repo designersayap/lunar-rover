@@ -78,7 +78,8 @@
 
 .topBarButton:hover,
 .topBarButtonWide:hover,
-.topBarButtonExport:hover {
+.topBarButtonExport:hover,
+.topBarButtonActive {
     background-color: var(--grey-100);
 }
 
@@ -688,4 +689,63 @@
     text-align: center;
     color: var(--content-neutral--body-subtle);
     font-size: var(--typography-font-size-90);
+}
+
+/* Theme Picker */
+.themePickerPopover {
+    position: absolute;
+    top: 40px;
+    right: 16px;
+    width: 320px;
+    margin: 0;
+}
+
+.themeList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+    overflow-y: auto;
+    max-height: 240px;
+    padding-right: 4px;
+}
+
+.themeOption {
+    display: flex;
+    align-items: center;
+    padding: var(--gap-sm) var(--gap-sm);
+    border: 1px solid var(--grey-100);
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: var(--base-white);
+    transition: background-color 0.2s;
+    color: var(--content-neutral--caption);
+}
+
+.themeOptionSelected {
+    background-color: var(--grey-50);
+}
+
+.themeOptionInput {
+    margin-right: var(--padding-xs);
+    width: 16px;
+    height: 16px;
+    accent-color: var(--grey-500);
+}
+
+.themePickerButton {
+    width: auto;
+    padding: 0 var(--padding-sm);
+}
+
+.themePickerFooter {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.themePickerContent {
+    padding: var(--padding-xs) var(--padding-sm);
+}
+
+.themePickerSearchContainer {
+    margin-bottom: var(--padding-xs);
 }
