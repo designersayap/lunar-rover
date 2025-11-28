@@ -210,7 +210,6 @@ export default function Sidebar({
                                                 className={styles.helpIconWrapper}
                                                 data-tooltip={section.tooltip}
                                                 data-tooltip-position="top"
-                                                data-tooltip-align="right"
                                             >
                                                 <LightBulbIcon className={styles.helpIcon} />
                                             </div>
