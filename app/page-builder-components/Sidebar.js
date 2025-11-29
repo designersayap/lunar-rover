@@ -12,9 +12,9 @@ import { searchComponents, searchAnalytics } from "./utils/search";
 const ANALYTICS_SECTIONS = [
     {
         id: 'google',
-        title: 'Google Analytics',
+        title: 'Google Tag Manager',
         type: 'input',
-        key: 'googleAnalyticsId',
+        key: 'googleTagManagerId',
         placeholder: 'i.e GTM-NNZFKBLC',
         tooltip: 'Generate this in the Google Cloud Console under APIs & Services > Credentials > Create Credentials > API Key.'
     },
