@@ -1,16 +1,32 @@
-import styles from "./global-header-title-description.module.css";
+import BuilderText from "../page-builder-components/utils/BuilderText";
 
 /**
  * Centered Header Section - Title and Subtitle Only
  */
-export default function GlobalHeaderTitleDescription() {
+export default function GlobalHeaderTitleDescription({ title = "Title", subtitle = "Subtitle", onUpdate }) {
     return (
-        <section className={styles.section}>
+        <section className="global-header-title-description">
             <div className="container-grid">
-                <div className="grid">
-                    <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
-                        <h2 className={`h2 ${styles.title}`}>Title</h2>
-                        <p className={`subheader-h1 ${styles.subtitle}`}>Subtitle</p>
+                <div className="grid align-center">
+                    <div className="col-mobile-2 col-tablet-8 col-desktop-12">
+                        <div className="text-center">
+                            <BuilderText
+                                initialText={title}
+                                onUpdate={onUpdate}
+                                propName="title"
+                                as="h2"
+                                className="h2"
+                                style={{ marginBottom: "var(--gap-sm)" }}
+                            />
+                            <BuilderText
+                                initialText={subtitle}
+                                onUpdate={onUpdate}
+                                propName="subtitle"
+                                as="p"
+                                className="body-regular"
+                                style={{ color: "var(--content-neutral--caption)" }}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

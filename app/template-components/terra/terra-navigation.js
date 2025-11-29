@@ -3,75 +3,126 @@
 import React, { useState } from 'react';
 import { Bars3Icon, XMarkIcon, ChevronDownIcon, GlobeAltIcon, UserIcon, ShoppingCartIcon } from '@heroicons/react/24/solid';
 import styles from './terra-navigation.module.css';
+import BuilderText from "../../page-builder-components/utils/BuilderText";
 
-
-export default function TerraNavigation() {
+export default function TerraNavigation({
+    brandName = "Terra",
+    menuItems = [
+        { label: "Products", href: "#" },
+        { label: "Solutions", href: "#" },
+        { label: "Resources", href: "#" },
+        { label: "Pricing", href: "#" },
+    ],
+    ctaText = "Get Started",
+    onUpdate
+}) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
+    const handleMenuUpdate = (index, value) => {
+        if (!onUpdate) return;
+        const newMenuItems = [...menuItems];
+        newMenuItems[index] = { ...newMenuItems[index], label: value };
+        onUpdate({ menuItems: newMenuItems });
+    };
+
     return (
-        <nav className="container-grid z-lg">
-            <div className="grid">
-                <div className="col-mobile-2 col-tablet-8 col-desktop-12">
-                    <div className={styles.navContainer}>
-                        {/* 1.1 Logo */}
-                        <div className={styles.logoContainer}>
-                            <div className={styles.logoIconWrapper}>
-                                <GlobeAltIcon className={styles.logoIcon} />
+        <nav className={`${styles.navigation} z-lg`}>
+            <div className="container-grid">
+                <div className="grid">
+                    <div className="col-mobile-2 col-tablet-8 col-desktop-12">
+                        <div className={styles.navWrapper}>
+                            {/* Brand Logo/Name */}
+                            <div className={styles.brandWrapper}>
+                                <a href="#" className={styles.brandLink}>
+                                    <BuilderText
+                                        initialText={brandName}
+                                        onUpdate={onUpdate}
+                                        propName="brandName"
+                                        as="span"
+                                        className={styles.brandName}
+                                    />
+                                </a>
                             </div>
-                            <span className={styles.brandName}>Terra</span>
-                        </div>
 
-                        {/* 1.2 Menu (Desktop) */}
-                        <div className={`${styles.menuContainer} ${styles.desktopOnly}`}>
-                            <a href="#" className={`${styles.menuItem} btn btn-sm btn-ghost-neutral`}>Menu 1</a>
-                            <div className={`${styles.menuItemWithArrow} btn btn-sm btn-ghost-neutral`}>
-                                Menu 2
-                                <ChevronDownIcon className={styles.arrowIcon} />
+                            {/* Desktop Menu */}
+                            <div className={`${styles.menuWrapper} ${styles.desktopOnly}`}>
+                                {menuItems.map((item, index) => (
+                                    <a
+                                        key={index}
+                                        href={item.href}
+                                        className={`body-regular ${styles.menuItem}`}
+                                    >
+                                        <BuilderText
+                                            initialText={item.label}
+                                            onUpdate={(updates) => handleMenuUpdate(index, updates.label)}
+                                            propName="label"
+                                            as="span"
+                                        />
+                                    </a>
+                                ))}
                             </div>
-                            <a href="#" className={`${styles.menuItem} btn btn-sm btn-ghost-neutral`}>Menu 3</a>
-                            <a href="#" className={`${styles.menuItem} btn btn-sm btn-ghost-neutral`}>Menu 4</a>
+
+                            {/* CTA Button & Hamburger */}
+                            <div className={styles.actionsWrapper}>
+                                <a href="#" className={`btn btn-primary btn-sm ${styles.ctaButton} ${styles.desktopOnly}`}>
+                                    <BuilderText
+                                        initialText={ctaText}
+                                        onUpdate={onUpdate}
+                                        propName="ctaText"
+                                        as="span"
+                                        style={{ minWidth: "10px", display: "inline-block" }}
+                                    />
+                                </a>
+
+                                <button
+                                    className={`${styles.hamburgerButton} ${styles.tabletMobileOnly}`}
+                                    onClick={toggleMobileMenu}
+                                    aria-label="Toggle menu"
+                                >
+                                    {isMobileMenuOpen ? (
+                                        <XMarkIcon className={styles.hamburgerIcon} />
+                                    ) : (
+                                        <Bars3Icon className={styles.hamburgerIcon} />
+                                    )}
+                                </button>
+                            </div>
                         </div>
 
-                        {/* 1.3 Account Button & Mobile Toggle */}
-                        <div className={styles.actionsContainer}>
-                            <button className={`btn btn-primary btn-sm ${styles.desktopOnly}`} aria-label="Buy Menu">
-                                Beli Sekarang  <ShoppingCartIcon className={styles.icon} />
-                            </button>
-
-                            <button
-                                className={`btn btn-ghost-neutral btn-md ${styles.mobileToggle} ${styles.mobileOnly}`}
-                                onClick={toggleMobileMenu}
-                                aria-label="Toggle menu" >
-                                {isMobileMenuOpen ? (
-                                    <XMarkIcon className={styles.icon} />
-                                ) : (
-                                    <Bars3Icon className={styles.icon} />
-                                )}
-                            </button>
-                        </div>
+                        {/* Mobile Menu */}
+                        {isMobileMenuOpen && (
+                            <div className={`${styles.mobileMenu} ${styles.tabletMobileOnly}`}>
+                                {menuItems.map((item, index) => (
+                                    <a
+                                        key={index}
+                                        href={item.href}
+                                        className={`body-regular ${styles.mobileMenuItem}`}
+                                    >
+                                        <BuilderText
+                                            initialText={item.label}
+                                            onUpdate={(updates) => handleMenuUpdate(index, updates.label)}
+                                            propName="label"
+                                            as="span"
+                                        />
+                                    </a>
+                                ))}
+                                <div className={styles.mobileCtaWrapper}>
+                                    <a href="#" className={`btn btn-primary btn-sm ${styles.mobileCtaButton}`}>
+                                        <BuilderText
+                                            initialText={ctaText}
+                                            onUpdate={onUpdate}
+                                            propName="ctaText"
+                                            as="span"
+                                            style={{ minWidth: "10px", display: "inline-block" }}
+                                        />
+                                    </a>
+                                </div>
+                            </div>
+                        )}
                     </div>
-
-                    {/* Mobile Menu Dropdown */}
-                    {isMobileMenuOpen && (
-                        <div className={`${styles.mobileMenu} ${styles.mobileOnly}`}>
-                            <a href="#" className={`${styles.mobileMenuItem} btn btn-sm btn-ghost-neutral`}>Menu 1</a>
-                            <div className={`${styles.mobileMenuItem} btn btn-sm btn-ghost-neutral`}>
-                                Menu 2
-                                <ChevronDownIcon className={styles.arrowIcon} />
-                            </div>
-                            <a href="#" className={`${styles.mobileMenuItem} btn btn-sm btn-ghost-neutral`}>Menu 3</a>
-                            <a href="#" className={`${styles.mobileMenuItem} btn btn-sm btn-ghost-neutral`}>Menu 4</a>
-                            {/* Account Button in Mobile Menu */}
-                            <button className={`${styles.mobileMenuItem} btn btn-primary btn-sm ${styles.mobileMenuBuy}`} aria-label="Buy Menu">
-                                Beli Sekarang
-                                <ShoppingCartIcon className={styles.icon} />
-                            </button>
-                        </div>
-                    )}
                 </div>
             </div>
         </nav>

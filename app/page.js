@@ -263,6 +263,18 @@ export default function TemplateGeneratorPage() {
     });
   }, [selectedComponents.length]);
 
+  const updateComponent = useCallback((uniqueId, newProps) => {
+    setSelectedComponents(prev => prev.map(comp => {
+      if (comp.uniqueId === uniqueId) {
+        return {
+          ...comp,
+          props: { ...comp.props, ...newProps }
+        };
+      }
+      return comp;
+    }));
+  }, []);
+
   const handleExport = useCallback(() => {
     handleExportTemplate(selectedComponents);
   }, [selectedComponents]);
@@ -291,6 +303,7 @@ export default function TemplateGeneratorPage() {
           moveUp={moveUp}
           moveDown={moveDown}
           removeComponent={removeComponent}
+          updateComponent={updateComponent}
         />
 
         {isSidebarVisible && (

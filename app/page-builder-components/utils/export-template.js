@@ -32,6 +32,19 @@ export const handleExportTemplate = (selectedComponents) => {
         const dropIndicator = clone.querySelector(`.${styles.dropIndicator}`);
         if (dropIndicator) dropIndicator.remove();
 
+        // Remove contentEditable attributes
+        const editableElements = clone.querySelectorAll('[contenteditable]');
+        editableElements.forEach(el => {
+            el.removeAttribute('contenteditable');
+            el.removeAttribute('suppresscontenteditablewarning');
+            // Also remove the inline style used for the button span if it exists
+            if (el.tagName === 'SPAN' && el.style.outline === 'none') {
+                el.style.outline = '';
+                el.style.minWidth = '';
+                el.style.display = '';
+            }
+        });
+
         cleanHtmlContent += clone.innerHTML + "\n";
     });
 

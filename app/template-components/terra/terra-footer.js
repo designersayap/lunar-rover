@@ -1,9 +1,17 @@
 import styles from "./terra-footer.module.css";
+import { GlobeAltIcon } from "@heroicons/react/24/solid";
+import BuilderText from "../../page-builder-components/utils/BuilderText";
 
 /**
  * Footer Component
  */
-export default function TerraFooter({ brand, products, social, bottomBar }) {
+export default function TerraFooter({
+    brand = { title: "Brand", description: "The advantage of hiring a workspace with us is that givees you comfortable service and all-around facilities." },
+    products = { title: "Products", links: [{ label: "Fabric Care", href: "#" }, { label: "Food & Beverage", href: "#" }, { label: "Home Care", href: "#" }] },
+    social = { title: "Follow Us", links: [{ label: "Facebook", href: "#" }, { label: "Twitter", href: "#" }, { label: "Instagram", href: "#" }] },
+    bottomBar = { copyright: "Copyright © 2025", legalLinks: [{ label: "Terms & Conditions", href: "#" }, { label: "Privacy Policy", href: "#" }] },
+    onUpdate
+}) {
     const getSocialIcon = (label) => {
         switch (label) {
             case "Facebook":
@@ -29,16 +37,45 @@ export default function TerraFooter({ brand, products, social, bottomBar }) {
         }
     };
 
+    const handleBrandUpdate = (field, value) => {
+        if (!onUpdate) return;
+        onUpdate({ brand: { ...brand, [field]: value } });
+    };
+
+    const handleLinkUpdate = (section, index, value) => {
+        if (!onUpdate) return;
+        const newSection = { ...section };
+        newSection.links = [...newSection.links];
+        newSection.links[index] = { ...newSection.links[index], label: value };
+        if (section === products) onUpdate({ products: newSection });
+        if (section === social) onUpdate({ social: newSection });
+    };
+
+    const handleCopyrightUpdate = (value) => {
+        if (!onUpdate) return;
+        onUpdate({ bottomBar: { ...bottomBar, copyright: value } });
+    };
+
     return (
         <footer className={styles.section}>
             <div className="container-grid">
                 <div className="grid">
                     {/* Brand Column */}
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-8 ${styles.brandColumn}`}>
-                        <h4 className={`h4 ${styles.title}`}>{brand?.title}</h4>
-                        <p className={`body-regular ${styles.description}`}>
-                            {brand?.description}
-                        </p>
+                        <BuilderText
+                            initialText={brand?.title}
+                            onUpdate={(updates) => handleBrandUpdate('title', updates.title)}
+                            propName="title"
+                            as="h4"
+                            className={`h4 ${styles.title}`}
+                        />
+                        <BuilderText
+                            initialText={brand?.description}
+                            onUpdate={(updates) => handleBrandUpdate('description', updates.description)}
+                            propName="description"
+                            as="p"
+                            className={`body-regular ${styles.description}`}
+                        />
                     </div>
 
                     {/* Products Column */}
@@ -46,7 +83,19 @@ export default function TerraFooter({ brand, products, social, bottomBar }) {
                         <h4 className={`body-regular ${styles.title}`}>{products?.title}</h4>
                         <ul className={styles.linkList}>
                             {products?.links.map((link, index) => (
-                                <li key={index}><a href={link.href} className={`body-regular ${styles.linkItem}`}>{link.label}</a></li>
+                                <li key={index}>
+                                    <a
+                                        href={link.href}
+                                        className={`body-regular ${styles.linkItem}`}
+                                    >
+                                        <BuilderText
+                                            initialText={link.label}
+                                            onUpdate={(updates) => handleLinkUpdate(products, index, updates.label)}
+                                            propName="label"
+                                            as="span"
+                                        />
+                                    </a>
+                                </li>
                             ))}
                         </ul>
                     </div>
@@ -59,7 +108,12 @@ export default function TerraFooter({ brand, products, social, bottomBar }) {
                                 <li key={index}>
                                     <a href={link.href} className={`body-regular ${styles.linkItem}`}>
                                         {getSocialIcon(link.label)}
-                                        {link.label}
+                                        <BuilderText
+                                            initialText={link.label}
+                                            onUpdate={(updates) => handleLinkUpdate(social, index, updates.label)}
+                                            propName="label"
+                                            as="span"
+                                        />
                                     </a>
                                 </li>
                             ))}
@@ -70,7 +124,12 @@ export default function TerraFooter({ brand, products, social, bottomBar }) {
                 {/* Bottom Bar */}
                 <div className={styles.bottomBar}>
                     <div className={`caption-regular ${styles.copyright}`}>
-                        {bottomBar?.copyright}
+                        <BuilderText
+                            initialText={bottomBar?.copyright}
+                            onUpdate={(updates) => handleCopyrightUpdate(updates.copyright)}
+                            propName="copyright"
+                            as="span"
+                        />
                     </div>
                     <div className={styles.legalLinks}>
                         {bottomBar?.legalLinks.map((link, index) => (

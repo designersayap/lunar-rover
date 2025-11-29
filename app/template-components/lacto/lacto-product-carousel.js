@@ -6,28 +6,31 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { ShoppingCartIcon } from '@heroicons/react/24/solid';
 import styles from './lacto-product-carousel.module.css';
 
-const products = [
-    {
-        id: 1,
-        title: "Meiji Oishii Gyunyu",
-        description: "Vanilla flavored milk, packaged for your daily enjoyment.",
-        image: "/images/placeholders/product-1.png", // We'll use a placeholder div if image missing
-    },
-    {
-        id: 2,
-        title: "Fresh Strawberry Milk",
-        description: "Sweet and refreshing strawberry milk made from fresh.",
-        image: "/images/placeholders/product-2.png",
-    },
-    {
-        id: 3,
-        title: "Classic Chocolate",
-        description: "Rich chocolate milk that brings back childhood memories.",
-        image: "/images/placeholders/product-3.png",
-    }
-];
+import BuilderText from "../../page-builder-components/utils/BuilderText";
 
-export default function LactoProductCarousel() {
+export default function LactoProductCarousel({
+    products = [
+        {
+            id: 1,
+            title: "Meiji Oishii Gyunyu",
+            description: "Vanilla flavored milk, packaged for your daily enjoyment.",
+            image: "/images/placeholders/product-1.png",
+        },
+        {
+            id: 2,
+            title: "Fresh Strawberry Milk",
+            description: "Sweet and refreshing strawberry milk made from fresh.",
+            image: "/images/placeholders/product-2.png",
+        },
+        {
+            id: 3,
+            title: "Classic Chocolate",
+            description: "Rich chocolate milk that brings back childhood memories.",
+            image: "/images/placeholders/product-3.png",
+        }
+    ],
+    onUpdate
+}) {
     const [activeIndex, setActiveIndex] = useState(0);
 
     const nextSlide = () => {
@@ -43,9 +46,17 @@ export default function LactoProductCarousel() {
         return products[index];
     };
 
+    const handleProductUpdate = (index, field, value) => {
+        if (!onUpdate) return;
+        const newProducts = [...products];
+        newProducts[index] = { ...newProducts[index], [field]: value };
+        onUpdate({ products: newProducts });
+    };
+
     const prevProduct = getProduct(-1);
     const activeProduct = getProduct(0);
     const nextProduct = getProduct(1);
+    const activeProductIndex = (activeIndex + products.length) % products.length;
 
     return (
         <section className={styles.section}>
@@ -73,8 +84,20 @@ export default function LactoProductCarousel() {
 
                         <div className={styles.contentWrapper}>
                             <div className={styles.textWrapper}>
-                                <h3 className={`h3 ${styles.title}`}>{activeProduct.title}</h3>
-                                <h1 className={`subheader-h1 ${styles.description}`}>{activeProduct.description}</h1>
+                                <BuilderText
+                                    initialText={activeProduct.title}
+                                    onUpdate={(updates) => handleProductUpdate(activeProductIndex, 'title', updates.title)}
+                                    propName="title"
+                                    as="h3"
+                                    className={`h3 ${styles.title}`}
+                                />
+                                <BuilderText
+                                    initialText={activeProduct.description}
+                                    onUpdate={(updates) => handleProductUpdate(activeProductIndex, 'description', updates.description)}
+                                    propName="description"
+                                    as="h1"
+                                    className={`subheader-h1 ${styles.description}`}
+                                />
                             </div>
                             <button className="btn btn-primary btn-lg">
                                 <ShoppingCartIcon className={styles.icon} />

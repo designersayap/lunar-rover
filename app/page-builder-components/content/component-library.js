@@ -28,8 +28,18 @@ export const componentLibrary = {
     "Header": [
         { id: "header-title", name: "Title", component: GlobalHeaderTitle, thumbnail: "/images/thumbnails/header-title.svg" },
         { id: "header-title-desc", name: "Title, Desc", component: GlobalHeaderTitleDescription, thumbnail: "/images/thumbnails/header-title-desc.svg" },
-        { id: "header-title-button", name: "Title, Button", component: GlobalHeaderTitleButton, thumbnail: "/images/thumbnails/header-title-button.svg" },
-        { id: "header-title-desc-button", name: "Title, Desc, Button", component: GlobalHeaderTitleButtonDescription, thumbnail: "/images/thumbnails/header-title-desc-button.svg" },
+        {
+            id: "header-title-button",
+            name: "Title, Button",
+            component: GlobalHeaderTitleButton,
+            thumbnail: "/images/thumbnails/header-title-button.svg"
+        },
+        {
+            id: "header-title-desc-button",
+            name: "Title, Desc, Button",
+            component: GlobalHeaderTitleButtonDescription,
+            thumbnail: "/images/thumbnails/header-title-desc-button.svg"
+        },
     ],
     "Hero Banner": [
         {

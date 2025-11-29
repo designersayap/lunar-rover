@@ -102,6 +102,25 @@ export default function ConfigPopover({
                                             ))}
                                         </select>
                                     )}
+
+                                    {prop.type === "input" && (
+                                        <input
+                                            type="text"
+                                            className={`caption-regular ${styles.propertyInput}`}
+                                            value={configProps[prop.name] || ""}
+                                            onChange={(e) => setConfigProps({ ...configProps, [prop.name]: e.target.value })}
+                                            placeholder={prop.placeholder || ""}
+                                            style={{
+                                                width: "100%",
+                                                padding: "var(--space-40) var(--space-80)",
+                                                borderRadius: "var(--round-40)",
+                                                border: "1px solid var(--grey-200)",
+                                                backgroundColor: "var(--white)",
+                                                color: "var(--content-neutral--body)",
+                                                fontSize: "var(--typography-font-size-80)"
+                                            }}
+                                        />
+                                    )}
                                 </div>
                             ))}
                         </div>

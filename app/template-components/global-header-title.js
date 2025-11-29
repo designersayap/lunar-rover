@@ -3,13 +3,21 @@ import styles from "./global-header-title.module.css";
 /**
  * Centered Header Section - Title Only
  */
-export default function GlobalHeaderTitle() {
+import BuilderText from "../page-builder-components/utils/BuilderText";
+
+export default function GlobalHeaderTitle({ title = "Title", onUpdate }) {
     return (
-        <section className={styles.section}>
+        <section className="global-header-title">
             <div className="container-grid">
-                <div className="grid">
-                    <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
-                        <h2 className={`h2 ${styles.title}`}>Title</h2>
+                <div className="grid align-center">
+                    <div className="col-mobile-2 col-tablet-8 col-desktop-12">
+                        <BuilderText
+                            initialText={title}
+                            onUpdate={onUpdate}
+                            propName="title"
+                            as="h2"
+                            className="h2 text-center"
+                        />
                     </div>
                 </div>
             </div>

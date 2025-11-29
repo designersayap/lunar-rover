@@ -3,46 +3,31 @@
 import { ChevronLeftIcon, ChevronRightIcon, StarIcon } from "@heroicons/react/20/solid";
 import { useRef } from "react";
 import styles from "./terra-testimony.module.css";
+import BuilderText from "../../page-builder-components/utils/BuilderText";
 
 /**
  * Testimony Component
  * Displays 6 testimonial cards with background images and floating content
  */
-export default function TerraTestimony() {
+export default function TerraTestimony({
+    testimonials = [
+        { name: "Uzair Nunez", role: "Web Developer", quote: "Terra transformed our brand! The flexible layouts boosted our team's creativity" },
+        { name: "Cecily Garcia", role: "Project Manager", quote: "This one is top-notch! Our customers love the modern designs" },
+        { name: "Maja Nash", role: "UX Designer", quote: "I love the sleek design! This template made our site modern and user-friendly." },
+        { name: "Sarah Johnson", role: "Marketing Director", quote: "The attention to detail is outstanding! Our conversion rates improved significantly." },
+        { name: "Michael Chen", role: "Product Designer", quote: "Beautiful components that are easy to customize. Saved us weeks." },
+        { name: "Emma Williams", role: "CEO", quote: "Professional, modern, and exactly what we needed. Highly recommend Terra!" },
+    ],
+    onUpdate
+}) {
     const scrollContainerRef = useRef(null);
 
-    const testimonials = [
-        {
-            name: "Uzair Nunez",
-            role: "Web Developer",
-            quote: "Terra transformed our brand! The flexible layouts boosted our team's creativity",
-        },
-        {
-            name: "Cecily Garcia",
-            role: "Project Manager",
-            quote: "This one is top-notch! Our customers love the modern designs",
-        },
-        {
-            name: "Maja Nash",
-            role: "UX Designer",
-            quote: "I love the sleek design! This template made our site modern and user-friendly.",
-        },
-        {
-            name: "Sarah Johnson",
-            role: "Marketing Director",
-            quote: "The attention to detail is outstanding! Our conversion rates improved significantly.",
-        },
-        {
-            name: "Michael Chen",
-            role: "Product Designer",
-            quote: "Beautiful components that are easy to customize. Saved us weeks.",
-        },
-        {
-            name: "Emma Williams",
-            role: "CEO",
-            quote: "Professional, modern, and exactly what we needed. Highly recommend Terra!",
-        },
-    ];
+    const handleTestimonialUpdate = (index, field, value) => {
+        if (!onUpdate) return;
+        const newTestimonials = [...testimonials];
+        newTestimonials[index] = { ...newTestimonials[index], [field]: value };
+        onUpdate({ testimonials: newTestimonials });
+    };
 
     const scrollLeft = () => {
         if (scrollContainerRef.current) {
@@ -99,9 +84,31 @@ export default function TerraTestimony() {
                                             </div>
 
                                             {/* Text Content */}
-                                            <div className={'titleheader'}><h5 className={`h5 truncate-1-line ${styles.name}`}>{item.name}</h5>
-                                                <p className={`caption-regular truncate-1-lines ${styles.role}`}>{item.role}</p></div>
-                                            <p className={`caption-regular truncate-2-lines ${styles.description}`}>"{item.quote}"</p>
+                                            <div className={'titleheader'}>
+                                                <BuilderText
+                                                    initialText={item.name}
+                                                    onUpdate={(updates) => handleTestimonialUpdate(index, 'name', updates.name)}
+                                                    propName="name"
+                                                    as="h5"
+                                                    className={`h5 truncate-1-line ${styles.name}`}
+                                                />
+                                                <BuilderText
+                                                    initialText={item.role}
+                                                    onUpdate={(updates) => handleTestimonialUpdate(index, 'role', updates.role)}
+                                                    propName="role"
+                                                    as="p"
+                                                    className={`caption-regular truncate-1-lines ${styles.role}`}
+                                                />
+                                            </div>
+                                            <div className={`caption-regular truncate-2-lines ${styles.description}`}>
+                                                "<BuilderText
+                                                    initialText={item.quote}
+                                                    onUpdate={(updates) => handleTestimonialUpdate(index, 'quote', updates.quote)}
+                                                    propName="quote"
+                                                    as="span"
+                                                    style={{ outline: "none" }}
+                                                />"
+                                            </div>
 
                                             {/* Stars */}
                                             <div className={styles.stars}>
@@ -114,7 +121,6 @@ export default function TerraTestimony() {
                                 </div>
                             ))}
                         </div>
-
                     </div>
                 </div>
             </div>
