@@ -32,7 +32,7 @@ function SectionIdInput({ id, initialValue, onUpdate }) {
                 type="text"
                 className={styles.controlIdInput}
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => setValue(e.target.value.replace(/\s/g, '-'))}
                 onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
             />
