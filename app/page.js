@@ -194,30 +194,42 @@ export default function TemplateGeneratorPage() {
   }, [draggedItemIndex, selectedComponents]);
 
   const addComponent = useCallback((componentData, event) => {
-    // Calculate position based on clicked element
-    const rect = event.currentTarget.getBoundingClientRect();
+    // Check if component has configuration options
+    if (componentData.config && componentData.config.length > 0) {
+      // Calculate position based on clicked element
+      const rect = event.currentTarget.getBoundingClientRect();
 
-    // Get popover width from CSS variable or fallback
-    const container = document.querySelector(`.${styles.container}`);
-    const popoverWidth = container ?
-      parseInt(getComputedStyle(container).getPropertyValue('--popover-width')) || 362
-      : 362;
+      // Get popover width from CSS variable or fallback
+      const container = document.querySelector(`.${styles.container}`);
+      const popoverWidth = container ?
+        parseInt(getComputedStyle(container).getPropertyValue('--popover-width')) || 362
+        : 362;
 
-    setPopoverPosition({
-      top: rect.top,
-      left: rect.left - popoverWidth - 10 // Width of popover + 10px spacing
-    });
+      setPopoverPosition({
+        top: rect.top,
+        left: rect.left - popoverWidth - 10 // Width of popover + 10px spacing
+      });
 
-    setSelectedComponentForConfig({ ...componentData, selected: true });
+      setSelectedComponentForConfig({ ...componentData, selected: true });
 
-    // Initialize config props based on component definition
-    const initialProps = {};
-    if (componentData.config) {
+      // Initialize config props based on component definition
+      const initialProps = {};
       componentData.config.forEach(prop => {
         initialProps[prop.name] = prop.default;
       });
+      setConfigProps(initialProps);
+    } else {
+      // No config, add directly
+      setSelectedComponents(prev => [...prev, {
+        ...componentData,
+        uniqueId: Date.now(),
+        props: componentData.props || {}
+      }]);
+
+      setToasterMessage(`${componentData.name} added`);
+      setToasterType("success");
+      setShowToaster(true);
     }
-    setConfigProps(initialProps);
   }, []);
 
   const insertComponent = useCallback(() => {
