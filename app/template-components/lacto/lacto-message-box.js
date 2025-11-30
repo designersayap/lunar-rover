@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './lacto-message-box.module.css';
-import BuilderText from "@/app/page-builder-components/common/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/BuilderText";
 
 /**
  * Lacto Message Box Component

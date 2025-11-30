@@ -1,6 +1,6 @@
 import { ArrowLongRightIcon, SparklesIcon } from "@heroicons/react/20/solid";
 import styles from "./global-header-title-button-description.module.css";
-import BuilderText from "@/app/page-builder-components/common/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/BuilderText";
 
 /**
  * Centered Header Section - Title with Button

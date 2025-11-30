@@ -1,5 +1,5 @@
 import styles from "./global-header-title-description.module.css";
-import BuilderText from "@/app/page-builder-components/common/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/BuilderText";
 
 /**
  * Centered Header Section - Title and Subtitle Only

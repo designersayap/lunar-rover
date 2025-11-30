@@ -8,7 +8,7 @@ import styles from "./terra-testimony.module.css";
  * Testimony Component
  * Displays 6 testimonial cards with background images and floating content
  */
-import BuilderText from "@/app/page-builder-components/common/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/BuilderText";
 
 /**
  * Testimony Component
