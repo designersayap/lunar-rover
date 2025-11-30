@@ -3,7 +3,6 @@ import {
     ArrowDownIcon,
     TrashIcon as TrashIconOutline,
 } from "@heroicons/react/24/outline";
-import { uspData, footerData } from "../template-components/content/data";
 import styles from "../page.module.css";
 
 export default function Canvas({
@@ -16,6 +15,7 @@ export default function Canvas({
     setDraggedItemIndex,
     moveUp,
     moveDown,
+
     removeComponent,
     updateComponent
 }) {
@@ -96,25 +96,10 @@ export default function Canvas({
                                     </div>
 
                                     {/* Render Component */}
-                                    {item.id === "usp-3col" || item.id === "usp-4col" ? (
-                                        <Component
-                                            title={uspData.title}
-                                            features={uspData.features}
-                                            {...item.props}
-                                            onUpdate={(props) => updateComponent(item.uniqueId, props)}
-                                        />
-                                    ) : item.id === "footer" ? (
-                                        <Component
-                                            {...footerData}
-                                            {...item.props}
-                                            onUpdate={(props) => updateComponent(item.uniqueId, props)}
-                                        />
-                                    ) : (
-                                        <Component
-                                            {...item.props}
-                                            onUpdate={(props) => updateComponent(item.uniqueId, props)}
-                                        />
-                                    )}
+                                    <Component
+                                        {...item.props}
+                                        onUpdate={(newProps) => updateComponent(item.uniqueId, newProps)}
+                                    />
                                 </div>
                             );
                         })}

@@ -3,7 +3,12 @@
 import { ChevronLeftIcon, ChevronRightIcon, StarIcon } from "@heroicons/react/20/solid";
 import { useRef } from "react";
 import styles from "./terra-testimony.module.css";
-import BuilderText from "../../page-builder-components/utils/BuilderText";
+
+/**
+ * Testimony Component
+ * Displays 6 testimonial cards with background images and floating content
+ */
+import BuilderText from "@/app/page-builder-components/common/BuilderText";
 
 /**
  * Testimony Component
@@ -22,10 +27,10 @@ export default function TerraTestimony({
 }) {
     const scrollContainerRef = useRef(null);
 
-    const handleTestimonialUpdate = (index, field, value) => {
+    const handleTestimonialUpdate = (index, key, value) => {
         if (!onUpdate) return;
         const newTestimonials = [...testimonials];
-        newTestimonials[index] = { ...newTestimonials[index], [field]: value };
+        newTestimonials[index] = { ...newTestimonials[index], [key]: value };
         onUpdate({ testimonials: newTestimonials });
     };
 
@@ -85,30 +90,28 @@ export default function TerraTestimony({
 
                                             {/* Text Content */}
                                             <div className={'titleheader'}>
-                                                <BuilderText
-                                                    initialText={item.name}
-                                                    onUpdate={(updates) => handleTestimonialUpdate(index, 'name', updates.name)}
-                                                    propName="name"
-                                                    as="h5"
-                                                    className={`h5 truncate-1-line ${styles.name}`}
-                                                />
-                                                <BuilderText
-                                                    initialText={item.role}
-                                                    onUpdate={(updates) => handleTestimonialUpdate(index, 'role', updates.role)}
-                                                    propName="role"
-                                                    as="p"
-                                                    className={`caption-regular truncate-1-lines ${styles.role}`}
-                                                />
+                                                <h5 className={`h5 truncate-1-line ${styles.name}`}>
+                                                    <BuilderText
+                                                        tagName="span"
+                                                        content={item.name}
+                                                        onChange={(val) => handleTestimonialUpdate(index, "name", val)}
+                                                    />
+                                                </h5>
+                                                <p className={`caption-regular truncate-1-lines ${styles.role}`}>
+                                                    <BuilderText
+                                                        tagName="span"
+                                                        content={item.role}
+                                                        onChange={(val) => handleTestimonialUpdate(index, "role", val)}
+                                                    />
+                                                </p>
                                             </div>
-                                            <div className={`caption-regular truncate-2-lines ${styles.description}`}>
+                                            <p className={`caption-regular truncate-2-lines ${styles.description}`}>
                                                 "<BuilderText
-                                                    initialText={item.quote}
-                                                    onUpdate={(updates) => handleTestimonialUpdate(index, 'quote', updates.quote)}
-                                                    propName="quote"
-                                                    as="span"
-                                                    style={{ outline: "none" }}
+                                                    tagName="span"
+                                                    content={item.quote}
+                                                    onChange={(val) => handleTestimonialUpdate(index, "quote", val)}
                                                 />"
-                                            </div>
+                                            </p>
 
                                             {/* Stars */}
                                             <div className={styles.stars}>
@@ -121,6 +124,7 @@ export default function TerraTestimony({
                                 </div>
                             ))}
                         </div>
+
                     </div>
                 </div>
             </div>

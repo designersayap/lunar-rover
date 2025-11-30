@@ -1,5 +1,6 @@
+import { ArrowLongRightIcon, SparklesIcon } from "@heroicons/react/20/solid";
 import styles from "./global-header-title-button.module.css";
-import BuilderText from "../page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/common/BuilderText";
 
 /**
  * Centered Header Section - Title with Button
@@ -10,28 +11,25 @@ export default function GlobalHeaderTitleButton({
     onUpdate
 }) {
     return (
-        <section className="global-header-title-button">
+        <section className={styles.section}>
             <div className="container-grid">
-                <div className="grid align-center">
-                    <div className="col-mobile-2 col-tablet-8 col-desktop-12">
-                        <div className="flex-between-center">
+                <div className="grid">
+                    <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
+                        <BuilderText
+                            tagName="h2"
+                            className={`h2 ${styles.title}`}
+                            content={title}
+                            onChange={(val) => onUpdate && onUpdate({ title: val })}
+                        />
+                        <button className={`btn btn-primary btn-lg ${styles.button}`}>
+                            <SparklesIcon />
                             <BuilderText
-                                initialText={title}
-                                onUpdate={onUpdate}
-                                propName="title"
-                                as="h2"
-                                className="h2"
+                                tagName="span"
+                                content={buttonText}
+                                onChange={(val) => onUpdate && onUpdate({ buttonText: val })}
                             />
-                            <button className="btn btn-primary btn-md">
-                                <BuilderText
-                                    initialText={buttonText}
-                                    onUpdate={onUpdate}
-                                    propName="buttonText"
-                                    as="span"
-                                    style={{ minWidth: "10px", display: "inline-block" }}
-                                />
-                            </button>
-                        </div>
+                            <ArrowLongRightIcon />
+                        </button>
                     </div>
                 </div>
             </div>

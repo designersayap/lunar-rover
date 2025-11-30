@@ -1,46 +1,42 @@
 import { ArrowLongRightIcon, SparklesIcon } from "@heroicons/react/20/solid";
 import styles from "./global-header-title-button-description.module.css";
+import BuilderText from "@/app/page-builder-components/common/BuilderText";
 
 /**
  * Centered Header Section - Title with Button
  */
-import BuilderText from "../page-builder-components/utils/BuilderText";
-
-export default function GlobalHeaderTitleButtonDescription({ title = "Title", subtitle = "Subtitle", buttonText = "Label", onUpdate }) {
+export default function GlobalHeaderTitleButtonDescription({
+    title = "Title",
+    subtitle = "Subtitle",
+    buttonText = "Label",
+    onUpdate
+}) {
     return (
-        <section className="global-header-title-button-description">
+        <section className={styles.section}>
             <div className="container-grid">
-                <div className="grid align-center">
-                    <div className="col-mobile-2 col-tablet-8 col-desktop-12">
-                        <div className="flex-between-center">
-                            <div>
-                                <BuilderText
-                                    initialText={title}
-                                    onUpdate={onUpdate}
-                                    propName="title"
-                                    as="h2"
-                                    className="h2"
-                                    style={{ marginBottom: "var(--gap-sm)" }}
-                                />
-                                <BuilderText
-                                    initialText={subtitle}
-                                    onUpdate={onUpdate}
-                                    propName="subtitle"
-                                    as="p"
-                                    className="body-regular"
-                                    style={{ color: "var(--content-neutral--caption)" }}
-                                />
-                            </div>
-                            <button className="btn btn-primary btn-md">
-                                <BuilderText
-                                    initialText={buttonText}
-                                    onUpdate={onUpdate}
-                                    propName="buttonText"
-                                    as="span"
-                                    style={{ minWidth: "10px", display: "inline-block" }}
-                                />
-                            </button>
-                        </div>
+                <div className="grid">
+                    <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
+                        <BuilderText
+                            tagName="h2"
+                            className={`h2 ${styles.title}`}
+                            content={title}
+                            onChange={(val) => onUpdate && onUpdate({ title: val })}
+                        />
+                        <BuilderText
+                            tagName="p"
+                            className={`subheader-h1 ${styles.subtitle}`}
+                            content={subtitle}
+                            onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
+                        />
+                        <button className={`btn btn-primary btn-lg ${styles.button}`}>
+                            <SparklesIcon />
+                            <BuilderText
+                                tagName="span"
+                                content={buttonText}
+                                onChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                            />
+                            <ArrowLongRightIcon />
+                        </button>
                     </div>
                 </div>
             </div>

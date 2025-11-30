@@ -5,8 +5,7 @@ import Image from 'next/image';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { ShoppingCartIcon } from '@heroicons/react/24/solid';
 import styles from './lacto-product-carousel.module.css';
-
-import BuilderText from "../../page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/common/BuilderText";
 
 export default function LactoProductCarousel({
     products = [
@@ -29,6 +28,7 @@ export default function LactoProductCarousel({
             image: "/images/placeholders/product-3.png",
         }
     ],
+    buttonText = "Buy Product",
     onUpdate
 }) {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -46,16 +46,18 @@ export default function LactoProductCarousel({
         return products[index];
     };
 
-    const handleProductUpdate = (index, field, value) => {
+    const handleProductUpdate = (index, key, value) => {
         if (!onUpdate) return;
         const newProducts = [...products];
-        newProducts[index] = { ...newProducts[index], [field]: value };
+        newProducts[index] = { ...newProducts[index], [key]: value };
         onUpdate({ products: newProducts });
     };
 
     const prevProduct = getProduct(-1);
     const activeProduct = getProduct(0);
     const nextProduct = getProduct(1);
+
+    // Calculate actual index of active product in the original array
     const activeProductIndex = (activeIndex + products.length) % products.length;
 
     return (
@@ -84,24 +86,28 @@ export default function LactoProductCarousel({
 
                         <div className={styles.contentWrapper}>
                             <div className={styles.textWrapper}>
-                                <BuilderText
-                                    initialText={activeProduct.title}
-                                    onUpdate={(updates) => handleProductUpdate(activeProductIndex, 'title', updates.title)}
-                                    propName="title"
-                                    as="h3"
-                                    className={`h3 ${styles.title}`}
-                                />
-                                <BuilderText
-                                    initialText={activeProduct.description}
-                                    onUpdate={(updates) => handleProductUpdate(activeProductIndex, 'description', updates.description)}
-                                    propName="description"
-                                    as="h1"
-                                    className={`subheader-h1 ${styles.description}`}
-                                />
+                                <h3 className={`h3 ${styles.title}`}>
+                                    <BuilderText
+                                        tagName="span"
+                                        content={activeProduct.title}
+                                        onChange={(val) => handleProductUpdate(activeProductIndex, "title", val)}
+                                    />
+                                </h3>
+                                <h1 className={`subheader-h1 ${styles.description}`}>
+                                    <BuilderText
+                                        tagName="span"
+                                        content={activeProduct.description}
+                                        onChange={(val) => handleProductUpdate(activeProductIndex, "description", val)}
+                                    />
+                                </h1>
                             </div>
                             <button className="btn btn-primary btn-lg">
                                 <ShoppingCartIcon className={styles.icon} />
-                                Buy Product
+                                <BuilderText
+                                    tagName="span"
+                                    content={buttonText}
+                                    onChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                />
                             </button>
                         </div>
                     </div>

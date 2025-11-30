@@ -1,22 +1,23 @@
 import styles from "./global-header-title.module.css";
+import BuilderText from "@/app/page-builder-components/common/BuilderText";
 
 /**
  * Centered Header Section - Title Only
  */
-import BuilderText from "../page-builder-components/utils/BuilderText";
-
-export default function GlobalHeaderTitle({ title = "Title", onUpdate }) {
+export default function GlobalHeaderTitle({
+    title = "Title",
+    onUpdate
+}) {
     return (
-        <section className="global-header-title">
+        <section className={styles.section}>
             <div className="container-grid">
-                <div className="grid align-center">
-                    <div className="col-mobile-2 col-tablet-8 col-desktop-12">
+                <div className="grid">
+                    <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
                         <BuilderText
-                            initialText={title}
-                            onUpdate={onUpdate}
-                            propName="title"
-                            as="h2"
-                            className="h2 text-center"
+                            tagName="h2"
+                            className={`h2 ${styles.title}`}
+                            content={title}
+                            onChange={(val) => onUpdate && onUpdate({ title: val })}
                         />
                     </div>
                 </div>

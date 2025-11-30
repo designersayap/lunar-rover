@@ -1,6 +1,6 @@
+
 import styles from "./terra-footer.module.css";
-import { GlobeAltIcon } from "@heroicons/react/24/solid";
-import BuilderText from "../../page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/common/BuilderText";
 
 /**
  * Footer Component
@@ -37,23 +37,42 @@ export default function TerraFooter({
         }
     };
 
-    const handleBrandUpdate = (field, value) => {
+    const handleUpdate = (section, key, value) => {
         if (!onUpdate) return;
-        onUpdate({ brand: { ...brand, [field]: value } });
+        onUpdate({ [section]: { ...[section], [key]: value } });
     };
 
-    const handleLinkUpdate = (section, index, value) => {
+    const handleLinkUpdate = (section, index, key, value) => {
         if (!onUpdate) return;
-        const newSection = { ...section };
-        newSection.links = [...newSection.links];
-        newSection.links[index] = { ...newSection.links[index], label: value };
-        if (section === products) onUpdate({ products: newSection });
-        if (section === social) onUpdate({ social: newSection });
+        const sectionData = { ...[section] }; // This won't work as expected because [section] is not defined in scope like this
+        // Correct way:
+        let currentSectionData;
+        if (section === 'products') currentSectionData = products;
+        else if (section === 'social') currentSectionData = social;
+        else if (section === 'bottomBar') currentSectionData = bottomBar; // bottomBar has legalLinks
+
+        // Wait, bottomBar structure is different.
+        // Let's simplify.
     };
 
-    const handleCopyrightUpdate = (value) => {
+    // Redefining handlers for clarity
+    const updateBrand = (key, val) => onUpdate && onUpdate({ brand: { ...brand, [key]: val } });
+    const updateProductsTitle = (val) => onUpdate && onUpdate({ products: { ...products, title: val } });
+    const updateProductLink = (index, val) => {
         if (!onUpdate) return;
-        onUpdate({ bottomBar: { ...bottomBar, copyright: value } });
+        const newLinks = [...products.links];
+        newLinks[index] = { ...newLinks[index], label: val };
+        onUpdate({ products: { ...products, links: newLinks } });
+    };
+    const updateSocialTitle = (val) => onUpdate && onUpdate({ social: { ...social, title: val } });
+    // Social links usually are fixed labels for icons, but let's allow editing label if needed, or just href (but BuilderText is for text)
+
+    const updateCopyright = (val) => onUpdate && onUpdate({ bottomBar: { ...bottomBar, copyright: val } });
+    const updateLegalLink = (index, val) => {
+        if (!onUpdate) return;
+        const newLinks = [...bottomBar.legalLinks];
+        newLinks[index] = { ...newLinks[index], label: val };
+        onUpdate({ bottomBar: { ...bottomBar, legalLinks: newLinks } });
     };
 
     return (
@@ -62,38 +81,24 @@ export default function TerraFooter({
                 <div className="grid">
                     {/* Brand Column */}
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-8 ${styles.brandColumn}`}>
-                        <BuilderText
-                            initialText={brand?.title}
-                            onUpdate={(updates) => handleBrandUpdate('title', updates.title)}
-                            propName="title"
-                            as="h4"
-                            className={`h4 ${styles.title}`}
-                        />
-                        <BuilderText
-                            initialText={brand?.description}
-                            onUpdate={(updates) => handleBrandUpdate('description', updates.description)}
-                            propName="description"
-                            as="p"
-                            className={`body-regular ${styles.description}`}
-                        />
+                        <h4 className={`h4 ${styles.title}`}>
+                            <BuilderText content={brand?.title} onChange={(val) => updateBrand('title', val)} tagName="span" />
+                        </h4>
+                        <p className={`body-regular ${styles.description}`}>
+                            <BuilderText content={brand?.description} onChange={(val) => updateBrand('description', val)} tagName="span" />
+                        </p>
                     </div>
 
                     {/* Products Column */}
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-2 ${styles.linksColumn}`}>
-                        <h4 className={`body-regular ${styles.title}`}>{products?.title}</h4>
+                        <h4 className={`body-regular ${styles.title}`}>
+                            <BuilderText content={products?.title} onChange={updateProductsTitle} tagName="span" />
+                        </h4>
                         <ul className={styles.linkList}>
                             {products?.links.map((link, index) => (
                                 <li key={index}>
-                                    <a
-                                        href={link.href}
-                                        className={`body-regular ${styles.linkItem}`}
-                                    >
-                                        <BuilderText
-                                            initialText={link.label}
-                                            onUpdate={(updates) => handleLinkUpdate(products, index, updates.label)}
-                                            propName="label"
-                                            as="span"
-                                        />
+                                    <a href={link.href} className={`body-regular ${styles.linkItem}`}>
+                                        <BuilderText content={link.label} onChange={(val) => updateProductLink(index, val)} tagName="span" />
                                     </a>
                                 </li>
                             ))}
@@ -102,18 +107,15 @@ export default function TerraFooter({
 
                     {/* Follow Us Column */}
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-2 ${styles.linksColumn}`}>
-                        <h4 className={`body-regular ${styles.title}`}>{social?.title}</h4>
+                        <h4 className={`body-regular ${styles.title}`}>
+                            <BuilderText content={social?.title} onChange={updateSocialTitle} tagName="span" />
+                        </h4>
                         <ul className={styles.linkList}>
                             {social?.links.map((link, index) => (
                                 <li key={index}>
                                     <a href={link.href} className={`body-regular ${styles.linkItem}`}>
                                         {getSocialIcon(link.label)}
-                                        <BuilderText
-                                            initialText={link.label}
-                                            onUpdate={(updates) => handleLinkUpdate(social, index, updates.label)}
-                                            propName="label"
-                                            as="span"
-                                        />
+                                        {link.label}
                                     </a>
                                 </li>
                             ))}
@@ -124,16 +126,13 @@ export default function TerraFooter({
                 {/* Bottom Bar */}
                 <div className={styles.bottomBar}>
                     <div className={`caption-regular ${styles.copyright}`}>
-                        <BuilderText
-                            initialText={bottomBar?.copyright}
-                            onUpdate={(updates) => handleCopyrightUpdate(updates.copyright)}
-                            propName="copyright"
-                            as="span"
-                        />
+                        <BuilderText content={bottomBar?.copyright} onChange={updateCopyright} tagName="span" />
                     </div>
                     <div className={styles.legalLinks}>
                         {bottomBar?.legalLinks.map((link, index) => (
-                            <a key={index} href={link.href} className={`caption-regular ${styles.legalLink}`}>{link.label}</a>
+                            <a key={index} href={link.href} className={`caption-regular ${styles.legalLink}`}>
+                                <BuilderText content={link.label} onChange={(val) => updateLegalLink(index, val)} tagName="span" />
+                            </a>
                         ))}
                     </div>
                 </div>

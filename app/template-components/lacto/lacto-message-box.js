@@ -2,13 +2,12 @@
 
 import React from 'react';
 import styles from './lacto-message-box.module.css';
+import BuilderText from "@/app/page-builder-components/common/BuilderText";
 
 /**
  * Lacto Message Box Component
  * A centered message box with title, description, and action buttons.
  */
-import BuilderText from "../../page-builder-components/utils/BuilderText";
-
 export default function LactoMessageBox({
     title = "Title",
     description = "Description",
@@ -25,38 +24,32 @@ export default function LactoMessageBox({
                             <div className={`${styles.contentWrapper} shadow-md`}>
                                 <div className={styles.textWrapper}>
                                     <BuilderText
-                                        initialText={title}
-                                        onUpdate={onUpdate}
-                                        propName="title"
-                                        as="h2"
+                                        tagName="h2"
                                         className={`h2 ${styles.title}`}
+                                        content={title}
+                                        onChange={(val) => onUpdate && onUpdate({ title: val })}
                                     />
                                     <BuilderText
-                                        initialText={description}
-                                        onUpdate={onUpdate}
-                                        propName="description"
-                                        as="p"
+                                        tagName="p"
                                         className={`body-regular ${styles.description}`}
+                                        content={description}
+                                        onChange={(val) => onUpdate && onUpdate({ description: val })}
                                     />
                                 </div>
 
                                 <div className={styles.buttonWrapper}>
                                     <button className="btn btn-primary btn-lg">
                                         <BuilderText
-                                            initialText={primaryButtonText}
-                                            onUpdate={onUpdate}
-                                            propName="primaryButtonText"
-                                            as="span"
-                                            style={{ minWidth: "10px", display: "inline-block" }}
+                                            tagName="span"
+                                            content={primaryButtonText}
+                                            onChange={(val) => onUpdate && onUpdate({ primaryButtonText: val })}
                                         />
                                     </button>
                                     <button className="btn btn-outline btn-lg">
                                         <BuilderText
-                                            initialText={secondaryButtonText}
-                                            onUpdate={onUpdate}
-                                            propName="secondaryButtonText"
-                                            as="span"
-                                            style={{ minWidth: "10px", display: "inline-block" }}
+                                            tagName="span"
+                                            content={secondaryButtonText}
+                                            onChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
                                         />
                                     </button>
                                 </div>

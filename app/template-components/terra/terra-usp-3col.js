@@ -1,64 +1,66 @@
-import { ArrowLongRightIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
+import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 import styles from "./terra-usp-3col.module.css";
-import BuilderText from "../../page-builder-components/utils/BuilderText";
+
+import BuilderText from "@/app/page-builder-components/common/BuilderText";
 
 /**
  * TerraUsp3col Component
  */
-export default function TerraUSP3Col({
-    title = "Why Choose Terra?",
+export default function TerraUsp3col({
+    title = "Why Choose Us",
     features = [
-        { title: "Lightning Fast", description: "Optimized for speed and performance." },
-        { title: "Secure by Default", description: "Enterprise-grade security built-in." },
-        { title: "Easy to Use", description: "Intuitive interface for everyone." }
+        { title: "Title", description: "Description" },
+        { title: "Title", description: "Description" },
+        { title: "Title", description: "Description" },
     ],
     onUpdate
 }) {
-    const handleFeatureUpdate = (index, field, value) => {
+    const handleFeatureUpdate = (index, key, value) => {
         if (!onUpdate) return;
         const newFeatures = [...features];
-        newFeatures[index] = { ...newFeatures[index], [field]: value };
+        newFeatures[index] = { ...newFeatures[index], [key]: value };
         onUpdate({ features: newFeatures });
     };
 
     return (
         <section className={styles.section}>
             <div className="container-grid">
-                <div className="grid justify-center">
-                    <div className="col-mobile-2 col-tablet-8 col-desktop-12">
-                        <div className={styles.headerWrapper}>
+                <div className="grid align-center">
+                    {/* Section Title */}
+                    <div className="col-mobile-2 col-tablet-8 col-desktop-4">
+                        <div className={styles.sectionTitleWrapper}>
                             <BuilderText
-                                initialText={title}
-                                onUpdate={onUpdate}
-                                propName="title"
-                                as="h2"
-                                className={`h2 ${styles.title}`}
+                                tagName="h2"
+                                className={`h3 ${styles.sectionTitle}`}
+                                content={title}
+                                onChange={(val) => onUpdate && onUpdate({ title: val })}
                             />
                         </div>
                     </div>
-                </div>
 
-                <div className="grid">
+                    {/* Feature Cards */}
                     {features.map((feature, index) => (
-                        <div key={index} className="col-mobile-2 col-tablet-4 col-desktop-4">
+                        <div
+                            key={index}
+                            className="col-mobile-2 col-tablet-8 col-desktop-4"
+                        >
                             <div className={styles.card}>
-                                <div className={styles.iconWrapper}>
-                                    <CheckCircleIcon className={styles.icon} />
-                                </div>
                                 <BuilderText
-                                    initialText={feature.title}
-                                    onUpdate={(updates) => handleFeatureUpdate(index, 'title', updates.title)}
-                                    propName="title"
-                                    as="h3"
+                                    tagName="h3"
                                     className={`h3 ${styles.cardTitle}`}
+                                    content={feature.title}
+                                    onChange={(val) => handleFeatureUpdate(index, "title", val)}
                                 />
                                 <BuilderText
-                                    initialText={feature.description}
-                                    onUpdate={(updates) => handleFeatureUpdate(index, 'description', updates.description)}
-                                    propName="description"
-                                    as="p"
+                                    tagName="p"
                                     className={`body-regular ${styles.cardDescription}`}
+                                    content={feature.description}
+                                    onChange={(val) => handleFeatureUpdate(index, "description", val)}
                                 />
+                                <button className="btn btn-ghost btn-md">
+                                    More Info
+                                    <ArrowLongRightIcon />
+                                </button>
                             </div>
                         </div>
                     ))}

@@ -1,32 +1,31 @@
-import BuilderText from "../page-builder-components/utils/BuilderText";
+import styles from "./global-header-title-description.module.css";
+import BuilderText from "@/app/page-builder-components/common/BuilderText";
 
 /**
  * Centered Header Section - Title and Subtitle Only
  */
-export default function GlobalHeaderTitleDescription({ title = "Title", subtitle = "Subtitle", onUpdate }) {
+export default function GlobalHeaderTitleDescription({
+    title = "Title",
+    subtitle = "Subtitle",
+    onUpdate
+}) {
     return (
-        <section className="global-header-title-description">
+        <section className={styles.section}>
             <div className="container-grid">
-                <div className="grid align-center">
-                    <div className="col-mobile-2 col-tablet-8 col-desktop-12">
-                        <div className="text-center">
-                            <BuilderText
-                                initialText={title}
-                                onUpdate={onUpdate}
-                                propName="title"
-                                as="h2"
-                                className="h2"
-                                style={{ marginBottom: "var(--gap-sm)" }}
-                            />
-                            <BuilderText
-                                initialText={subtitle}
-                                onUpdate={onUpdate}
-                                propName="subtitle"
-                                as="p"
-                                className="body-regular"
-                                style={{ color: "var(--content-neutral--caption)" }}
-                            />
-                        </div>
+                <div className="grid">
+                    <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
+                        <BuilderText
+                            tagName="h2"
+                            className={`h2 ${styles.title}`}
+                            content={title}
+                            onChange={(val) => onUpdate && onUpdate({ title: val })}
+                        />
+                        <BuilderText
+                            tagName="p"
+                            className={`subheader-h1 ${styles.subtitle}`}
+                            content={subtitle}
+                            onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
+                        />
                     </div>
                 </div>
             </div>

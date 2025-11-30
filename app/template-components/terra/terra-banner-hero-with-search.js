@@ -1,57 +1,59 @@
 import styles from "./terra-banner-hero-with-search.module.css";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import BuilderText from "../../page-builder-components/utils/BuilderText";
+
+import BuilderText from "@/app/page-builder-components/common/BuilderText";
 
 /**
  * Hero Banner Component with Search
  */
 export default function TerraBannerHeroWithSearch({
     showSearchBar = true,
-    title = "Find exactly what you need",
-    description = "Search through thousands of resources, articles, and tutorials to help you build better.",
+    title = "Find Your Perfect Space",
+    description = "Search for the best workspaces in your area.",
+    placeholder = "Search location...",
     onUpdate
 }) {
     return (
-        <section className={styles.section}>
+        <main className={styles.hero}>
+            {/* Grid Container */}
             <div className="container-grid">
-                <div className="grid justify-center">
-                    <div className="col-mobile-2 col-tablet-8 col-desktop-8">
-                        <div className={styles.contentWrapper}>
-                            <BuilderText
-                                initialText={title}
-                                onUpdate={onUpdate}
-                                propName="title"
-                                as="h1"
-                                className={`h1 ${styles.title}`}
-                            />
-                            <BuilderText
-                                initialText={description}
-                                onUpdate={onUpdate}
-                                propName="description"
-                                as="p"
-                                className={`subheader-h1 ${styles.description}`}
-                            />
+                <div className="grid">
+                    {/* Content Column */}
+                    <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
 
-                            {/* Search Bar */}
-                            {showSearchBar && (
-                                <div className={styles.searchWrapper}>
-                                    <div className={styles.inputGroup}>
-                                        <MagnifyingGlassIcon className={styles.searchIcon} />
-                                        <input
-                                            type="text"
-                                            placeholder="Search for anything..."
-                                            className={styles.searchInput}
-                                        />
-                                    </div>
-                                    <button className="btn btn-primary btn-lg">
-                                        Search
-                                    </button>
-                                </div>
-                            )}
-                        </div>
+                        {/* Hero Title */}
+                        <BuilderText
+                            tagName="h1"
+                            className={`h1 ${styles.heroTitle}`}
+                            content={title}
+                            onChange={(val) => onUpdate && onUpdate({ title: val })}
+                        />
+
+                        {/* Hero Subtitle */}
+                        <BuilderText
+                            tagName="p"
+                            className={`subheader-h1 ${styles.heroSubtitle}`}
+                            content={description}
+                            onChange={(val) => onUpdate && onUpdate({ description: val })}
+                        />
+
+                        {/* Search Bar */}
+                        {showSearchBar && (
+                            <div className={styles.searchContainer}>
+                                <input
+                                    type="text"
+                                    className={`body-regular ${styles.searchInput}`}
+                                    placeholder={placeholder}
+                                    onChange={(e) => onUpdate && onUpdate({ placeholder: e.target.value })}
+                                />
+                                <button className={`btn btn-primary btn-icon btn-md ${styles.searchButton}`}>
+                                    <MagnifyingGlassIcon className="icon" />
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
-        </section>
+        </main>
     );
 }

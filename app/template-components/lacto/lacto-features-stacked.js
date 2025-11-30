@@ -2,48 +2,49 @@
 
 import React from 'react';
 import styles from './lacto-features-stacked.module.css';
-import BuilderText from "../../page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/common/BuilderText";
 
 /**
  * Lacto Features Stacked (Image Top)
  * Stacked layout with image on top, followed by text and CTA
  */
 export default function LactoFeaturesStacked({
-    title = "Fresh from the Farm",
-    description = "Our products are sourced directly from local farms to ensure the highest quality and freshness.",
-    buttonText = "Shop Now",
+    title = "Mulai Dari Milku Hari Jadi Milikku",
+    description = "Susu Sapi belgia Asli dengan Nutrisi Esensial Protein, Kalsium, Vitamin D, dan Zinc.",
+    buttonText = "Eksplor Milku!",
     onUpdate
 }) {
     return (
         <section className={styles.section}>
-            <div className="container-grid">
-                <div className="grid align-center">
-                    <div className="col-mobile-2 col-tablet-8 col-desktop-6">
-                        <div className="imagePlaceholder-4-3"></div>
-                    </div>
-                    <div className="col-mobile-2 col-tablet-8 col-desktop-6">
-                        <div className={styles.content}>
-                            <BuilderText
-                                initialText={title}
-                                onUpdate={onUpdate}
-                                propName="title"
-                                as="h2"
-                                className={`h2 ${styles.title}`}
-                            />
-                            <BuilderText
-                                initialText={description}
-                                onUpdate={onUpdate}
-                                propName="description"
-                                as="p"
-                                className={`body-regular ${styles.description}`}
-                            />
-                            <button className="btn btn-primary btn-md">
+            <div className="container-grid ">
+                <div className="grid justify-center">
+                    <div className="col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2">
+                        <div className={styles.contentWrapper}>
+                            {/* Media */}
+                            <div className="imagePlaceholder-16-9"></div>
+
+                            {/* Text Wrapper */}
+                            <div className={styles.textWrapper}>
                                 <BuilderText
-                                    initialText={buttonText}
-                                    onUpdate={onUpdate}
-                                    propName="buttonText"
-                                    as="span"
-                                    style={{ minWidth: "10px", display: "inline-block" }}
+                                    tagName="h2"
+                                    className={`h2 ${styles.title}`}
+                                    content={title}
+                                    onChange={(val) => onUpdate && onUpdate({ title: val })}
+                                />
+                                <BuilderText
+                                    tagName="p"
+                                    className={`subheader-h2 ${styles.description}`}
+                                    content={description}
+                                    onChange={(val) => onUpdate && onUpdate({ description: val })}
+                                />
+                            </div>
+
+                            {/* Call to Action */}
+                            <button className="btn btn-md btn-primary">
+                                <BuilderText
+                                    tagName="span"
+                                    content={buttonText}
+                                    onChange={(val) => onUpdate && onUpdate({ buttonText: val })}
                                 />
                             </button>
                         </div>
