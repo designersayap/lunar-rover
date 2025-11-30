@@ -297,6 +297,18 @@ export default function TemplateGeneratorPage() {
     }));
   }, []);
 
+  const updateSectionId = useCallback((uniqueId, newId) => {
+    setSelectedComponents(prev => prev.map(comp => {
+      if (comp.uniqueId === uniqueId) {
+        return {
+          ...comp,
+          sectionId: newId
+        };
+      }
+      return comp;
+    }));
+  }, []);
+
   const handleExport = useCallback(() => {
     handleExportTemplate(selectedComponents);
   }, [selectedComponents]);
@@ -328,6 +340,7 @@ export default function TemplateGeneratorPage() {
           moveDown={moveDown}
           removeComponent={removeComponent}
           updateComponent={updateComponent}
+          updateSectionId={updateSectionId}
         />
 
         {isSidebarVisible && (

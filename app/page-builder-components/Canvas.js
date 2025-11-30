@@ -1,9 +1,44 @@
+import { useState, useEffect } from "react";
 import {
     ArrowUpIcon,
     ArrowDownIcon,
     TrashIcon as TrashIconOutline,
 } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
+
+function SectionIdInput({ id, initialValue, onUpdate }) {
+    const [value, setValue] = useState(initialValue);
+
+    useEffect(() => {
+        setValue(initialValue);
+    }, [initialValue]);
+
+    const handleBlur = () => {
+        if (value !== initialValue) {
+            onUpdate(id, value);
+        }
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.target.blur();
+        }
+    };
+
+    return (
+        <div className={styles.controlId}>
+            <span className={styles.controlIdHash}>#</span>
+            <input
+                type="text"
+                className={styles.controlIdInput}
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                onBlur={handleBlur}
+                onKeyDown={handleKeyDown}
+            />
+        </div>
+    );
+}
 
 export default function Canvas({
     selectedComponents,
@@ -17,7 +52,8 @@ export default function Canvas({
     moveDown,
 
     removeComponent,
-    updateComponent
+    updateComponent,
+    updateSectionId
 }) {
     return (
         <div className={styles.canvas}>
@@ -65,6 +101,13 @@ export default function Canvas({
                                     )}
                                     {/* Grouped Control Buttons */}
                                     <div className={styles.controlButtons}>
+                                        {item.sectionId && (
+                                            <SectionIdInput
+                                                id={item.uniqueId}
+                                                initialValue={item.sectionId}
+                                                onUpdate={updateSectionId}
+                                            />
+                                        )}
                                         {index < selectedComponents.length - 1 && (
                                             <button
                                                 onClick={() => moveDown(index)}
