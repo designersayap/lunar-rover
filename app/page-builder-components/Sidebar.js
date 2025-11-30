@@ -150,7 +150,7 @@ export default function Sidebar({
                                             {components.map((comp) => (
                                                 <button
                                                     key={comp.id}
-                                                    onClick={(e) => addComponent(comp, e)}
+                                                    onClick={(e) => addComponent(comp, category, e)}
                                                     className={`${styles.sidebarButton} ${selectedComponentForConfig?.id === comp.id ? styles.sidebarButtonSelected : ''}`}
                                                 >
                                                     <div className={styles.sidebarButtonImageWrapper}>

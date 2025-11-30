@@ -193,7 +193,13 @@ export default function TemplateGeneratorPage() {
     setDraggedItemIndex(null);
   }, [draggedItemIndex, selectedComponents]);
 
-  const addComponent = useCallback((componentData, event) => {
+  const generateSectionId = (category) => {
+    const slug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    const random = Math.floor(1000 + Math.random() * 9000); // 4 digit random number
+    return `${slug}-${random}`;
+  };
+
+  const addComponent = useCallback((componentData, category, event) => {
     // Check if component has configuration options
     if (componentData.config && componentData.config.length > 0) {
       // Calculate position based on clicked element
@@ -210,7 +216,7 @@ export default function TemplateGeneratorPage() {
         left: rect.left - popoverWidth - 10 // Width of popover + 10px spacing
       });
 
-      setSelectedComponentForConfig({ ...componentData, selected: true });
+      setSelectedComponentForConfig({ ...componentData, category, selected: true });
 
       // Initialize config props based on component definition
       const initialProps = {};
@@ -220,9 +226,11 @@ export default function TemplateGeneratorPage() {
       setConfigProps(initialProps);
     } else {
       // No config, add directly
+      const sectionId = generateSectionId(category);
       setSelectedComponents(prev => [...prev, {
         ...componentData,
         uniqueId: Date.now(),
+        sectionId: sectionId,
         props: componentData.props || {}
       }]);
 
@@ -235,9 +243,11 @@ export default function TemplateGeneratorPage() {
   const insertComponent = useCallback(() => {
     if (!selectedComponentForConfig) return;
 
+    const sectionId = generateSectionId(selectedComponentForConfig.category);
     setSelectedComponents(prev => [...prev, {
       ...selectedComponentForConfig,
       uniqueId: Date.now(),
+      sectionId: sectionId,
       props: { ...configProps }
     }]);
 

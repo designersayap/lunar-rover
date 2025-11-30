@@ -22,7 +22,7 @@ export const handleExportTemplate = (selectedComponents) => {
     const wrapperClass = styles.componentWrapper.split(' ')[0];
     const componentWrappers = canvasElement.querySelectorAll(`.${wrapperClass}`);
 
-    Array.from(componentWrappers).forEach(wrapper => {
+    Array.from(componentWrappers).forEach((wrapper, index) => {
         const clone = wrapper.cloneNode(true);
 
         // Remove editor controls
@@ -45,7 +45,20 @@ export const handleExportTemplate = (selectedComponents) => {
             }
         });
 
-        cleanHtmlContent += clone.innerHTML + "\n";
+        const component = selectedComponents[index];
+        const sectionId = component?.sectionId || `section-${index}`;
+
+        // Apply ID to the root element of the component
+        // The clone is the wrapper, so we look for the first child that is an element (the component itself)
+        // We've already removed controls and indicators
+        const componentRoot = clone.firstElementChild;
+        if (componentRoot) {
+            componentRoot.id = sectionId;
+            cleanHtmlContent += componentRoot.outerHTML + "\n";
+        } else {
+            // Fallback if something is weird
+            cleanHtmlContent += clone.innerHTML + "\n";
+        }
     });
 
     // 2. Extract CSS
