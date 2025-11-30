@@ -279,14 +279,7 @@ export default function TemplateGeneratorPage() {
     handleExportTemplate(selectedComponents);
   }, [selectedComponents]);
 
-  const updateComponent = useCallback((uniqueId, newProps) => {
-    setSelectedComponents(prev => prev.map(comp => {
-      if (comp.uniqueId === uniqueId) {
-        return { ...comp, props: { ...comp.props, ...newProps } };
-      }
-      return comp;
-    }));
-  }, []);
+
 
   return (
     <div className={styles.container}>
