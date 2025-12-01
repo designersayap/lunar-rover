@@ -19,7 +19,7 @@ import { getThemes } from "@/app/page-builder-components/utils/get-themes";
  * Allows users to select and preview section components
  */
 export default function TemplateGeneratorPage() {
-  // All state declarations first
+
   const [selectedComponents, setSelectedComponents] = useState([]);
   const [showToaster, setShowToaster] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
@@ -29,6 +29,7 @@ export default function TemplateGeneratorPage() {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   const [activeTab, setActiveTab] = useState("elements"); // "elements" | "analytics"
   const [analyticsData, setAnalyticsData] = useState({
+    metaDescription: "",
     googleAnalyticsId: "",
     tikTokPixel: "",
     metaPixel: "",
@@ -38,8 +39,6 @@ export default function TemplateGeneratorPage() {
   const [selectedComponentForConfig, setSelectedComponentForConfig] = useState(null);
   const [configProps, setConfigProps] = useState({ showDescription: true });
   const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
-
-  // Theme State
   const [isThemePickerOpen, setIsThemePickerOpen] = useState(false);
   const [isExportPopoverOpen, setIsExportPopoverOpen] = useState(false);
   const [selectedThemeId, setSelectedThemeId] = useState("theme");
@@ -60,7 +59,7 @@ export default function TemplateGeneratorPage() {
     setShowToaster(true);
   }, []);
 
-  // Theme Switching Effect
+
   useEffect(() => {
     const themeLink = document.getElementById("theme-stylesheet");
     if (themeLink && themes.length > 0) {
@@ -89,15 +88,16 @@ export default function TemplateGeneratorPage() {
           if (originalComp) {
             return {
               ...savedComp,
-              component: originalComp.component // Restore the React component function
+              component: originalComp.component
             };
           }
           return null;
-        }).filter(Boolean); // Remove any components that couldn't be found
+        }).filter(Boolean);
 
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedComponents(rehydratedComponents);
         setAnalyticsData(parsed.analytics || {
+          metaDescription: "",
           googleAnalyticsId: "",
           tikTokPixel: "",
           metaPixel: "",
@@ -111,7 +111,7 @@ export default function TemplateGeneratorPage() {
 
   // Auto-save to localStorage whenever components or analytics change
   useEffect(() => {
-    if (selectedComponents.length > 0 || analyticsData.googleAnalyticsId || analyticsData.tikTokPixel || analyticsData.metaPixel || analyticsData.hotjarId) {
+    if (selectedComponents.length > 0 || analyticsData.metaDescription || analyticsData.googleAnalyticsId || analyticsData.tikTokPixel || analyticsData.metaPixel || analyticsData.hotjarId) {
       const dataToSave = {
         components: selectedComponents,
         analytics: analyticsData,
@@ -151,7 +151,7 @@ export default function TemplateGeneratorPage() {
       }
     };
 
-    // Initial check
+
     handleResize();
 
     window.addEventListener('resize', handleResize);
@@ -162,7 +162,7 @@ export default function TemplateGeneratorPage() {
     setDraggedItemIndex(index);
     e.dataTransfer.effectAllowed = "move";
 
-    // Drag Preview
+
     const dragImage = document.getElementById("custom-drag-image");
     if (dragImage) {
       const thumbnailEl = document.getElementById("drag-thumbnail-image");
@@ -199,17 +199,16 @@ export default function TemplateGeneratorPage() {
 
   const generateSectionId = (category) => {
     const slug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-    const random = Math.floor(1000 + Math.random() * 9000); // 4 digit random number
+    const random = Math.floor(1000 + Math.random() * 9000);
     return `${slug}-${random}`;
   };
 
   const addComponent = useCallback((componentData, category, event) => {
-    // Check if component has configuration options
+
     if (componentData.config && componentData.config.length > 0) {
-      // Calculate position based on clicked element
+
       const rect = event.currentTarget.getBoundingClientRect();
 
-      // Get popover width from CSS variable or fallback
       const container = document.querySelector(`.${styles.container}`);
       const popoverWidth = container ?
         parseInt(getComputedStyle(container).getPropertyValue('--popover-width')) || 362
@@ -217,19 +216,18 @@ export default function TemplateGeneratorPage() {
 
       setPopoverPosition({
         top: rect.top,
-        left: rect.left - popoverWidth - 10 // Width of popover + 10px spacing
+        left: rect.left - popoverWidth - 10
       });
 
       setSelectedComponentForConfig({ ...componentData, category, selected: true });
 
-      // Initialize config props based on component definition
+
       const initialProps = {};
       componentData.config.forEach(prop => {
         initialProps[prop.name] = prop.default;
       });
       setConfigProps(initialProps);
     } else {
-      // No config, add directly
       const sectionId = generateSectionId(category);
       setSelectedComponents(prev => [...prev, {
         ...componentData,
@@ -318,9 +316,9 @@ export default function TemplateGeneratorPage() {
   }, []);
 
   const handleExportConfirm = useCallback((csvLink) => {
-    handleExportTemplate(selectedComponents);
+    handleExportTemplate(selectedComponents, analyticsData);
     setIsExportPopoverOpen(false);
-  }, [selectedComponents]);
+  }, [selectedComponents, analyticsData]);
 
   const onDownloadCsv = useCallback(() => {
     handleExportCsv(selectedComponents);

@@ -42,20 +42,6 @@ export default function TerraFooter({
         onUpdate({ [section]: { ...[section], [key]: value } });
     };
 
-    const handleLinkUpdate = (section, index, key, value) => {
-        if (!onUpdate) return;
-        const sectionData = { ...[section] }; // This won't work as expected because [section] is not defined in scope like this
-        // Correct way:
-        let currentSectionData;
-        if (section === 'products') currentSectionData = products;
-        else if (section === 'social') currentSectionData = social;
-        else if (section === 'bottomBar') currentSectionData = bottomBar; // bottomBar has legalLinks
-
-        // Wait, bottomBar structure is different.
-        // Let's simplify.
-    };
-
-    // Redefining handlers for clarity
     const updateBrand = (key, val) => onUpdate && onUpdate({ brand: { ...brand, [key]: val } });
     const updateProductsTitle = (val) => onUpdate && onUpdate({ products: { ...products, title: val } });
     const updateProductLink = (index, val) => {
@@ -65,7 +51,6 @@ export default function TerraFooter({
         onUpdate({ products: { ...products, links: newLinks } });
     };
     const updateSocialTitle = (val) => onUpdate && onUpdate({ social: { ...social, title: val } });
-    // Social links usually are fixed labels for icons, but let's allow editing label if needed, or just href (but BuilderText is for text)
 
     const updateCopyright = (val) => onUpdate && onUpdate({ bottomBar: { ...bottomBar, copyright: val } });
     const updateLegalLink = (index, val) => {

@@ -11,6 +11,14 @@ import { searchComponents, searchAnalytics } from "./utils/search";
 
 const ANALYTICS_SECTIONS = [
     {
+        id: 'meta-description',
+        title: 'Meta Description',
+        type: 'textarea',
+        key: 'metaDescription',
+        placeholder: 'Enter page description for SEO...',
+        tooltip: 'This description will appear in search engine results.'
+    },
+    {
         id: 'google',
         title: 'Google Tag Manager',
         type: 'input',
@@ -65,7 +73,6 @@ export default function Sidebar({
         [analyticsSearch]
     );
 
-    // Auto-open first category when searching
     useEffect(() => {
         if (elementSearch) {
             const categories = Object.keys(filteredLibrary);
@@ -232,9 +239,7 @@ export default function Sidebar({
                                         />
                                     )}
                                 </div>
-                                {index < filteredAnalyticsSections.length - 1 && (
-                                    <div className={styles.separator} />
-                                )}
+                                {index < filteredAnalyticsSections.length - 1}
                             </div>
                         ))
                     )}
