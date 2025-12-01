@@ -11,7 +11,7 @@ import TopBar from "@/app/page-builder-components/topbar";
 import Canvas from "@/app/page-builder-components/canvas";
 import ConfigPopover from "@/app/page-builder-components/config-popover";
 import ThemePickerPopover from "@/app/page-builder-components/theme-picker-popover";
-import ExportPopover from "@/app/page-builder-components/ExportPopover";
+import ExportPopover from "@/app/page-builder-components/export-popover";
 import { getThemes } from "@/app/page-builder-components/utils/get-themes";
 
 /**
