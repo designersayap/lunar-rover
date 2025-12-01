@@ -5,11 +5,11 @@ import { BellAlertIcon, TrashIcon } from "@heroicons/react/24/solid";
 import styles from "./page.module.css";
 import { handleExportTemplate } from "@/app/page-builder-components/utils/export-template";
 import { componentLibrary } from "@/app/page-builder-components/content/component-library";
-import Sidebar from "@/app/page-builder-components/Sidebar";
-import TopBar from "@/app/page-builder-components/TopBar";
-import Canvas from "@/app/page-builder-components/Canvas";
-import ConfigPopover from "@/app/page-builder-components/ConfigPopover";
-import ThemePickerPopover from "@/app/page-builder-components/ThemePickerPopover";
+import Sidebar from "@/app/page-builder-components/sidebar";
+import TopBar from "@/app/page-builder-components/topbar";
+import Canvas from "@/app/page-builder-components/canvas";
+import ConfigPopover from "@/app/page-builder-components/config-popover";
+import ThemePickerPopover from "@/app/page-builder-components/theme-picker-popover";
 import { getThemes } from "@/app/page-builder-components/utils/get-themes";
 
 /**
@@ -92,6 +92,7 @@ export default function TemplateGeneratorPage() {
           return null;
         }).filter(Boolean); // Remove any components that couldn't be found
 
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedComponents(rehydratedComponents);
         setAnalyticsData(parsed.analytics || {
           googleAnalyticsId: "",
@@ -374,6 +375,7 @@ export default function TemplateGeneratorPage() {
           border: "1px solid var(--grey-200)",
           overflow: "hidden"
         }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             id="drag-thumbnail-image"
             src={null}

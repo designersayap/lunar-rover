@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import styles from './lacto-navigation.module.css';
-import BuilderText from "@/app/page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/builder-text";
 
 /**
  * Lacto Navigation Component

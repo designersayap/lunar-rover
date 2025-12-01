@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './lacto-features-stacked.module.css';
-import BuilderText from "@/app/page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/builder-text";
 
 /**
  * Lacto Features Stacked (Image Top)

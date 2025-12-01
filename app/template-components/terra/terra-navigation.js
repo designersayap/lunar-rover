@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Bars3Icon, XMarkIcon, ChevronDownIcon, GlobeAltIcon, UserIcon, ShoppingCartIcon } from '@heroicons/react/24/solid';
 import styles from './terra-navigation.module.css';
-import BuilderText from "@/app/page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/builder-text";
 
 export default function TerraNavigation({
     brandName = "Terra",

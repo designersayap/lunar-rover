@@ -1,7 +1,7 @@
 import styles from "./terra-banner-hero-with-search.module.css";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-import BuilderText from "@/app/page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/builder-text";
 
 /**
  * Hero Banner Component with Search

@@ -1,7 +1,7 @@
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 import styles from "./terra-usp-3col.module.css";
 
-import BuilderText from "@/app/page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/builder-text";
 
 /**
  * TerraUsp3col Component

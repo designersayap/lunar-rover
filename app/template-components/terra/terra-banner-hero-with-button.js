@@ -1,7 +1,7 @@
 import styles from "./terra-banner-hero-with-button.module.css";
 import { SparklesIcon } from "@heroicons/react/24/outline";
 
-import BuilderText from "@/app/page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/builder-text";
 
 export default function TerraBannerHeroWithButton({
     showButton = true,

@@ -8,7 +8,7 @@ import styles from "./terra-product-carousel-4-products.module.css";
  * Terra Product Carousel - 4 Products
  * Displays product carousel with tabs and horizontal scroll
  */
-import BuilderText from "@/app/page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/builder-text";
 
 /**
  * Terra Product Carousel - 4 Products

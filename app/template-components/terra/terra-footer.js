@@ -1,6 +1,6 @@
 
 import styles from "./terra-footer.module.css";
-import BuilderText from "@/app/page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/builder-text";
 
 /**
  * Footer Component

@@ -7,7 +7,7 @@ All components in `app/template-components` must support inline editing and dyna
 Instead of hardcoding text or using standard HTML tags for text (like `h1`, `p`, `span`), use the `BuilderText` component.
 
 ```javascript
-import BuilderText from "@/app/page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/builder-text";
 
 // ...
 
@@ -69,7 +69,7 @@ const handleFeatureUpdate = (index, key, value) => {
 ```javascript
 import React from 'react';
 import styles from './MyComponent.module.css';
-import BuilderText from "@/app/page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/builder-text";
 
 export default function MyComponent({
     title = "Default Title",

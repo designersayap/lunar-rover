@@ -1,7 +1,7 @@
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 import styles from "./terra-features-image-left.module.css";
 
-import BuilderText from "@/app/page-builder-components/utils/BuilderText";
+import BuilderText from "@/app/page-builder-components/utils/builder-text";
 
 /**
  * TerraFeaturesImageLeft Component
