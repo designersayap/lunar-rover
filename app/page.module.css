@@ -789,3 +789,148 @@
 .themePickerSearchContainer {
     margin-bottom: var(--padding-xs);
 }
+
+/* Export Popover */
+/* Export Popover */
+.exportPopover {
+    position: absolute;
+    top: 40px;
+    right: 16px;
+    width: 362px;
+    margin: 0;
+    background-color: var(--background-neutral--default);
+    box-shadow: var(--shadow--md);
+    border-radius: 10px;
+    outline: 0.5px solid var(--stroke-neutral--neutral);
+    outline-offset: -0.5px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.exportHeader {
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--stroke-neutral--neutral);
+}
+
+.exportTitle {
+    color: var(--content-neutral--title);
+    font-family: var(--font-family-body);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    text-transform: capitalize;
+}
+
+.exportClose {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--content-neutral--body);
+    background: none;
+    border: none;
+    padding: 0;
+    border-radius: var(--border-radius-round);
+}
+
+.exportClose:hover {
+    background-color: var(--background-neutral--neutral-faint);
+}
+
+.exportContent {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.exportInputWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.exportTextarea {
+    width: 100%;
+    min-height: 80px;
+    max-height: 240px;
+    padding: 8px 12px;
+    background-color: var(--background-neutral--default);
+    border: 0.5px solid var(--stroke-neutral--neutral);
+    border-radius: 8px;
+    outline: none;
+    font-family: var(--font-family-body);
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--content-neutral--title);
+    resize: none;
+    transition: border-color 0.2s;
+}
+
+.exportTextarea:focus {
+    border-color: var(--brand-color-300);
+}
+
+.exportTextarea::placeholder {
+    color: var(--content-neutral--caption);
+}
+
+.exportHelperText {
+    font-size: 12px;
+    line-height: 16px;
+    font-family: var(--font-family-body);
+}
+
+.exportLink {
+    color: var(--content-brand--brand-strong);
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.exportLinkText {
+    color: var(--content-neutral--caption);
+    font-weight: 400;
+}
+
+.exportFooter {
+    padding: 16px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+}
+
+.exportButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--background-neutral--neutral-faint);
+    color: var(--content-neutral--caption);
+    font-family: var(--font-family-body);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 16px;
+    text-transform: capitalize;
+    cursor: not-allowed;
+    transition: all 0.2s;
+}
+
+.exportButtonActive {
+    background-color: var(--background-brand--button--primary-default);
+    color: var(--content-neutral--button--primary);
+    cursor: pointer;
+}
+
+.exportButtonActive:hover {
+    background-color: var(--background-brand--button--primary-hover);
+}
