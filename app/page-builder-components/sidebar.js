@@ -15,7 +15,6 @@ const ANALYTICS_SECTIONS = [
         title: 'Meta Description',
         type: 'textarea',
         key: 'metaDescription',
-        placeholder: 'Enter page description for SEO...',
         tooltip: 'This description will appear in search engine results.'
     },
     {
@@ -29,23 +28,20 @@ const ANALYTICS_SECTIONS = [
     {
         id: 'tiktok',
         title: 'TikTok Ads',
-        type: 'textarea',
-        key: 'tikTokPixel',
-        placeholder: 'paste your script here'
+        type: 'input',
+        key: 'tikTokPixel'
     },
     {
         id: 'meta',
         title: 'Meta Ads',
-        type: 'textarea',
-        key: 'metaPixel',
-        placeholder: 'paste your script here'
+        type: 'input',
+        key: 'metaPixel'
     },
     {
         id: 'hotjar',
         title: 'Hotjar Analytics',
-        type: 'textarea',
-        key: 'hotjarId',
-        placeholder: 'paste your script here'
+        type: 'input',
+        key: 'hotjarId'
     }
 ];
 
@@ -239,7 +235,9 @@ export default function Sidebar({
                                         />
                                     )}
                                 </div>
-                                {index < filteredAnalyticsSections.length - 1}
+                                {index < filteredAnalyticsSections.length - 1 && (
+                                    <div className={styles.separator} />
+                                )}
                             </div>
                         ))
                     )}
