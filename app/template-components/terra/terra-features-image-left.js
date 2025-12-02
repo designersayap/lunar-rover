@@ -12,6 +12,7 @@ export default function TerraFeaturesImageLeft({
     title = componentDefaults["feature-left"].title,
     subtitle = componentDefaults["feature-left"].subtitle,
     buttonText = componentDefaults["feature-left"].buttonText,
+    buttonId,
     onUpdate,
     sectionId
 }) {
@@ -46,11 +47,13 @@ export default function TerraFeaturesImageLeft({
                         />
                         <BuilderButton
                             label={buttonText}
-                            iconRight={<ArrowLongRightIcon />}
                             href="#"
+                            suffix="cta"
                             sectionId={sectionId}
-                            className={`btn btn-${buttonStyle} btn-md`}
+                            className="btn btn-primary btn-lg"
                             onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                            id={buttonId}
+                            onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
                         />
                     </div>
                 </div>

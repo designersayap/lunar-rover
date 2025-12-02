@@ -11,6 +11,7 @@ export default function TerraFeaturesImageRight({
     title = componentDefaults["feature-right"].title,
     subtitle = componentDefaults["feature-right"].subtitle,
     buttonText = componentDefaults["feature-right"].buttonText,
+    buttonId,
     buttonStyle = "primary", // primary, neutral, ghost, outline, link
     imageSrc = "/placeholder.jpg",
     onUpdate,
@@ -40,11 +41,13 @@ export default function TerraFeaturesImageRight({
                         />
                         <BuilderButton
                             label={buttonText}
-                            iconRight={<ArrowLongRightIcon />}
                             href="#"
+                            suffix="cta"
                             sectionId={sectionId}
-                            className={`btn btn-${buttonStyle} btn-md`}
+                            className="btn btn-primary btn-lg"
                             onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                            id={buttonId}
+                            onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
                         />
                     </div>
 

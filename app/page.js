@@ -9,10 +9,11 @@ import { componentLibrary } from "@/app/page-builder-components/content/componen
 import Sidebar from "@/app/page-builder-components/sidebar";
 import TopBar from "@/app/page-builder-components/topbar";
 import Canvas from "@/app/page-builder-components/canvas";
-import ConfigPopover from "@/app/page-builder-components/config-popover";
+
 import ThemePickerPopover from "@/app/page-builder-components/theme-picker-popover";
 import ExportPopover from "@/app/page-builder-components/export-popover";
 import { getThemes } from "@/app/page-builder-components/utils/get-themes";
+import { BuilderSelectionProvider } from "@/app/page-builder-components/utils/builder-controls";
 
 /**
  * Template Generator Page
@@ -36,9 +37,7 @@ export default function TemplateGeneratorPage() {
     hotjarId: ""
   });
   const [openCategories, setOpenCategories] = useState({ "Hero Banner": true });
-  const [selectedComponentForConfig, setSelectedComponentForConfig] = useState(null);
-  const [configProps, setConfigProps] = useState({ showDescription: true });
-  const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
+
   const [isThemePickerOpen, setIsThemePickerOpen] = useState(false);
   const [isExportPopoverOpen, setIsExportPopoverOpen] = useState(false);
   const [selectedThemeId, setSelectedThemeId] = useState("theme");
@@ -212,59 +211,29 @@ export default function TemplateGeneratorPage() {
   };
 
   const addComponent = useCallback((componentData, category, event) => {
+    const sectionId = generateSectionId(category);
 
-    if (componentData.config && componentData.config.length > 0) {
-
-      const rect = event.currentTarget.getBoundingClientRect();
-
-      const popoverWidth = containerRef.current ?
-        parseInt(getComputedStyle(containerRef.current).getPropertyValue('--popover-width')) || 362
-        : 362;
-
-      setPopoverPosition({
-        top: rect.top,
-        left: rect.left - popoverWidth - 10
-      });
-
-      setSelectedComponentForConfig({ ...componentData, category, selected: true });
-
-
-      const initialProps = {};
+    // Initialize props with defaults if config exists
+    const initialProps = {};
+    if (componentData.config) {
       componentData.config.forEach(prop => {
         initialProps[prop.name] = prop.default;
       });
-      setConfigProps(initialProps);
-    } else {
-      const sectionId = generateSectionId(category);
-      setSelectedComponents(prev => [...prev, {
-        ...componentData,
-        uniqueId: Date.now(),
-        sectionId: sectionId,
-        props: componentData.props || {}
-      }]);
-
-      setToasterMessage(`${componentData.name} added`);
-      setToasterType("success");
-      setShowToaster(true);
     }
-  }, []);
 
-  const insertComponent = useCallback(() => {
-    if (!selectedComponentForConfig) return;
-
-    const sectionId = generateSectionId(selectedComponentForConfig.category);
     setSelectedComponents(prev => [...prev, {
-      ...selectedComponentForConfig,
+      ...componentData,
       uniqueId: Date.now(),
       sectionId: sectionId,
-      props: { ...configProps }
+      props: { ...initialProps, ...(componentData.props || {}) }
     }]);
 
-    setSelectedComponentForConfig(null);
-    setToasterMessage(`${selectedComponentForConfig.name} added`);
+    setToasterMessage(`${componentData.name} added`);
     setToasterType("success");
     setShowToaster(true);
-  }, [selectedComponentForConfig, configProps]);
+  }, []);
+
+
 
   const removeComponent = useCallback((uniqueId) => {
     const componentToRemove = selectedComponents.find(c => c.uniqueId === uniqueId);
@@ -335,122 +304,116 @@ export default function TemplateGeneratorPage() {
 
   return (
     <div className={styles.container} ref={containerRef}>
-      <TopBar
-        isSidebarVisible={isSidebarVisible}
-        setIsSidebarVisible={setIsSidebarVisible}
-        handleExport={handleExport}
-        onThemeClick={() => setIsThemePickerOpen(true)}
-        isThemePickerOpen={isThemePickerOpen}
-        selectedThemeId={selectedThemeId}
-        themes={themes}
-      />
-
-      <div className={styles.mainContent}>
-        <Canvas
-          selectedComponents={selectedComponents}
-          handleDragStart={handleDragStart}
-          handleDragOver={handleDragOver}
-          handleDrop={handleDrop}
-          draggedItemIndex={draggedItemIndex}
-          dropTargetIndex={dropTargetIndex}
-          setDraggedItemIndex={setDraggedItemIndex}
-          moveUp={moveUp}
-          moveDown={moveDown}
-          removeComponent={removeComponent}
-          updateComponent={updateComponent}
-          updateSectionId={updateSectionId}
-        />
-
-        {isSidebarVisible && (
-          <Sidebar
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            componentLibrary={componentLibrary}
-            openCategories={openCategories}
-            toggleCategory={toggleCategory}
-            addComponent={addComponent}
-            selectedComponentForConfig={selectedComponentForConfig}
-            analyticsData={analyticsData}
-            setAnalyticsData={setAnalyticsData}
-          />
-        )}
-      </div>
-
-      {/* Custom Drag Image (Hidden) */}
-      <div
-        id="custom-drag-image"
-        ref={dragImageRef}
-        className={styles.customDragImage}
-      >
-        <div style={{
-          height: "60px",
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "var(--grey-50)",
-          borderRadius: "var(--round-80)",
-          border: "1px solid var(--grey-200)",
-          overflow: "hidden"
-        }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            id="drag-thumbnail-image"
-            ref={dragThumbnailRef}
-            src={null}
-            alt="Preview"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover"
-            }}
-          />
-        </div>
-        <span
-          id="drag-name-content"
-          ref={dragNameRef}
-          style={{
-            fontSize: "var(--typography-font-size-80)",
-            fontWeight: "var(--font-weight-bold)",
-            color: "var(--content-neutral--title)"
-          }}></span>
-      </div>
-
-      <ConfigPopover
-        selectedComponent={selectedComponentForConfig}
-        position={popoverPosition}
-        configProps={configProps}
-        setConfigProps={setConfigProps}
-        onClose={() => setSelectedComponentForConfig(null)}
-        onInsert={insertComponent}
-      />
-      {isThemePickerOpen && (
-        <ThemePickerPopover
-          isOpen={isThemePickerOpen}
-          onClose={() => setIsThemePickerOpen(false)}
-          onSelectTheme={handleThemeSelect}
-          currentTheme={selectedThemeId}
+      <BuilderSelectionProvider>
+        <TopBar
+          isSidebarVisible={isSidebarVisible}
+          setIsSidebarVisible={setIsSidebarVisible}
+          handleExport={handleExport}
+          onThemeClick={() => setIsThemePickerOpen(true)}
+          isThemePickerOpen={isThemePickerOpen}
+          selectedThemeId={selectedThemeId}
           themes={themes}
         />
-      )}
-      {isExportPopoverOpen && (
-        <ExportPopover
-          isOpen={isExportPopoverOpen}
-          onClose={() => setIsExportPopoverOpen(false)}
-          onExport={handleExportConfirm}
-          onDownloadCsv={onDownloadCsv}
-        />
-      )} {/* Toaster Notification */}
-      {showToaster && (
-        <div className={`${styles.toaster} ${toasterType === "delete" ? styles.toasterDelete : ""}`}>
-          {toasterType === "delete" ? (
-            <TrashIcon className={styles.toasterIcon} />
-          ) : (
-            <BellAlertIcon className={styles.toasterIcon} />
+
+        <div className={styles.mainContent}>
+          <Canvas
+            selectedComponents={selectedComponents}
+            handleDragStart={handleDragStart}
+            handleDragOver={handleDragOver}
+            handleDrop={handleDrop}
+            draggedItemIndex={draggedItemIndex}
+            dropTargetIndex={dropTargetIndex}
+            setDraggedItemIndex={setDraggedItemIndex}
+            moveUp={moveUp}
+            moveDown={moveDown}
+            removeComponent={removeComponent}
+            updateComponent={updateComponent}
+            updateSectionId={updateSectionId}
+          />
+
+          {isSidebarVisible && (
+            <Sidebar
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              componentLibrary={componentLibrary}
+              openCategories={openCategories}
+              toggleCategory={toggleCategory}
+              addComponent={addComponent}
+              analyticsData={analyticsData}
+              setAnalyticsData={setAnalyticsData}
+            />
           )}
-          {toasterMessage}
         </div>
-      )}
+
+        {/* Custom Drag Image (Hidden) */}
+        <div
+          id="custom-drag-image"
+          ref={dragImageRef}
+          className={styles.customDragImage}
+        >
+          <div style={{
+            height: "60px",
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "var(--grey-50)",
+            borderRadius: "var(--round-80)",
+            border: "1px solid var(--grey-200)",
+            overflow: "hidden"
+          }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              id="drag-thumbnail-image"
+              ref={dragThumbnailRef}
+              src={null}
+              alt="Preview"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover"
+              }}
+            />
+          </div>
+          <span
+            id="drag-name-content"
+            ref={dragNameRef}
+            style={{
+              fontSize: "var(--typography-font-size-80)",
+              fontWeight: "var(--font-weight-bold)",
+              color: "var(--content-neutral--title)"
+            }}></span>
+        </div>
+
+
+        {isThemePickerOpen && (
+          <ThemePickerPopover
+            isOpen={isThemePickerOpen}
+            onClose={() => setIsThemePickerOpen(false)}
+            onSelectTheme={handleThemeSelect}
+            currentTheme={selectedThemeId}
+            themes={themes}
+          />
+        )}
+        {isExportPopoverOpen && (
+          <ExportPopover
+            isOpen={isExportPopoverOpen}
+            onClose={() => setIsExportPopoverOpen(false)}
+            onExport={handleExportConfirm}
+            onDownloadCsv={onDownloadCsv}
+          />
+        )} {/* Toaster Notification */}
+        {showToaster && (
+          <div className={`${styles.toaster} ${toasterType === "delete" ? styles.toasterDelete : ""}`}>
+            {toasterType === "delete" ? (
+              <TrashIcon className={styles.toasterIcon} />
+            ) : (
+              <BellAlertIcon className={styles.toasterIcon} />
+            )}
+            {toasterMessage}
+          </div>
+        )}
+      </BuilderSelectionProvider>
     </div>
   );
 }

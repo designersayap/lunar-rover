@@ -14,6 +14,7 @@ export default function LactoFeaturesStacked({
     title = componentDefaults["lacto-features-stacked"].title,
     subtitle = componentDefaults["lacto-features-stacked"].subtitle,
     buttonText = componentDefaults["lacto-features-stacked"].buttonText,
+    buttonId,
     buttonStyle = "primary", // primary, neutral, ghost, outline, link
     buttonSize = "md", // sm, md, lg
     onUpdate,
@@ -50,9 +51,12 @@ export default function LactoFeaturesStacked({
                             <BuilderButton
                                 label={buttonText}
                                 href="#"
+                                suffix="cta"
                                 sectionId={sectionId}
-                                className={`btn btn-${buttonSize} btn-${buttonStyle}`}
+                                className="btn btn-primary btn-lg"
                                 onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                id={buttonId}
+                                onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
                             />
                         </div>
                     </div>

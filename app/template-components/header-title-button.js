@@ -11,6 +11,7 @@ export default function GlobalHeaderTitleButton({
     title = componentDefaults["header-title-button"].title,
     subtitle = componentDefaults["header-title-button"].subtitle,
     buttonText = componentDefaults["header-title-button"].buttonText,
+    buttonId,
     buttonStyle = "primary", // primary, neutral, ghost, outline, link
     buttonSize = "lg", // sm, md, lg
     onUpdate,
@@ -36,6 +37,8 @@ export default function GlobalHeaderTitleButton({
                             sectionId={sectionId}
                             className={`btn btn-${buttonStyle} btn-${buttonSize} ${styles.button}`}
                             onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                            id={buttonId}
+                            onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
                         />
                     </div>
                 </div>

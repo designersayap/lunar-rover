@@ -15,7 +15,9 @@ export default function LactoMessageBox({
     title = componentDefaults["lacto-message-box"].title,
     subtitle = componentDefaults["lacto-message-box"].subtitle,
     primaryButtonText = componentDefaults["lacto-message-box"].primaryButtonText,
+    primaryButtonId,
     secondaryButtonText = componentDefaults["lacto-message-box"].secondaryButtonText,
+    secondaryButtonId,
     primaryButtonStyle = "primary",
     secondaryButtonStyle = "outline",
     buttonSize = "lg",
@@ -53,6 +55,8 @@ export default function LactoMessageBox({
                                         sectionId={sectionId}
                                         className={`btn btn-${primaryButtonStyle} btn-${buttonSize}`}
                                         onLabelChange={(val) => onUpdate && onUpdate({ primaryButtonText: val })}
+                                        id={primaryButtonId}
+                                        onIdChange={(val) => onUpdate && onUpdate({ primaryButtonId: val })}
                                     />
                                     <BuilderButton
                                         label={secondaryButtonText}
@@ -60,6 +64,8 @@ export default function LactoMessageBox({
                                         sectionId={sectionId}
                                         className={`btn btn-${secondaryButtonStyle} btn-${buttonSize}`}
                                         onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
+                                        id={secondaryButtonId}
+                                        onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
                                     />
                                 </div>
                             </div>

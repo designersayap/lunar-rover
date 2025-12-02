@@ -14,6 +14,7 @@ export default function TerraNavigation({
     brandName = componentDefaults["terra-navigation"].brandName,
     menuItems = componentDefaults["terra-navigation"].menuItems,
     buttonText = componentDefaults["terra-navigation"].buttonLabel,
+    buttonId, // Add buttonId prop
     onUpdate,
     sectionId
 }) {
@@ -56,8 +57,10 @@ export default function TerraNavigation({
                                 <BuilderLink
                                     key={index}
                                     href={item.href}
+                                    id={item.id}
                                     sectionId={sectionId}
                                     suffix={`menu-${index + 1}`}
+                                    onIdChange={(val) => handleMenuUpdate(index, "id", val)}
                                     className={`${styles.menuItem} body-regular`}
                                 >
                                     <BuilderText
@@ -81,6 +84,8 @@ export default function TerraNavigation({
                                 sectionId={sectionId}
                                 className={`btn btn-primary btn-sm ${styles.desktopOnly}`}
                                 onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                id={buttonId}
+                                onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
                                 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
                             />
 
@@ -104,8 +109,10 @@ export default function TerraNavigation({
                                 <BuilderLink
                                     key={index}
                                     href={item.href}
+                                    id={item.id}
                                     sectionId={sectionId}
                                     suffix={`menu-${index + 1}`}
+                                    onIdChange={(val) => handleMenuUpdate(index, "id", val)}
                                     className={`${styles.mobileMenuItem} body-regular`}
                                 >
                                     <BuilderText
@@ -125,6 +132,8 @@ export default function TerraNavigation({
                                 sectionId={sectionId}
                                 className={`${styles.mobileMenuItem} btn btn-primary btn-sm ${styles.mobileMenuBuy}`}
                                 onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                id={buttonId}
+                                onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
                                 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
                             />
                         </div>

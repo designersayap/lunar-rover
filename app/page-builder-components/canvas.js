@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useBuilderSelection } from "@/app/page-builder-components/utils/builder-controls";
 import {
     ArrowUpIcon,
     ArrowDownIcon,
@@ -55,8 +56,10 @@ export default function Canvas({
     updateComponent,
     updateSectionId
 }) {
+    const { setActiveElementId } = useBuilderSelection();
+
     return (
-        <div className={styles.canvas}>
+        <div className={styles.canvas} onClick={() => setActiveElementId(null)}>
             {/* Canvas Content */}
             <div className={styles.canvasInner}>
                 {selectedComponents.length === 0 ? (

@@ -14,6 +14,7 @@ export default function LactoProductCarousel({
     // Lacto Product Carousel Component
     products = componentDefaults["lacto-product-carousel"].products,
     buttonText = componentDefaults["lacto-product-carousel"].buttonText,
+    buttonId,
     buttonStyle = "primary", // primary, neutral, ghost, outline, link
     buttonSize = "lg", // sm, md, lg
     onUpdate,
@@ -92,11 +93,13 @@ export default function LactoProductCarousel({
                             </div>
                             <BuilderButton
                                 label={buttonText}
-                                iconLeft={<ShoppingCartIcon className={styles.icon} />}
                                 href="#"
+                                suffix="cta"
                                 sectionId={sectionId}
-                                className={`btn btn-${buttonStyle} btn-${buttonSize}`}
+                                className="btn btn-primary btn-lg"
                                 onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                id={buttonId}
+                                onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
                             />
                         </div>
                     </div>

@@ -934,3 +934,91 @@
 .exportButtonActive:hover {
     background-color: var(--background-brand--button--primary-hover);
 }
+
+/* Builder Controls */
+.activeWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.activeBorder {
+    outline: 1px solid #404040;
+    outline-offset: 2px;
+    border-radius: 1px;
+    position: relative;
+}
+
+.activeOverlay {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #404040;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1;
+    z-index: 50;
+    height: 20px;
+    white-space: nowrap;
+    width: 100px;
+}
+
+.overlayLabel {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px;
+    height: 100%;
+    font-family: var(--font-family-caption);
+    font-size: 10px;
+    line-height: var(--typography-line-height-caption-md);
+    font-weight: var(--font-weight-regular);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    flex-grow: 1;
+    min-width: 0;
+    /* Allows shrinking below content size if needed */
+    overflow: hidden;
+}
+
+.overlayInput {
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: var(--font-family-caption);
+    font-size: 10px;
+    line-height: var(--typography-line-height-caption-md);
+    font-weight: var(--font-weight-regular);
+    width: 100%;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+}
+
+
+.settingsButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 100%;
+    flex-shrink: 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--content-neutral--body-invert);
+    padding: 0;
+}
+
+.settingsButton svg {
+    width: 12px;
+    height: 12px;
+}
+
+.settingsButton:hover {
+    background-color: #2B2B2B;
+}

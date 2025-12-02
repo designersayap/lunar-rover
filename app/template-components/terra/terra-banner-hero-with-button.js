@@ -10,6 +10,7 @@ export default function TerraBannerHeroWithButton({
     title = componentDefaults["hero-button"].title,
     subtitle = componentDefaults["hero-button"].subtitle,
     buttonText = componentDefaults["hero-button"].buttonText,
+    buttonId,
     buttonStyle = "primary", // primary, neutral, ghost, outline, link
     buttonSize = "lg", // sm, md, lg
     showButton = true,
@@ -48,9 +49,12 @@ export default function TerraBannerHeroWithButton({
                                 <BuilderButton
                                     label={buttonText}
                                     href="#"
+                                    suffix="cta"
                                     sectionId={sectionId}
-                                    className={`btn btn-${buttonStyle} btn-${buttonSize}`}
+                                    className="btn btn-primary btn-lg"
                                     onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                    id={buttonId}
+                                    onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
                                 />
                             </div>
                         )}

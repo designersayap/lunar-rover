@@ -11,8 +11,7 @@ export default function GlobalHeaderTitleButtonDescription({
     title = componentDefaults["header-title-desc-button"].title,
     subtitle = componentDefaults["header-title-desc-button"].subtitle,
     buttonText = componentDefaults["header-title-desc-button"].buttonText,
-    buttonStyle = "primary", // primary, neutral, ghost, outline, link
-    buttonSize = "lg", // sm, md, lg
+    buttonId,
     onUpdate,
     sectionId
 }) {
@@ -37,12 +36,13 @@ export default function GlobalHeaderTitleButtonDescription({
                         />
                         <BuilderButton
                             label={buttonText}
-                            iconLeft={<SparklesIcon />}
-                            iconRight={<ArrowLongRightIcon />}
                             href="#"
+                            suffix="cta"
                             sectionId={sectionId}
-                            className={`btn btn-${buttonStyle} btn-${buttonSize} ${styles.button}`}
+                            className="btn btn-primary btn-lg"
                             onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                            id={buttonId}
+                            onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
                         />
                     </div>
                 </div>

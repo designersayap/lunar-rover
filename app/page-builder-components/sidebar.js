@@ -52,7 +52,6 @@ export default function Sidebar({
     openCategories,
     toggleCategory,
     addComponent,
-    selectedComponentForConfig,
     analyticsData,
     setAnalyticsData
 }) {
@@ -154,7 +153,7 @@ export default function Sidebar({
                                                 <button
                                                     key={comp.id}
                                                     onClick={(e) => addComponent(comp, category, e)}
-                                                    className={`${styles.sidebarButton} ${selectedComponentForConfig?.id === comp.id ? styles.sidebarButtonSelected : ''}`}
+                                                    className={`${styles.sidebarButton}`}
                                                 >
                                                     <div className={styles.sidebarButtonImageWrapper}>
                                                         <img

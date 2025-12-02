@@ -11,6 +11,7 @@ export default function TerraUsp3col({
     title = componentDefaults["usp-3col"].title,
     features = componentDefaults["usp-3col"].features,
     buttonText = componentDefaults["usp-3col"].buttonText,
+    buttonId,
     buttonStyle = "ghost", // primary, neutral, ghost, outline, link
     buttonSize = "md", // sm, md, lg
     onUpdate,
@@ -66,6 +67,8 @@ export default function TerraUsp3col({
                                     sectionId={sectionId}
                                     className={`btn btn-${buttonStyle} btn-${buttonSize}`}
                                     onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                    id={buttonId}
+                                    onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
                                 />
                             </div>
                         </div>

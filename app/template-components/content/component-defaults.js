@@ -8,7 +8,8 @@ export const componentDefaults = {
             { label: "Menu 3", href: "#" },
             { label: "Menu 4", href: "#" }
         ],
-        buttonLabel: "Button"
+        buttonLabel: "Button",
+        buttonId: ""
     },
     "lacto-navigation": {
         logo: "Lacto Logo",
@@ -18,7 +19,8 @@ export const componentDefaults = {
             { label: "Menu 3", href: "#" },
             { label: "Menu 4", href: "#" }
         ],
-        buttonLabel: "Button"
+        buttonLabel: "Button",
+        buttonId: ""
     },
     "header-title": {
         title: "Title"
@@ -29,17 +31,20 @@ export const componentDefaults = {
     },
     "header-title-button": {
         title: "Title",
-        buttonText: "Label"
+        buttonText: "Label",
+        buttonId: ""
     },
     "header-title-desc-button": {
         title: "Title",
         subtitle: "Subtitle",
-        buttonText: "Label"
+        buttonText: "Label",
+        buttonId: ""
     },
     "hero-button": {
         title: "Title",
         subtitle: "Subtitle",
-        buttonText: "Label"
+        buttonText: "Label",
+        buttonId: ""
     },
     "hero-search": {
         title: "Title",
@@ -49,17 +54,20 @@ export const componentDefaults = {
     "feature-left": {
         title: "Title",
         subtitle: "Subtitle",
-        buttonText: "Label"
+        buttonText: "Label",
+        buttonId: ""
     },
     "feature-right": {
         title: "Title",
         subtitle: "Subtitle",
-        buttonText: "Label"
+        buttonText: "Label",
+        buttonId: ""
     },
     "lacto-features-stacked": {
         title: "Title",
         subtitle: "Subtitle",
-        buttonText: "Label"
+        buttonText: "Label",
+        buttonId: ""
     },
     "lacto-media": {
         // No text defaults needed for now, but keeping entry for consistency
@@ -71,7 +79,8 @@ export const componentDefaults = {
             { title: "Title", subtitle: "Subtitle" },
             { title: "Title", subtitle: "Subtitle" }
         ],
-        buttonText: "Label"
+        buttonText: "Label",
+        buttonId: ""
     },
     "usp-4col": {
         title: "Title",
@@ -81,7 +90,8 @@ export const componentDefaults = {
             { title: "Title", subtitle: "Subtitle" },
             { title: "Title", subtitle: "Subtitle" }
         ],
-        buttonText: "Label"
+        buttonText: "Label",
+        buttonId: ""
     },
     "testimony": {
         testimonials: [
@@ -108,13 +118,16 @@ export const componentDefaults = {
             { title: "Product Name", subtitle: "Description" },
             { title: "Product Name", subtitle: "Description" }
         ],
-        buttonText: "Label"
+        buttonText: "Label",
+        buttonId: ""
     },
     "lacto-message-box": {
         title: "Title",
         subtitle: "Subtitle",
         primaryButtonText: "Label",
-        secondaryButtonText: "Label"
+        primaryButtonId: "",
+        secondaryButtonText: "Label",
+        secondaryButtonId: ""
     },
     "footer": {
         brand: { title: "Brand", subtitle: "The advantage of hiring a workspace with us is that givees you comfortable service and all-around facilities." },

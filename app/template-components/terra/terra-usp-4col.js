@@ -11,6 +11,7 @@ export default function TerraUsp4col({
     title = componentDefaults["usp-4col"].title,
     features = componentDefaults["usp-4col"].features,
     buttonText = componentDefaults["usp-4col"].buttonText,
+    buttonId, // Added buttonId prop
     buttonStyle = "ghost", // primary, neutral, ghost, outline, link
     buttonSize = "md", // sm, md, lg
     onUpdate,
@@ -66,6 +67,8 @@ export default function TerraUsp4col({
                                     sectionId={sectionId}
                                     className={`btn btn-${buttonStyle} btn-${buttonSize}`}
                                     onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                    id={buttonId} // Pass buttonId
+                                    onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })} // Handle buttonId updates
                                 />
                             </div>
                         </div>

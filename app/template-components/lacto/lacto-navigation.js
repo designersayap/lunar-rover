@@ -17,6 +17,7 @@ export default function LactoNavigation({
     logo = componentDefaults["lacto-navigation"].logo,
     menuItems = componentDefaults["lacto-navigation"].menuItems,
     buttonText = componentDefaults["lacto-navigation"].buttonLabel,
+    buttonId,
     onUpdate,
     sectionId
 }) {
