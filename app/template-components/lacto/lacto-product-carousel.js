@@ -6,6 +6,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { ShoppingCartIcon } from '@heroicons/react/24/solid';
 import styles from './lacto-product-carousel.module.css';
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderButton from "@/app/page-builder-components/utils/builder-button";
 
 export default function LactoProductCarousel({
     products = [
@@ -29,7 +30,8 @@ export default function LactoProductCarousel({
         }
     ],
     buttonText = "Buy Product",
-    onUpdate
+    onUpdate,
+    sectionId
 }) {
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -101,14 +103,18 @@ export default function LactoProductCarousel({
                                     />
                                 </h1>
                             </div>
-                            <button className="btn btn-primary btn-lg">
-                                <ShoppingCartIcon className={styles.icon} />
-                                <BuilderText
-                                    tagName="span"
-                                    content={buttonText}
-                                    onChange={(val) => onUpdate && onUpdate({ buttonText: val })}
-                                />
-                            </button>
+                            <BuilderButton
+                                label={
+                                    <>
+                                        <ShoppingCartIcon className={styles.icon} />
+                                        {buttonText}
+                                    </>
+                                }
+                                href="#"
+                                sectionId={sectionId}
+                                className="btn btn-primary btn-lg"
+                                onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                            />
                         </div>
                     </div>
 

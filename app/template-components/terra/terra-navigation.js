@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Bars3Icon, XMarkIcon, ChevronDownIcon, GlobeAltIcon, UserIcon, ShoppingCartIcon } from '@heroicons/react/24/solid';
 import styles from './terra-navigation.module.css';
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderButton from "@/app/page-builder-components/utils/builder-button";
 
 export default function TerraNavigation({
     brandName = "Terra",
@@ -14,7 +15,8 @@ export default function TerraNavigation({
         { label: "Menu 4", href: "#" },
     ],
     buttonText = "Beli Sekarang",
-    onUpdate
+    onUpdate,
+    sectionId
 }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -74,14 +76,15 @@ export default function TerraNavigation({
 
                         {/* 1.3 Account Button & Mobile Toggle */}
                         <div className={styles.actionsContainer}>
-                            <button className={`btn btn-primary btn-sm ${styles.desktopOnly}`} aria-label="Buy Menu">
-                                <BuilderText
-                                    tagName="span"
-                                    content={buttonText}
-                                    onChange={(val) => onUpdate && onUpdate({ buttonText: val })}
-                                />
-                                <ShoppingCartIcon className={styles.icon} />
-                            </button>
+                            <BuilderButton
+                                label={buttonText}
+                                href="#"
+                                suffix="desktop"
+                                sectionId={sectionId}
+                                className={`btn btn-primary btn-sm ${styles.desktopOnly}`}
+                                onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                            />
 
                             <button
                                 className={`btn btn-ghost-neutral btn-md ${styles.mobileToggle} ${styles.mobileOnly}`}
@@ -112,10 +115,15 @@ export default function TerraNavigation({
                                 )
                             ))}
                             {/* Account Button in Mobile Menu */}
-                            <button className={`${styles.mobileMenuItem} btn btn-primary btn-sm ${styles.mobileMenuBuy}`} aria-label="Buy Menu">
-                                {buttonText}
-                                <ShoppingCartIcon className={styles.icon} />
-                            </button>
+                            <BuilderButton
+                                label={buttonText}
+                                href="#"
+                                suffix="mobile"
+                                sectionId={sectionId}
+                                className={`${styles.mobileMenuItem} btn btn-primary btn-sm ${styles.mobileMenuBuy}`}
+                                onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                            />
                         </div>
                     )}
                 </div>

@@ -3,6 +3,7 @@
 import React from 'react';
 import styles from './lacto-message-box.module.css';
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderButton from "@/app/page-builder-components/utils/builder-button";
 
 /**
  * Lacto Message Box Component
@@ -13,7 +14,8 @@ export default function LactoMessageBox({
     description = "Description",
     primaryButtonText = "Label",
     secondaryButtonText = "Label",
-    onUpdate
+    onUpdate,
+    sectionId
 }) {
     return (
         <section className={styles.section}>
@@ -38,20 +40,20 @@ export default function LactoMessageBox({
                                 </div>
 
                                 <div className={styles.buttonWrapper}>
-                                    <button className="btn btn-primary btn-lg">
-                                        <BuilderText
-                                            tagName="span"
-                                            content={primaryButtonText}
-                                            onChange={(val) => onUpdate && onUpdate({ primaryButtonText: val })}
-                                        />
-                                    </button>
-                                    <button className="btn btn-outline btn-lg">
-                                        <BuilderText
-                                            tagName="span"
-                                            content={secondaryButtonText}
-                                            onChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
-                                        />
-                                    </button>
+                                    <BuilderButton
+                                        label={primaryButtonText}
+                                        href="#"
+                                        sectionId={sectionId}
+                                        className="btn btn-primary btn-lg"
+                                        onLabelChange={(val) => onUpdate && onUpdate({ primaryButtonText: val })}
+                                    />
+                                    <BuilderButton
+                                        label={secondaryButtonText}
+                                        href="#"
+                                        sectionId={sectionId}
+                                        className="btn btn-outline btn-lg"
+                                        onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
+                                    />
                                 </div>
                             </div>
                         </div>

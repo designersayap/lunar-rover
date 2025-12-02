@@ -1,53 +1,55 @@
 import styles from "./terra-banner-hero-with-button.module.css";
-import { SparklesIcon } from "@heroicons/react/24/outline";
-
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderButton from "@/app/page-builder-components/utils/builder-button";
 
+/**
+ * TerraBannerHeroWithButton Component
+ */
 export default function TerraBannerHeroWithButton({
-    showButton = true,
     title = "Hero Title",
     description = "Hero description goes here.",
     buttonText = "Get Started",
-    onUpdate
+    showButton = true,
+    onUpdate,
+    sectionId
 }) {
     return (
-        <main className={`${styles.hero} imagePlaceholder-5-4`}>
-            {/* Grid Container */}
+        <section className={styles.section}>
             <div className="container-grid">
-                <div className="grid">
-                    {/* Content Column */}
-                    <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
-
-                        {/* Hero Title */}
-                        <BuilderText
-                            tagName="h1"
-                            className={`h1 ${styles.heroTitle}`}
-                            content={title}
-                            onChange={(val) => onUpdate && onUpdate({ title: val })}
-                        />
-
-                        {/* Hero Subtitle */}
-                        <BuilderText
-                            tagName="p"
-                            className={`subheader-h1 ${styles.heroSubtitle}`}
-                            content={description}
-                            onChange={(val) => onUpdate && onUpdate({ description: val })}
-                        />
-
-                        {/* CTA Button */}
-                        {showButton && (
-                            <button className={`btn btn-primary btn-md ${styles.ctaButton}`}>
-                                <SparklesIcon width={20} height={20} />
+                <div className="grid align-center">
+                    <div className="col-mobile-4 col-tablet-8 col-desktop-8 col-desktop-offset-2">
+                        <div className={styles.contentWrapper}>
+                            <div className={styles.titleWrapper}>
                                 <BuilderText
-                                    tagName="span"
-                                    content={buttonText}
-                                    onChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                    tagName="h1"
+                                    className={`h1 ${styles.title}`}
+                                    content={title}
+                                    onChange={(val) => onUpdate && onUpdate({ title: val })}
                                 />
-                            </button>
-                        )}
+                            </div>
+                            <div className={styles.descriptionWrapper}>
+                                <BuilderText
+                                    tagName="p"
+                                    className={`body-large ${styles.description}`}
+                                    content={description}
+                                    onChange={(val) => onUpdate && onUpdate({ description: val })}
+                                />
+                            </div>
+                            {showButton && (
+                                <div className={styles.buttonWrapper}>
+                                    <BuilderButton
+                                        label={buttonText}
+                                        href="#"
+                                        sectionId={sectionId}
+                                        className="btn btn-primary btn-lg"
+                                        onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                    />
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
-        </main>
+        </section>
     );
 }

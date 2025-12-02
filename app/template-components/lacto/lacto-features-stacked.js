@@ -3,6 +3,7 @@
 import React from 'react';
 import styles from './lacto-features-stacked.module.css';
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderButton from "@/app/page-builder-components/utils/builder-button";
 
 /**
  * Lacto Features Stacked (Image Top)
@@ -12,7 +13,8 @@ export default function LactoFeaturesStacked({
     title = "Mulai Dari Milku Hari Jadi Milikku",
     description = "Susu Sapi belgia Asli dengan Nutrisi Esensial Protein, Kalsium, Vitamin D, dan Zinc.",
     buttonText = "Eksplor Milku!",
-    onUpdate
+    onUpdate,
+    sectionId
 }) {
     return (
         <section className={styles.section}>
@@ -40,13 +42,13 @@ export default function LactoFeaturesStacked({
                             </div>
 
                             {/* Call to Action */}
-                            <button className="btn btn-md btn-primary">
-                                <BuilderText
-                                    tagName="span"
-                                    content={buttonText}
-                                    onChange={(val) => onUpdate && onUpdate({ buttonText: val })}
-                                />
-                            </button>
+                            <BuilderButton
+                                label={buttonText}
+                                href="#"
+                                sectionId={sectionId}
+                                className="btn btn-md btn-primary"
+                                onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                            />
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,6 @@
-import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 import styles from "./terra-features-image-left.module.css";
-
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderButton from "@/app/page-builder-components/utils/builder-button";
 
 /**
  * TerraFeaturesImageLeft Component
@@ -11,7 +10,8 @@ export default function TerraFeaturesImageLeft({
     title = "Feature Title",
     description = "Detailed description of the feature goes here. Explain the benefits and how it helps the user.",
     buttonText = "Label",
-    onUpdate
+    onUpdate,
+    sectionId
 }) {
     return (
         <section className={styles.container}>
@@ -40,13 +40,13 @@ export default function TerraFeaturesImageLeft({
                             content={description}
                             onChange={(val) => onUpdate && onUpdate({ description: val })}
                         />
-                        <button className={`btn btn-${buttonStyle} btn-md`}>
-                            <BuilderText
-                                tagName="span"
-                                content={buttonText}
-                                onChange={(val) => onUpdate && onUpdate({ buttonText: val })}
-                            />
-                        </button>
+                        <BuilderButton
+                            label={buttonText}
+                            href="#"
+                            sectionId={sectionId}
+                            className={`btn btn-${buttonStyle} btn-md`}
+                            onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                        />
                     </div>
                 </div>
             </div>

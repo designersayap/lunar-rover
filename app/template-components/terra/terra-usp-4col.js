@@ -2,6 +2,7 @@ import styles from "./terra-usp-4col.module.css";
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderButton from "@/app/page-builder-components/utils/builder-button";
 
 /**
  * TerraUsp4col Component
@@ -14,7 +15,8 @@ export default function TerraUsp4col({
         { title: "Title", description: "Description" },
         { title: "Title", description: "Description" },
     ],
-    onUpdate
+    onUpdate,
+    sectionId
 }) {
     const handleFeatureUpdate = (index, key, value) => {
         if (!onUpdate) return;
@@ -58,10 +60,18 @@ export default function TerraUsp4col({
                                     content={feature.description}
                                     onChange={(val) => handleFeatureUpdate(index, "description", val)}
                                 />
-                                <button className="btn btn-ghost btn-md">
-                                    More Info
-                                    <ArrowLongRightIcon />
-                                </button>
+                                <BuilderButton
+                                    label={
+                                        <>
+                                            More Info
+                                            <ArrowLongRightIcon style={{ width: "20px", height: "20px", marginLeft: "8px" }} />
+                                        </>
+                                    }
+                                    href="#"
+                                    suffix={index}
+                                    sectionId={sectionId}
+                                    className="btn btn-ghost btn-md"
+                                />
                             </div>
                         </div>
                     ))}

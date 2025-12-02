@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { BellAlertIcon, TrashIcon } from "@heroicons/react/24/solid";
 import styles from "./page.module.css";
 import { handleExportTemplate } from "@/app/page-builder-components/utils/export-template";
@@ -43,6 +43,12 @@ export default function TemplateGeneratorPage() {
   const [isExportPopoverOpen, setIsExportPopoverOpen] = useState(false);
   const [selectedThemeId, setSelectedThemeId] = useState("theme");
   const [themes, setThemes] = useState([]);
+
+  // Refs
+  const containerRef = useRef(null);
+  const dragImageRef = useRef(null);
+  const dragThumbnailRef = useRef(null);
+  const dragNameRef = useRef(null);
 
   useEffect(() => {
     const loadThemes = async () => {
@@ -109,16 +115,22 @@ export default function TemplateGeneratorPage() {
     }
   }, []);
 
-  // Auto-save to localStorage whenever components or analytics change
+  // Auto-save to localStorage whenever components or analytics change (Debounced)
   useEffect(() => {
-    if (selectedComponents.length > 0 || analyticsData.metaDescription || analyticsData.googleAnalyticsId || analyticsData.tikTokPixel || analyticsData.metaPixel || analyticsData.hotjarId) {
-      const dataToSave = {
-        components: selectedComponents,
-        analytics: analyticsData,
-        lastSaved: new Date().toISOString()
-      };
-      localStorage.setItem('lunar-template-builder', JSON.stringify(dataToSave));
-    }
+    const saveToLocalStorage = () => {
+      if (selectedComponents.length > 0 || analyticsData.metaDescription || analyticsData.googleAnalyticsId || analyticsData.tikTokPixel || analyticsData.metaPixel || analyticsData.hotjarId) {
+        const dataToSave = {
+          components: selectedComponents,
+          analytics: analyticsData,
+          lastSaved: new Date().toISOString()
+        };
+        localStorage.setItem('lunar-template-builder', JSON.stringify(dataToSave));
+      }
+    };
+
+    const timeoutId = setTimeout(saveToLocalStorage, 1000); // 1s debounce
+
+    return () => clearTimeout(timeoutId);
   }, [selectedComponents, analyticsData]);
 
   useEffect(() => {
@@ -163,15 +175,11 @@ export default function TemplateGeneratorPage() {
     e.dataTransfer.effectAllowed = "move";
 
 
-    const dragImage = document.getElementById("custom-drag-image");
-    if (dragImage) {
-      const thumbnailEl = document.getElementById("drag-thumbnail-image");
-      const nameEl = document.getElementById("drag-name-content");
+    if (dragImageRef.current) {
+      if (dragThumbnailRef.current) dragThumbnailRef.current.src = thumbnail || "";
+      if (dragNameRef.current) dragNameRef.current.innerText = componentName || "Section";
 
-      if (thumbnailEl) thumbnailEl.src = thumbnail || "";
-      if (nameEl) nameEl.innerText = componentName || "Section";
-
-      e.dataTransfer.setDragImage(dragImage, 0, 0);
+      e.dataTransfer.setDragImage(dragImageRef.current, 0, 0);
     }
   }, []);
 
@@ -209,9 +217,8 @@ export default function TemplateGeneratorPage() {
 
       const rect = event.currentTarget.getBoundingClientRect();
 
-      const container = document.querySelector(`.${styles.container}`);
-      const popoverWidth = container ?
-        parseInt(getComputedStyle(container).getPropertyValue('--popover-width')) || 362
+      const popoverWidth = containerRef.current ?
+        parseInt(getComputedStyle(containerRef.current).getPropertyValue('--popover-width')) || 362
         : 362;
 
       setPopoverPosition({
@@ -327,7 +334,7 @@ export default function TemplateGeneratorPage() {
 
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={containerRef}>
       <TopBar
         isSidebarVisible={isSidebarVisible}
         setIsSidebarVisible={setIsSidebarVisible}
@@ -372,6 +379,7 @@ export default function TemplateGeneratorPage() {
       {/* Custom Drag Image (Hidden) */}
       <div
         id="custom-drag-image"
+        ref={dragImageRef}
         className={styles.customDragImage}
       >
         <div style={{
@@ -388,6 +396,7 @@ export default function TemplateGeneratorPage() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             id="drag-thumbnail-image"
+            ref={dragThumbnailRef}
             src={null}
             alt="Preview"
             style={{
@@ -397,11 +406,14 @@ export default function TemplateGeneratorPage() {
             }}
           />
         </div>
-        <span id="drag-name-content" style={{
-          fontSize: "var(--typography-font-size-80)",
-          fontWeight: "var(--font-weight-bold)",
-          color: "var(--content-neutral--title)"
-        }}></span>
+        <span
+          id="drag-name-content"
+          ref={dragNameRef}
+          style={{
+            fontSize: "var(--typography-font-size-80)",
+            fontWeight: "var(--font-weight-bold)",
+            color: "var(--content-neutral--title)"
+          }}></span>
       </div>
 
       <ConfigPopover

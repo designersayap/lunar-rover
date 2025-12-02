@@ -141,6 +141,7 @@ export default function Canvas({
                                     {/* Render Component */}
                                     <Component
                                         {...item.props}
+                                        sectionId={item.sectionId}
                                         onUpdate={(newProps) => updateComponent(item.uniqueId, newProps)}
                                     />
                                 </div>

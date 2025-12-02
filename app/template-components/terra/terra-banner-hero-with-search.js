@@ -11,7 +11,8 @@ export default function TerraBannerHeroWithSearch({
     title = "Find Your Perfect Space",
     description = "Search for the best workspaces in your area.",
     placeholder = "Search location...",
-    onUpdate
+    onUpdate,
+    sectionId
 }) {
     return (
         <main className={styles.hero}>
@@ -46,7 +47,10 @@ export default function TerraBannerHeroWithSearch({
                                     placeholder={placeholder}
                                     onChange={(e) => onUpdate && onUpdate({ placeholder: e.target.value })}
                                 />
-                                <button className={`btn btn-primary btn-icon btn-md ${styles.searchButton}`}>
+                                <button
+                                    id={sectionId ? `${sectionId}-btn-primary` : undefined}
+                                    className={`btn btn-primary btn-icon btn-md ${styles.searchButton}`}
+                                >
                                     <MagnifyingGlassIcon className="icon" />
                                 </button>
                             </div>

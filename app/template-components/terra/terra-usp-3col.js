@@ -2,6 +2,7 @@ import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 import styles from "./terra-usp-3col.module.css";
 
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderButton from "@/app/page-builder-components/utils/builder-button";
 
 /**
  * TerraUsp3col Component
@@ -13,7 +14,8 @@ export default function TerraUsp3col({
         { title: "Title", description: "Description" },
         { title: "Title", description: "Description" },
     ],
-    onUpdate
+    onUpdate,
+    sectionId
 }) {
     const handleFeatureUpdate = (index, key, value) => {
         if (!onUpdate) return;
@@ -57,10 +59,18 @@ export default function TerraUsp3col({
                                     content={feature.description}
                                     onChange={(val) => handleFeatureUpdate(index, "description", val)}
                                 />
-                                <button className="btn btn-ghost btn-md">
-                                    More Info
-                                    <ArrowLongRightIcon />
-                                </button>
+                                <BuilderButton
+                                    label={
+                                        <>
+                                            More Info
+                                            <ArrowLongRightIcon style={{ width: "20px", height: "20px", marginLeft: "8px" }} />
+                                        </>
+                                    }
+                                    href="#"
+                                    suffix={index}
+                                    sectionId={sectionId}
+                                    className="btn btn-ghost btn-md"
+                                />
                             </div>
                         </div>
                     ))}

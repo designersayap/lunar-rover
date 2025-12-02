@@ -37,11 +37,6 @@ export default function BuilderText({
         }
     };
 
-    const handleInput = (e) => {
-        // Optional: Update local state immediately if needed for other UI feedback
-        // setText(e.target.innerText);
-    };
-
     const Tag = tagName;
 
     return (
@@ -52,7 +47,6 @@ export default function BuilderText({
             contentEditable
             suppressContentEditableWarning={true}
             onBlur={handleBlur}
-            onInput={handleInput}
         >
             {text}
         </Tag>
