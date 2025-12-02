@@ -8,28 +8,14 @@ import styles from './lacto-product-carousel.module.css';
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
 import BuilderButton from "@/app/page-builder-components/utils/builder-button";
 
+import { componentDefaults } from "../content/component-defaults";
+
 export default function LactoProductCarousel({
-    products = [
-        {
-            id: 1,
-            title: "Meiji Oishii Gyunyu",
-            description: "Vanilla flavored milk, packaged for your daily enjoyment.",
-            image: "/images/placeholders/product-1.png",
-        },
-        {
-            id: 2,
-            title: "Fresh Strawberry Milk",
-            description: "Sweet and refreshing strawberry milk made from fresh.",
-            image: "/images/placeholders/product-2.png",
-        },
-        {
-            id: 3,
-            title: "Classic Chocolate",
-            description: "Rich chocolate milk that brings back childhood memories.",
-            image: "/images/placeholders/product-3.png",
-        }
-    ],
-    buttonText = "Buy Product",
+    // Lacto Product Carousel Component
+    products = componentDefaults["lacto-product-carousel"].products,
+    buttonText = componentDefaults["lacto-product-carousel"].buttonText,
+    buttonStyle = "primary", // primary, neutral, ghost, outline, link
+    buttonSize = "lg", // sm, md, lg
     onUpdate,
     sectionId
 }) {
@@ -93,26 +79,23 @@ export default function LactoProductCarousel({
                                         tagName="span"
                                         content={activeProduct.title}
                                         onChange={(val) => handleProductUpdate(activeProductIndex, "title", val)}
+                                        sectionId={sectionId}
                                     />
                                 </h3>
-                                <h1 className={`subheader-h1 ${styles.description}`}>
-                                    <BuilderText
-                                        tagName="span"
-                                        content={activeProduct.description}
-                                        onChange={(val) => handleProductUpdate(activeProductIndex, "description", val)}
-                                    />
-                                </h1>
+                                <BuilderText
+                                    tagName="h1"
+                                    className={`subheader-h1 ${styles.description}`}
+                                    content={activeProduct.subtitle}
+                                    onChange={(val) => handleProductUpdate(activeProductIndex, "subtitle", val)}
+                                    sectionId={sectionId}
+                                />
                             </div>
                             <BuilderButton
-                                label={
-                                    <>
-                                        <ShoppingCartIcon className={styles.icon} />
-                                        {buttonText}
-                                    </>
-                                }
+                                label={buttonText}
+                                iconLeft={<ShoppingCartIcon className={styles.icon} />}
                                 href="#"
                                 sectionId={sectionId}
-                                className="btn btn-primary btn-lg"
+                                className={`btn btn-${buttonStyle} btn-${buttonSize}`}
                                 onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
                             />
                         </div>

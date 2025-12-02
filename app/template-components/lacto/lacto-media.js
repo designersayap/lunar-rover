@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styles from './lacto-media.module.css';
+import { componentDefaults } from "../content/component-defaults";
 
 /**
  * Lacto Media Component

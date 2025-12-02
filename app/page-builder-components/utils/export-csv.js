@@ -1,4 +1,4 @@
-import { componentDefaults } from "../content/component-defaults";
+import { componentDefaults } from "@/app/template-components/content/component-defaults";
 
 /**
  * Exports the selected components to a CSV file.

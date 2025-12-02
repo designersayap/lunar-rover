@@ -1,15 +1,18 @@
 import styles from "./terra-features-image-right.module.css";
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
 import BuilderButton from "@/app/page-builder-components/utils/builder-button";
+import { ArrowLongRightIcon } from "@heroicons/react/20/solid";
+import { componentDefaults } from "../content/component-defaults";
 
 /**
  * TerraFeaturesImageRight Component
  */
 export default function TerraFeaturesImageRight({
-    buttonStyle = "primary",
-    title = "Feature Title",
-    description = "Detailed description of the feature goes here. Explain the benefits and how it helps the user.",
-    buttonText = "Label",
+    title = componentDefaults["feature-right"].title,
+    subtitle = componentDefaults["feature-right"].subtitle,
+    buttonText = componentDefaults["feature-right"].buttonText,
+    buttonStyle = "primary", // primary, neutral, ghost, outline, link
+    imageSrc = "/placeholder.jpg",
     onUpdate,
     sectionId
 }) {
@@ -25,16 +28,19 @@ export default function TerraFeaturesImageRight({
                             style={{ marginBottom: "var(--gap-lg)" }}
                             content={title}
                             onChange={(val) => onUpdate && onUpdate({ title: val })}
+                            sectionId={sectionId}
                         />
                         <BuilderText
                             tagName="p"
                             className="subheader-h2"
                             style={{ color: "var(--content-neutral--caption)", marginBottom: "var(--gap-sm)" }}
-                            content={description}
-                            onChange={(val) => onUpdate && onUpdate({ description: val })}
+                            content={subtitle}
+                            onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
+                            sectionId={sectionId}
                         />
                         <BuilderButton
                             label={buttonText}
+                            iconRight={<ArrowLongRightIcon />}
                             href="#"
                             sectionId={sectionId}
                             className={`btn btn-${buttonStyle} btn-md`}

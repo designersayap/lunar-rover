@@ -1,20 +1,19 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Bars3Icon, XMarkIcon, ChevronDownIcon, GlobeAltIcon, UserIcon, ShoppingCartIcon } from '@heroicons/react/24/solid';
+import { Bars3Icon, XMarkIcon, GlobeAltIcon } from '@heroicons/react/24/solid';
+import { ShoppingBagIcon } from "@heroicons/react/20/solid";
 import styles from './terra-navigation.module.css';
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
 import BuilderButton from "@/app/page-builder-components/utils/builder-button";
+import BuilderLink from "@/app/page-builder-components/utils/builder-link";
+import { componentDefaults } from "../content/component-defaults";
 
 export default function TerraNavigation({
-    brandName = "Terra",
-    menuItems = [
-        { label: "Menu 1", href: "#" },
-        { label: "Menu 2", href: "#", hasDropdown: true },
-        { label: "Menu 3", href: "#" },
-        { label: "Menu 4", href: "#" },
-    ],
-    buttonText = "Beli Sekarang",
+    logo = componentDefaults["terra-navigation"].logo,
+    brandName = componentDefaults["terra-navigation"].brandName,
+    menuItems = componentDefaults["terra-navigation"].menuItems,
+    buttonText = componentDefaults["terra-navigation"].buttonLabel,
     onUpdate,
     sectionId
 }) {
@@ -46,6 +45,7 @@ export default function TerraNavigation({
                                     tagName="span"
                                     content={brandName}
                                     onChange={(val) => onUpdate && onUpdate({ brandName: val })}
+                                    sectionId={sectionId}
                                 />
                             </span>
                         </div>
@@ -53,24 +53,21 @@ export default function TerraNavigation({
                         {/* 1.2 Menu (Desktop) */}
                         <div className={`${styles.menuContainer} ${styles.desktopOnly}`}>
                             {menuItems.map((item, index) => (
-                                item.hasDropdown ? (
-                                    <div key={index} className={`${styles.menuItemWithArrow} btn btn-sm btn-ghost-neutral`}>
-                                        <BuilderText
-                                            tagName="span"
-                                            content={item.label}
-                                            onChange={(val) => handleMenuUpdate(index, "label", val)}
-                                        />
-                                        <ChevronDownIcon className={styles.arrowIcon} />
-                                    </div>
-                                ) : (
-                                    <a key={index} href={item.href} className={`${styles.menuItem} btn btn-sm btn-ghost-neutral`}>
-                                        <BuilderText
-                                            tagName="span"
-                                            content={item.label}
-                                            onChange={(val) => handleMenuUpdate(index, "label", val)}
-                                        />
-                                    </a>
-                                )
+                                <BuilderLink
+                                    key={index}
+                                    href={item.href}
+                                    sectionId={sectionId}
+                                    suffix={`menu-${index + 1}`}
+                                    className={`${styles.menuItem} body-regular`}
+                                >
+                                    <BuilderText
+                                        tagName="span"
+                                        content={item.label}
+                                        onChange={(val) => handleMenuUpdate(index, "label", val)}
+                                        sectionId={sectionId}
+                                        noId={true}
+                                    />
+                                </BuilderLink>
                             ))}
                         </div>
 
@@ -78,6 +75,7 @@ export default function TerraNavigation({
                         <div className={styles.actionsContainer}>
                             <BuilderButton
                                 label={buttonText}
+                                iconLeft={<ShoppingBagIcon />}
                                 href="#"
                                 suffix="desktop"
                                 sectionId={sectionId}
@@ -103,16 +101,21 @@ export default function TerraNavigation({
                     {isMobileMenuOpen && (
                         <div className={`${styles.mobileMenu} ${styles.mobileOnly}`}>
                             {menuItems.map((item, index) => (
-                                item.hasDropdown ? (
-                                    <div key={index} className={`${styles.mobileMenuItem} btn btn-sm btn-ghost-neutral`}>
-                                        {item.label}
-                                        <ChevronDownIcon className={styles.arrowIcon} />
-                                    </div>
-                                ) : (
-                                    <a key={index} href={item.href} className={`${styles.mobileMenuItem} btn btn-sm btn-ghost-neutral`}>
-                                        {item.label}
-                                    </a>
-                                )
+                                <BuilderLink
+                                    key={index}
+                                    href={item.href}
+                                    sectionId={sectionId}
+                                    suffix={`menu-${index + 1}`}
+                                    className={`${styles.mobileMenuItem} body-regular`}
+                                >
+                                    <BuilderText
+                                        tagName="span"
+                                        content={item.label}
+                                        onChange={(val) => handleMenuUpdate(index, "label", val)}
+                                        sectionId={sectionId}
+                                        noId={true}
+                                    />
+                                </BuilderLink>
                             ))}
                             {/* Account Button in Mobile Menu */}
                             <BuilderButton

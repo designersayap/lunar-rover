@@ -16,21 +16,23 @@ import BuilderText from "./builder-text";
  * @param {function} onHrefChange - Callback when href changes (not yet implemented in UI but good to have)
  */
 export default function BuilderButton({
-    label = "Button",
+    label = "Label",
     href = "#",
     suffix,
     sectionId,
     className = "",
     onLabelChange,
-    style = {}
+    style = {},
+    iconLeft,
+    iconRight
 }) {
     // Extract the button variant class (e.g., btn-primary, btn-ghost) from className
-    const variantClass = className.split(' ').find(c => c.startsWith('btn-') && c !== 'btn-lg' && c !== 'btn-md' && c !== 'btn-sm' && c !== 'btn-icon') || 'btn-default';
+    const variantClass = className.split(' ').find(c => c.startsWith('btn-') && !['btn-lg', 'btn-md', 'btn-sm', 'btn-icon'].includes(c)) || 'btn-default';
 
     const buttonId = sectionId ? `${sectionId}-${variantClass}${suffix ? `-${suffix}` : ''}` : undefined;
 
-    // If href is empty, don't render the button (per previous logic)
-    if (!href) return null;
+    // If href is empty, we still render the button in builder mode to allow editing
+    // if (!href) return null;
 
     const handleClick = (e) => {
         // Prevent navigation in builder
@@ -40,16 +42,21 @@ export default function BuilderButton({
     return (
         <Link
             id={buttonId}
-            href={href}
+            href={href || "#"}
             className={className}
             onClick={handleClick}
             style={style}
         >
+            {iconLeft}
             <BuilderText
                 tagName="span"
                 content={label}
                 onChange={onLabelChange}
+                placeholder="Button Label"
+                multiline={false}
+                noId={true}
             />
+            {iconRight}
         </Link>
     );
 }

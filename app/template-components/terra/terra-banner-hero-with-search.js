@@ -1,16 +1,17 @@
 import styles from "./terra-banner-hero-with-search.module.css";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { componentDefaults } from "../content/component-defaults";
 
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
 
 /**
- * Hero Banner Component with Search
+ * TerraBannerHeroWithSearch Component
  */
 export default function TerraBannerHeroWithSearch({
+    title = componentDefaults["hero-search"].title,
+    subtitle = componentDefaults["hero-search"].subtitle,
+    placeholder = componentDefaults["hero-search"].placeholder,
     showSearchBar = true,
-    title = "Find Your Perfect Space",
-    description = "Search for the best workspaces in your area.",
-    placeholder = "Search location...",
     onUpdate,
     sectionId
 }) {
@@ -28,14 +29,16 @@ export default function TerraBannerHeroWithSearch({
                             className={`h1 ${styles.heroTitle}`}
                             content={title}
                             onChange={(val) => onUpdate && onUpdate({ title: val })}
+                            sectionId={sectionId}
                         />
 
                         {/* Hero Subtitle */}
                         <BuilderText
                             tagName="p"
                             className={`subheader-h1 ${styles.heroSubtitle}`}
-                            content={description}
-                            onChange={(val) => onUpdate && onUpdate({ description: val })}
+                            content={subtitle}
+                            onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
+                            sectionId={sectionId}
                         />
 
                         {/* Search Bar */}

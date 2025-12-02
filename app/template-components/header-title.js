@@ -1,13 +1,14 @@
-import styles from "./global-header-title-description.module.css";
+import styles from "./header-title.module.css";
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import { componentDefaults } from "./content/component-defaults";
 
 /**
- * Centered Header Section - Title and Subtitle Only
+ * Centered Header Section - Title Only
  */
-export default function GlobalHeaderTitleDescription({
-    title = "Title",
-    subtitle = "Subtitle",
-    onUpdate
+export default function GlobalHeaderTitle({
+    title = componentDefaults["header-title"].title,
+    onUpdate,
+    sectionId
 }) {
     return (
         <section className={styles.section}>
@@ -19,12 +20,7 @@ export default function GlobalHeaderTitleDescription({
                             className={`h2 ${styles.title}`}
                             content={title}
                             onChange={(val) => onUpdate && onUpdate({ title: val })}
-                        />
-                        <BuilderText
-                            tagName="p"
-                            className={`subheader-h1 ${styles.subtitle}`}
-                            content={subtitle}
-                            onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
+                            sectionId={sectionId}
                         />
                     </div>
                 </div>
