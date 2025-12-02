@@ -110,7 +110,7 @@ export default function BuilderButton({
         <Link
             id={buttonId}
             href={href || "#"}
-            className={`${className} ${isActive ? styles.activeWrapper : ''}`}
+            className={`${className} ${isActive ? styles.activeWrapper : ''} ${isActive ? styles.activeBorder : ''}`}
             onClick={handleClick}
             style={style}
         >
@@ -132,7 +132,7 @@ export default function BuilderButton({
                     </button>
                 </div>
             )}
-            <div className={isActive ? styles.activeBorder : ''} style={{ display: 'flex', alignItems: 'center', gap: 'inherit', width: '100%', height: '100%' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'inherit', width: '100%', height: '100%' }}>
                 {iconLeft}
                 <BuilderText
                     tagName="span"

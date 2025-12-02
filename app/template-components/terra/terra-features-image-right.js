@@ -44,7 +44,8 @@ export default function TerraFeaturesImageRight({
                             href="#"
                             suffix="cta"
                             sectionId={sectionId}
-                            className="btn btn-primary btn-lg"
+                            className="btn btn-ghost btn-md"
+                            iconRight={<ArrowLongRightIcon />}
                             onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
                             id={buttonId}
                             onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}

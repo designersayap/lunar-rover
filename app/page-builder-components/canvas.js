@@ -15,6 +15,10 @@ function SectionIdInput({ id, initialValue, onUpdate }) {
     }, [initialValue]);
 
     const handleBlur = () => {
+        if (!value.trim()) {
+            setValue(initialValue);
+            return;
+        }
         if (value !== initialValue) {
             onUpdate(id, value);
         }
