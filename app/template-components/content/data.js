@@ -1,42 +1,84 @@
-// Mock data for component previews
+export const componentDefaults = {
+    "terra-navigation": {
+        logo: "GlobeAltIcon",
+        brandName: "Brand",
+        menuItems: [
+            { label: "Menu 1", href: "#" },
+            { label: "Menu 2", href: "#" },
+            { label: "Menu 3", href: "#" },
+            { label: "Menu 4", href: "#" }
+        ],
+        buttonLabel: "Button",
+        buttonId: ""
+    },
+    "lacto-navigation": {
+        logo: "Lacto Logo",
+        menuItems: [
+            { label: "Menu 1", href: "#" },
+            { label: "Menu 2", href: "#" },
+            { label: "Menu 3", href: "#" },
+            { label: "Menu 4", href: "#" }
+        ],
+        buttonLabel: "Button",
+        buttonId: ""
+    },
+    "header-title": {
+        title: "Title"
+    },
+    "header-title-desc": {
+        title: "Title",
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+    },
+    "header-title-button": {
+        title: "Title",
+        buttonText: "Label",
+        buttonId: ""
+    },
+    "header-title-desc-button": {
+        title: "Title",
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+        buttonText: "Label",
+        buttonId: ""
+    },
+    "hero-button": {
+        title: "Title",
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+        buttonText: "Label",
+        buttonId: ""
+    },
 
-export const uspData3Col = {
-    title: "Our Key Features",
-    features: [
-        {
-            title: "Feature 1",
-            description: "Description for feature 1"
-        },
-        {
-            title: "Feature 2",
-            description: "Description for feature 2"
-        }
-    ]
-};
+    "feature-left": {
+        title: "Title",
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+        buttonText: "Label",
+        buttonId: "",
+        image: ""
+    },
+    "feature-right": {
+        title: "Title",
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+        buttonText: "Label",
+        buttonId: "",
+        image: ""
+    },
+    "lacto-features-stacked": {
+        title: "Title",
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+        buttonText: "Label",
+        buttonId: "",
+        image: ""
+    },
 
-export const uspData4Col = {
-    title: "Our Key Features",
-    features: [
-        {
-            title: "Feature 1",
-            description: "Description for feature 1"
-        },
-        {
-            title: "Feature 2",
-            description: "Description for feature 2"
-        },
-        {
-            title: "Feature 3",
-            description: "Description for feature 4"
-        }
-    ]
-};
 
-export const footerData = {
-    copyright: "© 2024 Your Company. All rights reserved.",
-    links: [
-        { label: "Privacy Policy", href: "#" },
-        { label: "Terms of Service", href: "#" },
-        { label: "Contact", href: "#" }
-    ]
+
+
+    "lacto-message-box": {
+        title: "Title",
+        subtitle: "Subtitle",
+        primaryButtonText: "Label",
+        primaryButtonId: "",
+        secondaryButtonText: "Label",
+        secondaryButtonId: ""
+    },
+
 };

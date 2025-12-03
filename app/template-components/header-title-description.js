@@ -1,6 +1,6 @@
 import styles from "./header-title-description.module.css";
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
-import { componentDefaults } from "./content/component-defaults";
+import { componentDefaults } from "./content/data";
 
 /**
  * Centered Header Section - Title with Description

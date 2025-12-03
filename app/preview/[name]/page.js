@@ -9,19 +9,19 @@ import GlobalHeaderTitleButton from "../../template-components/header-title-butt
 import GlobalHeaderTitleDescription from "../../template-components/header-title-description";
 import GlobalHeaderTitleButtonDescription from "../../template-components/header-title-description-button";
 import TerraBannerHeroWithButton from "@/app/template-components/terra/terra-banner-hero-with-button";
-import TerraBannerHeroWithSearch from "@/app/template-components/terra/terra-banner-hero-with-search";
+
 import TerraFeaturesImageLeft from "@/app/template-components/terra/terra-features-image-left";
 import TerraFeaturesImageRight from "@/app/template-components/terra/terra-features-image-right";
-import TerraUsp3col from "@/app/template-components/terra/terra-usp-3col";
-import TerraUsp4col from "@/app/template-components/terra/terra-usp-4col";
-import TerraFooter from "@/app/template-components/terra/terra-footer";
-import TerraTestimony from "@/app/template-components/terra/terra-testimony";
-import TerraProductCarousel4Products from "@/app/template-components/terra/terra-product-carousel-4-products";
+
+
+
+
+
 import TerraNavigation from "@/app/template-components/terra/terra-navigation";
 import LactoNavigation from "@/app/template-components/lacto/lacto-navigation";
 import LactoFeaturesStacked from "@/app/template-components/lacto/lacto-features-stacked";
-import LactoMedia from "@/app/template-components/lacto/lacto-media";
-import LactoProductCarousel from "@/app/template-components/lacto/lacto-product-carousel";
+
+
 import LactoMessageBox from "@/app/template-components/lacto/lacto-message-box";
 
 export default function ComponentPreviewPage() {
@@ -35,18 +35,18 @@ export default function ComponentPreviewPage() {
         "global-header-title-description": GlobalHeaderTitleDescription,
         "header-title-description-button": GlobalHeaderTitleButtonDescription,
         "terra-banner-hero-with-button": TerraBannerHeroWithButton,
-        "terra-banner-hero-with-search": TerraBannerHeroWithSearch,
-        "terra-testimony": TerraTestimony,
-        "terra-product-carousel-4-products": TerraProductCarousel4Products,
+
+
+
         "terra-features-image-left": TerraFeaturesImageLeft,
         "terra-features-image-right": TerraFeaturesImageRight,
-        "terra-usp-3col": TerraUsp3col,
-        "terra-usp-4col": TerraUsp4col,
-        "terra-footer": TerraFooter,
+
+
+
         "lacto-navigation": LactoNavigation,
         "lacto-features-stacked": LactoFeaturesStacked,
-        "lacto-media": LactoMedia,
-        "lacto-product-carousel": LactoProductCarousel,
+
+
         "lacto-message-box": LactoMessageBox,
     };
 
@@ -72,10 +72,7 @@ export default function ComponentPreviewPage() {
         );
     }
 
-    // Render with specific props if needed
-    // if (name === "terra-footer") {
-    //     return <Component {...footerData} />;
-    // }
+
 
     return <Component />;
 }

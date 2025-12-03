@@ -1,4 +1,4 @@
-import { componentDefaults } from "@/app/template-components/content/component-defaults";
+import { componentDefaults } from "@/app/template-components/content/data";
 
 /**
  * Determine the property type of a content field

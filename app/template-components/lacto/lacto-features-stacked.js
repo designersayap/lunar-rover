@@ -5,7 +5,7 @@ import styles from './lacto-features-stacked.module.css';
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
 import BuilderButton from "@/app/page-builder-components/utils/builder-button";
 import BuilderImage from "@/app/page-builder-components/utils/builder-image";
-import { componentDefaults } from "../content/component-defaults";
+import { componentDefaults } from "../content/data";
 
 /**
  * Lacto Features Stacked (Image Top)

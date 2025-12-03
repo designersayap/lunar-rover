@@ -2,7 +2,7 @@ import { SparklesIcon, ArrowLongRightIcon } from "@heroicons/react/20/solid";
 import styles from "./header-title-description-button.module.css";
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
 import BuilderButton from "@/app/page-builder-components/utils/builder-button";
-import { componentDefaults } from "./content/component-defaults";
+import { componentDefaults } from "./content/data";
 
 /**
  * Centered Header Section - Title with Description and Button

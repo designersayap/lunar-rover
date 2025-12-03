@@ -3,7 +3,7 @@ import BuilderText from "@/app/page-builder-components/utils/builder-text";
 import BuilderButton from "@/app/page-builder-components/utils/builder-button";
 import BuilderImage from "@/app/page-builder-components/utils/builder-image";
 import { ArrowLongRightIcon } from "@heroicons/react/20/solid";
-import { componentDefaults } from "../content/component-defaults";
+import { componentDefaults } from "../content/data";
 
 /**
  * TerraFeaturesImageRight Component

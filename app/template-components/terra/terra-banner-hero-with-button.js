@@ -1,7 +1,7 @@
 import styles from "./terra-banner-hero-with-button.module.css";
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
 import BuilderButton from "@/app/page-builder-components/utils/builder-button";
-import { componentDefaults } from "../content/component-defaults";
+import { componentDefaults } from "../content/data";
 
 /**
  * TerraBannerHeroWithButton Component
