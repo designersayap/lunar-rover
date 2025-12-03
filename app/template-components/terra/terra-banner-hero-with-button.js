@@ -1,17 +1,24 @@
 import styles from "./terra-banner-hero-with-button.module.css";
-import { SparklesIcon } from "@heroicons/react/24/outline";
-
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderButton from "@/app/page-builder-components/utils/builder-button";
+import { componentDefaults } from "../content/component-defaults";
 
+/**
+ * TerraBannerHeroWithButton Component
+ */
 export default function TerraBannerHeroWithButton({
+    title = componentDefaults["hero-button"].title,
+    subtitle = componentDefaults["hero-button"].subtitle,
+    buttonText = componentDefaults["hero-button"].buttonText,
+    buttonId,
+    buttonStyle = "primary", // primary, neutral, ghost, outline, link
+    buttonSize = "lg", // sm, md, lg
     showButton = true,
-    title = "Hero Title",
-    description = "Hero description goes here.",
-    buttonText = "Get Started",
-    onUpdate
+    onUpdate,
+    sectionId
 }) {
     return (
-        <main className={`${styles.hero} imagePlaceholder-5-4`}>
+        <main className={styles.hero}>
             {/* Grid Container */}
             <div className="container-grid">
                 <div className="grid">
@@ -24,26 +31,32 @@ export default function TerraBannerHeroWithButton({
                             className={`h1 ${styles.heroTitle}`}
                             content={title}
                             onChange={(val) => onUpdate && onUpdate({ title: val })}
+                            sectionId={sectionId}
                         />
 
                         {/* Hero Subtitle */}
                         <BuilderText
                             tagName="p"
                             className={`subheader-h1 ${styles.heroSubtitle}`}
-                            content={description}
-                            onChange={(val) => onUpdate && onUpdate({ description: val })}
+                            content={subtitle}
+                            onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
+                            sectionId={sectionId}
                         />
 
-                        {/* CTA Button */}
+                        {/* Button */}
                         {showButton && (
-                            <button className={`btn btn-primary btn-md ${styles.ctaButton}`}>
-                                <SparklesIcon width={20} height={20} />
-                                <BuilderText
-                                    tagName="span"
-                                    content={buttonText}
-                                    onChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                            <div className={styles.buttonWrapper}>
+                                <BuilderButton
+                                    label={buttonText}
+                                    href="#"
+                                    suffix="cta"
+                                    sectionId={sectionId}
+                                    className="btn btn-primary btn-lg"
+                                    onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                    id={buttonId}
+                                    onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
                                 />
-                            </button>
+                            </div>
                         )}
                     </div>
                 </div>

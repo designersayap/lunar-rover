@@ -28,8 +28,8 @@
     color: var(--content-neutral--body);
 }
 
-.description {
-    color: var(--content-neutral--body);
+.subtitle {
+    color: var(--content-neutral--caption);
 }
 
 /* Responsive Adjustments */

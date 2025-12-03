@@ -6,30 +6,20 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { ShoppingCartIcon } from '@heroicons/react/24/solid';
 import styles from './lacto-product-carousel.module.css';
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderButton from "@/app/page-builder-components/utils/builder-button";
+import BuilderImage from "@/app/page-builder-components/utils/builder-image";
+
+import { componentDefaults } from "../content/component-defaults";
 
 export default function LactoProductCarousel({
-    products = [
-        {
-            id: 1,
-            title: "Meiji Oishii Gyunyu",
-            description: "Vanilla flavored milk, packaged for your daily enjoyment.",
-            image: "/images/placeholders/product-1.png",
-        },
-        {
-            id: 2,
-            title: "Fresh Strawberry Milk",
-            description: "Sweet and refreshing strawberry milk made from fresh.",
-            image: "/images/placeholders/product-2.png",
-        },
-        {
-            id: 3,
-            title: "Classic Chocolate",
-            description: "Rich chocolate milk that brings back childhood memories.",
-            image: "/images/placeholders/product-3.png",
-        }
-    ],
-    buttonText = "Buy Product",
-    onUpdate
+    // Lacto Product Carousel Component
+    products = componentDefaults["lacto-product-carousel"].products,
+    buttonText = componentDefaults["lacto-product-carousel"].buttonText,
+    buttonId,
+    buttonStyle = "primary", // primary, neutral, ghost, outline, link
+    buttonSize = "lg", // sm, md, lg
+    onUpdate,
+    sectionId
 }) {
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -67,7 +57,7 @@ export default function LactoProductCarousel({
                 <div className={styles.track}>
                     {/* Previous Item - Image Only */}
                     <div className={`${styles.item} ${styles.inactiveItem} ${styles.prevItem}`}>
-                        <div className={`imagePlaceholder-1-1 ${styles.media}`}></div>
+                        <BuilderImage src={prevProduct.image} className={`imagePlaceholder-1-1 ${styles.media}`} style={{ height: "auto" }} />
                     </div>
 
                     {/* Active Item - Full Content */}
@@ -77,7 +67,7 @@ export default function LactoProductCarousel({
                                 <ArrowLeftIcon className={styles.navIcon} />
                             </button>
 
-                            <div className={`imagePlaceholder-1-1 ${styles.activeMedia}`}></div>
+                            <BuilderImage src={activeProduct.image} className={`imagePlaceholder-1-1 ${styles.activeMedia}`} style={{ height: "auto" }} />
 
                             <button onClick={nextSlide} className={`${styles.navButton} ${styles.nextButton}`} aria-label="Next slide">
                                 <ArrowRightIcon className={styles.navIcon} />
@@ -91,30 +81,34 @@ export default function LactoProductCarousel({
                                         tagName="span"
                                         content={activeProduct.title}
                                         onChange={(val) => handleProductUpdate(activeProductIndex, "title", val)}
+                                        sectionId={sectionId}
                                     />
                                 </h3>
-                                <h1 className={`subheader-h1 ${styles.description}`}>
-                                    <BuilderText
-                                        tagName="span"
-                                        content={activeProduct.description}
-                                        onChange={(val) => handleProductUpdate(activeProductIndex, "description", val)}
-                                    />
-                                </h1>
-                            </div>
-                            <button className="btn btn-primary btn-lg">
-                                <ShoppingCartIcon className={styles.icon} />
                                 <BuilderText
-                                    tagName="span"
-                                    content={buttonText}
-                                    onChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                    tagName="h1"
+                                    className={`subheader-h1 ${styles.description}`}
+                                    content={activeProduct.subtitle}
+                                    onChange={(val) => handleProductUpdate(activeProductIndex, "subtitle", val)}
+                                    sectionId={sectionId}
+                                    style={{ color: "var(--content-neutral--caption)" }}
                                 />
-                            </button>
+                            </div>
+                            <BuilderButton
+                                label={buttonText}
+                                href="#"
+                                suffix="cta"
+                                sectionId={sectionId}
+                                className="btn btn-primary btn-lg"
+                                onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                id={buttonId}
+                                onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
+                            />
                         </div>
                     </div>
 
                     {/* Next Item - Image Only */}
                     <div className={`${styles.item} ${styles.inactiveItem} ${styles.nextItem}`}>
-                        <div className={`imagePlaceholder-1-1 ${styles.media}`}></div>
+                        <BuilderImage src={nextProduct.image} className={`imagePlaceholder-1-1 ${styles.media}`} style={{ height: "auto" }} />
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { BellAlertIcon, TrashIcon } from "@heroicons/react/24/solid";
 import styles from "./page.module.css";
 import { handleExportTemplate } from "@/app/page-builder-components/utils/export-template";
@@ -9,17 +9,18 @@ import { componentLibrary } from "@/app/page-builder-components/content/componen
 import Sidebar from "@/app/page-builder-components/sidebar";
 import TopBar from "@/app/page-builder-components/topbar";
 import Canvas from "@/app/page-builder-components/canvas";
-import ConfigPopover from "@/app/page-builder-components/config-popover";
+
 import ThemePickerPopover from "@/app/page-builder-components/theme-picker-popover";
 import ExportPopover from "@/app/page-builder-components/export-popover";
 import { getThemes } from "@/app/page-builder-components/utils/get-themes";
+import { BuilderSelectionProvider } from "@/app/page-builder-components/utils/builder-controls";
 
 /**
  * Template Generator Page
  * Allows users to select and preview section components
  */
 export default function TemplateGeneratorPage() {
-  // All state declarations first
+
   const [selectedComponents, setSelectedComponents] = useState([]);
   const [showToaster, setShowToaster] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
@@ -29,21 +30,24 @@ export default function TemplateGeneratorPage() {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   const [activeTab, setActiveTab] = useState("elements"); // "elements" | "analytics"
   const [analyticsData, setAnalyticsData] = useState({
+    metaDescription: "",
     googleAnalyticsId: "",
     tikTokPixel: "",
     metaPixel: "",
     hotjarId: ""
   });
   const [openCategories, setOpenCategories] = useState({ "Hero Banner": true });
-  const [selectedComponentForConfig, setSelectedComponentForConfig] = useState(null);
-  const [configProps, setConfigProps] = useState({ showDescription: true });
-  const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
 
-  // Theme State
   const [isThemePickerOpen, setIsThemePickerOpen] = useState(false);
   const [isExportPopoverOpen, setIsExportPopoverOpen] = useState(false);
   const [selectedThemeId, setSelectedThemeId] = useState("theme");
   const [themes, setThemes] = useState([]);
+
+  // Refs
+  const containerRef = useRef(null);
+  const dragImageRef = useRef(null);
+  const dragThumbnailRef = useRef(null);
+  const dragNameRef = useRef(null);
 
   useEffect(() => {
     const loadThemes = async () => {
@@ -60,7 +64,7 @@ export default function TemplateGeneratorPage() {
     setShowToaster(true);
   }, []);
 
-  // Theme Switching Effect
+
   useEffect(() => {
     const themeLink = document.getElementById("theme-stylesheet");
     if (themeLink && themes.length > 0) {
@@ -89,15 +93,16 @@ export default function TemplateGeneratorPage() {
           if (originalComp) {
             return {
               ...savedComp,
-              component: originalComp.component // Restore the React component function
+              component: originalComp.component
             };
           }
           return null;
-        }).filter(Boolean); // Remove any components that couldn't be found
+        }).filter(Boolean);
 
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedComponents(rehydratedComponents);
         setAnalyticsData(parsed.analytics || {
+          metaDescription: "",
           googleAnalyticsId: "",
           tikTokPixel: "",
           metaPixel: "",
@@ -109,16 +114,22 @@ export default function TemplateGeneratorPage() {
     }
   }, []);
 
-  // Auto-save to localStorage whenever components or analytics change
+  // Auto-save to localStorage whenever components or analytics change (Debounced)
   useEffect(() => {
-    if (selectedComponents.length > 0 || analyticsData.googleAnalyticsId || analyticsData.tikTokPixel || analyticsData.metaPixel || analyticsData.hotjarId) {
-      const dataToSave = {
-        components: selectedComponents,
-        analytics: analyticsData,
-        lastSaved: new Date().toISOString()
-      };
-      localStorage.setItem('lunar-template-builder', JSON.stringify(dataToSave));
-    }
+    const saveToLocalStorage = () => {
+      if (selectedComponents.length > 0 || analyticsData.metaDescription || analyticsData.googleAnalyticsId || analyticsData.tikTokPixel || analyticsData.metaPixel || analyticsData.hotjarId) {
+        const dataToSave = {
+          components: selectedComponents,
+          analytics: analyticsData,
+          lastSaved: new Date().toISOString()
+        };
+        localStorage.setItem('lunar-template-builder', JSON.stringify(dataToSave));
+      }
+    };
+
+    const timeoutId = setTimeout(saveToLocalStorage, 1000); // 1s debounce
+
+    return () => clearTimeout(timeoutId);
   }, [selectedComponents, analyticsData]);
 
   useEffect(() => {
@@ -151,7 +162,7 @@ export default function TemplateGeneratorPage() {
       }
     };
 
-    // Initial check
+
     handleResize();
 
     window.addEventListener('resize', handleResize);
@@ -162,16 +173,12 @@ export default function TemplateGeneratorPage() {
     setDraggedItemIndex(index);
     e.dataTransfer.effectAllowed = "move";
 
-    // Drag Preview
-    const dragImage = document.getElementById("custom-drag-image");
-    if (dragImage) {
-      const thumbnailEl = document.getElementById("drag-thumbnail-image");
-      const nameEl = document.getElementById("drag-name-content");
 
-      if (thumbnailEl) thumbnailEl.src = thumbnail || "";
-      if (nameEl) nameEl.innerText = componentName || "Section";
+    if (dragImageRef.current) {
+      if (dragThumbnailRef.current) dragThumbnailRef.current.src = thumbnail || "";
+      if (dragNameRef.current) dragNameRef.current.innerText = componentName || "Section";
 
-      e.dataTransfer.setDragImage(dragImage, 0, 0);
+      e.dataTransfer.setDragImage(dragImageRef.current, 0, 0);
     }
   }, []);
 
@@ -199,67 +206,34 @@ export default function TemplateGeneratorPage() {
 
   const generateSectionId = (category) => {
     const slug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-    const random = Math.floor(1000 + Math.random() * 9000); // 4 digit random number
+    const random = Math.floor(1000 + Math.random() * 9000);
     return `${slug}-${random}`;
   };
 
   const addComponent = useCallback((componentData, category, event) => {
-    // Check if component has configuration options
-    if (componentData.config && componentData.config.length > 0) {
-      // Calculate position based on clicked element
-      const rect = event.currentTarget.getBoundingClientRect();
+    const sectionId = generateSectionId(category);
 
-      // Get popover width from CSS variable or fallback
-      const container = document.querySelector(`.${styles.container}`);
-      const popoverWidth = container ?
-        parseInt(getComputedStyle(container).getPropertyValue('--popover-width')) || 362
-        : 362;
-
-      setPopoverPosition({
-        top: rect.top,
-        left: rect.left - popoverWidth - 10 // Width of popover + 10px spacing
-      });
-
-      setSelectedComponentForConfig({ ...componentData, category, selected: true });
-
-      // Initialize config props based on component definition
-      const initialProps = {};
+    // Initialize props with defaults if config exists
+    const initialProps = {};
+    if (componentData.config) {
       componentData.config.forEach(prop => {
         initialProps[prop.name] = prop.default;
       });
-      setConfigProps(initialProps);
-    } else {
-      // No config, add directly
-      const sectionId = generateSectionId(category);
-      setSelectedComponents(prev => [...prev, {
-        ...componentData,
-        uniqueId: Date.now(),
-        sectionId: sectionId,
-        props: componentData.props || {}
-      }]);
-
-      setToasterMessage(`${componentData.name} added`);
-      setToasterType("success");
-      setShowToaster(true);
     }
-  }, []);
 
-  const insertComponent = useCallback(() => {
-    if (!selectedComponentForConfig) return;
-
-    const sectionId = generateSectionId(selectedComponentForConfig.category);
     setSelectedComponents(prev => [...prev, {
-      ...selectedComponentForConfig,
+      ...componentData,
       uniqueId: Date.now(),
       sectionId: sectionId,
-      props: { ...configProps }
+      props: { ...initialProps, ...(componentData.props || {}) }
     }]);
 
-    setSelectedComponentForConfig(null);
-    setToasterMessage(`${selectedComponentForConfig.name} added`);
+    setToasterMessage(`${componentData.name} added`);
     setToasterType("success");
     setShowToaster(true);
-  }, [selectedComponentForConfig, configProps]);
+  }, []);
+
+
 
   const removeComponent = useCallback((uniqueId) => {
     const componentToRemove = selectedComponents.find(c => c.uniqueId === uniqueId);
@@ -318,9 +292,9 @@ export default function TemplateGeneratorPage() {
   }, []);
 
   const handleExportConfirm = useCallback((csvLink) => {
-    handleExportTemplate(selectedComponents, csvLink);
+    handleExportTemplate(selectedComponents, csvLink, analyticsData);
     setIsExportPopoverOpen(false);
-  }, [selectedComponents]);
+  }, [selectedComponents, analyticsData]);
 
   const onDownloadCsv = useCallback(() => {
     handleExportCsv(selectedComponents);
@@ -329,118 +303,117 @@ export default function TemplateGeneratorPage() {
 
 
   return (
-    <div className={styles.container}>
-      <TopBar
-        isSidebarVisible={isSidebarVisible}
-        setIsSidebarVisible={setIsSidebarVisible}
-        handleExport={handleExport}
-        onThemeClick={() => setIsThemePickerOpen(true)}
-        isThemePickerOpen={isThemePickerOpen}
-        selectedThemeId={selectedThemeId}
-        themes={themes}
-      />
-
-      <div className={styles.mainContent}>
-        <Canvas
-          selectedComponents={selectedComponents}
-          handleDragStart={handleDragStart}
-          handleDragOver={handleDragOver}
-          handleDrop={handleDrop}
-          draggedItemIndex={draggedItemIndex}
-          dropTargetIndex={dropTargetIndex}
-          setDraggedItemIndex={setDraggedItemIndex}
-          moveUp={moveUp}
-          moveDown={moveDown}
-          removeComponent={removeComponent}
-          updateComponent={updateComponent}
-          updateSectionId={updateSectionId}
-        />
-
-        {isSidebarVisible && (
-          <Sidebar
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            componentLibrary={componentLibrary}
-            openCategories={openCategories}
-            toggleCategory={toggleCategory}
-            addComponent={addComponent}
-            selectedComponentForConfig={selectedComponentForConfig}
-            analyticsData={analyticsData}
-            setAnalyticsData={setAnalyticsData}
-          />
-        )}
-      </div>
-
-      {/* Custom Drag Image (Hidden) */}
-      <div
-        id="custom-drag-image"
-        className={styles.customDragImage}
-      >
-        <div style={{
-          height: "60px",
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "var(--grey-50)",
-          borderRadius: "var(--round-80)",
-          border: "1px solid var(--grey-200)",
-          overflow: "hidden"
-        }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            id="drag-thumbnail-image"
-            src={null}
-            alt="Preview"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover"
-            }}
-          />
-        </div>
-        <span id="drag-name-content" style={{
-          fontSize: "var(--typography-font-size-80)",
-          fontWeight: "var(--font-weight-bold)",
-          color: "var(--content-neutral--title)"
-        }}></span>
-      </div>
-
-      <ConfigPopover
-        selectedComponent={selectedComponentForConfig}
-        position={popoverPosition}
-        configProps={configProps}
-        setConfigProps={setConfigProps}
-        onClose={() => setSelectedComponentForConfig(null)}
-        onInsert={insertComponent}
-      />
-      {isThemePickerOpen && (
-        <ThemePickerPopover
-          isOpen={isThemePickerOpen}
-          onClose={() => setIsThemePickerOpen(false)}
-          onSelectTheme={handleThemeSelect}
-          currentTheme={selectedThemeId}
+    <div className={styles.container} ref={containerRef}>
+      <BuilderSelectionProvider>
+        <TopBar
+          isSidebarVisible={isSidebarVisible}
+          setIsSidebarVisible={setIsSidebarVisible}
+          handleExport={handleExport}
+          onThemeClick={() => setIsThemePickerOpen(true)}
+          isThemePickerOpen={isThemePickerOpen}
+          selectedThemeId={selectedThemeId}
           themes={themes}
         />
-      )}
-      {isExportPopoverOpen && (
-        <ExportPopover
-          isOpen={isExportPopoverOpen}
-          onClose={() => setIsExportPopoverOpen(false)}
-          onExport={handleExportConfirm}
-          onDownloadCsv={onDownloadCsv}
-        />
-      )} {/* Toaster Notification */}
-      {showToaster && (
-        <div className={`${styles.toaster} ${toasterType === "delete" ? styles.toasterDelete : ""}`}>
-          {toasterType === "delete" ? (
-            <TrashIcon className={styles.toasterIcon} />
-          ) : (
-            <BellAlertIcon className={styles.toasterIcon} />
+
+        <div className={styles.mainContent}>
+          <Canvas
+            selectedComponents={selectedComponents}
+            handleDragStart={handleDragStart}
+            handleDragOver={handleDragOver}
+            handleDrop={handleDrop}
+            draggedItemIndex={draggedItemIndex}
+            dropTargetIndex={dropTargetIndex}
+            setDraggedItemIndex={setDraggedItemIndex}
+            moveUp={moveUp}
+            moveDown={moveDown}
+            removeComponent={removeComponent}
+            updateComponent={updateComponent}
+            updateSectionId={updateSectionId}
+          />
+
+          {isSidebarVisible && (
+            <Sidebar
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              componentLibrary={componentLibrary}
+              openCategories={openCategories}
+              toggleCategory={toggleCategory}
+              addComponent={addComponent}
+              analyticsData={analyticsData}
+              setAnalyticsData={setAnalyticsData}
+            />
           )}
-          {toasterMessage}
         </div>
-      )}
+
+        {/* Custom Drag Image (Hidden) */}
+        <div
+          id="custom-drag-image"
+          ref={dragImageRef}
+          className={styles.customDragImage}
+        >
+          <div style={{
+            height: "60px",
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "var(--grey-50)",
+            borderRadius: "var(--round-80)",
+            border: "1px solid var(--grey-200)",
+            overflow: "hidden"
+          }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              id="drag-thumbnail-image"
+              ref={dragThumbnailRef}
+              src={null}
+              alt="Preview"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover"
+              }}
+            />
+          </div>
+          <span
+            id="drag-name-content"
+            ref={dragNameRef}
+            style={{
+              fontSize: "var(--typography-font-size-80)",
+              fontWeight: "var(--font-weight-bold)",
+              color: "var(--content-neutral--title)"
+            }}></span>
+        </div>
+
+
+        {isThemePickerOpen && (
+          <ThemePickerPopover
+            isOpen={isThemePickerOpen}
+            onClose={() => setIsThemePickerOpen(false)}
+            onSelectTheme={handleThemeSelect}
+            currentTheme={selectedThemeId}
+            themes={themes}
+          />
+        )}
+        {isExportPopoverOpen && (
+          <ExportPopover
+            isOpen={isExportPopoverOpen}
+            onClose={() => setIsExportPopoverOpen(false)}
+            onExport={handleExportConfirm}
+            onDownloadCsv={onDownloadCsv}
+          />
+        )} {/* Toaster Notification */}
+        {showToaster && (
+          <div className={`${styles.toaster} ${toasterType === "delete" ? styles.toasterDelete : ""}`}>
+            {toasterType === "delete" ? (
+              <TrashIcon className={styles.toasterIcon} />
+            ) : (
+              <BellAlertIcon className={styles.toasterIcon} />
+            )}
+            {toasterMessage}
+          </div>
+        )}
+      </BuilderSelectionProvider>
     </div>
   );
 }

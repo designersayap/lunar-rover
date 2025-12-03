@@ -9,6 +9,9 @@ import styles from "./terra-product-carousel-4-products.module.css";
  * Displays product carousel with tabs and horizontal scroll
  */
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderImage from "@/app/page-builder-components/utils/builder-image";
+
+import { componentDefaults } from "../content/component-defaults";
 
 /**
  * Terra Product Carousel - 4 Products
@@ -21,40 +24,7 @@ export default function TerraProductCarousel4Products({
         { id: "home", label: "Home Care" },
         { id: "personal", label: "Personal Care" },
     ],
-    products = {
-        fabric: [
-            { name: "Softener Fresh", description: "Long-lasting freshness", image: "/placeholder-product.jpg" },
-            { name: "Detergent Pods", description: "Deep cleaning power", image: "/placeholder-product.jpg" },
-            { name: "Stain Remover", description: "Tough on stains", image: "/placeholder-product.jpg" },
-            { name: "Fabric Mist", description: "Instant refresh", image: "/placeholder-product.jpg" },
-            { name: "Wool Care", description: "Gentle protection", image: "/placeholder-product.jpg" },
-            { name: "Color Guard", description: "Protects vibrancy", image: "/placeholder-product.jpg" },
-        ],
-        food: [
-            { name: "Organic Coffee", description: "Rich arabica blend", image: "/placeholder-product.jpg" },
-            { name: "Green Tea", description: "Antioxidant rich", image: "/placeholder-product.jpg" },
-            { name: "Oat Milk", description: "Creamy & dairy-free", image: "/placeholder-product.jpg" },
-            { name: "Protein Bar", description: "Fuel for your day", image: "/placeholder-product.jpg" },
-            { name: "Fruit Snacks", description: "Natural sweetness", image: "/placeholder-product.jpg" },
-            { name: "Sparkling Water", description: "Crisp refreshment", image: "/placeholder-product.jpg" },
-        ],
-        home: [
-            { name: "Surface Cleaner", description: "Kills 99.9% germs", image: "/placeholder-product.jpg" },
-            { name: "Dish Soap", description: "Grease cutting", image: "/placeholder-product.jpg" },
-            { name: "Air Purifier", description: "Clean home air", image: "/placeholder-product.jpg" },
-            { name: "Glass Spray", description: "Streak-free shine", image: "/placeholder-product.jpg" },
-            { name: "Floor Polish", description: "Restores shine", image: "/placeholder-product.jpg" },
-            { name: "Laundry Basket", description: "Durable storage", image: "/placeholder-product.jpg" },
-        ],
-        personal: [
-            { name: "Daily Moisturizer", description: "Hydrating formula", image: "/placeholder-product.jpg" },
-            { name: "Gentle Cleanser", description: "For sensitive skin", image: "/placeholder-product.jpg" },
-            { name: "Sunscreen SPF50", description: "Broad spectrum", image: "/placeholder-product.jpg" },
-            { name: "Night Cream", description: "Repair while sleeping", image: "/placeholder-product.jpg" },
-            { name: "Body Wash", description: "Refreshing scent", image: "/placeholder-product.jpg" },
-            { name: "Hand Cream", description: "Softens dry hands", image: "/placeholder-product.jpg" },
-        ],
-    },
+    products = componentDefaults["product-carousel-4"].products,
     onUpdate
 }) {
     const scrollContainerRef = useRef(null);
@@ -115,6 +85,7 @@ export default function TerraProductCarousel4Products({
                                             tagName="span"
                                             content={tab.label}
                                             onChange={(val) => handleTabUpdate(index, val)}
+                                            sectionId={sectionId}
                                         />
                                     </button>
                                 ))}
@@ -148,9 +119,7 @@ export default function TerraProductCarousel4Products({
                                         <div className={styles.cardWrapper}>
                                             {/* Product Image */}
                                             <div className={styles.imageWrapper}>
-                                                <div className="imagePlaceholder-1-1">
-                                                    {/* Placeholder for product image */}
-                                                </div>
+                                                <BuilderImage src={product.image} className="imagePlaceholder-1-1" style={{ height: "auto" }} />
                                                 {/* Add to Cart Button */}
                                                 <button className={`btn btn-md ${styles.addButton}`}>
                                                     <img src="/arrow.svg" alt="View details" className={styles.arrowIcon} />
@@ -164,13 +133,16 @@ export default function TerraProductCarousel4Products({
                                                         tagName="span"
                                                         content={product.name}
                                                         onChange={(val) => handleProductUpdate(activeTab, index, "name", val)}
+                                                        sectionId={sectionId}
                                                     />
                                                 </h3>
                                                 <p className={`${styles.productDescription} truncate-2-lines`}>
                                                     <BuilderText
                                                         tagName="span"
-                                                        content={product.description}
-                                                        onChange={(val) => handleProductUpdate(activeTab, index, "description", val)}
+                                                        className={`body-regular ${styles.description}`}
+                                                        content={product.subtitle}
+                                                        onChange={(val) => handleProductUpdate(index, "subtitle", val)}
+                                                        sectionId={sectionId}
                                                     />
                                                 </p>
                                             </div>

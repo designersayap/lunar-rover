@@ -1,5 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import styles from "../../page.module.css";
+import JSZip from 'jszip';
 
 // Essential classes whitelist
 const essentialClasses = [
@@ -224,12 +225,7 @@ const renderCss = (model, docStyleSheets) => {
     return cssString;
 };
 
-import JSZip from 'jszip';
-
-
-// ... (imports and helper functions remain the same)
-
-export const handleExportTemplate = async (selectedComponents, csvLink = "") => {
+export const handleExportTemplate = async (selectedComponents, csvLink = "", analyticsData = {}) => {
     // 1. Render Components to Static HTML (Bridge)
     const tempContainer = document.createElement('div');
 
@@ -381,7 +377,9 @@ document.addEventListener('DOMContentLoaded', () => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exported Template</title>${csvLink ? `\n    <meta name="csv-data-source" content="${csvLink}">` : ''}
+    <title>Exported Template</title>
+    ${csvLink ? `\n    <meta name="csv-data-source" content="${csvLink}">` : ''}
+    ${analyticsData.metaDescription ? `\n    <meta name="description" content="${analyticsData.metaDescription}">` : ''}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@600&display=swap" rel="stylesheet">

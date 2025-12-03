@@ -1,22 +1,25 @@
 "use client";
 
 import React, { useState } from 'react';
+import { componentDefaults } from "../content/component-defaults";
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import styles from './lacto-navigation.module.css';
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderButton from "@/app/page-builder-components/utils/builder-button";
+
+import BuilderLink from "@/app/page-builder-components/utils/builder-link";
 
 /**
  * Lacto Navigation Component
  * Sticky navigation bar with centered logo and menu items
  */
 export default function LactoNavigation({
-    menuItems = [
-        { label: "Beranda", href: "#" },
-        { label: "Terbaru", href: "#" },
-        { label: "Produk", href: "#" },
-        { label: "Kontak", href: "#" },
-    ],
-    onUpdate
+    logo = componentDefaults["lacto-navigation"].logo,
+    menuItems = componentDefaults["lacto-navigation"].menuItems,
+    buttonText = componentDefaults["lacto-navigation"].buttonLabel,
+    buttonId,
+    onUpdate,
+    sectionId
 }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -54,24 +57,38 @@ export default function LactoNavigation({
 
                             {/* Menu Item 1 - Desktop Only */}
                             <div className={`${styles.menuWrapper} ${styles.desktopOnly}`}>
-                                <a href={menuItems[0]?.href} className={`btn btn-ghost-neutral btn-sm ${styles.menuItem}`}>
+                                <BuilderLink
+                                    href={menuItems[0]?.href}
+                                    sectionId={sectionId}
+                                    suffix="menu-1"
+                                    className={`${styles.menuItem} body-regular`}
+                                >
                                     <BuilderText
                                         tagName="span"
                                         content={menuItems[0]?.label}
                                         onChange={(val) => handleMenuUpdate(0, "label", val)}
+                                        sectionId={sectionId}
+                                        noId={true}
                                     />
-                                </a>
+                                </BuilderLink>
                             </div>
 
                             {/* Menu Item 2 - Desktop Only */}
                             <div className={`${styles.menuWrapper} ${styles.desktopOnly}`}>
-                                <a href={menuItems[1]?.href} className={`btn btn-ghost-neutral btn-sm ${styles.menuItem}`}>
+                                <BuilderLink
+                                    href={menuItems[1]?.href}
+                                    sectionId={sectionId}
+                                    suffix="menu-2"
+                                    className={`${styles.menuItem} body-regular`}
+                                >
                                     <BuilderText
                                         tagName="span"
                                         content={menuItems[1]?.label}
                                         onChange={(val) => handleMenuUpdate(1, "label", val)}
+                                        sectionId={sectionId}
+                                        noId={true}
                                     />
-                                </a>
+                                </BuilderLink>
                             </div>
 
                             {/* Logo */}
@@ -85,24 +102,38 @@ export default function LactoNavigation({
 
                             {/* Menu Item 3 - Desktop Only */}
                             <div className={`${styles.menuWrapper} ${styles.desktopOnly}`}>
-                                <a href={menuItems[2]?.href} className={`btn btn-ghost-neutral btn-sm ${styles.menuItem}`}>
+                                <BuilderLink
+                                    href={menuItems[2]?.href}
+                                    sectionId={sectionId}
+                                    suffix="menu-3"
+                                    className={`${styles.menuItem} body-regular`}
+                                >
                                     <BuilderText
                                         tagName="span"
                                         content={menuItems[2]?.label}
                                         onChange={(val) => handleMenuUpdate(2, "label", val)}
+                                        sectionId={sectionId}
+                                        noId={true}
                                     />
-                                </a>
+                                </BuilderLink>
                             </div>
 
                             {/* Menu Item 4 - Desktop Only */}
                             <div className={`${styles.menuWrapper} ${styles.desktopOnly}`}>
-                                <a href={menuItems[3]?.href} className={`btn btn-ghost-neutral btn-sm ${styles.menuItem}`}>
+                                <BuilderLink
+                                    href={menuItems[3]?.href}
+                                    sectionId={sectionId}
+                                    suffix="menu-4"
+                                    className={`${styles.menuItem} body-regular`}
+                                >
                                     <BuilderText
                                         tagName="span"
                                         content={menuItems[3]?.label}
                                         onChange={(val) => handleMenuUpdate(3, "label", val)}
+                                        sectionId={sectionId}
+                                        noId={true}
                                     />
-                                </a>
+                                </BuilderLink>
                             </div>
 
                             {/* Spacer for tablet/mobile to keep logo centered */}
@@ -110,17 +141,15 @@ export default function LactoNavigation({
                         </div>
 
                         {/* Mobile Menu Dropdown */}
-                        <div
-                            className={`${styles.mobileMenu} ${styles.tabletMobileOnly}`}
-                            style={{ display: isMobileMenuOpen ? 'flex' : 'none' }}
-                            data-mobile-menu
-                        >
-                            {menuItems.map((item, index) => (
-                                <a key={index} href={item.href} className={`btn btn-ghost-neutral btn-sm ${styles.mobileMenuItem}`}>
-                                    {item.label}
-                                </a>
-                            ))}
-                        </div>
+                        {isMobileMenuOpen && (
+                            <div className={`${styles.mobileMenu} ${styles.tabletMobileOnly}`}>
+                                {menuItems.map((item, index) => (
+                                    <a key={index} href={item.href} className={`btn btn-ghost-neutral btn-sm ${styles.mobileMenuItem}`}>
+                                        {item.label}
+                                    </a>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

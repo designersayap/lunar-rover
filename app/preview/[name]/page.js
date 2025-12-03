@@ -4,10 +4,10 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 
 // Components
-import GlobalHeaderTitle from "../../template-components/global-header-title";
-import GlobalHeaderTitleButton from "../../template-components/global-header-title-button";
-import GlobalHeaderTitleDescription from "../../template-components/global-header-title-description";
-import GlobalHeaderTitleButtonDescription from "../../template-components/global-header-title-button-description";
+import GlobalHeaderTitle from "../../template-components/header-title";
+import GlobalHeaderTitleButton from "../../template-components/header-title-button";
+import GlobalHeaderTitleDescription from "../../template-components/header-title-description";
+import GlobalHeaderTitleButtonDescription from "../../template-components/header-title-description-button";
 import TerraBannerHeroWithButton from "@/app/template-components/terra/terra-banner-hero-with-button";
 import TerraBannerHeroWithSearch from "@/app/template-components/terra/terra-banner-hero-with-search";
 import TerraFeaturesImageLeft from "@/app/template-components/terra/terra-features-image-left";
@@ -25,7 +25,7 @@ import LactoProductCarousel from "@/app/template-components/lacto/lacto-product-
 import LactoMessageBox from "@/app/template-components/lacto/lacto-message-box";
 
 // Data
-import { uspData3Col, uspData4Col, footerData } from "../../template-components/content/data";
+import { uspData, footerData } from "../../template-components/content/data";
 
 export default function ComponentPreviewPage() {
     const params = useParams();
@@ -34,10 +34,9 @@ export default function ComponentPreviewPage() {
     // Component Mapping
     const components = {
         "terra-navigation": TerraNavigation,
-        "global-header-title": GlobalHeaderTitle,
         "global-header-title-button": GlobalHeaderTitleButton,
         "global-header-title-description": GlobalHeaderTitleDescription,
-        "global-header-title-button-description": GlobalHeaderTitleButtonDescription,
+        "header-title-description-button": GlobalHeaderTitleButtonDescription,
         "terra-banner-hero-with-button": TerraBannerHeroWithButton,
         "terra-banner-hero-with-search": TerraBannerHeroWithSearch,
         "terra-testimony": TerraTestimony,
@@ -77,17 +76,13 @@ export default function ComponentPreviewPage() {
     }
 
     // Render with specific props if needed
-    if (name === "terra-usp-3col") {
-        return <Component title={uspData3Col.title} features={uspData3Col.features} />;
+    if (name === "terra-usp-3col" || name === "terra-usp-4col") {
+        return <Component title={uspData.title} features={uspData.features} />;
     }
 
-    if (name === "terra-usp-4col") {
-        return <Component title={uspData4Col.title} features={uspData4Col.features} />;
-    }
-
-    if (name === "terra-footer") {
-        return <Component {...footerData} />;
-    }
+    // if (name === "terra-footer") {
+    //     return <Component {...footerData} />;
+    // }
 
     return <Component />;
 }

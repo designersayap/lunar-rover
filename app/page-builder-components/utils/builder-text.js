@@ -17,16 +17,29 @@ export default function BuilderText({
     tagName = "p",
     className = "",
     style = {},
-    onChange
+    onChange,
+    multiline = true,
+    placeholder = "Type here...",
+    sectionId,
+    suffix,
+    noId = false
 }) {
     const [text, setText] = useState(content);
     const elementRef = useRef(null);
+
+    // Generate ID: {section_id}-{class_name}
+    // We take the first class from className as the "class_name" identifier
+    // If suffix is provided, we append it: {section_id}-{class_name}-{suffix}
+    const firstClass = className.split(" ")[0] || tagName;
+    const elementId = (sectionId && !noId) ? `${sectionId}-${firstClass}${suffix ? `-${suffix}` : ""}` : undefined;
 
     // Sync internal state if prop changes (e.g. undo/redo or initial load)
     useEffect(() => {
         if (elementRef.current && elementRef.current.innerText !== content) {
             setText(content);
-            elementRef.current.innerText = content;
+            if (document.activeElement !== elementRef.current) {
+                elementRef.current.innerText = content;
+            }
         }
     }, [content]);
 
@@ -37,22 +50,33 @@ export default function BuilderText({
         }
     };
 
-    const handleInput = (e) => {
-        // Optional: Update local state immediately if needed for other UI feedback
-        // setText(e.target.innerText);
+    const handlePaste = (e) => {
+        e.preventDefault();
+        const plainText = e.clipboardData.getData("text/plain");
+        document.execCommand("insertText", false, plainText);
+    };
+
+    const handleKeyDown = (e) => {
+        if (!multiline && e.key === "Enter") {
+            e.preventDefault();
+            e.target.blur();
+        }
     };
 
     const Tag = tagName;
 
     return (
         <Tag
+            id={elementId}
             ref={elementRef}
-            className={className}
-            style={{ ...style, outline: "none", cursor: "text" }}
+            className={`${className} ${!text ? "empty-builder-text" : ""}`}
+            style={{ ...style, outline: "none", cursor: "text", minWidth: "1em", minHeight: "1em" }}
             contentEditable
             suppressContentEditableWarning={true}
             onBlur={handleBlur}
-            onInput={handleInput}
+            onPaste={handlePaste}
+            onKeyDown={handleKeyDown}
+            data-placeholder={placeholder}
         >
             {text}
         </Tag>

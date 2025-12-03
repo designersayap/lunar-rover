@@ -1,15 +1,15 @@
-import { ArrowLongRightIcon, SparklesIcon } from "@heroicons/react/20/solid";
-import styles from "./global-header-title-button-description.module.css";
+import styles from "./header-title-description.module.css";
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import { componentDefaults } from "./content/component-defaults";
 
 /**
- * Centered Header Section - Title with Button
+ * Centered Header Section - Title with Description
  */
-export default function GlobalHeaderTitleButtonDescription({
-    title = "Title",
-    subtitle = "Subtitle",
-    buttonText = "Label",
-    onUpdate
+export default function GlobalHeaderTitleTitleDescription({
+    title = componentDefaults["header-title-desc"].title,
+    subtitle = componentDefaults["header-title-desc"].subtitle,
+    onUpdate,
+    sectionId
 }) {
     return (
         <section className={styles.section}>
@@ -21,22 +21,15 @@ export default function GlobalHeaderTitleButtonDescription({
                             className={`h2 ${styles.title}`}
                             content={title}
                             onChange={(val) => onUpdate && onUpdate({ title: val })}
+                            sectionId={sectionId}
                         />
                         <BuilderText
                             tagName="p"
                             className={`subheader-h1 ${styles.subtitle}`}
                             content={subtitle}
                             onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
+                            sectionId={sectionId}
                         />
-                        <button className={`btn btn-primary btn-lg ${styles.button}`}>
-                            <SparklesIcon />
-                            <BuilderText
-                                tagName="span"
-                                content={buttonText}
-                                onChange={(val) => onUpdate && onUpdate({ buttonText: val })}
-                            />
-                            <ArrowLongRightIcon />
-                        </button>
                     </div>
                 </div>
             </div>

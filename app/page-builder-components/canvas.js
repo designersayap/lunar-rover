@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useBuilderSelection } from "@/app/page-builder-components/utils/builder-controls";
 import {
     ArrowUpIcon,
     ArrowDownIcon,
@@ -14,6 +15,10 @@ function SectionIdInput({ id, initialValue, onUpdate }) {
     }, [initialValue]);
 
     const handleBlur = () => {
+        if (!value.trim()) {
+            setValue(initialValue);
+            return;
+        }
         if (value !== initialValue) {
             onUpdate(id, value);
         }
@@ -55,8 +60,10 @@ export default function Canvas({
     updateComponent,
     updateSectionId
 }) {
+    const { setActiveElementId } = useBuilderSelection();
+
     return (
-        <div className={styles.canvas}>
+        <div className={styles.canvas} onClick={() => setActiveElementId(null)}>
             {/* Canvas Content */}
             <div className={styles.canvasInner}>
                 {selectedComponents.length === 0 ? (
@@ -141,6 +148,7 @@ export default function Canvas({
                                     {/* Render Component */}
                                     <Component
                                         {...item.props}
+                                        sectionId={item.sectionId}
                                         onUpdate={(newProps) => updateComponent(item.uniqueId, newProps)}
                                     />
                                 </div>

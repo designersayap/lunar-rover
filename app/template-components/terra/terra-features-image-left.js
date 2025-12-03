@@ -1,17 +1,22 @@
-import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 import styles from "./terra-features-image-left.module.css";
-
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderButton from "@/app/page-builder-components/utils/builder-button";
+import BuilderImage from "@/app/page-builder-components/utils/builder-image";
+import { ArrowLongRightIcon } from "@heroicons/react/20/solid";
+import { componentDefaults } from "../content/component-defaults";
 
 /**
  * TerraFeaturesImageLeft Component
  */
 export default function TerraFeaturesImageLeft({
     buttonStyle = "primary",
-    title = "Feature Title",
-    description = "Detailed description of the feature goes here. Explain the benefits and how it helps the user.",
-    buttonText = "Label",
-    onUpdate
+    title = componentDefaults["feature-left"].title,
+    subtitle = componentDefaults["feature-left"].subtitle,
+    buttonText = componentDefaults["feature-left"].buttonText,
+    image = componentDefaults["feature-left"].image,
+    buttonId,
+    onUpdate,
+    sectionId
 }) {
     return (
         <section className={styles.container}>
@@ -19,9 +24,7 @@ export default function TerraFeaturesImageLeft({
                 <div className="grid align-center">
                     {/* Image Column */}
                     <div className={`${styles.imageWrapper} col-mobile-2 col-tablet-8 col-desktop-6`}>
-                        <div className="imagePlaceholder-1-1">
-                            {/* Placeholder for Image */}
-                        </div>
+                        <BuilderImage src={image} className="imagePlaceholder-1-1" style={{ height: "auto" }} />
                     </div>
 
                     {/* Content Column */}
@@ -32,21 +35,27 @@ export default function TerraFeaturesImageLeft({
                             style={{ marginBottom: "var(--gap-lg)" }}
                             content={title}
                             onChange={(val) => onUpdate && onUpdate({ title: val })}
+                            sectionId={sectionId}
                         />
                         <BuilderText
                             tagName="p"
                             className="subheader-h2"
                             style={{ color: "var(--content-neutral--caption)", marginBottom: "var(--gap-sm)" }}
-                            content={description}
-                            onChange={(val) => onUpdate && onUpdate({ description: val })}
+                            content={subtitle}
+                            onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
+                            sectionId={sectionId}
                         />
-                        <button className={`btn btn-${buttonStyle} btn-md`}>
-                            <BuilderText
-                                tagName="span"
-                                content={buttonText}
-                                onChange={(val) => onUpdate && onUpdate({ buttonText: val })}
-                            />
-                        </button>
+                        <BuilderButton
+                            label={buttonText}
+                            href="#"
+                            suffix="cta"
+                            sectionId={sectionId}
+                            className="btn btn-ghost btn-md"
+                            iconRight={<ArrowLongRightIcon />}
+                            onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                            id={buttonId}
+                            onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
+                        />
                     </div>
                 </div>
             </div>

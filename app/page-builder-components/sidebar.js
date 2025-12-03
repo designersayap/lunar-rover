@@ -11,6 +11,13 @@ import { searchComponents, searchAnalytics } from "./utils/search";
 
 const ANALYTICS_SECTIONS = [
     {
+        id: 'meta-description',
+        title: 'Meta Description',
+        type: 'textarea',
+        key: 'metaDescription',
+        tooltip: 'This description will appear in search engine results.'
+    },
+    {
         id: 'google',
         title: 'Google Tag Manager',
         type: 'input',
@@ -21,23 +28,20 @@ const ANALYTICS_SECTIONS = [
     {
         id: 'tiktok',
         title: 'TikTok Ads',
-        type: 'textarea',
-        key: 'tikTokPixel',
-        placeholder: 'paste your script here'
+        type: 'input',
+        key: 'tikTokPixel'
     },
     {
         id: 'meta',
         title: 'Meta Ads',
-        type: 'textarea',
-        key: 'metaPixel',
-        placeholder: 'paste your script here'
+        type: 'input',
+        key: 'metaPixel'
     },
     {
         id: 'hotjar',
         title: 'Hotjar Analytics',
-        type: 'textarea',
-        key: 'hotjarId',
-        placeholder: 'paste your script here'
+        type: 'input',
+        key: 'hotjarId'
     }
 ];
 
@@ -48,7 +52,6 @@ export default function Sidebar({
     openCategories,
     toggleCategory,
     addComponent,
-    selectedComponentForConfig,
     analyticsData,
     setAnalyticsData
 }) {
@@ -65,7 +68,6 @@ export default function Sidebar({
         [analyticsSearch]
     );
 
-    // Auto-open first category when searching
     useEffect(() => {
         if (elementSearch) {
             const categories = Object.keys(filteredLibrary);
@@ -151,7 +153,7 @@ export default function Sidebar({
                                                 <button
                                                     key={comp.id}
                                                     onClick={(e) => addComponent(comp, category, e)}
-                                                    className={`${styles.sidebarButton} ${selectedComponentForConfig?.id === comp.id ? styles.sidebarButtonSelected : ''}`}
+                                                    className={`${styles.sidebarButton}`}
                                                 >
                                                     <div className={styles.sidebarButtonImageWrapper}>
                                                         <img

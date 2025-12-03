@@ -3,26 +3,17 @@
 import { ChevronLeftIcon, ChevronRightIcon, StarIcon } from "@heroicons/react/20/solid";
 import { useRef } from "react";
 import styles from "./terra-testimony.module.css";
-
-/**
- * Testimony Component
- * Displays 6 testimonial cards with background images and floating content
- */
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderImage from "@/app/page-builder-components/utils/builder-image";
+
+import { componentDefaults } from "../content/component-defaults";
 
 /**
  * Testimony Component
  * Displays 6 testimonial cards with background images and floating content
  */
 export default function TerraTestimony({
-    testimonials = [
-        { name: "Uzair Nunez", role: "Web Developer", quote: "Terra transformed our brand! The flexible layouts boosted our team's creativity" },
-        { name: "Cecily Garcia", role: "Project Manager", quote: "This one is top-notch! Our customers love the modern designs" },
-        { name: "Maja Nash", role: "UX Designer", quote: "I love the sleek design! This template made our site modern and user-friendly." },
-        { name: "Sarah Johnson", role: "Marketing Director", quote: "The attention to detail is outstanding! Our conversion rates improved significantly." },
-        { name: "Michael Chen", role: "Product Designer", quote: "Beautiful components that are easy to customize. Saved us weeks." },
-        { name: "Emma Williams", role: "CEO", quote: "Professional, modern, and exactly what we needed. Highly recommend Terra!" },
-    ],
+    testimonials = componentDefaults["testimony"].testimonials,
     onUpdate
 }) {
     const scrollContainerRef = useRef(null);
@@ -82,7 +73,8 @@ export default function TerraTestimony({
                             {testimonials.map((item, index) => (
                                 <div key={index} className={`col-mobile-2 col-tablet-8 col-desktop-4 ${styles.terraTestimoniContent}`}>
                                     <div className={`imagePlaceholder-4-5 ${styles.cardWrapper}`}>
-                                        <div className={styles.cardContent}>
+                                        <BuilderImage src={item.image} style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }} />
+                                        <div className={styles.cardContent} style={{ position: 'relative', zIndex: 1 }}>
                                             {/* Profile Image */}
                                             <div className={styles.profileImageWrapper}>
                                                 <div className={styles.profileImage} style={{ backgroundColor: '#CBD5E1' }}></div>
@@ -95,6 +87,7 @@ export default function TerraTestimony({
                                                         tagName="span"
                                                         content={item.name}
                                                         onChange={(val) => handleTestimonialUpdate(index, "name", val)}
+                                                        sectionId={sectionId}
                                                     />
                                                 </h5>
                                                 <p className={`caption-regular truncate-1-lines ${styles.role}`}>
@@ -102,6 +95,7 @@ export default function TerraTestimony({
                                                         tagName="span"
                                                         content={item.role}
                                                         onChange={(val) => handleTestimonialUpdate(index, "role", val)}
+                                                        sectionId={sectionId}
                                                     />
                                                 </p>
                                             </div>
@@ -110,6 +104,7 @@ export default function TerraTestimony({
                                                     tagName="span"
                                                     content={item.quote}
                                                     onChange={(val) => handleTestimonialUpdate(index, "quote", val)}
+                                                    sectionId={sectionId}
                                                 />"
                                             </p>
 

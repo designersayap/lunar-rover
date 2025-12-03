@@ -3,17 +3,26 @@
 import React from 'react';
 import styles from './lacto-message-box.module.css';
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderButton from "@/app/page-builder-components/utils/builder-button";
+
+import { componentDefaults } from "../content/component-defaults";
 
 /**
  * Lacto Message Box Component
  * A centered message box with title, description, and action buttons.
  */
 export default function LactoMessageBox({
-    title = "Title",
-    description = "Description",
-    primaryButtonText = "Label",
-    secondaryButtonText = "Label",
-    onUpdate
+    title = componentDefaults["lacto-message-box"].title,
+    subtitle = componentDefaults["lacto-message-box"].subtitle,
+    primaryButtonText = componentDefaults["lacto-message-box"].primaryButtonText,
+    primaryButtonId,
+    secondaryButtonText = componentDefaults["lacto-message-box"].secondaryButtonText,
+    secondaryButtonId,
+    primaryButtonStyle = "primary",
+    secondaryButtonStyle = "outline",
+    buttonSize = "lg",
+    onUpdate,
+    sectionId
 }) {
     return (
         <section className={styles.section}>
@@ -28,30 +37,36 @@ export default function LactoMessageBox({
                                         className={`h2 ${styles.title}`}
                                         content={title}
                                         onChange={(val) => onUpdate && onUpdate({ title: val })}
+                                        sectionId={sectionId}
                                     />
                                     <BuilderText
                                         tagName="p"
                                         className={`body-regular ${styles.description}`}
-                                        content={description}
-                                        onChange={(val) => onUpdate && onUpdate({ description: val })}
+                                        content={subtitle}
+                                        onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
+                                        sectionId={sectionId}
                                     />
                                 </div>
 
                                 <div className={styles.buttonWrapper}>
-                                    <button className="btn btn-primary btn-lg">
-                                        <BuilderText
-                                            tagName="span"
-                                            content={primaryButtonText}
-                                            onChange={(val) => onUpdate && onUpdate({ primaryButtonText: val })}
-                                        />
-                                    </button>
-                                    <button className="btn btn-outline btn-lg">
-                                        <BuilderText
-                                            tagName="span"
-                                            content={secondaryButtonText}
-                                            onChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
-                                        />
-                                    </button>
+                                    <BuilderButton
+                                        label={primaryButtonText}
+                                        href="#"
+                                        sectionId={sectionId}
+                                        className={`btn btn-${primaryButtonStyle} btn-${buttonSize}`}
+                                        onLabelChange={(val) => onUpdate && onUpdate({ primaryButtonText: val })}
+                                        id={primaryButtonId}
+                                        onIdChange={(val) => onUpdate && onUpdate({ primaryButtonId: val })}
+                                    />
+                                    <BuilderButton
+                                        label={secondaryButtonText}
+                                        href="#"
+                                        sectionId={sectionId}
+                                        className={`btn btn-${secondaryButtonStyle} btn-${buttonSize}`}
+                                        onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
+                                        id={secondaryButtonId}
+                                        onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
+                                    />
                                 </div>
                             </div>
                         </div>
