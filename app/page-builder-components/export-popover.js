@@ -24,14 +24,13 @@ export default function ExportPopover({
     return (
         <div className={styles.popoverOverlay} onClick={onClose}>
             <div
-                className={styles.exportPopover}
+                className={`${styles.popoverContainer} ${styles.exportPopover}`}
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* Header */}
-                <div className={styles.exportHeader}>
-                    <div className={styles.exportTitle}>Link your File</div>
+                <div className={styles.popoverHeader}>
+                    <h3 className={`body-bold ${styles.popoverTitle}`}>Link your File</h3>
                     <button
-                        className={styles.exportClose}
+                        className={styles.popoverClose}
                         onClick={onClose}
                     >
                         <XMarkIcon style={{ width: "20px", height: "20px" }} />
@@ -39,7 +38,7 @@ export default function ExportPopover({
                 </div>
 
                 {/* Content */}
-                <div className={styles.exportContent}>
+                <div className={styles.popoverContent}>
                     <div className={styles.exportInputWrapper}>
                         <textarea
                             className={styles.exportTextarea}
@@ -54,15 +53,15 @@ export default function ExportPopover({
                             >
                                 Download CSV
                             </span>
-                            <span className={styles.exportLinkText}>, and publish from your google sheet</span>
+                            <span className={styles.exportLinkText}> and publish from your google sheet</span>
                         </div>
                     </div>
                 </div>
 
                 {/* Footer */}
-                <div className={styles.exportFooter}>
+                <div className={`${styles.popoverFooter} ${styles.themePickerFooter}`}>
                     <button
-                        className={`${styles.exportButton} ${hasLink ? styles.exportButtonActive : ''}`}
+                        className={`btn btn-primary btn-sm ${styles.themePickerButton}`}
                         onClick={handleExportClick}
                         disabled={!hasLink}
                     >

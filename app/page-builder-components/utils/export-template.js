@@ -1,224 +1,416 @@
+import { renderToStaticMarkup } from 'react-dom/server';
 import styles from "../../page.module.css";
 
+// Essential classes whitelist
+const essentialClasses = [
+    'container-grid', 'grid',
+    'col-mobile-1', 'col-mobile-2',
+    'col-tablet-1', 'col-tablet-2', 'col-tablet-3', 'col-tablet-4',
+    'col-tablet-5', 'col-tablet-6', 'col-tablet-7', 'col-tablet-8',
+    'col-desktop-1', 'col-desktop-2', 'col-desktop-3', 'col-desktop-4',
+    'col-desktop-5', 'col-desktop-6', 'col-desktop-7', 'col-desktop-8',
+    'col-desktop-9', 'col-desktop-10', 'col-desktop-11', 'col-desktop-12',
+    'col-1', 'col-2', 'col-3', 'col-4', 'col-5', 'col-6',
+    'col-7', 'col-8', 'col-9', 'col-10', 'col-11', 'col-12',
+    'justify-center', 'justify-start', 'justify-end',
+    'align-center', 'align-start', 'align-end',
+    'offset-mobile-0', 'offset-mobile-1',
+    'offset-tablet-0', 'offset-tablet-1', 'offset-tablet-2', 'offset-tablet-3', 'offset-tablet-4',
+    'offset-desktop-0', 'offset-desktop-1', 'offset-desktop-2', 'offset-desktop-3',
+    'offset-desktop-4', 'offset-desktop-5', 'offset-desktop-6',
+    'z-lg', 'z-md', 'z-sm', 'relative', 'absolute', 'fixed', 'sticky'
+];
+
 /**
- * Exports the current canvas content as a downloadable HTML file.
- * @param {Array} selectedComponents - List of selected components.
+ * Converts a DOM node to a JSON Component Object Model
  */
-export const handleExportTemplate = (selectedComponents) => {
-    if (selectedComponents.length === 0) {
-        alert("No components to export. Please add components to the canvas first.");
-        return;
+const domToModel = (node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent.trim();
+        return text ? { type: '#text', content: text } : null;
     }
 
-    // Get the canvas content
-    const canvasElement = document.querySelector('[data-canvas="true"]');
-    if (!canvasElement) {
-        alert("Canvas not found");
-        return;
+    if (node.nodeType !== Node.ELEMENT_NODE) return null;
+
+    // Skip editor-specific elements
+    if (node.classList.contains(styles.controlButtons) ||
+        node.classList.contains(styles.dropIndicator)) {
+        return null;
     }
 
-    // 1. Extract Clean HTML (remove editor UI)
-    let cleanHtmlContent = "";
-    const wrapperClass = styles.componentWrapper.split(' ')[0];
-    const componentWrappers = canvasElement.querySelectorAll(`.${wrapperClass}`);
+    const model = {
+        type: node.tagName.toLowerCase(),
+        attributes: {},
+        children: []
+    };
 
-    Array.from(componentWrappers).forEach((wrapper, index) => {
-        const clone = wrapper.cloneNode(true);
-
-        // Remove editor controls
-        const controlButtons = clone.querySelector(`.${styles.controlButtons}`);
-        if (controlButtons) controlButtons.remove();
-
-        const dropIndicator = clone.querySelector(`.${styles.dropIndicator}`);
-        if (dropIndicator) dropIndicator.remove();
-
-        // Remove contentEditable attributes
-        const editableElements = clone.querySelectorAll('[contenteditable]');
-        editableElements.forEach(el => {
-            el.removeAttribute('contenteditable');
-            el.removeAttribute('suppresscontenteditablewarning');
-            // Also remove the inline style used for the button span if it exists
-            if (el.tagName === 'SPAN' && el.style.outline === 'none') {
-                el.style.outline = '';
-                el.style.minWidth = '';
-                el.style.display = '';
-            }
-        });
-
-        const component = selectedComponents[index];
-        const sectionId = component?.sectionId || `section-${index}`;
-
-        // Apply ID to the root element of the component
-        // The clone is the wrapper, so we look for the first child that is an element (the component itself)
-        // We've already removed controls and indicators
-        const componentRoot = clone.firstElementChild;
-        if (componentRoot) {
-            componentRoot.id = sectionId;
-            cleanHtmlContent += componentRoot.outerHTML + "\n";
-        } else {
-            // Fallback if something is weird
-            cleanHtmlContent += clone.innerHTML + "\n";
+    // Extract attributes
+    Array.from(node.attributes).forEach(attr => {
+        if (attr.name === 'class') {
+            // Filter out editor classes
+            const classes = attr.value.split(' ')
+                .filter(c => !c.includes(styles.componentWrapper) &&
+                    !c.includes(styles.componentWrapperDragging))
+                .join(' ');
+            if (classes) model.attributes.class = classes;
+        } else if (!['contenteditable', 'draggable', 'data-tooltip'].includes(attr.name)) {
+            model.attributes[attr.name] = attr.value;
         }
     });
 
-    // 2. Extract CSS
-    let cssContent = "/* Exported Styles */\n\n";
+    // Recursively process children
+    node.childNodes.forEach(child => {
+        const childModel = domToModel(child);
+        if (childModel) model.children.push(childModel);
+    });
+
+    return model;
+};
+
+/**
+ * Generates HTML string from JSON Model
+ */
+const renderHtml = (node) => {
+    if (!node) return '';
+    if (node.type === '#text') return node.content;
+
+    const attributes = Object.entries(node.attributes || {})
+        .map(([key, value]) => `${key}="${value}"`)
+        .join(' ');
+
+    const childrenHtml = (node.children || [])
+        .map(child => renderHtml(child))
+        .join('');
+
+    // Self-closing tags
+    if (['img', 'br', 'hr', 'input'].includes(node.type)) {
+        return `<${node.type} ${attributes} />`;
+    }
+
+    return `<${node.type} ${attributes}>${childrenHtml}</${node.type}>`;
+};
+
+/**
+ * Extracts and organizes CSS from the model
+ */
+const renderCss = (model, docStyleSheets) => {
     const usedSelectors = new Set();
+    const extractedRules = [];
+    const variableNames = new Set(); // Track all variable names found
 
-    // Helper to process rules
-    const processRule = (rule) => {
-        if (rule.type === 1) { // CSSStyleRule
-            try {
-                const cleanSelector = rule.selectorText.split(':')[0];
+    // 1. Collect all classes from the model
+    const collectClasses = (node, set) => {
+        if (node.attributes && node.attributes.class) {
+            node.attributes.class.split(' ').forEach(c => set.add(c));
+        }
+        if (node.children) {
+            node.children.forEach(child => collectClasses(child, set));
+        }
+    };
+    const modelClasses = new Set();
+    if (Array.isArray(model)) {
+        model.forEach(m => collectClasses(m, modelClasses));
+    } else {
+        collectClasses(model, modelClasses);
+    }
 
-                // Include globals and used selectors
-                if (rule.selectorText === ":root" || rule.selectorText === "html" || rule.selectorText === "body" ||
-                    (cleanSelector && (canvasElement.querySelector(cleanSelector) || canvasElement.matches(cleanSelector)))) {
+    // 2. Helper to check if a rule should be included
+    const shouldIncludeRule = (selectorText) => {
+        if (!selectorText) return false;
+        // Always include :root, html, body, and universal selector
+        if (selectorText.includes(':root') || selectorText === 'html' || selectorText === 'body' || selectorText === '*') return true;
 
-                    // Exclude editor styles
-                    if (rule.selectorText.includes(wrapperClass)) return;
-                    if (rule.selectorText.includes(styles.controlButtons)) return;
-                    if (rule.selectorText.includes(styles.dropIndicator)) return;
+        // Check essential classes (Relaxed matching)
+        if (essentialClasses.some(cls => selectorText.includes(cls))) return true;
 
+        // Check used model classes
+        return Array.from(modelClasses).some(cls => selectorText.includes(cls));
+    };
+
+    // Helper to scan for variable names in CSS text
+    const scanForVariables = (cssText) => {
+        const matches = cssText.match(/--[a-zA-Z0-9-_]+/g);
+        if (matches) {
+            matches.forEach(v => variableNames.add(v));
+        }
+    };
+
+    // Recursive function to process rules
+    const processRules = (rules) => {
+        Array.from(rules).forEach(rule => {
+            if (rule.type === 1) { // Style Rule
+                scanForVariables(rule.cssText); // Scan for variables
+                if (shouldIncludeRule(rule.selectorText)) {
                     if (!usedSelectors.has(rule.selectorText)) {
-                        cssContent += rule.cssText + "\n";
+                        extractedRules.push({ type: 'style', css: rule.cssText });
                         usedSelectors.add(rule.selectorText);
                     }
                 }
-            } catch (e) { }
-        } else if (rule.type === 4) { // CSSMediaRule
-            // For media queries, we check if any rule inside matches
-            let mediaCss = "";
-            let hasMatch = false;
-            for (const subRule of rule.cssRules) {
-                if (subRule.type === 1) {
-                    try {
-                        const cleanSelector = subRule.selectorText.split(':')[0];
-                        if (canvasElement.querySelector(cleanSelector) || canvasElement.matches(cleanSelector)) {
+            } else if (rule.type === 4) { // Media Rule
+                let mediaCss = "";
+                let hasMatch = false;
+
+                // Special check: If media query contains :root, ALWAYS include it for responsiveness
+                const isRootMedia = Array.from(rule.cssRules).some(r => r.selectorText && r.selectorText.includes(':root'));
+
+                Array.from(rule.cssRules).forEach(subRule => {
+                    if (subRule.type === 1) {
+                        if (isRootMedia || shouldIncludeRule(subRule.selectorText)) {
+                            scanForVariables(subRule.cssText);
                             mediaCss += subRule.cssText + "\n";
                             hasMatch = true;
                         }
-                    } catch (e) { }
+                    }
+                });
+                if (hasMatch) {
+                    extractedRules.push({
+                        type: 'media',
+                        css: `@media ${rule.media.mediaText} {\n${mediaCss}}\n`,
+                        condition: rule.media.mediaText
+                    });
+                }
+            } else if (rule.type === 5) { // Font Face
+                extractedRules.push({ type: 'font', css: rule.cssText });
+            } else if (rule.type === 9 || rule.type === 12) { // Layer Rule (9) or Supports Rule (12)
+                // Recurse into layers and supports
+                if (rule.cssRules) {
+                    processRules(rule.cssRules);
                 }
             }
-            if (hasMatch) {
-                cssContent += `@media ${rule.media.mediaText} {\n${mediaCss}}\n`;
-            }
-        } else if (rule.type === 5) { // CSSFontFaceRule
-            cssContent += rule.cssText + "\n";
-        } else if (rule.type === 7) { // CSSKeyframesRule
-            cssContent += rule.cssText + "\n";
-        }
-    };
-
-    // Iterate through all stylesheets
-    Array.from(document.styleSheets).forEach(sheet => {
-        try {
-            const rules = sheet.cssRules || sheet.rules;
-            if (rules) {
-                Array.from(rules).forEach(processRule);
-            }
-        } catch (e) {
-            console.warn("Could not access stylesheet rules", e);
-        }
-    });
-
-    // 3. Resolve CSS Variables
-    const computedStyle = getComputedStyle(document.documentElement);
-
-    const resolveVariables = (cssText) => {
-        return cssText.replace(/var\((--[^,)]+)(?:,\s*([^)]+))?\)/g, (match, variable, fallback) => {
-            const value = computedStyle.getPropertyValue(variable).trim();
-            if (value) return value;
-            if (fallback) return fallback;
-            return match;
         });
     };
 
-    // Resolve variables in CSS content
-    // We might need multiple passes for nested variables
-    let resolvedCssContent = cssContent;
-    let previousContent = "";
-    let passes = 0;
-    while (resolvedCssContent !== previousContent && passes < 5) {
-        previousContent = resolvedCssContent;
-        resolvedCssContent = resolveVariables(resolvedCssContent);
-        passes++;
-    }
+    // 3. Iterate StyleSheets
+    Array.from(docStyleSheets).forEach(sheet => {
+        try {
+            const rules = sheet.cssRules || sheet.rules;
+            if (rules) processRules(rules);
+        } catch (e) {
+            console.warn("Error accessing stylesheet", e);
+        }
+    });
 
-    // 4. Clean Class Names (remove hashes)
-    const classMap = new Map();
+    // 4. Organize CSS
+    let cssString = "/* Exported Styles */\n\n";
 
-    const cleanClassName = (className) => {
-        if (classMap.has(className)) return classMap.get(className);
+    // Dynamic Variable Capture (Capture ALL used variables)
+    // We capture the current computed values of ALL variables found in the CSS
+    // to ensure colors and tokens are defined even if their definition rule was missed.
+    const computedStyle = getComputedStyle(document.documentElement);
+    let capturedVars = ":root {\n";
 
-        // Convert to kebab-case
-        let clean = className.split('__')[0];
-        clean = clean.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
-        clean = clean.replace(/_/g, '-');
-        clean = clean.replace(/^-+/, '');
+    // Add critical grid variables explicitly to the set to ensure they are checked
+    ['--grid-columns', '--grid-margin', '--grid-gutter'].forEach(v => variableNames.add(v));
 
-        classMap.set(className, clean);
-        return clean;
-    };
+    variableNames.forEach(variable => {
+        const value = computedStyle.getPropertyValue(variable).trim();
+        // Only capture if it has a value and is NOT a grid layout variable that should be handled by media queries
+        // actually, capturing the base value is fine as long as media queries override it.
+        // The extracted CSS (with media queries) usually comes AFTER this block, so it should override.
+        if (value) {
+            capturedVars += `    ${variable}: ${value};\n`;
+        }
+    });
+    capturedVars += "}\n";
 
-    // Update HTML classes
-    let finalHtmlContent = cleanHtmlContent.replace(/class="([^"]+)"/g, (match, classNames) => {
-        const cleanedClasses = classNames.split(' ').map(cls => {
-            if (cls.includes('_') || cls.includes('__')) {
-                return cleanClassName(cls);
+    cssString += "/* Dynamically Captured Variables */\n" + capturedVars + "\n";
+
+
+
+    extractedRules.forEach(rule => {
+        cssString += rule.css + "\n";
+    });
+
+    return cssString;
+};
+
+import JSZip from 'jszip';
+
+
+// ... (imports and helper functions remain the same)
+
+export const handleExportTemplate = async (selectedComponents, csvLink = "") => {
+    // 1. Render Components to Static HTML (Bridge)
+    const tempContainer = document.createElement('div');
+
+    const componentsHtml = selectedComponents.map(item => {
+        const Component = item.component;
+        const htmlString = renderToStaticMarkup(
+            <Component {...item.props} />
+        );
+        return htmlString;
+    }).join('');
+
+    // 2. Parse to DOM (Detached)
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(`<body>${componentsHtml}</body>`, 'text/html');
+
+    // 3. Build JSON Model
+    const model = [];
+    doc.body.childNodes.forEach(node => {
+        const nodeModel = domToModel(node);
+        if (nodeModel) model.push(nodeModel);
+    });
+
+    // 4. Enhance Model with Data Fields
+    const enhanceModelWithDataFields = (node, index = 0) => {
+        if (!node) return;
+        if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(node.type)) {
+            node.attributes['data-field'] = index === 0 ? 'title' : `title_${index + 1}`;
+        } else if (node.type === 'p') {
+            node.attributes['data-field'] = index === 0 ? 'description' : `description_${index + 1}`;
+        } else if (node.type === 'img') {
+            node.attributes['data-field'] = index === 0 ? 'image' : `image_${index + 1}`;
+        } else if (node.type === 'a') {
+            if (node.attributes.class && node.attributes.class.includes('btn')) {
+                node.attributes['data-field'] = 'buttonLink';
+            } else {
+                node.attributes['data-field'] = 'link';
             }
-            return cls;
-        }).join(' ');
-        return `class="${cleanedClasses}"`;
+        }
+        if (node.children) {
+            node.children.forEach((child, i) => enhanceModelWithDataFields(child, i));
+        }
+    };
+    model.forEach(m => enhanceModelWithDataFields(m));
+
+    // 5. Generate Content Strings
+    const finalHtmlBody = model.map(m => renderHtml(m)).join('\n');
+    const finalCssContent = renderCss(model, document.styleSheets);
+    const syncScriptContent = `
+/**
+ * Google Sheets Sync Script & Navigation Toggle
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Navigation Toggle Logic ---
+    const toggleButtons = document.querySelectorAll('[data-mobile-menu-toggle]');
+    toggleButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const container = btn.closest('nav') || document.body;
+            const menu = container.querySelector('[data-mobile-menu]');
+            const openIcon = btn.querySelector('[data-menu-icon="open"]');
+            const closeIcon = btn.querySelector('[data-menu-icon="close"]');
+
+            if (menu) {
+                const isHidden = menu.style.display === 'none' || getComputedStyle(menu).display === 'none';
+                menu.style.display = isHidden ? 'flex' : 'none';
+                
+                if (openIcon) openIcon.style.display = isHidden ? 'none' : 'block';
+                if (closeIcon) closeIcon.style.display = isHidden ? 'block' : 'none';
+            }
+        });
     });
 
-    // Update CSS classes
-    const sortedClasses = Array.from(classMap.keys()).sort((a, b) => b.length - a.length);
+    // --- Google Sheets Sync Logic ---
+    const csvUrl = "${csvLink || ''}";
+    if (!csvUrl) return;
 
-    let finalCssContent = resolvedCssContent;
-    sortedClasses.forEach(originalClass => {
-        const cleanClass = classMap.get(originalClass);
-        const escapedOriginal = originalClass.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(`\\.${escapedOriginal}(?![\\w-])`, 'g');
-        finalCssContent = finalCssContent.replace(regex, `.${cleanClass}`);
-    });
+    console.log("Syncing with Google Sheets:", csvUrl);
+    
+    async function fetchAndUpdateContent() {
+        try {
+            const response = await fetch(csvUrl);
+            const text = await response.text();
+            const rows = text.split('\\n').map(row => {
+                const regex = /(?:^|,)("(?:[^"]|"")*"|[^,]*)/g;
+                let matches = [];
+                let match;
+                while (match = regex.exec(row)) {
+                    if (match.index === regex.lastIndex) regex.lastIndex++;
+                    let val = match[1];
+                    if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1).replace(/""/g, '"');
+                    matches.push(val);
+                }
+                return matches;
+            }).slice(1); // Skip header
 
-    // 5. Generate Final HTML
+            rows.forEach(row => {
+                if (row.length < 3) return;
+                const [key, value, property] = row;
+                if (!key || !value) return;
+
+                let targetField = key;
+                if (key.includes('_')) {
+                    const parts = key.split('_');
+                    const lastPart = parts[parts.length - 1];
+                    if (!isNaN(parseInt(lastPart))) {
+                        targetField = parts.slice(parts.length - 2).join('_');
+                    } else {
+                        targetField = lastPart;
+                    }
+                }
+
+                const elements = document.querySelectorAll(\`[data-field="\${targetField}"]\`);
+                
+                elements.forEach(el => {
+                    if (property === 'image') {
+                        el.src = value;
+                    } else if (property === 'link') {
+                        el.href = value;
+                    } else if (property === 'buttonLabel') {
+                         const span = el.querySelector('span');
+                         if (span) span.textContent = value;
+                         else el.textContent = value;
+                    } else {
+                        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                            el.placeholder = value;
+                        } else {
+                            el.textContent = value;
+                        }
+                    }
+                });
+                
+                if (property === 'buttonLink') {
+                    const linkElements = document.querySelectorAll(\`[data-field-link="\${targetField}"]\`);
+                    linkElements.forEach(el => el.href = value);
+                }
+            });
+
+        } catch (error) {
+            console.error('Error syncing content:', error);
+        }
+    }
+    
+    fetchAndUpdateContent();
+});
+`;
+
+    // 6. Assembly HTML File
     const fullHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exported Template</title>
+    <title>Exported Template</title>${csvLink ? `\n    <meta name="csv-data-source" content="${csvLink}">` : ''}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Round" rel="stylesheet">
-    <style>
-        /* Reset & Base Styles */
-        body { margin: 0; padding: 0; background-color: var(--base-white); font-family: 'Lato', sans-serif; }
-        
-        /* Extracted Styles */
-        ${finalCssContent}
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-${finalHtmlContent}
+${finalHtmlBody}
+<script src="script.js"></script>
 </body>
 </html>`;
 
-    // 6. Download File
-    const htmlBlob = new Blob([fullHTML], { type: 'text/html' });
-    const htmlUrl = URL.createObjectURL(htmlBlob);
-    const htmlLink = document.createElement('a');
-    htmlLink.href = htmlUrl;
-    htmlLink.download = 'template.html';
-    document.body.appendChild(htmlLink);
-    htmlLink.click();
-    document.body.removeChild(htmlLink);
-    URL.revokeObjectURL(htmlUrl);
+    // 7. Create ZIP
+    const zip = new JSZip();
+    zip.file("index.html", fullHTML);
+    zip.file("style.css", finalCssContent);
+    zip.file("script.js", syncScriptContent);
+    zip.folder("images"); // Empty folder for now
 
-    alert('Export complete! Downloaded template.html');
+    // 8. Generate and Download
+    zip.generateAsync({ type: "blob" })
+        .then(function (content) {
+            const url = URL.createObjectURL(content);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "template.zip";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
 };

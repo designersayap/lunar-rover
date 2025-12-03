@@ -125,11 +125,10 @@ export const componentLibrary = {
             component: TerraUsp3col,
             thumbnail: "/images/thumbnails/terra-USP-3col.svg",
             props: {
-                title: "Why Choose Us",
+                title: "Our Key Features",
                 features: [
-                    { title: "Title", description: "Description" },
-                    { title: "Title", description: "Description" },
-                    { title: "Title", description: "Description" }
+                    { title: "Feature 1", description: "Description for feature 1" },
+                    { title: "Feature 2", description: "Description for feature 2" },
                 ]
             }
         },
@@ -139,12 +138,12 @@ export const componentLibrary = {
             component: TerraUsp4col,
             thumbnail: "/images/thumbnails/terra-USP-4col.svg",
             props: {
-                title: "Why Choose Us",
+                title: "Our Key Features",
                 features: [
-                    { title: "Title", description: "Description" },
-                    { title: "Title", description: "Description" },
-                    { title: "Title", description: "Description" },
-                    { title: "Title", description: "Description" }
+                    { title: "Feature 1", description: "Description for feature 1" },
+                    { title: "Feature 2", description: "Description for feature 2" },
+                    { title: "Feature 3", description: "Description for feature 3" },
+                    { title: "Feature 4", description: "Description for feature 4" }
                 ]
             }
         },

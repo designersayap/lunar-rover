@@ -42,12 +42,14 @@ export default function LactoNavigation({
                                 className={`${styles.hamburgerButton} ${styles.tabletMobileOnly}`}
                                 onClick={toggleMobileMenu}
                                 aria-label="Toggle menu"
+                                data-mobile-menu-toggle
                             >
-                                {isMobileMenuOpen ? (
-                                    <XMarkIcon className={styles.hamburgerIcon} />
-                                ) : (
+                                <div data-menu-icon="open" style={{ display: isMobileMenuOpen ? 'none' : 'block' }}>
                                     <Bars3Icon className={styles.hamburgerIcon} />
-                                )}
+                                </div>
+                                <div data-menu-icon="close" style={{ display: isMobileMenuOpen ? 'block' : 'none' }}>
+                                    <XMarkIcon className={styles.hamburgerIcon} />
+                                </div>
                             </button>
 
                             {/* Menu Item 1 - Desktop Only */}
@@ -108,15 +110,17 @@ export default function LactoNavigation({
                         </div>
 
                         {/* Mobile Menu Dropdown */}
-                        {isMobileMenuOpen && (
-                            <div className={`${styles.mobileMenu} ${styles.tabletMobileOnly}`}>
-                                {menuItems.map((item, index) => (
-                                    <a key={index} href={item.href} className={`btn btn-ghost-neutral btn-sm ${styles.mobileMenuItem}`}>
-                                        {item.label}
-                                    </a>
-                                ))}
-                            </div>
-                        )}
+                        <div
+                            className={`${styles.mobileMenu} ${styles.tabletMobileOnly}`}
+                            style={{ display: isMobileMenuOpen ? 'flex' : 'none' }}
+                            data-mobile-menu
+                        >
+                            {menuItems.map((item, index) => (
+                                <a key={index} href={item.href} className={`btn btn-ghost-neutral btn-sm ${styles.mobileMenuItem}`}>
+                                    {item.label}
+                                </a>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

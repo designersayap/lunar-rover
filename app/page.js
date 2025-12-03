@@ -318,7 +318,7 @@ export default function TemplateGeneratorPage() {
   }, []);
 
   const handleExportConfirm = useCallback((csvLink) => {
-    handleExportTemplate(selectedComponents);
+    handleExportTemplate(selectedComponents, csvLink);
     setIsExportPopoverOpen(false);
   }, [selectedComponents]);
 
@@ -444,3 +444,5 @@ export default function TemplateGeneratorPage() {
     </div>
   );
 }
+
+//design with love, emotion and pain by Daru & Deni. QRIS for support will be update later.

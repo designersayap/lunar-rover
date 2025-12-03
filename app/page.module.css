@@ -777,6 +777,13 @@
     padding: 0 var(--padding-sm);
 }
 
+.themePickerButton:disabled {
+    background-color: var(--background-neutral--button--neutral-default);
+    color: var(--content-neutral--button--primary);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
 .themePickerFooter {
     display: flex;
     justify-content: flex-end;
@@ -798,57 +805,9 @@
     right: 16px;
     width: 362px;
     margin: 0;
-    background-color: var(--background-neutral--default);
-    box-shadow: var(--shadow--md);
-    border-radius: 10px;
-    outline: 0.5px solid var(--stroke-neutral--neutral);
-    outline-offset: -0.5px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
 }
 
-.exportHeader {
-    padding: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--stroke-neutral--neutral);
-}
 
-.exportTitle {
-    color: var(--content-neutral--title);
-    font-family: var(--font-family-body);
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 20px;
-    text-transform: capitalize;
-}
-
-.exportClose {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: var(--content-neutral--body);
-    background: none;
-    border: none;
-    padding: 0;
-    border-radius: var(--border-radius-round);
-}
-
-.exportClose:hover {
-    background-color: var(--background-neutral--neutral-faint);
-}
-
-.exportContent {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
 
 .exportInputWrapper {
     display: flex;
@@ -899,13 +858,7 @@
     font-weight: 400;
 }
 
-.exportFooter {
-    padding: 16px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 16px;
-}
+
 
 .exportButton {
     display: flex;

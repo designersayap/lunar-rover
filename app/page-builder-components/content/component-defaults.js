@@ -3,12 +3,22 @@ export const componentDefaults = {
         logo: "GlobeAltIcon",
         brandName: "Terra",
         menuItems: ["Menu 1", "Menu 2", "Menu 3", "Menu 4"],
-        buttonLabel: "Beli Sekarang"
+        menuItem_1_link: "#",
+        menuItem_2_link: "#",
+        menuItem_3_link: "#",
+        menuItem_4_link: "#",
+        buttonLabel: "Beli Sekarang",
+        buttonLink: "#"
     },
     "lacto-navigation": {
         logo: "Lacto Logo",
         menuItems: ["Menu 1", "Menu 2", "Menu 3", "Menu 4"],
-        buttonLabel: "Button"
+        menuItem_1_link: "#",
+        menuItem_2_link: "#",
+        menuItem_3_link: "#",
+        menuItem_4_link: "#",
+        buttonLabel: "Button",
+        buttonLink: "#"
     },
     "header-title": {
         title: "Title"
@@ -19,17 +29,20 @@ export const componentDefaults = {
     },
     "header-title-button": {
         title: "Title",
-        buttonLabel: "Button"
+        buttonLabel: "Button",
+        buttonLink: "#"
     },
     "header-title-desc-button": {
         title: "Title",
         description: "Description",
-        buttonLabel: "Button"
+        buttonLabel: "Button",
+        buttonLink: "#"
     },
     "hero-button": {
         title: "Hero Title",
         description: "Hero Description",
-        buttonLabel: "Button"
+        buttonLabel: "Button",
+        buttonLink: "#"
     },
     "hero-search": {
         title: "Hero Title",
@@ -40,13 +53,15 @@ export const componentDefaults = {
         image: "Placeholder Image",
         title: "Feature Title",
         description: "Detailed description of the feature goes here. Explain the benefits and how it helps the user.",
-        buttonLabel: "Label"
+        buttonLabel: "Label",
+        buttonLink: "#"
     },
     "feature-right": {
         image: "Placeholder Image",
         title: "Feature Title",
         description: "Detailed description of the feature goes here. Explain the benefits and how it helps the user.",
-        buttonLabel: "Label"
+        buttonLabel: "Label",
+        buttonLink: "#"
     },
     "lacto-features-stacked": {
         image: "Placeholder Image",
@@ -58,17 +73,16 @@ export const componentDefaults = {
     },
     "usp-3col": {
         items: [
-            { title: "USP 1", description: "Description 1" },
-            { title: "USP 2", description: "Description 2" },
-            { title: "USP 3", description: "Description 3" }
+            { title: "Feature 1", description: "Description for feature 1" },
+            { title: "Feature 2", description: "Description for feature 2" },
         ]
     },
     "usp-4col": {
         items: [
-            { title: "USP 1", description: "Description 1" },
-            { title: "USP 2", description: "Description 2" },
-            { title: "USP 3", description: "Description 3" },
-            { title: "USP 4", description: "Description 4" }
+            { title: "Feature 1", description: "Description for feature 1" },
+            { title: "Feature 2", description: "Description for feature 2" },
+            { title: "Feature 3", description: "Description for feature 3" },
+            { title: "Feature 4", description: "Description for feature 4" }
         ]
     },
     "testimony": {
@@ -87,10 +101,14 @@ export const componentDefaults = {
     "lacto-message-box": {
         title: "Message Box Title",
         description: "Message Box Description",
-        buttonLabel: "Button"
+        buttonLabel: "Button",
+        buttonLink: "#"
     },
     "footer": {
         copyright: "© 2024 Terra. All rights reserved.",
-        links: ["Link 1", "Link 2", "Link 3"]
+        links: ["Link 1", "Link 2", "Link 3"],
+        link_1_url: "#",
+        link_2_url: "#",
+        link_3_url: "#"
     }
 };
