@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Bars3Icon, XMarkIcon, GlobeAltIcon } from '@heroicons/react/24/solid';
+import { Bars3Icon, XMarkIcon, GlobeAltIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
 import { ShoppingBagIcon } from "@heroicons/react/20/solid";
 import styles from './terra-navigation.module.css';
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
@@ -106,27 +106,29 @@ export default function TerraNavigation({
                     </div>
 
                     {/* Mobile Menu Dropdown */}
-                    {isMobileMenuOpen && (
-                        <div className={`${styles.mobileMenu} ${styles.mobileOnly}`}>
-                            {menuItems.map((item, index) => (
-                                item.hasDropdown ? (
-                                    <div key={index} className={`${styles.mobileMenuItem} btn btn-sm btn-ghost-neutral`}>
-                                        {item.label}
-                                        <ChevronDownIcon className={styles.arrowIcon} />
-                                    </div>
-                                ) : (
-                                    <a key={index} href={item.href} className={`${styles.mobileMenuItem} btn btn-sm btn-ghost-neutral`}>
-                                        {item.label}
-                                    </a>
-                                )
-                            ))}
-                            {/* Account Button in Mobile Menu */}
-                            <button className={`${styles.mobileMenuItem} btn btn-primary btn-sm ${styles.mobileMenuBuy}`} aria-label="Buy Menu">
-                                {buttonText}
-                                <ShoppingCartIcon className={styles.icon} />
-                            </button>
-                        </div>
-                    )}
+                    <div
+                        className={`${styles.mobileMenu} ${styles.mobileOnly}`}
+                        style={{ display: isMobileMenuOpen ? 'flex' : 'none' }}
+                        data-mobile-menu
+                    >
+                        {menuItems.map((item, index) => (
+                            item.hasDropdown ? (
+                                <div key={index} className={`${styles.mobileMenuItem} btn btn-sm btn-ghost-neutral`}>
+                                    {item.label}
+                                    <ChevronDownIcon className={styles.arrowIcon} />
+                                </div>
+                            ) : (
+                                <a key={index} href={item.href} className={`${styles.mobileMenuItem} btn btn-sm btn-ghost-neutral`}>
+                                    {item.label}
+                                </a>
+                            )
+                        ))}
+                        {/* Account Button in Mobile Menu */}
+                        <button className={`${styles.mobileMenuItem} btn btn-primary btn-sm ${styles.mobileMenuBuy}`} aria-label="Buy Menu">
+                            {buttonText}
+                            <ShoppingCartIcon className={styles.icon} />
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>

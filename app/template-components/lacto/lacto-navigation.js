@@ -141,15 +141,17 @@ export default function LactoNavigation({
                         </div>
 
                         {/* Mobile Menu Dropdown */}
-                        {isMobileMenuOpen && (
-                            <div className={`${styles.mobileMenu} ${styles.tabletMobileOnly}`}>
-                                {menuItems.map((item, index) => (
-                                    <a key={index} href={item.href} className={`btn btn-ghost-neutral btn-sm ${styles.mobileMenuItem}`}>
-                                        {item.label}
-                                    </a>
-                                ))}
-                            </div>
-                        )}
+                        <div
+                            className={`${styles.mobileMenu} ${styles.tabletMobileOnly}`}
+                            style={{ display: isMobileMenuOpen ? 'flex' : 'none' }}
+                            data-mobile-menu
+                        >
+                            {menuItems.map((item, index) => (
+                                <a key={index} href={item.href} className={`btn btn-ghost-neutral btn-sm ${styles.mobileMenuItem}`}>
+                                    {item.label}
+                                </a>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
