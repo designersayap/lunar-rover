@@ -153,7 +153,7 @@ export default function Sidebar({
                                                 <button
                                                     key={comp.id}
                                                     onClick={(e) => addComponent(comp, category, e)}
-                                                    className={`${styles.sidebarButton}`}
+                                                    className={styles.sidebarButton}
                                                 >
                                                     <div className={styles.sidebarButtonImageWrapper}>
                                                         <img
