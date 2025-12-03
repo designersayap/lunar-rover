@@ -25,7 +25,7 @@ import LactoProductCarousel from "@/app/template-components/lacto/lacto-product-
 import LactoMessageBox from "@/app/template-components/lacto/lacto-message-box";
 
 // Data
-import { uspData, footerData } from "../../template-components/content/data";
+import { uspData3Col, uspData4Col, footerData } from "../../template-components/content/data";
 
 export default function ComponentPreviewPage() {
     const params = useParams();
@@ -76,8 +76,12 @@ export default function ComponentPreviewPage() {
     }
 
     // Render with specific props if needed
-    if (name === "terra-usp-3col" || name === "terra-usp-4col") {
-        return <Component title={uspData.title} features={uspData.features} />;
+    if (name === "terra-usp-3col") {
+        return <Component title={uspData3Col.title} features={uspData3Col.features} />;
+    }
+
+    if (name === "terra-usp-4col") {
+        return <Component title={uspData4Col.title} features={uspData4Col.features} />;
     }
 
     // if (name === "terra-footer") {
