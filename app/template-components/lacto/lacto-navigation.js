@@ -5,8 +5,6 @@ import { componentDefaults } from "../content/component-defaults";
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import styles from './lacto-navigation.module.css';
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
-import BuilderButton from "@/app/page-builder-components/utils/builder-button";
-
 import BuilderLink from "@/app/page-builder-components/utils/builder-link";
 
 /**

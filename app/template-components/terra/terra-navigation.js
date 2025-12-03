@@ -126,7 +126,7 @@ export default function TerraNavigation({
                         {/* Account Button in Mobile Menu */}
                         <button className={`${styles.mobileMenuItem} btn btn-primary btn-sm ${styles.mobileMenuBuy}`} aria-label="Buy Menu">
                             {buttonText}
-                            <ShoppingCartIcon className={styles.icon} />
+                            <ShoppingBagIcon className={styles.icon} />
                         </button>
                     </div>
                 </div>
