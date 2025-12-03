@@ -27,7 +27,7 @@ export const componentDefaults = {
     },
     "header-title-desc": {
         title: "Title",
-        subtitle: "Subtitle"
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
     },
     "header-title-button": {
         title: "Title",
@@ -36,48 +36,52 @@ export const componentDefaults = {
     },
     "header-title-desc-button": {
         title: "Title",
-        subtitle: "Subtitle",
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         buttonText: "Label",
         buttonId: ""
     },
     "hero-button": {
         title: "Title",
-        subtitle: "Subtitle",
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         buttonText: "Label",
         buttonId: ""
     },
     "hero-search": {
         title: "Title",
-        subtitle: "Subtitle",
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         placeholder: "Search product..."
     },
     "feature-left": {
         title: "Title",
-        subtitle: "Subtitle",
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         buttonText: "Label",
-        buttonId: ""
+        buttonId: "",
+        image: ""
     },
     "feature-right": {
         title: "Title",
-        subtitle: "Subtitle",
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         buttonText: "Label",
-        buttonId: ""
+        buttonId: "",
+        image: ""
     },
     "lacto-features-stacked": {
         title: "Title",
-        subtitle: "Subtitle",
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         buttonText: "Label",
-        buttonId: ""
+        buttonId: "",
+        image: ""
     },
     "lacto-media": {
         // No text defaults needed for now, but keeping entry for consistency
+        image: ""
     },
     "usp-3col": {
         title: "Title",
         features: [
-            { title: "Title", subtitle: "Subtitle" },
-            { title: "Title", subtitle: "Subtitle" },
-            { title: "Title", subtitle: "Subtitle" }
+            { title: "Title", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
+            { title: "Title", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
+            { title: "Title", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" }
         ],
         buttonText: "Label",
         buttonId: ""
@@ -85,38 +89,38 @@ export const componentDefaults = {
     "usp-4col": {
         title: "Title",
         features: [
-            { title: "Title", subtitle: "Subtitle" },
-            { title: "Title", subtitle: "Subtitle" },
-            { title: "Title", subtitle: "Subtitle" },
-            { title: "Title", subtitle: "Subtitle" }
+            { title: "Title", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
+            { title: "Title", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
+            { title: "Title", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
+            { title: "Title", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" }
         ],
         buttonText: "Label",
         buttonId: ""
     },
     "testimony": {
         testimonials: [
-            { name: "Uzair Nunez", role: "Web Developer", quote: "Terra transformed our brand! The flexible layouts boosted our team's creativity" },
-            { name: "Cecily Garcia", role: "Project Manager", quote: "This one is top-notch! Our customers love the modern designs" },
-            { name: "Maja Nash", role: "UX Designer", quote: "I love the sleek design! This template made our site modern and user-friendly." },
-            { name: "Sarah Johnson", role: "Marketing Director", quote: "The attention to detail is outstanding! Our conversion rates improved significantly." },
-            { name: "Michael Chen", role: "Product Designer", quote: "Beautiful components that are easy to customize. Saved us weeks." },
-            { name: "Emma Williams", role: "CEO", quote: "Professional, modern, and exactly what we needed. Highly recommend Terra!" },
+            { name: "Person Name", role: "Role", quote: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
+            { name: "Person Name", role: "Role", quote: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
+            { name: "Person Name", role: "Role", quote: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
+            { name: "Person Name", role: "Role", quote: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
+            { name: "Person Name", role: "Role", quote: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
+            { name: "Person Name", role: "Role", quote: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
         ]
     },
     "product-carousel-4": {
         products: [
-            { title: "Product Name", subtitle: "Description", price: "Rp100.000" },
-            { title: "Product Name", subtitle: "Description", price: "Rp100.000" },
-            { title: "Product Name", subtitle: "Description", price: "Rp100.000" },
-            { title: "Product Name", subtitle: "Description", price: "Rp100.000" }
+            { title: "Product Name", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", price: "Rp100.000", image: "" },
+            { title: "Product Name", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", price: "Rp100.000", image: "" },
+            { title: "Product Name", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", price: "Rp100.000", image: "" },
+            { title: "Product Name", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", price: "Rp100.000", image: "" }
         ]
     },
     "lacto-product-carousel": {
         products: [
-            { title: "Product Name", subtitle: "Description" },
-            { title: "Product Name", subtitle: "Description" },
-            { title: "Product Name", subtitle: "Description" },
-            { title: "Product Name", subtitle: "Description" }
+            { title: "Product Name", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
+            { title: "Product Name", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
+            { title: "Product Name", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
+            { title: "Product Name", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" }
         ],
         buttonText: "Label",
         buttonId: ""
@@ -130,7 +134,7 @@ export const componentDefaults = {
         secondaryButtonId: ""
     },
     "footer": {
-        brand: { title: "Brand", subtitle: "The advantage of hiring a workspace with us is that givees you comfortable service and all-around facilities." },
+        brand: { title: "Brand", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry" },
         products: { title: "Products", links: [{ label: "Fabric Care", href: "#" }, { label: "Food & Beverage", href: "#" }, { label: "Home Care", href: "#" }] },
         social: { title: "Follow Us", links: [{ label: "Facebook", href: "#" }, { label: "Twitter", href: "#" }, { label: "Instagram", href: "#" }] },
         bottomBar: { copyright: "Copyright © 2025", legalLinks: [{ label: "Terms & Conditions", href: "#" }, { label: "Privacy Policy", href: "#" }] }

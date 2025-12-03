@@ -12,9 +12,9 @@ export default function TerraFeaturesImageRight({
     title = componentDefaults["feature-right"].title,
     subtitle = componentDefaults["feature-right"].subtitle,
     buttonText = componentDefaults["feature-right"].buttonText,
+    image = componentDefaults["feature-right"].image,
     buttonId,
     buttonStyle = "primary", // primary, neutral, ghost, outline, link
-    imageSrc = "/placeholder.jpg",
     onUpdate,
     sectionId
 }) {
@@ -55,7 +55,7 @@ export default function TerraFeaturesImageRight({
 
                     {/* Image Column */}
                     <div className={`${styles.imageWrapper} col-mobile-2 col-tablet-8 col-desktop-6`}>
-                        <BuilderImage src={imageSrc} className="imagePlaceholder-1-1" style={{ height: "auto" }} />
+                        <BuilderImage src={image} className="imagePlaceholder-1-1" style={{ height: "auto" }} />
                     </div>
                 </div>
             </div>

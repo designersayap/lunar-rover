@@ -15,6 +15,7 @@ export default function LactoFeaturesStacked({
     title = componentDefaults["lacto-features-stacked"].title,
     subtitle = componentDefaults["lacto-features-stacked"].subtitle,
     buttonText = componentDefaults["lacto-features-stacked"].buttonText,
+    image = componentDefaults["lacto-features-stacked"].image,
     buttonId,
     buttonStyle = "primary", // primary, neutral, ghost, outline, link
     buttonSize = "md", // sm, md, lg
@@ -28,7 +29,7 @@ export default function LactoFeaturesStacked({
                     <div className="col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2">
                         <div className={styles.contentWrapper}>
                             {/* Media */}
-                            <BuilderImage className="imagePlaceholder-16-9" style={{ height: "auto" }} />
+                            <BuilderImage src={image} className="imagePlaceholder-16-9" style={{ height: "auto" }} />
 
                             {/* Text Wrapper */}
                             <div className={styles.textWrapper}>

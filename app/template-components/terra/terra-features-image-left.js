@@ -13,6 +13,7 @@ export default function TerraFeaturesImageLeft({
     title = componentDefaults["feature-left"].title,
     subtitle = componentDefaults["feature-left"].subtitle,
     buttonText = componentDefaults["feature-left"].buttonText,
+    image = componentDefaults["feature-left"].image,
     buttonId,
     onUpdate,
     sectionId
@@ -23,7 +24,7 @@ export default function TerraFeaturesImageLeft({
                 <div className="grid align-center">
                     {/* Image Column */}
                     <div className={`${styles.imageWrapper} col-mobile-2 col-tablet-8 col-desktop-6`}>
-                        <BuilderImage className="imagePlaceholder-1-1" style={{ height: "auto" }} />
+                        <BuilderImage src={image} className="imagePlaceholder-1-1" style={{ height: "auto" }} />
                     </div>
 
                     {/* Content Column */}
