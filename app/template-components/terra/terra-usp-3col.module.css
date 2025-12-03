@@ -1,13 +1,17 @@
 .section {
     padding: var(--padding-2xl) 0;
+    background-color: var(--base-white);
 }
 
-.sectionTitleWrapper {
-    padding: var(--padding-md);
+.header {
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
 }
 
-.sectionTitle {
+.title {
     color: var(--content-neutral--title);
+    margin-bottom: var(--gap-lg);
 }
 
 .sectionSubtitle {
@@ -19,20 +23,45 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: var(--padding-md);
+    height: 100%;
 }
 
 .cardTitle {
     color: var(--content-neutral--title);
-    margin-bottom: var(--gap-md);
-}
-
-.cardDescription {
-    color: var(--content-neutral--caption);
     margin-bottom: var(--gap-sm);
 }
 
+.description {
+    color: var(--content-neutral--caption);
+    margin-bottom: var(--gap-md);
+    flex-grow: 1;
+}
+
+.linkButton {
+    color: var(--content-brand--brand) !important;
+    padding: 0 !important;
+    font-weight: var(--font-weight-bold);
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs);
+}
+
+.linkButton:hover {
+    color: var(--content-brand--brand-dark) !important;
+    background: transparent !important;
+}
+
 .icon {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
+}
+
+@media (max-width: 768px) {
+    .header {
+        margin-bottom: var(--gap-xl);
+    }
+
+    .card {
+        margin-bottom: var(--gap-lg);
+    }
 }

@@ -10,7 +10,6 @@ import { componentDefaults } from "../content/component-defaults";
  */
 export default function TerraUsp3col({
     title = componentDefaults["usp-3col"].title,
-    subtitle = componentDefaults["usp-3col"].subtitle,
     features = componentDefaults["usp-3col"].features,
     buttonText = componentDefaults["usp-3col"].buttonText,
     buttonId,
@@ -31,7 +30,7 @@ export default function TerraUsp3col({
             <div className="container-grid">
                 <div className="grid">
                     <div className="col-mobile-4 col-tablet-8 col-desktop-12">
-                        <div className={styles.sectionTitleWrapper}>
+                        <div className={styles.header}>
                             <BuilderText
                                 tagName="h2"
                                 className={`h2 ${styles.sectionTitle}`}
@@ -48,16 +47,11 @@ export default function TerraUsp3col({
                             />
                         </div>
                     </div>
-                </div>
-                <div className="grid">
+
+                    {/* Features Columns - Each spans 3 on Desktop (Total 9), 4 on Mobile/Tablet */}
                     {features.map((feature, index) => (
-                        <div key={index} className="col-mobile-4 col-tablet-4 col-desktop-4">
+                        <div key={index} className="col-mobile-4 col-tablet-4 col-desktop-3">
                             <div className={styles.card}>
-                                <BuilderImage
-                                    src={feature.image}
-                                    className="imagePlaceholder-4-3"
-                                    style={{ marginBottom: "var(--gap-md)", height: "auto" }}
-                                />
                                 <BuilderText
                                     tagName="h3"
                                     className={`h4 ${styles.cardTitle}`}
@@ -67,18 +61,18 @@ export default function TerraUsp3col({
                                 />
                                 <BuilderText
                                     tagName="p"
-                                    className={`body-regular ${styles.cardDescription}`}
+                                    className={`body-regular ${styles.description}`}
                                     content={feature.subtitle}
                                     onChange={(val) => handleFeatureUpdate(index, "subtitle", val)}
                                     sectionId={sectionId}
                                 />
                                 <BuilderButton
                                     label={buttonText}
-                                    iconRight={<ArrowLongRightIcon style={{ width: "20px", height: "20px", marginLeft: "8px" }} />}
+                                    iconRight={<ArrowLongRightIcon className={styles.icon} />}
                                     href="#"
                                     suffix={index}
                                     sectionId={sectionId}
-                                    className={`btn btn-${buttonStyle} btn-${buttonSize}`}
+                                    className={`btn btn-${buttonStyle} btn-${buttonSize} ${styles.linkButton}`}
                                     onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
                                     id={buttonId}
                                     onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
