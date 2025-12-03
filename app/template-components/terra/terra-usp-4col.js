@@ -10,6 +10,7 @@ import { componentDefaults } from "../content/component-defaults";
  */
 export default function TerraUsp4col({
     title = componentDefaults["usp-4col"].title,
+    subtitle = componentDefaults["usp-4col"].subtitle,
     features = componentDefaults["usp-4col"].features,
     buttonText = componentDefaults["usp-4col"].buttonText,
     buttonId, // Added buttonId prop
@@ -30,12 +31,19 @@ export default function TerraUsp4col({
             <div className="container-grid">
                 <div className="grid">
                     <div className="col-mobile-4 col-tablet-8 col-desktop-12">
-                        <div className={styles.header}>
+                        <div className={styles.sectionTitleWrapper}>
                             <BuilderText
                                 tagName="h2"
-                                className={`h2 ${styles.title}`}
+                                className={`h2 ${styles.sectionTitle}`}
                                 content={title}
                                 onChange={(val) => onUpdate && onUpdate({ title: val })}
+                                sectionId={sectionId}
+                            />
+                            <BuilderText
+                                tagName="p"
+                                className={`body-regular ${styles.sectionSubtitle}`}
+                                content={subtitle}
+                                onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
                                 sectionId={sectionId}
                             />
                         </div>
@@ -59,7 +67,7 @@ export default function TerraUsp4col({
                                 />
                                 <BuilderText
                                     tagName="p"
-                                    className={`body-regular ${styles.description}`}
+                                    className={`body-regular ${styles.cardDescription}`}
                                     content={feature.subtitle}
                                     onChange={(val) => handleFeatureUpdate(index, "subtitle", val)}
                                     sectionId={sectionId}

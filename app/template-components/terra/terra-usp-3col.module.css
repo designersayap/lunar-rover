@@ -10,6 +10,11 @@
     color: var(--content-neutral--title);
 }
 
+.sectionSubtitle {
+    color: var(--content-neutral--caption);
+    margin-top: var(--gap-sm);
+}
+
 .card {
     display: flex;
     flex-direction: column;

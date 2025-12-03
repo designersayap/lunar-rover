@@ -78,6 +78,7 @@ export const componentDefaults = {
     },
     "usp-3col": {
         title: "Title",
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         features: [
             { title: "Title", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
             { title: "Title", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
@@ -88,6 +89,7 @@ export const componentDefaults = {
     },
     "usp-4col": {
         title: "Title",
+        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         features: [
             { title: "Title", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
             { title: "Title", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", image: "" },
