@@ -4,6 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon, StarIcon } from "@heroicons/react/20
 import { useRef } from "react";
 import styles from "./terra-testimony.module.css";
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderImage from "@/app/page-builder-components/utils/builder-image";
 
 import { componentDefaults } from "../content/component-defaults";
 
@@ -72,7 +73,8 @@ export default function TerraTestimony({
                             {testimonials.map((item, index) => (
                                 <div key={index} className={`col-mobile-2 col-tablet-8 col-desktop-4 ${styles.terraTestimoniContent}`}>
                                     <div className={`imagePlaceholder-4-5 ${styles.cardWrapper}`}>
-                                        <div className={styles.cardContent}>
+                                        <BuilderImage src={item.image} style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }} />
+                                        <div className={styles.cardContent} style={{ position: 'relative', zIndex: 1 }}>
                                             {/* Profile Image */}
                                             <div className={styles.profileImageWrapper}>
                                                 <div className={styles.profileImage} style={{ backgroundColor: '#CBD5E1' }}></div>

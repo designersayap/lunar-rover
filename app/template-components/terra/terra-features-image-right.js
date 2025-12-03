@@ -1,6 +1,7 @@
 import styles from "./terra-features-image-right.module.css";
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
 import BuilderButton from "@/app/page-builder-components/utils/builder-button";
+import BuilderImage from "@/app/page-builder-components/utils/builder-image";
 import { ArrowLongRightIcon } from "@heroicons/react/20/solid";
 import { componentDefaults } from "../content/component-defaults";
 
@@ -54,9 +55,7 @@ export default function TerraFeaturesImageRight({
 
                     {/* Image Column */}
                     <div className={`${styles.imageWrapper} col-mobile-2 col-tablet-8 col-desktop-6`}>
-                        <div className="imagePlaceholder-1-1">
-                            {/* Placeholder for Image */}
-                        </div>
+                        <BuilderImage src={imageSrc} className="imagePlaceholder-1-1" style={{ height: "auto" }} />
                     </div>
                 </div>
             </div>

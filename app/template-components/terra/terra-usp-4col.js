@@ -2,6 +2,7 @@ import styles from "./terra-usp-4col.module.css";
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
 import BuilderButton from "@/app/page-builder-components/utils/builder-button";
+import BuilderImage from "@/app/page-builder-components/utils/builder-image";
 import { componentDefaults } from "../content/component-defaults";
 
 /**
@@ -44,7 +45,11 @@ export default function TerraUsp4col({
                     {features.map((feature, index) => (
                         <div key={index} className="col-mobile-4 col-tablet-4 col-desktop-3">
                             <div className={styles.card}>
-                                <div className="imagePlaceholder-4-3" style={{ marginBottom: "var(--gap-md)" }}></div>
+                                <BuilderImage
+                                    src={feature.image}
+                                    className="imagePlaceholder-4-3"
+                                    style={{ marginBottom: "var(--gap-md)", height: "auto" }}
+                                />
                                 <BuilderText
                                     tagName="h3"
                                     className={`h4 ${styles.cardTitle}`}

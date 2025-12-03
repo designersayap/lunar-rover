@@ -4,6 +4,7 @@ import React from 'react';
 import styles from './lacto-features-stacked.module.css';
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
 import BuilderButton from "@/app/page-builder-components/utils/builder-button";
+import BuilderImage from "@/app/page-builder-components/utils/builder-image";
 import { componentDefaults } from "../content/component-defaults";
 
 /**
@@ -27,7 +28,7 @@ export default function LactoFeaturesStacked({
                     <div className="col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2">
                         <div className={styles.contentWrapper}>
                             {/* Media */}
-                            <div className="imagePlaceholder-16-9"></div>
+                            <BuilderImage className="imagePlaceholder-16-9" style={{ height: "auto" }} />
 
                             {/* Text Wrapper */}
                             <div className={styles.textWrapper}>

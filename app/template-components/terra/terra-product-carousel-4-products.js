@@ -9,6 +9,7 @@ import styles from "./terra-product-carousel-4-products.module.css";
  * Displays product carousel with tabs and horizontal scroll
  */
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderImage from "@/app/page-builder-components/utils/builder-image";
 
 import { componentDefaults } from "../content/component-defaults";
 
@@ -118,9 +119,7 @@ export default function TerraProductCarousel4Products({
                                         <div className={styles.cardWrapper}>
                                             {/* Product Image */}
                                             <div className={styles.imageWrapper}>
-                                                <div className="imagePlaceholder-1-1">
-                                                    {/* Placeholder for product image */}
-                                                </div>
+                                                <BuilderImage src={product.image} className="imagePlaceholder-1-1" style={{ height: "auto" }} />
                                                 {/* Add to Cart Button */}
                                                 <button className={`btn btn-md ${styles.addButton}`}>
                                                     <img src="/arrow.svg" alt="View details" className={styles.arrowIcon} />

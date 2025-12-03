@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styles from './lacto-media.module.css';
+import BuilderImage from "@/app/page-builder-components/utils/builder-image";
 import { componentDefaults } from "../content/component-defaults";
 
 /**
@@ -14,7 +15,7 @@ export default function LactoMedia() {
             <div className="container-grid">
                 <div className="grid justify-center">
                     <div className="col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2">
-                        <div className={`imagePlaceholder-21-9 ${styles.media}`}></div>
+                        <BuilderImage className={`imagePlaceholder-21-9 ${styles.media}`} style={{ height: "auto" }} />
                     </div>
                 </div>
             </div>

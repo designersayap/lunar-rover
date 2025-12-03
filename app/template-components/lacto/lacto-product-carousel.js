@@ -7,6 +7,7 @@ import { ShoppingCartIcon } from '@heroicons/react/24/solid';
 import styles from './lacto-product-carousel.module.css';
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
 import BuilderButton from "@/app/page-builder-components/utils/builder-button";
+import BuilderImage from "@/app/page-builder-components/utils/builder-image";
 
 import { componentDefaults } from "../content/component-defaults";
 
@@ -56,7 +57,7 @@ export default function LactoProductCarousel({
                 <div className={styles.track}>
                     {/* Previous Item - Image Only */}
                     <div className={`${styles.item} ${styles.inactiveItem} ${styles.prevItem}`}>
-                        <div className={`imagePlaceholder-1-1 ${styles.media}`}></div>
+                        <BuilderImage src={prevProduct.image} className={`imagePlaceholder-1-1 ${styles.media}`} style={{ height: "auto" }} />
                     </div>
 
                     {/* Active Item - Full Content */}
@@ -66,7 +67,7 @@ export default function LactoProductCarousel({
                                 <ArrowLeftIcon className={styles.navIcon} />
                             </button>
 
-                            <div className={`imagePlaceholder-1-1 ${styles.activeMedia}`}></div>
+                            <BuilderImage src={activeProduct.image} className={`imagePlaceholder-1-1 ${styles.activeMedia}`} style={{ height: "auto" }} />
 
                             <button onClick={nextSlide} className={`${styles.navButton} ${styles.nextButton}`} aria-label="Next slide">
                                 <ArrowRightIcon className={styles.navIcon} />
@@ -89,6 +90,7 @@ export default function LactoProductCarousel({
                                     content={activeProduct.subtitle}
                                     onChange={(val) => handleProductUpdate(activeProductIndex, "subtitle", val)}
                                     sectionId={sectionId}
+                                    style={{ color: "var(--content-neutral--caption)" }}
                                 />
                             </div>
                             <BuilderButton
@@ -106,7 +108,7 @@ export default function LactoProductCarousel({
 
                     {/* Next Item - Image Only */}
                     <div className={`${styles.item} ${styles.inactiveItem} ${styles.nextItem}`}>
-                        <div className={`imagePlaceholder-1-1 ${styles.media}`}></div>
+                        <BuilderImage src={nextProduct.image} className={`imagePlaceholder-1-1 ${styles.media}`} style={{ height: "auto" }} />
                     </div>
                 </div>
             </div>
