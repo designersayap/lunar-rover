@@ -1,7 +1,6 @@
 /* Section Spacing */
 .section {
-    padding-top: var(--padding-xl);
-    padding-bottom: var(--padding-xl);
+    padding-block: var(--padding-xl);
     text-align: center;
 }
 
@@ -11,8 +10,7 @@
     flex-direction: column;
     align-items: center;
     gap: var(--gap-md);
-    margin-left: var(--size-margin-md);
-    margin-right: var(--size-margin-md);
+    margin-inline: var(--size-margin-md);
 }
 
 /* Text Wrapper */
@@ -30,11 +28,4 @@
 
 .subtitle {
     color: var(--content-neutral--caption);
-}
-
-/* Responsive Adjustments */
-@media (max-width: 1023px) {
-    /* Tablet & Mobile: Inherit standard responsive stacking */
-    /* The grid classes (col-tablet-8, col-mobile-2) handle the width */
-    /* Margins and paddings adjust automatically via tokens */
 }

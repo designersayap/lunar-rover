@@ -55,7 +55,7 @@ export default function LactoFeaturesStacked({
                                 href="#"
                                 suffix="cta"
                                 sectionId={sectionId}
-                                className="btn btn-primary btn-lg"
+                                className={`btn btn-${buttonStyle} btn-${buttonSize}`}
                                 onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
                                 id={buttonId}
                                 onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
