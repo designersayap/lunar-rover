@@ -17,12 +17,11 @@ import TerraFeaturesImageRight from "@/app/template-components/terra/terra-featu
 
 
 
-import TerraNavigation from "@/app/template-components/terra/terra-navigation";
-import LactoNavigation from "@/app/template-components/lacto/lacto-navigation";
-import LactoFeaturesStacked from "@/app/template-components/lacto/lacto-features-stacked";
 
 
-import LactoMessageBox from "@/app/template-components/lacto/lacto-message-box";
+
+
+
 
 export default function ComponentPreviewPage() {
     const params = useParams();
@@ -30,7 +29,7 @@ export default function ComponentPreviewPage() {
 
     // Component Mapping
     const components = {
-        "terra-navigation": TerraNavigation,
+
         "global-header-title-button": GlobalHeaderTitleButton,
         "global-header-title-description": GlobalHeaderTitleDescription,
         "header-title-description-button": GlobalHeaderTitleButtonDescription,
@@ -43,11 +42,11 @@ export default function ComponentPreviewPage() {
 
 
 
-        "lacto-navigation": LactoNavigation,
-        "lacto-features-stacked": LactoFeaturesStacked,
 
 
-        "lacto-message-box": LactoMessageBox,
+
+
+
     };
 
     const Component = components[name];

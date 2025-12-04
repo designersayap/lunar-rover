@@ -1,27 +1,5 @@
 export const componentDefaults = {
-    "terra-navigation": {
-        logo: "GlobeAltIcon",
-        brandName: "Brand",
-        menuItems: [
-            { label: "Menu 1", href: "#" },
-            { label: "Menu 2", href: "#" },
-            { label: "Menu 3", href: "#" },
-            { label: "Menu 4", href: "#" }
-        ],
-        buttonLabel: "Button",
-        buttonId: ""
-    },
-    "lacto-navigation": {
-        logo: "Lacto Logo",
-        menuItems: [
-            { label: "Menu 1", href: "#" },
-            { label: "Menu 2", href: "#" },
-            { label: "Menu 3", href: "#" },
-            { label: "Menu 4", href: "#" }
-        ],
-        buttonLabel: "Button",
-        buttonId: ""
-    },
+
     "header-title": {
         title: "Title"
     },
@@ -61,24 +39,11 @@ export const componentDefaults = {
         buttonId: "",
         image: ""
     },
-    "lacto-features-stacked": {
-        title: "Title",
-        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-        buttonText: "Label",
-        buttonId: "",
-        image: ""
-    },
 
 
 
 
-    "lacto-message-box": {
-        title: "Title",
-        subtitle: "Subtitle",
-        primaryButtonText: "Label",
-        primaryButtonId: "",
-        secondaryButtonText: "Label",
-        secondaryButtonId: ""
-    },
+
+
 
 };

@@ -4,11 +4,10 @@ const GlobalHeaderTitle = dynamic(() => import("../../template-components/header
 const GlobalHeaderTitleButton = dynamic(() => import("../../template-components/header-title-button"));
 const GlobalHeaderTitleDescription = dynamic(() => import("../../template-components/header-title-description"));
 const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../template-components/header-title-description-button"));
-const TerraNavigation = dynamic(() => import("@/app/template-components/terra/terra-navigation"));
-const LactoNavigation = dynamic(() => import("@/app/template-components/lacto/lacto-navigation"));
-const LactoFeaturesStacked = dynamic(() => import("@/app/template-components/lacto/lacto-features-stacked"));
 
-const LactoMessageBox = dynamic(() => import("@/app/template-components/lacto/lacto-message-box"));
+
+
+
 const TerraBannerHeroWithButton = dynamic(() => import("@/app/template-components/terra/terra-banner-hero-with-button"));
 
 const TerraFeaturesImageLeft = dynamic(() => import("@/app/template-components/terra/terra-features-image-left"));
@@ -17,10 +16,7 @@ const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/
 
 
 export const componentLibrary = {
-    "Navigation": [
-        { id: "terra-navigation", name: "Terra - Navigation", component: TerraNavigation, thumbnail: "/images/thumbnails/terra-navigation.svg" },
-        { id: "lacto-navigation", name: "Lacto - Navigation", component: LactoNavigation, thumbnail: "/images/thumbnails/lacto-navigation.svg" },
-    ],
+
     "Header": [
         {
             id: "header-title",
@@ -116,23 +112,7 @@ export const componentLibrary = {
             ],
         },
     ],
-    "Feature - Stacked": [
-        {
-            id: "lacto-features-stacked",
-            name: "Lacto - Image Top",
-            component: LactoFeaturesStacked,
-            thumbnail: "/images/thumbnails/lacto-features-stacked.svg",
-            config: [
-                {
-                    name: "buttonStyle",
-                    label: "Button Style",
-                    type: "select",
-                    options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: "primary"
-                }
-            ],
-        },
-    ],
+
     "Media": [
 
     ],
@@ -143,28 +123,7 @@ export const componentLibrary = {
 
     ],
     "Content": [
-        {
-            id: "lacto-message-box",
-            name: "Lacto - Message Box",
-            component: LactoMessageBox,
-            thumbnail: "/images/thumbnails/lacto-message-box.svg",
-            config: [
-                {
-                    name: "primaryButtonStyle",
-                    label: "Primary Button Style",
-                    type: "select",
-                    options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: "primary"
-                },
-                {
-                    name: "secondaryButtonStyle",
-                    label: "Secondary Button Style",
-                    type: "select",
-                    options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: "outline"
-                }
-            ],
-        },
+
     ],
 
 };
