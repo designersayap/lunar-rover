@@ -1,5 +1,6 @@
 .section {
     padding-top: var(--padding-2xl);
+    position: relative;
 }
 
 .content {
@@ -17,9 +18,4 @@
 .subtitle {
     color: var(--content-neutral--caption);
     margin-bottom: var(--gap-lg);
-}
-
-.icon {
-    width: 20px;
-    height: 20px;
 }

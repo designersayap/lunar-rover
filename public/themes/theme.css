@@ -12,6 +12,10 @@
     --brand-color-75: #96C4ADFF;
     --brand-color-50: #E6F1EBFF;
 
+    /* Custom Colors */
+    --button-text-primary: var(--base-white);
+    --button-stroke-primary: none;
+
     /* System Colors */
     --system-color-green-500: #1B683EFF;
     --system-color-green-300: #2BAA66FF;
@@ -42,8 +46,8 @@
     --shadow-blur-md: 20px;
     --shadow-spread-button: 0px;
     --shadow-spread-md: 0px;
-    --shadow-color-button: #00000000;
-    --shadow-color-md: #0000000A;
+    --shadow-color-button: rgba(0, 0, 0, 0);
+    --shadow-color-md: rgba(0, 0, 0, 0.2);
 
     /* Base Colors */
     --base-black: #000000FF;

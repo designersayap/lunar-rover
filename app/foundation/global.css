@@ -157,6 +157,7 @@ body {
   text-decoration: none;
   border-radius: var(--border-radius-button);
   max-width: 100%;
+  box-shadow: var(--shadow--button);
 }
 
 /* Button Sizes */
@@ -185,6 +186,7 @@ body {
 .btn-primary {
   background-color: var(--background-brand--button--primary-default);
   color: var(--content-neutral--button--primary);
+  border: 1px solid var(--button-stroke-primary);
 }
 
 .btn-primary:hover {
@@ -195,6 +197,7 @@ body {
   background-color: transparent;
   color: var(--content-neutral--button--ghost);
   padding: 0;
+  box-shadow: none;
 }
 
 .btn-ghost-neutral:hover {
@@ -225,6 +228,7 @@ body {
   background-color: transparent;
   color: var(--content-brand--brand);
   padding: 0;
+  box-shadow: none;
 }
 
 .btn-ghost:hover {
@@ -467,10 +471,6 @@ body {
 /* Shadows */
 .shadow-md {
   box-shadow: var(--shadow--md);
-}
-
-.shadow-sm {
-  box-shadow: var(--shadow--sm);
 }
 
 /* Z-Index */

@@ -12,7 +12,12 @@
     --brand-color-75: #FDE1A2FF;
     --brand-color-50: #FEF8E8FF;
 
+    /* Custom Colors */
+    --button-text-primary: var(--grey-500);
+    --button-stroke-primary: var(--grey-500);
+
     /* System Colors */
+
     --system-color-green-500: #1B683EFF;
     --system-color-green-300: #2BAA66FF;
     --system-color-green-50: #EAF7F0FF;
@@ -34,16 +39,16 @@
     --round-circle: 9999px;
 
     /* Shadows */
-    --shadow-x-button: 0px;
-    --shadow-x-md: 0px;
-    --shadow-y-button: 0px;
-    --shadow-y-md: 8px;
+    --shadow-x-button: 4px;
+    --shadow-x-md: 8px;
+    --shadow-y-button: 6px;
+    --shadow-y-md: 10px;
     --shadow-blur-button: 0px;
-    --shadow-blur-md: 20px;
+    --shadow-blur-md: 0px;
     --shadow-spread-button: 0px;
     --shadow-spread-md: 0px;
-    --shadow-color-button: #00000000;
-    --shadow-color-md: #0000000A;
+    --shadow-color-button: rgba(0, 0, 0, 1);
+    --shadow-color-md: rgba(0, 0, 0, 1);
 
     /* Base Colors */
     --base-black: #000000FF;

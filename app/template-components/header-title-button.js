@@ -20,7 +20,7 @@ export default function GlobalHeaderTitleButton({
     sectionId
 }) {
     return (
-        <section className={styles.section}>
+        <section className={`${styles.section} z-md`}>
             <div className="container-grid">
                 <div className="grid">
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>

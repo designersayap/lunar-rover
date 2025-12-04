@@ -51,7 +51,7 @@
     --content-neutral--body-invert: var(--base-white);
 
     /* Button Content */
-    --content-neutral--button--primary: var(--base-white);
+    --content-neutral--button--primary: var(--button-text-primary);
     --content-neutral--button--neutral: var(--grey-500);
     --content-neutral--button--ghost: var(--grey-400);
 
@@ -87,8 +87,8 @@
 
 
     /* Shadows */
-    --shadow--button: 0px 0px 0px 0px transparent;
-    --shadow--md: 0px 8px 20px 0px rgba(0, 0, 0, 0.08);
+    --shadow--button: var(--shadow-x-button) var(--shadow-y-button) var(--shadow-blur-button) var(--shadow-spread-button) var(--shadow-color-button);
+    --shadow--md: var(--shadow-x-md) var(--shadow-y-md) var(--shadow-blur-md) var(--shadow-spread-md) var(--shadow-color-md);
 
     /* Z-Index (Material Design Elevation Levels) */
     --z-index-sm: 0;
