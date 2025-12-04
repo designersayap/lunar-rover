@@ -49,7 +49,6 @@ export default function TerraBannerHeroWithButton({
                                 <BuilderButton
                                     label={buttonText}
                                     href="#"
-                                    suffix="cta"
                                     sectionId={sectionId}
                                     className="btn btn-primary btn-lg"
                                     onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}

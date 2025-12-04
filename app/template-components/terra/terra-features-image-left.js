@@ -48,7 +48,6 @@ export default function TerraFeaturesImageLeft({
                         <BuilderButton
                             label={buttonText}
                             href="#"
-                            suffix="cta"
                             sectionId={sectionId}
                             className="btn btn-ghost btn-md"
                             iconRight={<ArrowLongRightIcon />}
