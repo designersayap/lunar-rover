@@ -1,6 +1,5 @@
 .hero {
     width: 100%;
-    aspect-ratio: 5 / 4;
     display: flex;
     justify-content: center;
     align-items: flex-start;

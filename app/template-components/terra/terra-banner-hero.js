@@ -19,7 +19,7 @@ export default function TerraBannerHero({
     sectionId
 }) {
     return (
-        <main className={styles.hero}>
+        <main className={`${styles.hero} imagePlaceholder-5-4`}>
             <div className={styles.backgroundImage}>
                 <BuilderImage
                     src={image}

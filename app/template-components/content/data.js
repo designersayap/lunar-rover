@@ -29,7 +29,7 @@ export const componentDefaults = {
         buttonId: "",
         secondaryButtonText: "Label",
         secondaryButtonId: "",
-        image: "/images/hero-banner.png"
+        image: "/images/placeholder-5-4.svg"
     },
 
     "feature-left": {

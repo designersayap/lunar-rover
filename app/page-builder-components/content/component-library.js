@@ -98,7 +98,7 @@ export const componentLibrary = {
                     name: "image",
                     label: "Image",
                     type: "image",
-                    default: "/images/hero-banner.png"
+                    default: "/images/placeholder.svg"
                 }
             ],
         },
