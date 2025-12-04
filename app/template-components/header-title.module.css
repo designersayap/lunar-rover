@@ -11,4 +11,6 @@
 
 .title {
     color: var(--content-neutral--title);
+    overflow-wrap: break-word;
+    word-break: break-word;
 }

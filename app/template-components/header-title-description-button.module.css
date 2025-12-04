@@ -13,9 +13,13 @@
 .title {
     color: var(--content-neutral--title);
     margin-bottom: var(--gap-md);
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .subtitle {
     color: var(--content-neutral--caption);
     margin-bottom: var(--gap-lg);
+    overflow-wrap: break-word;
+    word-break: break-word;
 }

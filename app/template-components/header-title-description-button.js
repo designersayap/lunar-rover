@@ -36,7 +36,7 @@ export default function GlobalHeaderTitleButtonDescription({
                             onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
                             sectionId={sectionId}
                         />
-                        <div className="buttonWrapperLeft">
+                        <div className="buttonWrapperCenter">
                             <BuilderButton
                                 label={buttonText}
                                 href="#"

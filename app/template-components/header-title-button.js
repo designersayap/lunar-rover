@@ -36,7 +36,7 @@ export default function GlobalHeaderTitleButton({
                                 label={buttonText}
                                 href="#"
                                 sectionId={sectionId}
-                                className="btn btn-primary btn-md"
+                                className={`btn btn-${buttonStyle} btn-md`}
                                 iconRight={<ArrowLongRightIcon />}
                                 onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
                                 id={buttonId}
@@ -46,7 +46,7 @@ export default function GlobalHeaderTitleButton({
                                 label={secondaryButtonText}
                                 href="#"
                                 sectionId={sectionId}
-                                className="btn btn-outline btn-md"
+                                className="btn btn-ghost btn-md"
                                 onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
                                 id={secondaryButtonId}
                                 onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}

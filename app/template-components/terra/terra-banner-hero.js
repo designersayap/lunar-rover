@@ -14,6 +14,7 @@ export default function TerraBannerHero({
     secondaryButtonText = componentDefaults["terra-banner-hero"].secondaryButtonText,
     buttonId,
     secondaryButtonId,
+    buttonStyle = "primary",
     image = componentDefaults["terra-banner-hero"].image,
     onUpdate,
     sectionId
@@ -56,7 +57,7 @@ export default function TerraBannerHero({
                                 label={buttonText}
                                 href="#"
                                 sectionId={sectionId}
-                                className="btn btn-primary btn-lg"
+                                className={`btn btn-${buttonStyle || 'primary'} btn-lg`}
                                 onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
                                 id={buttonId}
                                 onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
