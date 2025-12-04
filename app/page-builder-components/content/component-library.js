@@ -5,14 +5,9 @@ const GlobalHeaderTitleButton = dynamic(() => import("../../template-components/
 const GlobalHeaderTitleDescription = dynamic(() => import("../../template-components/header-title-description"));
 const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../template-components/header-title-description-button"));
 
-
-
-
 const TerraBannerHero = dynamic(() => import("@/app/template-components/terra/terra-banner-hero"));
-
 const TerraFeaturesImageLeft = dynamic(() => import("@/app/template-components/terra/terra-features-image-left"));
 const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/terra/terra-features-image-right"));
-
 
 
 export const componentLibrary = {
