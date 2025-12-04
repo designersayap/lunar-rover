@@ -13,8 +13,10 @@ export default function TerraFeaturesImageLeft({
     title = componentDefaults["feature-left"].title,
     subtitle = componentDefaults["feature-left"].subtitle,
     buttonText = componentDefaults["feature-left"].buttonText,
+    secondaryButtonText = componentDefaults["feature-left"].secondaryButtonText,
     image = componentDefaults["feature-left"].image,
     buttonId,
+    secondaryButtonId,
     onUpdate,
     sectionId
 }) {
@@ -45,16 +47,28 @@ export default function TerraFeaturesImageLeft({
                             onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
                             sectionId={sectionId}
                         />
-                        <BuilderButton
-                            label={buttonText}
-                            href="#"
-                            sectionId={sectionId}
-                            className="btn btn-ghost btn-md"
-                            iconRight={<ArrowLongRightIcon />}
-                            onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
-                            id={buttonId}
-                            onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
-                        />
+                        <div className={styles.buttonWrapper}>
+                            <BuilderButton
+                                label={buttonText}
+                                href="#"
+                                sectionId={sectionId}
+                                className="btn btn-primary btn-md"
+                                iconRight={<ArrowLongRightIcon />}
+                                onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                id={buttonId}
+                                onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
+                            />
+                            <BuilderButton
+                                label={secondaryButtonText}
+                                href="#"
+                                sectionId={sectionId}
+                                className="btn btn-ghost btn-md"
+                                iconRight={<ArrowLongRightIcon />}
+                                onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
+                                id={secondaryButtonId}
+                                onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

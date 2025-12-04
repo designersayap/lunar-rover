@@ -30,6 +30,8 @@ export const componentDefaults = {
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         buttonText: "Label",
         buttonId: "",
+        secondaryButtonText: "Label",
+        secondaryButtonId: "",
         image: ""
     },
     "feature-right": {

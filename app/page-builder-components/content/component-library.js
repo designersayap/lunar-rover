@@ -93,6 +93,12 @@ export const componentLibrary = {
                     type: "select",
                     options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
                     default: "primary"
+                },
+                {
+                    name: "secondaryButtonText",
+                    label: "Secondary Button Text",
+                    type: "text",
+                    default: "Label"
                 }
             ],
         },
