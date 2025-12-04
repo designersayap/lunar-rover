@@ -117,17 +117,4 @@ export const componentLibrary = {
         },
     ],
 
-    "Media": [
-
-    ],
-
-
-    "Product": [
-
-
-    ],
-    "Content": [
-
-    ],
-
 };
