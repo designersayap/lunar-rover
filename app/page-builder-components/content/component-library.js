@@ -93,6 +93,12 @@ export const componentLibrary = {
                     type: "select",
                     options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
                     default: "primary"
+                },
+                {
+                    name: "image",
+                    label: "Image",
+                    type: "image",
+                    default: "/images/hero-banner.png"
                 }
             ],
         },

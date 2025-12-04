@@ -28,7 +28,8 @@ export const componentDefaults = {
         buttonText: "Label",
         buttonId: "",
         secondaryButtonText: "Label",
-        secondaryButtonId: ""
+        secondaryButtonId: "",
+        image: "/images/hero-banner.png"
     },
 
     "feature-left": {

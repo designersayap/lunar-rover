@@ -185,8 +185,8 @@ body {
 /* Button Variants */
 .btn-primary {
   background-color: var(--background-brand--button--primary-default);
-  color: var(--content-neutral--button--primary);
-  border: 1px solid var(--button-stroke-primary);
+  color: var(--button--text-primary);
+  border: 1px solid var(--button--stroke-primary);
 }
 
 .btn-primary:hover {
@@ -216,7 +216,7 @@ body {
 
 .btn-outline {
   background-color: var(--background-neutral--button--invert-default);
-  border: 1px solid var(--stroke-neutral--neutral);
+  border: 1px solid var(--button--stroke-neutral);
   color: var(--content-neutral--button--neutral);
 }
 
@@ -294,6 +294,7 @@ body {
 .imagePlaceholder-16-9,
 .imagePlaceholder-21-9 {
   width: 100%;
+  border-radius: var(--border-radius-md);
 }
 
 .imagePlaceholder-1-1 {
@@ -424,6 +425,8 @@ body {
   z-index: 100;
   font-weight: 500;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 [data-tooltip]:hover::after {
@@ -474,20 +477,24 @@ body {
 }
 
 /* Z-Index */
+/* Level 1: Drawer, Sheet, Banner */
 .z-sm {
-  z-index: var(--z-index-sm);
+  z-index: 1;
 }
 
+/* Level 2: */
 .z-md {
-  z-index: var(--z-index-md);
+  z-index: 2;
 }
 
+/* Level 3: App Bar, Menu */
 .z-lg {
-  z-index: var(--z-index-lg);
+  z-index: 4;
 }
 
+/* Level 4: Toast, Dragged, Dialog, Picker */
 .z-xl {
-  z-index: var(--z-index-xl);
+  z-index: 8;
 }
 
 /* ============================================

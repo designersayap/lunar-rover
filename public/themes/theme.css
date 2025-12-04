@@ -15,6 +15,7 @@
     /* Custom Colors */
     --button-text-primary: var(--base-white);
     --button-stroke-primary: none;
+    --button-stroke-neutral: var(--grey-200);
 
     /* System Colors */
     --system-color-green-500: #1B683EFF;

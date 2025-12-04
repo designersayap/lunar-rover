@@ -20,7 +20,7 @@ export default function GlobalHeaderTitleButton({
     sectionId
 }) {
     return (
-        <section className={`${styles.section} z-md`}>
+        <section className={`${styles.section} z-sm`}>
             <div className="container-grid">
                 <div className="grid">
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
@@ -46,7 +46,7 @@ export default function GlobalHeaderTitleButton({
                                 label={secondaryButtonText}
                                 href="#"
                                 sectionId={sectionId}
-                                className="btn btn-ghost btn-md"
+                                className="btn btn-outline btn-md"
                                 onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
                                 id={secondaryButtonId}
                                 onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}

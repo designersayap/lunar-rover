@@ -1,6 +1,7 @@
 import styles from "./terra-banner-hero.module.css";
 import BuilderText from "@/app/page-builder-components/utils/builder-text";
 import BuilderButton from "@/app/page-builder-components/utils/builder-button";
+import BuilderImage from "@/app/page-builder-components/utils/builder-image";
 import { componentDefaults } from "../content/data";
 
 /**
@@ -13,11 +14,18 @@ export default function TerraBannerHero({
     secondaryButtonText = componentDefaults["terra-banner-hero"].secondaryButtonText,
     buttonId,
     secondaryButtonId,
+    image = componentDefaults["terra-banner-hero"].image,
     onUpdate,
     sectionId
 }) {
     return (
         <main className={styles.hero}>
+            <div className={styles.backgroundImage}>
+                <BuilderImage
+                    src={image}
+                    className={styles.image}
+                />
+            </div>
             {/* Grid Container */}
             <div className="container-grid">
                 <div className="grid">
@@ -48,7 +56,7 @@ export default function TerraBannerHero({
                                 label={buttonText}
                                 href="#"
                                 sectionId={sectionId}
-                                className="btn btn-primary btn-md"
+                                className="btn btn-primary btn-lg"
                                 onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
                                 id={buttonId}
                                 onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
@@ -57,7 +65,7 @@ export default function TerraBannerHero({
                                 label={secondaryButtonText}
                                 href="#"
                                 sectionId={sectionId}
-                                className="btn btn-ghost btn-md"
+                                className="btn btn-outline btn-lg"
                                 onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
                                 id={secondaryButtonId}
                                 onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
