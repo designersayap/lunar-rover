@@ -8,7 +8,7 @@ const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../template-
 
 
 
-const TerraBannerHeroWithButton = dynamic(() => import("@/app/template-components/terra/terra-banner-hero-with-button"));
+const TerraBannerHero = dynamic(() => import("@/app/template-components/terra/terra-banner-hero"));
 
 const TerraFeaturesImageLeft = dynamic(() => import("@/app/template-components/terra/terra-features-image-left"));
 const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/terra/terra-features-image-right"));
@@ -63,12 +63,11 @@ export const componentLibrary = {
     ],
     "Hero Banner": [
         {
-            id: "hero-button",
-            name: "Terra - CTA",
-            component: TerraBannerHeroWithButton,
+            id: "terra-banner-hero",
+            name: "Terra Banner Hero",
+            component: TerraBannerHero,
             thumbnail: "/images/thumbnails/terra-cta.svg",
             config: [
-                { name: "showButton", label: "Button", type: "boolean", default: true },
                 {
                     name: "buttonStyle",
                     label: "Button Style",
@@ -78,7 +77,6 @@ export const componentLibrary = {
                 }
             ],
         },
-
     ],
     "Feature - Split": [
         {

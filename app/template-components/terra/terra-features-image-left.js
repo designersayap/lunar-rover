@@ -9,7 +9,6 @@ import { componentDefaults } from "../content/data";
  * TerraFeaturesImageLeft Component
  */
 export default function TerraFeaturesImageLeft({
-    buttonStyle = "primary",
     title = componentDefaults["feature-left"].title,
     subtitle = componentDefaults["feature-left"].subtitle,
     buttonText = componentDefaults["feature-left"].buttonText,
@@ -25,7 +24,7 @@ export default function TerraFeaturesImageLeft({
             <div className="container-grid">
                 <div className="grid align-center">
                     {/* Image Column */}
-                    <div className={`${styles.imageWrapper} col-mobile-2 col-tablet-8 col-desktop-6`}>
+                    <div className={`imageWrapper ${styles.imageWrapper} col-mobile-2 col-tablet-8 col-desktop-6`}>
                         <BuilderImage src={image} className="imagePlaceholder-1-1" style={{ height: "auto" }} />
                     </div>
 
@@ -34,7 +33,7 @@ export default function TerraFeaturesImageLeft({
                         <BuilderText
                             tagName="h2"
                             className={`h2 ${styles.title}`}
-                            style={{ marginBottom: "var(--gap-lg)" }}
+                            style={{ marginBottom: "var(--gap-sm)" }}
                             content={title}
                             onChange={(val) => onUpdate && onUpdate({ title: val })}
                             sectionId={sectionId}
@@ -42,12 +41,12 @@ export default function TerraFeaturesImageLeft({
                         <BuilderText
                             tagName="p"
                             className="subheader-h2"
-                            style={{ color: "var(--content-neutral--caption)", marginBottom: "var(--gap-sm)" }}
+                            style={{ color: "var(--content-neutral--caption)", marginBottom: "var(--gap-md)" }}
                             content={subtitle}
                             onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
                             sectionId={sectionId}
                         />
-                        <div className={styles.buttonWrapper}>
+                        <div className="buttonWrapperLeft">
                             <BuilderButton
                                 label={buttonText}
                                 href="#"

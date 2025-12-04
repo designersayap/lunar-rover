@@ -8,20 +8,9 @@ import GlobalHeaderTitle from "../../template-components/header-title";
 import GlobalHeaderTitleButton from "../../template-components/header-title-button";
 import GlobalHeaderTitleDescription from "../../template-components/header-title-description";
 import GlobalHeaderTitleButtonDescription from "../../template-components/header-title-description-button";
-import TerraBannerHeroWithButton from "@/app/template-components/terra/terra-banner-hero-with-button";
-
+import TerraBannerHero from "@/app/template-components/terra/terra-banner-hero";
 import TerraFeaturesImageLeft from "@/app/template-components/terra/terra-features-image-left";
 import TerraFeaturesImageRight from "@/app/template-components/terra/terra-features-image-right";
-
-
-
-
-
-
-
-
-
-
 
 export default function ComponentPreviewPage() {
     const params = useParams();
@@ -29,24 +18,11 @@ export default function ComponentPreviewPage() {
 
     // Component Mapping
     const components = {
-
         "global-header-title-button": GlobalHeaderTitleButton,
         "global-header-title-description": GlobalHeaderTitleDescription,
         "header-title-description-button": GlobalHeaderTitleButtonDescription,
-        "terra-banner-hero-with-button": TerraBannerHeroWithButton,
-
-
-
-        "terra-features-image-left": TerraFeaturesImageLeft,
+        "terra-banner-hero": TerraBannerHero, "terra-features-image-left": TerraFeaturesImageLeft,
         "terra-features-image-right": TerraFeaturesImageRight,
-
-
-
-
-
-
-
-
     };
 
     const Component = components[name];
@@ -70,8 +46,5 @@ export default function ComponentPreviewPage() {
             </div>
         );
     }
-
-
-
     return <Component />;
 }

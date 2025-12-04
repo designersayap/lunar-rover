@@ -39,11 +39,6 @@
     margin-bottom: var(--gap-2xl);
 }
 
-.buttonWrapper {
-    display: inline-flex;
-    align-items: center;
-}
-
 .iconLeft {
     width: 20px;
     height: 20px;

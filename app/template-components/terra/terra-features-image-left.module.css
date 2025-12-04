@@ -3,10 +3,6 @@
 }
 
 .imageWrapper {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 0 var(--padding-md);
     order: 1;
 }
 
@@ -29,17 +25,6 @@
     margin: 0 0 var(--gap-sm) 0;
 }
 
-.buttonWrapper {
-    display: flex;
-    gap: var(--gap-sm);
-    flex-wrap: wrap;
-}
-
-
-.icon {
-    width: 16px;
-    height: 16px;
-}
 
 /* Mobile & Tablet: Text above image */
 @media (max-width: 767px) {

@@ -110,39 +110,45 @@ export default function BuilderButton({
         <Link
             id={buttonId}
             href={href || "#"}
-            className={`${className} ${isActive ? styles.activeWrapper : ''} ${isActive ? styles.activeBorder : ''}`}
+            className={`${className} ${isActive ? styles.activeWrapper : ''}`}
             onClick={handleClick}
             style={style}
+            data-tooltip={label}
         >
-            {isActive && (
-                <div className={styles.activeOverlay}>
-                    <div className={styles.overlayLabel}>
-                        <input
-                            type="text"
-                            className={styles.overlayInput}
-                            value={tempId || ''}
-                            onChange={handleIdChange}
-                            onBlur={handleIdBlur}
-                            onKeyDown={handleIdKeyDown}
-                            onClick={(e) => e.stopPropagation()}
-                        />
+            {isActive && <div className={styles.activeBorderOutline} />}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
+                {isActive && (
+                    <div className={styles.activeOverlay}>
+                        <div className={styles.overlayLabel}>
+                            <input
+                                type="text"
+                                className={styles.overlayInput}
+                                value={tempId || ''}
+                                onChange={handleIdChange}
+                                onBlur={handleIdBlur}
+                                onKeyDown={handleIdKeyDown}
+                                onClick={(e) => e.stopPropagation()}
+                            />
+                        </div>
+                        <button className={styles.settingsButton}>
+                            <Cog6ToothIcon className={styles.overlayIcon} />
+                        </button>
                     </div>
-                    <button className={styles.settingsButton}>
-                        <Cog6ToothIcon className={styles.overlayIcon} />
-                    </button>
+                )}
+                {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
+                <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
+                    <BuilderText
+                        tagName="span"
+                        content={label}
+                        onChange={onLabelChange}
+                        placeholder="Button Label"
+                        multiline={false}
+                        noId={true}
+                        className={!isActive ? "truncate-1-line" : ""}
+                        style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap' }}
+                    />
                 </div>
-            )}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'inherit', width: '100%', height: '100%' }}>
-                {iconLeft}
-                <BuilderText
-                    tagName="span"
-                    content={label}
-                    onChange={onLabelChange}
-                    placeholder="Button Label"
-                    multiline={false}
-                    noId={true}
-                />
-                {iconRight}
+                {iconRight && <span style={{ display: 'flex', flexShrink: 0 }}>{iconRight}</span>}
             </div>
         </Link>
     );

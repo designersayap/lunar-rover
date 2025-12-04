@@ -3,10 +3,6 @@
 }
 
 .imageWrapper {
-    display: flex;
-    align-items: center;
-    padding: 0 var(--padding-md);
-    width: 100%;
     order: 2;
 }
 
@@ -29,10 +25,6 @@
     margin: 0 0 var(--gap-sm) 0;
 }
 
-.icon {
-    width: 16px;
-    height: 16px;
-}
 
 /* Mobile & Tablet: Text above image */
 @media (max-width: 767px) {
