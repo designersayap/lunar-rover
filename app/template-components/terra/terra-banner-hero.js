@@ -7,10 +7,10 @@ import { componentDefaults } from "../content/data";
  * TerraBannerHero Component
  */
 export default function TerraBannerHero({
-    title = componentDefaults["hero-button"].title,
-    subtitle = componentDefaults["hero-button"].subtitle,
-    buttonText = componentDefaults["hero-button"].buttonText,
-    secondaryButtonText = componentDefaults["hero-button"].secondaryButtonText,
+    title = componentDefaults["terra-banner-hero"].title,
+    subtitle = componentDefaults["terra-banner-hero"].subtitle,
+    buttonText = componentDefaults["terra-banner-hero"].buttonText,
+    secondaryButtonText = componentDefaults["terra-banner-hero"].secondaryButtonText,
     buttonId,
     secondaryButtonId,
     onUpdate,

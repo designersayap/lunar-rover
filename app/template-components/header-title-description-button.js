@@ -8,10 +8,12 @@ import { componentDefaults } from "./content/data";
  * Centered Header Section - Title with Description and Button
  */
 export default function GlobalHeaderTitleButtonDescription({
-    title = componentDefaults["header-title-desc-button"].title,
-    subtitle = componentDefaults["header-title-desc-button"].subtitle,
-    buttonText = componentDefaults["header-title-desc-button"].buttonText,
+    title = componentDefaults["header-title-description-button"].title,
+    subtitle = componentDefaults["header-title-description-button"].subtitle,
+    buttonText = componentDefaults["header-title-description-button"].buttonText,
+    secondaryButtonText = componentDefaults["header-title-description-button"].secondaryButtonText,
     buttonId,
+    secondaryButtonId,
     onUpdate,
     sectionId
 }) {
@@ -34,15 +36,27 @@ export default function GlobalHeaderTitleButtonDescription({
                             onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
                             sectionId={sectionId}
                         />
-                        <BuilderButton
-                            label={buttonText}
-                            href="#"
-                            sectionId={sectionId}
-                            className="btn btn-primary btn-lg"
-                            onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
-                            id={buttonId}
-                            onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
-                        />
+                        <div className="buttonWrapperLeft">
+                            <BuilderButton
+                                label={buttonText}
+                                href="#"
+                                sectionId={sectionId}
+                                className="btn btn-primary btn-md"
+                                iconRight={<ArrowLongRightIcon />}
+                                onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                id={buttonId}
+                                onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
+                            />
+                            <BuilderButton
+                                label={secondaryButtonText}
+                                href="#"
+                                sectionId={sectionId}
+                                className="btn btn-ghost btn-md"
+                                onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
+                                id={secondaryButtonId}
+                                onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

@@ -36,6 +36,18 @@ export const componentLibrary = {
                     type: "select",
                     options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
                     default: "primary"
+                },
+                {
+                    name: "buttonText",
+                    label: "Button Text",
+                    type: "text",
+                    default: "Label"
+                },
+                {
+                    name: "secondaryButtonText",
+                    label: "Secondary Button Text",
+                    type: "text",
+                    default: "Label"
                 }
             ],
         },
@@ -57,6 +69,18 @@ export const componentLibrary = {
                     type: "select",
                     options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
                     default: "primary"
+                },
+                {
+                    name: "buttonText",
+                    label: "Button Text",
+                    type: "text",
+                    default: "Label"
+                },
+                {
+                    name: "secondaryButtonText",
+                    label: "Secondary Button Text",
+                    type: "text",
+                    default: "Label"
                 }
             ],
         },

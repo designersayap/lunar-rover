@@ -11,6 +11,7 @@ import GlobalHeaderTitleButtonDescription from "../../template-components/header
 import TerraBannerHero from "@/app/template-components/terra/terra-banner-hero";
 import TerraFeaturesImageLeft from "@/app/template-components/terra/terra-features-image-left";
 import TerraFeaturesImageRight from "@/app/template-components/terra/terra-features-image-right";
+import { BuilderSelectionProvider } from "@/app/page-builder-components/utils/builder-controls";
 
 export default function ComponentPreviewPage() {
     const params = useParams();
@@ -18,11 +19,13 @@ export default function ComponentPreviewPage() {
 
     // Component Mapping
     const components = {
-        "global-header-title-button": GlobalHeaderTitleButton,
-        "global-header-title-description": GlobalHeaderTitleDescription,
+        "header-title": GlobalHeaderTitle,
+        "header-title-button": GlobalHeaderTitleButton,
+        "header-title-description": GlobalHeaderTitleDescription,
         "header-title-description-button": GlobalHeaderTitleButtonDescription,
-        "terra-banner-hero": TerraBannerHero, "terra-features-image-left": TerraFeaturesImageLeft,
-        "terra-features-image-right": TerraFeaturesImageRight,
+        "terra-banner-hero": TerraBannerHero,
+        "feature-left": TerraFeaturesImageLeft,
+        "feature-right": TerraFeaturesImageRight,
     };
 
     const Component = components[name];
@@ -36,7 +39,8 @@ export default function ComponentPreviewPage() {
                 alignItems: "center",
                 justifyContent: "center",
                 fontFamily: "sans-serif",
-                gap: "1rem"
+                gap: "1rem",
+                color: "black"
             }}>
                 <h1 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>Component Not Found</h1>
                 <p>The component "{name}" does not exist.</p>
@@ -46,5 +50,9 @@ export default function ComponentPreviewPage() {
             </div>
         );
     }
-    return <Component />;
+    return (
+        <BuilderSelectionProvider>
+            <Component sectionId="preview-section" />
+        </BuilderSelectionProvider>
+    );
 }

@@ -6,8 +6,8 @@ import { componentDefaults } from "./content/data";
  * Centered Header Section - Title with Description
  */
 export default function GlobalHeaderTitleTitleDescription({
-    title = componentDefaults["header-title-desc"].title,
-    subtitle = componentDefaults["header-title-desc"].subtitle,
+    title = componentDefaults["header-title-description"].title,
+    subtitle = componentDefaults["header-title-description"].subtitle,
     onUpdate,
     sectionId
 }) {
