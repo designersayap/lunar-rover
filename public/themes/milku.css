@@ -13,9 +13,9 @@
     --brand-color-50: #FEF8E8FF;
 
     /* Custom Colors */
-    --button--text-primary: var(--grey-500);
-    --button--stroke-primary: var(--grey-500);
-    --button--stroke-neutral: var(--grey-500);
+    --text--primary-button: var(--grey-500);
+    --stroke--primary-button: var(--grey-500);
+    --stroke--neutral-button: var(--grey-500);
 
     /* System Colors */
 

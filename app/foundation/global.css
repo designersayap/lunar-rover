@@ -185,8 +185,8 @@ body {
 /* Button Variants */
 .btn-primary {
   background-color: var(--background-brand--button--primary-default);
-  color: var(--button--text-primary);
-  border: 1px solid var(--button--stroke-primary);
+  color: var(--text--primary-button);
+  border: 1px solid var(--stroke--primary-button);
 }
 
 .btn-primary:hover {
@@ -216,7 +216,7 @@ body {
 
 .btn-outline {
   background-color: var(--background-neutral--button--invert-default);
-  border: 1px solid var(--button--stroke-neutral);
+  border: 1px solid var(--stroke--neutral-button);
   color: var(--content-neutral--button--neutral);
 }
 
@@ -422,7 +422,7 @@ body {
   visibility: hidden;
   transition: opacity 0.2s;
   pointer-events: none;
-  z-index: 100;
+  z-index: 999;
   font-weight: 500;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow-wrap: break-word;

@@ -12,8 +12,13 @@ export default function TerraFeaturesImageRight({
     title = componentDefaults["feature-right"].title,
     subtitle = componentDefaults["feature-right"].subtitle,
     buttonText = componentDefaults["feature-right"].buttonText,
+    buttonUrl = componentDefaults["feature-right"].buttonUrl,
+    buttonVisible = componentDefaults["feature-right"].buttonVisible,
     secondaryButtonText = componentDefaults["feature-right"].secondaryButtonText,
+    secondaryButtonUrl = componentDefaults["feature-right"].secondaryButtonUrl,
+    secondaryButtonVisible = componentDefaults["feature-right"].secondaryButtonVisible,
     image = componentDefaults["feature-right"].image,
+    buttonStyle = "primary",
     buttonId,
     secondaryButtonId,
     onUpdate,
@@ -44,22 +49,31 @@ export default function TerraFeaturesImageRight({
                         <div className="buttonWrapperLeft">
                             <BuilderButton
                                 label={buttonText}
-                                href="#"
+                                href={buttonUrl}
+                                isVisible={buttonVisible}
                                 sectionId={sectionId}
-                                className="btn btn-primary btn-md"
+                                className={`btn btn-${buttonStyle || 'primary'} btn-md`}
                                 iconRight={<ArrowLongRightIcon />}
                                 onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                                onHrefChange={(val) => onUpdate && onUpdate({ buttonUrl: val })}
+                                onVisibilityChange={(val) => onUpdate && onUpdate({ buttonVisible: val })}
+                                onVariantChange={(val) => onUpdate && onUpdate({ buttonStyle: val })}
                                 id={buttonId}
                                 onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
+                                suffix="button"
                             />
                             <BuilderButton
                                 label={secondaryButtonText}
-                                href="#"
+                                href={secondaryButtonUrl}
+                                isVisible={secondaryButtonVisible}
                                 sectionId={sectionId}
                                 className="btn btn-ghost btn-md"
                                 onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
+                                onHrefChange={(val) => onUpdate && onUpdate({ secondaryButtonUrl: val })}
+                                onVisibilityChange={(val) => onUpdate && onUpdate({ secondaryButtonVisible: val })}
                                 id={secondaryButtonId}
                                 onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
+                                suffix="secondary-button"
                             />
                         </div>
                     </div>

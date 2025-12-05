@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import BuilderText from "./builder-text";
-import { useBuilderSelection } from "@/app/page-builder-components/utils/builder-controls";
+import { useBuilderSelection, BuilderSelectionContext } from "@/app/page-builder-components/utils/builder-controls";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import styles from "../../page.module.css";
+import BuilderControlsPopover from "./builder-controls-popover";
 
 /**
  * BuilderButton Component
@@ -28,17 +29,28 @@ export default function BuilderButton({
     className = "",
     onLabelChange,
     onIdChange,
+    onHrefChange,
+    onVariantChange,
+    onVisibilityChange,
+    isVisible = true,
     style = {},
     iconLeft,
     iconRight
 }) {
+    const buttonRef = useRef(null);
+    const [popoverPosition, setPopoverPosition] = useState(null);
+
     // Extract the button variant class (e.g., btn-primary, btn-ghost) from className
     const variantClass = className.split(' ').find(c => c.startsWith('btn-') && !['btn-lg', 'btn-md', 'btn-sm', 'btn-icon'].includes(c)) || 'btn-default';
 
-    const generatedId = sectionId ? `${sectionId}-${variantClass}${suffix ? `-${suffix}` : ''}` : undefined;
+    const generatedId = sectionId ? (suffix ? `${sectionId}-${suffix}` : `${sectionId}-${variantClass}`) : undefined;
     const buttonId = id || generatedId;
-    const { activeElementId, setActiveElementId } = useBuilderSelection();
-    const isActive = activeElementId === buttonId && buttonId !== undefined;
+    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId } = useContext(BuilderSelectionContext);
+    const isActive = activeElementId === buttonId;
+
+    // Unique ID for this button's popover
+    const myPopoverId = `popover-${buttonId}`;
+    const showSettings = activePopoverId === myPopoverId;
 
     const prefix = sectionId ? `${sectionId}-` : "";
     const [tempId, setTempId] = useState("");
@@ -97,6 +109,8 @@ export default function BuilderButton({
     // If href is empty, we still render the button in builder mode to allow editing
     // if (!href) return null;
 
+    if (!isVisible && !isActive) return null;
+
     const handleClick = (e) => {
         // Prevent navigation in builder
         e.preventDefault();
@@ -106,50 +120,88 @@ export default function BuilderButton({
         }
     };
 
+
+
+    const handleSettingsClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!showSettings && buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            setPopoverPosition({
+                top: rect.bottom + 4, // 4px gap
+                left: rect.left + rect.width / 2
+            });
+        }
+
+        setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
+    };
+
     return (
-        <Link
-            id={buttonId}
-            href={href || "#"}
-            className={`${className} ${isActive ? styles.activeWrapper : ''}`}
-            onClick={handleClick}
-            style={style}
-            data-tooltip={label}
-        >
-            {isActive && <div className={styles.activeBorderOutline} />}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
-                {isActive && (
-                    <div className={styles.activeOverlay}>
-                        <div className={styles.overlayLabel}>
-                            <input
-                                type="text"
-                                className={styles.overlayInput}
-                                value={tempId || ''}
-                                onChange={handleIdChange}
-                                onBlur={handleIdBlur}
-                                onKeyDown={handleIdKeyDown}
-                                onClick={(e) => e.stopPropagation()}
-                            />
+        <>
+            <Link
+                id={buttonId}
+                href={href || "#"}
+                className={`${className} ${isActive ? styles.activeWrapper : ''}`}
+                onClick={handleClick}
+                style={{ ...style, opacity: isVisible ? 1 : 0.5 }}
+                data-tooltip={label}
+            >
+                {isActive && <div className={styles.activeBorderOutline} />}
+                <div ref={buttonRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
+                    {isActive && (
+                        <div className={styles.activeOverlay}>
+                            <div className={styles.overlayLabel}>
+                                <input
+                                    type="text"
+                                    className={styles.overlayInput}
+                                    value={tempId || ''}
+                                    onChange={handleIdChange}
+                                    onBlur={handleIdBlur}
+                                    onKeyDown={handleIdKeyDown}
+                                    onClick={(e) => e.stopPropagation()}
+                                />
+                            </div>
+                            <button
+                                type="button"
+                                className={styles.settingsButton}
+                                onClick={handleSettingsClick}
+                            >
+                                <Cog6ToothIcon className={styles.overlayIcon} />
+                            </button>
                         </div>
-                        <button className={styles.settingsButton}>
-                            <Cog6ToothIcon className={styles.overlayIcon} />
-                        </button>
+                    )}
+                    {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
+                    <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
+                        <BuilderText
+                            tagName="span"
+                            content={label}
+                            onChange={onLabelChange}
+                            placeholder="Button Label"
+                            multiline={false}
+                            noId={true}
+                            className={!isActive ? "truncate-1-line" : ""}
+                            style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap' }}
+                        />
                     </div>
-                )}
-                {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
-                <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
-                    <BuilderText
-                        tagName="span"
-                        content={label}
-                        onChange={onLabelChange}
-                        placeholder="Button Label"
-                        multiline={false}
-                        noId={true}
-                        className={!isActive ? "truncate-1-line" : ""}
-                        style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap' }}
-                    />
+                    {iconRight && <span style={{ display: 'flex', flexShrink: 0 }}>{iconRight}</span>}
                 </div>
-                {iconRight && <span style={{ display: 'flex', flexShrink: 0 }}>{iconRight}</span>}
-            </div>
-        </Link>
+            </Link>
+
+            {/* We render the popover outside the Link to avoid nesting issues */}
+            {isActive && (
+                <BuilderControlsPopover
+                    isOpen={showSettings}
+                    onClose={() => setActivePopoverId(null)}
+                    url={href}
+                    onUrlChange={onHrefChange}
+                    variant={variantClass.replace('btn-', '')}
+                    onVariantChange={onVariantChange}
+                    isVisible={isVisible}
+                    onVisibilityChange={onVisibilityChange}
+                    position={popoverPosition}
+                />
+            )}
+        </>
     );
 }

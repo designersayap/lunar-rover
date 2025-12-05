@@ -51,7 +51,7 @@
     --content-neutral--body-invert: var(--base-white);
 
     /* Button Content */
-    --content-neutral--button--primary: var(--button-text-primary);
+    --content-neutral--button--primary: var(--text--primary-button);
     --content-neutral--button--neutral: var(--grey-500);
     --content-neutral--button--ghost: var(--grey-400);
 
@@ -90,13 +90,5 @@
     --shadow--button: var(--shadow-x-button) var(--shadow-y-button) var(--shadow-blur-button) var(--shadow-spread-button) var(--shadow-color-button);
     --shadow--md: var(--shadow-x-md) var(--shadow-y-md) var(--shadow-blur-md) var(--shadow-spread-md) var(--shadow-color-md);
 
-    /* Z-Index (Material Design Elevation Levels) */
-    --z-index-sm: 0;
-    /* Level 1: Drawer, Sheet, Banner */
-    --z-index-md: 2;
-    /* Level 2: */
-    --z-index-lg: 4;
-    /* Level 3: App Bar, Menu */
-    --z-index-xl: 8;
-    /* Level 4: Toast, Dragged, Dialog, Picker */
+
 }

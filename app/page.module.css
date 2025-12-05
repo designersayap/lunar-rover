@@ -556,10 +556,12 @@
 
 /* Dropdown Select */
 .propertySelect {
-    padding: 8px 12px;
+    padding: 0 12px;
     border: 1px solid var(--grey-100);
     border-radius: 8px;
-    min-width: 120px;
+    width: 100%;
+    height: 36px;
+    font-size: var(--typography-font-size-90);
     cursor: pointer;
     appearance: none;
     background-color: var(--base-white);
@@ -582,11 +584,12 @@
     background-image: none;
 }
 
-.propertyRow:has(select) {
+.selectWrapper {
     position: relative;
+    width: 100%;
 }
 
-.propertyRow:has(select)::after {
+.selectWrapper::after {
     content: '';
     position: absolute;
     right: 12px;

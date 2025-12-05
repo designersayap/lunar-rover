@@ -18,11 +18,15 @@
 .title {
     color: var(--content-neutral--title);
     margin: 0 0 var(--gap-lg) 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .description {
     color: var(--content-neutral--caption);
     margin: 0 0 var(--gap-sm) 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 

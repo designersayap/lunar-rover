@@ -2,16 +2,24 @@
 
 import { createContext, useContext, useState } from "react";
 
-const BuilderSelectionContext = createContext({
+export const BuilderSelectionContext = createContext({
     activeElementId: null,
-    setActiveElementId: () => { }
+    setActiveElementId: () => { },
+    activePopoverId: null,
+    setActivePopoverId: () => { }
 });
 
 export function BuilderSelectionProvider({ children }) {
     const [activeElementId, setActiveElementId] = useState(null);
+    const [activePopoverId, setActivePopoverId] = useState(null);
 
     return (
-        <BuilderSelectionContext.Provider value={{ activeElementId, setActiveElementId }}>
+        <BuilderSelectionContext.Provider value={{
+            activeElementId,
+            setActiveElementId,
+            activePopoverId,
+            setActivePopoverId
+        }}>
             {children}
         </BuilderSelectionContext.Provider>
     );

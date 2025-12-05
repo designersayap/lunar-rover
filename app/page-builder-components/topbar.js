@@ -52,14 +52,26 @@ export default function TopBar({
                 <button
                     className={`${styles.topBarButtonWide} ${isThemePickerOpen ? styles.topBarButtonActive : ''}`}
                     data-tooltip={selectedThemeName}
-                    onClick={onThemeClick}
+                    onClick={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        onThemeClick({
+                            top: rect.bottom + 4,
+                            left: rect.left + rect.width / 2
+                        });
+                    }}
                 >
                     <SwatchIcon style={{ width: "16px", height: "16px", flexShrink: 0 }} />
                     <span className={`${styles.topBarButtonText} truncate-1-line`}>{selectedThemeName}</span>
                 </button>
                 <button
                     className={styles.topBarButtonExport}
-                    onClick={handleExport}
+                    onClick={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        handleExport({
+                            top: rect.bottom + 4,
+                            left: rect.left + rect.width / 2
+                        });
+                    }}
                 >
                     <RocketLaunchIcon style={{ width: "16px", height: "16px" }} />
                     Export

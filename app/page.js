@@ -13,7 +13,7 @@ import Canvas from "@/app/page-builder-components/canvas";
 import ThemePickerPopover from "@/app/page-builder-components/theme-picker-popover";
 import ExportPopover from "@/app/page-builder-components/export-popover";
 import { getThemes } from "@/app/page-builder-components/utils/get-themes";
-import { BuilderSelectionProvider } from "@/app/page-builder-components/utils/builder-controls";
+import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder-controls";
 
 /**
  * Template Generator Page
@@ -38,10 +38,13 @@ export default function TemplateGeneratorPage() {
   });
   const [openCategories, setOpenCategories] = useState({ "Hero Banner": true });
 
-  const [isThemePickerOpen, setIsThemePickerOpen] = useState(false);
-  const [isExportPopoverOpen, setIsExportPopoverOpen] = useState(false);
+
+  const [themePickerPosition, setThemePickerPosition] = useState(null);
+  const [exportPopoverPosition, setExportPopoverPosition] = useState(null);
   const [selectedThemeId, setSelectedThemeId] = useState("theme");
   const [themes, setThemes] = useState([]);
+  const [activeElementId, setActiveElementId] = useState(null);
+  const [activePopoverId, setActivePopoverId] = useState(null);
 
   // Refs
   const containerRef = useRef(null);
@@ -287,13 +290,14 @@ export default function TemplateGeneratorPage() {
     }));
   }, []);
 
-  const handleExport = useCallback(() => {
-    setIsExportPopoverOpen(true);
+  const handleExport = useCallback((position) => {
+    if (position) setExportPopoverPosition(position);
+    setActivePopoverId(prev => prev === 'export-popover' ? null : 'export-popover');
   }, []);
 
   const handleExportConfirm = useCallback((csvLink) => {
     handleExportTemplate(selectedComponents, csvLink, analyticsData);
-    setIsExportPopoverOpen(false);
+    setActivePopoverId(null);
   }, [selectedComponents, analyticsData]);
 
   const onDownloadCsv = useCallback(() => {
@@ -304,13 +308,21 @@ export default function TemplateGeneratorPage() {
 
   return (
     <div className={styles.container} ref={containerRef}>
-      <BuilderSelectionProvider>
+      <BuilderSelectionContext.Provider value={{
+        activeElementId,
+        setActiveElementId,
+        activePopoverId,
+        setActivePopoverId
+      }}>
         <TopBar
           isSidebarVisible={isSidebarVisible}
           setIsSidebarVisible={setIsSidebarVisible}
           handleExport={handleExport}
-          onThemeClick={() => setIsThemePickerOpen(true)}
-          isThemePickerOpen={isThemePickerOpen}
+          onThemeClick={(position) => {
+            if (position) setThemePickerPosition(position);
+            setActivePopoverId(prev => prev === 'theme-picker' ? null : 'theme-picker');
+          }}
+          isThemePickerOpen={activePopoverId === 'theme-picker'}
           selectedThemeId={selectedThemeId}
           themes={themes}
         />
@@ -386,21 +398,23 @@ export default function TemplateGeneratorPage() {
         </div>
 
 
-        {isThemePickerOpen && (
+        {activePopoverId === 'theme-picker' && (
           <ThemePickerPopover
-            isOpen={isThemePickerOpen}
-            onClose={() => setIsThemePickerOpen(false)}
+            isOpen={true}
+            onClose={() => setActivePopoverId(null)}
             onSelectTheme={handleThemeSelect}
             currentTheme={selectedThemeId}
             themes={themes}
+            position={themePickerPosition}
           />
         )}
-        {isExportPopoverOpen && (
+        {activePopoverId === 'export-popover' && (
           <ExportPopover
-            isOpen={isExportPopoverOpen}
-            onClose={() => setIsExportPopoverOpen(false)}
+            isOpen={true}
+            onClose={() => setActivePopoverId(null)}
             onExport={handleExportConfirm}
             onDownloadCsv={onDownloadCsv}
+            position={exportPopoverPosition}
           />
         )} {/* Toaster Notification */}
         {showToaster && (
@@ -413,7 +427,7 @@ export default function TemplateGeneratorPage() {
             {toasterMessage}
           </div>
         )}
-      </BuilderSelectionProvider>
+      </BuilderSelectionContext.Provider>
     </div>
   );
 }

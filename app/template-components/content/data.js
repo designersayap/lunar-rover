@@ -10,24 +10,36 @@ export const componentDefaults = {
     "header-title-button": {
         title: "Title",
         buttonText: "Label",
+        buttonUrl: "",
+        buttonVisible: true,
         buttonId: "",
         secondaryButtonText: "Label",
+        secondaryButtonUrl: "#",
+        secondaryButtonVisible: true,
         secondaryButtonId: ""
     },
     "header-title-description-button": {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         buttonText: "Label",
+        buttonUrl: "",
+        buttonVisible: true,
         buttonId: "",
         secondaryButtonText: "Label",
+        secondaryButtonUrl: "",
+        secondaryButtonVisible: true,
         secondaryButtonId: ""
     },
     "terra-banner-hero": {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         buttonText: "Label",
+        buttonUrl: "",
+        buttonVisible: true,
         buttonId: "",
         secondaryButtonText: "Label",
+        secondaryButtonUrl: "",
+        secondaryButtonVisible: true,
         secondaryButtonId: "",
         image: ""
     },
@@ -36,8 +48,12 @@ export const componentDefaults = {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         buttonText: "Label",
+        buttonUrl: "",
+        buttonVisible: true,
         buttonId: "",
         secondaryButtonText: "Label",
+        secondaryButtonUrl: "",
+        secondaryButtonVisible: true,
         secondaryButtonId: "",
         image: ""
     },
@@ -45,6 +61,8 @@ export const componentDefaults = {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         buttonText: "Label",
+        buttonUrl: "",
+        buttonVisible: true,
         buttonId: "",
         image: ""
     },

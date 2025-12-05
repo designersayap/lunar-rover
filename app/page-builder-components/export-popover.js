@@ -6,7 +6,8 @@ export default function ExportPopover({
     isOpen,
     onClose,
     onExport,
-    onDownloadCsv
+    onDownloadCsv,
+    position
 }) {
     const [csvLink, setCsvLink] = useState("");
 
@@ -21,21 +22,39 @@ export default function ExportPopover({
 
     const hasLink = csvLink.trim().length > 0;
 
+    // Calculate constrained position
+    let popoverStyle = {
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        margin: 0,
+        pointerEvents: "auto"
+    };
+
+    if (position && typeof window !== 'undefined') {
+        const popoverWidth = 362;
+        const padding = 16;
+        const windowWidth = window.innerWidth;
+        const minLeft = popoverWidth / 2 + padding;
+        const maxLeft = windowWidth - popoverWidth / 2 - padding;
+        const constrainedLeft = Math.max(minLeft, Math.min(position.left, maxLeft));
+
+        popoverStyle = {
+            ...popoverStyle,
+            top: `${position.top}px`,
+            left: `${constrainedLeft}px`,
+            transform: "translateX(-50%)"
+        };
+    }
+
     return (
-        <div className={styles.popoverOverlay} onClick={onClose}>
+        <div className={styles.popoverOverlay} style={{ pointerEvents: "none" }}>
             <div
                 className={`${styles.popoverContainer} ${styles.exportPopover}`}
+                style={popoverStyle}
                 onClick={(e) => e.stopPropagation()}
             >
-                <div className={styles.popoverHeader}>
-                    <h3 className={`body-bold ${styles.popoverTitle}`}>Link your File</h3>
-                    <button
-                        className={styles.popoverClose}
-                        onClick={onClose}
-                    >
-                        <XMarkIcon style={{ width: "20px", height: "20px" }} />
-                    </button>
-                </div>
 
                 {/* Content */}
                 <div className={styles.popoverContent}>

@@ -10,7 +10,11 @@ export default function GlobalHeaderTitleButton({
     title = componentDefaults["header-title-button"].title,
     subtitle = componentDefaults["header-title-button"].subtitle,
     buttonText = componentDefaults["header-title-button"].buttonText,
+    buttonUrl = componentDefaults["header-title-button"].buttonUrl,
+    buttonVisible = componentDefaults["header-title-button"].buttonVisible,
     secondaryButtonText = componentDefaults["header-title-button"].secondaryButtonText,
+    secondaryButtonUrl = componentDefaults["header-title-button"].secondaryButtonUrl,
+    secondaryButtonVisible = componentDefaults["header-title-button"].secondaryButtonVisible,
     buttonId,
     secondaryButtonId,
     buttonStyle = "primary", // primary, neutral, ghost, outline, link
@@ -28,22 +32,32 @@ export default function GlobalHeaderTitleButton({
             <div className="buttonWrapperCenter">
                 <BuilderButton
                     label={buttonText}
-                    href="#"
+                    href={buttonUrl}
+                    isVisible={buttonVisible}
                     sectionId={sectionId}
                     className={`btn btn-${buttonStyle} btn-md`}
                     iconRight={<ArrowLongRightIcon />}
                     onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
+                    onHrefChange={(val) => onUpdate && onUpdate({ buttonUrl: val })}
+                    onVisibilityChange={(val) => onUpdate && onUpdate({ buttonVisible: val })}
+                    onVariantChange={(val) => onUpdate && onUpdate({ buttonStyle: val })}
                     id={buttonId}
                     onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
+                    suffix="button"
                 />
                 <BuilderButton
                     label={secondaryButtonText}
-                    href="#"
+                    href={secondaryButtonUrl}
+                    isVisible={secondaryButtonVisible}
                     sectionId={sectionId}
                     className="btn btn-ghost btn-md"
                     onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
+                    onHrefChange={(val) => onUpdate && onUpdate({ secondaryButtonUrl: val })}
+                    onVisibilityChange={(val) => onUpdate && onUpdate({ secondaryButtonVisible: val })}
+                    // Secondary button variant is hardcoded to ghost for now, or we could add a prop for it
                     id={secondaryButtonId}
                     onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
+                    suffix="secondary-button"
                 />
             </div>
         </HeaderSection>
