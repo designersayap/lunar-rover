@@ -19,6 +19,7 @@ export default function TerraFeaturesImageLeft({
     secondaryButtonVisible = componentDefaults["feature-left"].secondaryButtonVisible,
     image = componentDefaults["feature-left"].image,
     buttonStyle = "primary",
+    secondaryButtonStyle = "ghost",
     buttonId,
     secondaryButtonId,
     onUpdate,
@@ -72,10 +73,11 @@ export default function TerraFeaturesImageLeft({
                                 href={secondaryButtonUrl}
                                 isVisible={secondaryButtonVisible}
                                 sectionId={sectionId}
-                                className="btn btn-ghost btn-md"
+                                className={`btn btn-${secondaryButtonStyle} btn-md`}
                                 onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
                                 onHrefChange={(val) => onUpdate && onUpdate({ secondaryButtonUrl: val })}
                                 onVisibilityChange={(val) => onUpdate && onUpdate({ secondaryButtonVisible: val })}
+                                onVariantChange={(val) => onUpdate && onUpdate({ secondaryButtonStyle: val })}
                                 id={secondaryButtonId}
                                 onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
                                 suffix="secondary-button"

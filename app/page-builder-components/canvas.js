@@ -1,49 +1,9 @@
 import { useState, useEffect } from "react";
 import { useBuilderSelection } from "@/app/page-builder-components/utils/builder-controls";
-import {
-    ArrowUpIcon,
-    ArrowDownIcon,
-    TrashIcon as TrashIconOutline,
-} from "@heroicons/react/24/outline";
+
 import styles from "../page.module.css";
 
-function SectionIdInput({ id, initialValue, onUpdate }) {
-    const [value, setValue] = useState(initialValue);
 
-    useEffect(() => {
-        setValue(initialValue);
-    }, [initialValue]);
-
-    const handleBlur = () => {
-        if (!value.trim()) {
-            setValue(initialValue);
-            return;
-        }
-        if (value !== initialValue) {
-            onUpdate(id, value);
-        }
-    };
-
-    const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            e.target.blur();
-        }
-    };
-
-    return (
-        <div className={styles.controlId}>
-            <span className={styles.controlIdHash}>#</span>
-            <input
-                type="text"
-                className={styles.controlIdInput}
-                value={value}
-                onChange={(e) => setValue(e.target.value.replace(/\s/g, '-'))}
-                onBlur={handleBlur}
-                onKeyDown={handleKeyDown}
-            />
-        </div>
-    );
-}
 
 export default function Canvas({
     selectedComponents,
@@ -53,12 +13,7 @@ export default function Canvas({
     draggedItemIndex,
     dropTargetIndex,
     setDraggedItemIndex,
-    moveUp,
-    moveDown,
-
-    removeComponent,
-    updateComponent,
-    updateSectionId
+    updateComponent
 }) {
     const { setActiveElementId } = useBuilderSelection();
 
@@ -106,44 +61,7 @@ export default function Canvas({
                                             <div className={styles.dropIndicatorCircle} />
                                         </div>
                                     )}
-                                    {/* Grouped Control Buttons */}
-                                    <div className={styles.controlButtons}>
-                                        {item.sectionId && (
-                                            <SectionIdInput
-                                                id={item.uniqueId}
-                                                initialValue={item.sectionId}
-                                                onUpdate={updateSectionId}
-                                            />
-                                        )}
-                                        {index < selectedComponents.length - 1 && (
-                                            <button
-                                                onClick={() => moveDown(index)}
-                                                className={`${styles.controlButton} ${styles.controlButtonBordered}`}
-                                                data-tooltip="Move Down"
-                                                data-tooltip-position="top"
-                                            >
-                                                <ArrowDownIcon style={{ width: "16px", height: "16px" }} />
-                                            </button>
-                                        )}
-                                        {index > 0 && (
-                                            <button
-                                                onClick={() => moveUp(index)}
-                                                className={`${styles.controlButton} ${styles.controlButtonBordered}`}
-                                                data-tooltip="Move Up"
-                                                data-tooltip-position="top"
-                                            >
-                                                <ArrowUpIcon style={{ width: "16px", height: "16px" }} />
-                                            </button>
-                                        )}
-                                        <button
-                                            onClick={() => removeComponent(item.uniqueId)}
-                                            className={`${styles.controlButton} ${styles.controlButtonDelete}`}
-                                            data-tooltip="Delete Section"
-                                            data-tooltip-position="top"
-                                        >
-                                            <TrashIconOutline style={{ width: "16px", height: "16px" }} />
-                                        </button>
-                                    </div>
+                                    {/* Removed Control Buttons per user request */}
 
                                     {/* Render Component */}
                                     <Component

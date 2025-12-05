@@ -1,186 +1,195 @@
 "use client";
-
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { BellAlertIcon, TrashIcon } from "@heroicons/react/24/solid";
 import styles from "./page.module.css";
-import { handleExportTemplate } from "@/app/page-builder-components/utils/export-template";
-import { handleExportCsv } from "@/app/page-builder-components/utils/export-csv";
-import { componentLibrary } from "@/app/page-builder-components/content/component-library";
+
+// Components
 import Sidebar from "@/app/page-builder-components/sidebar";
 import TopBar from "@/app/page-builder-components/topbar";
 import Canvas from "@/app/page-builder-components/canvas";
-
 import ThemePickerPopover from "@/app/page-builder-components/theme-picker-popover";
 import ExportPopover from "@/app/page-builder-components/export-popover";
+import ComponentsPopover from "@/app/page-builder-components/components-popover";
+
+// Utilities
+import { componentLibrary } from "@/app/page-builder-components/content/component-library";
 import { getThemes } from "@/app/page-builder-components/utils/get-themes";
+import { handleExportTemplate } from "@/app/page-builder-components/utils/export-template";
+import { handleExportCsv } from "@/app/page-builder-components/utils/export-csv";
 import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder-controls";
+import {
+  loadTemplate,
+  saveTemplate,
+  generateSectionId,
+  calculatePopoverPosition,
+  DEFAULT_ANALYTICS
+} from "@/app/page-builder-components/utils/template-storage";
+import {
+  addComponentToList,
+  removeComponentFromList,
+  moveComponentUp,
+  moveComponentDown,
+  updateComponentProps,
+  updateComponentSectionId,
+  reorderComponents
+} from "@/app/page-builder-components/utils/component-manager";
 
 /**
  * Template Generator Page
- * Allows users to select and preview section components
+ * Main page for building landing page templates
  */
 export default function TemplateGeneratorPage() {
+  // ==================== STATE ====================
 
+  // Components & Data
   const [selectedComponents, setSelectedComponents] = useState([]);
-  const [showToaster, setShowToaster] = useState(false);
-  const [toasterMessage, setToasterMessage] = useState("");
-  const [toasterType, setToasterType] = useState("success"); // success | delete
-  const [draggedItemIndex, setDraggedItemIndex] = useState(null);
-  const [dropTargetIndex, setDropTargetIndex] = useState(null);
+  const [analyticsData, setAnalyticsData] = useState(DEFAULT_ANALYTICS);
+
+  // Theme
+  const [themes, setThemes] = useState([]);
+  const [selectedThemeId, setSelectedThemeId] = useState("theme");
+
+  // UI State
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
-  const [activeTab, setActiveTab] = useState("elements"); // "elements" | "analytics"
-  const [analyticsData, setAnalyticsData] = useState({
-    metaDescription: "",
-    googleAnalyticsId: "",
-    tikTokPixel: "",
-    metaPixel: "",
-    hotjarId: ""
-  });
+  const [activeTab, setActiveTab] = useState("elements");
   const [openCategories, setOpenCategories] = useState({ "Hero Banner": true });
 
+  // Toaster
+  const [toaster, setToaster] = useState({ show: false, message: "", type: "success" });
 
-  const [themePickerPosition, setThemePickerPosition] = useState(null);
-  const [exportPopoverPosition, setExportPopoverPosition] = useState(null);
-  const [selectedThemeId, setSelectedThemeId] = useState("theme");
-  const [themes, setThemes] = useState([]);
-  const [activeElementId, setActiveElementId] = useState(null);
+  // Drag & Drop
+  const [draggedIndex, setDraggedIndex] = useState(null);
+  const [dropTargetIndex, setDropTargetIndex] = useState(null);
+
+  // Popovers
   const [activePopoverId, setActivePopoverId] = useState(null);
+  const [popoverPositions, setPopoverPositions] = useState({});
 
-  // Refs
+  // Active Element
+  const [activeElementId, setActiveElementId] = useState(null);
+
+  // ==================== REFS ====================
+
   const containerRef = useRef(null);
   const dragImageRef = useRef(null);
   const dragThumbnailRef = useRef(null);
   const dragNameRef = useRef(null);
 
+  // ==================== HELPERS ====================
+
+  const showToast = useCallback((message, type = "success") => {
+    setToaster({ show: true, message, type });
+  }, []);
+
+  const togglePopover = useCallback((id, position) => {
+    if (position) {
+      setPopoverPositions(prev => ({ ...prev, [id]: position }));
+    }
+    setActivePopoverId(prev => prev === id ? null : id);
+  }, []);
+
+  const closePopover = useCallback(() => {
+    setActivePopoverId(null);
+  }, []);
+
+  // ==================== EFFECTS ====================
+
+  // Load themes on mount
   useEffect(() => {
-    const loadThemes = async () => {
-      const loadedThemes = await getThemes();
-      setThemes(loadedThemes);
-    };
-    loadThemes();
+    getThemes().then(setThemes);
   }, []);
 
-  const handleThemeSelect = useCallback((themeId) => {
-    setSelectedThemeId(themeId);
-    setToasterMessage(`Theme switched to ${themeId}`);
-    setToasterType("success");
-    setShowToaster(true);
-  }, []);
-
-
+  // Apply theme stylesheet
   useEffect(() => {
     const themeLink = document.getElementById("theme-stylesheet");
-    if (themeLink && themes.length > 0) {
-      const selectedTheme = themes.find(t => t.id === selectedThemeId);
-      const newThemeHref = selectedTheme ? selectedTheme.path : "/themes/theme.css";
-      themeLink.href = newThemeHref;
+    if (themeLink && themes.length) {
+      const theme = themes.find(t => t.id === selectedThemeId);
+      themeLink.href = theme?.path || "/themes/theme.css";
     }
   }, [selectedThemeId, themes]);
 
-  // Load saved template from localStorage on mount
+  // Load saved template on mount
   useEffect(() => {
-    const savedTemplate = localStorage.getItem('lunar-template-builder');
-    if (savedTemplate) {
-      try {
-        const parsed = JSON.parse(savedTemplate);
-
-        // Rehydrate components (restore the component function reference)
-        const rehydratedComponents = (parsed.components || []).map(savedComp => {
-          // Find the original component definition in the library
-          let originalComp = null;
-          Object.values(componentLibrary).forEach(category => {
-            const found = category.find(c => c.id === savedComp.id);
-            if (found) originalComp = found;
-          });
-
-          if (originalComp) {
-            return {
-              ...savedComp,
-              component: originalComp.component
-            };
-          }
-          return null;
-        }).filter(Boolean);
-
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setSelectedComponents(rehydratedComponents);
-        setAnalyticsData(parsed.analytics || {
-          metaDescription: "",
-          googleAnalyticsId: "",
-          tikTokPixel: "",
-          metaPixel: "",
-          hotjarId: ""
-        });
-      } catch (error) {
-        console.error('Error loading saved template:', error);
-      }
+    const saved = loadTemplate(componentLibrary);
+    if (saved) {
+      setSelectedComponents(saved.components);
+      setAnalyticsData(saved.analytics);
     }
   }, []);
 
-  // Auto-save to localStorage whenever components or analytics change (Debounced)
+  // Auto-save template (debounced)
   useEffect(() => {
-    const saveToLocalStorage = () => {
-      if (selectedComponents.length > 0 || analyticsData.metaDescription || analyticsData.googleAnalyticsId || analyticsData.tikTokPixel || analyticsData.metaPixel || analyticsData.hotjarId) {
-        const dataToSave = {
-          components: selectedComponents,
-          analytics: analyticsData,
-          lastSaved: new Date().toISOString()
-        };
-        localStorage.setItem('lunar-template-builder', JSON.stringify(dataToSave));
-      }
-    };
-
-    const timeoutId = setTimeout(saveToLocalStorage, 1000); // 1s debounce
-
+    const timeoutId = setTimeout(() => {
+      saveTemplate(selectedComponents, analyticsData);
+    }, 1000);
     return () => clearTimeout(timeoutId);
   }, [selectedComponents, analyticsData]);
 
+  // Auto-hide toaster
   useEffect(() => {
-    if (showToaster) {
-      const timer = setTimeout(() => {
-        setShowToaster(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [showToaster]);
+    if (!toaster.show) return;
+    const timeoutId = setTimeout(() => {
+      setToaster(t => ({ ...t, show: false }));
+    }, 3000);
+    return () => clearTimeout(timeoutId);
+  }, [toaster.show]);
 
-  const toggleCategory = useCallback((category, forceOpen = false) => {
-    setOpenCategories(prev => {
-      if (forceOpen) {
-        return { [category]: true };
-      }
-      if (prev[category]) {
-        return {};
-      }
-      return { [category]: true };
-    });
-  }, []);
-
+  // Responsive sidebar
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 1024) {
-        setIsSidebarVisible(false);
-      } else {
-        setIsSidebarVisible(true);
-      }
-    };
-
-
+    const handleResize = () => setIsSidebarVisible(window.innerWidth >= 1024);
     handleResize();
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleDragStart = useCallback((e, index, componentName, thumbnail) => {
-    setDraggedItemIndex(index);
-    e.dataTransfer.effectAllowed = "move";
+  // ==================== HANDLERS ====================
 
+  // Theme
+  const handleThemeSelect = useCallback((themeId) => {
+    setSelectedThemeId(themeId);
+    showToast(`Theme switched to ${themeId}`);
+  }, [showToast]);
+
+  // Categories
+  const toggleCategory = useCallback((category, forceOpen = false) => {
+    setOpenCategories(prev =>
+      forceOpen || !prev[category] ? { [category]: true } : {}
+    );
+  }, []);
+
+  // Components
+  const addComponent = useCallback((componentData, category) => {
+    const sectionId = generateSectionId(category);
+    setSelectedComponents(prev => addComponentToList(prev, componentData, sectionId));
+    showToast(`${componentData.name} added`);
+  }, [showToast]);
+
+  const removeComponent = useCallback((uniqueId) => {
+    const comp = selectedComponents.find(c => c.uniqueId === uniqueId);
+    if (comp) {
+      showToast(`${comp.name} deleted`, "delete");
+      setSelectedComponents(prev => removeComponentFromList(prev, uniqueId));
+    }
+  }, [selectedComponents, showToast]);
+
+
+
+  const updateComponent = useCallback((uniqueId, newProps) => {
+    setSelectedComponents(prev => updateComponentProps(prev, uniqueId, newProps));
+  }, []);
+
+  const updateSectionId = useCallback((uniqueId, newId) => {
+    setSelectedComponents(prev => updateComponentSectionId(prev, uniqueId, newId));
+  }, []);
+
+  // Drag & Drop
+  const handleDragStart = useCallback((e, index, name, thumbnail) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = "move";
 
     if (dragImageRef.current) {
       if (dragThumbnailRef.current) dragThumbnailRef.current.src = thumbnail || "";
-      if (dragNameRef.current) dragNameRef.current.innerText = componentName || "Section";
-
+      if (dragNameRef.current) dragNameRef.current.innerText = name || "Section";
       e.dataTransfer.setDragImage(dragImageRef.current, 0, 0);
     }
   }, []);
@@ -188,249 +197,161 @@ export default function TemplateGeneratorPage() {
   const handleDragOver = useCallback((e, index) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
-    if (draggedItemIndex !== index) {
+    if (draggedIndex !== index) {
       setDropTargetIndex(index);
     }
-  }, [draggedItemIndex]);
+  }, [draggedIndex]);
 
   const handleDrop = useCallback((e, index) => {
     e.preventDefault();
+    if (draggedIndex !== null && draggedIndex !== index) {
+      setSelectedComponents(prev => reorderComponents(prev, draggedIndex, index));
+    }
+    setDraggedIndex(null);
     setDropTargetIndex(null);
-    if (draggedItemIndex === null || draggedItemIndex === index) return;
+  }, [draggedIndex]);
 
-    const newComponents = [...selectedComponents];
-    const draggedItem = newComponents[draggedItemIndex];
-    newComponents.splice(draggedItemIndex, 1);
-    newComponents.splice(index, 0, draggedItem);
-
-    setSelectedComponents(newComponents);
-    setDraggedItemIndex(null);
-  }, [draggedItemIndex, selectedComponents]);
-
-  const generateSectionId = (category) => {
-    const slug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-    const random = Math.floor(1000 + Math.random() * 9000);
-    return `${slug}-${random}`;
-  };
-
-  const addComponent = useCallback((componentData, category, event) => {
-    const sectionId = generateSectionId(category);
-
-    // Initialize props with defaults if config exists
-    const initialProps = {};
-    if (componentData.config) {
-      componentData.config.forEach(prop => {
-        initialProps[prop.name] = prop.default;
-      });
-    }
-
-    setSelectedComponents(prev => [...prev, {
-      ...componentData,
-      uniqueId: Date.now(),
-      sectionId: sectionId,
-      props: { ...initialProps, ...(componentData.props || {}) }
-    }]);
-
-    setToasterMessage(`${componentData.name} added`);
-    setToasterType("success");
-    setShowToaster(true);
-  }, []);
-
-
-
-  const removeComponent = useCallback((uniqueId) => {
-    const componentToRemove = selectedComponents.find(c => c.uniqueId === uniqueId);
-    if (componentToRemove) {
-      setToasterMessage(`${componentToRemove.name} deleted`);
-      setToasterType("delete");
-      setShowToaster(true);
-      setSelectedComponents(prev => prev.filter(c => c.uniqueId !== uniqueId));
-    }
-  }, [selectedComponents]);
-
-  const moveUp = useCallback((index) => {
-    if (index === 0) return;
-    setSelectedComponents(prev => {
-      const newComponents = [...prev];
-      [newComponents[index - 1], newComponents[index]] = [newComponents[index], newComponents[index - 1]];
-      return newComponents;
-    });
-  }, []);
-
-  const moveDown = useCallback((index) => {
-    if (index === selectedComponents.length - 1) return;
-    setSelectedComponents(prev => {
-      const newComponents = [...prev];
-      [newComponents[index], newComponents[index + 1]] = [newComponents[index + 1], newComponents[index]];
-      return newComponents;
-    });
-  }, [selectedComponents.length]);
-
-  const updateComponent = useCallback((uniqueId, newProps) => {
-    setSelectedComponents(prev => prev.map(comp => {
-      if (comp.uniqueId === uniqueId) {
-        return {
-          ...comp,
-          props: { ...comp.props, ...newProps }
-        };
-      }
-      return comp;
-    }));
-  }, []);
-
-  const updateSectionId = useCallback((uniqueId, newId) => {
-    setSelectedComponents(prev => prev.map(comp => {
-      if (comp.uniqueId === uniqueId) {
-        return {
-          ...comp,
-          sectionId: newId
-        };
-      }
-      return comp;
-    }));
-  }, []);
-
+  // Export
   const handleExport = useCallback((position) => {
-    if (position) setExportPopoverPosition(position);
-    setActivePopoverId(prev => prev === 'export-popover' ? null : 'export-popover');
-  }, []);
+    togglePopover('export', position);
+  }, [togglePopover]);
 
   const handleExportConfirm = useCallback((csvLink) => {
     handleExportTemplate(selectedComponents, csvLink, analyticsData);
-    setActivePopoverId(null);
-  }, [selectedComponents, analyticsData]);
+    closePopover();
+  }, [selectedComponents, analyticsData, closePopover]);
 
   const onDownloadCsv = useCallback(() => {
     handleExportCsv(selectedComponents);
   }, [selectedComponents]);
 
+  // Add Component Popover
+  const handleAddClick = useCallback((rect) => {
+    if (rect) {
+      const position = calculatePopoverPosition(rect);
+      togglePopover('components', position);
+    } else {
+      togglePopover('components');
+    }
+  }, [togglePopover]);
 
+  // ==================== CONTEXT VALUE ====================
+
+  const selectionContext = useMemo(() => ({
+    activeElementId,
+    setActiveElementId,
+    activePopoverId,
+    setActivePopoverId
+  }), [activeElementId, activePopoverId]);
+
+  // ==================== RENDER ====================
 
   return (
     <div className={styles.container} ref={containerRef}>
-      <BuilderSelectionContext.Provider value={{
-        activeElementId,
-        setActiveElementId,
-        activePopoverId,
-        setActivePopoverId
-      }}>
+      <BuilderSelectionContext.Provider value={selectionContext}>
+
+        {/* Top Bar */}
         <TopBar
           isSidebarVisible={isSidebarVisible}
           setIsSidebarVisible={setIsSidebarVisible}
           handleExport={handleExport}
-          onThemeClick={(position) => {
-            if (position) setThemePickerPosition(position);
-            setActivePopoverId(prev => prev === 'theme-picker' ? null : 'theme-picker');
-          }}
-          isThemePickerOpen={activePopoverId === 'theme-picker'}
-          isExportPopoverOpen={activePopoverId === 'export-popover'}
+          onThemeClick={(pos) => togglePopover('theme', pos)}
+          isThemePickerOpen={activePopoverId === 'theme'}
+          isExportPopoverOpen={activePopoverId === 'export'}
           selectedThemeId={selectedThemeId}
           themes={themes}
         />
 
+        {/* Main Content */}
         <div className={styles.mainContent}>
           <Canvas
             selectedComponents={selectedComponents}
             handleDragStart={handleDragStart}
             handleDragOver={handleDragOver}
             handleDrop={handleDrop}
-            draggedItemIndex={draggedItemIndex}
+            draggedItemIndex={draggedIndex}
             dropTargetIndex={dropTargetIndex}
-            setDraggedItemIndex={setDraggedItemIndex}
-            moveUp={moveUp}
-            moveDown={moveDown}
-            removeComponent={removeComponent}
+            setDraggedItemIndex={setDraggedIndex}
             updateComponent={updateComponent}
-            updateSectionId={updateSectionId}
           />
 
           {isSidebarVisible && (
             <Sidebar
               activeTab={activeTab}
               setActiveTab={setActiveTab}
-              componentLibrary={componentLibrary}
-              openCategories={openCategories}
-              toggleCategory={toggleCategory}
-              addComponent={addComponent}
               analyticsData={analyticsData}
               setAnalyticsData={setAnalyticsData}
+              selectedComponents={selectedComponents}
+              updateSectionId={updateSectionId}
+              updateComponent={updateComponent}
+              removeComponent={removeComponent}
+              activeElementId={activeElementId}
+              setActiveElementId={setActiveElementId}
+              onAddClick={handleAddClick}
+              isAddPopoverOpen={activePopoverId === 'components'}
+              handleDragStart={handleDragStart}
+              handleDragOver={handleDragOver}
+              handleDrop={handleDrop}
+              draggedIndex={draggedIndex}
+              dropTargetIndex={dropTargetIndex}
             />
           )}
         </div>
 
-        {/* Custom Drag Image (Hidden) */}
-        <div
-          id="custom-drag-image"
-          ref={dragImageRef}
-          className={styles.customDragImage}
-        >
-          <div style={{
-            height: "60px",
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "var(--grey-50)",
-            borderRadius: "var(--round-80)",
-            border: "1px solid var(--grey-200)",
-            overflow: "hidden"
-          }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              id="drag-thumbnail-image"
-              ref={dragThumbnailRef}
-              src={null}
-              alt="Preview"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover"
-              }}
-            />
+        {/* Hidden Drag Image */}
+        <div ref={dragImageRef} className={styles.customDragImage}>
+          <div style={{ height: 60, width: "100%", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "var(--grey-50)", borderRadius: "var(--round-80)", border: "1px solid var(--grey-200)", overflow: "hidden" }}>
+            <img ref={dragThumbnailRef} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
-          <span
-            id="drag-name-content"
-            ref={dragNameRef}
-            style={{
-              fontSize: "var(--typography-font-size-80)",
-              fontWeight: "var(--font-weight-bold)",
-              color: "var(--content-neutral--title)"
-            }}></span>
+          <span ref={dragNameRef} style={{ fontSize: "var(--typography-font-size-80)", fontWeight: "var(--font-weight-bold)", color: "var(--content-neutral--title)" }} />
         </div>
 
-
-        {activePopoverId === 'theme-picker' && (
+        {/* Popovers */}
+        {activePopoverId === 'theme' && (
           <ThemePickerPopover
-            isOpen={true}
-            onClose={() => setActivePopoverId(null)}
+            isOpen
+            onClose={closePopover}
             onSelectTheme={handleThemeSelect}
             currentTheme={selectedThemeId}
             themes={themes}
-            position={themePickerPosition}
+            position={popoverPositions.theme}
           />
         )}
-        {activePopoverId === 'export-popover' && (
+
+        {activePopoverId === 'export' && (
           <ExportPopover
-            isOpen={true}
-            onClose={() => setActivePopoverId(null)}
+            isOpen
+            onClose={closePopover}
             onExport={handleExportConfirm}
             onDownloadCsv={onDownloadCsv}
-            position={exportPopoverPosition}
+            position={popoverPositions.export}
           />
-        )} {/* Toaster Notification */}
-        {showToaster && (
-          <div className={`${styles.toaster} ${toasterType === "delete" ? styles.toasterDelete : ""}`}>
-            {toasterType === "delete" ? (
-              <TrashIcon className={styles.toasterIcon} />
-            ) : (
-              <BellAlertIcon className={styles.toasterIcon} />
-            )}
-            {toasterMessage}
+        )}
+
+        {activePopoverId === 'components' && (
+          <ComponentsPopover
+            isOpen
+            onClose={closePopover}
+            position={popoverPositions.components}
+            componentLibrary={componentLibrary}
+            openCategories={openCategories}
+            toggleCategory={toggleCategory}
+            addComponent={addComponent}
+          />
+        )}
+
+        {/* Toaster */}
+        {toaster.show && (
+          <div className={`${styles.toaster} ${toaster.type === "delete" ? styles.toasterDelete : ""}`}>
+            {toaster.type === "delete"
+              ? <TrashIcon className={styles.toasterIcon} />
+              : <BellAlertIcon className={styles.toasterIcon} />
+            }
+            {toaster.message}
           </div>
         )}
+
       </BuilderSelectionContext.Provider>
     </div>
   );
 }
-
-//design with love, emotion and pain by Daru & Deni. QRIS for support will be update later.

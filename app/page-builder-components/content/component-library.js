@@ -19,6 +19,7 @@ export const componentLibrary = {
             component: GlobalHeaderTitle,
             thumbnail: "/images/thumbnails/header-title.svg",
         },
+
         {
             id: "header-title-button",
             name: "Title, Button",
@@ -45,6 +46,22 @@ export const componentLibrary = {
                     default: "Label"
                 }
             ],
+            buttons: [
+                {
+                    label: "Button",
+                    propId: "buttonId",
+                    suffix: "button",
+                    labelProp: "buttonText",
+                    visibleProp: "buttonVisible"
+                },
+                {
+                    label: "Secondary Button",
+                    propId: "secondaryButtonId",
+                    suffix: "secondary-button",
+                    labelProp: "secondaryButtonText",
+                    visibleProp: "secondaryButtonVisible"
+                }
+            ]
         },
         {
             id: "header-title-description",
@@ -52,6 +69,7 @@ export const componentLibrary = {
             component: GlobalHeaderTitleDescription,
             thumbnail: "/images/thumbnails/header-title-desc.svg",
         },
+
         {
             id: "header-title-description-button",
             name: "Title, Description, Button",
@@ -78,6 +96,22 @@ export const componentLibrary = {
                     default: "Label"
                 }
             ],
+            buttons: [
+                {
+                    label: "Button",
+                    propId: "buttonId",
+                    suffix: "button",
+                    labelProp: "buttonText",
+                    visibleProp: "buttonVisible"
+                },
+                {
+                    label: "Secondary Button",
+                    propId: "secondaryButtonId",
+                    suffix: "secondary-button",
+                    labelProp: "secondaryButtonText",
+                    visibleProp: "secondaryButtonVisible"
+                }
+            ]
         },
     ],
     "Hero Banner": [
@@ -101,6 +135,22 @@ export const componentLibrary = {
                     default: ""
                 }
             ],
+            buttons: [
+                {
+                    label: "Primary Button",
+                    propId: "buttonId",
+                    suffix: "button",
+                    labelProp: "buttonText",
+                    visibleProp: "buttonVisible"
+                },
+                {
+                    label: "Secondary Button",
+                    propId: "secondaryButtonId",
+                    suffix: "secondary-button",
+                    labelProp: "secondaryButtonText",
+                    visibleProp: "secondaryButtonVisible"
+                }
+            ]
         },
     ],
     "Feature - Split": [
@@ -124,6 +174,22 @@ export const componentLibrary = {
                     default: "Label"
                 }
             ],
+            buttons: [
+                {
+                    label: "Button",
+                    propId: "buttonId",
+                    suffix: "button",
+                    labelProp: "buttonText",
+                    visibleProp: "buttonVisible"
+                },
+                {
+                    label: "Secondary Button",
+                    propId: "secondaryButtonId",
+                    suffix: "secondary-button",
+                    labelProp: "secondaryButtonText",
+                    visibleProp: "secondaryButtonVisible"
+                }
+            ]
         },
         {
             id: "feature-right",
@@ -139,6 +205,15 @@ export const componentLibrary = {
                     default: "primary"
                 }
             ],
+            buttons: [
+                {
+                    label: "Button",
+                    propId: "buttonId",
+                    suffix: "button",
+                    labelProp: "buttonText",
+                    visibleProp: "buttonVisible"
+                }
+            ]
         },
     ],
 

@@ -60,7 +60,7 @@ export default function ExportPopover({
                 <div className={styles.popoverContent}>
                     <div className={styles.exportInputWrapper}>
                         <textarea
-                            className={styles.exportTextarea}
+                            className={`${styles.formInput} ${styles.formTextarea} ${styles.exportTextarea}`}
                             placeholder="Paste your csv link here"
                             value={csvLink}
                             onChange={(e) => setCsvLink(e.target.value)}
@@ -80,7 +80,7 @@ export default function ExportPopover({
                 {/* Footer */}
                 <div className={`${styles.popoverFooter} ${styles.themePickerFooter}`}>
                     <button
-                        className={`btn btn-primary btn-sm ${styles.themePickerButton}`}
+                        className={styles.generatorButton}
                         onClick={handleExportClick}
                         disabled={!hasLink}
                     >

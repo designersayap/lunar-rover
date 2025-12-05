@@ -152,15 +152,7 @@ export default function BuilderButton({
                     {isActive && (
                         <div className={styles.activeOverlay}>
                             <div className={styles.overlayLabel}>
-                                <input
-                                    type="text"
-                                    className={styles.overlayInput}
-                                    value={tempId || ''}
-                                    onChange={handleIdChange}
-                                    onBlur={handleIdBlur}
-                                    onKeyDown={handleIdKeyDown}
-                                    onClick={(e) => e.stopPropagation()}
-                                />
+                                <span className={styles.overlayIdText}>#{buttonId}</span>
                             </div>
                             <button
                                 type="button"

@@ -19,6 +19,7 @@ export default function TerraFeaturesImageRight({
     secondaryButtonVisible = componentDefaults["feature-right"].secondaryButtonVisible,
     image = componentDefaults["feature-right"].image,
     buttonStyle = "primary",
+    secondaryButtonStyle = "ghost",
     buttonId,
     secondaryButtonId,
     onUpdate,
@@ -67,10 +68,11 @@ export default function TerraFeaturesImageRight({
                                 href={secondaryButtonUrl}
                                 isVisible={secondaryButtonVisible}
                                 sectionId={sectionId}
-                                className="btn btn-ghost btn-md"
+                                className={`btn btn-${secondaryButtonStyle} btn-md`}
                                 onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
                                 onHrefChange={(val) => onUpdate && onUpdate({ secondaryButtonUrl: val })}
                                 onVisibilityChange={(val) => onUpdate && onUpdate({ secondaryButtonVisible: val })}
+                                onVariantChange={(val) => onUpdate && onUpdate({ secondaryButtonStyle: val })}
                                 id={secondaryButtonId}
                                 onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
                                 suffix="secondary-button"

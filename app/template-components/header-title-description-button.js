@@ -17,6 +17,8 @@ export default function GlobalHeaderTitleButtonDescription({
     secondaryButtonVisible = componentDefaults["header-title-description-button"].secondaryButtonVisible,
     buttonId,
     secondaryButtonId,
+    buttonStyle = "primary",
+    secondaryButtonStyle = "ghost",
     onUpdate,
     sectionId
 }) {
@@ -35,12 +37,12 @@ export default function GlobalHeaderTitleButtonDescription({
                     href={buttonUrl}
                     isVisible={buttonVisible}
                     sectionId={sectionId}
-                    className="btn btn-primary btn-md"
+                    className={`btn btn-${buttonStyle} btn-md`}
                     iconRight={<ArrowLongRightIcon />}
                     onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
                     onHrefChange={(val) => onUpdate && onUpdate({ buttonUrl: val })}
                     onVisibilityChange={(val) => onUpdate && onUpdate({ buttonVisible: val })}
-                    // Primary button variant is hardcoded to primary here, could be dynamic
+                    onVariantChange={(val) => onUpdate && onUpdate({ buttonStyle: val })}
                     id={buttonId}
                     onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
                     suffix="button"
@@ -50,10 +52,11 @@ export default function GlobalHeaderTitleButtonDescription({
                     href={secondaryButtonUrl}
                     isVisible={secondaryButtonVisible}
                     sectionId={sectionId}
-                    className="btn btn-ghost btn-md"
+                    className={`btn btn-${secondaryButtonStyle} btn-md`}
                     onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
                     onHrefChange={(val) => onUpdate && onUpdate({ secondaryButtonUrl: val })}
                     onVisibilityChange={(val) => onUpdate && onUpdate({ secondaryButtonVisible: val })}
+                    onVariantChange={(val) => onUpdate && onUpdate({ secondaryButtonStyle: val })}
                     id={secondaryButtonId}
                     onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
                     suffix="secondary-button"

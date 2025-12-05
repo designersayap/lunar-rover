@@ -18,6 +18,7 @@ export default function GlobalHeaderTitleButton({
     buttonId,
     secondaryButtonId,
     buttonStyle = "primary", // primary, neutral, ghost, outline, link
+    secondaryButtonStyle = "ghost",
     buttonSize = "md", // sm, md, lg
     onUpdate,
     sectionId
@@ -50,11 +51,11 @@ export default function GlobalHeaderTitleButton({
                     href={secondaryButtonUrl}
                     isVisible={secondaryButtonVisible}
                     sectionId={sectionId}
-                    className="btn btn-ghost btn-md"
+                    className={`btn btn-${secondaryButtonStyle} btn-md`}
                     onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
                     onHrefChange={(val) => onUpdate && onUpdate({ secondaryButtonUrl: val })}
                     onVisibilityChange={(val) => onUpdate && onUpdate({ secondaryButtonVisible: val })}
-                    // Secondary button variant is hardcoded to ghost for now, or we could add a prop for it
+                    onVariantChange={(val) => onUpdate && onUpdate({ secondaryButtonStyle: val })}
                     id={secondaryButtonId}
                     onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
                     suffix="secondary-button"

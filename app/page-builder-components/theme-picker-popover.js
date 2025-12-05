@@ -21,10 +21,7 @@ export default function ThemePickerPopover({
         theme.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const handleSelect = () => {
-        onSelectTheme(selectedThemeId);
-        onClose();
-    };
+
 
     // Calculate constrained position
     let popoverStyle = {
@@ -67,7 +64,7 @@ export default function ThemePickerPopover({
                         <input
                             type="text"
                             placeholder="Search brand"
-                            className={styles.searchBar}
+                            className={`${styles.formInput} ${styles.searchBar}`}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
@@ -85,7 +82,10 @@ export default function ThemePickerPopover({
                                     name="theme"
                                     value={theme.id}
                                     checked={selectedThemeId === theme.id}
-                                    onChange={() => setSelectedThemeId(theme.id)}
+                                    onChange={() => {
+                                        setSelectedThemeId(theme.id);
+                                        onSelectTheme(theme.id);
+                                    }}
                                     className={styles.themeOptionInput}
                                 />
                                 <span className="caption-regular">{theme.name}</span>
@@ -94,16 +94,9 @@ export default function ThemePickerPopover({
                     </div>
                 </div>
 
-                {/* Footer */}
-                <div className={`${styles.popoverFooter} ${styles.themePickerFooter}`}>
-                    <button
-                        className={`btn btn-primary btn-sm ${styles.themePickerButton}`}
-                        onClick={handleSelect}
-                    >
-                        Choose Themes
-                    </button>
-                </div>
+                {/* Footer removed as requested */}
             </div>
         </div>
+
     );
 }

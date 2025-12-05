@@ -1,4 +1,4 @@
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
 import styles from "../../page.module.css";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
@@ -58,32 +58,16 @@ export default function BuilderControlsPopover({
                 style={popoverStyle}
                 onClick={(e) => e.stopPropagation()}
             >
-
-
                 {/* Content */}
                 <div className={styles.popoverContent}>
                     <div className={styles.popoverProperties}>
-                        {/* Visibility Toggle */}
-                        <div className={styles.propertyRow}>
-                            <label className={styles.propertyLabel}>Show Button</label>
-                            <label className={styles.toggleSwitch}>
-                                <input
-                                    type="checkbox"
-                                    className={styles.toggleInput}
-                                    checked={isVisible}
-                                    onChange={(e) => onVisibilityChange && onVisibilityChange(e.target.checked)}
-                                />
-                                <span className={styles.toggleSlider}></span>
-                            </label>
-                        </div>
 
                         {/* URL Input */}
-                        <div className={styles.propertyRow} style={{ flexDirection: "column", alignItems: "flex-start", gap: "8px" }}>
-                            <label className={styles.propertyLabel}>URL</label>
+                        <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
+                            <label className={`caption-bold ${styles.formInputTitle}`}>URL</label>
                             <input
                                 type="text"
-                                className={styles.searchBar}
-                                style={{ marginBottom: 0 }}
+                                className={`${styles.formInput}`}
                                 value={url}
                                 onChange={(e) => onUrlChange && onUrlChange(e.target.value)}
                                 placeholder="write you link or page here"
@@ -91,11 +75,11 @@ export default function BuilderControlsPopover({
                         </div>
 
                         {/* Variant Select */}
-                        <div className={styles.propertyRow} style={{ flexDirection: "column", alignItems: "flex-start", gap: "8px" }}>
-                            <label className={styles.propertyLabel}>Variant</label>
+                        <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
+                            <label className={`caption-bold ${styles.formInputTitle}`}>Variant</label>
                             <div className={styles.selectWrapper}>
                                 <select
-                                    className={styles.propertySelect}
+                                    className={`${styles.formInput} ${styles.formSelect}`}
                                     value={variant}
                                     onChange={(e) => onVariantChange && onVariantChange(e.target.value)}
                                 >
@@ -103,6 +87,7 @@ export default function BuilderControlsPopover({
                                         <option key={v} value={v}>{v.charAt(0).toUpperCase() + v.slice(1)}</option>
                                     ))}
                                 </select>
+                                <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
                             </div>
                         </div>
 
