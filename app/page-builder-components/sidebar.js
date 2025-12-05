@@ -80,7 +80,6 @@ export default function Sidebar({
     return (
         <div className={styles.sidebar}>
             <div className={styles.sidebarSection}>
-                <h2 className={`h5 ${styles.sidebarTitle}`}>Configuration</h2>
                 <div className={styles.tabs}>
                     <button
                         className={`${styles.tab} ${activeTab === "elements" ? styles.tabActive : styles.tabInactive}`}
@@ -134,14 +133,14 @@ export default function Sidebar({
                                         <ChevronUpIcon style={{
                                             width: "12px",
                                             height: "12px",
-                                            color: "var(--content-neutral--body)",
+                                            color: "var(--base-white)",
                                             transition: "transform 0.2s"
                                         }} />
                                     ) : (
                                         <ChevronDownIcon style={{
                                             width: "12px",
                                             height: "12px",
-                                            color: "var(--content-neutral--body)",
+                                            color: "var(--base-white)",
                                             transition: "transform 0.2s"
                                         }} />
                                     )}
@@ -168,7 +167,7 @@ export default function Sidebar({
                                                     </div>
                                                     <p className="caption-regular" style={{
                                                         fontSize: "var(--typography-font-size-80)",
-                                                        color: "var(--content-neutral--caption)"
+                                                        color: "var(--grey-200)"
                                                     }}>
                                                         {comp.name}
                                                     </p>

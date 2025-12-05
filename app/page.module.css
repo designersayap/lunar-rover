@@ -12,14 +12,15 @@
 
 
 /* Top Bar */
+/* Top Bar */
 .topBar {
-    background-color: var(--background-neutral--default);
-    border-bottom: 1px solid var(--grey-100);
+    background-color: #282828;
+    border-bottom: 1px solid #3a3a3a;
     padding: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 36px;
+    height: 42px;
     z-index: 10;
 }
 
@@ -32,19 +33,21 @@
 
 .topBarRight {
     display: flex;
-    gap: 0;
+    align-items: center;
+    gap: 8px;
+    padding-right: 8px;
 }
 
 .logo {
     padding: 0;
-    color: var(--content-neutral--title);
+    color: var(--base-white);
 }
 
 /* Top Bar Buttons */
 .topBarButton,
 .topBarButtonWide,
 .topBarButtonExport {
-    height: 36px;
+    height: 40px;
     padding: 0;
     border: none;
     background-color: transparent;
@@ -53,40 +56,54 @@
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s;
-    border-left: 1px solid var(--grey-100);
 }
 
 .topBarButton {
     width: 36px;
 }
 
-.topBarButtonWide,
-.topBarButtonExport {
+.generatorButton {
     gap: var(--space-60);
     font-size: var(--typography-font-size-90);
-    color: var(--content-neutral--title);
+    color: var(--base-white);
+    height: 28px;
+    background-color: #3a3a3a;
+    border-radius: 6px;
+    margin: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    padding: 0 var(--space-60);
 }
 
 .topBarButtonWide {
-    width: 134px;
-    justify-content: center;
-    padding: 0 var(--space-60);
+    max-width: 134px;
 }
+
 
 .topBarButtonText {
     max-width: 80px;
     text-align: left;
 }
 
-.topBarButtonExport {
-    width: 94px;
+
+.topBarButton:hover {
+    background-color: var(--grey-400);
 }
 
-.topBarButton:hover,
-.topBarButtonWide:hover,
-.topBarButtonExport:hover,
+.generatorButton:hover {
+    background-color: #3f3f3f;
+}
+
+.generatorButton:active,
 .topBarButtonActive {
-    background-color: var(--grey-100);
+    background-color: #3f3f3f;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(1px);
+    border-color: #2A2A2A;
 }
 
 
@@ -253,10 +270,10 @@
 /* Sidebar */
 .sidebar {
     width: 300px;
-    background-color: var(--grey-50);
-    border-left: 1px solid var(--grey-100);
+    background: linear-gradient(to top, #111111, #282828);
+    border-left: 1px solid #2A2A2A;
     overflow-y: auto;
-    padding: var(--space-80);
+    padding: 0 var(--space-80);
 }
 
 .sidebarSection {
@@ -265,20 +282,20 @@
 
 .sidebarTitle {
     margin-bottom: var(--space-80);
-    color: var(--content-neutral--title);
+    color: var(--base-white);
 }
 
 /* Tabs */
 .tabs {
     display: flex;
     gap: 0;
-    border-bottom: 1px solid var(--grey-100);
+    border-bottom: 1px solid #3a3a3a;
     margin: 0 calc(-1 * var(--space-80));
     padding: 0;
 }
 
 .tab {
-    padding: var(--space-60) var(--space-80);
+    padding: var(--space-80) var(--space-80);
     border: none;
     background-color: transparent;
     font-weight: var(--font-weight-regular);
@@ -289,39 +306,42 @@
 }
 
 .tabActive {
-    color: var(--content-neutral--title);
-    border-bottom-color: var(--content-neutral--title);
+    color: var(--base-white);
+    border-bottom-color: var(--base-white);
 }
 
 .tabInactive {
-    color: var(--grey-300);
+    color: var(--grey-200);
 }
 
 /* Search */
 .searchBar {
     width: 100%;
     padding: 0 var(--space-70);
-    border: 1px solid var(--grey-100);
+    border: 1px solid #3f3f3f;
     border-radius: 8px;
     height: 36px;
     margin-bottom: var(--space-60);
     font-size: var(--typography-font-size-90);
     outline: none;
     transition: border-color 0.2s;
+    background-color: #1A1A1A;
+    color: var(--base-white);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .searchBar:focus {
-    border-color: var(--brand-color-300);
+    border-color: #4d4d4d;
 }
 
 .searchBar::placeholder {
-    color: var(--content-neutral--body-subtle);
+    color: var(--grey-400);
     opacity: 1;
 }
 
 /* Separator */
 .separator {
-    border-bottom: 1px solid var(--grey-100);
+    border-bottom: 1px solid #3f3f3f;
     margin-top: var(--space-60);
     margin-bottom: var(--space-60);
     margin-left: calc(-1 * var(--space-80));
@@ -344,7 +364,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: var(--content-neutral--body);
+    color: var(--base-white);
 }
 
 .componentGrid {
@@ -671,7 +691,9 @@
 }
 
 .analyticsTitle {
-    color: var(--content-neutral--title);
+    color: var(--grey-300);
+    font-size: var(--typography-font-size-90);
+    font-weight: var(--typography-font-weight-regular);
 }
 
 .helpIconWrapper {
@@ -690,12 +712,16 @@
 .analyticsInput {
     width: 100%;
     padding: 0 var(--space-70);
-    border: 1px solid var(--grey-100);
+    border: 1px solid #3f3f3f;
     border-radius: 8px;
     height: 36px;
     font-size: var(--typography-font-size-90);
     outline: none;
     transition: border-color 0.2s;
+    background-color: #1A1A1A;
+    color: var(--base-white);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+
 }
 
 .analyticsInput:focus {
@@ -703,13 +729,13 @@
 }
 
 .analyticsInput::placeholder {
-    color: var(--content-neutral--body-subtle);
+    color: var(--grey-400);
 }
 
 .analyticsTextarea {
     width: 100%;
     padding: var(--space-60) var(--space-70);
-    border: 1px solid var(--grey-100);
+    border: 1px solid #3f3f3f;
     border-radius: 8px;
     height: 80px;
     font-size: var(--typography-font-size-90);
@@ -717,6 +743,9 @@
     transition: border-color 0.2s;
     resize: none;
     font-family: inherit;
+    background-color: #1A1A1A;
+    color: var(--base-white);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .analyticsTextarea:focus {
@@ -724,7 +753,7 @@
 }
 
 .analyticsTextarea::placeholder {
-    color: var(--content-neutral--body-subtle);
+    color: var(--grey-400);
 }
 
 .sidebarEmptyState {

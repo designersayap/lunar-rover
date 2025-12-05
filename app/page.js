@@ -323,6 +323,7 @@ export default function TemplateGeneratorPage() {
             setActivePopoverId(prev => prev === 'theme-picker' ? null : 'theme-picker');
           }}
           isThemePickerOpen={activePopoverId === 'theme-picker'}
+          isExportPopoverOpen={activePopoverId === 'export-popover'}
           selectedThemeId={selectedThemeId}
           themes={themes}
         />

@@ -5,6 +5,7 @@ import {
     SwatchIcon,
     CodeBracketIcon,
     RocketLaunchIcon,
+    ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
 
@@ -14,6 +15,7 @@ export default function TopBar({
     handleExport,
     onThemeClick,
     isThemePickerOpen,
+    isExportPopoverOpen,
     selectedThemeId,
     themes = []
 }) {
@@ -38,19 +40,19 @@ export default function TopBar({
                     data-tooltip={isSidebarVisible ? "Collapse Sidebar" : "Expand Sidebar"}
                 >
                     {isSidebarVisible ? (
-                        <ChevronDoubleRightIcon style={{ width: "16px", height: "16px", color: "var(--content-neutral--body)" }} />
+                        <ChevronDoubleRightIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />
                     ) : (
-                        <ChevronDoubleLeftIcon style={{ width: "16px", height: "16px", color: "var(--content-neutral--body)" }} />
+                        <ChevronDoubleLeftIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />
                     )}
                 </button>
                 <button
                     className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}
                     data-tooltip="Import JSON"
                 >
-                    <CodeBracketIcon style={{ width: "16px", height: "16px", color: "var(--content-neutral--body)" }} />
+                    <CodeBracketIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />
                 </button>
                 <button
-                    className={`${styles.topBarButtonWide} ${isThemePickerOpen ? styles.topBarButtonActive : ''}`}
+                    className={`${styles.generatorButton} ${styles.topBarButtonWide} ${isThemePickerOpen ? styles.topBarButtonActive : ''}`}
                     data-tooltip={selectedThemeName}
                     onClick={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
@@ -62,9 +64,10 @@ export default function TopBar({
                 >
                     <SwatchIcon style={{ width: "16px", height: "16px", flexShrink: 0 }} />
                     <span className={`${styles.topBarButtonText} truncate-1-line`}>{selectedThemeName}</span>
+                    <ChevronDownIcon style={{ width: "12px", height: "12px", marginLeft: "auto", strokeWidth: 2 }} />
                 </button>
                 <button
-                    className={styles.topBarButtonExport}
+                    className={`${styles.generatorButton} ${styles.topBarButtonExport} ${isExportPopoverOpen ? styles.topBarButtonActive : ''}`}
                     onClick={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
                         handleExport({
