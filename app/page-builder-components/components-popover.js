@@ -48,9 +48,6 @@ export default function ComponentsPopover({
                 className={`${styles.popoverContainer} ${styles.componentsPopover}`}
                 style={style}
             >
-                <div className={styles.popoverHeader} style={{ padding: '12px 16px', borderBottom: '1px solid var(--grey-200)' }}>
-                    <h3 className="caption-bold">Add Element</h3>
-                </div>
 
                 <div style={{ padding: '12px 16px' }}>
                     <div className={styles.searchInputWrapper}>
@@ -80,13 +77,13 @@ export default function ComponentsPopover({
                                 >
                                     <span className="caption-bold">{category}</span>
                                     {openCategories[category] ? (
-                                        <ChevronUpIcon style={{ width: "12px", height: "12px", color: "var(--grey-500)" }} />
+                                        <ChevronUpIcon style={{ width: "12px", height: "12px" }} />
                                     ) : (
-                                        <ChevronDownIcon style={{ width: "12px", height: "12px", color: "var(--grey-500)" }} />
+                                        <ChevronDownIcon style={{ width: "12px", height: "12px" }} />
                                     )}
                                 </div>
-                                {openCategories[category] && (
-                                    <div className={styles.accordionContent}>
+                                <div className={`${styles.accordionContent} ${openCategories[category] ? styles.accordionContentOpen : ''}`}>
+                                    <div className={styles.accordionInner}>
                                         <div className={styles.popoverGrid}>
                                             {components.map((comp) => (
                                                 <button
@@ -116,7 +113,7 @@ export default function ComponentsPopover({
                                             ))}
                                         </div>
                                     </div>
-                                )}
+                                </div>
                             </div>
                         ))
                     )}

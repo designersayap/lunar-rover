@@ -322,6 +322,14 @@
     transition: grid-template-rows .3s ease-out;
 }
 
+.accordionContentOpen {
+    grid-template-rows: 1fr;
+}
+
+.accordionInner {
+    overflow: hidden;
+}
+
 .customDragImage {
     position: absolute;
     top: -1000px;
@@ -962,8 +970,5 @@
     cursor: pointer;
     justify-content: space-between;
     user-select: none;
-}
-
-.categoryHeader:hover {
-    background: var(--grey-50);
+    color: var(--grey-100);
 }
