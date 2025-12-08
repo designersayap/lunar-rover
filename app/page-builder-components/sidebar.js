@@ -239,66 +239,70 @@ export default function Sidebar({
                                         </div>
 
                                         {/* Nested Buttons - collapsible */}
-                                        {expandedSections[comp.uniqueId] && buttonsToShow.map((btn, btnIndex) => {
-                                            const currentId = comp.props?.[btn.propId] || (comp.sectionId ? `${comp.sectionId}-${btn.suffix}` : '');
-                                            const isBtnActive = activeElementId === currentId;
+                                        {expandedSections[comp.uniqueId] && (
+                                            <div className={styles.treeChildren}>
+                                                {buttonsToShow.map((btn, btnIndex) => {
+                                                    const currentId = comp.props?.[btn.propId] || (comp.sectionId ? `${comp.sectionId}-${btn.suffix}` : '');
+                                                    const isBtnActive = activeElementId === currentId;
 
-                                            // Extract suffix from currentId (part after sectionId-)
-                                            const prefix = comp.sectionId ? `${comp.sectionId}-` : '';
-                                            const suffix = currentId.startsWith(prefix) ? currentId.slice(prefix.length) : currentId;
+                                                    // Extract suffix from currentId (part after sectionId-)
+                                                    const prefix = comp.sectionId ? `${comp.sectionId}-` : '';
+                                                    const suffix = currentId.startsWith(prefix) ? currentId.slice(prefix.length) : currentId;
 
-                                            return (
-                                                <div
-                                                    key={btnIndex}
-                                                    className={`${styles.treeRow} ${isBtnActive ? styles.treeRowActive : ''} ${styles.treeRowNested} `}
-                                                    onClick={() => setActiveElementId && setActiveElementId(currentId)}
-                                                >
-                                                    <div className={styles.treeIconWrapper}>
-                                                        <CursorArrowRaysIcon className={styles.treeIcon} />
-                                                    </div>
-                                                    <input
-                                                        type="text"
-                                                        value={suffix}
-                                                        onChange={(e) => {
-                                                            const newFullId = prefix + sanitizeId(e.target.value);
-                                                            updateComponent(comp.uniqueId, { [btn.propId]: newFullId });
-                                                        }}
-                                                        onBlur={(e) => {
-                                                            if (!e.target.value.trim()) {
-                                                                updateComponent(comp.uniqueId, { [btn.propId]: prefix + btn.suffix });
-                                                            }
-                                                        }}
-                                                        onFocus={() => setActiveElementId && setActiveElementId(currentId)}
-                                                        onClick={(e) => e.stopPropagation()}
-                                                        className={styles.treeInputInline}
-                                                    />
-                                                    {btn.visibleProp && (
-                                                        comp.props?.[btn.visibleProp] === false ? (
-                                                            <button
-                                                                className={styles.sidebarDeleteButton}
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    updateComponent(comp.uniqueId, { [btn.visibleProp]: true });
+                                                    return (
+                                                        <div
+                                                            key={btnIndex}
+                                                            className={`${styles.treeRow} ${isBtnActive ? styles.treeRowActive : ''} ${styles.treeRowNested} `}
+                                                            onClick={() => setActiveElementId && setActiveElementId(currentId)}
+                                                        >
+                                                            <div className={styles.treeIconWrapper}>
+                                                                <CursorArrowRaysIcon className={styles.treeIcon} />
+                                                            </div>
+                                                            <input
+                                                                type="text"
+                                                                value={suffix}
+                                                                onChange={(e) => {
+                                                                    const newFullId = prefix + sanitizeId(e.target.value);
+                                                                    updateComponent(comp.uniqueId, { [btn.propId]: newFullId });
                                                                 }}
-                                                            >
-                                                                <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
-                                                            </button>
-                                                        ) : (
-                                                            <button
-                                                                className={styles.sidebarDeleteButton}
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    updateComponent(comp.uniqueId, { [btn.visibleProp]: false });
+                                                                onBlur={(e) => {
+                                                                    if (!e.target.value.trim()) {
+                                                                        updateComponent(comp.uniqueId, { [btn.propId]: prefix + btn.suffix });
+                                                                    }
                                                                 }}
-                                                            >
-                                                                <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
-                                                                <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
-                                                            </button>
-                                                        )
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
+                                                                onFocus={() => setActiveElementId && setActiveElementId(currentId)}
+                                                                onClick={(e) => e.stopPropagation()}
+                                                                className={styles.treeInputInline}
+                                                            />
+                                                            {btn.visibleProp && (
+                                                                comp.props?.[btn.visibleProp] === false ? (
+                                                                    <button
+                                                                        className={styles.sidebarDeleteButton}
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            updateComponent(comp.uniqueId, { [btn.visibleProp]: true });
+                                                                        }}
+                                                                    >
+                                                                        <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
+                                                                    </button>
+                                                                ) : (
+                                                                    <button
+                                                                        className={styles.sidebarDeleteButton}
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            updateComponent(comp.uniqueId, { [btn.visibleProp]: false });
+                                                                        }}
+                                                                    >
+                                                                        <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
+                                                                        <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
+                                                                    </button>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })

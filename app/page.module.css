@@ -857,7 +857,12 @@
 }
 
 .treeRowNested {
-    padding-left: 36px;
+    padding-left: 16px;
+}
+
+.treeChildren {
+    margin-left: 10px;
+    border-left: .75px solid var(--grey-300);
 }
 
 .treeIconWrapper {
