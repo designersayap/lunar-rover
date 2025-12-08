@@ -62,6 +62,7 @@ export default function Sidebar({
     handleDragStart,
     handleDragOver,
     handleDrop,
+    handleDragEnd,
     draggedIndex,
     dropTargetIndex,
     isAddPopoverOpen,
@@ -175,17 +176,23 @@ export default function Sidebar({
 
                                 const buttonsToShow = parentMatches ? allButtons : filteredButtons;
 
+                                // Determine drag direction relative to this item
+                                const isDragDown = draggedIndex !== null && draggedIndex < originalIndex;
+                                const isTarget = dropTargetIndex === originalIndex;
+
                                 return (
                                     <div
                                         key={comp.uniqueId}
                                         className={styles.treeGroup}
                                         draggable={handleDragStart ? "true" : "false"}
                                         onDragStart={(e) => handleDragStart && handleDragStart(e, originalIndex, comp.name)}
+                                        onDragEnd={handleDragEnd}
                                         onDragOver={(e) => handleDragOver && handleDragOver(e, originalIndex)}
                                         onDrop={(e) => handleDrop && handleDrop(e, originalIndex)}
                                         style={{
                                             opacity: draggedIndex === originalIndex ? 0.5 : 1,
-                                            borderTop: dropTargetIndex === originalIndex ? '2px solid var(--brand-color-300)' : 'none',
+                                            borderTop: isTarget && !isDragDown ? '2px solid var(--brand-color-300)' : 'none',
+                                            borderBottom: isTarget && isDragDown ? '2px solid var(--brand-color-300)' : 'none',
                                             transition: 'all 0.2s ease'
                                         }}
                                     >

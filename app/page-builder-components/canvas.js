@@ -1,18 +1,10 @@
-import { useState, useEffect } from "react";
 import { useBuilderSelection } from "@/app/page-builder-components/utils/builder-controls";
 
 import styles from "../page.module.css";
 
 
-
 export default function Canvas({
     selectedComponents,
-    handleDragStart,
-    handleDragOver,
-    handleDrop,
-    draggedItemIndex,
-    dropTargetIndex,
-    setDraggedItemIndex,
     updateComponent
 }) {
     const { setActiveElementId } = useBuilderSelection();
@@ -45,22 +37,8 @@ export default function Canvas({
                             return (
                                 <div
                                     key={item.uniqueId}
-                                    draggable
-                                    onDragStart={(e) => handleDragStart(e, index, item.name || "Section", item.thumbnail)}
-                                    onDragEnd={() => setDraggedItemIndex(null)}
-                                    onDragOver={(e) => handleDragOver(e, index)}
-                                    onDrop={(e) => handleDrop(e, index)}
-                                    className={`${styles.componentWrapper} ${draggedItemIndex === index ? styles.componentWrapperDragging : ''}`}
-                                    style={{
-                                        marginTop: dropTargetIndex === index && draggedItemIndex !== index ? "var(--space-80)" : "0"
-                                    }}
+                                    className={styles.componentWrapper}
                                 >
-                                    {/* Drop Indicator */}
-                                    {dropTargetIndex === index && draggedItemIndex !== index && (
-                                        <div className={styles.dropIndicator}>
-                                            <div className={styles.dropIndicatorCircle} />
-                                        </div>
-                                    )}
                                     {/* Removed Control Buttons per user request */}
 
                                     {/* Render Component */}

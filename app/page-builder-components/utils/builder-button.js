@@ -156,7 +156,7 @@ export default function BuilderButton({
                             </div>
                             <button
                                 type="button"
-                                className={styles.settingsButton}
+                                className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
                                 onClick={handleSettingsClick}
                             >
                                 <Cog6ToothIcon className={styles.overlayIcon} />

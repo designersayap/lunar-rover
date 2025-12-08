@@ -202,14 +202,18 @@ export default function TemplateGeneratorPage() {
     }
   }, [draggedIndex]);
 
+  const handleDragEnd = useCallback(() => {
+    setDraggedIndex(null);
+    setDropTargetIndex(null);
+  }, []);
+
   const handleDrop = useCallback((e, index) => {
     e.preventDefault();
     if (draggedIndex !== null && draggedIndex !== index) {
       setSelectedComponents(prev => reorderComponents(prev, draggedIndex, index));
     }
-    setDraggedIndex(null);
-    setDropTargetIndex(null);
-  }, [draggedIndex]);
+    handleDragEnd();
+  }, [draggedIndex, handleDragEnd]);
 
   // Export
   const handleExport = useCallback((position) => {
@@ -292,6 +296,7 @@ export default function TemplateGeneratorPage() {
               handleDragStart={handleDragStart}
               handleDragOver={handleDragOver}
               handleDrop={handleDrop}
+              handleDragEnd={handleDragEnd}
               draggedIndex={draggedIndex}
               dropTargetIndex={dropTargetIndex}
             />
