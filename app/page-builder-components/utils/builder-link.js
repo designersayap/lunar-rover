@@ -1,128 +1,216 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
-import { useBuilderSelection } from "@/app/page-builder-components/utils/builder-controls";
+import { useState, useEffect, useRef, useContext } from "react";
+import { createPortal } from "react-dom";
+import BuilderText from "./builder-text";
+import { useBuilderSelection, BuilderSelectionContext } from "@/app/page-builder-components/utils/builder-controls";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import styles from "../../page.module.css";
+import BuilderControlsPopover from "./builder-controls-popover";
 
 /**
  * BuilderLink Component
- * Renders a link with consistent ID generation and builder-safe navigation.
+ * Renders a link with consistent styling, ID generation, and editing capabilities.
+ * Similar to BuilderButton but without button variant options in settings.
  * 
+ * @param {string} label - Link text
  * @param {string} href - Link URL
- * @param {string} className - CSS classes
+ * @param {string} suffix - ID suffix
  * @param {string} sectionId - Parent section ID
- * @param {string} suffix - ID suffix (e.g. 'product-1')
- * @param {object} style - Inline styles
- * @param {React.ReactNode} children - Link content
+ * @param {string} className - CSS classes
+ * @param {function} onLabelChange - Callback when label changes
+ * @param {function} onHrefChange - Callback when href changes
  */
 export default function BuilderLink({
-    href = "#",
+    label = "Link",
     id,
-    className = "",
-    sectionId,
+    href = "#",
     suffix,
-    children,
+    sectionId,
+    className = "",
+    onLabelChange,
     onIdChange,
-    style = {}
+    onHrefChange,
+    onVisibilityChange,
+    isVisible = true,
+    style = {},
+    iconLeft,
+    iconRight
 }) {
-    // Generate ID: {sectionId}-{suffix} or {sectionId}-link if no suffix
-    const generatedId = sectionId ? `${sectionId}-${suffix || 'link'}` : undefined;
-    const linkId = id || generatedId;
-    const { activeElementId, setActiveElementId } = useBuilderSelection();
-    const isActive = activeElementId === linkId && linkId !== undefined;
+    const buttonRef = useRef(null);
+    const wrapperRef = useRef(null); // Ref for the wrapper span
+    const [popoverPosition, setPopoverPosition] = useState(null);
+    const [overlayRect, setOverlayRect] = useState(null); // State for portal position
+
+    const generatedId = sectionId ? (suffix ? `${sectionId}-${suffix}` : `${sectionId}-link`) : undefined;
+    const buttonId = id || generatedId;
+    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId } = useContext(BuilderSelectionContext);
+    const isActive = activeElementId === buttonId;
+
+    // Unique ID for this button's popover
+    const myPopoverId = `popover-${buttonId}`;
+    const showSettings = activePopoverId === myPopoverId;
 
     const prefix = sectionId ? `${sectionId}-` : "";
     const [tempId, setTempId] = useState("");
 
     useEffect(() => {
-        if (linkId && linkId.startsWith(prefix)) {
-            setTempId(linkId.slice(prefix.length));
+        if (buttonId && buttonId.startsWith(prefix)) {
+            setTempId(buttonId.slice(prefix.length));
         } else {
-            setTempId(linkId);
+            setTempId(buttonId);
         }
-    }, [linkId, prefix]);
+    }, [buttonId, prefix]);
 
     // Sync ID when sectionId changes
     const prevSectionIdRef = useRef(sectionId);
     useEffect(() => {
         const prevSectionId = prevSectionIdRef.current;
         if (prevSectionId && prevSectionId !== sectionId) {
-            const prefix = `${prevSectionId}-`;
-            if (linkId && linkId.startsWith(prefix)) {
-                const suffix = linkId.slice(prefix.length);
-                const newId = `${sectionId}-${suffix}`;
+            const oldPrefix = `${prevSectionId}-`;
+            if (buttonId && buttonId.startsWith(oldPrefix)) {
+                const suffixPart = buttonId.slice(oldPrefix.length);
+                const newId = `${sectionId}-${suffixPart}`;
                 if (onIdChange) {
                     onIdChange(newId);
                 }
             }
         }
         prevSectionIdRef.current = sectionId;
-    }, [sectionId, linkId, onIdChange]);
+    }, [sectionId, buttonId, onIdChange]);
 
-    const handleIdChange = (e) => {
-        // Replace spaces with underscores
-        const newValue = e.target.value.replace(/\s/g, '-');
-        setTempId(newValue);
-    };
+    // Update overlay position
+    useEffect(() => {
+        if (isActive && wrapperRef.current) {
+            const updatePosition = () => {
+                if (wrapperRef.current) {
+                    setOverlayRect(wrapperRef.current.getBoundingClientRect());
+                }
+            };
 
-    const handleIdBlur = () => {
-        // If empty, revert to original ID (suffix)
-        if (!tempId || tempId.trim() === '') {
-            setTempId(linkId.startsWith(prefix) ? linkId.slice(prefix.length) : linkId);
-            return;
+            updatePosition();
+            // Capture scroll events to update position while scrolling
+            window.addEventListener('scroll', updatePosition, true);
+            window.addEventListener('resize', updatePosition);
+
+            return () => {
+                window.removeEventListener('scroll', updatePosition, true);
+                window.removeEventListener('resize', updatePosition);
+            };
         }
+    }, [isActive]);
 
-        const newFullId = prefix + tempId;
-        if (newFullId !== linkId && onIdChange) {
-            onIdChange(newFullId);
-        }
-    };
 
-    const handleIdKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            e.target.blur();
-        }
-        e.stopPropagation();
-    };
+    if (!isVisible && !isActive) return null;
 
     const handleClick = (e) => {
         // Prevent navigation in builder
         e.preventDefault();
         e.stopPropagation();
-        if (linkId) {
-            setActiveElementId(linkId);
+        if (buttonId) {
+            setActiveElementId(buttonId);
         }
     };
 
-    return (
-        <Link
-            id={linkId}
-            href={href || "#"}
-            className={`${className} ${isActive ? styles.activeBorder : ''}`}
-            onClick={handleClick}
-            style={style}
-        >
-            {isActive && (
-                <div className={styles.activeOverlay}>
+    const handleSettingsClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!showSettings && wrapperRef.current) {
+            const rect = wrapperRef.current.getBoundingClientRect();
+            setPopoverPosition({
+                top: rect.bottom + 4, // 4px gap
+                left: rect.left + rect.width / 2
+            });
+        }
+
+        setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
+    };
+
+    // Render Portal for Active Overlay
+    const renderActiveOverlay = () => {
+        if (!isActive || !overlayRect) return null;
+
+        const anchorStyle = {
+            position: 'fixed',
+            top: overlayRect.top,
+            left: overlayRect.left,
+            width: overlayRect.width,
+            height: overlayRect.height,
+            pointerEvents: 'none', // Allow clicking through the anchor area
+            zIndex: 101 // Using global active overlay Z-index
+        };
+
+        return createPortal(
+            <div style={anchorStyle}>
+                <div className={styles.activeOverlay} style={{ pointerEvents: 'auto' }}>
                     <div className={styles.overlayLabel}>
-                        <input
-                            type="text"
-                            className={styles.overlayInput}
-                            value={tempId || ''}
-                            onChange={handleIdChange}
-                            onBlur={handleIdBlur}
-                            onKeyDown={handleIdKeyDown}
-                            onClick={(e) => e.stopPropagation()}
-                        />
+                        <span className={styles.overlayIdText}>#{buttonId}</span>
                     </div>
-                    <button className={styles.settingsButton}>
+                    <button
+                        type="button"
+                        className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
+                        onClick={handleSettingsClick}
+                    >
                         <Cog6ToothIcon className={styles.overlayIcon} />
                     </button>
                 </div>
+            </div>,
+            document.body
+        );
+    };
+
+    return (
+        <>
+            <span
+                ref={wrapperRef}
+                className={`${isActive ? styles.activeWrapper : ''}`}
+                style={{ display: 'inline-flex', position: 'relative', height: '100%', ...style }} // Propagate style to wrapper
+                onClick={handleClick} // Move click handler to wrapper to capture all interactions
+            >
+                {isActive && <div className={styles.activeBorderOutline} />}
+
+                <Link
+                    id={buttonId}
+                    href={href || "#"}
+                    className={className}
+                    style={{ opacity: isVisible ? 1 : 0.5, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%' }}
+                    data-tooltip={label}
+                >
+                    <div ref={buttonRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
+                        {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
+                        <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
+                            <BuilderText
+                                tagName="span"
+                                content={label}
+                                onChange={onLabelChange}
+                                placeholder="Link Label"
+                                multiline={false}
+                                noId={true}
+                                className={!isActive ? "truncate-1-line" : ""}
+                                style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap' }}
+                            />
+                        </div>
+                        {iconRight && <span style={{ display: 'flex', flexShrink: 0 }}>{iconRight}</span>}
+                    </div>
+                </Link>
+            </span>
+
+            {renderActiveOverlay()}
+
+            {isActive && (
+                <BuilderControlsPopover
+                    isOpen={showSettings}
+                    onClose={() => setActivePopoverId(null)}
+                    url={href}
+                    onUrlChange={onHrefChange}
+                    showVariant={false} // Hide variant for BuilderLink
+                    isVisible={isVisible}
+                    onVisibilityChange={onVisibilityChange}
+                    position={popoverPosition}
+                />
             )}
-            {children}
-        </Link>
+        </>
     );
 }

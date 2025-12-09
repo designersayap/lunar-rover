@@ -643,7 +643,7 @@
     border: 1px solid #404040;
     border-radius: 1px;
     pointer-events: none;
-    z-index: 10;
+    z-index: 100;
 }
 
 .activeOverlay {
@@ -659,7 +659,7 @@
     border-radius: 4px;
     font-size: 12px;
     line-height: 1;
-    z-index: 50;
+    z-index: 101;
     height: 20px;
     white-space: nowrap;
     min-width: 100px;

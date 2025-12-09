@@ -11,6 +11,7 @@ import GlobalHeaderTitleButtonDescription from "../../template-components/header
 import TerraBannerHero from "@/app/template-components/terra/terra-banner-hero";
 import TerraFeaturesImageLeft from "@/app/template-components/terra/terra-features-image-left";
 import TerraFeaturesImageRight from "@/app/template-components/terra/terra-features-image-right";
+import Dialog from "@/app/template-components/dialog";
 import { BuilderSelectionProvider } from "@/app/page-builder-components/utils/builder-controls";
 
 export default function ComponentPreviewPage() {
@@ -26,6 +27,7 @@ export default function ComponentPreviewPage() {
         "terra-banner-hero": TerraBannerHero,
         "feature-left": TerraFeaturesImageLeft,
         "feature-right": TerraFeaturesImageRight,
+        "dialog": Dialog,
     };
 
     const Component = components[name];

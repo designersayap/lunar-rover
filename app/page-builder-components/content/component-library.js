@@ -8,6 +8,7 @@ const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../template-
 const TerraBannerHero = dynamic(() => import("@/app/template-components/terra/terra-banner-hero"));
 const TerraFeaturesImageLeft = dynamic(() => import("@/app/template-components/terra/terra-features-image-left"));
 const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/terra/terra-features-image-right"));
+const Dialog = dynamic(() => import("../../template-components/dialog"));
 
 
 export const componentLibrary = {
@@ -217,4 +218,20 @@ export const componentLibrary = {
         },
     ],
 
+    "Dialog": [
+        {
+            id: "dialog",
+            name: "Dialog / Modal",
+            component: Dialog,
+            thumbnail: "/images/thumbnails/dialog.svg", // Placeholder or generic
+            config: [
+                {
+                    name: "triggerLabel",
+                    label: "Trigger Button Label",
+                    type: "text",
+                    default: "Open Dialog"
+                }
+            ]
+        }
+    ]
 };

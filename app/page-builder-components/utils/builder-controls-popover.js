@@ -10,9 +10,8 @@ export default function BuilderControlsPopover({
     onUrlChange,
     variant,
     onVariantChange,
-    isVisible,
-    onVisibilityChange,
     variants = ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
+    showVariant = true,
     position
 }) {
     const [mounted, setMounted] = useState(false);
@@ -75,21 +74,23 @@ export default function BuilderControlsPopover({
                         </div>
 
                         {/* Variant Select */}
-                        <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
-                            <label className={`caption-bold ${styles.formInputTitle}`}>Variant</label>
-                            <div className={styles.selectWrapper}>
-                                <select
-                                    className={`${styles.formInput} ${styles.formSelect}`}
-                                    value={variant}
-                                    onChange={(e) => onVariantChange && onVariantChange(e.target.value)}
-                                >
-                                    {variants.map(v => (
-                                        <option key={v} value={v}>{v.charAt(0).toUpperCase() + v.slice(1)}</option>
-                                    ))}
-                                </select>
-                                <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
+                        {showVariant && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Variant</label>
+                                <div className={styles.selectWrapper}>
+                                    <select
+                                        className={`${styles.formInput} ${styles.formSelect}`}
+                                        value={variant}
+                                        onChange={(e) => onVariantChange && onVariantChange(e.target.value)}
+                                    >
+                                        {variants.map(v => (
+                                            <option key={v} value={v}>{v.charAt(0).toUpperCase() + v.slice(1)}</option>
+                                        ))}
+                                    </select>
+                                    <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                     </div>
                 </div>
