@@ -1,4 +1,4 @@
-import { useBuilderSelection } from "@/app/page-builder-components/utils/builder-controls";
+import { useBuilderSelection } from "@/app/page-builder-components/utils/builder/builder-controls";
 
 import styles from "../page.module.css";
 
@@ -53,6 +53,8 @@ export default function Canvas({
                     </div>
                 )}
             </div>
+            {/* Portal container for dialogs - positioned relative to canvas */}
+            <div id="dialog-portal-root" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }} />
         </div>
     );
 }

@@ -2,9 +2,9 @@
 
 import { useContext, useRef, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder-controls";
-import { useIdSync } from "./hooks/use-id-sync";
-import styles from "../../page.module.css";
+import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
+import { useIdSync } from "../hooks/use-id-sync";
+import styles from "../../../page.module.css";
 
 /**
  * BuilderImage Component

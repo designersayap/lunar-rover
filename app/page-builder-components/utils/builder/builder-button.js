@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useState, useEffect, useRef, useContext } from "react";
 import BuilderText from "./builder-text";
-import { useBuilderSelection, BuilderSelectionContext } from "@/app/page-builder-components/utils/builder-controls";
+import { useBuilderSelection, BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
 import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid";
-import styles from "../../page.module.css";
+import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 
 /**

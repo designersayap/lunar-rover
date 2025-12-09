@@ -1,5 +1,5 @@
 import { ArrowLongRightIcon } from "@heroicons/react/20/solid";
-import BuilderButton from "@/app/page-builder-components/utils/builder-button";
+import BuilderButton from "@/app/page-builder-components/utils/builder/builder-button";
 import { componentDefaults } from "./content/data";
 import HeaderSection from "./header-section";
 

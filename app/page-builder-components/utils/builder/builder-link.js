@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useState, useContext, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import BuilderText from "./builder-text";
-import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder-controls";
-import { useIdSync } from "./hooks/use-id-sync";
+import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
+import { useIdSync } from "../hooks/use-id-sync";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
-import styles from "../../page.module.css";
+import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 
 /**

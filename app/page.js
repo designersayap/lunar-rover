@@ -16,7 +16,7 @@ import { componentLibrary } from "@/app/page-builder-components/content/componen
 import { getThemes } from "@/app/page-builder-components/utils/get-themes";
 import { handleExportTemplate } from "@/app/page-builder-components/utils/export-template";
 import { handleExportCsv } from "@/app/page-builder-components/utils/export-csv";
-import { BuilderSelectionContext, calculatePopoverPosition } from "@/app/page-builder-components/utils/builder-controls";
+import { BuilderSelectionContext, calculatePopoverPosition } from "@/app/page-builder-components/utils/builder/builder-controls";
 import {
   loadTemplate,
   saveTemplate,

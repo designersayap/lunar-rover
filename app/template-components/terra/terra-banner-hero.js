@@ -1,7 +1,7 @@
 import styles from "./terra-banner-hero.module.css";
-import BuilderText from "@/app/page-builder-components/utils/builder-text";
-import BuilderButton from "@/app/page-builder-components/utils/builder-button";
-import BuilderImage from "@/app/page-builder-components/utils/builder-image";
+import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
+import BuilderButton from "@/app/page-builder-components/utils/builder/builder-button";
+import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
 import { componentDefaults } from "../content/data";
 
 /**

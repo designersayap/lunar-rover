@@ -1,5 +1,5 @@
 import { XMarkIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
-import styles from "../../page.module.css";
+import styles from "../../../page.module.css";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
 

@@ -349,7 +349,7 @@
 .popoverOverlay {
     position: fixed;
     inset: 0;
-    z-index: 1000;
+    z-index: 7;
 }
 
 .popoverContainer {
@@ -363,6 +363,7 @@
     flex-direction: column;
     box-shadow: var(--shd-pop);
     overflow: hidden;
+    z-index: 8;
 }
 
 .popoverHeader {
@@ -659,7 +660,7 @@
     border-radius: 4px;
     font-size: 12px;
     line-height: 1;
-    z-index: 101;
+    z-index: 7;
     height: 20px;
     white-space: nowrap;
     min-width: 100px;

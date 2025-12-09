@@ -12,7 +12,7 @@ import TerraBannerHero from "@/app/template-components/terra/terra-banner-hero";
 import TerraFeaturesImageLeft from "@/app/template-components/terra/terra-features-image-left";
 import TerraFeaturesImageRight from "@/app/template-components/terra/terra-features-image-right";
 import Dialog from "@/app/template-components/dialog";
-import { BuilderSelectionProvider } from "@/app/page-builder-components/utils/builder-controls";
+import { BuilderSelectionProvider } from "@/app/page-builder-components/utils/builder/builder-controls";
 
 export default function ComponentPreviewPage() {
     const params = useParams();

@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
         <link id="theme-stylesheet" rel="stylesheet" href="/themes/theme.css" />
 
       </head>
-      <body>{children}</body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }

@@ -1,5 +1,5 @@
 import styles from "./header-section.module.css";
-import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
 
 export default function HeaderSection({
     title,

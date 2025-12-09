@@ -8,7 +8,7 @@
 }
 
 .overlay {
-    position: fixed;
+    position: absolute;
     inset: 0;
     background-color: var(--background-neutral--alpha--black-50);
     display: flex;
@@ -16,6 +16,7 @@
     justify-content: center;
     padding: var(--padding-md);
     animation: fadeIn 0.2s ease-out;
+    z-index: 100;
 }
 
 .dialog {
@@ -23,17 +24,14 @@
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow--md);
     width: 100%;
-    max-width: 400px;
-    /* Slimmer max-width based on image */
-    max-height: 80vh;
-    /* User requested max height */
+    max-height: 90vh;
     position: relative;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    /* Clips the top image to border radius */
+    overflow-y: auto;
     animation: scaleIn 0.2s ease-out;
 }
+
 
 .imageContainer {
     width: 100%;
