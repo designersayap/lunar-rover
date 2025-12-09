@@ -3,6 +3,9 @@
   --text-color: var(--content-neutral--body-invert);
   --input-bg: var(--alpha-white-25);
   --input-border: var(--alpha-white-25);
+
+  /* Icon Sizes */
+  --size-icon-md: 20px;
 }
 
 * {

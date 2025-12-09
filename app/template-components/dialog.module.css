@@ -110,8 +110,8 @@
 
 .itemArrow {
     color: var(--content-neutral--caption);
-    width: 20px;
-    height: 20px;
+    width: var(--size-icon-md);
+    height: var(--size-icon-md);
 }
 
 .closeButton {

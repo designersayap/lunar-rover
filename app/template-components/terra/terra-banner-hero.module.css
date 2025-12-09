@@ -46,7 +46,7 @@
 
 .heroTitle {
     margin-bottom: var(--gap-md);
-    margin-top: 200px;
+    margin-top: calc(var(--space-240) * 2.5);
     overflow-wrap: break-word;
     word-break: break-word;
 }
@@ -69,11 +69,11 @@
 }
 
 .iconLeft {
-    width: 20px;
-    height: 20px;
+    width: var(--size-icon-md);
+    height: var(--size-icon-md);
 }
 
 .iconRight {
-    width: 20px;
-    height: 20px;
+    width: var(--size-icon-md);
+    height: var(--size-icon-md);
 }

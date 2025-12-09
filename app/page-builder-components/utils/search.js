@@ -29,18 +29,4 @@ export const searchComponents = (query, library) => {
     return filteredLibrary;
 };
 
-/**
- * Filters analytics sections based on a search query.
- * @param {string} query - The search query.
- * @param {Array} sections - The list of analytics sections.
- * @returns {Array} - The filtered list of analytics sections.
- */
-export const searchAnalytics = (query, sections) => {
-    if (!query) return sections;
 
-    const queryTerms = query.toLowerCase().split(/\s+/).filter(Boolean);
-    return sections.filter(section => {
-        const lowerTitle = section.title.toLowerCase();
-        return queryTerms.every(term => lowerTitle.includes(term));
-    });
-};
