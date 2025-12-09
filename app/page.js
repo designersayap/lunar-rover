@@ -16,23 +16,21 @@ import { componentLibrary } from "@/app/page-builder-components/content/componen
 import { getThemes } from "@/app/page-builder-components/utils/get-themes";
 import { handleExportTemplate } from "@/app/page-builder-components/utils/export-template";
 import { handleExportCsv } from "@/app/page-builder-components/utils/export-csv";
-import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder-controls";
+import { BuilderSelectionContext, calculatePopoverPosition } from "@/app/page-builder-components/utils/builder-controls";
 import {
   loadTemplate,
   saveTemplate,
-  generateSectionId,
-  calculatePopoverPosition,
   DEFAULT_ANALYTICS
 } from "@/app/page-builder-components/utils/template-storage";
 import {
   addComponentToList,
   removeComponentFromList,
-  moveComponentUp,
-  moveComponentDown,
+  generateSectionId,
   updateComponentProps,
   updateComponentSectionId,
   reorderComponents
 } from "@/app/page-builder-components/utils/component-manager";
+import { useToast, useDragDrop } from "@/app/page-builder-components/utils/hooks";
 
 /**
  * Template Generator Page
@@ -54,13 +52,6 @@ export default function TemplateGeneratorPage() {
   const [activeTab, setActiveTab] = useState("elements");
   const [openCategories, setOpenCategories] = useState({ "Hero Banner": true });
 
-  // Toaster
-  const [toaster, setToaster] = useState({ show: false, message: "", type: "success" });
-
-  // Drag & Drop
-  const [draggedIndex, setDraggedIndex] = useState(null);
-  const [dropTargetIndex, setDropTargetIndex] = useState(null);
-
   // Popovers
   const [activePopoverId, setActivePopoverId] = useState(null);
   const [popoverPositions, setPopoverPositions] = useState({});
@@ -68,18 +59,32 @@ export default function TemplateGeneratorPage() {
   // Active Element
   const [activeElementId, setActiveElementId] = useState(null);
 
+  // ==================== HOOKS ====================
+
+  // Toast Hook
+  const { toast: toaster, showToast } = useToast();
+
+  // Drag & Drop Hook
+  const {
+    draggedIndex,
+    dropTargetIndex,
+    setDraggedIndex,
+    dragImageRef,
+    dragThumbnailRef,
+    dragNameRef,
+    handleDragStart,
+    handleDragOver,
+    handleDragEnd,
+    handleDrop
+  } = useDragDrop({
+    onReorder: (fromIndex, toIndex) => {
+      setSelectedComponents(prev => reorderComponents(prev, fromIndex, toIndex));
+    }
+  });
+
   // ==================== REFS ====================
 
   const containerRef = useRef(null);
-  const dragImageRef = useRef(null);
-  const dragThumbnailRef = useRef(null);
-  const dragNameRef = useRef(null);
-
-  // ==================== HELPERS ====================
-
-  const showToast = useCallback((message, type = "success") => {
-    setToaster({ show: true, message, type });
-  }, []);
 
   const togglePopover = useCallback((id, position) => {
     if (position) {
@@ -124,15 +129,6 @@ export default function TemplateGeneratorPage() {
     }, 1000);
     return () => clearTimeout(timeoutId);
   }, [selectedComponents, analyticsData]);
-
-  // Auto-hide toaster
-  useEffect(() => {
-    if (!toaster.show) return;
-    const timeoutId = setTimeout(() => {
-      setToaster(t => ({ ...t, show: false }));
-    }, 3000);
-    return () => clearTimeout(timeoutId);
-  }, [toaster.show]);
 
   // Responsive sidebar
   useEffect(() => {
@@ -181,39 +177,6 @@ export default function TemplateGeneratorPage() {
   const updateSectionId = useCallback((uniqueId, newId) => {
     setSelectedComponents(prev => updateComponentSectionId(prev, uniqueId, newId));
   }, []);
-
-  // Drag & Drop
-  const handleDragStart = useCallback((e, index, name, thumbnail) => {
-    setDraggedIndex(index);
-    e.dataTransfer.effectAllowed = "move";
-
-    if (dragImageRef.current) {
-      if (dragThumbnailRef.current) dragThumbnailRef.current.src = thumbnail || "";
-      if (dragNameRef.current) dragNameRef.current.innerText = name || "Section";
-      e.dataTransfer.setDragImage(dragImageRef.current, 0, 0);
-    }
-  }, []);
-
-  const handleDragOver = useCallback((e, index) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-    if (draggedIndex !== index) {
-      setDropTargetIndex(index);
-    }
-  }, [draggedIndex]);
-
-  const handleDragEnd = useCallback(() => {
-    setDraggedIndex(null);
-    setDropTargetIndex(null);
-  }, []);
-
-  const handleDrop = useCallback((e, index) => {
-    e.preventDefault();
-    if (draggedIndex !== null && draggedIndex !== index) {
-      setSelectedComponents(prev => reorderComponents(prev, draggedIndex, index));
-    }
-    handleDragEnd();
-  }, [draggedIndex, handleDragEnd]);
 
   // Export
   const handleExport = useCallback((position) => {

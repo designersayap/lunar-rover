@@ -11,42 +11,8 @@ import {
 import { TrashIcon as TrashIconSolid } from "@heroicons/react/24/solid";
 import styles from "../page.module.css";
 import { componentLibrary } from "./content/component-library";
+import SidebarAnalyticsTab from "./sidebar-analytics-tab";
 
-const ANALYTICS_SECTIONS = [
-    {
-        id: 'meta-description',
-        title: 'Meta Description',
-        type: 'textarea',
-        key: 'metaDescription',
-        tooltip: 'This description will appear in search engine results.'
-    },
-    {
-        id: 'google',
-        title: 'Google Tag Manager',
-        type: 'input',
-        key: 'googleTagManagerId',
-        placeholder: 'i.e GTM-NNZFKBLC',
-        tooltip: 'Generate this in the Google Cloud Console under APIs & Services > Credentials > Create Credentials > API Key.'
-    },
-    {
-        id: 'tiktok',
-        title: 'TikTok Ads',
-        type: 'input',
-        key: 'tikTokPixel'
-    },
-    {
-        id: 'meta',
-        title: 'Meta Ads',
-        type: 'input',
-        key: 'metaPixel'
-    },
-    {
-        id: 'hotjar',
-        title: 'Hotjar Analytics',
-        type: 'input',
-        key: 'hotjarId'
-    }
-];
 
 export default function Sidebar({
     activeTab,
@@ -79,8 +45,12 @@ export default function Sidebar({
         }));
     };
 
-    // Sanitize ID: replace spaces with dashes
-    const sanitizeId = (value) => value.replace(/\s+/g, '-');
+    // Sanitize ID while typing: lowercase, replace spaces with dashes, collapse multiple dashes, remove leading dashes
+    // Note: This ALLOWS trailing dashes so user can type dashes
+    const sanitizeId = (value) => value.toLowerCase().trimStart().replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '');
+
+    // Finalize ID on blur: also removes trailing dashes
+    const sanitizeIdFinal = (value) => sanitizeId(value).replace(/-+$/, '');
 
     // Helper to find component definition
     const getComponentDef = (id) => {
@@ -100,9 +70,12 @@ export default function Sidebar({
             if (comp.sectionId?.toLowerCase().includes(searchLower)) return true;
             const def = getComponentDef(comp.id);
             const buttons = def?.buttons || [];
-            return buttons.some(btn => {
-                const currentId = comp.props?.[btn.propId] || (comp.sectionId ? `${comp.sectionId}-${btn.suffix}` : '');
-                return btn.label?.toLowerCase().includes(searchLower) || currentId.toLowerCase().includes(searchLower);
+            const images = def?.images || [];
+            const links = def?.links || [];
+            const allChildren = [...buttons, ...images, ...links];
+            return allChildren.some(child => {
+                const currentId = comp.props?.[child.propId] || (comp.sectionId ? `${comp.sectionId}-${child.suffix}` : '');
+                return child.label?.toLowerCase().includes(searchLower) || currentId.toLowerCase().includes(searchLower);
             });
         });
     }, [selectedComponents, layerSearch]);
@@ -157,24 +130,27 @@ export default function Sidebar({
                             filteredComponents.map((comp) => {
                                 const def = getComponentDef(comp.id);
                                 const allButtons = def?.buttons || [];
+                                const allImages = (def?.images || []).map(img => ({ ...img, type: 'image' }));
+                                const allLinks = (def?.links || []).map(link => ({ ...link, type: 'link' }));
+                                const allChildren = [...allButtons, ...allImages, ...allLinks];
                                 const isActive = activeElementId === comp.sectionId;
                                 const originalIndex = selectedComponents.findIndex(c => c.uniqueId === comp.uniqueId);
 
-                                // Filter buttons if search is active
+                                // Filter children if search is active
                                 const searchLower = layerSearch.toLowerCase().trim();
-                                const filteredButtons = searchLower
-                                    ? allButtons.filter(btn => {
-                                        const currentId = comp.props?.[btn.propId] || (comp.sectionId ? `${comp.sectionId}-${btn.suffix}` : '');
-                                        return btn.label?.toLowerCase().includes(searchLower) || currentId.toLowerCase().includes(searchLower);
+                                const filteredChildren = searchLower
+                                    ? allChildren.filter(child => {
+                                        const currentId = comp.props?.[child.propId] || (comp.sectionId ? `${comp.sectionId}-${child.suffix}` : '');
+                                        return child.label?.toLowerCase().includes(searchLower) || currentId.toLowerCase().includes(searchLower);
                                     })
-                                    : allButtons;
+                                    : allChildren;
 
                                 // Check if parent itself matches (show all children if parent matches)
                                 const parentMatches = !searchLower ||
                                     comp.name?.toLowerCase().includes(searchLower) ||
                                     comp.sectionId?.toLowerCase().includes(searchLower);
 
-                                const buttonsToShow = parentMatches ? allButtons : filteredButtons;
+                                const childrenToShow = parentMatches ? allChildren : filteredChildren;
 
                                 // Determine drag direction relative to this item
                                 const isDragDown = draggedIndex !== null && draggedIndex < originalIndex;
@@ -203,10 +179,10 @@ export default function Sidebar({
                                         >
                                             <button
                                                 className={styles.treeChevron}
-                                                style={{ visibility: buttonsToShow.length > 0 ? 'visible' : 'hidden' }}
+                                                style={{ visibility: childrenToShow.length > 0 ? 'visible' : 'hidden' }}
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    if (buttonsToShow.length > 0) toggleSection(comp.uniqueId);
+                                                    if (childrenToShow.length > 0) toggleSection(comp.uniqueId);
                                                 }}
                                             >
                                                 <ChevronRightIcon
@@ -218,8 +194,11 @@ export default function Sidebar({
                                                 value={comp.sectionId || ''}
                                                 onChange={(e) => updateSectionId(comp.uniqueId, sanitizeId(e.target.value))}
                                                 onBlur={(e) => {
-                                                    if (!e.target.value.trim()) {
+                                                    const finalValue = sanitizeIdFinal(e.target.value);
+                                                    if (!finalValue.trim()) {
                                                         updateSectionId(comp.uniqueId, comp.sectionId || 'section');
+                                                    } else {
+                                                        updateSectionId(comp.uniqueId, finalValue);
                                                     }
                                                 }}
                                                 onFocus={() => setActiveElementId && setActiveElementId(comp.sectionId)}
@@ -238,24 +217,29 @@ export default function Sidebar({
                                             </button>
                                         </div>
 
-                                        {/* Nested Buttons - collapsible */}
+                                        {/* Nested Children - collapsible */}
                                         {expandedSections[comp.uniqueId] && (
                                             <div className={styles.treeChildren}>
-                                                {buttonsToShow.map((btn, btnIndex) => {
-                                                    const currentId = comp.props?.[btn.propId] || (comp.sectionId ? `${comp.sectionId}-${btn.suffix}` : '');
-                                                    const isBtnActive = activeElementId === currentId;
+                                                {childrenToShow.map((child, childIndex) => {
+                                                    // Normalize sectionId by removing trailing dashes to prevent double-dash
+                                                    const normalizedSectionId = comp.sectionId?.replace(/-+$/, '') || '';
+                                                    const currentId = comp.props?.[child.propId] || (normalizedSectionId ? `${normalizedSectionId}-${child.suffix}` : '');
+                                                    const isChildActive = activeElementId === currentId;
 
-                                                    // Extract suffix from currentId (part after sectionId-)
-                                                    const prefix = comp.sectionId ? `${comp.sectionId}-` : '';
-                                                    const suffix = currentId.startsWith(prefix) ? currentId.slice(prefix.length) : currentId;
+                                                    // Extract suffix from currentId (part after normalizedSectionId-)
+                                                    const prefix = normalizedSectionId ? `${normalizedSectionId}-` : '';
+                                                    // Strip leading dashes from suffix to handle legacy corrupted data
+                                                    const rawSuffix = currentId.startsWith(prefix) ? currentId.slice(prefix.length) : currentId;
+                                                    const suffix = rawSuffix.replace(/^-+/, '');
 
                                                     return (
                                                         <div
-                                                            key={btnIndex}
-                                                            className={`${styles.treeRow} ${isBtnActive ? styles.treeRowActive : ''} ${styles.treeRowNested} `}
+                                                            key={childIndex}
+                                                            className={`${styles.treeRow} ${isChildActive ? styles.treeRowActive : ''} ${styles.treeRowNested} `}
                                                             onClick={() => setActiveElementId && setActiveElementId(currentId)}
                                                         >
                                                             <div className={styles.treeIconWrapper}>
+                                                                {/* Generic icon or specific based on type */}
                                                                 <CursorArrowRaysIcon className={styles.treeIcon} />
                                                             </div>
                                                             <input
@@ -263,24 +247,24 @@ export default function Sidebar({
                                                                 value={suffix}
                                                                 onChange={(e) => {
                                                                     const newFullId = prefix + sanitizeId(e.target.value);
-                                                                    updateComponent(comp.uniqueId, { [btn.propId]: newFullId });
+                                                                    updateComponent(comp.uniqueId, { [child.propId]: newFullId });
                                                                 }}
                                                                 onBlur={(e) => {
                                                                     if (!e.target.value.trim()) {
-                                                                        updateComponent(comp.uniqueId, { [btn.propId]: prefix + btn.suffix });
+                                                                        updateComponent(comp.uniqueId, { [child.propId]: prefix + child.suffix });
                                                                     }
                                                                 }}
                                                                 onFocus={() => setActiveElementId && setActiveElementId(currentId)}
                                                                 onClick={(e) => e.stopPropagation()}
                                                                 className={styles.treeInputInline}
                                                             />
-                                                            {btn.visibleProp && (
-                                                                comp.props?.[btn.visibleProp] === false ? (
+                                                            {child.visibleProp && (
+                                                                comp.props?.[child.visibleProp] === false ? (
                                                                     <button
                                                                         className={styles.sidebarDeleteButton}
                                                                         onClick={(e) => {
                                                                             e.stopPropagation();
-                                                                            updateComponent(comp.uniqueId, { [btn.visibleProp]: true });
+                                                                            updateComponent(comp.uniqueId, { [child.visibleProp]: true });
                                                                         }}
                                                                     >
                                                                         <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
@@ -290,7 +274,15 @@ export default function Sidebar({
                                                                         className={styles.sidebarDeleteButton}
                                                                         onClick={(e) => {
                                                                             e.stopPropagation();
-                                                                            updateComponent(comp.uniqueId, { [btn.visibleProp]: false });
+                                                                            // Calculate current visibility state properly
+                                                                            const isVisible = comp.props?.[child.visibleProp] !== false;
+
+                                                                            // If we are hiding it and it's currently selected, deselect it immediately
+                                                                            if (isVisible && activeElementId === currentId) {
+                                                                                setActiveElementId(null);
+                                                                            }
+
+                                                                            updateComponent(comp.uniqueId, { [child.visibleProp]: false });
                                                                         }}
                                                                     >
                                                                         <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
@@ -310,33 +302,10 @@ export default function Sidebar({
                     </div>
                 </>
             ) : (
-                <div className={styles.analyticsContainer}>
-                    <div className={styles.analyticsSection}>
-                        {ANALYTICS_SECTIONS.map((section) => (
-                            <div key={section.id} className={styles.analyticsRow}>
-                                <div className={styles.analyticsHeader}>
-                                    <label className={`caption - bold ${styles.formInputTitle} `}>{section.title}</label>
-                                </div>
-                                {section.type === 'input' ? (
-                                    <input
-                                        type="text"
-                                        className={`${styles.formInput} `}
-                                        placeholder={section.placeholder}
-                                        value={analyticsData[section.key]}
-                                        onChange={(e) => setAnalyticsData({ ...analyticsData, [section.key]: e.target.value })}
-                                    />
-                                ) : (
-                                    <textarea
-                                        className={`${styles.formInput} ${styles.formTextarea} ${styles.analyticsTextarea} `}
-                                        placeholder={section.placeholder}
-                                        value={analyticsData[section.key]}
-                                        onChange={(e) => setAnalyticsData({ ...analyticsData, [section.key]: e.target.value })}
-                                    />
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <SidebarAnalyticsTab
+                    analyticsData={analyticsData}
+                    setAnalyticsData={setAnalyticsData}
+                />
             )}
         </div>
     );

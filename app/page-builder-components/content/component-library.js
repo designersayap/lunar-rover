@@ -199,6 +199,14 @@ export const componentLibrary = {
                     visibleProp: "secondaryButtonVisible",
                     linkTypeProp: "secondaryButtonLinkType"
                 }
+            ],
+            images: [
+                {
+                    label: "Hero Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
             ]
         },
     ],
@@ -254,6 +262,14 @@ export const componentLibrary = {
                     visibleProp: "secondaryButtonVisible",
                     linkTypeProp: "secondaryButtonLinkType"
                 }
+            ],
+            images: [
+                {
+                    label: "Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
             ]
         },
         {
@@ -279,6 +295,14 @@ export const componentLibrary = {
                     visibleProp: "buttonVisible",
                     linkTypeProp: "buttonLinkType"
                 }
+            ],
+            images: [
+                {
+                    label: "Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
             ]
         },
     ],
@@ -296,13 +320,34 @@ export const componentLibrary = {
                     label: "List Items",
                     type: "list", // Placeholder type, main goal is to get the default passed through
                     default: [
-                        { label: "Label", image: "", url: "#" },
-                        { label: "Label", image: "", url: "#" },
-                        { label: "Label", image: "", url: "#" },
-                        { label: "Label", image: "", url: "#" },
-                        { label: "Label", image: "", url: "#" }
+                        { label: "Label", image: "", url: "" },
+                        { label: "Label", image: "", url: "" },
+                        { label: "Label", image: "", url: "" },
+                        { label: "Label", image: "", url: "" },
+                        { label: "Label", image: "", url: "" },
+                        { label: "Label", image: "", url: "" },
+                        { label: "Label", image: "", url: "" },
+                        { label: "Label", image: "", url: "" }
                     ]
                 }
+            ],
+            images: [
+                {
+                    label: "Main Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
+            ],
+            links: [
+                { label: "Item 1", propId: "item0Id", suffix: "item-0", visibleProp: "item0Visible" },
+                { label: "Item 2", propId: "item1Id", suffix: "item-1", visibleProp: "item1Visible" },
+                { label: "Item 3", propId: "item2Id", suffix: "item-2", visibleProp: "item2Visible" },
+                { label: "Item 4", propId: "item3Id", suffix: "item-3", visibleProp: "item3Visible" },
+                { label: "Item 5", propId: "item4Id", suffix: "item-4", visibleProp: "item4Visible" },
+                { label: "Item 6", propId: "item5Id", suffix: "item-5", visibleProp: "item5Visible" },
+                { label: "Item 7", propId: "item6Id", suffix: "item-6", visibleProp: "item6Visible" },
+                { label: "Item 8", propId: "item7Id", suffix: "item-7", visibleProp: "item7Visible" }
             ]
         }
     ]

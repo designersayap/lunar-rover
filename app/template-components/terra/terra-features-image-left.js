@@ -22,6 +22,8 @@ export default function TerraFeaturesImageLeft({
     secondaryButtonLinkType = componentDefaults["feature-left"].secondaryButtonLinkType || "url",
     secondaryButtonTargetDialogId = componentDefaults["feature-left"].secondaryButtonTargetDialogId,
     image = componentDefaults["feature-left"].image,
+    imageId,
+    imageVisible,
     buttonStyle = "primary",
     secondaryButtonStyle = "ghost",
     buttonId,
@@ -35,7 +37,16 @@ export default function TerraFeaturesImageLeft({
                 <div className="grid align-center">
                     {/* Image Column */}
                     <div className={`imageWrapper ${styles.imageWrapper} col-mobile-2 col-tablet-8 col-desktop-6`}>
-                        <BuilderImage src={image} className="imagePlaceholder-1-1 shadow-md" style={{ height: "auto" }} />
+                        <BuilderImage
+                            src={image}
+                            className="imagePlaceholder-1-1 shadow-md"
+                            style={{ height: "auto" }}
+                            id={imageId}
+                            sectionId={sectionId}
+                            isVisible={imageVisible}
+                            onIdChange={(val) => onUpdate && onUpdate({ imageId: val })}
+                            suffix="image"
+                        />
                     </div>
 
                     {/* Content Column */}

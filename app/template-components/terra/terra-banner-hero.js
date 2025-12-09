@@ -21,6 +21,8 @@ export default function TerraBannerHero({
     secondaryButtonLinkType = "url",
     secondaryButtonTargetDialogId = componentDefaults["terra-banner-hero"].secondaryButtonTargetDialogId,
     image = componentDefaults["terra-banner-hero"].image,
+    imageId,
+    imageVisible,
     buttonStyle = "primary",
     secondaryButtonStyle = "ghost",
     buttonId,
@@ -34,6 +36,11 @@ export default function TerraBannerHero({
                 <BuilderImage
                     src={image}
                     className={styles.image}
+                    id={imageId}
+                    sectionId={sectionId}
+                    isVisible={imageVisible}
+                    onIdChange={(val) => onUpdate && onUpdate({ imageId: val })}
+                    suffix="image"
                 />
             </div>
             <div className={styles.overlay}>

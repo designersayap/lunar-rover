@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import BuilderText from "./builder-text";
-import { useBuilderSelection, BuilderSelectionContext } from "@/app/page-builder-components/utils/builder-controls";
+import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder-controls";
+import { useIdSync } from "./hooks/use-id-sync";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import styles from "../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
@@ -12,15 +13,6 @@ import BuilderControlsPopover from "./builder-controls-popover";
 /**
  * BuilderLink Component
  * Renders a link with consistent styling, ID generation, and editing capabilities.
- * Similar to BuilderButton but without button variant options in settings.
- * 
- * @param {string} label - Link text
- * @param {string} href - Link URL
- * @param {string} suffix - ID suffix
- * @param {string} sectionId - Parent section ID
- * @param {string} className - CSS classes
- * @param {function} onLabelChange - Callback when label changes
- * @param {function} onHrefChange - Callback when href changes
  */
 export default function BuilderLink({
     label = "Link",
@@ -40,73 +32,27 @@ export default function BuilderLink({
     justify = "center",
     fullWidth = false
 }) {
-    const buttonRef = useRef(null);
-    const wrapperRef = useRef(null); // Ref for the wrapper span
-    const [popoverPosition, setPopoverPosition] = useState(null);
-    const [overlayRect, setOverlayRect] = useState(null); // State for portal position
+    // ID Sync Hook
+    const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "link", onIdChange });
 
-    const generatedId = sectionId ? (suffix ? `${sectionId}-${suffix}` : `${sectionId}-link`) : undefined;
-    const buttonId = id || generatedId;
+    // Context
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId } = useContext(BuilderSelectionContext);
-    const isActive = activeElementId === buttonId;
+    const isActive = activeElementId === elementId;
 
-    // Unique ID for this button's popover
-    const myPopoverId = `popover-${buttonId}`;
+    // Popover state
+    const myPopoverId = `popover-${elementId}`;
     const showSettings = activePopoverId === myPopoverId;
+    const [popoverPosition, setPopoverPosition] = useState(null);
 
-    const prefix = sectionId ? `${sectionId}-` : "";
-    const [tempId, setTempId] = useState("");
+    // Overlay position
+    const wrapperRef = useRef(null);
+    const [overlayRect, setOverlayRect] = useState(null);
 
-    // Display style determines if the component acts as a block (flex) or inline (inline-flex)
+    // Display style
     const displayStyle = fullWidth ? 'flex' : 'inline-flex';
-    const widthStyle = fullWidth ? '100%' : undefined; // width will be merged with style prop
+    const widthStyle = fullWidth ? '100%' : undefined;
 
-    useEffect(() => {
-        if (buttonId && buttonId.startsWith(prefix)) {
-            setTempId(buttonId.slice(prefix.length));
-        } else {
-            setTempId(buttonId);
-        }
-    }, [buttonId, prefix]);
-
-    // ... (Sync ID logic omitted for brevity as it shouldn't change, but I must match context)
-    // Actually I can't skip the useEffects in replace_file_content if I'm replacing a chunk. 
-    // I should only replace the top part where props are destructured and variable declared.
-
-    // Let's split this into chunks.
-    // 1. Update params and variables.
-    // 2. Update JSX.
-
-    // WAIT, replace_file_content limitation: "StartLine and EndLine should specify a range... containing precisely the instances...".
-    // I can replacing the props definition and the render part separately.
-
-
-    useEffect(() => {
-        if (buttonId && buttonId.startsWith(prefix)) {
-            setTempId(buttonId.slice(prefix.length));
-        } else {
-            setTempId(buttonId);
-        }
-    }, [buttonId, prefix]);
-
-    // Sync ID when sectionId changes
-    const prevSectionIdRef = useRef(sectionId);
-    useEffect(() => {
-        const prevSectionId = prevSectionIdRef.current;
-        if (prevSectionId && prevSectionId !== sectionId) {
-            const oldPrefix = `${prevSectionId}-`;
-            if (buttonId && buttonId.startsWith(oldPrefix)) {
-                const suffixPart = buttonId.slice(oldPrefix.length);
-                const newId = `${sectionId}-${suffixPart}`;
-                if (onIdChange) {
-                    onIdChange(newId);
-                }
-            }
-        }
-        prevSectionIdRef.current = sectionId;
-    }, [sectionId, buttonId, onIdChange]);
-
-    // Update overlay position
+    // Update overlay position when active
     useEffect(() => {
         if (isActive && wrapperRef.current) {
             const updatePosition = () => {
@@ -116,7 +62,6 @@ export default function BuilderLink({
             };
 
             updatePosition();
-            // Capture scroll events to update position while scrolling
             window.addEventListener('scroll', updatePosition, true);
             window.addEventListener('resize', updatePosition);
 
@@ -127,15 +72,13 @@ export default function BuilderLink({
         }
     }, [isActive]);
 
-
-    if (!isVisible && !isActive) return null;
+    if (!isVisible) return null;
 
     const handleClick = (e) => {
-        // Prevent navigation in builder
         e.preventDefault();
         e.stopPropagation();
-        if (buttonId) {
-            setActiveElementId(buttonId);
+        if (elementId) {
+            setActiveElementId(elementId);
         }
     };
 
@@ -146,7 +89,7 @@ export default function BuilderLink({
         if (!showSettings && wrapperRef.current) {
             const rect = wrapperRef.current.getBoundingClientRect();
             setPopoverPosition({
-                top: rect.bottom + 4, // 4px gap
+                top: rect.bottom + 4,
                 left: rect.left + rect.width / 2
             });
         }
@@ -164,15 +107,15 @@ export default function BuilderLink({
             left: overlayRect.left,
             width: overlayRect.width,
             height: overlayRect.height,
-            pointerEvents: 'none', // Allow clicking through the anchor area
-            zIndex: 101 // Using global active overlay Z-index
+            pointerEvents: 'none',
+            zIndex: 101
         };
 
         return createPortal(
             <div style={anchorStyle}>
                 <div className={styles.activeOverlay} style={{ pointerEvents: 'auto' }}>
                     <div className={styles.overlayLabel}>
-                        <span className={styles.overlayIdText}>#{buttonId}</span>
+                        <span className={styles.overlayIdText}>#{elementId}</span>
                     </div>
                     <button
                         type="button"
@@ -192,19 +135,19 @@ export default function BuilderLink({
             <span
                 ref={wrapperRef}
                 className={`${isActive ? styles.activeWrapper : ''}`}
-                style={{ display: displayStyle, position: 'relative', height: '100%', width: widthStyle, ...style }} // Propagate style to wrapper
-                onClick={handleClick} // Move click handler to wrapper to capture all interactions
+                style={{ display: displayStyle, position: 'relative', height: '100%', width: widthStyle, ...style }}
+                onClick={handleClick}
             >
                 {isActive && <div className={styles.activeBorderOutline} />}
 
                 <Link
-                    id={buttonId}
+                    id={elementId}
                     href={href || "#"}
                     className={className}
                     style={{ opacity: isVisible ? 1 : 0.5, display: displayStyle, alignItems: 'center', justifyContent: justify, width: '100%', height: '100%' }}
                     data-tooltip={label}
                 >
-                    <div ref={buttonRef} style={{ display: 'flex', alignItems: 'center', justifyContent: justify, gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: justify, gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
                         {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
                         <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: justify }}>
                             <BuilderText
@@ -231,7 +174,8 @@ export default function BuilderLink({
                     onClose={() => setActivePopoverId(null)}
                     url={href}
                     onUrlChange={onHrefChange}
-                    showVariant={false} // Hide variant for BuilderLink
+                    showVariant={false}
+                    showLinkType={false}
                     isVisible={isVisible}
                     onVisibilityChange={onVisibilityChange}
                     position={popoverPosition}

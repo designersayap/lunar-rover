@@ -47,8 +47,12 @@ export default function BuilderButton({
     // Extract the button variant class (e.g., btn-primary, btn-ghost) from className
     const variantClass = className.split(' ').find(c => c.startsWith('btn-') && !['btn-lg', 'btn-md', 'btn-sm', 'btn-icon'].includes(c)) || 'btn-default';
 
-    const generatedId = sectionId ? (suffix ? `${sectionId}-${suffix}` : `${sectionId}-${variantClass}`) : undefined;
-    const buttonId = id || generatedId;
+    // Normalize sectionId by removing trailing dashes to prevent double dashes
+    const normalizedSectionId = sectionId?.replace(/-+$/, '') || '';
+    const generatedId = normalizedSectionId ? (suffix ? `${normalizedSectionId}-${suffix}` : `${normalizedSectionId}-${variantClass}`) : undefined;
+    // Also normalize stored id prop to collapse consecutive dashes
+    const normalizedId = id?.replace(/-+/g, '-') || '';
+    const buttonId = normalizedId || generatedId;
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent } = useContext(BuilderSelectionContext);
     const isActive = activeElementId === buttonId;
 
@@ -56,7 +60,7 @@ export default function BuilderButton({
     const myPopoverId = `popover-${buttonId}`;
     const showSettings = activePopoverId === myPopoverId;
 
-    const prefix = sectionId ? `${sectionId}-` : "";
+    const prefix = normalizedSectionId ? `${normalizedSectionId}-` : "";
     const [tempId, setTempId] = useState("");
 
     useEffect(() => {

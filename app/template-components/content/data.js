@@ -82,7 +82,9 @@ export const componentDefaults = {
         description: "Description",
 
         image: "",
-        items: Array(7).fill({ label: "Label", image: "", url: "" })
+        imageId: "",
+        imageVisible: true,
+        items: Array(8).fill({ label: "Label", image: "", url: "" })
     },
 
 

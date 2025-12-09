@@ -28,3 +28,27 @@ export function BuilderSelectionProvider({ children }) {
 export function useBuilderSelection() {
     return useContext(BuilderSelectionContext);
 }
+
+/**
+ * Calculate popover position within viewport bounds
+ * @param {DOMRect} triggerRect - Bounding rect of trigger element
+ * @param {Object} options - Width/height/padding options
+ * @returns {{ top: number, left: number }}
+ */
+export function calculatePopoverPosition(triggerRect, options = {}) {
+    const { width = 362, height = 500, padding = 12 } = options;
+
+    let left = triggerRect.right + padding;
+    let top = triggerRect.top;
+
+    // Flip to left if overflows right
+    if (left + width > window.innerWidth) {
+        left = triggerRect.left - width - padding;
+    }
+
+    // Clamp to viewport
+    left = Math.max(padding, Math.min(left, window.innerWidth - width - padding));
+    top = Math.max(padding, Math.min(top, window.innerHeight - height - padding));
+
+    return { top, left };
+}

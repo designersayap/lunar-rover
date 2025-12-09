@@ -14,6 +14,7 @@ export default function BuilderControlsPopover({
     onVariantChange,
     variants = ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
     showVariant = true,
+    showLinkType = true, // Set to false for BuilderLink
     position,
     dialogOptions = [],
     targetDialogId,
@@ -66,45 +67,47 @@ export default function BuilderControlsPopover({
                 <div className={styles.popoverContent}>
                     <div className={styles.popoverProperties}>
 
-                        {/* Link Type Selector */}
-                        <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
-                            <label className={`caption-bold ${styles.formInputTitle}`}>Link Type</label>
-                            <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
-                                <label
-                                    className={`${styles.themeOption} ${linkType === 'url' ? styles.themeOptionSelected : ''}`}
-                                    style={{ flex: 1, padding: '8px', justifyContent: 'center', border: '1px solid var(--bdr)', borderRadius: '4px' }}
-                                >
-                                    <input
-                                        type="radio"
-                                        name="linkType"
-                                        value="url"
-                                        checked={linkType === 'url'}
-                                        onChange={() => onLinkTypeChange && onLinkTypeChange('url')}
-                                        className={styles.themeOptionInput}
-                                        style={{ margin: 0, marginRight: '8px' }}
-                                    />
-                                    <span className="caption-regular">Custom URL</span>
-                                </label>
-                                <label
-                                    className={`${styles.themeOption} ${linkType === 'dialog' ? styles.themeOptionSelected : ''}`}
-                                    style={{ flex: 1, padding: '8px', justifyContent: 'center', border: '1px solid var(--bdr)', borderRadius: '4px' }}
-                                >
-                                    <input
-                                        type="radio"
-                                        name="linkType"
-                                        value="dialog"
-                                        checked={linkType === 'dialog'}
-                                        onChange={() => onLinkTypeChange && onLinkTypeChange('dialog')}
-                                        className={styles.themeOptionInput}
-                                        style={{ margin: 0, marginRight: '8px' }}
-                                    />
-                                    <span className="caption-regular">Dialog</span>
-                                </label>
+                        {/* Link Type Selector - only show for buttons */}
+                        {showLinkType && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Link Type</label>
+                                <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                                    <label
+                                        className={`${styles.themeOption} ${linkType === 'url' ? styles.themeOptionSelected : ''}`}
+                                        style={{ flex: 1, padding: '8px', justifyContent: 'center', border: '1px solid var(--bdr)', borderRadius: '4px' }}
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="linkType"
+                                            value="url"
+                                            checked={linkType === 'url'}
+                                            onChange={() => onLinkTypeChange && onLinkTypeChange('url')}
+                                            className={styles.themeOptionInput}
+                                            style={{ margin: 0, marginRight: '8px' }}
+                                        />
+                                        <span className="caption-regular">Custom URL</span>
+                                    </label>
+                                    <label
+                                        className={`${styles.themeOption} ${linkType === 'dialog' ? styles.themeOptionSelected : ''}`}
+                                        style={{ flex: 1, padding: '8px', justifyContent: 'center', border: '1px solid var(--bdr)', borderRadius: '4px' }}
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="linkType"
+                                            value="dialog"
+                                            checked={linkType === 'dialog'}
+                                            onChange={() => onLinkTypeChange && onLinkTypeChange('dialog')}
+                                            className={styles.themeOptionInput}
+                                            style={{ margin: 0, marginRight: '8px' }}
+                                        />
+                                        <span className="caption-regular">Dialog</span>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
+                        )}
 
-                        {/* URL Input */}
-                        {linkType === 'url' && (
+                        {/* URL Input - always show for links, or when linkType is 'url' for buttons */}
+                        {(linkType === 'url' || !showLinkType) && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>URL</label>
                                 <input
@@ -159,7 +162,7 @@ export default function BuilderControlsPopover({
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 
     if (!mounted || !isOpen) return null;

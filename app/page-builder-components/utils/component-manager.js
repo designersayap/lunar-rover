@@ -115,17 +115,18 @@ function recursivelyUpdateIds(props, oldPrefix, newPrefix) {
 export function updateComponentSectionId(components, uniqueId, newSectionId) {
     return components.map(c => {
         if (c.uniqueId === uniqueId) {
-            // Calculate prefixes
-            const oldSectionId = c.sectionId;
+            // Calculate prefixes - normalize by removing trailing dashes
+            const oldSectionId = c.sectionId?.replace(/-+$/, '') || '';
+            const normalizedNewSectionId = newSectionId?.replace(/-+$/, '') || '';
             const oldPrefix = `${oldSectionId}-`;
-            const newPrefix = `${newSectionId}-`;
+            const newPrefix = `${normalizedNewSectionId}-`;
 
             // Recursively update props that start with the old prefix
             const updatedProps = recursivelyUpdateIds(c.props, oldPrefix, newPrefix);
 
             return {
                 ...c,
-                sectionId: newSectionId,
+                sectionId: newSectionId, // Allow trailing dashes while typing; finalization happens on blur
                 props: updatedProps
             };
         }
@@ -146,4 +147,15 @@ export function reorderComponents(components, fromIndex, toIndex) {
     const [item] = arr.splice(fromIndex, 1);
     arr.splice(toIndex, 0, item);
     return arr;
+}
+
+/**
+ * Generate unique section ID from category name
+ * @param {string} category - Category name
+ * @returns {string} Section ID like "hero-banner-1234"
+ */
+export function generateSectionId(category) {
+    const slug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    const random = Math.floor(1000 + Math.random() * 9000);
+    return `${slug}-${random}`;
 }
