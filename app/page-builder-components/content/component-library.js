@@ -9,6 +9,7 @@ const TerraBannerHero = dynamic(() => import("@/app/template-components/terra/te
 const TerraFeaturesImageLeft = dynamic(() => import("@/app/template-components/terra/terra-features-image-left"));
 const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/terra/terra-features-image-right"));
 const Dialog = dynamic(() => import("../../template-components/dialog"));
+const DialogAccordion = dynamic(() => import("../../template-components/dialog-accordion"));
 
 
 export const componentLibrary = {
@@ -305,8 +306,8 @@ export const componentLibrary = {
                 }
             ]
         },
-    ],
 
+    ],
     "Dialog": [
         {
             id: "dialog",
@@ -348,6 +349,39 @@ export const componentLibrary = {
                 { label: "Item 6", propId: "item5Id", suffix: "item-5", visibleProp: "item5Visible" },
                 { label: "Item 7", propId: "item6Id", suffix: "item-6", visibleProp: "item6Visible" },
                 { label: "Item 8", propId: "item7Id", suffix: "item-7", visibleProp: "item7Visible" }
+            ]
+        },
+        {
+            id: "dialog-accordion",
+            name: "Dialog / Accordion",
+            component: DialogAccordion,
+            thumbnail: "/images/thumbnails/dialog.svg", // Placeholder
+            config: [
+                {
+                    name: "items",
+                    label: "Accordion Items",
+                    type: "list",
+                    default: [
+                        { title: "Title 1", content: "Content 1" },
+                        { title: "Title 2", content: "Content 2" },
+                        { title: "Title 3", content: "Content 3" },
+                        { title: "Title 4", content: "Content 4" },
+                        { title: "Title 5", content: "Content 5" },
+                        { title: "Title 6", content: "Content 6" },
+                        { title: "Title 7", content: "Content 7" },
+                        { title: "Title 8", content: "Content 8" }
+                    ]
+                }
+            ],
+            links: [
+                { label: "Accordion 1", propId: "item0Id", suffix: "accordion-0" },
+                { label: "Accordion 2", propId: "item1Id", suffix: "accordion-1" },
+                { label: "Accordion 3", propId: "item2Id", suffix: "accordion-2" },
+                { label: "Accordion 4", propId: "item3Id", suffix: "accordion-3" },
+                { label: "Accordion 5", propId: "item4Id", suffix: "accordion-4" },
+                { label: "Accordion 6", propId: "item5Id", suffix: "accordion-5" },
+                { label: "Accordion 7", propId: "item6Id", suffix: "accordion-6" },
+                { label: "Accordion 8", propId: "item7Id", suffix: "accordion-7" }
             ]
         }
     ]

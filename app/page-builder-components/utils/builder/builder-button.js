@@ -154,12 +154,13 @@ export default function BuilderButton({
         // Find the Dialog component
         let dialogComponent;
         if (targetDialogId) {
-            dialogComponent = selectedComponents?.find(c => c.uniqueId === targetDialogId);
+            // Compare as strings to handle potential type mismatch (number vs string)
+            dialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
         }
 
         // Fallback to first if not found or not set
         if (!dialogComponent) {
-            dialogComponent = selectedComponents?.find(c => c.id === 'dialog');
+            dialogComponent = selectedComponents?.find(c => c.id === 'dialog' || c.id === 'dialog-accordion');
         }
 
         if (dialogComponent) {
@@ -173,6 +174,9 @@ export default function BuilderButton({
         }
     };
 
+    const targetDialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
+    const targetDialogSectionId = targetDialogComponent?.sectionId;
+
     return (
         <>
             <Link
@@ -183,7 +187,7 @@ export default function BuilderButton({
                 style={{ ...style, opacity: isVisible ? 1 : 0.5 }}
                 data-tooltip={label}
                 data-dialog-trigger={linkType === 'dialog' ? "" : undefined}
-                data-dialog-target={linkType === 'dialog' ? targetDialogId : undefined}
+                data-dialog-target={linkType === 'dialog' ? targetDialogSectionId : undefined}
             >
                 {isActive && <div className={styles.activeBorderOutline} />}
                 <div ref={buttonRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
@@ -245,7 +249,7 @@ export default function BuilderButton({
                     isVisible={isVisible}
                     onVisibilityChange={onVisibilityChange}
                     position={popoverPosition}
-                    dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog').map(c => ({ label: c.sectionId || c.settings?.title || 'Dialog', value: c.uniqueId })) : []}
+                    dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
                     targetDialogId={targetDialogId}
                     onTargetDialogIdChange={onTargetDialogIdChange}
                 />

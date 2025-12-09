@@ -1,0 +1,192 @@
+.wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.triggerWrapper {
+    display: inline-block;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background-color: var(--background-neutral--alpha--black-50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--padding-md);
+    animation: fadeIn 0.2s ease-out;
+    z-index: 10;
+}
+
+.dialog {
+    background-color: var(--background-neutral--default);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow--md);
+    width: 100%;
+    max-height: 90vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    animation: scaleIn 0.2s ease-out;
+    padding-bottom: var(--padding-xl);
+}
+
+.textContainer {
+    padding: var(--padding-md) var(--padding-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+}
+
+.title {
+    margin: 0;
+    color: var(--content-neutral--title);
+}
+
+.description {
+    margin: 0;
+    color: var(--content-neutral--body);
+}
+
+.accordionContainer {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex: 1;
+    padding: 0 var(--padding-md);
+    /* Removed gap to allow border-bottom separators to work cleanly */
+}
+
+.accordionItem {
+    background: none;
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid var(--stroke-neutral--neutral);
+}
+
+/* ... existing code ... */
+
+
+
+.accordionItem:last-child {
+    border-bottom: none;
+}
+
+.accordionHeader {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md);
+    width: 100%;
+    padding: var(--padding-md) 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.accordionTitle {
+    flex: 1;
+    color: var(--content-neutral--title);
+    font-weight: 600;
+    /* Matching semi-bold look */
+}
+
+/* Icon Container - Solid Circle Style */
+.iconContainer {
+    width: var(--size-icon-lg);
+    height: var(--size-icon-lg);
+    border-radius: var(--border-radius-round);
+    background-color: var(--background-neutral--default);
+    /* Dark circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color 0.2s;
+}
+
+.accordionIcon {
+    width: var(--size-icon-sm);
+    /* Slightly smaller to fit in circle */
+    height: var(--size-icon-sm);
+    color: var(--content-neutral--default-invert);
+    /* White icon */
+}
+
+.accordionContent {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease-out;
+    background-color: transparent;
+    overflow: hidden;
+    /* Ensure content with padding is clipped */
+}
+
+.accordionContentOpen {
+    grid-template-rows: 1fr;
+}
+
+.accordionInner {
+    /* Indent content to align with title (size-icon-lg + gap-md) */
+    position: relative;
+    z-index: 1;
+    min-height: 0;
+    padding-left: calc(var(--size-icon-lg) + var(--gap-md));
+    padding-bottom: 0;
+    padding-right: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease-out, padding-bottom 0.3s ease;
+    color: var(--content-neutral--caption);
+}
+
+.accordionContentOpen .accordionInner {
+    opacity: 1;
+    padding-bottom: var(--padding-md);
+}
+
+.closeButton {
+    position: absolute;
+    top: var(--padding-xs);
+    right: var(--padding-xs);
+    background: var(--background-neutral--default);
+    border: none;
+    cursor: pointer;
+    width: var(--size-button-sm);
+    height: var(--size-button-sm);
+    border-radius: var(--border-radius-round);
+    color: var(--content-neutral--caption);
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.closeButton:hover {
+    background-color: var(--background-neutral--default);
+    color: var(--content-neutral--title);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}

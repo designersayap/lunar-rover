@@ -225,6 +225,8 @@ const renderCss = (model, docStyleSheets) => {
     return cssString;
 };
 
+import { BuilderSelectionContext } from "./builder/builder-controls";
+
 export const handleExportTemplate = async (selectedComponents, csvLink = "", analyticsData = {}) => {
     // 1. Render Components to Static HTML (Bridge)
     const tempContainer = document.createElement('div');
@@ -232,7 +234,9 @@ export const handleExportTemplate = async (selectedComponents, csvLink = "", ana
     const componentsHtml = selectedComponents.map(item => {
         const Component = item.component;
         const htmlString = renderToStaticMarkup(
-            <Component {...item.props} />
+            <BuilderSelectionContext.Provider value={{ selectedComponents }}>
+                <Component {...item.props} sectionId={item.sectionId} />
+            </BuilderSelectionContext.Provider>
         );
         return htmlString;
     }).join('');
@@ -378,8 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let overlay;
             if (targetId) {
                 overlay = document.querySelector(\`[data-section-id="\${targetId}"]\`);
-            }
-            if (!overlay) {
+            } else {
                 overlay = document.querySelector('[data-dialog-overlay]');
             }
             if (overlay) {
@@ -415,6 +418,56 @@ document.addEventListener('DOMContentLoaded', () => {
                 overlay.style.display = 'none';
             });
         }
+    });
+
+    // --- Accordion Logic ---
+    const accordionHeaders = document.querySelectorAll('[class*="accordionHeader"]');
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+             const item = header.closest('[class*="accordionItem"]');
+             const container = item.parentElement;
+             const content = item.querySelector('[class*="accordionContent"]');
+             const inner = content.querySelector('[class*="accordionInner"]');
+             const iconPlus = header.querySelector('[class*="PlusIcon"]');
+             const iconMinus = header.querySelector('[class*="MinusIcon"]');
+
+             // Close others in the same container
+             container.querySelectorAll('[class*="accordionItem"]').forEach(otherItem => {
+                 if (otherItem !== item) {
+                     const otherContent = otherItem.querySelector('[class*="accordionContent"]');
+                     const otherPlus = otherItem.querySelector('[class*="PlusIcon"]');
+                     const otherMinus = otherItem.querySelector('[class*="MinusIcon"]');
+                     
+                     if (otherContent) {
+                        otherContent.style.gridTemplateRows = '0fr';
+                        // Manually manage inner classes or styles if needed, but grid trick handles it
+                        const otherInner = otherContent.querySelector('[class*="accordionInner"]');
+                        if (otherInner) {
+                             otherInner.style.paddingBottom = '0';
+                             otherInner.style.opacity = '0';
+                        }
+                     }
+                     if (otherPlus) otherPlus.style.display = 'block';
+                     if (otherMinus) otherMinus.style.display = 'none';
+                 }
+             });
+
+             // Toggle current
+             const isOpen = content.style.gridTemplateRows === '1fr';
+             if (isOpen) {
+                 content.style.gridTemplateRows = '0fr';
+                 inner.style.paddingBottom = '0';
+                 inner.style.opacity = '0';
+                 if (iconPlus) iconPlus.style.display = 'block';
+                 if (iconMinus) iconMinus.style.display = 'none';
+             } else {
+                 content.style.gridTemplateRows = '1fr';
+                 inner.style.paddingBottom = 'var(--padding-md)';
+                 inner.style.opacity = '1';
+                 if (iconPlus) iconPlus.style.display = 'none';
+                 if (iconMinus) iconMinus.style.display = 'block';
+             }
+        });
     });
 });
 `;
