@@ -12,9 +12,13 @@ export default function GlobalHeaderTitleButton({
     buttonText = componentDefaults["header-title-button"].buttonText,
     buttonUrl = componentDefaults["header-title-button"].buttonUrl,
     buttonVisible = componentDefaults["header-title-button"].buttonVisible,
+    buttonLinkType = componentDefaults["header-title-button"].buttonLinkType || "url",
+    buttonTargetDialogId = componentDefaults["header-title-button"].buttonTargetDialogId,
     secondaryButtonText = componentDefaults["header-title-button"].secondaryButtonText,
     secondaryButtonUrl = componentDefaults["header-title-button"].secondaryButtonUrl,
     secondaryButtonVisible = componentDefaults["header-title-button"].secondaryButtonVisible,
+    secondaryButtonLinkType = componentDefaults["header-title-button"].secondaryButtonLinkType || "url",
+    secondaryButtonTargetDialogId = componentDefaults["header-title-button"].secondaryButtonTargetDialogId,
     buttonId,
     secondaryButtonId,
     buttonStyle = "primary", // primary, neutral, ghost, outline, link
@@ -42,6 +46,10 @@ export default function GlobalHeaderTitleButton({
                     onHrefChange={(val) => onUpdate && onUpdate({ buttonUrl: val })}
                     onVisibilityChange={(val) => onUpdate && onUpdate({ buttonVisible: val })}
                     onVariantChange={(val) => onUpdate && onUpdate({ buttonStyle: val })}
+                    linkType={buttonLinkType}
+                    onLinkTypeChange={(val) => onUpdate && onUpdate({ buttonLinkType: val })}
+                    targetDialogId={buttonTargetDialogId}
+                    onTargetDialogIdChange={(val) => onUpdate && onUpdate({ buttonTargetDialogId: val })}
                     id={buttonId}
                     onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
                     suffix="button"
@@ -56,6 +64,10 @@ export default function GlobalHeaderTitleButton({
                     onHrefChange={(val) => onUpdate && onUpdate({ secondaryButtonUrl: val })}
                     onVisibilityChange={(val) => onUpdate && onUpdate({ secondaryButtonVisible: val })}
                     onVariantChange={(val) => onUpdate && onUpdate({ secondaryButtonStyle: val })}
+                    linkType={secondaryButtonLinkType}
+                    onLinkTypeChange={(val) => onUpdate && onUpdate({ secondaryButtonLinkType: val })}
+                    targetDialogId={secondaryButtonTargetDialogId}
+                    onTargetDialogIdChange={(val) => onUpdate && onUpdate({ secondaryButtonTargetDialogId: val })}
                     id={secondaryButtonId}
                     onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
                     suffix="secondary-button"

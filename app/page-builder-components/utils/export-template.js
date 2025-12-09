@@ -368,6 +368,54 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     fetchAndUpdateContent();
+
+    // --- Dialog Logic ---
+    // Open Dialog
+    document.querySelectorAll('[data-dialog-trigger]').forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = trigger.getAttribute('data-dialog-target');
+            let overlay;
+            if (targetId) {
+                overlay = document.querySelector(\`[data-section-id="\${targetId}"]\`);
+            }
+            if (!overlay) {
+                overlay = document.querySelector('[data-dialog-overlay]');
+            }
+            if (overlay) {
+                overlay.style.display = 'flex';
+            }
+        });
+    });
+
+    // Close Dialog (Button)
+    document.querySelectorAll('[data-dialog-close]').forEach(btnClose => {
+        btnClose.addEventListener('click', (e) => {
+            e.preventDefault();
+            const overlay = btnClose.closest('[data-dialog-overlay]');
+            if (overlay) {
+                overlay.style.display = 'none';
+            }
+        });
+    });
+
+    // Close Dialog (Overlay Click)
+    document.querySelectorAll('[data-dialog-overlay]').forEach(overlay => {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.style.display = 'none';
+            }
+        });
+    });
+
+    // Close Dialog (Escape Key)
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('[data-dialog-overlay]').forEach(overlay => {
+                overlay.style.display = 'none';
+            });
+        }
+    });
 });
 `;
 

@@ -35,6 +35,20 @@ export const componentLibrary = {
                     default: "primary"
                 },
                 {
+                    name: "buttonLinkType",
+                    label: "Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: "url"
+                },
+                {
+                    name: "secondaryButtonLinkType",
+                    label: "Secondary Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: "url"
+                },
+                {
                     name: "buttonText",
                     label: "Button Text",
                     type: "text",
@@ -53,14 +67,16 @@ export const componentLibrary = {
                     propId: "buttonId",
                     suffix: "button",
                     labelProp: "buttonText",
-                    visibleProp: "buttonVisible"
+                    visibleProp: "buttonVisible",
+                    linkTypeProp: "buttonLinkType"
                 },
                 {
                     label: "Secondary Button",
                     propId: "secondaryButtonId",
                     suffix: "secondary-button",
                     labelProp: "secondaryButtonText",
-                    visibleProp: "secondaryButtonVisible"
+                    visibleProp: "secondaryButtonVisible",
+                    linkTypeProp: "secondaryButtonLinkType"
                 }
             ]
         },
@@ -85,6 +101,20 @@ export const componentLibrary = {
                     default: "primary"
                 },
                 {
+                    name: "buttonLinkType",
+                    label: "Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: "url"
+                },
+                {
+                    name: "secondaryButtonLinkType",
+                    label: "Secondary Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: "url"
+                },
+                {
                     name: "buttonText",
                     label: "Button Text",
                     type: "text",
@@ -103,14 +133,16 @@ export const componentLibrary = {
                     propId: "buttonId",
                     suffix: "button",
                     labelProp: "buttonText",
-                    visibleProp: "buttonVisible"
+                    visibleProp: "buttonVisible",
+                    linkTypeProp: "buttonLinkType"
                 },
                 {
                     label: "Secondary Button",
                     propId: "secondaryButtonId",
                     suffix: "secondary-button",
                     labelProp: "secondaryButtonText",
-                    visibleProp: "secondaryButtonVisible"
+                    visibleProp: "secondaryButtonVisible",
+                    linkTypeProp: "secondaryButtonLinkType"
                 }
             ]
         },
@@ -130,6 +162,20 @@ export const componentLibrary = {
                     default: "primary"
                 },
                 {
+                    name: "buttonLinkType",
+                    label: "Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: "url"
+                },
+                {
+                    name: "secondaryButtonLinkType",
+                    label: "Secondary Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: "url"
+                },
+                {
                     name: "image",
                     label: "Image",
                     type: "image",
@@ -142,14 +188,16 @@ export const componentLibrary = {
                     propId: "buttonId",
                     suffix: "button",
                     labelProp: "buttonText",
-                    visibleProp: "buttonVisible"
+                    visibleProp: "buttonVisible",
+                    linkTypeProp: "buttonLinkType"
                 },
                 {
                     label: "Secondary Button",
                     propId: "secondaryButtonId",
                     suffix: "secondary-button",
                     labelProp: "secondaryButtonText",
-                    visibleProp: "secondaryButtonVisible"
+                    visibleProp: "secondaryButtonVisible",
+                    linkTypeProp: "secondaryButtonLinkType"
                 }
             ]
         },
@@ -169,6 +217,20 @@ export const componentLibrary = {
                     default: "primary"
                 },
                 {
+                    name: "buttonLinkType",
+                    label: "Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: "url"
+                },
+                {
+                    name: "secondaryButtonLinkType",
+                    label: "Secondary Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: "url"
+                },
+                {
                     name: "secondaryButtonText",
                     label: "Secondary Button Text",
                     type: "text",
@@ -181,14 +243,16 @@ export const componentLibrary = {
                     propId: "buttonId",
                     suffix: "button",
                     labelProp: "buttonText",
-                    visibleProp: "buttonVisible"
+                    visibleProp: "buttonVisible",
+                    linkTypeProp: "buttonLinkType"
                 },
                 {
                     label: "Secondary Button",
                     propId: "secondaryButtonId",
                     suffix: "secondary-button",
                     labelProp: "secondaryButtonText",
-                    visibleProp: "secondaryButtonVisible"
+                    visibleProp: "secondaryButtonVisible",
+                    linkTypeProp: "secondaryButtonLinkType"
                 }
             ]
         },
@@ -212,7 +276,8 @@ export const componentLibrary = {
                     propId: "buttonId",
                     suffix: "button",
                     labelProp: "buttonText",
-                    visibleProp: "buttonVisible"
+                    visibleProp: "buttonVisible",
+                    linkTypeProp: "buttonLinkType"
                 }
             ]
         },
@@ -225,11 +290,18 @@ export const componentLibrary = {
             component: Dialog,
             thumbnail: "/images/thumbnails/dialog.svg", // Placeholder or generic
             config: [
+
                 {
-                    name: "triggerLabel",
-                    label: "Trigger Button Label",
-                    type: "text",
-                    default: "Open Dialog"
+                    name: "items",
+                    label: "List Items",
+                    type: "list", // Placeholder type, main goal is to get the default passed through
+                    default: [
+                        { label: "Label", image: "", url: "#" },
+                        { label: "Label", image: "", url: "#" },
+                        { label: "Label", image: "", url: "#" },
+                        { label: "Label", image: "", url: "#" },
+                        { label: "Label", image: "", url: "#" }
+                    ]
                 }
             ]
         }

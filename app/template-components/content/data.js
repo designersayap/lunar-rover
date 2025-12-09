@@ -12,10 +12,14 @@ export const componentDefaults = {
         buttonText: "Label",
         buttonUrl: "",
         buttonVisible: true,
+        buttonLinkType: "url",
+        buttonTargetDialogId: "",
         buttonId: "",
         secondaryButtonText: "Label",
-        secondaryButtonUrl: "#",
+        secondaryButtonUrl: "",
         secondaryButtonVisible: true,
+        secondaryButtonLinkType: "url",
+        secondaryButtonTargetDialogId: "",
         secondaryButtonId: ""
     },
     "header-title-description-button": {
@@ -24,10 +28,12 @@ export const componentDefaults = {
         buttonText: "Label",
         buttonUrl: "",
         buttonVisible: true,
+        buttonLinkType: "url",
         buttonId: "",
         secondaryButtonText: "Label",
         secondaryButtonUrl: "",
         secondaryButtonVisible: true,
+        secondaryButtonLinkType: "url",
         secondaryButtonId: ""
     },
     "terra-banner-hero": {
@@ -36,10 +42,12 @@ export const componentDefaults = {
         buttonText: "Label",
         buttonUrl: "",
         buttonVisible: true,
+        buttonLinkType: "url",
         buttonId: "",
         secondaryButtonText: "Label",
         secondaryButtonUrl: "",
         secondaryButtonVisible: true,
+        secondaryButtonLinkType: "url",
         secondaryButtonId: "",
         image: ""
     },
@@ -50,10 +58,12 @@ export const componentDefaults = {
         buttonText: "Label",
         buttonUrl: "",
         buttonVisible: true,
+        buttonLinkType: "url",
         buttonId: "",
         secondaryButtonText: "Label",
         secondaryButtonUrl: "",
         secondaryButtonVisible: true,
+        secondaryButtonLinkType: "url",
         secondaryButtonId: "",
         image: ""
     },
@@ -63,13 +73,14 @@ export const componentDefaults = {
         buttonText: "Label",
         buttonUrl: "",
         buttonVisible: true,
+        buttonLinkType: "url",
         buttonId: "",
         image: ""
     },
     "dialog": {
         title: "Title",
         description: "Description",
-        triggerLabel: "Open Dialog",
+
         image: "",
         items: Array(7).fill({ label: "Label", image: "", url: "" })
     },

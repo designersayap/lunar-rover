@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useEffect, useRef, useContext } from "react";
 import BuilderText from "./builder-text";
 import { useBuilderSelection, BuilderSelectionContext } from "@/app/page-builder-components/utils/builder-controls";
-import { Cog6ToothIcon } from "@heroicons/react/24/solid";
+import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid";
 import styles from "../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 
@@ -35,7 +35,11 @@ export default function BuilderButton({
     isVisible = true,
     style = {},
     iconLeft,
-    iconRight
+    iconRight,
+    linkType = 'url',
+    onLinkTypeChange,
+    targetDialogId,
+    onTargetDialogIdChange
 }) {
     const buttonRef = useRef(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
@@ -45,7 +49,7 @@ export default function BuilderButton({
 
     const generatedId = sectionId ? (suffix ? `${sectionId}-${suffix}` : `${sectionId}-${variantClass}`) : undefined;
     const buttonId = id || generatedId;
-    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId } = useContext(BuilderSelectionContext);
+    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent } = useContext(BuilderSelectionContext);
     const isActive = activeElementId === buttonId;
 
     // Unique ID for this button's popover
@@ -137,15 +141,45 @@ export default function BuilderButton({
         setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
     };
 
+
+
+    const handleOpenDialog = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Find the Dialog component
+        let dialogComponent;
+        if (targetDialogId) {
+            dialogComponent = selectedComponents?.find(c => c.uniqueId === targetDialogId);
+        }
+
+        // Fallback to first if not found or not set
+        if (!dialogComponent) {
+            dialogComponent = selectedComponents?.find(c => c.id === 'dialog');
+        }
+
+        if (dialogComponent) {
+            // Open it
+            if (updateComponent) {
+                updateComponent(dialogComponent.uniqueId, { isOpen: true });
+                // Optional: show toast or feedback?
+            }
+        } else {
+            alert("No Dialog component found on the page. Please add one from the Components menu.");
+        }
+    };
+
     return (
         <>
             <Link
                 id={buttonId}
-                href={href || "#"}
+                href={linkType === 'url' ? (href || "#") : "#"}
                 className={`${className} ${isActive ? styles.activeWrapper : ''}`}
                 onClick={handleClick}
                 style={{ ...style, opacity: isVisible ? 1 : 0.5 }}
                 data-tooltip={label}
+                data-dialog-trigger={linkType === 'dialog' ? "" : undefined}
+                data-dialog-target={linkType === 'dialog' ? targetDialogId : undefined}
             >
                 {isActive && <div className={styles.activeBorderOutline} />}
                 <div ref={buttonRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
@@ -154,6 +188,19 @@ export default function BuilderButton({
                             <div className={styles.overlayLabel}>
                                 <span className={styles.overlayIdText}>#{buttonId}</span>
                             </div>
+
+                            {/* specific trigger for dialog if selected */}
+                            {linkType === 'dialog' && (
+                                <button
+                                    type="button"
+                                    className={styles.settingsButton}
+                                    onClick={handleOpenDialog}
+                                    title="Open Dialog"
+                                >
+                                    <ChatBubbleLeftEllipsisIcon className={styles.overlayIcon} />
+                                </button>
+                            )}
+
                             <button
                                 type="button"
                                 className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
@@ -187,11 +234,16 @@ export default function BuilderButton({
                     onClose={() => setActivePopoverId(null)}
                     url={href}
                     onUrlChange={onHrefChange}
+                    linkType={linkType}
+                    onLinkTypeChange={onLinkTypeChange}
                     variant={variantClass.replace('btn-', '')}
                     onVariantChange={onVariantChange}
                     isVisible={isVisible}
                     onVisibilityChange={onVisibilityChange}
                     position={popoverPosition}
+                    dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog').map(c => ({ label: c.sectionId || c.settings?.title || 'Dialog', value: c.uniqueId })) : []}
+                    targetDialogId={targetDialogId}
+                    onTargetDialogIdChange={onTargetDialogIdChange}
                 />
             )}
         </>

@@ -14,9 +14,13 @@ export default function TerraFeaturesImageRight({
     buttonText = componentDefaults["feature-right"].buttonText,
     buttonUrl = componentDefaults["feature-right"].buttonUrl,
     buttonVisible = componentDefaults["feature-right"].buttonVisible,
+    buttonLinkType = componentDefaults["feature-right"].buttonLinkType || "url",
+    buttonTargetDialogId = componentDefaults["feature-right"].buttonTargetDialogId,
     secondaryButtonText = componentDefaults["feature-right"].secondaryButtonText,
     secondaryButtonUrl = componentDefaults["feature-right"].secondaryButtonUrl,
     secondaryButtonVisible = componentDefaults["feature-right"].secondaryButtonVisible,
+    secondaryButtonLinkType = componentDefaults["feature-right"].secondaryButtonLinkType || "url",
+    secondaryButtonTargetDialogId = componentDefaults["feature-right"].secondaryButtonTargetDialogId,
     image = componentDefaults["feature-right"].image,
     buttonStyle = "primary",
     secondaryButtonStyle = "ghost",
@@ -59,6 +63,10 @@ export default function TerraFeaturesImageRight({
                                 onHrefChange={(val) => onUpdate && onUpdate({ buttonUrl: val })}
                                 onVisibilityChange={(val) => onUpdate && onUpdate({ buttonVisible: val })}
                                 onVariantChange={(val) => onUpdate && onUpdate({ buttonStyle: val })}
+                                linkType={buttonLinkType}
+                                onLinkTypeChange={(val) => onUpdate && onUpdate({ buttonLinkType: val })}
+                                targetDialogId={buttonTargetDialogId}
+                                onTargetDialogIdChange={(val) => onUpdate && onUpdate({ buttonTargetDialogId: val })}
                                 id={buttonId}
                                 onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
                                 suffix="button"
@@ -73,6 +81,10 @@ export default function TerraFeaturesImageRight({
                                 onHrefChange={(val) => onUpdate && onUpdate({ secondaryButtonUrl: val })}
                                 onVisibilityChange={(val) => onUpdate && onUpdate({ secondaryButtonVisible: val })}
                                 onVariantChange={(val) => onUpdate && onUpdate({ secondaryButtonStyle: val })}
+                                linkType={secondaryButtonLinkType}
+                                onLinkTypeChange={(val) => onUpdate && onUpdate({ secondaryButtonLinkType: val })}
+                                targetDialogId={secondaryButtonTargetDialogId}
+                                onTargetDialogIdChange={(val) => onUpdate && onUpdate({ secondaryButtonTargetDialogId: val })}
                                 id={secondaryButtonId}
                                 onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
                                 suffix="secondary-button"

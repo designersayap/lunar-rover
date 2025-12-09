@@ -245,8 +245,10 @@ export default function TemplateGeneratorPage() {
     activeElementId,
     setActiveElementId,
     activePopoverId,
-    setActivePopoverId
-  }), [activeElementId, activePopoverId]);
+    setActivePopoverId,
+    selectedComponents,
+    updateComponent
+  }), [activeElementId, activePopoverId, selectedComponents, updateComponent]);
 
   // ==================== RENDER ====================
 
