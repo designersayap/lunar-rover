@@ -45,7 +45,7 @@
 }
 
 .textContainer {
-    padding: var(--padding-sm) var(--padding-sm);
+    padding: var(--padding-md) var(--padding-md);
     display: flex;
     flex-direction: column;
     gap: var(--gap-xs);
@@ -66,6 +66,8 @@
     flex-direction: column;
     overflow-y: auto;
     flex: 1;
+    padding: 0 var(--padding-md);
+    gap: var(--gap-xs);
     /* Take remaining space */
 }
 
@@ -77,7 +79,8 @@
     text-decoration: none;
     color: var(--content-neutral--body);
     transition: background-color 0.2s;
-    border-top: 1px solid var(--stroke-neutral--neutral);
+    border: 1px solid var(--stroke-neutral--neutral);
+    border-radius: var(--border-radius-md);
     background: none;
     width: 100%;
     text-align: left;

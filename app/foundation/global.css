@@ -406,7 +406,8 @@ body {
 [data-tooltip]::after {
   content: attr(data-tooltip);
   position: absolute;
-  bottom: -40px;
+  top: calc(100% + var(--gap-xs));
+  bottom: auto;
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--background-neutral--neutral-strong);
