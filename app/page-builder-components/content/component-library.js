@@ -8,7 +8,7 @@ const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../template-
 const TerraBannerHero = dynamic(() => import("@/app/template-components/terra/terra-banner-hero"));
 const TerraFeaturesImageLeft = dynamic(() => import("@/app/template-components/terra/terra-features-image-left"));
 const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/terra/terra-features-image-right"));
-const Dialog = dynamic(() => import("../../template-components/dialog"));
+const Dialog = dynamic(() => import("../../template-components/dialog-default"));
 const DialogAccordion = dynamic(() => import("../../template-components/dialog-accordion"));
 
 

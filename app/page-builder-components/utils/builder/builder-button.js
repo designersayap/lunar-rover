@@ -194,6 +194,7 @@ export default function BuilderButton({
                 data-tooltip={label}
                 data-dialog-trigger={linkType === 'dialog' ? "" : undefined}
                 data-dialog-target={linkType === 'dialog' ? targetDialogSectionId : undefined}
+                prefetch={false}
             >
                 {isActive && <div className={styles.activeBorderOutline} />}
                 <div ref={buttonRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
