@@ -115,6 +115,7 @@ export default function Sidebar({
                         </div>
                         <button
                             className={`${styles.generatorButton} ${styles.sidebarAddButton} ${isAddPopoverOpen ? styles.generatorButtonActive : ''} `}
+                            data-tooltip="Add Layer"
                             onClick={(e) => onAddClick(e.currentTarget.getBoundingClientRect())}
                         >
                             <PlusIcon className={styles.sidebarAddIcon} />
@@ -207,6 +208,7 @@ export default function Sidebar({
                                             />
                                             <button
                                                 className={styles.sidebarDeleteButton}
+                                                data-tooltip="Delete Layer"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     removeComponent && removeComponent(comp.uniqueId);
@@ -272,6 +274,7 @@ export default function Sidebar({
                                                                 ) : (
                                                                     <button
                                                                         className={styles.sidebarDeleteButton}
+                                                                        data-tooltip="Delete Layer"
                                                                         onClick={(e) => {
                                                                             e.stopPropagation();
                                                                             // Calculate current visibility state properly

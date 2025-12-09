@@ -116,7 +116,7 @@ export default function Dialog({
         >
             <div className="container-grid" style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                 <div className="grid" style={{ width: '100%' }}>
-                    <div className="col-2 col-tablet-8 col-desktop-8 offset-desktop-2">
+                    <div className="col-2 col-tablet-4 col-desktop-6 offset-desktop-3 offset-tablet-2">
                         <div
                             className={styles.dialog}
                             role="dialog"

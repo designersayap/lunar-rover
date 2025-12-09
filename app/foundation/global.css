@@ -1,11 +1,8 @@
 :root {
-  --bg-color: var(--grey-400);
-  --text-color: var(--content-neutral--body-invert);
-  --input-bg: var(--alpha-white-25);
-  --input-border: var(--alpha-white-25);
-
   /* Icon Sizes */
+  --size-icon-sm: 16px;
   --size-icon-md: 20px;
+  --size-icon-lg: 24px;
 }
 
 * {
@@ -16,7 +13,7 @@
 
 body {
   background-color: var(--background-neutral--default);
-  color: var(--text-color);
+  color: var(--content-neutral--body);
   min-height: 100vh;
 }
 
@@ -260,20 +257,20 @@ body {
 /* Button Icon Sizes */
 .btn-sm svg,
 .btn-sm .icon {
-  width: 16px;
-  height: 16px;
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
 }
 
 .btn-md svg,
 .btn-md .icon {
-  width: 20px;
-  height: 20px;
+  width: var(--size-icon-md);
+  height: var(--size-icon-md);
 }
 
 .btn-lg svg,
 .btn-lg .icon {
-  width: 24px;
-  height: 24px;
+  width: var(--size-icon-lg);
+  height: var(--size-icon-lg);
 }
 
 
@@ -329,8 +326,8 @@ body {
    ============================================ */
 
 .icon-social {
-  width: 20px;
-  height: 20px;
+  width: var(--size-icon-md);
+  height: var(--size-icon-md);
   fill: currentColor;
 }
 
@@ -371,7 +368,7 @@ body {
 
 /* Tab Button Active State */
 .tabs-button-active {
-  background-color: var(--base-white);
+  background-color: var(--background-neutral--default);
   color: var(--content-neutral--title);
   font-weight: var(--font-weight-bold);
   box-shadow: var(--shadow--md);
@@ -409,14 +406,14 @@ body {
 [data-tooltip]::after {
   content: attr(data-tooltip);
   position: absolute;
-  bottom: -24px;
+  bottom: -40px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--base-black);
-  color: var(--base-white);
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  background-color: var(--background-neutral--neutral-strong);
+  color: var(--content-neutral--body-invert);
+  padding: 8px 12px;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--typography-font-size-caption-md);
   white-space: normal;
   width: max-content;
   max-width: 240px;

@@ -49,7 +49,7 @@ export default function SidebarAnalyticsTab({ analyticsData, setAnalyticsData })
             <div className={styles.analyticsSection}>
                 {ANALYTICS_SECTIONS.map((section) => (
                     <div key={section.id} className={styles.analyticsRow}>
-                        <div className={styles.analyticsHeader}>
+                        <div className={styles.analyticsHeader} data-tooltip={section.tooltip || undefined}>
                             <label className={`caption-bold ${styles.formInputTitle}`}>{section.title}</label>
                         </div>
                         {section.type === 'input' ? (

@@ -82,7 +82,7 @@
     --stroke-brand--danger: var(--system-color-red-300);
 
     /* Neutral Strokes */
-    --stroke-neutral--neutral: var(--grey-200);
+    --stroke-neutral--neutral: var(--grey-100);
     --stroke-neutral--invert: var(--base-white);
 
 

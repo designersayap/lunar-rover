@@ -199,7 +199,7 @@ export default function BuilderButton({
                                     type="button"
                                     className={styles.settingsButton}
                                     onClick={handleOpenDialog}
-                                    title="Open Dialog"
+                                    data-tooltip="Open Dialog"
                                 >
                                     <ChatBubbleLeftEllipsisIcon className={styles.overlayIcon} />
                                 </button>
