@@ -36,7 +36,9 @@ export default function BuilderLink({
     isVisible = true,
     style = {},
     iconLeft,
-    iconRight
+    iconRight,
+    justify = "center",
+    fullWidth = false
 }) {
     const buttonRef = useRef(null);
     const wrapperRef = useRef(null); // Ref for the wrapper span
@@ -54,6 +56,30 @@ export default function BuilderLink({
 
     const prefix = sectionId ? `${sectionId}-` : "";
     const [tempId, setTempId] = useState("");
+
+    // Display style determines if the component acts as a block (flex) or inline (inline-flex)
+    const displayStyle = fullWidth ? 'flex' : 'inline-flex';
+    const widthStyle = fullWidth ? '100%' : undefined; // width will be merged with style prop
+
+    useEffect(() => {
+        if (buttonId && buttonId.startsWith(prefix)) {
+            setTempId(buttonId.slice(prefix.length));
+        } else {
+            setTempId(buttonId);
+        }
+    }, [buttonId, prefix]);
+
+    // ... (Sync ID logic omitted for brevity as it shouldn't change, but I must match context)
+    // Actually I can't skip the useEffects in replace_file_content if I'm replacing a chunk. 
+    // I should only replace the top part where props are destructured and variable declared.
+
+    // Let's split this into chunks.
+    // 1. Update params and variables.
+    // 2. Update JSX.
+
+    // WAIT, replace_file_content limitation: "StartLine and EndLine should specify a range... containing precisely the instances...".
+    // I can replacing the props definition and the render part separately.
+
 
     useEffect(() => {
         if (buttonId && buttonId.startsWith(prefix)) {
@@ -166,7 +192,7 @@ export default function BuilderLink({
             <span
                 ref={wrapperRef}
                 className={`${isActive ? styles.activeWrapper : ''}`}
-                style={{ display: 'inline-flex', position: 'relative', height: '100%', ...style }} // Propagate style to wrapper
+                style={{ display: displayStyle, position: 'relative', height: '100%', width: widthStyle, ...style }} // Propagate style to wrapper
                 onClick={handleClick} // Move click handler to wrapper to capture all interactions
             >
                 {isActive && <div className={styles.activeBorderOutline} />}
@@ -175,12 +201,12 @@ export default function BuilderLink({
                     id={buttonId}
                     href={href || "#"}
                     className={className}
-                    style={{ opacity: isVisible ? 1 : 0.5, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%' }}
+                    style={{ opacity: isVisible ? 1 : 0.5, display: displayStyle, alignItems: 'center', justifyContent: justify, width: '100%', height: '100%' }}
                     data-tooltip={label}
                 >
-                    <div ref={buttonRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
+                    <div ref={buttonRef} style={{ display: 'flex', alignItems: 'center', justifyContent: justify, gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
                         {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
-                        <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
+                        <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: justify }}>
                             <BuilderText
                                 tagName="span"
                                 content={label}

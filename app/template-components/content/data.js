@@ -66,6 +66,13 @@ export const componentDefaults = {
         buttonId: "",
         image: ""
     },
+    "dialog": {
+        title: "Title",
+        description: "Description",
+        triggerLabel: "Open Dialog",
+        image: "",
+        items: Array(7).fill({ label: "Label", image: "", url: "" })
+    },
 
 
 

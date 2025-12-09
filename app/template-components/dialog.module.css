@@ -20,7 +20,7 @@
 
 .dialog {
     background-color: var(--background-neutral--default);
-    border-radius: 16px;
+    border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow--md);
     width: 100%;
     max-width: 400px;
@@ -55,7 +55,7 @@
 
 .title {
     margin: 0;
-    color: var(--content-neutral--title, #111);
+    color: var(--content-neutral--title);
 }
 
 .description {
@@ -66,7 +66,6 @@
 .listContainer {
     display: flex;
     flex-direction: column;
-    border-top: 1px solid var(--stroke-neutral--neutral, #e5e5e5);
     overflow-y: auto;
     flex: 1;
     /* Take remaining space */
@@ -75,20 +74,19 @@
 .listItem {
     display: flex;
     align-items: center;
-    gap: var(--gap-md);
+    gap: var(--gap-xs);
     padding: var(--padding-sm) var(--padding-sm);
     text-decoration: none;
-    color: inherit;
+    color: var(--content-neutral--body);
     transition: background-color 0.2s;
-    border-bottom: 1px solid var(--stroke-neutral--neutral);
+    border-top: 1px solid var(--stroke-neutral--neutral);
     background: none;
-    border: none;
     width: 100%;
     text-align: left;
     cursor: pointer;
 }
 
-.listItem:last-child {
+.lastItem {
     border-bottom: none;
 }
 
@@ -97,9 +95,9 @@
 }
 
 .itemIcon {
-    width: 40px;
-    height: 40px;
-    border-radius: 4px;
+    width: var(--size-button-md);
+    height: var(--size-button-md);
+    border-radius: var(--border-radius-sm);
     overflow: hidden;
     /* Ensure image respects border radius */
     flex-shrink: 0;
@@ -120,13 +118,13 @@
 
 .closeButton {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: var(--padding-md);
+    right: var(--padding-md);
     background: var(--background-neutral--default);
     border: none;
     cursor: pointer;
-    width: 32px;
-    height: 32px;
+    width: var(--size-button-sm);
+    height: var(--size-button-sm);
     border-radius: 50%;
     color: var(--content-neutral--caption);
     transition: background-color 0.2s;

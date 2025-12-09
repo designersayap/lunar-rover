@@ -14,63 +14,51 @@ export default function Dialog({
     sectionId,
     className = "",
     image,
-    // We could make this dynamic later, for now we mock the list structure
-    items = Array(7).fill({ label: "Label", image: "", url: "#" })
+    // List items are now provided by parent/data.js
+    items = []
 }) {
     const [internalIsOpen, setInternalIsOpen] = useState(false);
     const isControlled = controlledIsOpen !== undefined;
     const isOpen = isControlled ? controlledIsOpen : internalIsOpen;
 
-    const toggleOpen = (value) => {
-        if (!isControlled) {
-            setInternalIsOpen(value);
-        }
+    const toggleOpen = (value) => !isControlled && setInternalIsOpen(value);
+
+    const updateItem = (index, field, value) => {
+        if (!onUpdate) return;
+        const newItems = [...items];
+        newItems[index] = { ...newItems[index], [field]: value };
+        onUpdate({ items: newItems });
     };
 
     useEffect(() => {
-        const handleEsc = (e) => {
-            if (e.key === 'Escape') toggleOpen(false);
-        };
-        if (isOpen) {
-            window.addEventListener('keydown', handleEsc);
-        }
+        if (!isOpen) return;
+        const handleEsc = (e) => e.key === 'Escape' && toggleOpen(false);
+        window.addEventListener('keydown', handleEsc);
         return () => window.removeEventListener('keydown', handleEsc);
     }, [isOpen]);
 
     return (
         <div className={`${styles.wrapper} ${className}`} data-section-id={sectionId}>
             <div className={styles.triggerWrapper}>
-                <button
-                    className="btn btn-primary btn-md"
-                    onClick={() => toggleOpen(true)}
-                >
+                <button className="btn btn-primary btn-md" onClick={() => toggleOpen(true)}>
                     <BuilderText
                         tagName="span"
                         content={triggerLabel}
-                        onChange={(val) => onUpdate && onUpdate({ triggerLabel: val })}
+                        onChange={(val) => onUpdate?.({ triggerLabel: val })}
                         sectionId={sectionId}
                     />
                 </button>
             </div>
 
             {isOpen && (
-                <div className={`${styles.overlay} z-xl`} onClick={(e) => {
-                    if (e.target === e.currentTarget) toggleOpen(false);
-                }}>
+                <div className={`${styles.overlay} z-xl`} onClick={(e) => e.target === e.currentTarget && toggleOpen(false)}>
                     <div className={styles.dialog} role="dialog" aria-modal="true">
-                        <button
-                            className={styles.closeButton}
-                            onClick={() => toggleOpen(false)}
-                            aria-label="Close dialog"
-                        >
+                        <button className={styles.closeButton} onClick={() => toggleOpen(false)} aria-label="Close dialog">
                             <XMarkIcon style={{ width: 20, height: 20 }} />
                         </button>
 
                         <div className={styles.imageContainer}>
-                            <BuilderImage
-                                className="imagePlaceholder-4-3"
-                                src={image}
-                            />
+                            <BuilderImage className="imagePlaceholder-4-3" src={image} />
                         </div>
 
                         <div className={styles.textContainer}>
@@ -78,14 +66,14 @@ export default function Dialog({
                                 tagName="h4"
                                 className={`h4 ${styles.title}`}
                                 content={title}
-                                onChange={(val) => onUpdate && onUpdate({ title: val })}
+                                onChange={(val) => onUpdate?.({ title: val })}
                                 sectionId={sectionId}
                             />
                             <BuilderText
                                 tagName="p"
                                 className={`body-regular ${styles.description}`}
                                 content={description}
-                                onChange={(val) => onUpdate && onUpdate({ description: val })}
+                                onChange={(val) => onUpdate?.({ description: val })}
                                 sectionId={sectionId}
                             />
                         </div>
@@ -96,25 +84,16 @@ export default function Dialog({
                                     key={i}
                                     label={item.label}
                                     href={item.url}
-                                    className={styles.listItem}
+                                    className={`${styles.listItem} body-regular ${i === items.length - 1 ? styles.lastItem : ''}`}
                                     sectionId={sectionId}
                                     suffix={`item-${i}`}
-                                    onLabelChange={(val) => {
-                                        const newItems = [...items];
-                                        newItems[i] = { ...newItems[i], label: val };
-                                        onUpdate && onUpdate({ items: newItems });
-                                    }}
-                                    onHrefChange={(val) => {
-                                        const newItems = [...items];
-                                        newItems[i] = { ...newItems[i], url: val };
-                                        onUpdate && onUpdate({ items: newItems });
-                                    }}
+                                    justify="flex-start"
+                                    fullWidth={true}
+                                    onLabelChange={(val) => updateItem(i, 'label', val)}
+                                    onHrefChange={(val) => updateItem(i, 'url', val)}
                                     iconLeft={
                                         <div className={styles.itemIcon}>
-                                            <BuilderImage
-                                                className="imagePlaceholder-1-1"
-                                                src={item.image}
-                                            />
+                                            <BuilderImage className="imagePlaceholder-1-1" src={item.image} />
                                         </div>
                                     }
                                     iconRight={<ArrowRightIcon className={styles.itemArrow} />}
