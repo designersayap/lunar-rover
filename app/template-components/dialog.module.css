@@ -16,7 +16,7 @@
     justify-content: center;
     padding: var(--padding-md);
     animation: fadeIn 0.2s ease-out;
-    z-index: 100;
+    z-index: 10;
 }
 
 .dialog {
@@ -116,14 +116,14 @@
 
 .closeButton {
     position: absolute;
-    top: var(--padding-md);
-    right: var(--padding-md);
+    top: var(--padding-xs);
+    right: var(--padding-xs);
     background: var(--background-neutral--default);
     border: none;
     cursor: pointer;
     width: var(--size-button-sm);
     height: var(--size-button-sm);
-    border-radius: 50%;
+    border-radius: var(--border-radius-round);
     color: var(--content-neutral--caption);
     transition: background-color 0.2s;
     display: flex;

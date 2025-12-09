@@ -113,7 +113,7 @@ export default function BuilderImage({
                 <img
                     id={elementId}
                     src={imageSrc}
-                    alt={alt}
+                    alt={(!alt || alt === "#") && sectionId ? sectionId : alt}
                     style={finalStyle}
                 />
             </div>

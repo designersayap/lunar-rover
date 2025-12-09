@@ -349,7 +349,7 @@
 .popoverOverlay {
     position: fixed;
     inset: 0;
-    z-index: 7;
+    z-index: 999;
 }
 
 .popoverContainer {
