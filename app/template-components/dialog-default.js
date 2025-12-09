@@ -1,5 +1,6 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
+import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
 import BuilderLink from "@/app/page-builder-components/utils/builder/builder-link";
 import { componentDefaults } from "./content/data";
 import styles from "./dialog-section.module.css";
@@ -42,8 +43,6 @@ export default function DialogDefault({
 
     return (
         <DialogSection
-            title={title}
-            description={description}
             isOpen={isOpen}
             onUpdate={onUpdate}
             sectionId={sectionId}
@@ -58,6 +57,23 @@ export default function DialogDefault({
                 onIdChange={(val) => onUpdate && onUpdate({ imageId: val })}
                 suffix="image"
             />
+
+            <div className={styles.textContainer}>
+                <BuilderText
+                    tagName="h4"
+                    className={`h4 ${styles.title}`}
+                    content={title}
+                    onChange={(val) => onUpdate?.({ title: val })}
+                    sectionId={sectionId}
+                />
+                <BuilderText
+                    tagName="p"
+                    className={`body-regular ${styles.description}`}
+                    content={description}
+                    onChange={(val) => onUpdate?.({ description: val })}
+                    sectionId={sectionId}
+                />
+            </div>
 
             <div className={styles.listContainer}>
                 {items.map((item, i) => (

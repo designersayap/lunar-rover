@@ -77,26 +77,28 @@ export default function DialogSection({
                                 <XMarkIcon style={{ width: 20, height: 20 }} />
                             </button>
 
-                            <div className={styles.textContainer}>
-                                {title && (
-                                    <BuilderText
-                                        tagName="h4"
-                                        className={`h4 ${styles.title}`}
-                                        content={title}
-                                        onChange={(val) => onUpdate?.({ title: val })}
-                                        sectionId={sectionId}
-                                    />
-                                )}
-                                {description && (
-                                    <BuilderText
-                                        tagName="p"
-                                        className={`body-regular ${styles.description}`}
-                                        content={description}
-                                        onChange={(val) => onUpdate?.({ description: val })}
-                                        sectionId={sectionId}
-                                    />
-                                )}
-                            </div>
+                            {(title || description) && (
+                                <div className={styles.textContainer}>
+                                    {title && (
+                                        <BuilderText
+                                            tagName="h4"
+                                            className={`h4 ${styles.title}`}
+                                            content={title}
+                                            onChange={(val) => onUpdate?.({ title: val })}
+                                            sectionId={sectionId}
+                                        />
+                                    )}
+                                    {description && (
+                                        <BuilderText
+                                            tagName="p"
+                                            className={`body-regular ${styles.description}`}
+                                            content={description}
+                                            onChange={(val) => onUpdate?.({ description: val })}
+                                            sectionId={sectionId}
+                                        />
+                                    )}
+                                </div>
+                            )}
 
                             {children}
                         </div>
