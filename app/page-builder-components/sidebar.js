@@ -277,6 +277,16 @@ export default function Sidebar({
                                                                         data-tooltip="Delete Layer"
                                                                         onClick={(e) => {
                                                                             e.stopPropagation();
+
+                                                                            // SAFEGURAD: For dialog-accordion, prevent deleting the last item
+                                                                            if (comp.id === 'dialog-accordion') {
+                                                                                const visibleCount = allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length;
+                                                                                if (visibleCount <= 1) {
+                                                                                    alert("At least one accordion item must remain visible.");
+                                                                                    return;
+                                                                                }
+                                                                            }
+
                                                                             // Calculate current visibility state properly
                                                                             const isVisible = comp.props?.[child.visibleProp] !== false;
 
@@ -286,6 +296,10 @@ export default function Sidebar({
                                                                             }
 
                                                                             updateComponent(comp.uniqueId, { [child.visibleProp]: false });
+                                                                        }}
+                                                                        style={{
+                                                                            opacity: (comp.id === 'dialog-accordion' && allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length <= 1) ? 0.3 : 1,
+                                                                            cursor: (comp.id === 'dialog-accordion' && allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length <= 1) ? 'not-allowed' : 'pointer'
                                                                         }}
                                                                     >
                                                                         <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />

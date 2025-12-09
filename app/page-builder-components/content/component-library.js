@@ -374,14 +374,14 @@ export const componentLibrary = {
                 }
             ],
             links: [
-                { label: "Accordion 1", propId: "item0Id", suffix: "accordion-0" },
-                { label: "Accordion 2", propId: "item1Id", suffix: "accordion-1" },
-                { label: "Accordion 3", propId: "item2Id", suffix: "accordion-2" },
-                { label: "Accordion 4", propId: "item3Id", suffix: "accordion-3" },
-                { label: "Accordion 5", propId: "item4Id", suffix: "accordion-4" },
-                { label: "Accordion 6", propId: "item5Id", suffix: "accordion-5" },
-                { label: "Accordion 7", propId: "item6Id", suffix: "accordion-6" },
-                { label: "Accordion 8", propId: "item7Id", suffix: "accordion-7" }
+                { label: "Accordion 1", propId: "item0Id", suffix: "accordion-0", visibleProp: "item0Visible" },
+                { label: "Accordion 2", propId: "item1Id", suffix: "accordion-1", visibleProp: "item1Visible" },
+                { label: "Accordion 3", propId: "item2Id", suffix: "accordion-2", visibleProp: "item2Visible" },
+                { label: "Accordion 4", propId: "item3Id", suffix: "accordion-3", visibleProp: "item3Visible" },
+                { label: "Accordion 5", propId: "item4Id", suffix: "accordion-4", visibleProp: "item4Visible" },
+                { label: "Accordion 6", propId: "item5Id", suffix: "accordion-5", visibleProp: "item5Visible" },
+                { label: "Accordion 7", propId: "item6Id", suffix: "accordion-6", visibleProp: "item6Visible" },
+                { label: "Accordion 8", propId: "item7Id", suffix: "accordion-7", visibleProp: "item7Visible" }
             ]
         }
     ]

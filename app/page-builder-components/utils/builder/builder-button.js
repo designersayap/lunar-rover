@@ -174,7 +174,13 @@ export default function BuilderButton({
         }
     };
 
-    const targetDialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
+    let targetDialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
+
+    // Fallback if not found (matching handleOpenDialog logic)
+    if (!targetDialogComponent && linkType === 'dialog') {
+        targetDialogComponent = selectedComponents?.find(c => c.id === 'dialog' || c.id === 'dialog-accordion');
+    }
+
     const targetDialogSectionId = targetDialogComponent?.sectionId;
 
     return (
