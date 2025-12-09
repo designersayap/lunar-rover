@@ -70,7 +70,7 @@ export default function BuilderText({
             id={elementId}
             ref={elementRef}
             className={`${className} ${!text ? "empty-builder-text" : ""}`}
-            style={{ ...style, outline: "none", cursor: "text", minWidth: "1em", minHeight: "1em" }}
+            style={{ ...style, outline: "none", cursor: "default", minWidth: "1em", minHeight: "1em" }}
             contentEditable
             suppressContentEditableWarning={true}
             onBlur={handleBlur}
