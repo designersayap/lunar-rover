@@ -61,6 +61,10 @@ export default function BuilderText({
             e.preventDefault();
             e.target.blur();
         }
+        if (e.key === "Escape") {
+            e.preventDefault();
+            e.target.blur();
+        }
     };
 
     const Tag = tagName;
