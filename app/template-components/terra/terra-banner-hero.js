@@ -35,7 +35,7 @@ export default function TerraBannerHero({
             <div className={styles.backgroundImage}>
                 <BuilderImage
                     src={image}
-                    className={styles.image}
+                    className={`${styles.image} object-cover`}
                     id={imageId}
                     sectionId={sectionId}
                     isVisible={imageVisible}
@@ -46,7 +46,7 @@ export default function TerraBannerHero({
             <div className={styles.overlay}>
                 <div className={`container-grid ${styles.fullHeight}`}>
                     <div className={`grid ${styles.fullHeight}`}>
-                        <div className={`col-mobile-4 col-tablet-8 col-desktop-12 ${styles.content}`}>
+                        <div className={`col-mobile-2 col-tablet-8 col-desktop-12 ${styles.content}`}>
                             <BuilderText
                                 tagName="h1"
                                 className={`h1 ${styles.heroTitle}`}

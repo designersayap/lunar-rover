@@ -403,6 +403,11 @@ body {
   position: relative;
 }
 
+/* Object Fit Utilities */
+.object-cover {
+  object-fit: cover;
+}
+
 [data-tooltip]::after {
   content: attr(data-tooltip);
   position: absolute;

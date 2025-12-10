@@ -102,6 +102,9 @@ export const componentDefaults = {
         buttonLinkType: "url",
         buttonTargetDialogId: "",
         buttonId: ""
+    },
+    "lacto-media": {
+        image: ""
     }
 
 };

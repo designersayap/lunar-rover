@@ -11,6 +11,7 @@ const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/
 const Dialog = dynamic(() => import("../../template-components/dialog-default"));
 const DialogAccordion = dynamic(() => import("../../template-components/dialog-accordion"));
 const BannerInformation = dynamic(() => import("../../template-components/banner-information"));
+const LactoMedia = dynamic(() => import("@/app/template-components/lacto/lacto-media"));
 
 
 export const componentLibrary = {
@@ -434,7 +435,30 @@ export const componentLibrary = {
                     visibleProp: "imageVisible"
                 }
             ]
-        },
-
+        }
+    ],
+    "Lacto": [
+        {
+            id: "lacto-media",
+            name: "Lacto Media",
+            component: LactoMedia,
+            thumbnail: "/images/thumbnails/lacto-media.svg", // Placeholder
+            config: [
+                {
+                    name: "image",
+                    label: "Image",
+                    type: "image",
+                    default: ""
+                }
+            ],
+            images: [
+                {
+                    label: "Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
+            ]
+        }
     ]
 };
