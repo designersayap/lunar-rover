@@ -23,6 +23,7 @@ export default function BannerInformation({
     const [isClosed, setIsClosed] = useState(false);
     const [isMarquee, setIsMarquee] = useState(false);
     const [marqueeOffset, setMarqueeOffset] = useState(0);
+    const [marqueeDuration, setMarqueeDuration] = useState(10); // Default duration
     const textWrapperRef = useRef(null);
     const textRef = useRef(null);
 
@@ -40,6 +41,10 @@ export default function BannerInformation({
                 if (scrollWidth > clientWidth) {
                     setIsMarquee(true);
                     setMarqueeOffset(scrollWidth - clientWidth);
+                    // Calculate duration based on speed (e.g. 50px/s)
+                    // Min duration 8s to avoid too fast startup/short scroll
+                    const duration = Math.max(8, (scrollWidth - clientWidth) / 50);
+                    setMarqueeDuration(duration);
                 } else {
                     setIsMarquee(false);
                     setMarqueeOffset(0);
@@ -70,7 +75,8 @@ export default function BannerInformation({
                         style={{
                             display: isMarquee ? 'inline-block' : 'block',
                             width: isMarquee ? 'auto' : '100%',
-                            '--marquee-offset': `-${marqueeOffset}px`
+                            '--marquee-offset': `-${marqueeOffset}px`,
+                            '--marquee-duration': `${marqueeDuration}s`
                         }}
                     >
                         <BuilderText
@@ -79,6 +85,7 @@ export default function BannerInformation({
                             content={title}
                             onChange={(val) => onUpdate?.({ title: val })}
                             sectionId={sectionId}
+                            multiline={false}
                         />
                     </div>
                 </div>
@@ -87,7 +94,7 @@ export default function BannerInformation({
                     href={buttonUrl}
                     isVisible={buttonVisible}
                     sectionId={sectionId}
-                    className="btn btn-neutral btn-sm"
+                    className="btn btn-outline btn-sm"
                     onLabelChange={(val) => onUpdate?.({ buttonText: val })}
                     onHrefChange={(val) => onUpdate?.({ buttonUrl: val })}
                     onVisibilityChange={(val) => onUpdate?.({ buttonVisible: val })}

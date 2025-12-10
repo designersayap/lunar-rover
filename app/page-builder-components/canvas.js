@@ -37,7 +37,7 @@ export default function Canvas({
                             return (
                                 <div
                                     key={item.uniqueId}
-                                    className={styles.componentWrapper}
+                                    className={`${styles.componentWrapper} ${item.id === 'banner-information' ? styles.stickyWrapper : ''}`}
                                 >
                                     {/* Removed Control Buttons per user request */}
 

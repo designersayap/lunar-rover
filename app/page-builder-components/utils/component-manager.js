@@ -14,12 +14,21 @@ export function addComponentToList(components, componentData, sectionId) {
         initialProps[prop.name] = prop.default;
     });
 
-    return [...components, {
+    const newItem = {
         ...componentData,
         uniqueId: Date.now(),
         sectionId,
         props: { ...initialProps, ...(componentData.props || {}) }
-    }];
+    };
+
+    if (componentData.id === 'banner-information') {
+        const banners = components.filter(c => c.id === 'banner-information');
+        const others = components.filter(c => c.id !== 'banner-information');
+        return [newItem, ...banners, ...others];
+    }
+
+    // If we are adding a normal component, ensure it doesn't go above existing banners (it goes to end anyway)
+    return [...components, newItem];
 }
 
 /**
@@ -146,6 +155,16 @@ export function reorderComponents(components, fromIndex, toIndex) {
     const arr = [...components];
     const [item] = arr.splice(fromIndex, 1);
     arr.splice(toIndex, 0, item);
+
+    // Enforce banner-information always at the top
+    const banners = arr.filter(c => c.id === 'banner-information');
+    const others = arr.filter(c => c.id !== 'banner-information');
+
+    // If there are banners, they must be at the start
+    if (banners.length > 0) {
+        return [...banners, ...others];
+    }
+
     return arr;
 }
 

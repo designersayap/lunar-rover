@@ -231,7 +231,12 @@
     transition: border-color .2s, transform .2s;
 }
 
-
+.stickyWrapper {
+    position: sticky;
+    top: 0;
+    z-index: 100 !important;
+    /* Ensure it stays above other content */
+}
 
 /* Drop indicator */
 .dropIndicator {

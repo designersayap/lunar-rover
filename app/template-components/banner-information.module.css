@@ -35,8 +35,8 @@
 .marqueeWrapper {
     flex: 0 1 auto;
     min-width: 0;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: var(--padding-xs);
+    padding-right: var(--padding-xs);
     overflow: hidden;
     position: relative;
 }
@@ -47,19 +47,8 @@
     -webkit-mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
 }
 
-.marqueeContent {
-    display: inline-block;
-    white-space: nowrap;
-    animation: marquee 2000s linear infinite;
-    padding-left: 0;
-    /* Start from off-screen right */
-}
 
-/* When not overflowing, center it effectively by not animating or different structure?
-   Actually, the plan said "conditional". JS will toggle the class.
-   If .marquee is NOT present, it behaves like normal centered text.
-*/
-
+/* If .marquee is NOT present, it behaves like normal centered text. */
 .marquee {
     /* If we use a class on the text itself */
     display: inline-block;
@@ -69,9 +58,9 @@
        Maybe depends on length? But constant is safer for now.
        10s scroll + 2s pause + restart = 12s cycle? 
     */
-    animation: marquee 8s linear infinite;
+    animation: marquee var(--marquee-duration, 10s) linear infinite;
     /* Add delay before starting? */
-    animation-delay: 2s;
+    animation-delay: 1s;
 }
 
 @keyframes marquee {
