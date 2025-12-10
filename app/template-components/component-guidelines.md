@@ -1,104 +1,130 @@
 # Component Guidelines
 
-All components in `app/template-components` must support inline editing and dynamic property updates. Follow these guidelines when creating new components.
+All components in `app/template-components` must support inline editing, dynamic property updates, and the project's architectural standards.
 
-## 1. Use `BuilderText` for Text Content
+## 1. Core Builder Components
 
-Instead of hardcoding text or using standard HTML tags for text (like `h1`, `p`, `span`), use the `BuilderText` component.
+Use these primitives instead of standard HTML tags to enable builder functionality (ID generation, overlay, editing).
 
+### `BuilderText`
+For all editable text content.
 ```javascript
-import BuilderText from "@/app/page-builder-components/utils/builder-text";
-
+import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
 // ...
-
 <BuilderText
     tagName="h2"
     className={styles.title}
     content={title}
-    onChange={(val) => onUpdate && onUpdate({ title: val })}
+    onChange={(val) => onUpdate?.({ title: val })}
+    sectionId={sectionId}
 />
 ```
 
-## 2. Accept Props for Content
-
-Components should accept props for all dynamic content (text, images, links, etc.) and provide default values.
-
+### `BuilderImage`
+For images with upload/replacement support.
 ```javascript
-export default function MyComponent({
-    title = "Default Title",
-    description = "Default Description",
-    onUpdate // Callback for updates
-}) {
-    // ...
-}
-```
-
-## 3. Implement `onUpdate` Callback
-
-The `onUpdate` prop is a function provided by the parent to update the component's state. It expects an object with the updated properties.
-
-```javascript
-const handleUpdate = (key, value) => {
-    if (onUpdate) {
-        onUpdate({ [key]: value });
-    }
-};
-
-// Usage
-<BuilderText
-    // ...
-    onChange={(val) => handleUpdate("title", val)}
+import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
+// ...
+<BuilderImage
+    className={`${styles.imageContainer} imagePlaceholder-16-9`}
+    src={image}
+    id={imageId}
+    sectionId={sectionId}
+    isVisible={imageVisible}
+    onIdChange={(val) => onUpdate?.({ imageId: val })}
+    suffix="image"
 />
 ```
 
-## 4. Handle Array/Object Updates
-
-For complex state like arrays (e.g., lists of features) or objects, ensure you update the specific item correctly.
-
+### `BuilderLink`
+For links or list items that need ID/visibility management.
 ```javascript
-const handleFeatureUpdate = (index, key, value) => {
-    if (!onUpdate) return;
-    const newFeatures = [...features];
-    newFeatures[index] = { ...newFeatures[index], [key]: value };
-    onUpdate({ features: newFeatures });
-};
+import BuilderLink from "@/app/page-builder-components/utils/builder/builder-link";
+// ...
+<BuilderLink
+    label={item.label}
+    href={item.url}
+    id={item0Id}
+    isVisible={item0Visible}
+    onVisibilityChange={(val) => onUpdate?.({ item0Visible: val })}
+    onIdChange={(val) => onUpdate?.({ item0Id: val })}
+    // ...other props
+/>
 ```
 
-## 5. Example Component Structure
+### `BuilderElement`
+For generic elements (like accordion items or wrappers) that need ID generation/synchronization but don't fit into the above categories.
+```javascript
+import BuilderElement from "@/app/page-builder-components/utils/builder/builder-element";
+// ...
+<BuilderElement
+    tagName="div"
+    sectionId={sectionId}
+    id={item0Id}
+    elementProps="accordion-0"
+    onIdChange={(val) => onUpdate?.({ item0Id: val })}
+>
+    {/* Content */}
+</BuilderElement>
+```
+
+---
+
+## 2. Standard Dialog Structure
+
+All dialog components **must** use `DialogSection` to ensure consistency.
+**Structure Order:** Floating Close Button -> Image -> Title -> Description -> Content.
+
+`DialogSection` handles the layout automatically when you pass props:
 
 ```javascript
-import React from 'react';
-import styles from './MyComponent.module.css';
-import BuilderText from "@/app/page-builder-components/utils/builder-text";
+import DialogSection from "./dialog-section";
 
-export default function MyComponent({
-    title = "Default Title",
-    items = [{ label: "Item 1" }, { label: "Item 2" }],
-    onUpdate
+export default function MyDialog({
+    title, description, image, imageId, imageVisible, sectionId, isOpen, onUpdate
 }) {
     return (
-        <div className={styles.container}>
-            <BuilderText
-                tagName="h2"
-                content={title}
-                onChange={(val) => onUpdate && onUpdate({ title: val })}
-            />
-            <ul>
-                {items.map((item, index) => (
-                    <li key={index}>
-                        <BuilderText
-                            tagName="span"
-                            content={item.label}
-                            onChange={(val) => {
-                                const newItems = [...items];
-                                newItems[index] = { ...newItems[index], label: val };
-                                onUpdate && onUpdate({ items: newItems });
-                            }}
-                        />
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <DialogSection
+            title={title}
+            description={description}
+            image={image}
+            imageId={imageId}
+            imageVisible={imageVisible}
+            sectionId={sectionId}
+            isOpen={isOpen}
+            onUpdate={onUpdate}
+        >
+            {/* Custom Content Children (e.g., List, Accordion) */}
+        </DialogSection>
     );
 }
 ```
+
+---
+
+## 3. Visibility & Soft Deletion
+
+To allow users to "delete" items from the sidebar (without permanently breaking the structure), implementing "soft deletion" via visibility props.
+
+1.  **Props**: Accept an `isVisible` prop (e.g., `item0Visible`).
+2.  **Conditional Rendering**: Only render the item if `isVisible !== false`.
+3.  **Sidebar Config**: In `component-library.js`, map the `visibleProp` in the `links` array.
+
+```javascript
+// component-library.js
+links: [
+    { label: "Item 1", propId: "item0Id", suffix: "item-0", visibleProp: "item0Visible" }
+]
+```
+
+---
+
+## 4. Configuration & Defaults
+
+### `component-library.js`
+Defines how the component appears in the sidebar.
+-   **`config`**: Fields for the properties panel (e.g., items list).
+-   **`links`**: Individual elements shown as layers in the sidebar (for selection/deletion).
+
+### `data.js`
+Defines the initial default values for all props. Ensure new props (like `image`, `imageId`) have defaults here.
