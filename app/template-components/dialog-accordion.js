@@ -20,13 +20,9 @@ export default function DialogAccordion({
     imageId,
     imageVisible,
 
-    // Accordion items provided by parent/data.js
-    // We expect 5 items by design
+    // Accordion Items
     items = componentDefaults["dialog-accordion"]?.items || [],
-
-    // Individual IDs passed from Sidebar
     item0Id, item1Id, item2Id, item3Id, item4Id, item5Id, item6Id, item7Id,
-    // Visibility props
     item0Visible = true, item1Visible = true, item2Visible = true, item3Visible = true,
     item4Visible = true, item5Visible = true, item6Visible = true, item7Visible = true,
 }) {

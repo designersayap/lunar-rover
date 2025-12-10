@@ -34,15 +34,9 @@ export default function BannerInformation({
                 const wrapper = textWrapperRef.current;
                 const scrollWidth = wrapper.scrollWidth;
                 const clientWidth = wrapper.clientWidth;
-
-                // If content is wider, calculate how much it needs to scroll
-                // We want to scroll until the END of content aligns with END of wrapper.
-                // Distance = scrollWidth - clientWidth
                 if (scrollWidth > clientWidth) {
                     setIsMarquee(true);
                     setMarqueeOffset(scrollWidth - clientWidth);
-                    // Calculate duration based on speed (e.g. 50px/s)
-                    // Min duration 8s to avoid too fast startup/short scroll
                     const duration = Math.max(8, (scrollWidth - clientWidth) / 50);
                     setMarqueeDuration(duration);
                 } else {
@@ -61,51 +55,54 @@ export default function BannerInformation({
 
     return (
         <div
-
-            className={`${styles.banner} z-xl ${className}`}
+            className={`${styles.banner} z-sm ${className}`}
             data-section-id={sectionId}
         >
-            <div className={styles.content}>
-                <div
-                    className={`${styles.marqueeWrapper} ${isMarquee ? styles.marqueeMask : ''}`}
-                    ref={textWrapperRef}
-                >
-                    <div
-                        ref={textRef}
-                        style={{
-                            display: isMarquee ? 'inline-block' : 'block',
-                            width: isMarquee ? 'auto' : '100%',
-                            '--marquee-offset': `-${marqueeOffset}px`,
-                            '--marquee-duration': `${marqueeDuration}s`
-                        }}
-                    >
-                        <BuilderText
-                            tagName="p"
-                            className={`body-regular ${styles.title} ${isMarquee ? styles.marquee : ''}`}
-                            content={title}
-                            onChange={(val) => onUpdate?.({ title: val })}
+            <div className="container-grid" style={{ width: '100%' }}>
+                <div className="grid align-center">
+                    <div className={`col-mobile-2 col-tablet-8 col-desktop-12 ${styles.content}`}>
+                        <div
+                            className={`${styles.marqueeWrapper} ${isMarquee ? styles.marqueeMask : ''}`}
+                            ref={textWrapperRef}
+                        >
+                            <div
+                                ref={textRef}
+                                style={{
+                                    display: isMarquee ? 'inline-block' : 'block',
+                                    width: isMarquee ? 'auto' : '100%',
+                                    '--marquee-offset': `-${marqueeOffset}px`,
+                                    '--marquee-duration': `${marqueeDuration}s`
+                                }}
+                            >
+                                <BuilderText
+                                    tagName="p"
+                                    className={`body-regular ${styles.title} ${isMarquee ? styles.marquee : ''}`}
+                                    content={title}
+                                    onChange={(val) => onUpdate?.({ title: val })}
+                                    sectionId={sectionId}
+                                    multiline={false}
+                                />
+                            </div>
+                        </div>
+                        <BuilderButton
+                            label={buttonText}
+                            href={buttonUrl}
+                            isVisible={buttonVisible}
                             sectionId={sectionId}
-                            multiline={false}
+                            className="btn btn-outline btn-sm"
+                            onLabelChange={(val) => onUpdate?.({ buttonText: val })}
+                            onHrefChange={(val) => onUpdate?.({ buttonUrl: val })}
+                            onVisibilityChange={(val) => onUpdate?.({ buttonVisible: val })}
+                            linkType={buttonLinkType}
+                            onLinkTypeChange={(val) => onUpdate?.({ buttonLinkType: val })}
+                            targetDialogId={buttonTargetDialogId}
+                            onTargetDialogIdChange={(val) => onUpdate?.({ buttonTargetDialogId: val })}
+                            id={buttonId}
+                            onIdChange={(val) => onUpdate?.({ buttonId: val })}
+                            suffix="button"
                         />
                     </div>
                 </div>
-                <BuilderButton
-                    label={buttonText}
-                    href={buttonUrl}
-                    isVisible={buttonVisible}
-                    sectionId={sectionId}
-                    className="btn btn-outline btn-sm"
-                    onLabelChange={(val) => onUpdate?.({ buttonText: val })}
-                    onHrefChange={(val) => onUpdate?.({ buttonUrl: val })}
-                    onVisibilityChange={(val) => onUpdate?.({ buttonVisible: val })}
-                    linkType={buttonLinkType}
-                    onLinkTypeChange={(val) => onUpdate?.({ buttonLinkType: val })}
-                    targetDialogId={buttonTargetDialogId}
-                    onTargetDialogIdChange={(val) => onUpdate?.({ buttonTargetDialogId: val })}
-                    id={buttonId}
-                    onIdChange={(val) => onUpdate?.({ buttonId: val })}
-                    suffix="button"
-                />
             </div>
 
             <div className={styles.actions}>

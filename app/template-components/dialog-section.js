@@ -19,13 +19,16 @@ export default function DialogSection({
     imageId,
     imageVisible,
 }) {
+    // === State & Control ===
     const [internalIsOpen, setInternalIsOpen] = useState(false);
     const [portalContainer, setPortalContainer] = useState(null);
 
+    // Support both controlled (via props) and uncontrolled modes
     const isControlled = controlledIsOpen !== undefined;
     const isOpen = isControlled ? controlledIsOpen : internalIsOpen;
 
-    // Find the portal container on mount
+    // === Portal Setup ===
+    // We render into #dialog-portal-root to escape parent overflow/z-index issues
     useEffect(() => {
         const container = document.getElementById('dialog-portal-root');
         setPortalContainer(container);
@@ -39,22 +42,27 @@ export default function DialogSection({
         }
     };
 
-    // Lock scroll logic
+    // === Effects ===
+
+    // 1. Lock Body Scroll when Open
     useEffect(() => {
         if (!isOpen) return;
 
         if (portalContainer) {
+            // If in builder/canvas, lock canvas scroll
             const canvas = portalContainer.parentElement;
             if (canvas) {
                 canvas.style.overflow = 'hidden';
                 return () => { canvas.style.overflow = ''; };
             }
         } else {
+            // If standalone, lock body scroll
             document.body.style.overflow = 'hidden';
             return () => { document.body.style.overflow = ''; };
         }
     }, [isOpen, portalContainer]);
 
+    // 2. Escape Key to Close
     useEffect(() => {
         if (!isOpen) return;
         const handleEsc = (e) => e.key === 'Escape' && toggleOpen(false);
@@ -62,6 +70,7 @@ export default function DialogSection({
         return () => window.removeEventListener('keydown', handleEsc);
     }, [isOpen]);
 
+    // === Render Logic ===
     const dialogContent = (
         <div
             className={`${styles.overlay} z-xl ${className}`}
@@ -72,7 +81,8 @@ export default function DialogSection({
         >
             <div className="container-grid" style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                 <div className="grid" style={{ width: '100%' }}>
-                    <div className="col-1 col-tablet-4 col-desktop-6 offset-desktop-3 offset-tablet-2">
+                    {/* Centered Modal Column */}
+                    <div className="col-1 col-tablet-6 col-desktop-6 offset-desktop-3 offset-tablet-1">
                         <div
                             className={styles.dialog}
                             role="dialog"
@@ -124,5 +134,6 @@ export default function DialogSection({
         </div>
     );
 
+    // Use Portal if container exists, otherwise fallback to inline (SSR/mounting)
     return portalContainer ? createPortal(dialogContent, portalContainer) : dialogContent;
 }

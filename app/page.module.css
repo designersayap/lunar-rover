@@ -234,7 +234,7 @@
 .stickyWrapper {
     position: sticky;
     top: 0;
-    z-index: 100 !important;
+    z-index: 5 !important;
     /* Ensure it stays above other content */
 }
 

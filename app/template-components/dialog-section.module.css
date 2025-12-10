@@ -31,10 +31,10 @@
     flex-direction: column;
     overflow-y: auto;
     animation: scaleIn 0.2s ease-out;
-    /* Optional: padding-bottom can be overriden or set generally */
     padding-bottom: var(--padding-xl);
 }
 
+/* Controls & Content */
 .closeButton {
     position: absolute;
     top: var(--padding-xs);
@@ -99,7 +99,7 @@
     }
 }
 
-/* Dialog Default Specifics (Image & List) */
+/* Dialog Default (List Variant) */
 .imageContainer {
     width: 100%;
     position: relative;
@@ -163,7 +163,7 @@
     height: var(--size-icon-md);
 }
 
-/* Dialog Accordion Specifics */
+/* Dialog Accordion Variant */
 .accordionContainer {
     display: flex;
     flex-direction: column;

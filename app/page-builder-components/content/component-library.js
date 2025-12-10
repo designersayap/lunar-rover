@@ -15,6 +15,51 @@ const BannerInformation = dynamic(() => import("../../template-components/banner
 
 export const componentLibrary = {
 
+    "OSM": [
+        {
+            id: "banner-information",
+            name: "Info Banner",
+            component: BannerInformation,
+            thumbnail: "/images/thumbnails/banner-info.svg",
+            config: [
+                {
+                    name: "title",
+                    label: "Title",
+                    type: "text",
+                    default: "Information Banner"
+                },
+                {
+                    name: "buttonText",
+                    label: "Button Label",
+                    type: "text",
+                    default: "Label"
+                },
+                {
+                    name: "buttonLinkType",
+                    label: "Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: "url"
+                },
+                {
+                    name: "buttonUrl",
+                    label: "Button URL",
+                    type: "text",
+                    default: ""
+                }
+            ],
+            buttons: [
+                {
+                    label: "Button",
+                    propId: "buttonId",
+                    suffix: "button",
+                    labelProp: "buttonText",
+                    visibleProp: "buttonVisible",
+                    linkTypeProp: "buttonLinkType"
+                }
+            ]
+        }
+    ],
     "Header": [
         {
             id: "header-title",
@@ -148,51 +193,6 @@ export const componentLibrary = {
                 }
             ]
         },
-    ],
-    "OSM": [
-        {
-            id: "banner-information",
-            name: "Info Banner",
-            component: BannerInformation,
-            thumbnail: "/images/thumbnails/banner-info.svg",
-            config: [
-                {
-                    name: "title",
-                    label: "Title",
-                    type: "text",
-                    default: "Information Banner"
-                },
-                {
-                    name: "buttonText",
-                    label: "Button Label",
-                    type: "text",
-                    default: "Label"
-                },
-                {
-                    name: "buttonLinkType",
-                    label: "Button Link Type",
-                    type: "select",
-                    options: ["url", "dialog"],
-                    default: "url"
-                },
-                {
-                    name: "buttonUrl",
-                    label: "Button URL",
-                    type: "text",
-                    default: ""
-                }
-            ],
-            buttons: [
-                {
-                    label: "Button",
-                    propId: "buttonId",
-                    suffix: "button",
-                    labelProp: "buttonText",
-                    visibleProp: "buttonVisible",
-                    linkTypeProp: "buttonLinkType"
-                }
-            ]
-        }
     ],
     "Dialog": [
         {

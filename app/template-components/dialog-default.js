@@ -17,11 +17,9 @@ export default function DialogDefault({
     image,
     imageId,
     imageVisible,
-    // List items are now provided by parent/data.js
+    // List Items
     items = componentDefaults.dialog.items,
-    // Individual IDs for list items passed from sidebar/page
     item0Id, item1Id, item2Id, item3Id, item4Id, item5Id, item6Id, item7Id,
-    // Visibility for list items
     item0Visible, item1Visible, item2Visible, item3Visible, item4Visible, item5Visible, item6Visible, item7Visible,
 }) {
     // Map item IDs and visibility for easy access
