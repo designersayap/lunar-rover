@@ -358,6 +358,11 @@ export const componentLibrary = {
             thumbnail: "/images/thumbnails/dialog.svg", // Placeholder
             config: [
                 {
+                    name: "image",
+                    label: "Image",
+                    type: "image"
+                },
+                {
                     name: "items",
                     label: "Accordion Items",
                     type: "list",
@@ -374,6 +379,7 @@ export const componentLibrary = {
                 }
             ],
             links: [
+                { label: "Image", propId: "imageId", suffix: "image", visibleProp: "imageVisible" },
                 { label: "Accordion 1", propId: "item0Id", suffix: "accordion-0", visibleProp: "item0Visible" },
                 { label: "Accordion 2", propId: "item1Id", suffix: "accordion-1", visibleProp: "item1Visible" },
                 { label: "Accordion 3", propId: "item2Id", suffix: "accordion-2", visibleProp: "item2Visible" },

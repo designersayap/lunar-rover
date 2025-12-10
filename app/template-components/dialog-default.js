@@ -43,37 +43,16 @@ export default function DialogDefault({
 
     return (
         <DialogSection
+            title={title}
+            description={description}
             isOpen={isOpen}
             onUpdate={onUpdate}
             sectionId={sectionId}
             className={className}
+            image={image}
+            imageId={imageId}
+            imageVisible={imageVisible}
         >
-            <BuilderImage
-                className={`${styles.imageContainer} imagePlaceholder-16-9`}
-                src={image}
-                id={imageId}
-                sectionId={sectionId}
-                isVisible={imageVisible}
-                onIdChange={(val) => onUpdate && onUpdate({ imageId: val })}
-                suffix="image"
-            />
-
-            <div className={styles.textContainer}>
-                <BuilderText
-                    tagName="h4"
-                    className={`h4 ${styles.title}`}
-                    content={title}
-                    onChange={(val) => onUpdate?.({ title: val })}
-                    sectionId={sectionId}
-                />
-                <BuilderText
-                    tagName="p"
-                    className={`body-regular ${styles.description}`}
-                    content={description}
-                    onChange={(val) => onUpdate?.({ description: val })}
-                    sectionId={sectionId}
-                />
-            </div>
 
             <div className={styles.listContainer}>
                 {items.map((item, i) => (

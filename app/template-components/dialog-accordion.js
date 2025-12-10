@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/solid';
 import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
 import BuilderElement from "@/app/page-builder-components/utils/builder/builder-element";
+import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
 import { componentDefaults } from "./content/data";
 import styles from "./dialog-section.module.css";
 import DialogSection from "./dialog-section";
@@ -13,7 +14,11 @@ export default function DialogAccordion({
     isOpen,
     onUpdate,
     sectionId,
+
     className = "",
+    image,
+    imageId,
+    imageVisible,
 
     // Accordion items provided by parent/data.js
     // We expect 5 items by design
@@ -58,6 +63,9 @@ export default function DialogAccordion({
             onUpdate={onUpdate}
             sectionId={sectionId}
             className={className}
+            image={image}
+            imageId={imageId}
+            imageVisible={imageVisible}
         >
             <div className={styles.accordionContainer}>
                 {items.slice(0, 8).map((item, i) => (

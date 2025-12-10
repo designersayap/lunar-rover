@@ -89,6 +89,9 @@ export const componentDefaults = {
     "dialog-accordion": {
         title: "Title",
         description: "Description",
+        image: "",
+        imageId: "",
+        imageVisible: true,
         items: Array(8).fill({ title: "Accordion Title", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." })
     },
 

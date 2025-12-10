@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
+import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
 import styles from "./dialog-section.module.css";
 
 export default function DialogSection({
@@ -11,7 +12,12 @@ export default function DialogSection({
     isOpen: controlledIsOpen,
     onUpdate,
     sectionId,
-    className = ""
+
+    className = "",
+    // New Props for Image
+    image,
+    imageId,
+    imageVisible,
 }) {
     const [internalIsOpen, setInternalIsOpen] = useState(false);
     const [portalContainer, setPortalContainer] = useState(null);
@@ -76,6 +82,16 @@ export default function DialogSection({
                             <button className={styles.closeButton} onClick={() => toggleOpen(false)} aria-label="Close dialog" data-dialog-close>
                                 <XMarkIcon style={{ width: 20, height: 20 }} />
                             </button>
+
+                            <BuilderImage
+                                className={`${styles.imageContainer} imagePlaceholder-16-9`}
+                                src={image}
+                                id={imageId}
+                                sectionId={sectionId}
+                                isVisible={imageVisible}
+                                onIdChange={(val) => onUpdate && onUpdate({ imageId: val })}
+                                suffix="image"
+                            />
 
                             {(title || description) && (
                                 <div className={styles.textContainer}>
