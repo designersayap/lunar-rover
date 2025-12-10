@@ -6,7 +6,7 @@
     /* Neutral Backgrounds */
     --scrim: var(--base-black);
     --background-neutral--default: var(--base-white);
-    --background-neutral--neutral-strong: var(--base-black);
+    --background-neutral--neutral-strong: var(--grey-500);
     --background-neutral--neutral-mute: var(--grey-300);
     --background-neutral--neutral-subtle: var(--grey-100);
     --background-neutral--neutral-faint: var(--grey-50);

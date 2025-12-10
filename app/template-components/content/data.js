@@ -94,11 +94,14 @@ export const componentDefaults = {
         imageVisible: true,
         items: Array(8).fill({ title: "Accordion Title", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." })
     },
-
-
-
-
-
-
+    "banner-information": {
+        title: "Information Banner",
+        buttonText: "Label",
+        buttonUrl: "",
+        buttonVisible: true,
+        buttonLinkType: "url",
+        buttonTargetDialogId: "",
+        buttonId: ""
+    }
 
 };

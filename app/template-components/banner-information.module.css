@@ -1,0 +1,44 @@
+.banner {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-neutral--neutral-strong);
+    border-bottom: 1px solid var(--stroke-neutral--neutral);
+    padding: var(--padding-sm) var(--padding-md);
+    min-height: 48px;
+    width: 100%;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Dynamic padding applied via CSS variable --actions-width */
+    padding-left: 0;
+    padding-right: var(--actions-width, 40px);
+    min-width: 0;
+    /* Crucial for flex child truncation */
+}
+
+.title {
+    color: var(--content-neutral--body-invert);
+    margin: 0;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    /* Ensure it respects container width */
+}
+
+.actions {
+    position: absolute;
+    right: var(--padding-md);
+    display: flex;
+    align-items: center;
+    gap: var(--padding-xs);
+}

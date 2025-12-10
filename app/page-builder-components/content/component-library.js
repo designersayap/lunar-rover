@@ -10,6 +10,7 @@ const TerraFeaturesImageLeft = dynamic(() => import("@/app/template-components/t
 const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/terra/terra-features-image-right"));
 const Dialog = dynamic(() => import("../../template-components/dialog-default"));
 const DialogAccordion = dynamic(() => import("../../template-components/dialog-accordion"));
+const BannerInformation = dynamic(() => import("../../template-components/banner-information"));
 
 
 export const componentLibrary = {
@@ -388,6 +389,51 @@ export const componentLibrary = {
                 { label: "Accordion 6", propId: "item5Id", suffix: "accordion-5", visibleProp: "item5Visible" },
                 { label: "Accordion 7", propId: "item6Id", suffix: "accordion-6", visibleProp: "item6Visible" },
                 { label: "Accordion 8", propId: "item7Id", suffix: "accordion-7", visibleProp: "item7Visible" }
+            ]
+        }
+    ],
+    "Banners": [
+        {
+            id: "banner-information",
+            name: "Info Banner",
+            component: BannerInformation,
+            thumbnail: "/images/thumbnails/banner-info.svg",
+            config: [
+                {
+                    name: "title",
+                    label: "Title",
+                    type: "text",
+                    default: "Information Banner"
+                },
+                {
+                    name: "buttonText",
+                    label: "Button Label",
+                    type: "text",
+                    default: "Label"
+                },
+                {
+                    name: "buttonLinkType",
+                    label: "Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: "url"
+                },
+                {
+                    name: "buttonUrl",
+                    label: "Button URL",
+                    type: "text",
+                    default: ""
+                }
+            ],
+            buttons: [
+                {
+                    label: "Button",
+                    propId: "buttonId",
+                    suffix: "button",
+                    labelProp: "buttonText",
+                    visibleProp: "buttonVisible",
+                    linkTypeProp: "buttonLinkType"
+                }
             ]
         }
     ]
