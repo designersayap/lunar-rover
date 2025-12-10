@@ -103,7 +103,7 @@ export const componentDefaults = {
         buttonTargetDialogId: "",
         buttonId: ""
     },
-    "lacto-media": {
+    "media-16-9": {
         image: ""
     }
 

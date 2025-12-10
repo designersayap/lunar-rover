@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import { useBuilderSelection, BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import styles from "../../../page.module.css";
@@ -36,6 +36,35 @@ export default function BuilderSection({
     const myPopoverId = `popover-${elementId}`;
     const showSettings = activePopoverId === myPopoverId;
 
+    // Update overlay position when active
+    const [overlayRect, setOverlayRect] = useState(null);
+
+    useEffect(() => {
+        if (isActive && sectionRef.current) {
+            const updatePosition = () => {
+                if (sectionRef.current) {
+                    const rect = sectionRef.current.getBoundingClientRect();
+                    setOverlayRect(rect);
+                    if (showSettings) {
+                        setPopoverPosition({
+                            top: rect.top,
+                            left: rect.left + rect.width / 2
+                        });
+                    }
+                }
+            };
+
+            updatePosition();
+            window.addEventListener('scroll', updatePosition, true);
+            window.addEventListener('resize', updatePosition);
+
+            return () => {
+                window.removeEventListener('scroll', updatePosition, true);
+                window.removeEventListener('resize', updatePosition);
+            };
+        }
+    }, [isActive, showSettings]);
+
     if (!isVisible && !isActive) return null;
 
     const handleClick = (e) => {
@@ -53,7 +82,7 @@ export default function BuilderSection({
         if (!showSettings && sectionRef.current) {
             const rect = sectionRef.current.getBoundingClientRect();
             setPopoverPosition({
-                top: rect.bottom + 4,
+                top: rect.top,
                 left: rect.left + rect.width / 2
             });
         }
@@ -89,7 +118,12 @@ export default function BuilderSection({
 
                 {/* Active Overlay */}
                 {isActive && (
-                    <div className={styles.activeOverlay}>
+                    <div
+                        className={styles.activeOverlay}
+                        style={{
+                            top: overlayRect ? Math.max(-24, 42 - overlayRect.top) : -24
+                        }}
+                    >
                         <div className={styles.overlayLabel}>
                             <span className={styles.overlayIdText}>#{elementId}</span>
                         </div>

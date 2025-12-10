@@ -112,8 +112,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    align-items: center;
     height: var(--h-topbar);
-    z-index: 10;
+    z-index: 200;
+    position: relative;
 }
 
 .topBarLeft {
@@ -345,7 +347,7 @@
 .popoverOverlay {
     position: fixed;
     inset: 0;
-    z-index: 999;
+    z-index: 150;
 }
 
 .popoverContainer {
@@ -359,7 +361,7 @@
     flex-direction: column;
     box-shadow: var(--shd-pop);
     overflow: hidden;
-    z-index: 1000;
+    z-index: 160;
 }
 
 .popoverHeader {
@@ -659,7 +661,9 @@
     z-index: 7;
     height: 20px;
     white-space: nowrap;
+    border: 1px solid #fff3;
     min-width: 100px;
+    box-shadow: var(--shadow--md)
 }
 
 .overlayLabel {

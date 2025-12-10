@@ -50,13 +50,19 @@ export default function BuilderControlsPopover({
         const popoverWidth = 320;
         const padding = 16;
         const windowWidth = window.innerWidth;
-        const minLeft = popoverWidth / 2 + padding;
+        const sidebarWidth = 320;
+        const topBarHeight = 42;
+        const minLeft = sidebarWidth + popoverWidth / 2 + padding;
         const maxLeft = windowWidth - popoverWidth / 2 - padding;
         const constrainedLeft = Math.max(minLeft, Math.min(position.left, maxLeft));
 
+        // Constrain Top
+        const minTop = topBarHeight + padding;
+        const constrainedTop = Math.max(minTop, position.top);
+
         popoverStyle = {
             ...popoverStyle,
-            top: `${position.top}px`,
+            top: `${constrainedTop}px`,
             left: `${constrainedLeft}px`,
             transform: "translateX(-50%)"
         };
@@ -119,7 +125,7 @@ export default function BuilderControlsPopover({
                                 <input
                                     type="text"
                                     className={`${styles.formInput}`}
-                                    value={url}
+                                    value={url || ''}
                                     onChange={(e) => onUrlChange && onUrlChange(e.target.value)}
                                     placeholder="write you link or page here"
                                 />
@@ -169,7 +175,7 @@ export default function BuilderControlsPopover({
                         {/* Section Layout Controls - Only show if onLayoutChange is provided */}
                         {onLayoutChange && (
                             <>
-                                <div className={styles.propertyRow} style={{ borderTop: '1px solid var(--bdr)', paddingTop: '16px', marginTop: '8px' }}>
+                                <div className={styles.propertyRow}>
                                     <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Full Width</label>
                                     <label className={styles.toggleSwitch}>
                                         <input

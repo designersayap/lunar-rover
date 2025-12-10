@@ -2,7 +2,7 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
 import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
 import BuilderLink from "@/app/page-builder-components/utils/builder/builder-link";
-import { componentDefaults } from "./content/data";
+import { componentDefaults } from "../content/data";
 import styles from "./dialog-section.module.css";
 import DialogSection from "./dialog-section";
 

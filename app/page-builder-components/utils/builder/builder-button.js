@@ -43,6 +43,7 @@ export default function BuilderButton({
 }) {
     const buttonRef = useRef(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
+    const [overlayRect, setOverlayRect] = useState(null);
 
     // Extract the button variant class (e.g., btn-primary, btn-ghost) from className
     const variantClass = className.split(' ').find(c => c.startsWith('btn-') && !['btn-lg', 'btn-md', 'btn-sm', 'btn-icon'].includes(c)) || 'btn-default';
@@ -134,18 +135,35 @@ export default function BuilderButton({
         e.preventDefault();
         e.stopPropagation();
 
-        if (!showSettings && buttonRef.current) {
-            const rect = buttonRef.current.getBoundingClientRect();
-            setPopoverPosition({
-                top: rect.bottom + 4, // 4px gap
-                left: rect.left + rect.width / 2
-            });
-        }
-
         setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
     };
 
+    // Update overlay position when active
+    useEffect(() => {
+        if (isActive && buttonRef.current) {
+            const updatePosition = () => {
+                if (buttonRef.current) {
+                    const rect = buttonRef.current.getBoundingClientRect();
+                    setOverlayRect(rect);
+                    if (showSettings) {
+                        setPopoverPosition({
+                            top: rect.top,
+                            left: rect.left + rect.width / 2
+                        });
+                    }
+                }
+            };
 
+            updatePosition();
+            window.addEventListener('scroll', updatePosition, true);
+            window.addEventListener('resize', updatePosition);
+
+            return () => {
+                window.removeEventListener('scroll', updatePosition, true);
+                window.removeEventListener('resize', updatePosition);
+            };
+        }
+    }, [isActive, showSettings]);
 
     const handleOpenDialog = (e) => {
         e.preventDefault();
@@ -199,7 +217,12 @@ export default function BuilderButton({
                 {isActive && <div className={styles.activeBorderOutline} />}
                 <div ref={buttonRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
                     {isActive && (
-                        <div className={styles.activeOverlay}>
+                        <div
+                            className={styles.activeOverlay}
+                            style={{
+                                top: overlayRect ? Math.max(-24, 42 - overlayRect.top) : -24
+                            }}
+                        >
                             <div className={styles.overlayLabel}>
                                 <span className={styles.overlayIdText}>#{buttonId}</span>
                             </div>

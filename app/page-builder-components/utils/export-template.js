@@ -387,6 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (overlay) {
                 overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
             }
         });
     });
@@ -398,6 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const overlay = btnClose.closest('[data-dialog-overlay]');
             if (overlay) {
                 overlay.style.display = 'none';
+                document.body.style.overflow = '';
             }
         });
     });
@@ -407,6 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
                 overlay.style.display = 'none';
+                document.body.style.overflow = '';
             }
         });
     });
@@ -417,6 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('[data-dialog-overlay]').forEach(overlay => {
                 overlay.style.display = 'none';
             });
+            document.body.style.overflow = '';
         }
     });
 

@@ -8,10 +8,10 @@ const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../template-
 const TerraBannerHero = dynamic(() => import("@/app/template-components/terra/terra-banner-hero"));
 const TerraFeaturesImageLeft = dynamic(() => import("@/app/template-components/terra/terra-features-image-left"));
 const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/terra/terra-features-image-right"));
-const Dialog = dynamic(() => import("../../template-components/dialog-default"));
-const DialogAccordion = dynamic(() => import("../../template-components/dialog-accordion"));
+const Dialog = dynamic(() => import("../../template-components/dialog/dialog-default"));
+const DialogAccordion = dynamic(() => import("../../template-components/dialog/dialog-accordion"));
 const BannerInformation = dynamic(() => import("../../template-components/banner-information"));
-const LactoMedia = dynamic(() => import("@/app/template-components/lacto/lacto-media"));
+const Media16x9 = dynamic(() => import("@/app/template-components/media/media-16-9"));
 
 
 export const componentLibrary = {
@@ -278,6 +278,30 @@ export const componentLibrary = {
             ]
         }
     ],
+    "Media": [
+        {
+            id: "media-16-9",
+            name: "Media 16:9",
+            component: Media16x9,
+            thumbnail: "/images/thumbnails/lacto-media.svg", // Placeholder
+            config: [
+                {
+                    name: "image",
+                    label: "Image",
+                    type: "image",
+                    default: ""
+                }
+            ],
+            images: [
+                {
+                    label: "Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
+            ]
+        }
+    ],
     "Hero Banner": [
         {
             id: "terra-banner-hero",
@@ -425,30 +449,6 @@ export const componentLibrary = {
                     labelProp: "buttonText",
                     visibleProp: "buttonVisible",
                     linkTypeProp: "buttonLinkType"
-                }
-            ],
-            images: [
-                {
-                    label: "Image",
-                    propId: "imageId",
-                    suffix: "image",
-                    visibleProp: "imageVisible"
-                }
-            ]
-        }
-    ],
-    "Lacto": [
-        {
-            id: "lacto-media",
-            name: "Lacto Media",
-            component: LactoMedia,
-            thumbnail: "/images/thumbnails/lacto-media.svg", // Placeholder
-            config: [
-                {
-                    name: "image",
-                    label: "Image",
-                    type: "image",
-                    default: ""
                 }
             ],
             images: [

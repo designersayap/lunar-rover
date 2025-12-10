@@ -53,11 +53,19 @@ export default function BuilderLink({
     const widthStyle = fullWidth ? '100%' : undefined;
 
     // Update overlay position when active
+    // Update overlay position when active
     useEffect(() => {
         if (isActive && wrapperRef.current) {
             const updatePosition = () => {
                 if (wrapperRef.current) {
-                    setOverlayRect(wrapperRef.current.getBoundingClientRect());
+                    const rect = wrapperRef.current.getBoundingClientRect();
+                    setOverlayRect(rect);
+                    if (showSettings) {
+                        setPopoverPosition({
+                            top: rect.top,
+                            left: rect.left + rect.width / 2
+                        });
+                    }
                 }
             };
 
@@ -70,7 +78,7 @@ export default function BuilderLink({
                 window.removeEventListener('resize', updatePosition);
             };
         }
-    }, [isActive]);
+    }, [isActive, showSettings]);
 
     if (!isVisible) return null;
 
@@ -89,7 +97,7 @@ export default function BuilderLink({
         if (!showSettings && wrapperRef.current) {
             const rect = wrapperRef.current.getBoundingClientRect();
             setPopoverPosition({
-                top: rect.bottom + 4,
+                top: rect.top,
                 left: rect.left + rect.width / 2
             });
         }
@@ -113,7 +121,13 @@ export default function BuilderLink({
 
         return createPortal(
             <div style={anchorStyle}>
-                <div className={styles.activeOverlay} style={{ pointerEvents: 'auto' }}>
+                <div
+                    className={styles.activeOverlay}
+                    style={{
+                        pointerEvents: 'auto',
+                        top: overlayRect ? Math.max(-24, 42 - overlayRect.top) : -24
+                    }}
+                >
                     <div className={styles.overlayLabel}>
                         <span className={styles.overlayIdText}>#{elementId}</span>
                     </div>
