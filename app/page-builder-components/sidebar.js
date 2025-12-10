@@ -240,7 +240,10 @@ export default function Sidebar({
                                                             className={`${styles.treeRow} ${isChildActive ? styles.treeRowActive : ''} ${styles.treeRowNested} `}
                                                             onClick={() => setActiveElementId && setActiveElementId(currentId)}
                                                         >
-                                                            <div className={styles.treeIconWrapper}>
+                                                            <div
+                                                                className={styles.treeIconWrapper}
+                                                                style={{ opacity: comp.props?.[child.visibleProp] === false ? 0.25 : 1 }}
+                                                            >
                                                                 {/* Generic icon or specific based on type */}
                                                                 <CursorArrowRaysIcon className={styles.treeIcon} />
                                                             </div>
@@ -259,6 +262,7 @@ export default function Sidebar({
                                                                 onFocus={() => setActiveElementId && setActiveElementId(currentId)}
                                                                 onClick={(e) => e.stopPropagation()}
                                                                 className={styles.treeInputInline}
+                                                                style={{ opacity: comp.props?.[child.visibleProp] === false ? 0.25 : 1 }}
                                                             />
                                                             {child.visibleProp && (
                                                                 comp.props?.[child.visibleProp] === false ? (
