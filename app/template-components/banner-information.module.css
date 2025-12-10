@@ -1,14 +1,14 @@
 .banner {
     position: sticky;
     top: 0;
-    z-index: 100;
+
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: var(--background-neutral--neutral-strong);
     border-bottom: 1px solid var(--stroke-neutral--neutral);
-    padding: var(--padding-sm) var(--padding-md);
-    min-height: 48px;
+    padding: var(--padding-xs) 0;
+    min-height: 40px;
     width: 100%;
 }
 
@@ -17,9 +17,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Dynamic padding applied via CSS variable --actions-width */
-    padding-left: 0;
-    padding-right: var(--actions-width, 40px);
+    gap: var(--gap-xs);
+    padding-left: var(--grid-margin);
+    padding-right: calc(var(--padding-md) + var(--size-button-sm) + var(--gap-sm));
     min-width: 0;
     /* Crucial for flex child truncation */
 }

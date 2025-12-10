@@ -392,7 +392,7 @@ export const componentLibrary = {
             ]
         }
     ],
-    "Banners": [
+    "OSM": [
         {
             id: "banner-information",
             name: "Info Banner",

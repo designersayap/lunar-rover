@@ -227,20 +227,11 @@
 /* === COMPONENT WRAPPER === */
 .componentWrapper {
     position: relative;
-    border: 1px dashed transparent;
     background: var(--background-neutral--default);
     transition: border-color .2s, transform .2s;
 }
 
-.componentWrapper:hover {
-    border-color: var(--grey-100);
-}
 
-
-
-.componentWrapperDragging {
-    opacity: 0;
-}
 
 /* Drop indicator */
 .dropIndicator {
