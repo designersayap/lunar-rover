@@ -1,5 +1,6 @@
 import styles from "./lacto-media.module.css";
 import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
+import BuilderSection from "@/app/page-builder-components/utils/builder/builder-section";
 import { componentDefaults } from "../content/data";
 
 /**
@@ -11,11 +12,20 @@ export default function LactoMedia({
     imageId,
     imageVisible,
     onUpdate,
-    sectionId
+    sectionId,
+    fullWidth,
+    removePaddingLeft,
+    removePaddingRight
 }) {
     return (
         <section className={styles.container}>
-            <div className="container-grid">
+            <BuilderSection
+                sectionId={sectionId}
+                fullWidth={fullWidth}
+                removePaddingLeft={removePaddingLeft}
+                removePaddingRight={removePaddingRight}
+                onUpdate={onUpdate}
+            >
                 <div className="grid">
                     <div className="col-mobile-2 col-tablet-8 col-desktop-12">
                         <div className="imageWrapper">
@@ -31,7 +41,7 @@ export default function LactoMedia({
                         </div>
                     </div>
                 </div>
-            </div>
+            </BuilderSection>
         </section>
     );
 }

@@ -14,11 +14,17 @@ export default function BuilderControlsPopover({
     onVariantChange,
     variants = ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
     showVariant = true,
+
     showLinkType = true, // Set to false for BuilderLink
+    showUrl = true, // Set to false to hide URL input
     position,
     dialogOptions = [],
     targetDialogId,
-    onTargetDialogIdChange
+    onTargetDialogIdChange,
+    fullWidth,
+    removePaddingLeft,
+    removePaddingRight,
+    onLayoutChange
 }) {
     const [mounted, setMounted] = useState(false);
 
@@ -107,7 +113,7 @@ export default function BuilderControlsPopover({
                         )}
 
                         {/* URL Input - always show for links, or when linkType is 'url' for buttons */}
-                        {(linkType === 'url' || !showLinkType) && (
+                        {((linkType === 'url' || !showLinkType) && showUrl) && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>URL</label>
                                 <input
@@ -157,6 +163,29 @@ export default function BuilderControlsPopover({
                                     <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
                                 </div>
                             </div>
+                        )}
+
+
+                        {/* Section Layout Controls - Only show if onLayoutChange is provided */}
+                        {onLayoutChange && (
+                            <>
+                                <div className={styles.propertyRow} style={{ borderTop: '1px solid var(--bdr)', paddingTop: '16px', marginTop: '8px' }}>
+                                    <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Full Width</label>
+                                    <label className={styles.toggleSwitch}>
+                                        <input
+                                            type="checkbox"
+                                            className={styles.toggleInput}
+                                            checked={fullWidth || false}
+                                            onChange={(e) => onLayoutChange({
+                                                fullWidth: e.target.checked,
+                                                removePaddingLeft: e.target.checked,
+                                                removePaddingRight: e.target.checked
+                                            })}
+                                        />
+                                        <span className={styles.toggleSlider}></span>
+                                    </label>
+                                </div>
+                            </>
                         )}
 
                     </div>
