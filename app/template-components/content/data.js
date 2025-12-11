@@ -105,6 +105,17 @@ export const componentDefaults = {
     },
     "media-16-9": {
         image: ""
+    },
+    "terra-testimony": {
+        testimonies: Array(12).fill({
+            name: "People Name",
+            role: "Role",
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+            image: "",
+            avatar: "",
+            imageVisible: true,
+            avatarVisible: true
+        })
     }
 
 };

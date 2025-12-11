@@ -11,9 +11,9 @@ const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/
 const Dialog = dynamic(() => import("../../template-components/dialog/dialog-default"));
 const DialogAccordion = dynamic(() => import("../../template-components/dialog/dialog-accordion"));
 const BannerInformation = dynamic(() => import("../../template-components/banner-information"));
-const Media16x9 = dynamic(() => import("../../template-components/media/media-16-9"));
 const LactoMediaSection = dynamic(() => import("../../template-components/lacto/lacto-media-section"));
 const TerraTestimony = dynamic(() => import("../../template-components/terra/terra-testimony"));
+const Media16x9 = dynamic(() => import("../../template-components/media/media-16-9"));
 
 export const componentLibrary = {
 
@@ -458,6 +458,135 @@ export const componentLibrary = {
                     propId: "imageId",
                     suffix: "image",
                     visibleProp: "imageVisible"
+                }
+            ]
+        },
+
+    ],
+    "Dialog": [
+        {
+            id: "dialog",
+            name: "Dialog / Modal",
+            component: Dialog,
+            thumbnail: "/images/thumbnails/dialog.svg", // Placeholder or generic
+            config: [
+
+                {
+                    name: "items",
+                    label: "List Items",
+                    type: "list", // Placeholder type, main goal is to get the default passed through
+                    default: [
+                        { label: "Label", image: "", url: "" },
+                        { label: "Label", image: "", url: "" },
+                        { label: "Label", image: "", url: "" },
+                        { label: "Label", image: "", url: "" },
+                        { label: "Label", image: "", url: "" },
+                        { label: "Label", image: "", url: "" },
+                        { label: "Label", image: "", url: "" },
+                        { label: "Label", image: "", url: "" }
+                    ]
+                }
+            ],
+            images: [
+                {
+                    label: "Main Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
+            ],
+            links: [
+                { label: "Item 1", propId: "item0Id", suffix: "item-0", visibleProp: "item0Visible" },
+                { label: "Item 2", propId: "item1Id", suffix: "item-1", visibleProp: "item1Visible" },
+                { label: "Item 3", propId: "item2Id", suffix: "item-2", visibleProp: "item2Visible" },
+                { label: "Item 4", propId: "item3Id", suffix: "item-3", visibleProp: "item3Visible" },
+                { label: "Item 5", propId: "item4Id", suffix: "item-4", visibleProp: "item4Visible" },
+                { label: "Item 6", propId: "item5Id", suffix: "item-5", visibleProp: "item5Visible" },
+                { label: "Item 7", propId: "item6Id", suffix: "item-6", visibleProp: "item6Visible" },
+                { label: "Item 8", propId: "item7Id", suffix: "item-7", visibleProp: "item7Visible" }
+            ]
+        },
+        {
+            id: "dialog-accordion",
+            name: "Dialog / Accordion",
+            component: DialogAccordion,
+            thumbnail: "/images/thumbnails/dialog.svg", // Placeholder
+            config: [
+                {
+                    name: "image",
+                    label: "Image",
+                    type: "image"
+                },
+                {
+                    name: "items",
+                    label: "Accordion Items",
+                    type: "list",
+                    default: [
+                        { title: "Title 1", content: "Content 1" },
+                        { title: "Title 2", content: "Content 2" },
+                        { title: "Title 3", content: "Content 3" },
+                        { title: "Title 4", content: "Content 4" },
+                        { title: "Title 5", content: "Content 5" },
+                        { title: "Title 6", content: "Content 6" },
+                        { title: "Title 7", content: "Content 7" },
+                        { title: "Title 8", content: "Content 8" }
+                    ]
+                }
+            ],
+            links: [
+                { label: "Image", propId: "imageId", suffix: "image", visibleProp: "imageVisible" },
+                { label: "Accordion 1", propId: "item0Id", suffix: "accordion-0", visibleProp: "item0Visible" },
+                { label: "Accordion 2", propId: "item1Id", suffix: "accordion-1", visibleProp: "item1Visible" },
+                { label: "Accordion 3", propId: "item2Id", suffix: "accordion-2", visibleProp: "item2Visible" },
+                { label: "Accordion 4", propId: "item3Id", suffix: "accordion-3", visibleProp: "item3Visible" },
+                { label: "Accordion 5", propId: "item4Id", suffix: "accordion-4", visibleProp: "item4Visible" },
+                { label: "Accordion 6", propId: "item5Id", suffix: "accordion-5", visibleProp: "item5Visible" },
+                { label: "Accordion 7", propId: "item6Id", suffix: "accordion-6", visibleProp: "item6Visible" },
+                { label: "Accordion 8", propId: "item7Id", suffix: "accordion-7", visibleProp: "item7Visible" }
+            ]
+        }
+    ],
+    "OSM": [
+        {
+            id: "banner-information",
+            name: "Info Banner",
+            component: BannerInformation,
+            thumbnail: "/images/thumbnails/banner-info.svg",
+            config: [
+                {
+                    name: "title",
+                    label: "Title",
+                    type: "text",
+                    default: "Information Banner"
+                },
+                {
+                    name: "buttonText",
+                    label: "Button Label",
+                    type: "text",
+                    default: "Label"
+                },
+                {
+                    name: "buttonLinkType",
+                    label: "Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: "url"
+                },
+                {
+                    name: "buttonUrl",
+                    label: "Button URL",
+                    type: "text",
+                    default: ""
+                }
+            ],
+            buttons: [
+                {
+                    label: "Button",
+                    propId: "buttonId",
+                    suffix: "button",
+                    labelProp: "buttonText",
+                    visibleProp: "buttonVisible",
+                    linkTypeProp: "buttonLinkType"
                 }
             ]
         }
