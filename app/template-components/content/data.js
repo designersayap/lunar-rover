@@ -1,3 +1,11 @@
+/**
+ * Component Default Values (Single Source of Truth)
+ * 
+ * These values are used when a component is first added to the canvas.
+ * They also serve as fallbacks if a prop is undefined.
+ * 
+ * Keys match the 'id' in component-library.js.
+ */
 export const componentDefaults = {
 
     "header-title": {
@@ -9,6 +17,7 @@ export const componentDefaults = {
     },
     "header-title-button": {
         title: "Title",
+        buttonStyle: "primary",
         buttonText: "Label",
         buttonUrl: "",
         buttonVisible: true,
@@ -24,6 +33,7 @@ export const componentDefaults = {
     },
     "header-title-description-button": {
         title: "Title",
+        buttonStyle: "primary",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         buttonText: "Label",
         buttonUrl: "",
@@ -39,6 +49,7 @@ export const componentDefaults = {
     "terra-banner-hero": {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+        buttonStyle: "primary",
         buttonText: "Label",
         buttonUrl: "",
         buttonVisible: true,
@@ -55,6 +66,7 @@ export const componentDefaults = {
     "feature-left": {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+        buttonStyle: "primary",
         buttonText: "Label",
         buttonUrl: "",
         buttonVisible: true,
@@ -70,6 +82,7 @@ export const componentDefaults = {
     "feature-right": {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+        buttonStyle: "primary",
         buttonText: "Label",
         buttonUrl: "",
         buttonVisible: true,

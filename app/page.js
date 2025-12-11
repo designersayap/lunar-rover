@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { BellAlertIcon, TrashIcon } from "@heroicons/react/24/solid";
 import styles from "./page.module.css";
 
-// Components
+// Feature Components
 import Sidebar from "@/app/page-builder-components/sidebar";
 import TopBar from "@/app/page-builder-components/topbar";
 import Canvas from "@/app/page-builder-components/canvas";
@@ -11,7 +11,7 @@ import ThemePickerPopover from "@/app/page-builder-components/theme-picker-popov
 import ExportPopover from "@/app/page-builder-components/export-popover";
 import ComponentsPopover from "@/app/page-builder-components/components-popover";
 
-// Utilities
+// Helper Utilities
 import { componentLibrary } from "@/app/page-builder-components/content/component-library";
 import { getThemes } from "@/app/page-builder-components/utils/get-themes";
 import { handleExportTemplate } from "@/app/page-builder-components/utils/export-template";
@@ -37,34 +37,34 @@ import { useToast, useDragDrop } from "@/app/page-builder-components/utils/hooks
  * Main page for building landing page templates
  */
 export default function TemplateGeneratorPage() {
-  // ==================== STATE ====================
+  // ==================== STATE MANAGEMENT ====================
 
-  // Components & Data
+  // Data Sources
   const [selectedComponents, setSelectedComponents] = useState([]);
   const [analyticsData, setAnalyticsData] = useState(DEFAULT_ANALYTICS);
 
-  // Theme
+  // Theme Selection
   const [themes, setThemes] = useState([]);
   const [selectedThemeId, setSelectedThemeId] = useState("theme");
 
-  // UI State
+  // Interface Visibility State
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   const [activeTab, setActiveTab] = useState("elements");
   const [openCategories, setOpenCategories] = useState({ "Hero Banner": true });
 
-  // Popovers
+  // Popover & Overlay State
   const [activePopoverId, setActivePopoverId] = useState(null);
   const [popoverPositions, setPopoverPositions] = useState({});
 
-  // Active Element
+  // Selection State
   const [activeElementId, setActiveElementId] = useState(null);
 
   // ==================== HOOKS ====================
 
-  // Toast Hook
+  // Toast Notifications
   const { toast: toaster, showToast } = useToast();
 
-  // Drag & Drop Hook
+  // Drag and Drop Logic
   const {
     draggedIndex,
     dropTargetIndex,
@@ -82,7 +82,7 @@ export default function TemplateGeneratorPage() {
     }
   });
 
-  // ==================== REFS ====================
+  // ==================== DOM REFERENCES ====================
 
   const containerRef = useRef(null);
 
@@ -97,7 +97,7 @@ export default function TemplateGeneratorPage() {
     setActivePopoverId(null);
   }, []);
 
-  // ==================== EFFECTS ====================
+  // ==================== INITIALIZATION & SIDE EFFECTS ====================
 
   // Load themes on mount
   useEffect(() => {
@@ -138,7 +138,7 @@ export default function TemplateGeneratorPage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // ==================== HANDLERS ====================
+  // ==================== EVENT HANDLERS ====================
 
   // Theme
   const handleThemeSelect = useCallback((themeId) => {
@@ -205,7 +205,7 @@ export default function TemplateGeneratorPage() {
     }
   }, [togglePopover]);
 
-  // ==================== CONTEXT VALUE ====================
+  // ==================== CONTEXT PROVIDERS ====================
 
   const selectionContext = useMemo(() => ({
     activeElementId,

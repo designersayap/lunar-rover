@@ -45,11 +45,13 @@ export default function Sidebar({
         }));
     };
 
-    // Sanitize ID while typing: lowercase, replace spaces with dashes, collapse multiple dashes, remove leading dashes
-    // Note: This ALLOWS trailing dashes so user can type dashes
+    // ID Sanitization: Enforce URL-friendly format (lowercase, hyphens)
+    // - Replaces spaces with dashes
+    // - Removes duplicate dashes
+    // - Allows trailing dashes so users can type naturally before blur
     const sanitizeId = (value) => value.toLowerCase().trimStart().replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '');
 
-    // Finalize ID on blur: also removes trailing dashes
+    // ID Finalization: Cleanup when user finishes typing (removes trailing dashes)
     const sanitizeIdFinal = (value) => sanitizeId(value).replace(/-+$/, '');
 
     // Helper to find component definition
@@ -61,7 +63,8 @@ export default function Sidebar({
         return null;
     };
 
-    // Filter layers based on search
+    // Search Filtering Logic
+    // Matches against: Component Name, Section ID, or any Child Element (Button/Image/Link) properties
     const filteredComponents = useMemo(() => {
         if (!layerSearch.trim()) return selectedComponents;
         const searchLower = layerSearch.toLowerCase();
@@ -137,7 +140,9 @@ export default function Sidebar({
                                 const isActive = activeElementId === comp.sectionId;
                                 const originalIndex = selectedComponents.findIndex(c => c.uniqueId === comp.uniqueId);
 
-                                // Filter children if search is active
+                                // Child Filtering:
+                                // If search matches specific children, show only those.
+                                // If search matches the parent, show ALL children.
                                 const searchLower = layerSearch.toLowerCase().trim();
                                 const filteredChildren = searchLower
                                     ? allChildren.filter(child => {
@@ -153,7 +158,8 @@ export default function Sidebar({
 
                                 const childrenToShow = parentMatches ? allChildren : filteredChildren;
 
-                                // Determine drag direction relative to this item
+                                // Visual Drag Feedback:
+                                // Determine where to show the "drop line" (above or below) based on drag direction
                                 const isDragDown = draggedIndex !== null && draggedIndex < originalIndex;
                                 const isTarget = dropTargetIndex === originalIndex;
 
@@ -282,7 +288,8 @@ export default function Sidebar({
                                                                         onClick={(e) => {
                                                                             e.stopPropagation();
 
-                                                                            // SAFEGURAD: For dialog-accordion, prevent deleting the last item
+                                                                            // Guard Rail: Prevent user from deleting the last accordion item
+                                                                            // A dialog must have at least one active item to function correctly
                                                                             if (comp.id === 'dialog-accordion') {
                                                                                 const visibleCount = allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length;
                                                                                 if (visibleCount <= 1) {

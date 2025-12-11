@@ -115,29 +115,6 @@ export default function BuilderButton({
         e.stopPropagation();
     };
 
-    // If href is empty, we still render the button in builder mode to allow editing
-    // if (!href) return null;
-
-    if (!isVisible && !isActive) return null;
-
-    const handleClick = (e) => {
-        // Prevent navigation in builder
-        e.preventDefault();
-        e.stopPropagation();
-        if (buttonId) {
-            setActiveElementId(buttonId);
-        }
-    };
-
-
-
-    const handleSettingsClick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
-    };
-
     // Update overlay position when active
     useEffect(() => {
         if (isActive && buttonRef.current) {
@@ -164,6 +141,31 @@ export default function BuilderButton({
             };
         }
     }, [isActive, showSettings]);
+
+    // If href is empty, we still render the button in builder mode to allow editing
+    // if (!href) return null;
+
+    if (!isVisible && !isActive) return null;
+
+    const handleClick = (e) => {
+        // Prevent navigation in builder
+        e.preventDefault();
+        e.stopPropagation();
+        if (buttonId) {
+            setActiveElementId(buttonId);
+        }
+    };
+
+
+
+    const handleSettingsClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
+    };
+
+
 
     const handleOpenDialog = (e) => {
         e.preventDefault();

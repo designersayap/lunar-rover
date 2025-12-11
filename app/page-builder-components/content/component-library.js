@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { componentDefaults } from "../../template-components/content/data";
 
 const GlobalHeaderTitle = dynamic(() => import("../../template-components/header/header-title"));
 const GlobalHeaderTitleButton = dynamic(() => import("../../template-components/header/header-title-button"));
@@ -11,10 +12,27 @@ const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/
 const Dialog = dynamic(() => import("../../template-components/dialog/dialog-default"));
 const DialogAccordion = dynamic(() => import("../../template-components/dialog/dialog-accordion"));
 const BannerInformation = dynamic(() => import("../../template-components/osm/banner-information"));
-const LactoMediaSection = dynamic(() => import("../../template-components/lacto/lacto-media-section"));
+
+// Template Component Imports (Dynamic Loading for Performance)
+// These components are loaded only when needed to reduce initial bundle size
+
 const TerraTestimony = dynamic(() => import("../../template-components/terra/terra-testimony"));
 const Media16x9 = dynamic(() => import("../../template-components/media/media-16-9"));
 
+/**
+ * Component Library Definitions
+ * Maps internal IDs to React Components and defines their editable properties.
+ * 
+ * Structure:
+ * - Category Name: [ List of Components ]
+ * - Component: {
+ *     id: Unique string ID,
+ *     name: Display name in UI,
+ *     component: The React Component,
+ *     config: [ Editable Props for the Sidebar Settings Panel ],
+ *     buttons/images/links: [ Child Elements shown in the Sidebar Layer Tree ]
+ * }
+ */
 export const componentLibrary = {
 
     "OSM": [
@@ -28,26 +46,26 @@ export const componentLibrary = {
                     name: "title",
                     label: "Title",
                     type: "text",
-                    default: "Information Banner"
+                    default: componentDefaults["banner-information"].title
                 },
                 {
                     name: "buttonText",
                     label: "Button Label",
                     type: "text",
-                    default: "Label"
+                    default: componentDefaults["banner-information"].buttonText
                 },
                 {
                     name: "buttonLinkType",
                     label: "Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: "url"
+                    default: componentDefaults["banner-information"].buttonLinkType
                 },
                 {
                     name: "buttonUrl",
                     label: "Button URL",
                     type: "text",
-                    default: ""
+                    default: componentDefaults["banner-information"].buttonUrl
                 }
             ],
             buttons: [
@@ -81,33 +99,33 @@ export const componentLibrary = {
                     label: "Button Style",
                     type: "select",
                     options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: "primary"
+                    default: componentDefaults["header-title-button"].buttonStyle
                 },
                 {
                     name: "buttonLinkType",
                     label: "Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: "url"
+                    default: componentDefaults["header-title-button"].buttonLinkType
                 },
                 {
                     name: "secondaryButtonLinkType",
                     label: "Secondary Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: "url"
+                    default: componentDefaults["header-title-button"].secondaryButtonLinkType
                 },
                 {
                     name: "buttonText",
                     label: "Button Text",
                     type: "text",
-                    default: "Label"
+                    default: componentDefaults["header-title-button"].buttonText
                 },
                 {
                     name: "secondaryButtonText",
                     label: "Secondary Button Text",
                     type: "text",
-                    default: "Label"
+                    default: componentDefaults["header-title-button"].secondaryButtonText
                 }
             ],
             buttons: [
@@ -147,33 +165,33 @@ export const componentLibrary = {
                     label: "Button Style",
                     type: "select",
                     options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: "primary"
+                    default: componentDefaults["header-title-description-button"].buttonStyle
                 },
                 {
                     name: "buttonLinkType",
                     label: "Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: "url"
+                    default: componentDefaults["header-title-description-button"].buttonLinkType
                 },
                 {
                     name: "secondaryButtonLinkType",
                     label: "Secondary Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: "url"
+                    default: componentDefaults["header-title-description-button"].secondaryButtonLinkType
                 },
                 {
                     name: "buttonText",
                     label: "Button Text",
                     type: "text",
-                    default: "Label"
+                    default: componentDefaults["header-title-description-button"].buttonText
                 },
                 {
                     name: "secondaryButtonText",
                     label: "Secondary Button Text",
                     type: "text",
-                    default: "Label"
+                    default: componentDefaults["header-title-description-button"].secondaryButtonText
                 }
             ],
             buttons: [
@@ -207,17 +225,8 @@ export const componentLibrary = {
                 {
                     name: "items",
                     label: "List Items",
-                    type: "list", // Placeholder type, main goal is to get the default passed through
-                    default: [
-                        { label: "Label", image: "", url: "" },
-                        { label: "Label", image: "", url: "" },
-                        { label: "Label", image: "", url: "" },
-                        { label: "Label", image: "", url: "" },
-                        { label: "Label", image: "", url: "" },
-                        { label: "Label", image: "", url: "" },
-                        { label: "Label", image: "", url: "" },
-                        { label: "Label", image: "", url: "" }
-                    ]
+                    type: "list", // Special type: Renders a list editor in the sidebar
+                    default: componentDefaults["dialog"].items
                 }
             ],
             images: [
@@ -254,16 +263,7 @@ export const componentLibrary = {
                     name: "items",
                     label: "Accordion Items",
                     type: "list",
-                    default: [
-                        { title: "Title 1", content: "Content 1" },
-                        { title: "Title 2", content: "Content 2" },
-                        { title: "Title 3", content: "Content 3" },
-                        { title: "Title 4", content: "Content 4" },
-                        { title: "Title 5", content: "Content 5" },
-                        { title: "Title 6", content: "Content 6" },
-                        { title: "Title 7", content: "Content 7" },
-                        { title: "Title 8", content: "Content 8" }
-                    ]
+                    default: componentDefaults["dialog-accordion"].items
                 }
             ],
             links: [
@@ -284,13 +284,13 @@ export const componentLibrary = {
             id: "media-16-9",
             name: "Media 16:9",
             component: Media16x9,
-            thumbnail: "/images/thumbnails/lacto-media.svg", // Placeholder
+            thumbnail: "/images/thumbnails/placeholder.svg", // Placeholder
             config: [
                 {
                     name: "image",
                     label: "Image",
                     type: "image",
-                    default: ""
+                    default: componentDefaults["media-16-9"].image
                 }
             ],
             images: [
@@ -315,27 +315,27 @@ export const componentLibrary = {
                     label: "Button Style",
                     type: "select",
                     options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: "primary"
+                    default: componentDefaults["terra-banner-hero"].buttonStyle
                 },
                 {
                     name: "buttonLinkType",
                     label: "Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: "url"
+                    default: componentDefaults["terra-banner-hero"].buttonLinkType
                 },
                 {
                     name: "secondaryButtonLinkType",
                     label: "Secondary Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: "url"
+                    default: componentDefaults["terra-banner-hero"].secondaryButtonLinkType
                 },
                 {
                     name: "image",
                     label: "Image",
                     type: "image",
-                    default: ""
+                    default: componentDefaults["terra-banner-hero"].image
                 }
             ],
             buttons: [
@@ -378,27 +378,27 @@ export const componentLibrary = {
                     label: "Button Style",
                     type: "select",
                     options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: "primary"
+                    default: componentDefaults["feature-left"].buttonStyle
                 },
                 {
                     name: "buttonLinkType",
                     label: "Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: "url"
+                    default: componentDefaults["feature-left"].buttonLinkType
                 },
                 {
                     name: "secondaryButtonLinkType",
                     label: "Secondary Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: "url"
+                    default: componentDefaults["feature-left"].secondaryButtonLinkType
                 },
                 {
                     name: "secondaryButtonText",
                     label: "Secondary Button Text",
                     type: "text",
-                    default: "Label"
+                    default: componentDefaults["feature-left"].secondaryButtonText
                 }
             ],
             buttons: [
@@ -439,7 +439,7 @@ export const componentLibrary = {
                     label: "Button Style",
                     type: "select",
                     options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: "primary"
+                    default: componentDefaults["feature-right"].buttonStyle
                 }
             ],
             buttons: [
@@ -463,89 +463,7 @@ export const componentLibrary = {
         },
 
     ],
-    "Dialog": [
-        {
-            id: "dialog",
-            name: "Dialog / Modal",
-            component: Dialog,
-            thumbnail: "/images/thumbnails/dialog.svg", // Placeholder or generic
-            config: [
 
-                {
-                    name: "items",
-                    label: "List Items",
-                    type: "list", // Placeholder type, main goal is to get the default passed through
-                    default: [
-                        { label: "Label", image: "", url: "" },
-                        { label: "Label", image: "", url: "" },
-                        { label: "Label", image: "", url: "" },
-                        { label: "Label", image: "", url: "" },
-                        { label: "Label", image: "", url: "" },
-                        { label: "Label", image: "", url: "" },
-                        { label: "Label", image: "", url: "" },
-                        { label: "Label", image: "", url: "" }
-                    ]
-                }
-            ],
-            images: [
-                {
-                    label: "Main Image",
-                    propId: "imageId",
-                    suffix: "image",
-                    visibleProp: "imageVisible"
-                }
-            ],
-            links: [
-                { label: "Item 1", propId: "item0Id", suffix: "item-0", visibleProp: "item0Visible" },
-                { label: "Item 2", propId: "item1Id", suffix: "item-1", visibleProp: "item1Visible" },
-                { label: "Item 3", propId: "item2Id", suffix: "item-2", visibleProp: "item2Visible" },
-                { label: "Item 4", propId: "item3Id", suffix: "item-3", visibleProp: "item3Visible" },
-                { label: "Item 5", propId: "item4Id", suffix: "item-4", visibleProp: "item4Visible" },
-                { label: "Item 6", propId: "item5Id", suffix: "item-5", visibleProp: "item5Visible" },
-                { label: "Item 7", propId: "item6Id", suffix: "item-6", visibleProp: "item6Visible" },
-                { label: "Item 8", propId: "item7Id", suffix: "item-7", visibleProp: "item7Visible" }
-            ]
-        },
-        {
-            id: "dialog-accordion",
-            name: "Dialog / Accordion",
-            component: DialogAccordion,
-            thumbnail: "/images/thumbnails/dialog.svg", // Placeholder
-            config: [
-                {
-                    name: "image",
-                    label: "Image",
-                    type: "image"
-                },
-                {
-                    name: "items",
-                    label: "Accordion Items",
-                    type: "list",
-                    default: [
-                        { title: "Title 1", content: "Content 1" },
-                        { title: "Title 2", content: "Content 2" },
-                        { title: "Title 3", content: "Content 3" },
-                        { title: "Title 4", content: "Content 4" },
-                        { title: "Title 5", content: "Content 5" },
-                        { title: "Title 6", content: "Content 6" },
-                        { title: "Title 7", content: "Content 7" },
-                        { title: "Title 8", content: "Content 8" }
-                    ]
-                }
-            ],
-            links: [
-                { label: "Image", propId: "imageId", suffix: "image", visibleProp: "imageVisible" },
-                { label: "Accordion 1", propId: "item0Id", suffix: "accordion-0", visibleProp: "item0Visible" },
-                { label: "Accordion 2", propId: "item1Id", suffix: "accordion-1", visibleProp: "item1Visible" },
-                { label: "Accordion 3", propId: "item2Id", suffix: "accordion-2", visibleProp: "item2Visible" },
-                { label: "Accordion 4", propId: "item3Id", suffix: "accordion-3", visibleProp: "item3Visible" },
-                { label: "Accordion 5", propId: "item4Id", suffix: "accordion-4", visibleProp: "item4Visible" },
-                { label: "Accordion 6", propId: "item5Id", suffix: "accordion-5", visibleProp: "item5Visible" },
-                { label: "Accordion 7", propId: "item6Id", suffix: "accordion-6", visibleProp: "item6Visible" },
-                { label: "Accordion 8", propId: "item7Id", suffix: "accordion-7", visibleProp: "item7Visible" }
-            ]
-        }
-    ],
     "OSM": [
         {
             id: "banner-information",
@@ -591,22 +509,7 @@ export const componentLibrary = {
             ]
         }
     ],
-    "Lacto": [
-        {
-            id: "lacto-media-section",
-            name: "Lacto Media Section",
-            component: LactoMediaSection,
-            thumbnail: "/images/thumbnails/placeholder.svg",
-            images: [
-                {
-                    label: "Main Image",
-                    propId: "imageId",
-                    suffix: "main-image",
-                    visibleProp: "imageVisible"
-                }
-            ]
-        }
-    ],
+
     "Testimonials": [
         {
             id: "terra-testimony",
@@ -618,35 +521,7 @@ export const componentLibrary = {
                     name: "testimonies",
                     label: "Testimonies",
                     type: "list",
-                    default: [
-                        {
-                            name: "People Name",
-                            role: "Role",
-                            description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
-                            image: "",
-                            avatar: "",
-                            imageVisible: true,
-                            avatarVisible: true
-                        },
-                        {
-                            name: "People Name",
-                            role: "Role",
-                            description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
-                            image: "",
-                            avatar: "",
-                            imageVisible: true,
-                            avatarVisible: true
-                        },
-                        {
-                            name: "People Name",
-                            role: "Role",
-                            description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
-                            image: "",
-                            avatar: "",
-                            imageVisible: true,
-                            avatarVisible: true
-                        }
-                    ]
+                    default: componentDefaults["terra-testimony"].testimonies
                 }
             ]
         }

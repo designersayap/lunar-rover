@@ -1,4 +1,4 @@
-import { XMarkIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
+import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
 import styles from "../../../page.module.css";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
@@ -33,7 +33,9 @@ export default function BuilderControlsPopover({
         return () => setMounted(false);
     }, []);
 
-    // Calculate constrained position
+    // Positioning Logic:
+    // Ensures the popover stays within the viewport and doesn't overlap the sidebar/topbar.
+    // Calculates a "constrained" position.
     let popoverStyle = {
         position: "fixed",
         top: "50%",
@@ -56,7 +58,7 @@ export default function BuilderControlsPopover({
         const maxLeft = windowWidth - popoverWidth / 2 - padding;
         const constrainedLeft = Math.max(minLeft, Math.min(position.left, maxLeft));
 
-        // Constrain Top
+        // Top Boundary: Prevent overlapping the TopBar
         const minTop = topBarHeight + padding;
         const constrainedTop = Math.max(minTop, position.top);
 
