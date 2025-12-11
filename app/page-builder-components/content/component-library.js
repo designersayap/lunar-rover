@@ -1,16 +1,16 @@
 import dynamic from "next/dynamic";
 
-const GlobalHeaderTitle = dynamic(() => import("../../template-components/header-title"));
-const GlobalHeaderTitleButton = dynamic(() => import("../../template-components/header-title-button"));
-const GlobalHeaderTitleDescription = dynamic(() => import("../../template-components/header-title-description"));
-const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../template-components/header-title-description-button"));
+const GlobalHeaderTitle = dynamic(() => import("../../template-components/header/header-title"));
+const GlobalHeaderTitleButton = dynamic(() => import("../../template-components/header/header-title-button"));
+const GlobalHeaderTitleDescription = dynamic(() => import("../../template-components/header/header-title-description"));
+const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../template-components/header/header-title-description-button"));
 
 const TerraBannerHero = dynamic(() => import("@/app/template-components/terra/terra-banner-hero"));
 const TerraFeaturesImageLeft = dynamic(() => import("@/app/template-components/terra/terra-features-image-left"));
 const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/terra/terra-features-image-right"));
 const Dialog = dynamic(() => import("../../template-components/dialog/dialog-default"));
 const DialogAccordion = dynamic(() => import("../../template-components/dialog/dialog-accordion"));
-const BannerInformation = dynamic(() => import("../../template-components/banner-information"));
+const BannerInformation = dynamic(() => import("../../template-components/osm/banner-information"));
 const Media16x9 = dynamic(() => import("@/app/template-components/media/media-16-9"));
 
 

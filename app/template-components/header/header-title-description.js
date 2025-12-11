@@ -1,4 +1,4 @@
-import { componentDefaults } from "./content/data";
+import { componentDefaults } from "../content/data";
 import HeaderSection from "./header-section";
 
 /**
