@@ -6,41 +6,84 @@ All components in `app/template-components` must support inline editing, dynamic
 
 Use these primitives instead of standard HTML tags to enable builder functionality (ID generation, overlay, editing).
 
+### `BuilderButton`
+**Primary component for Buttons AND Links.**
+Supports variants, custom URLs, and opening Dialogs.
+```javascript
+import BuilderButton from "@/app/page-builder-components/utils/builder/builder-button";
+
+<BuilderButton
+    label={buttonText}
+    href={buttonUrl}
+    isVisible={buttonVisible}
+    sectionId={sectionId}
+    className="btn btn-primary" // Use utility classes for style
+    
+    // State Updates
+    onLabelChange={(val) => onUpdate?.({ buttonText: val })}
+    onHrefChange={(val) => onUpdate?.({ buttonUrl: val })}
+    onVisibilityChange={(val) => onUpdate?.({ buttonVisible: val })}
+    
+    // Link Type Logic (URL vs Dialog)
+    linkType={buttonLinkType}
+    onLinkTypeChange={(val) => onUpdate?.({ buttonLinkType: val })}
+    targetDialogId={buttonTargetDialogId}
+    onTargetDialogIdChange={(val) => onUpdate?.({ buttonTargetDialogId: val })}
+    
+    // Identity
+    id={buttonId}
+    onIdChange={(val) => onUpdate?.({ buttonId: val })}
+    suffix="button"
+/>
+```
+
+### `BuilderImage`
+For images with upload, replacement, and link support.
+```javascript
+import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
+
+<BuilderImage
+    src={image}
+    alt="Descriptive Alt Text"
+    className={`${styles.image} imagePlaceholder-16-9`}
+    isVisible={imageVisible}
+    sectionId={sectionId}
+    
+    // Identity
+    id={imageId}
+    onIdChange={(val) => onUpdate?.({ imageId: val })}
+    suffix="image"
+    
+    // Optional Link Support
+    href={imageLink}
+    onHrefChange={(val) => onUpdate?.({ imageLink: val })}
+    linkType={imageLinkType}        // 'url' or 'dialog'
+    onLinkTypeChange={(val) => onUpdate?.({ imageLinkType: val })}
+    targetDialogId={imageTargetDialogId}
+    onTargetDialogIdChange={(val) => onUpdate?.({ imageTargetDialogId: val })}
+/>
+```
+
 ### `BuilderText`
 For all editable text content.
 ```javascript
 import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
-// ...
+
 <BuilderText
     tagName="h2"
     className={styles.title}
     content={title}
     onChange={(val) => onUpdate?.({ title: val })}
     sectionId={sectionId}
-/>
-```
-
-### `BuilderImage`
-For images with upload/replacement support.
-```javascript
-import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
-// ...
-<BuilderImage
-    className={`${styles.imageContainer} imagePlaceholder-16-9`}
-    src={image}
-    id={imageId}
-    sectionId={sectionId}
-    isVisible={imageVisible}
-    onIdChange={(val) => onUpdate?.({ imageId: val })}
-    suffix="image"
+    // No suffix needed for text unless multiple valid texts exist in one block
 />
 ```
 
 ### `BuilderLink`
-For links or list items that need ID/visibility management.
+Simplified link component, primarily for lists or footer links where button styling isn't needed.
 ```javascript
 import BuilderLink from "@/app/page-builder-components/utils/builder/builder-link";
-// ...
+
 <BuilderLink
     label={item.label}
     href={item.url}
@@ -48,34 +91,16 @@ import BuilderLink from "@/app/page-builder-components/utils/builder/builder-lin
     isVisible={item0Visible}
     onVisibilityChange={(val) => onUpdate?.({ item0Visible: val })}
     onIdChange={(val) => onUpdate?.({ item0Id: val })}
-    // ...other props
+    // supports linkType/targetDialogId as well if needed
 />
-```
-
-### `BuilderElement`
-For generic elements (like accordion items or wrappers) that need ID generation/synchronization but don't fit into the above categories.
-```javascript
-import BuilderElement from "@/app/page-builder-components/utils/builder/builder-element";
-// ...
-<BuilderElement
-    tagName="div"
-    sectionId={sectionId}
-    id={item0Id}
-    elementProps="accordion-0"
-    onIdChange={(val) => onUpdate?.({ item0Id: val })}
->
-    {/* Content */}
-</BuilderElement>
 ```
 
 ---
 
 ## 2. Standard Dialog Structure
 
-All dialog components **must** use `DialogSection` to ensure consistency.
-**Structure Order:** Floating Close Button -> Image -> Title -> Description -> Content.
-
-`DialogSection` handles the layout automatically when you pass props:
+All dialog components **must** use `DialogSection`.
+**Order:** Close Button -> Image -> Title -> Description -> Content.
 
 ```javascript
 import DialogSection from "./dialog-section";
@@ -85,16 +110,11 @@ export default function MyDialog({
 }) {
     return (
         <DialogSection
-            title={title}
-            description={description}
-            image={image}
-            imageId={imageId}
-            imageVisible={imageVisible}
-            sectionId={sectionId}
+            // ...pass all standard props
             isOpen={isOpen}
             onUpdate={onUpdate}
         >
-            {/* Custom Content Children (e.g., List, Accordion) */}
+            {/* Custom Content Children */}
         </DialogSection>
     );
 }
@@ -102,29 +122,61 @@ export default function MyDialog({
 
 ---
 
-## 3. Visibility & Soft Deletion
+## 3. Sidebar Configuration (`component-library.js`)
 
-To allow users to "delete" items from the sidebar (without permanently breaking the structure), implementing "soft deletion" via visibility props.
-
-1.  **Props**: Accept an `isVisible` prop (e.g., `item0Visible`).
-2.  **Conditional Rendering**: Only render the item if `isVisible !== false`.
-3.  **Sidebar Config**: In `component-library.js`, map the `visibleProp` in the `links` array.
+You must define child elements in `component-library.js` so they appear in the Sidebar Layer Tree.
 
 ```javascript
 // component-library.js
-links: [
-    { label: "Item 1", propId: "item0Id", suffix: "item-0", visibleProp: "item0Visible" }
+"My Category": [
+    {
+        id: "my-component",
+        // ...
+        
+        // 1. Config for Settings Panel (Strings, Selects, Toggles)
+        config: [
+            { name: "title", label: "Title", type: "text", default: componentDefaults["my-component"].title },
+            { name: "buttonStyle", label: "Style", type: "select", options: ["primary", "neutral"] }
+        ],
+        
+        // 2. Child Layers for Sidebar Tree (Buttons, Images, Links)
+        buttons: [
+            { 
+                label: "CTA Button", 
+                propId: "buttonId",      // Prop storing the custom ID
+                suffix: "button",        // Default suffix
+                labelProp: "buttonText", // Prop storing the label text
+                visibleProp: "buttonVisible",
+                linkTypeProp: "buttonLinkType" // Prop storing 'url' vs 'dialog'
+            }
+        ],
+        images: [
+            { 
+                label: "Hero Image", 
+                propId: "imageId", 
+                suffix: "image", 
+                visibleProp: "imageVisible" 
+            }
+        ],
+        links: [
+            { label: "Link 1", propId: "link1Id", suffix: "link-1" }
+        ]
+    }
 ]
 ```
 
----
+## 4. Default Values (`data.js`)
 
-## 4. Configuration & Defaults
+**Single Source of Truth.** All default values must be defined in `app/template-components/content/data.js`.
 
-### `component-library.js`
-Defines how the component appears in the sidebar.
--   **`config`**: Fields for the properties panel (e.g., items list).
--   **`links`**: Individual elements shown as layers in the sidebar (for selection/deletion).
-
-### `data.js`
-Defines the initial default values for all props. Ensure new props (like `image`, `imageId`) have defaults here.
+```javascript
+// data.js
+export const componentDefaults = {
+    "my-component": {
+        title: "Default Title",
+        buttonText: "Click Me",
+        buttonLinkType: "url",
+        // ...
+    }
+}
+```

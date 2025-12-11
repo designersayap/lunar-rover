@@ -523,6 +523,20 @@ export const componentLibrary = {
                     type: "list",
                     default: componentDefaults["terra-testimony"].testimonies
                 }
+            ],
+            links: [
+                { label: "Testimony 1", propId: "card0Id", suffix: "testimony-0", visibleProp: "card0Visible" },
+                { label: "Testimony 2", propId: "card1Id", suffix: "testimony-1", visibleProp: "card1Visible" },
+                { label: "Testimony 3", propId: "card2Id", suffix: "testimony-2", visibleProp: "card2Visible" },
+                { label: "Testimony 4", propId: "card3Id", suffix: "testimony-3", visibleProp: "card3Visible" },
+                { label: "Testimony 5", propId: "card4Id", suffix: "testimony-4", visibleProp: "card4Visible" },
+                { label: "Testimony 6", propId: "card5Id", suffix: "testimony-5", visibleProp: "card5Visible" },
+                { label: "Testimony 7", propId: "card6Id", suffix: "testimony-6", visibleProp: "card6Visible" },
+                { label: "Testimony 8", propId: "card7Id", suffix: "testimony-7", visibleProp: "card7Visible" },
+                { label: "Testimony 9", propId: "card8Id", suffix: "testimony-8", visibleProp: "card8Visible" },
+                { label: "Testimony 10", propId: "card9Id", suffix: "testimony-9", visibleProp: "card9Visible" },
+                { label: "Testimony 11", propId: "card10Id", suffix: "testimony-10", visibleProp: "card10Visible" },
+                { label: "Testimony 12", propId: "card11Id", suffix: "testimony-11", visibleProp: "card11Visible" }
             ]
         }
     ]

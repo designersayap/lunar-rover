@@ -184,12 +184,8 @@ export default function BuilderControlsPopover({
                                         <input
                                             type="checkbox"
                                             className={styles.toggleInput}
-                                            checked={fullWidth || false}
-                                            onChange={(e) => onLayoutChange({
-                                                fullWidth: e.target.checked,
-                                                removePaddingLeft: e.target.checked,
-                                                removePaddingRight: e.target.checked
-                                            })}
+                                            checked={fullWidth === true || fullWidth === "true"}
+                                            onChange={(e) => onLayoutChange({ fullWidth: e.target.checked })}
                                         />
                                         <span className={styles.toggleSlider}></span>
                                     </label>

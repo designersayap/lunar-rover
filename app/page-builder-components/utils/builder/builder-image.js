@@ -12,6 +12,8 @@ import styles from "../../../page.module.css";
  * BuilderImage Component
  * Renders an image with consistent styling and placeholder support.
  */
+const defaultPlaceholder = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg"; // Change this to any URL to use a remote image as placeholder
+
 export default function BuilderImage({
     src,
     alt = "#",
@@ -28,7 +30,8 @@ export default function BuilderImage({
     linkType = 'url',
     onLinkTypeChange,
     targetDialogId,
-    onTargetDialogIdChange
+    onTargetDialogIdChange,
+    disableSettings = false
 }) {
     // ID Sync Hook
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
@@ -161,21 +164,24 @@ export default function BuilderImage({
                         </button>
                     )}
 
-                    <button
-                        type="button"
-                        className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                        onClick={handleSettingsClick}
-                    >
-                        <Cog6ToothIcon className={styles.overlayIcon} />
-                    </button>
+                    {/* Show simple settings toggle if NOT disabled */}
+                    {!disableSettings && (
+                        <button
+                            type="button"
+                            className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
+                            onClick={handleSettingsClick}
+                        >
+                            <Cog6ToothIcon className={styles.overlayIcon} />
+                        </button>
+                    )}
                 </div>
             </div>,
             document.body
         );
     };
 
-    const imageSrc = src || "/images/placeholder.svg";
-    const isPlaceholder = !src || src === "/images/placeholder.svg";
+    const imageSrc = src || defaultPlaceholder;
+    const isPlaceholder = !src || src === defaultPlaceholder;
     const finalStyle = {
         width: "100%",
         height: "100%",

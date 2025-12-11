@@ -1,5 +1,5 @@
 /* Container */
-.container {
+.section {
     padding: var(--padding-xl) 0;
 }
 
@@ -7,11 +7,9 @@
 .cardsWrapper {
     display: flex;
     justify-content: flex-start;
-    margin-bottom: var(--gap-md);
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    padding-bottom: var(--padding-sm);
     scrollbar-width: none;
 }
 
@@ -48,7 +46,7 @@
 .terraTestimoniImage {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+
     position: absolute;
     top: 0;
     left: 0;
@@ -57,9 +55,9 @@
 /* Description Card Container */
 .terraTestimoniDescriptionCard {
     position: absolute;
-    bottom: var(--space-80);
-    left: var(--space-80);
-    right: var(--space-80);
+    bottom: var(--padding-md);
+    left: var(--padding-md);
+    right: var(--padding-md);
     background: var(--background-neutral--default);
     border-radius: var(--border-radius-md);
     backdrop-filter: blur(5.5px);
@@ -88,7 +86,7 @@
 .avatarImg {
     width: 52px;
     height: 52px;
-    object-fit: cover;
+
     position: absolute;
     top: 0;
     left: 50%;
@@ -104,7 +102,7 @@
     width: 100%;
     opacity: 0.6;
     text-align: center;
-    color: var(--grey-300);
+    color: var(--content-neutral--caption);
     margin-bottom: var(--gap-sm);
 }
 
@@ -113,7 +111,7 @@
     width: 100%;
     opacity: 0.8;
     text-align: center;
-    color: var(--grey-400);
+    color: var(--content-neutral--body);
 }
 
 /* Pagination Dots */
@@ -121,14 +119,14 @@
     display: flex;
     justify-content: center;
     gap: var(--gap-sm);
-    margin-top: var(--gap-md);
+    margin-top: var(--gap-sm);
 }
 
 .dot {
     width: 40px;
     height: 4px;
-    border-radius: var(--round-120);
-    background: var(--grey-100);
+    border-radius: var(--border-radius-lg);
+    background: var(--background-neutral--neutral-subtle);
     cursor: pointer;
     transition: background 0.3s ease, opacity 0.3s ease;
 }

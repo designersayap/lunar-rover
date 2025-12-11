@@ -1,6 +1,7 @@
 import { ArrowLongRightIcon } from "@heroicons/react/20/solid";
 import BuilderButton from "@/app/page-builder-components/utils/builder/builder-button";
 import { componentDefaults } from "../content/data";
+import { createUpdateHandler } from "../utils/component-helpers";
 import HeaderSection from "./header-section";
 
 /**
@@ -26,6 +27,8 @@ export default function GlobalHeaderTitleButtonDescription({
     onUpdate,
     sectionId
 }) {
+    const update = createUpdateHandler(onUpdate);
+
     return (
         <HeaderSection
             title={title}
@@ -43,16 +46,16 @@ export default function GlobalHeaderTitleButtonDescription({
                     sectionId={sectionId}
                     className={`btn btn-${buttonStyle} btn-md`}
                     iconRight={<ArrowLongRightIcon />}
-                    onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
-                    onHrefChange={(val) => onUpdate && onUpdate({ buttonUrl: val })}
-                    onVisibilityChange={(val) => onUpdate && onUpdate({ buttonVisible: val })}
-                    onVariantChange={(val) => onUpdate && onUpdate({ buttonStyle: val })}
+                    onLabelChange={update('buttonText')}
+                    onHrefChange={update('buttonUrl')}
+                    onVisibilityChange={update('buttonVisible')}
+                    onVariantChange={update('buttonStyle')}
                     linkType={buttonLinkType}
-                    onLinkTypeChange={(val) => onUpdate && onUpdate({ buttonLinkType: val })}
+                    onLinkTypeChange={update('buttonLinkType')}
                     targetDialogId={buttonTargetDialogId}
-                    onTargetDialogIdChange={(val) => onUpdate && onUpdate({ buttonTargetDialogId: val })}
+                    onTargetDialogIdChange={update('buttonTargetDialogId')}
                     id={buttonId}
-                    onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
+                    onIdChange={update('buttonId')}
                     suffix="button"
                 />
                 <BuilderButton
@@ -61,16 +64,16 @@ export default function GlobalHeaderTitleButtonDescription({
                     isVisible={secondaryButtonVisible}
                     sectionId={sectionId}
                     className={`btn btn-${secondaryButtonStyle} btn-md`}
-                    onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
-                    onHrefChange={(val) => onUpdate && onUpdate({ secondaryButtonUrl: val })}
-                    onVisibilityChange={(val) => onUpdate && onUpdate({ secondaryButtonVisible: val })}
-                    onVariantChange={(val) => onUpdate && onUpdate({ secondaryButtonStyle: val })}
+                    onLabelChange={update('secondaryButtonText')}
+                    onHrefChange={update('secondaryButtonUrl')}
+                    onVisibilityChange={update('secondaryButtonVisible')}
+                    onVariantChange={update('secondaryButtonStyle')}
                     linkType={secondaryButtonLinkType}
-                    onLinkTypeChange={(val) => onUpdate && onUpdate({ secondaryButtonLinkType: val })}
+                    onLinkTypeChange={update('secondaryButtonLinkType')}
                     targetDialogId={secondaryButtonTargetDialogId}
-                    onTargetDialogIdChange={(val) => onUpdate && onUpdate({ secondaryButtonTargetDialogId: val })}
+                    onTargetDialogIdChange={update('secondaryButtonTargetDialogId')}
                     id={secondaryButtonId}
-                    onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
+                    onIdChange={update('secondaryButtonId')}
                     suffix="secondary-button"
                 />
             </div>

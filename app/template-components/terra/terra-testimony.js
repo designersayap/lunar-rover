@@ -5,6 +5,7 @@ import styles from "./terra-testimony.module.css";
 import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
 import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
 import BuilderSection from "@/app/page-builder-components/utils/builder/builder-section";
+import BuilderElement from "@/app/page-builder-components/utils/builder/builder-element";
 import { componentDefaults } from "../content/data";
 
 export default function TerraTestimony({
@@ -13,8 +14,23 @@ export default function TerraTestimony({
     onUpdate,
     fullWidth,
     removePaddingLeft,
-    removePaddingRight
+    removePaddingRight,
+    // Card Visibility Props (Controlled by Sidebar)
+    card0Visible, card1Visible, card2Visible, card3Visible, card4Visible, card5Visible,
+    card6Visible, card7Visible, card8Visible, card9Visible, card10Visible, card11Visible,
+    // Card ID Props (Controlled by Sidebar)
+    card0Id, card1Id, card2Id, card3Id, card4Id, card5Id,
+    card6Id, card7Id, card8Id, card9Id, card10Id, card11Id
 }) {
+    const cardVisibility = [
+        card0Visible, card1Visible, card2Visible, card3Visible, card4Visible, card5Visible,
+        card6Visible, card7Visible, card8Visible, card9Visible, card10Visible, card11Visible
+    ];
+    const cardIds = [
+        card0Id, card1Id, card2Id, card3Id, card4Id, card5Id,
+        card6Id, card7Id, card8Id, card9Id, card10Id, card11Id
+    ];
+
     const scrollContainerRef = useRef(null);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
@@ -25,6 +41,13 @@ export default function TerraTestimony({
         newTestimonies[index] = { ...newTestimonies[index], [key]: value };
         onUpdate({ testimonies: newTestimonies });
     };
+
+    const updateCardId = (index, newId) => {
+        if (!onUpdate) return;
+        onUpdate({ [`card${index}Id`]: newId });
+    };
+
+    const visibleCardsString = cardVisibility.join(',');
 
     // Calculate total pages based on viewport width
     useEffect(() => {
@@ -39,10 +62,15 @@ export default function TerraTestimony({
             setTotalPages(pages);
         };
 
-        calculatePages();
+        // Delay calculation slightly to ensure DOM has updated
+        const timer = setTimeout(calculatePages, 100);
+
         window.addEventListener('resize', calculatePages);
-        return () => window.removeEventListener('resize', calculatePages);
-    }, [testimonies]);
+        return () => {
+            window.removeEventListener('resize', calculatePages);
+            clearTimeout(timer);
+        };
+    }, [testimonies.length, visibleCardsString]);
 
     // Track scroll position to update active page
     useEffect(() => {
@@ -86,76 +114,106 @@ export default function TerraTestimony({
         });
     };
 
-    return (
-        <section className={styles.container}>
-            <BuilderSection
-                sectionId={sectionId}
-                fullWidth={fullWidth}
-                removePaddingLeft={removePaddingLeft}
-                removePaddingRight={removePaddingRight}
-                onUpdate={onUpdate}
-            >
-                <div className="grid">
-                    <div className="col-mobile-2 col-tablet-8 col-desktop-12">
-                        <div ref={scrollContainerRef} className={`grid ${styles.cardsWrapper}`}>
-                            {testimonies.map((item, index) => (
-                                <div key={index} className={`col-mobile-2 col-tablet-4 col-desktop-3 ${styles.itemWrapper}`}>
-                                    <div className={styles.card}>
-                                        <BuilderImage
-                                            src={item.image}
-                                            className={`${styles.terraTestimoniImage} imagePlaceholder-4-5`}
-                                            id={item.imageId}
-                                            sectionId={sectionId}
-                                            isVisible={item.imageVisible}
-                                            onIdChange={(val) => updateTestimony(index, "imageId", val)}
-                                            onVisibilityChange={(val) => updateTestimony(index, "imageVisible", val)}
-                                            suffix={`background-${index}`}
-                                        />
+    const visibleCount = cardVisibility.filter(v => v !== false).length;
 
-                                        <div className={styles.terraTestimoniDescriptionCard}>
-                                            <div className={`imageWrapper ${styles.avatarImg}`}>
-                                                <BuilderImage
-                                                    src={item.avatar}
-                                                    className={'imagePlaceholder-1-1'}
-                                                    id={item.avatarId}
-                                                    style={{ borderRadius: "var(--border-radius-round)" }}
-                                                    sectionId={sectionId}
-                                                    isVisible={item.avatarVisible}
-                                                    onIdChange={(val) => updateTestimony(index, "avatarId", val)}
-                                                    onVisibilityChange={(val) => updateTestimony(index, "avatarVisible", val)}
-                                                    suffix={`avatar-${index}`}
-                                                />
-                                            </div>
-                                            <BuilderText
-                                                tagName="div"
-                                                className={`h6 truncate-1-line`}
-                                                content={item.name}
-                                                onChange={(val) => updateTestimony(index, "name", val)}
+    return (
+        <BuilderSection
+            tagName="section"
+            className={styles.section}
+            innerContainer={true}
+            sectionId={sectionId}
+            fullWidth={fullWidth}
+            removePaddingLeft={removePaddingLeft}
+            removePaddingRight={removePaddingRight}
+            onUpdate={onUpdate}
+        >
+            <div className="grid">
+                <div className="col-mobile-2 col-tablet-8 col-desktop-12">
+                    <div
+                        ref={scrollContainerRef}
+                        className={styles.cardsWrapper}
+                        style={{ justifyContent: visibleCount === 3 ? 'center' : 'initial' }}
+                    >
+                        {testimonies.map((item, index) => (
+                            <BuilderElement
+                                key={index}
+                                tagName="div"
+                                className={`col-mobile-2 col-tablet-4 col-desktop-3 ${styles.itemWrapper}`}
+                                id={cardIds[index]}
+                                sectionId={sectionId}
+                                onIdChange={(val) => updateCardId(index, val)}
+                                elementProps={`testimony-${index}`}
+                                isVisible={cardVisibility[index] !== false}
+                            >
+                                <div className={styles.card}>
+                                    <BuilderImage
+                                        src={item.image}
+                                        className={`${styles.terraTestimoniImage} imagePlaceholder-4-5 object-cover`}
+                                        id={item.imageId}
+                                        sectionId={sectionId}
+                                        isVisible={item.imageVisible}
+                                        onIdChange={(val) => updateTestimony(index, "imageId", val)}
+                                        onVisibilityChange={(val) => updateTestimony(index, "imageVisible", val)}
+                                        suffix={`background-${index}`}
+                                        href={item.imageUrl}
+                                        onHrefChange={(val) => updateTestimony(index, "imageUrl", val)}
+                                        linkType={item.imageLinkType}
+                                        onLinkTypeChange={(val) => updateTestimony(index, "imageLinkType", val)}
+                                        targetDialogId={item.imageTargetDialogId}
+                                        onTargetDialogIdChange={(val) => updateTestimony(index, "imageTargetDialogId", val)}
+                                    />
+
+                                    <div className={styles.terraTestimoniDescriptionCard}>
+                                        <div className={`imageWrapper ${styles.avatarImg}`}>
+                                            <BuilderImage
+                                                src={item.avatar}
+                                                className={'imagePlaceholder-1-1 object-cover'}
+                                                id={item.avatarId}
+                                                style={{ borderRadius: "var(--border-radius-round)" }}
                                                 sectionId={sectionId}
-                                                title={item.name}
-                                            />
-                                            <BuilderText
-                                                tagName="div"
-                                                className={`caption-regular truncate-1-line ${styles.role}`}
-                                                content={item.role}
-                                                onChange={(val) => updateTestimony(index, "role", val)}
-                                                sectionId={sectionId}
-                                                title={item.role}
-                                            />
-                                            <BuilderText
-                                                tagName="div"
-                                                className={`caption-regular truncate-2-lines ${styles.description}`}
-                                                content={item.description}
-                                                onChange={(val) => updateTestimony(index, "description", val)}
-                                                sectionId={sectionId}
-                                                title={item.description}
+                                                isVisible={item.avatarVisible}
+                                                onIdChange={(val) => updateTestimony(index, "avatarId", val)}
+                                                onVisibilityChange={(val) => updateTestimony(index, "avatarVisible", val)}
+                                                suffix={`avatar-${index}`}
+                                                href={item.avatarUrl}
+                                                onHrefChange={(val) => updateTestimony(index, "avatarUrl", val)}
+                                                linkType={item.avatarLinkType}
+                                                onLinkTypeChange={(val) => updateTestimony(index, "avatarLinkType", val)}
+                                                targetDialogId={item.avatarTargetDialogId}
+                                                onTargetDialogIdChange={(val) => updateTestimony(index, "avatarTargetDialogId", val)}
                                             />
                                         </div>
+                                        <BuilderText
+                                            tagName="div"
+                                            className={`h6 truncate-1-line`}
+                                            content={item.name}
+                                            onChange={(val) => updateTestimony(index, "name", val)}
+                                            sectionId={sectionId}
+                                            title={item.name}
+                                        />
+                                        <BuilderText
+                                            tagName="div"
+                                            className={`caption-regular truncate-1-line ${styles.role}`}
+                                            content={item.role}
+                                            onChange={(val) => updateTestimony(index, "role", val)}
+                                            sectionId={sectionId}
+                                            title={item.role}
+                                        />
+                                        <BuilderText
+                                            tagName="div"
+                                            className={`caption-regular truncate-2-lines ${styles.description}`}
+                                            content={item.description}
+                                            onChange={(val) => updateTestimony(index, "description", val)}
+                                            sectionId={sectionId}
+                                            title={item.description}
+                                        />
                                     </div>
                                 </div>
-                            ))}
-                        </div>
+                            </BuilderElement>
+                        ))}
+                    </div>
 
+                    {totalPages > 1 && (
                         <div className={styles.paginator}>
                             {Array.from({ length: totalPages }).map((_, index) => (
                                 <div
@@ -168,9 +226,9 @@ export default function TerraTestimony({
                                 />
                             ))}
                         </div>
-                    </div>
+                    )}
                 </div>
-            </BuilderSection>
-        </section>
+            </div>
+        </BuilderSection >
     );
 }

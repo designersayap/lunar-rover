@@ -298,6 +298,15 @@ export default function Sidebar({
                                                                                 }
                                                                             }
 
+                                                                            // Guard Rail: Terra Testimony must have at least 3 items
+                                                                            if (comp.id === 'terra-testimony') {
+                                                                                const visibleCount = allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length;
+                                                                                if (visibleCount <= 3) {
+                                                                                    alert("At least 3 testimony cards must remain visible.");
+                                                                                    return;
+                                                                                }
+                                                                            }
+
                                                                             // Calculate current visibility state properly
                                                                             const isVisible = comp.props?.[child.visibleProp] !== false;
 
@@ -309,8 +318,14 @@ export default function Sidebar({
                                                                             updateComponent(comp.uniqueId, { [child.visibleProp]: false });
                                                                         }}
                                                                         style={{
-                                                                            opacity: (comp.id === 'dialog-accordion' && allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length <= 1) ? 0.3 : 1,
-                                                                            cursor: (comp.id === 'dialog-accordion' && allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length <= 1) ? 'not-allowed' : 'pointer'
+                                                                            opacity: (
+                                                                                (comp.id === 'dialog-accordion' && allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length <= 1) ||
+                                                                                (comp.id === 'terra-testimony' && allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length <= 3)
+                                                                            ) ? 0.3 : 1,
+                                                                            cursor: (
+                                                                                (comp.id === 'dialog-accordion' && allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length <= 1) ||
+                                                                                (comp.id === 'terra-testimony' && allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length <= 3)
+                                                                            ) ? 'not-allowed' : 'pointer'
                                                                         }}
                                                                     >
                                                                         <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
@@ -322,7 +337,8 @@ export default function Sidebar({
                                                     );
                                                 })}
                                             </div>
-                                        )}
+                                        )
+                                        }
                                     </div>
                                 );
                             })
@@ -334,7 +350,8 @@ export default function Sidebar({
                     analyticsData={analyticsData}
                     setAnalyticsData={setAnalyticsData}
                 />
-            )}
-        </div>
+            )
+            }
+        </div >
     );
 }

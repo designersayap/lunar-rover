@@ -21,36 +21,37 @@ export default function Media16x9({
     imageTargetDialogId
 }) {
     return (
-        <section className={styles.container}>
-            <BuilderSection
-                sectionId={sectionId}
-                fullWidth={fullWidth}
-                removePaddingLeft={removePaddingLeft}
-                removePaddingRight={removePaddingRight}
-                onUpdate={onUpdate}
-            >
-                <div className="grid">
-                    <div className="col-mobile-2 col-tablet-8 col-desktop-12">
-                        <div className="imageWrapper">
-                            <BuilderImage
-                                src={image}
-                                className={`${styles.image} imagePlaceholder-16-9 object-cover`}
-                                id={imageId}
-                                sectionId={sectionId}
-                                isVisible={imageVisible}
-                                onIdChange={(val) => onUpdate && onUpdate({ imageId: val })}
-                                suffix="image"
-                                href={imageHref}
-                                onHrefChange={(val) => onUpdate && onUpdate({ imageHref: val })}
-                                linkType={imageLinkType}
-                                onLinkTypeChange={(val) => onUpdate && onUpdate({ imageLinkType: val })}
-                                targetDialogId={imageTargetDialogId}
-                                onTargetDialogIdChange={(val) => onUpdate && onUpdate({ imageTargetDialogId: val })}
-                            />
-                        </div>
+        <BuilderSection
+            tagName="section"
+            className={styles.container}
+            innerContainer={true}
+            sectionId={sectionId}
+            fullWidth={fullWidth}
+            removePaddingLeft={removePaddingLeft}
+            removePaddingRight={removePaddingRight}
+            onUpdate={onUpdate}
+        >
+            <div className="grid">
+                <div className="col-mobile-2 col-tablet-8 col-desktop-12">
+                    <div className="imageWrapper">
+                        <BuilderImage
+                            src={image}
+                            className={`${styles.image} imagePlaceholder-16-9 object-cover`}
+                            id={imageId}
+                            sectionId={sectionId}
+                            isVisible={imageVisible}
+                            onIdChange={(val) => onUpdate && onUpdate({ imageId: val })}
+                            suffix="image"
+                            href={imageHref}
+                            onHrefChange={(val) => onUpdate && onUpdate({ imageHref: val })}
+                            linkType={imageLinkType}
+                            onLinkTypeChange={(val) => onUpdate && onUpdate({ imageLinkType: val })}
+                            targetDialogId={imageTargetDialogId}
+                            onTargetDialogIdChange={(val) => onUpdate && onUpdate({ imageTargetDialogId: val })}
+                        />
                     </div>
                 </div>
-            </BuilderSection>
-        </section>
+            </div>
+        </BuilderSection >
     );
 }

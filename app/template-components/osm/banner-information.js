@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
 import BuilderButton from "@/app/page-builder-components/utils/builder/builder-button";
+import { createUpdateHandler } from "../utils/component-helpers";
 import styles from "./banner-information.module.css";
 
 export default function BannerInformation({
@@ -20,6 +21,7 @@ export default function BannerInformation({
     className = "",
     isVisible = true,
 }) {
+    const update = createUpdateHandler(onUpdate);
     const [isClosed, setIsClosed] = useState(false);
     const [isMarquee, setIsMarquee] = useState(false);
     const [marqueeOffset, setMarqueeOffset] = useState(0);
@@ -56,7 +58,7 @@ export default function BannerInformation({
     return (
         <div
             className={`${styles.banner} z-sm ${className}`}
-            data-section-id={sectionId}
+            id={sectionId}
         >
             <div className="container-grid" style={{ width: '100%' }}>
                 <div className="grid align-center">
@@ -78,7 +80,7 @@ export default function BannerInformation({
                                     tagName="p"
                                     className={`body-regular ${styles.title} ${isMarquee ? styles.marquee : ''}`}
                                     content={title}
-                                    onChange={(val) => onUpdate?.({ title: val })}
+                                    onChange={update('title')}
                                     sectionId={sectionId}
                                     multiline={false}
                                 />
@@ -90,15 +92,15 @@ export default function BannerInformation({
                             isVisible={buttonVisible}
                             sectionId={sectionId}
                             className="btn btn-outline btn-sm"
-                            onLabelChange={(val) => onUpdate?.({ buttonText: val })}
-                            onHrefChange={(val) => onUpdate?.({ buttonUrl: val })}
-                            onVisibilityChange={(val) => onUpdate?.({ buttonVisible: val })}
+                            onLabelChange={update('buttonText')}
+                            onHrefChange={update('buttonUrl')}
+                            onVisibilityChange={update('buttonVisible')}
                             linkType={buttonLinkType}
-                            onLinkTypeChange={(val) => onUpdate?.({ buttonLinkType: val })}
+                            onLinkTypeChange={update('buttonLinkType')}
                             targetDialogId={buttonTargetDialogId}
-                            onTargetDialogIdChange={(val) => onUpdate?.({ buttonTargetDialogId: val })}
+                            onTargetDialogIdChange={update('buttonTargetDialogId')}
                             id={buttonId}
-                            onIdChange={(val) => onUpdate?.({ buttonId: val })}
+                            onIdChange={update('buttonId')}
                             suffix="button"
                         />
                     </div>

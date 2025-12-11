@@ -117,7 +117,8 @@ export const componentDefaults = {
         buttonId: ""
     },
     "media-16-9": {
-        image: ""
+        image: "",
+        fullWidth: false
     },
     "terra-testimony": {
         testimonies: Array(12).fill({
@@ -125,10 +126,18 @@ export const componentDefaults = {
             role: "Role",
             description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
             image: "",
+            imageUrl: "",
+            imageLinkType: "url",
+            imageTargetDialogId: "",
             avatar: "",
+            avatarUrl: "",
+            avatarLinkType: "url",
+            avatarTargetDialogId: "",
             imageVisible: true,
-            avatarVisible: true
-        })
+            avatarVisible: true,
+            cardId: ""
+        }),
+        fullWidth: false
     }
 
 };

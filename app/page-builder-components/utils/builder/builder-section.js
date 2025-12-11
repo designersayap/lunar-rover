@@ -10,7 +10,21 @@ import { getContainerClasses } from "../section-utils";
 
 /**
  * BuilderSection Component
- * Renders a section container with consistent styling and settings.
+ * Wraps content with builder controls (selection, settings popup) and optional container styling.
+ * 
+ * Container Modes:
+ * - Default (innerContainer=false): Container classes applied directly to root element
+ * - Inner Container (innerContainer=true): Root element gets ID, inner wrapper gets container classes
+ *   Use this when you need semantic HTML (e.g., <section id="...">) with flexible width control
+ * 
+ * @param {Object} props
+ * @param {string} props.sectionId - Unique ID for the section
+ * @param {boolean} props.fullWidth - Remove max-width constraint (1440px -> 100%)
+ * @param {boolean} props.removePaddingLeft - Remove left padding from container
+ * @param {boolean} props.removePaddingRight - Remove right padding from container
+ * @param {Function} props.onUpdate - Callback when settings change
+ * @param {string} props.tagName - HTML tag to render (default: "div")
+ * @param {boolean} props.innerContainer - Use inner wrapper for container classes
  */
 export default function BuilderSection({
     sectionId,
@@ -21,7 +35,9 @@ export default function BuilderSection({
     children,
     className = "",
     style = {},
-    isVisible = true
+    isVisible = true,
+    tagName = "div",
+    innerContainer = false
 }) {
     const sectionRef = useRef(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
@@ -96,18 +112,24 @@ export default function BuilderSection({
         }
     };
 
-    // Generate container classes
+    // Generate container classes based on layout props
     const containerClasses = getContainerClasses({
-        fullWidth,
+        fullWidth: fullWidth === true || fullWidth === "true",
         removePaddingLeft,
         removePaddingRight
     });
 
-    const combinedClassName = `${containerClasses} ${className} ${isActive ? styles.activeWrapper : ''}`;
+    // Apply classes to root or inner wrapper based on innerContainer mode
+    const rootContainerClasses = !innerContainer ? containerClasses : "";
+    const innerContainerClasses = innerContainer ? containerClasses : "";
+
+    const combinedClassName = `${rootContainerClasses} ${className} ${isActive ? styles.activeWrapper : ''}`.trim();
+
+    const Tag = tagName;
 
     return (
         <>
-            <div
+            <Tag
                 ref={sectionRef}
                 id={elementId}
                 className={combinedClassName}
@@ -137,8 +159,15 @@ export default function BuilderSection({
                     </div>
                 )}
 
-                {children}
-            </div>
+
+                {innerContainer ? (
+                    <div className={innerContainerClasses}>
+                        {children}
+                    </div>
+                ) : (
+                    children
+                )}
+            </Tag>
 
             {/* Popover */}
             {isActive && (

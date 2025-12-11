@@ -3,6 +3,7 @@ import BuilderText from "@/app/page-builder-components/utils/builder/builder-tex
 import BuilderButton from "@/app/page-builder-components/utils/builder/builder-button";
 import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
 import { componentDefaults } from "../content/data";
+import { createUpdateHandler } from "../utils/component-helpers";
 
 /**
  * TerraBannerHero Component
@@ -30,8 +31,10 @@ export default function TerraBannerHero({
     onUpdate,
     sectionId
 }) {
+    const update = createUpdateHandler(onUpdate);
+
     return (
-        <main className={`${styles.hero} imagePlaceholder-5-4`}>
+        <main className={`${styles.hero} imagePlaceholder-5-4`} id={sectionId}>
             <div className={styles.backgroundImage}>
                 <BuilderImage
                     src={image}
@@ -39,7 +42,7 @@ export default function TerraBannerHero({
                     id={imageId}
                     sectionId={sectionId}
                     isVisible={imageVisible}
-                    onIdChange={(val) => onUpdate && onUpdate({ imageId: val })}
+                    onIdChange={update('imageId')}
                     suffix="image"
                 />
             </div>
@@ -51,14 +54,14 @@ export default function TerraBannerHero({
                                 tagName="h1"
                                 className={`h1 ${styles.heroTitle}`}
                                 content={title}
-                                onChange={(val) => onUpdate && onUpdate({ title: val })}
+                                onChange={update('title')}
                                 sectionId={sectionId}
                             />
                             <BuilderText
                                 tagName="p"
                                 className={`subheader-h1 ${styles.heroSubtitle}`}
                                 content={subtitle}
-                                onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
+                                onChange={update('subtitle')}
                                 sectionId={sectionId}
                             />
                             <div className="buttonWrapperCenter">
@@ -67,17 +70,17 @@ export default function TerraBannerHero({
                                     href={buttonUrl}
                                     isVisible={buttonVisible}
                                     sectionId={sectionId}
-                                    className={`btn btn-${buttonStyle || 'primary'} btn-lg`}
-                                    onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
-                                    onHrefChange={(val) => onUpdate && onUpdate({ buttonUrl: val })}
-                                    onVisibilityChange={(val) => onUpdate && onUpdate({ buttonVisible: val })}
-                                    onVariantChange={(val) => onUpdate && onUpdate({ buttonStyle: val })}
+                                    className={`btn btn-${buttonStyle} btn-md`}
+                                    onLabelChange={update('buttonText')}
+                                    onHrefChange={update('buttonUrl')}
+                                    onVisibilityChange={update('buttonVisible')}
+                                    onVariantChange={update('buttonStyle')}
                                     linkType={buttonLinkType}
-                                    onLinkTypeChange={(val) => onUpdate && onUpdate({ buttonLinkType: val })}
+                                    onLinkTypeChange={update('buttonLinkType')}
                                     targetDialogId={buttonTargetDialogId}
-                                    onTargetDialogIdChange={(val) => onUpdate && onUpdate({ buttonTargetDialogId: val })}
+                                    onTargetDialogIdChange={update('buttonTargetDialogId')}
                                     id={buttonId}
-                                    onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
+                                    onIdChange={update('buttonId')}
                                     suffix="button"
                                 />
                                 <BuilderButton
@@ -85,17 +88,17 @@ export default function TerraBannerHero({
                                     href={secondaryButtonUrl}
                                     isVisible={secondaryButtonVisible}
                                     sectionId={sectionId}
-                                    className={`btn btn-${secondaryButtonStyle} btn-lg`}
-                                    onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
-                                    onHrefChange={(val) => onUpdate && onUpdate({ secondaryButtonUrl: val })}
-                                    onVisibilityChange={(val) => onUpdate && onUpdate({ secondaryButtonVisible: val })}
-                                    onVariantChange={(val) => onUpdate && onUpdate({ secondaryButtonStyle: val })}
+                                    className={`btn btn-${secondaryButtonStyle} btn-md`}
+                                    onLabelChange={update('secondaryButtonText')}
+                                    onHrefChange={update('secondaryButtonUrl')}
+                                    onVisibilityChange={update('secondaryButtonVisible')}
+                                    onVariantChange={update('secondaryButtonStyle')}
                                     linkType={secondaryButtonLinkType}
-                                    onLinkTypeChange={(val) => onUpdate && onUpdate({ secondaryButtonLinkType: val })}
+                                    onLinkTypeChange={update('secondaryButtonLinkType')}
                                     targetDialogId={secondaryButtonTargetDialogId}
-                                    onTargetDialogIdChange={(val) => onUpdate && onUpdate({ secondaryButtonTargetDialogId: val })}
+                                    onTargetDialogIdChange={update('secondaryButtonTargetDialogId')}
                                     id={secondaryButtonId}
-                                    onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
+                                    onIdChange={update('secondaryButtonId')}
                                     suffix="secondary-button"
                                 />
                             </div>

@@ -4,6 +4,7 @@ import BuilderButton from "@/app/page-builder-components/utils/builder/builder-b
 import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
 import { ArrowLongRightIcon } from "@heroicons/react/20/solid";
 import { componentDefaults } from "../content/data";
+import { createUpdateHandler } from "../utils/component-helpers";
 
 /**
  * TerraFeaturesImageLeft Component
@@ -31,8 +32,10 @@ export default function TerraFeaturesImageLeft({
     onUpdate,
     sectionId
 }) {
+    const update = createUpdateHandler(onUpdate);
+
     return (
-        <section className={styles.container}>
+        <section className={styles.container} id={sectionId}>
             <div className="container-grid">
                 <div className="grid align-center">
                     {/* Image Column */}
@@ -44,7 +47,7 @@ export default function TerraFeaturesImageLeft({
                             id={imageId}
                             sectionId={sectionId}
                             isVisible={imageVisible}
-                            onIdChange={(val) => onUpdate && onUpdate({ imageId: val })}
+                            onIdChange={update('imageId')}
                             suffix="image"
                         />
                     </div>
@@ -56,7 +59,7 @@ export default function TerraFeaturesImageLeft({
                             className={`h2 ${styles.title}`}
                             style={{ marginBottom: "var(--gap-sm)" }}
                             content={title}
-                            onChange={(val) => onUpdate && onUpdate({ title: val })}
+                            onChange={update('title')}
                             sectionId={sectionId}
                         />
                         <BuilderText
@@ -64,7 +67,7 @@ export default function TerraFeaturesImageLeft({
                             className="subheader-h2"
                             style={{ color: "var(--content-neutral--caption)", marginBottom: "var(--gap-md)" }}
                             content={subtitle}
-                            onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
+                            onChange={update('subtitle')}
                             sectionId={sectionId}
                         />
                         <div className="buttonWrapperLeft">
@@ -73,18 +76,18 @@ export default function TerraFeaturesImageLeft({
                                 href={buttonUrl}
                                 isVisible={buttonVisible}
                                 sectionId={sectionId}
-                                className={`btn btn-${buttonStyle || 'primary'} btn-md`}
+                                className={`btn btn-${buttonStyle} btn-md`}
                                 iconRight={<ArrowLongRightIcon />}
-                                onLabelChange={(val) => onUpdate && onUpdate({ buttonText: val })}
-                                onHrefChange={(val) => onUpdate && onUpdate({ buttonUrl: val })}
-                                onVisibilityChange={(val) => onUpdate && onUpdate({ buttonVisible: val })}
-                                onVariantChange={(val) => onUpdate && onUpdate({ buttonStyle: val })}
+                                onLabelChange={update('buttonText')}
+                                onHrefChange={update('buttonUrl')}
+                                onVisibilityChange={update('buttonVisible')}
+                                onVariantChange={update('buttonStyle')}
                                 linkType={buttonLinkType}
-                                onLinkTypeChange={(val) => onUpdate && onUpdate({ buttonLinkType: val })}
+                                onLinkTypeChange={update('buttonLinkType')}
                                 targetDialogId={buttonTargetDialogId}
-                                onTargetDialogIdChange={(val) => onUpdate && onUpdate({ buttonTargetDialogId: val })}
+                                onTargetDialogIdChange={update('buttonTargetDialogId')}
                                 id={buttonId}
-                                onIdChange={(val) => onUpdate && onUpdate({ buttonId: val })}
+                                onIdChange={update('buttonId')}
                                 suffix="button"
                             />
                             <BuilderButton
@@ -93,16 +96,16 @@ export default function TerraFeaturesImageLeft({
                                 isVisible={secondaryButtonVisible}
                                 sectionId={sectionId}
                                 className={`btn btn-${secondaryButtonStyle} btn-md`}
-                                onLabelChange={(val) => onUpdate && onUpdate({ secondaryButtonText: val })}
-                                onHrefChange={(val) => onUpdate && onUpdate({ secondaryButtonUrl: val })}
-                                onVisibilityChange={(val) => onUpdate && onUpdate({ secondaryButtonVisible: val })}
-                                onVariantChange={(val) => onUpdate && onUpdate({ secondaryButtonStyle: val })}
+                                onLabelChange={update('secondaryButtonText')}
+                                onHrefChange={update('secondaryButtonUrl')}
+                                onVisibilityChange={update('secondaryButtonVisible')}
+                                onVariantChange={update('secondaryButtonStyle')}
                                 linkType={secondaryButtonLinkType}
-                                onLinkTypeChange={(val) => onUpdate && onUpdate({ secondaryButtonLinkType: val })}
+                                onLinkTypeChange={update('secondaryButtonLinkType')}
                                 targetDialogId={secondaryButtonTargetDialogId}
-                                onTargetDialogIdChange={(val) => onUpdate && onUpdate({ secondaryButtonTargetDialogId: val })}
+                                onTargetDialogIdChange={update('secondaryButtonTargetDialogId')}
                                 id={secondaryButtonId}
-                                onIdChange={(val) => onUpdate && onUpdate({ secondaryButtonId: val })}
+                                onIdChange={update('secondaryButtonId')}
                                 suffix="secondary-button"
                             />
                         </div>
