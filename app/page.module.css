@@ -557,7 +557,7 @@
 }
 
 .themeList {
-    gap: 0;
+    gap: 4px;
     overflow-y: auto;
     max-height: 240px;
 }
@@ -605,16 +605,16 @@
 }
 
 .themePickerContent {
-    padding: var(--padding-sm) var(--padding-sm) 0 var(--padding-sm);
+    padding: var(--padding-sm) var(--padding-sm);
 }
 
 .themePickerSearchContainer {
-    margin-bottom: 0;
+    margin-bottom: var(--gap-xs);
 }
 
 /* === EXPORT === */
 .exportInputWrapper {
-    gap: 8px;
+    gap: var(--gap-xs);
 }
 
 .exportTextarea {
