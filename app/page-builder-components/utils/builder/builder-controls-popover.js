@@ -86,7 +86,6 @@ export default function BuilderControlsPopover({
                                 <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
                                     <label
                                         className={`${styles.themeOption} ${linkType === 'url' ? styles.themeOptionSelected : ''}`}
-                                        style={{ flex: 1, padding: '8px', justifyContent: 'center', border: '1px solid var(--bdr)', borderRadius: '4px' }}
                                     >
                                         <input
                                             type="radio"
@@ -101,7 +100,6 @@ export default function BuilderControlsPopover({
                                     </label>
                                     <label
                                         className={`${styles.themeOption} ${linkType === 'dialog' ? styles.themeOptionSelected : ''}`}
-                                        style={{ flex: 1, padding: '8px', justifyContent: 'center', border: '1px solid var(--bdr)', borderRadius: '4px' }}
                                     >
                                         <input
                                             type="radio"
@@ -154,21 +152,24 @@ export default function BuilderControlsPopover({
 
                         {/* Variant Select */}
                         {showVariant && (
-                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
-                                <label className={`caption-bold ${styles.formInputTitle}`}>Variant</label>
-                                <div className={styles.selectWrapper}>
-                                    <select
-                                        className={`${styles.formInput} ${styles.formSelect}`}
-                                        value={variant}
-                                        onChange={(e) => onVariantChange && onVariantChange(e.target.value)}
-                                    >
-                                        {variants.map(v => (
-                                            <option key={v} value={v}>{v.charAt(0).toUpperCase() + v.slice(1)}</option>
-                                        ))}
-                                    </select>
-                                    <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
+                            <>
+                                <div style={{ borderTop: '1px solid var(--bdr)', margin: '8px 0', width: '100%' }} />
+                                <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
+                                    <label className={`caption-bold ${styles.formInputTitle}`}>Variant</label>
+                                    <div className={styles.selectWrapper}>
+                                        <select
+                                            className={`${styles.formInput} ${styles.formSelect}`}
+                                            value={variant}
+                                            onChange={(e) => onVariantChange && onVariantChange(e.target.value)}
+                                        >
+                                            {variants.map(v => (
+                                                <option key={v} value={v}>{v.charAt(0).toUpperCase() + v.slice(1)}</option>
+                                            ))}
+                                        </select>
+                                        <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
+                                    </div>
                                 </div>
-                            </div>
+                            </>
                         )}
 
 

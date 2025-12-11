@@ -195,7 +195,10 @@ export default function TemplateGeneratorPage() {
   // Add Component Popover
   const handleAddClick = useCallback((rect) => {
     if (rect) {
-      const position = calculatePopoverPosition(rect);
+      const position = calculatePopoverPosition(rect, { padding: 4 });
+      // Adjust for BasePopover centering (it applies translateX(-50%))
+      // calculation returns left edge, so we add width/2 to get center
+      position.left += 181;
       togglePopover('components', position);
     } else {
       togglePopover('components');
