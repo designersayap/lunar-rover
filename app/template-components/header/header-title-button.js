@@ -1,37 +1,36 @@
 import { ArrowLongRightIcon } from "@heroicons/react/20/solid";
 import BuilderButton from "@/app/page-builder-components/utils/builder/builder-button";
-import { componentDefaults } from "./content/data";
+import { componentDefaults } from "../content/data";
 import HeaderSection from "./header-section";
 
 /**
- * Centered Header Section - Title with Description and Button
+ * Centered Header Section - Title with Button
  */
-export default function GlobalHeaderTitleButtonDescription({
-    title = componentDefaults["header-title-description-button"].title,
-    subtitle = componentDefaults["header-title-description-button"].subtitle,
-    buttonText = componentDefaults["header-title-description-button"].buttonText,
-    buttonUrl = componentDefaults["header-title-description-button"].buttonUrl,
-    buttonVisible = componentDefaults["header-title-description-button"].buttonVisible,
-    buttonLinkType = componentDefaults["header-title-description-button"].buttonLinkType || "url",
-    buttonTargetDialogId = componentDefaults["header-title-description-button"].buttonTargetDialogId,
-    secondaryButtonText = componentDefaults["header-title-description-button"].secondaryButtonText,
-    secondaryButtonUrl = componentDefaults["header-title-description-button"].secondaryButtonUrl,
-    secondaryButtonVisible = componentDefaults["header-title-description-button"].secondaryButtonVisible,
-    secondaryButtonLinkType = componentDefaults["header-title-description-button"].secondaryButtonLinkType || "url",
-    secondaryButtonTargetDialogId = componentDefaults["header-title-description-button"].secondaryButtonTargetDialogId,
+export default function GlobalHeaderTitleButton({
+    title = componentDefaults["header-title-button"].title,
+    subtitle = componentDefaults["header-title-button"].subtitle,
+    buttonText = componentDefaults["header-title-button"].buttonText,
+    buttonUrl = componentDefaults["header-title-button"].buttonUrl,
+    buttonVisible = componentDefaults["header-title-button"].buttonVisible,
+    buttonLinkType = componentDefaults["header-title-button"].buttonLinkType || "url",
+    buttonTargetDialogId = componentDefaults["header-title-button"].buttonTargetDialogId,
+    secondaryButtonText = componentDefaults["header-title-button"].secondaryButtonText,
+    secondaryButtonUrl = componentDefaults["header-title-button"].secondaryButtonUrl,
+    secondaryButtonVisible = componentDefaults["header-title-button"].secondaryButtonVisible,
+    secondaryButtonLinkType = componentDefaults["header-title-button"].secondaryButtonLinkType || "url",
+    secondaryButtonTargetDialogId = componentDefaults["header-title-button"].secondaryButtonTargetDialogId,
     buttonId,
     secondaryButtonId,
-    buttonStyle = "primary",
+    buttonStyle = "primary", // primary, neutral, ghost, outline, link
     secondaryButtonStyle = "ghost",
+    buttonSize = "md", // sm, md, lg
     onUpdate,
     sectionId
 }) {
     return (
         <HeaderSection
             title={title}
-            titleStyle={{ marginBottom: "var(--gap-md)" }}
-            subtitle={subtitle}
-            subtitleStyle={{ marginBottom: "var(--gap-lg)" }}
+            titleStyle={{ marginBottom: "var(--gap-lg)" }}
             onUpdate={onUpdate}
             sectionId={sectionId}
         >

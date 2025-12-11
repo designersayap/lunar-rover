@@ -1,5 +1,5 @@
 import HeaderSection from "./header-section";
-import { componentDefaults } from "./content/data";
+import { componentDefaults } from "../content/data";
 
 /**
  * Centered Header Section - Title Only

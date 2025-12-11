@@ -4,10 +4,10 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 
 // Components
-import GlobalHeaderTitle from "../../template-components/header-title";
-import GlobalHeaderTitleButton from "../../template-components/header-title-button";
-import GlobalHeaderTitleDescription from "../../template-components/header-title-description";
-import GlobalHeaderTitleButtonDescription from "../../template-components/header-title-description-button";
+import GlobalHeaderTitle from "../../template-components/header/header-title";
+import GlobalHeaderTitleButton from "../../template-components/header/header-title-button";
+import GlobalHeaderTitleDescription from "../../template-components/header/header-title-description";
+import GlobalHeaderTitleButtonDescription from "../../template-components/header/header-title-description-button";
 import TerraBannerHero from "@/app/template-components/terra/terra-banner-hero";
 import TerraFeaturesImageLeft from "@/app/template-components/terra/terra-features-image-left";
 import TerraFeaturesImageRight from "@/app/template-components/terra/terra-features-image-right";
