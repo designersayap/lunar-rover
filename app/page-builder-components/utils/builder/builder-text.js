@@ -22,7 +22,8 @@ export default function BuilderText({
     placeholder = "Type here...",
     sectionId,
     suffix,
-    noId = false
+    noId = false,
+    ...props
 }) {
     const [text, setText] = useState(content);
     const elementRef = useRef(null);
@@ -81,6 +82,7 @@ export default function BuilderText({
             onPaste={handlePaste}
             onKeyDown={handleKeyDown}
             data-placeholder={placeholder}
+            {...props}
         >
             {text}
         </Tag>

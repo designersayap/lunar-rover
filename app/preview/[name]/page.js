@@ -12,6 +12,8 @@ import TerraBannerHero from "@/app/template-components/terra/terra-banner-hero";
 import TerraFeaturesImageLeft from "@/app/template-components/terra/terra-features-image-left";
 import TerraFeaturesImageRight from "@/app/template-components/terra/terra-features-image-right";
 import Dialog from "@/app/template-components/dialog/dialog-default";
+import TerraTestimony from "@/app/template-components/terra/terra-testimony";
+import LactoMediaSection from "@/app/template-components/lacto/lacto-media-section";
 import { BuilderSelectionProvider } from "@/app/page-builder-components/utils/builder/builder-controls";
 
 export default function ComponentPreviewPage() {
@@ -28,6 +30,8 @@ export default function ComponentPreviewPage() {
         "feature-left": TerraFeaturesImageLeft,
         "feature-right": TerraFeaturesImageRight,
         "dialog": Dialog,
+        "terra-testimony": TerraTestimony,
+        "lacto-media-section": LactoMediaSection,
     };
 
     const Component = components[name];

@@ -11,8 +11,9 @@ const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/
 const Dialog = dynamic(() => import("../../template-components/dialog/dialog-default"));
 const DialogAccordion = dynamic(() => import("../../template-components/dialog/dialog-accordion"));
 const BannerInformation = dynamic(() => import("../../template-components/banner-information"));
-const Media16x9 = dynamic(() => import("@/app/template-components/media/media-16-9"));
-
+const Media16x9 = dynamic(() => import("../../template-components/media/media-16-9"));
+const LactoMediaSection = dynamic(() => import("../../template-components/lacto/lacto-media-section"));
+const TerraTestimony = dynamic(() => import("../../template-components/terra/terra-testimony"));
 
 export const componentLibrary = {
 
@@ -457,6 +458,66 @@ export const componentLibrary = {
                     propId: "imageId",
                     suffix: "image",
                     visibleProp: "imageVisible"
+                }
+            ]
+        }
+    ],
+    "Lacto": [
+        {
+            id: "lacto-media-section",
+            name: "Lacto Media Section",
+            component: LactoMediaSection,
+            thumbnail: "/images/thumbnails/placeholder.svg",
+            images: [
+                {
+                    label: "Main Image",
+                    propId: "imageId",
+                    suffix: "main-image",
+                    visibleProp: "imageVisible"
+                }
+            ]
+        }
+    ],
+    "Testimonials": [
+        {
+            id: "terra-testimony",
+            name: "Terra Testimony",
+            component: TerraTestimony,
+            thumbnail: "/images/thumbnails/placeholder.svg",
+            config: [
+                {
+                    name: "testimonies",
+                    label: "Testimonies",
+                    type: "list",
+                    default: [
+                        {
+                            name: "People Name",
+                            role: "Role",
+                            description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                            image: "",
+                            avatar: "",
+                            imageVisible: true,
+                            avatarVisible: true
+                        },
+                        {
+                            name: "People Name",
+                            role: "Role",
+                            description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                            image: "",
+                            avatar: "",
+                            imageVisible: true,
+                            avatarVisible: true
+                        },
+                        {
+                            name: "People Name",
+                            role: "Role",
+                            description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                            image: "",
+                            avatar: "",
+                            imageVisible: true,
+                            avatarVisible: true
+                        }
+                    ]
                 }
             ]
         }
