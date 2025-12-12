@@ -22,20 +22,18 @@
     color: inherit;
 }
 
-/* Logo Wrapper */
+/* Logo Wrapper - constrains imageWrapper height */
 .logoWrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 72px;
 }
 
 /* Logo Image */
 .logo {
-    max-width: 100%;
+    width: 129px;
     height: 72px;
     object-fit: contain;
 }
+
 
 
 /* Hamburger Menu Icon */

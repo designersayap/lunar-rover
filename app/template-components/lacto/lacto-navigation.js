@@ -99,16 +99,18 @@ export default function LactoNavigation({
                     {/* Center Logo */}
                     <div className="col-mobile-2 col-tablet-8 col-desktop-2">
                         <div className={styles.logoWrapper}>
-                            <BuilderImage
-                                src={logo.image}
-                                className={`${styles.logo} imagePlaceholder-16-9`}
-                                id={logo.imageId}
-                                sectionId={sectionId}
-                                isVisible={logo.imageVisible}
-                                onIdChange={(val) => updateLogo("imageId", val)}
-                                onVisibilityChange={(val) => updateLogo("imageVisible", val)}
-                                suffix="logo"
-                            />
+                            <div className="imageWrapper">
+                                <BuilderImage
+                                    src={logo.image}
+                                    className={`${styles.logo} imagePlaceholder-16-9`}
+                                    id={logo.imageId}
+                                    sectionId={sectionId}
+                                    isVisible={logo.imageVisible}
+                                    onIdChange={(val) => updateLogo("imageId", val)}
+                                    onVisibilityChange={(val) => updateLogo("imageVisible", val)}
+                                    suffix="logo"
+                                />
+                            </div>
                         </div>
                     </div>
 
