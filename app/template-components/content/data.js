@@ -172,7 +172,8 @@ export const componentDefaults = {
             imageId: "",
             imageVisible: true
         },
-        isSticky: true
+        isSticky: true,
+        fullWidth: true
     }
 
 

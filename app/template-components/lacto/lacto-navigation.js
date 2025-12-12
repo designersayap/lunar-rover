@@ -5,15 +5,15 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import styles from "./lacto-navigation.module.css";
 import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
 import BuilderLink from "@/app/page-builder-components/utils/builder/builder-link";
-import BuilderSection from "@/app/page-builder-components/utils/builder/builder-section";
 import { componentDefaults } from "../content/data";
+import { getContainerClasses } from "@/app/page-builder-components/utils/section-utils";
 
 export default function LactoNavigation({
     menuItems = componentDefaults["lacto-navigation"].menuItems,
     logo = componentDefaults["lacto-navigation"].logo,
     sectionId,
     onUpdate,
-    fullWidth,
+    fullWidth = componentDefaults["lacto-navigation"].fullWidth,
     removePaddingLeft,
     removePaddingRight
 }) {
@@ -35,15 +35,15 @@ export default function LactoNavigation({
         setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
+    const containerClasses = getContainerClasses({
+        fullWidth: fullWidth,
+        removePaddingLeft: removePaddingLeft,
+        removePaddingRight: removePaddingRight
+    });
+
     return (
-        <section className={styles.container}>
-            <BuilderSection
-                sectionId={sectionId}
-                fullWidth={fullWidth}
-                removePaddingLeft={removePaddingLeft}
-                removePaddingRight={removePaddingRight}
-                onUpdate={onUpdate}
-            >
+        <section className={`${styles.container} z-xl`} id={sectionId}>
+            <div className={containerClasses}>
                 <div className="grid">
                     {/* Hamburger Menu Icon (Mobile/Tablet Only) */}
                     <button
@@ -60,7 +60,7 @@ export default function LactoNavigation({
 
                     {/* Menu Items */}
                     {menuItems.slice(0, 2).map((item, index) => (
-                        <div key={index} className={`col-desktop-2 ${styles.menuItem}`}>
+                        <div key={index} className={`col-desktop-2 ${index === 0 ? 'offset-desktop-1' : ''} ${styles.menuItem}`}>
                             <BuilderLink
                                 label={item?.label}
                                 href={item?.url}
@@ -78,10 +78,9 @@ export default function LactoNavigation({
                     ))}
 
                     {/* Center Logo */}
-                    <div className={`col-mobile-2 col-tablet-8 col-desktop-2 ${styles.logoWrapper}`}>
+                    <div className={`col-mobile-2 col-tablet-8 col-desktop-2 imageWrapper ${styles.logo}`}>
                         <BuilderImage
                             src={logo.image}
-                            className={`${styles.logo} imagePlaceholder-16-9`}
                             id={logo.imageId}
                             sectionId={sectionId}
                             isVisible={logo.imageVisible}
@@ -134,7 +133,7 @@ export default function LactoNavigation({
                         </div>
                     )}
                 </div>
-            </BuilderSection>
+            </div>
         </section>
     );
 }

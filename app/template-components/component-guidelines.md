@@ -249,3 +249,45 @@ export const componentDefaults = {
     }
 }
 ```
+
+---
+
+## 6. Page Builder Utilities (`page-builder-components/utils`)
+
+### Component Manager (`utils/component-manager.js`)
+Core logic for manipulating the component list.
+
+- **`addComponentToList(components, componentData, sectionId)`**: Adds a new component. Handles `isSticky` logic to place pinned items at the top.
+- **`removeComponentFromList(components, uniqueId)`**: Removes a component by ID.
+- **`updateComponentProps(components, uniqueId, newProps)`**: Updates specific props (shallow merge).
+- **`reorderComponents(components, fromIndex, toIndex)`**: Handles drag-and-drop reordering. Enforces "Pinned" vs "Normal" zones.
+- **`isComponentSticky(comp)`**: Returns `true` if a component is sticky (checks props and defaults).
+
+### Sticky Stacking (`utils/sticky-stacking.js`)
+**Hook: `useStickyStacking(components)`**
+
+Manages the visual stacking of sticky elements on the generic Canvas.
+- **Inputs**: List of selected components.
+- **Outputs**:
+    - `stickyStyles`: Object map `{ [uniqueId]: { top, zIndex, position: 'sticky' } }`
+    - `setRef(id, el)`: Ref callback to measure element heights.
+- **Usage**:
+  ```javascript
+  const { stickyStyles, setRef } = useStickyStacking(displayComponents);
+  // ...
+  <div style={stickyStyles[item.uniqueId]} ref={el => setRef(item.uniqueId, el)}>...</div>
+  ```
+
+### Export Logic (`utils/export-template.js`)
+**`handleExportTemplate(components)`**
+
+- Generates static HTML from React components.
+- Extracts used CSS classes (whitelist + component usage) from `page.module.css`.
+- Injects `script.js` for Client-Side interactivity (Google Sheets sync, Mobile Menu, Sticky Stacking).
+- Packages everything into a ZIP file.
+
+### Template Storage (`utils/template-storage.js`)
+**`loadTemplate(library)` / `saveTemplate(components, analytics)`**
+
+- Persists state to `localStorage`.
+- Rehydrates component references from the library on load (since JSON only stores IDs).

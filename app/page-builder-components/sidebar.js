@@ -338,7 +338,7 @@ export default function Sidebar({
                                 <>
                                     {pinnedComps.length > 0 && (
                                         <div className={styles.categoryWrapper} style={{ marginBottom: 12 }}>
-                                            <div className={`${styles.categoryHeader} caption-regular`} >
+                                            <div className={`caption-regular`} style={{ padding: '4px 0', color: 'var(--grey-300)' }}>
                                                 Pinned Layers
                                             </div>
                                             {renderLayerList(pinnedComps)}
@@ -347,7 +347,7 @@ export default function Sidebar({
 
                                     {otherComps.length > 0 && (
                                         <div className={styles.categoryWrapper}>
-                                            <div className={`${styles.categoryHeader} caption-regular`} >
+                                            <div className={`caption-regular`} style={{ padding: '4px 0', color: 'var(--grey-300)' }}>
                                                 Page Layers
                                             </div>
                                             {renderLayerList(otherComps)}

@@ -51,6 +51,40 @@ export function removeComponentFromList(components, uniqueId) {
 
 
 /**
+ * Helper to set value at path immutably
+ * Supports dot notation for nested objects and arrays
+ */
+function setIn(obj, path, value) {
+    if (!path || path.length === 0) return value;
+
+    const [head, ...rest] = Array.isArray(path) ? path : path.split('.');
+
+    // Handle the leaf case
+    if (rest.length === 0) {
+        if (Array.isArray(obj)) {
+            const newArr = [...obj];
+            newArr[Number(head)] = value;
+            return newArr;
+        }
+        return { ...obj, [head]: value };
+    }
+
+    // Recursive step
+    const nextObj = obj && obj[head] ? obj[head] : (isNaN(Number(rest[0])) ? {} : []);
+
+    if (Array.isArray(obj)) {
+        const newArr = [...obj];
+        newArr[Number(head)] = setIn(nextObj, rest, value);
+        return newArr;
+    }
+
+    return {
+        ...obj,
+        [head]: setIn(nextObj, rest, value)
+    };
+}
+
+/**
  * Update component props
  * @param {Array} components - Current components array
  * @param {number} uniqueId - Unique ID of component to update
@@ -58,11 +92,24 @@ export function removeComponentFromList(components, uniqueId) {
  * @returns {Array} New components array
  */
 export function updateComponentProps(components, uniqueId, newProps) {
-    return components.map(c =>
-        c.uniqueId === uniqueId
-            ? { ...c, props: { ...c.props, ...newProps } }
-            : c
-    );
+    return components.map(c => {
+        if (c.uniqueId !== uniqueId) return c;
+
+        let updatedProps = { ...c.props };
+
+        Object.keys(newProps).forEach(key => {
+            const value = newProps[key];
+            if (key.includes('.')) {
+                // Handle nested update (e.g. "menuItems.0.linkVisible")
+                updatedProps = setIn(updatedProps, key, value);
+            } else {
+                // Standard shallow update
+                updatedProps[key] = value;
+            }
+        });
+
+        return { ...c, props: updatedProps };
+    });
 }
 
 /**

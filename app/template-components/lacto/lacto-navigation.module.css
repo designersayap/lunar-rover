@@ -1,11 +1,9 @@
 /* Navigation Container */
 .container {
-
+    padding: var(--padding-xs);
     display: flex;
-    z-index: 10;
     background-color: var(--background-neutral--default);
     margin: 0;
-    padding: 0;
     width: 100%;
 }
 
@@ -43,19 +41,13 @@
     color: inherit;
 }
 
-/* Logo Wrapper - constrains imageWrapper height */
-.logoWrapper {
-    height: 72px;
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-/* Logo Image */
+/* Logo Container */
 .logo {
-    width: 129px;
-    height: 72px;
-    object-fit: contain;
+    width: 100%;
+    height: 56px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
