@@ -119,7 +119,7 @@ export default function TerraTestimony({
     return (
         <BuilderSection
             tagName="section"
-            className={styles.section}
+            className={styles.container}
             innerContainer={true}
             sectionId={sectionId}
             fullWidth={fullWidth}
