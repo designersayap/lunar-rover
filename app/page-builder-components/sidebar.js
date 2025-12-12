@@ -11,6 +11,7 @@ import {
 import { TrashIcon as TrashIconSolid } from "@heroicons/react/24/solid";
 import styles from "../page.module.css";
 import { componentLibrary } from "./content/component-library";
+import { isComponentSticky } from "./utils/component-manager";
 import SidebarAnalyticsTab from "./sidebar-analytics-tab";
 
 
@@ -126,12 +127,22 @@ export default function Sidebar({
                     </div>
 
                     <div className={styles.treeContainer}>
-                        {filteredComponents.length === 0 ? (
-                            <div className={styles.sidebarEmptyState}>
-                                {selectedComponents.length === 0 ? "No layers added" : "No matching layers"}
-                            </div>
-                        ) : (
-                            filteredComponents.map((comp) => {
+
+                        // ...
+
+                        {(() => {
+                            const pinnedComps = filteredComponents.filter(isComponentSticky);
+                            const otherComps = filteredComponents.filter(c => !isComponentSticky(c));
+
+                            if (filteredComponents.length === 0) {
+                                return (
+                                    <div className={styles.sidebarEmptyState}>
+                                        {selectedComponents.length === 0 ? "No layers added" : "No matching layers"}
+                                    </div>
+                                );
+                            }
+
+                            const renderLayerList = (list) => list.map((comp) => {
                                 const def = getComponentDef(comp.id);
                                 const allButtons = def?.buttons || [];
                                 const allImages = (def?.images || []).map(img => ({ ...img, type: 'image' }));
@@ -141,8 +152,6 @@ export default function Sidebar({
                                 const originalIndex = selectedComponents.findIndex(c => c.uniqueId === comp.uniqueId);
 
                                 // Child Filtering:
-                                // If search matches specific children, show only those.
-                                // If search matches the parent, show ALL children.
                                 const searchLower = layerSearch.toLowerCase().trim();
                                 const filteredChildren = searchLower
                                     ? allChildren.filter(child => {
@@ -151,15 +160,12 @@ export default function Sidebar({
                                     })
                                     : allChildren;
 
-                                // Check if parent itself matches (show all children if parent matches)
                                 const parentMatches = !searchLower ||
                                     comp.name?.toLowerCase().includes(searchLower) ||
                                     comp.sectionId?.toLowerCase().includes(searchLower);
 
                                 const childrenToShow = parentMatches ? allChildren : filteredChildren;
 
-                                // Visual Drag Feedback:
-                                // Determine where to show the "drop line" (above or below) based on drag direction
                                 const isDragDown = draggedIndex !== null && draggedIndex < originalIndex;
                                 const isTarget = dropTargetIndex === originalIndex;
 
@@ -167,7 +173,7 @@ export default function Sidebar({
                                     <div
                                         key={comp.uniqueId}
                                         className={styles.treeGroup}
-                                        draggable={handleDragStart ? "true" : "false"}
+                                        draggable="true"
                                         onDragStart={(e) => handleDragStart && handleDragStart(e, originalIndex, comp.name)}
                                         onDragEnd={handleDragEnd}
                                         onDragOver={(e) => handleDragOver && handleDragOver(e, originalIndex)}
@@ -176,10 +182,11 @@ export default function Sidebar({
                                             opacity: draggedIndex === originalIndex ? 0.5 : 1,
                                             borderTop: isTarget && !isDragDown ? '2px solid var(--brand-color-300)' : 'none',
                                             borderBottom: isTarget && isDragDown ? '2px solid var(--brand-color-300)' : 'none',
-                                            transition: 'all 0.2s ease'
+                                            transition: 'all 0.2s ease',
+                                            transition: 'all 0.2s ease',
+                                            cursor: 'grab'
                                         }}
-                                    >
-                                        {/* Component Header - shows ID directly */}
+                                    >  {/* Component Header - shows ID directly */}
                                         <div
                                             className={`${styles.treeRow} ${isActive ? styles.treeRowActive : ''} `}
                                             onClick={() => setActiveElementId && setActiveElementId(comp.sectionId)}
@@ -229,14 +236,10 @@ export default function Sidebar({
                                         {expandedSections[comp.uniqueId] && (
                                             <div className={styles.treeChildren}>
                                                 {childrenToShow.map((child, childIndex) => {
-                                                    // Normalize sectionId by removing trailing dashes to prevent double-dash
                                                     const normalizedSectionId = comp.sectionId?.replace(/-+$/, '') || '';
                                                     const currentId = comp.props?.[child.propId] || (normalizedSectionId ? `${normalizedSectionId}-${child.suffix}` : '');
                                                     const isChildActive = activeElementId === currentId;
-
-                                                    // Extract suffix from currentId (part after normalizedSectionId-)
                                                     const prefix = normalizedSectionId ? `${normalizedSectionId}-` : '';
-                                                    // Strip leading dashes from suffix to handle legacy corrupted data
                                                     const rawSuffix = currentId.startsWith(prefix) ? currentId.slice(prefix.length) : currentId;
                                                     const suffix = rawSuffix.replace(/^-+/, '');
 
@@ -250,7 +253,6 @@ export default function Sidebar({
                                                                 className={styles.treeIconWrapper}
                                                                 style={{ opacity: comp.props?.[child.visibleProp] === false ? 0.25 : 1 }}
                                                             >
-                                                                {/* Generic icon or specific based on type */}
                                                                 <CursorArrowRaysIcon className={styles.treeIcon} />
                                                             </div>
                                                             <input
@@ -287,9 +289,6 @@ export default function Sidebar({
                                                                         data-tooltip="Delete Layer"
                                                                         onClick={(e) => {
                                                                             e.stopPropagation();
-
-                                                                            // Guard Rail: Prevent user from deleting the last accordion item
-                                                                            // A dialog must have at least one active item to function correctly
                                                                             if (comp.id === 'dialog-accordion') {
                                                                                 const visibleCount = allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length;
                                                                                 if (visibleCount <= 1) {
@@ -297,8 +296,6 @@ export default function Sidebar({
                                                                                     return;
                                                                                 }
                                                                             }
-
-                                                                            // Guard Rail: Terra Testimony must have at least 3 items
                                                                             if (comp.id === 'terra-testimony') {
                                                                                 const visibleCount = allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length;
                                                                                 if (visibleCount <= 3) {
@@ -306,15 +303,10 @@ export default function Sidebar({
                                                                                     return;
                                                                                 }
                                                                             }
-
-                                                                            // Calculate current visibility state properly
                                                                             const isVisible = comp.props?.[child.visibleProp] !== false;
-
-                                                                            // If we are hiding it and it's currently selected, deselect it immediately
                                                                             if (isVisible && activeElementId === currentId) {
                                                                                 setActiveElementId(null);
                                                                             }
-
                                                                             updateComponent(comp.uniqueId, { [child.visibleProp]: false });
                                                                         }}
                                                                         style={{
@@ -337,12 +329,33 @@ export default function Sidebar({
                                                     );
                                                 })}
                                             </div>
-                                        )
-                                        }
+                                        )}
                                     </div>
                                 );
-                            })
-                        )}
+                            });
+
+                            return (
+                                <>
+                                    {pinnedComps.length > 0 && (
+                                        <div className={styles.categoryWrapper} style={{ marginBottom: 12 }}>
+                                            <div className={`${styles.categoryHeader} caption-regular`} >
+                                                Pinned Layers
+                                            </div>
+                                            {renderLayerList(pinnedComps)}
+                                        </div>
+                                    )}
+
+                                    {otherComps.length > 0 && (
+                                        <div className={styles.categoryWrapper}>
+                                            <div className={`${styles.categoryHeader} caption-regular`} >
+                                                Page Layers
+                                            </div>
+                                            {renderLayerList(otherComps)}
+                                        </div>
+                                    )}
+                                </>
+                            );
+                        })()}
                     </div>
                 </>
             ) : (

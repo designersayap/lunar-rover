@@ -79,6 +79,54 @@ export const componentLibrary = {
                     linkTypeProp: "buttonLinkType"
                 }
             ]
+        },
+        {
+            id: "lacto-navigation",
+            name: "Navigation",
+            component: LactoNavigation,
+            thumbnail: "/images/thumbnails/placeholder.svg",
+            config: [
+                {
+                    name: "menuItems",
+                    label: "Menu Items",
+                    type: "list",
+                    default: componentDefaults["lacto-navigation"].menuItems
+                }
+            ],
+            images: [
+                {
+                    label: "Logo",
+                    propId: "logo.imageId",
+                    suffix: "logo",
+                    visibleProp: "logo.imageVisible"
+                }
+            ],
+            links: [
+                {
+                    label: "Menu 1",
+                    propId: "menuItems.0.linkId",
+                    suffix: "menu-0",
+                    visibleProp: "menuItems.0.linkVisible"
+                },
+                {
+                    label: "Menu 2",
+                    propId: "menuItems.1.linkId",
+                    suffix: "menu-1",
+                    visibleProp: "menuItems.1.linkVisible"
+                },
+                {
+                    label: "Menu 3",
+                    propId: "menuItems.2.linkId",
+                    suffix: "menu-2",
+                    visibleProp: "menuItems.2.linkVisible"
+                },
+                {
+                    label: "Menu 4",
+                    propId: "menuItems.3.linkId",
+                    suffix: "menu-3",
+                    visibleProp: "menuItems.3.linkVisible"
+                }
+            ]
         }
     ],
     "Header": [

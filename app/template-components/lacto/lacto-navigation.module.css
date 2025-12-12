@@ -1,19 +1,40 @@
 /* Navigation Container */
 .container {
+
     display: flex;
-    align-items: center;
-    padding-top: var(--padding-lg);
-    padding-bottom: var(--padding-lg);
+    z-index: 10;
+    background-color: var(--background-neutral--default);
+    margin: 0;
+    padding: 0;
+    width: 100%;
 }
 
 /* Menu Item */
 .menuItem {
     text-align: center;
-    color: var(--content-neutral--title);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
+    overflow: hidden;
+    min-width: 0;
+    width: 100%;
+    padding: 0 var(--padding-sm);
+}
+
+/* Ensure all nested elements respect width constraints */
+.menuItem>*,
+.menuItem a,
+.menuItem span {
+    max-width: 100%;
+    min-width: 0;
+}
+
+/* Constrain menu item width on desktop to match col-2 */
+@media (min-width: 768px) {
+    .menuItem {
+        max-width: 100%;
+    }
 }
 
 /* Remove underline from menu links */
@@ -25,6 +46,9 @@
 /* Logo Wrapper - constrains imageWrapper height */
 .logoWrapper {
     height: 72px;
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
 /* Logo Image */
@@ -58,7 +82,6 @@
     right: 0;
     background: var(--background-neutral--default);
     border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-md);
     padding: var(--padding-md);
     gap: var(--gap-sm);
     flex-direction: column;
@@ -97,16 +120,5 @@
     /* Hide all menu items on mobile and tablet */
     .menuItem {
         display: none;
-    }
-
-    .navWrapper {
-        justify-content: center;
-    }
-}
-
-/* Responsive: Desktop */
-@media (min-width: 768px) {
-    .navWrapper {
-        gap: var(--gap-md);
     }
 }

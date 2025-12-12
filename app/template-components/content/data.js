@@ -114,7 +114,8 @@ export const componentDefaults = {
         buttonVisible: true,
         buttonLinkType: "url",
         buttonTargetDialogId: "",
-        buttonId: ""
+        buttonId: "",
+        isSticky: true
     },
     "media-16-9": {
         image: "",
@@ -170,7 +171,8 @@ export const componentDefaults = {
             image: "",
             imageId: "",
             imageVisible: true
-        }
+        },
+        isSticky: true
     }
 
 

@@ -1,4 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server';
+import { componentDefaults } from "@/app/template-components/content/data";
 import styles from "../../page.module.css";
 import JSZip from 'jszip';
 
@@ -226,19 +227,92 @@ const renderCss = (model, docStyleSheets) => {
 };
 
 import { BuilderSelectionContext } from "./builder/builder-controls";
+import { isComponentSticky } from "./component-manager";
 
 export const handleExportTemplate = async (selectedComponents, csvLink = "", analyticsData = {}) => {
+    // 0. Sort Components (Sticky First)
+    const exportComponents = [
+        ...selectedComponents.filter(c => isComponentSticky(c)),
+        ...selectedComponents.filter(c => !isComponentSticky(c))
+    ];
+
     // 1. Render Components to Static HTML (Bridge)
     const tempContainer = document.createElement('div');
 
-    const componentsHtml = selectedComponents.map(item => {
+    // Calcluate Sticky Offsets for Export
+    let stickyOffset = 0;
+    const stickyStylesMap = {};
+
+    // We can't measure DOM height here (it's node.js/server-side context potentially or just detached).
+    // BUT we are in the browser when clicking export.
+    // So we can try to find the rendered elements in the existing DOM before export!
+    // Or we rely on the `stickyStyles` if we could access them? No.
+
+    // Better strategy for export: Use the same calculation logic but relies either on assume height OR
+    // measure the actual DOM elements from the Canvas (if they exist).
+
+    // Attempt to measure from current DOM
+    exportComponents.forEach((comp, index) => {
+        const isSticky = comp.props?.isSticky ?? componentDefaults[comp.id]?.isSticky ?? false;
+        if (isSticky) {
+            // Find element in real DOM? 
+            // We don't have unique IDs on the wrapper div in the DOM easily unless we put them there.
+            // We can assume standard heights? No, that's brittle.
+            // Best bet: The user is seeing the canvas. The canvas has the heights.
+            // We can find the component by some attribute?
+            // Not easily accessible here without passing refs.
+
+            // Fallback: We can't perfectly export exact pixel offsets if we can't measure. 
+            // But valid standard fixed height components (like Nav/Banner) usually have fixed heights.
+            // Nav (~72px), Banner (~40px). 
+            // This is risky.
+
+            // Alternative: Write a JS script in the exported HTML that calculates it on load?
+            // YES. That is robust.
+        }
+    });
+
+    const componentsHtml = exportComponents.map(item => {
         const Component = item.component;
-        const htmlString = renderToStaticMarkup(
-            <BuilderSelectionContext.Provider value={{ selectedComponents }}>
+
+        // We will inject a distinct class or data attribute to let the client-side script handle sticky stacking
+        // properties: data-unique-id, data-is-sticky
+
+        // BUT `renderToStaticMarkup` renders the COMPONENT only. The wrapper is created inside `Canvas`.
+        // The export function usually just renders the Component. 
+        // We need to Wrap it in the export loop too if we want wrapper styles?
+
+        // Looking at current implementation: 
+        // `const componentsHtml = selectedComponents.map(...)` renders just the COMPONENT.
+        // `renderToStaticMarkup( <Component ... /> )`
+
+        // The `Canvas` wrapper `div` (styles.componentWrapper) is NOT exported currently?
+        // Let's check `canvas.js` vs `export-template.js`.
+        // `canvas.js` wraps with `<div className={styles.componentWrapper}>`.
+        // `export-template.js` renders `<Component ... />` directly into a string.
+
+        // So the exported HTML likely lacks the wrapper unless the Component includes it.
+        // Most components have a `container` or similar.
+
+        // If we want sticky behavior in export, we must wrap sticky components in a sticky div 
+        // OR rely on the component's root element.
+
+        // Let's modify the export loop to WRAP the component if it is sticky.
+
+        const markup = renderToStaticMarkup(
+            <BuilderSelectionContext.Provider value={{ selectedComponents: exportComponents }}>
                 <Component {...item.props} sectionId={item.sectionId} />
             </BuilderSelectionContext.Provider>
         );
-        return htmlString;
+
+        if (item.props?.isSticky ?? componentDefaults[item.id]?.isSticky ?? false) {
+            // We need to wrap this markup in a sticky container and add a script to handle stacking?
+            // Or simpler: The user asked for it to affect export result.
+            // Best way: Add a small JS script to the exported file that implements "Sticky Stacking".
+            return `<div class="sticky-wrapper" data-is-sticky="true" style="z-index: ${100 - index}">${markup}</div>`;
+        }
+
+        return markup;
     }).join('');
 
     // 2. Parse to DOM (Detached)
@@ -473,6 +547,24 @@ document.addEventListener('DOMContentLoaded', () => {
              }
         });
     });
+    // --- Sticky Stacking Logic ---
+    function updateStickyOffsets() {
+        const stickyWrappers = document.querySelectorAll('[data-is-sticky="true"]');
+        let offset = 0;
+        stickyWrappers.forEach((el, index) => {
+            el.style.position = 'sticky';
+            el.style.top = offset + 'px';
+            el.style.zIndex = 100 - index;
+            offset += el.offsetHeight;
+        });
+    }
+    
+    // Run on load and resize
+    updateStickyOffsets();
+    window.addEventListener('resize', updateStickyOffsets);
+    // Also run periodically incase of font loads/layout shifts
+    setTimeout(updateStickyOffsets, 100);
+    setTimeout(updateStickyOffsets, 500);
 });
 `;
 

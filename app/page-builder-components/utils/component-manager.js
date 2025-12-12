@@ -1,4 +1,5 @@
 // Component management utilities for the template builder
+import { componentDefaults } from "@/app/template-components/content/data";
 
 /**
  * Add a new component to the list
@@ -21,13 +22,20 @@ export function addComponentToList(components, componentData, sectionId) {
         props: { ...initialProps, ...(componentData.props || {}) }
     };
 
-    if (componentData.id === 'banner-information') {
-        const banners = components.filter(c => c.id === 'banner-information');
-        const others = components.filter(c => c.id !== 'banner-information');
-        return [newItem, ...banners, ...others];
+    // Pinned components (isSticky: true) always go to the specific "Pinned Section" at top
+    // We check defaults if not present in passed props (though it should be merged)
+    const isSticky = Boolean(initialProps.isSticky);
+
+    if (isSticky) {
+        // Find existing pinned items by checking their props
+        const pinnedItems = components.filter(c => c.props?.isSticky);
+        const otherItems = components.filter(c => !c.props?.isSticky);
+
+        // Add new pinned item at the end of the pinned group
+        return [...pinnedItems, newItem, ...otherItems];
     }
 
-    // If we are adding a normal component, ensure it doesn't go above existing banners (it goes to end anyway)
+    // Normal components just go to the end
     return [...components, newItem];
 }
 
@@ -41,31 +49,6 @@ export function removeComponentFromList(components, uniqueId) {
     return components.filter(c => c.uniqueId !== uniqueId);
 }
 
-/**
- * Move a component up in the list
- * @param {Array} components - Current components array
- * @param {number} index - Index of component to move
- * @returns {Array} New components array
- */
-export function moveComponentUp(components, index) {
-    if (index === 0) return components;
-    const arr = [...components];
-    [arr[index - 1], arr[index]] = [arr[index], arr[index - 1]];
-    return arr;
-}
-
-/**
- * Move a component down in the list
- * @param {Array} components - Current components array
- * @param {number} index - Index of component to move
- * @returns {Array} New components array
- */
-export function moveComponentDown(components, index) {
-    if (index >= components.length - 1) return components;
-    const arr = [...components];
-    [arr[index], arr[index + 1]] = [arr[index + 1], arr[index]];
-    return arr;
-}
 
 /**
  * Update component props
@@ -144,6 +127,14 @@ export function updateComponentSectionId(components, uniqueId, newSectionId) {
 }
 
 /**
+ * Helper to check if a component is sticky (pinned)
+ * Checks both props and defaults
+ */
+export const isComponentSticky = (comp) => {
+    return comp.props?.isSticky ?? componentDefaults[comp.id]?.isSticky ?? false;
+};
+
+/**
  * Reorder components via drag and drop
  * @param {Array} components - Current components array
  * @param {number} fromIndex - Source index
@@ -152,20 +143,48 @@ export function updateComponentSectionId(components, uniqueId, newSectionId) {
  */
 export function reorderComponents(components, fromIndex, toIndex) {
     if (fromIndex === toIndex) return components;
-    const arr = [...components];
-    const [item] = arr.splice(fromIndex, 1);
-    arr.splice(toIndex, 0, item);
 
-    // Enforce banner-information always at the top
-    const banners = arr.filter(c => c.id === 'banner-information');
-    const others = arr.filter(c => c.id !== 'banner-information');
+    const item = components[fromIndex];
+    const isPinned = isComponentSticky(item);
 
-    // If there are banners, they must be at the start
-    if (banners.length > 0) {
-        return [...banners, ...others];
+    // Filter list into pinned and others
+    const pinnedItems = components.filter(isComponentSticky);
+    const otherItems = components.filter(c => !isComponentSticky(c));
+
+    // Calculate boundaries
+    const pinnedCount = pinnedItems.length;
+
+    // SCENARIO 1: Dragging a PINNED item
+    if (isPinned) {
+        // If user tries to drop outside pinned zone, clamp to valid range
+        let targetIndex = toIndex;
+        if (targetIndex >= pinnedCount) targetIndex = pinnedCount - 1;
+
+        const newPinned = [...pinnedItems];
+        // We need to find the *relative* index within the pinned list
+        const fromRelative = pinnedItems.findIndex(c => c.uniqueId === item.uniqueId);
+        // Remove from old pos
+        newPinned.splice(fromRelative, 1);
+        // Insert at new pos
+        newPinned.splice(targetIndex, 0, item);
+
+        return [...newPinned, ...otherItems];
     }
 
-    return arr;
+    // SCENARIO 2: Dragging a NORMAL item
+    else {
+        // If user tries to drop inside pinned zone, clamp to valid range (start of unpinned)
+        // Adjust target index because the unified list includes pinned items at start
+        let targetRelative = toIndex - pinnedCount;
+        if (targetRelative < 0) targetRelative = 0;
+
+        const newOthers = [...otherItems];
+        const fromRelative = otherItems.findIndex(c => c.uniqueId === item.uniqueId);
+        newOthers.splice(fromRelative, 1);
+        newOthers.splice(targetRelative, 0, item);
+
+        return [...pinnedItems, ...newOthers];
+    }
 }
 
 /**
