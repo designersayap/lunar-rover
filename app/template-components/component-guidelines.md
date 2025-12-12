@@ -97,7 +97,76 @@ import BuilderLink from "@/app/page-builder-components/utils/builder/builder-lin
 
 ---
 
-## 2. Standard Dialog Structure
+## 2. Component Helpers (`component-helpers.js`)
+
+Use helper utilities from `app/template-components/utils/component-helpers.js` to reduce boilerplate code in your components.
+
+### `createUpdateHandler`
+
+Creates a reusable update handler function that simplifies prop updates. This eliminates repetitive callback functions.
+
+**Import:**
+```javascript
+import { createUpdateHandler } from "../utils/component-helpers";
+```
+
+**Usage:**
+```javascript
+export default function MyComponent({ title, buttonText, buttonUrl, onUpdate, sectionId }) {
+    // Create the update handler once
+    const update = createUpdateHandler(onUpdate);
+    
+    return (
+        <>
+            <BuilderText
+                tagName="h2"
+                content={title}
+                onChange={update('title')}  // Instead of: (val) => onUpdate?.({ title: val })
+                sectionId={sectionId}
+            />
+            
+            <BuilderButton
+                label={buttonText}
+                href={buttonUrl}
+                sectionId={sectionId}
+                onLabelChange={update('buttonText')}     // Cleaner and more concise
+                onHrefChange={update('buttonUrl')}       // No repetitive arrow functions
+                // ...other props
+            />
+        </>
+    );
+}
+```
+
+**Before (without helper):**
+```javascript
+<BuilderButton
+    onLabelChange={(val) => onUpdate?.({ buttonText: val })}
+    onHrefChange={(val) => onUpdate?.({ buttonUrl: val })}
+    onVisibilityChange={(val) => onUpdate?.({ buttonVisible: val })}
+/>
+```
+
+**After (with helper):**
+```javascript
+const update = createUpdateHandler(onUpdate);
+
+<BuilderButton
+    onLabelChange={update('buttonText')}
+    onHrefChange={update('buttonUrl')}
+    onVisibilityChange={update('buttonVisible')}
+/>
+```
+
+**Benefits:**
+- Reduces code duplication
+- Improves readability
+- Ensures consistency across components
+- Automatically handles `onUpdate` existence checks
+
+---
+
+## 3. Standard Dialog Structure
 
 All dialog components **must** use `DialogSection`.
 **Order:** Close Button -> Image -> Title -> Description -> Content.
@@ -122,7 +191,7 @@ export default function MyDialog({
 
 ---
 
-## 3. Sidebar Configuration (`component-library.js`)
+## 4. Sidebar Configuration (`component-library.js`)
 
 You must define child elements in `component-library.js` so they appear in the Sidebar Layer Tree.
 
@@ -165,7 +234,7 @@ You must define child elements in `component-library.js` so they appear in the S
 ]
 ```
 
-## 4. Default Values (`data.js`)
+## 5. Default Values (`data.js`)
 
 **Single Source of Truth.** All default values must be defined in `app/template-components/content/data.js`.
 
