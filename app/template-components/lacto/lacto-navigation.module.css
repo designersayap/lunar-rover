@@ -1,0 +1,114 @@
+/* Navigation Container */
+.container {
+    display: flex;
+    align-items: center;
+    padding-top: var(--padding-lg);
+    padding-bottom: var(--padding-lg);
+}
+
+/* Menu Item */
+.menuItem {
+    text-align: center;
+    color: var(--content-neutral--title);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* Remove underline from menu links */
+.menuItem a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Logo Wrapper */
+.logoWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 72px;
+}
+
+/* Logo Image */
+.logo {
+    max-width: 100%;
+    height: 72px;
+    object-fit: contain;
+}
+
+
+/* Hamburger Menu Icon */
+.hamburger {
+    display: none;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    background: none;
+    border: none;
+    color: var(--content-neutral--title);
+}
+
+/* Mobile Menu Overlay */
+.mobileMenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--background-neutral--default);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    padding: var(--padding-md);
+    gap: var(--gap-sm);
+    flex-direction: column;
+    margin-top: var(--gap-sm);
+    z-index: 50;
+}
+
+/* Mobile Menu Item */
+.mobileMenuItem {
+    padding: var(--padding-sm);
+    color: var(--content-neutral--title);
+    text-align: left;
+    border-bottom: 1px solid var(--stroke-neutral--neutral);
+}
+
+/* Remove underline from mobile menu links */
+.mobileMenuItem a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.mobileMenuItem:last-child {
+    border-bottom: none;
+}
+
+/* Responsive: Mobile and Tablet */
+@media (max-width: 767px) {
+    .hamburger {
+        display: block;
+    }
+
+    .mobileMenu {
+        display: flex;
+    }
+
+    /* Hide all menu items on mobile and tablet */
+    .menuItem {
+        display: none;
+    }
+
+    .navWrapper {
+        justify-content: center;
+    }
+}
+
+/* Responsive: Desktop */
+@media (min-width: 768px) {
+    .navWrapper {
+        gap: var(--gap-md);
+    }
+}

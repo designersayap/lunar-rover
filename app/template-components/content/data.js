@@ -138,6 +138,40 @@ export const componentDefaults = {
             cardId: ""
         }),
         fullWidth: false
+    },
+    "lacto-navigation": {
+        menuItems: [
+            {
+                label: "menu",
+                url: "",
+                linkId: "",
+                linkVisible: true
+            },
+            {
+                label: "menu",
+                url: "",
+                linkId: "",
+                linkVisible: true
+            },
+            {
+                label: "menu",
+                url: "",
+                linkId: "",
+                linkVisible: true
+            },
+            {
+                label: "menu",
+                url: "",
+                linkId: "",
+                linkVisible: true
+            }
+        ],
+        logo: {
+            image: "",
+            imageId: "",
+            imageVisible: true
+        }
     }
+
 
 };
