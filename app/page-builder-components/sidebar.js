@@ -11,7 +11,7 @@ import {
 import { TrashIcon as TrashIconSolid } from "@heroicons/react/24/solid";
 import styles from "../page.module.css";
 import { componentLibrary } from "./content/component-library";
-import { isComponentSticky } from "./utils/component-manager";
+import { isComponentSticky, getValueAt } from "./utils/component-manager";
 import SidebarAnalyticsTab from "./sidebar-analytics-tab";
 
 
@@ -78,7 +78,7 @@ export default function Sidebar({
             const links = def?.links || [];
             const allChildren = [...buttons, ...images, ...links];
             return allChildren.some(child => {
-                const currentId = comp.props?.[child.propId] || (comp.sectionId ? `${comp.sectionId}-${child.suffix}` : '');
+                const currentId = getValueAt(comp.props, child.propId) || (comp.sectionId ? `${comp.sectionId}-${child.suffix}` : '');
                 return child.label?.toLowerCase().includes(searchLower) || currentId.toLowerCase().includes(searchLower);
             });
         });
@@ -128,8 +128,6 @@ export default function Sidebar({
 
                     <div className={styles.treeContainer}>
 
-                        // ...
-
                         {(() => {
                             const pinnedComps = filteredComponents.filter(isComponentSticky);
                             const otherComps = filteredComponents.filter(c => !isComponentSticky(c));
@@ -155,7 +153,7 @@ export default function Sidebar({
                                 const searchLower = layerSearch.toLowerCase().trim();
                                 const filteredChildren = searchLower
                                     ? allChildren.filter(child => {
-                                        const currentId = comp.props?.[child.propId] || (comp.sectionId ? `${comp.sectionId}-${child.suffix}` : '');
+                                        const currentId = getValueAt(comp.props, child.propId) || (comp.sectionId ? `${comp.sectionId}-${child.suffix}` : '');
                                         return child.label?.toLowerCase().includes(searchLower) || currentId.toLowerCase().includes(searchLower);
                                     })
                                     : allChildren;
@@ -237,7 +235,7 @@ export default function Sidebar({
                                             <div className={styles.treeChildren}>
                                                 {childrenToShow.map((child, childIndex) => {
                                                     const normalizedSectionId = comp.sectionId?.replace(/-+$/, '') || '';
-                                                    const currentId = comp.props?.[child.propId] || (normalizedSectionId ? `${normalizedSectionId}-${child.suffix}` : '');
+                                                    const currentId = getValueAt(comp.props, child.propId) || (normalizedSectionId ? `${normalizedSectionId}-${child.suffix}` : '');
                                                     const isChildActive = activeElementId === currentId;
                                                     const prefix = normalizedSectionId ? `${normalizedSectionId}-` : '';
                                                     const rawSuffix = currentId.startsWith(prefix) ? currentId.slice(prefix.length) : currentId;
@@ -251,7 +249,7 @@ export default function Sidebar({
                                                         >
                                                             <div
                                                                 className={styles.treeIconWrapper}
-                                                                style={{ opacity: comp.props?.[child.visibleProp] === false ? 0.25 : 1 }}
+                                                                style={{ opacity: getValueAt(comp.props, child.visibleProp) === false ? 0.25 : 1 }}
                                                             >
                                                                 <CursorArrowRaysIcon className={styles.treeIcon} />
                                                             </div>
@@ -270,10 +268,10 @@ export default function Sidebar({
                                                                 onFocus={() => setActiveElementId && setActiveElementId(currentId)}
                                                                 onClick={(e) => e.stopPropagation()}
                                                                 className={styles.treeInputInline}
-                                                                style={{ opacity: comp.props?.[child.visibleProp] === false ? 0.25 : 1 }}
+                                                                style={{ opacity: getValueAt(comp.props, child.visibleProp) === false ? 0.25 : 1 }}
                                                             />
                                                             {child.visibleProp && (
-                                                                comp.props?.[child.visibleProp] === false ? (
+                                                                getValueAt(comp.props, child.visibleProp) === false ? (
                                                                     <button
                                                                         className={styles.sidebarDeleteButton}
                                                                         onClick={(e) => {
@@ -290,20 +288,20 @@ export default function Sidebar({
                                                                         onClick={(e) => {
                                                                             e.stopPropagation();
                                                                             if (comp.id === 'dialog-accordion') {
-                                                                                const visibleCount = allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length;
+                                                                                const visibleCount = allChildren.filter(c => getValueAt(comp.props, c.visibleProp) !== false).length;
                                                                                 if (visibleCount <= 1) {
                                                                                     alert("At least one accordion item must remain visible.");
                                                                                     return;
                                                                                 }
                                                                             }
                                                                             if (comp.id === 'terra-testimony') {
-                                                                                const visibleCount = allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length;
+                                                                                const visibleCount = allChildren.filter(c => getValueAt(comp.props, c.visibleProp) !== false).length;
                                                                                 if (visibleCount <= 3) {
                                                                                     alert("At least 3 testimony cards must remain visible.");
                                                                                     return;
                                                                                 }
                                                                             }
-                                                                            const isVisible = comp.props?.[child.visibleProp] !== false;
+                                                                            const isVisible = getValueAt(comp.props, child.visibleProp) !== false;
                                                                             if (isVisible && activeElementId === currentId) {
                                                                                 setActiveElementId(null);
                                                                             }
@@ -311,12 +309,12 @@ export default function Sidebar({
                                                                         }}
                                                                         style={{
                                                                             opacity: (
-                                                                                (comp.id === 'dialog-accordion' && allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length <= 1) ||
-                                                                                (comp.id === 'terra-testimony' && allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length <= 3)
+                                                                                (comp.id === 'dialog-accordion' && allChildren.filter(c => getValueAt(comp.props, c.visibleProp) !== false).length <= 1) ||
+                                                                                (comp.id === 'terra-testimony' && allChildren.filter(c => getValueAt(comp.props, c.visibleProp) !== false).length <= 3)
                                                                             ) ? 0.3 : 1,
                                                                             cursor: (
-                                                                                (comp.id === 'dialog-accordion' && allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length <= 1) ||
-                                                                                (comp.id === 'terra-testimony' && allChildren.filter(c => comp.props?.[c.visibleProp] !== false).length <= 3)
+                                                                                (comp.id === 'dialog-accordion' && allChildren.filter(c => getValueAt(comp.props, c.visibleProp) !== false).length <= 1) ||
+                                                                                (comp.id === 'terra-testimony' && allChildren.filter(c => getValueAt(comp.props, c.visibleProp) !== false).length <= 3)
                                                                             ) ? 'not-allowed' : 'pointer'
                                                                         }}
                                                                     >

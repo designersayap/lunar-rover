@@ -59,23 +59,26 @@ export default function LactoNavigation({
                     </button>
 
                     {/* Menu Items */}
-                    {menuItems.slice(0, 2).map((item, index) => (
-                        <div key={index} className={`col-desktop-2 ${index === 0 ? 'offset-desktop-1' : ''} ${styles.menuItem}`}>
-                            <BuilderLink
-                                label={item?.label}
-                                href={item?.url}
-                                id={item?.linkId}
-                                isVisible={item?.linkVisible}
-                                className="body-bold truncate-1-line"
-                                sectionId={sectionId}
-                                suffix={`menu-${index}`}
-                                onLabelChange={(val) => updateMenuItem(index, "label", val)}
-                                onHrefChange={(val) => updateMenuItem(index, "url", val)}
-                                onIdChange={(val) => updateMenuItem(index, "linkId", val)}
-                                onVisibilityChange={(val) => updateMenuItem(index, "linkVisible", val)}
-                            />
-                        </div>
-                    ))}
+                    {menuItems.slice(0, 2).map((item, index) => {
+                        if (item?.linkVisible === false) return null;
+                        return (
+                            <div key={index} className={`col-desktop-2 ${index === 0 ? 'offset-desktop-1' : ''} ${styles.menuItem}`}>
+                                <BuilderLink
+                                    label={item?.label}
+                                    href={item?.url}
+                                    id={item?.linkId}
+                                    isVisible={item?.linkVisible}
+                                    className="body-bold truncate-1-line"
+                                    sectionId={sectionId}
+                                    suffix={`menu-${index}`}
+                                    onLabelChange={(val) => updateMenuItem(index, "label", val)}
+                                    onHrefChange={(val) => updateMenuItem(index, "url", val)}
+                                    onIdChange={(val) => updateMenuItem(index, "linkId", val)}
+                                    onVisibilityChange={(val) => updateMenuItem(index, "linkVisible", val)}
+                                />
+                            </div>
+                        );
+                    })}
 
                     {/* Center Logo */}
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-2 imageWrapper ${styles.logo}`}>
@@ -91,23 +94,26 @@ export default function LactoNavigation({
                     </div>
 
                     {/* Menu Items 3-4 */}
-                    {menuItems.slice(2, 4).map((item, index) => (
-                        <div key={index + 2} className={`col-desktop-2 ${styles.menuItem}`}>
-                            <BuilderLink
-                                label={item?.label}
-                                href={item?.url}
-                                id={item?.linkId}
-                                isVisible={item?.linkVisible}
-                                className="body-bold truncate-1-line"
-                                sectionId={sectionId}
-                                suffix={`menu-${index + 2}`}
-                                onLabelChange={(val) => updateMenuItem(index + 2, "label", val)}
-                                onHrefChange={(val) => updateMenuItem(index + 2, "url", val)}
-                                onIdChange={(val) => updateMenuItem(index + 2, "linkId", val)}
-                                onVisibilityChange={(val) => updateMenuItem(index + 2, "linkVisible", val)}
-                            />
-                        </div>
-                    ))}
+                    {menuItems.slice(2, 4).map((item, index) => {
+                        if (item?.linkVisible === false) return null;
+                        return (
+                            <div key={index + 2} className={`col-desktop-2 ${styles.menuItem}`}>
+                                <BuilderLink
+                                    label={item?.label}
+                                    href={item?.url}
+                                    id={item?.linkId}
+                                    isVisible={item?.linkVisible}
+                                    className="body-bold truncate-1-line"
+                                    sectionId={sectionId}
+                                    suffix={`menu-${index + 2}`}
+                                    onLabelChange={(val) => updateMenuItem(index + 2, "label", val)}
+                                    onHrefChange={(val) => updateMenuItem(index + 2, "url", val)}
+                                    onIdChange={(val) => updateMenuItem(index + 2, "linkId", val)}
+                                    onVisibilityChange={(val) => updateMenuItem(index + 2, "linkVisible", val)}
+                                />
+                            </div>
+                        );
+                    })}
 
                     {/* Mobile Menu Overlay */}
                     {isMobileMenuOpen && (

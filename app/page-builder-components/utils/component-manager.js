@@ -85,6 +85,27 @@ function setIn(obj, path, value) {
 }
 
 /**
+ * Helper to get value at path
+ * Supports dot notation for nested objects and arrays
+ */
+export function getValueAt(obj, path) {
+    if (!path || !obj) return undefined;
+
+    // If path is a key that exists directly, return it (optimization/fallback)
+    if (Object.prototype.hasOwnProperty.call(obj, path)) return obj[path];
+
+    const parts = path.split('.');
+    let current = obj;
+
+    for (const part of parts) {
+        if (current === null || current === undefined) return undefined;
+        current = current[part];
+    }
+
+    return current;
+}
+
+/**
  * Update component props
  * @param {Array} components - Current components array
  * @param {number} uniqueId - Unique ID of component to update

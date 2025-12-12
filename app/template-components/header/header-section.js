@@ -1,5 +1,7 @@
 import styles from "./header-section.module.css";
 import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
+import { getContainerClasses } from "@/app/page-builder-components/utils/section-utils";
+import { createUpdateHandler } from "../utils/component-helpers";
 
 export default function HeaderSection({
     title,
@@ -9,11 +11,16 @@ export default function HeaderSection({
     onUpdate,
     titleStyle = {},
     subtitleStyle = {},
-    className = ""
+    className = "",
+    fullWidth,
+    removePaddingLeft,
+    removePaddingRight
 }) {
+    const update = createUpdateHandler(onUpdate);
+
     return (
         <section className={`${styles.section} ${className}`} id={sectionId}>
-            <div className="container-grid">
+            <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })}>
                 <div className="grid">
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
                         {title && (
@@ -22,7 +29,7 @@ export default function HeaderSection({
                                 className={`h2 ${styles.title}`}
                                 style={titleStyle}
                                 content={title}
-                                onChange={(val) => onUpdate && onUpdate({ title: val })}
+                                onChange={update('title')}
                                 sectionId={sectionId}
                             />
                         )}
@@ -32,7 +39,7 @@ export default function HeaderSection({
                                 className={`subheader-h1 ${styles.subtitle}`}
                                 style={subtitleStyle}
                                 content={subtitle}
-                                onChange={(val) => onUpdate && onUpdate({ subtitle: val })}
+                                onChange={update('subtitle')}
                                 sectionId={sectionId}
                             />
                         )}

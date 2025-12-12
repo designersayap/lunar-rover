@@ -2,6 +2,7 @@ import styles from "./media-16-9.module.css";
 import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
 import BuilderSection from "@/app/page-builder-components/utils/builder/builder-section";
 import { componentDefaults } from "../content/data";
+import { createUpdateHandler } from "../utils/component-helpers";
 
 /**
  * Media16x9 Component
@@ -20,6 +21,8 @@ export default function Media16x9({
     imageLinkType,
     imageTargetDialogId
 }) {
+    const update = createUpdateHandler(onUpdate);
+
     return (
         <BuilderSection
             tagName="section"
@@ -40,14 +43,14 @@ export default function Media16x9({
                             id={imageId}
                             sectionId={sectionId}
                             isVisible={imageVisible}
-                            onIdChange={(val) => onUpdate && onUpdate({ imageId: val })}
+                            onIdChange={update('imageId')}
                             suffix="image"
                             href={imageHref}
-                            onHrefChange={(val) => onUpdate && onUpdate({ imageHref: val })}
+                            onHrefChange={update('imageHref')}
                             linkType={imageLinkType}
-                            onLinkTypeChange={(val) => onUpdate && onUpdate({ imageLinkType: val })}
+                            onLinkTypeChange={update('imageLinkType')}
                             targetDialogId={imageTargetDialogId}
-                            onTargetDialogIdChange={(val) => onUpdate && onUpdate({ imageTargetDialogId: val })}
+                            onTargetDialogIdChange={update('imageTargetDialogId')}
                         />
                     </div>
                 </div>

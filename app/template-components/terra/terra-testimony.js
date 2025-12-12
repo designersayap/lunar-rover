@@ -14,23 +14,8 @@ export default function TerraTestimony({
     onUpdate,
     fullWidth,
     removePaddingLeft,
-    removePaddingRight,
-    // Card Visibility Props (Controlled by Sidebar)
-    card0Visible, card1Visible, card2Visible, card3Visible, card4Visible, card5Visible,
-    card6Visible, card7Visible, card8Visible, card9Visible, card10Visible, card11Visible,
-    // Card ID Props (Controlled by Sidebar)
-    card0Id, card1Id, card2Id, card3Id, card4Id, card5Id,
-    card6Id, card7Id, card8Id, card9Id, card10Id, card11Id
+    removePaddingRight
 }) {
-    const cardVisibility = [
-        card0Visible, card1Visible, card2Visible, card3Visible, card4Visible, card5Visible,
-        card6Visible, card7Visible, card8Visible, card9Visible, card10Visible, card11Visible
-    ];
-    const cardIds = [
-        card0Id, card1Id, card2Id, card3Id, card4Id, card5Id,
-        card6Id, card7Id, card8Id, card9Id, card10Id, card11Id
-    ];
-
     const scrollContainerRef = useRef(null);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
@@ -43,11 +28,10 @@ export default function TerraTestimony({
     };
 
     const updateCardId = (index, newId) => {
-        if (!onUpdate) return;
-        onUpdate({ [`card${index}Id`]: newId });
+        updateTestimony(index, 'cardId', newId);
     };
 
-    const visibleCardsString = cardVisibility.join(',');
+    const visibleCardsString = testimonies.map(t => t.visible).join(',');
 
     // Calculate total pages based on viewport width
     useEffect(() => {
@@ -114,7 +98,7 @@ export default function TerraTestimony({
         });
     };
 
-    const visibleCount = cardVisibility.filter(v => v !== false).length;
+    const visibleCount = testimonies.filter(t => t.visible !== false).length;
 
     return (
         <BuilderSection
@@ -139,11 +123,11 @@ export default function TerraTestimony({
                                 key={index}
                                 tagName="div"
                                 className={`col-mobile-2 col-tablet-4 col-desktop-3 ${styles.itemWrapper}`}
-                                id={cardIds[index]}
+                                id={item.cardId}
                                 sectionId={sectionId}
                                 onIdChange={(val) => updateCardId(index, val)}
                                 elementProps={`testimony-${index}`}
-                                isVisible={cardVisibility[index] !== false}
+                                isVisible={item.visible !== false}
                             >
                                 <div className={styles.card}>
                                     <BuilderImage

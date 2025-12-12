@@ -15,8 +15,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    flex: 1;
     min-width: 0;
+    gap: var(--padding-xs);
 }
 
 .title {
@@ -31,7 +32,6 @@
     flex: 0 1 auto;
     min-width: 0;
     padding-left: var(--padding-xs);
-    padding-right: var(--padding-xs);
     overflow: hidden;
     position: relative;
 }
@@ -68,9 +68,8 @@
 }
 
 .actions {
-    position: absolute;
-    right: var(--padding-md);
     display: flex;
     align-items: center;
     gap: var(--padding-xs);
+    flex-shrink: 0;
 }

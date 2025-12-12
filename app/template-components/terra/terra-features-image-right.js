@@ -5,6 +5,7 @@ import BuilderImage from "@/app/page-builder-components/utils/builder/builder-im
 import { ArrowLongRightIcon } from "@heroicons/react/20/solid";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
+import { getContainerClasses } from "@/app/page-builder-components/utils/section-utils";
 
 /**
  * TerraFeaturesImageRight Component
@@ -30,13 +31,16 @@ export default function TerraFeaturesImageRight({
     buttonId,
     secondaryButtonId,
     onUpdate,
-    sectionId
+    sectionId,
+    fullWidth,
+    removePaddingLeft,
+    removePaddingRight
 }) {
     const update = createUpdateHandler(onUpdate);
 
     return (
         <section className={styles.container} id={sectionId}>
-            <div className="container-grid">
+            <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })}>
                 <div className="grid align-center">
                     {/* Content Column */}
                     <div className={`${styles.content} col-mobile-2 col-tablet-8 col-desktop-6`}>

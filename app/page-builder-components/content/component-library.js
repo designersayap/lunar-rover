@@ -287,14 +287,14 @@ export const componentLibrary = {
                 }
             ],
             links: [
-                { label: "Item 1", propId: "item0Id", suffix: "item-0", visibleProp: "item0Visible" },
-                { label: "Item 2", propId: "item1Id", suffix: "item-1", visibleProp: "item1Visible" },
-                { label: "Item 3", propId: "item2Id", suffix: "item-2", visibleProp: "item2Visible" },
-                { label: "Item 4", propId: "item3Id", suffix: "item-3", visibleProp: "item3Visible" },
-                { label: "Item 5", propId: "item4Id", suffix: "item-4", visibleProp: "item4Visible" },
-                { label: "Item 6", propId: "item5Id", suffix: "item-5", visibleProp: "item5Visible" },
-                { label: "Item 7", propId: "item6Id", suffix: "item-6", visibleProp: "item6Visible" },
-                { label: "Item 8", propId: "item7Id", suffix: "item-7", visibleProp: "item7Visible" }
+                { label: "Item 1", propId: "items.0.itemId", suffix: "item-0", visibleProp: "items.0.visible" },
+                { label: "Item 2", propId: "items.1.itemId", suffix: "item-1", visibleProp: "items.1.visible" },
+                { label: "Item 3", propId: "items.2.itemId", suffix: "item-2", visibleProp: "items.2.visible" },
+                { label: "Item 4", propId: "items.3.itemId", suffix: "item-3", visibleProp: "items.3.visible" },
+                { label: "Item 5", propId: "items.4.itemId", suffix: "item-4", visibleProp: "items.4.visible" },
+                { label: "Item 6", propId: "items.5.itemId", suffix: "item-5", visibleProp: "items.5.visible" },
+                { label: "Item 7", propId: "items.6.itemId", suffix: "item-6", visibleProp: "items.6.visible" },
+                { label: "Item 8", propId: "items.7.itemId", suffix: "item-7", visibleProp: "items.7.visible" }
             ]
         },
         {
@@ -625,18 +625,18 @@ export const componentLibrary = {
                 }
             ],
             links: [
-                { label: "Testimony 1", propId: "card0Id", suffix: "testimony-0", visibleProp: "card0Visible" },
-                { label: "Testimony 2", propId: "card1Id", suffix: "testimony-1", visibleProp: "card1Visible" },
-                { label: "Testimony 3", propId: "card2Id", suffix: "testimony-2", visibleProp: "card2Visible" },
-                { label: "Testimony 4", propId: "card3Id", suffix: "testimony-3", visibleProp: "card3Visible" },
-                { label: "Testimony 5", propId: "card4Id", suffix: "testimony-4", visibleProp: "card4Visible" },
-                { label: "Testimony 6", propId: "card5Id", suffix: "testimony-5", visibleProp: "card5Visible" },
-                { label: "Testimony 7", propId: "card6Id", suffix: "testimony-6", visibleProp: "card6Visible" },
-                { label: "Testimony 8", propId: "card7Id", suffix: "testimony-7", visibleProp: "card7Visible" },
-                { label: "Testimony 9", propId: "card8Id", suffix: "testimony-8", visibleProp: "card8Visible" },
-                { label: "Testimony 10", propId: "card9Id", suffix: "testimony-9", visibleProp: "card9Visible" },
-                { label: "Testimony 11", propId: "card10Id", suffix: "testimony-10", visibleProp: "card10Visible" },
-                { label: "Testimony 12", propId: "card11Id", suffix: "testimony-11", visibleProp: "card11Visible" }
+                { label: "Testimony 1", propId: "testimonies.0.cardId", suffix: "testimony-0", visibleProp: "testimonies.0.visible" },
+                { label: "Testimony 2", propId: "testimonies.1.cardId", suffix: "testimony-1", visibleProp: "testimonies.1.visible" },
+                { label: "Testimony 3", propId: "testimonies.2.cardId", suffix: "testimony-2", visibleProp: "testimonies.2.visible" },
+                { label: "Testimony 4", propId: "testimonies.3.cardId", suffix: "testimony-3", visibleProp: "testimonies.3.visible" },
+                { label: "Testimony 5", propId: "testimonies.4.cardId", suffix: "testimony-4", visibleProp: "testimonies.4.visible" },
+                { label: "Testimony 6", propId: "testimonies.5.cardId", suffix: "testimony-5", visibleProp: "testimonies.5.visible" },
+                { label: "Testimony 7", propId: "testimonies.6.cardId", suffix: "testimony-6", visibleProp: "testimonies.6.visible" },
+                { label: "Testimony 8", propId: "testimonies.7.cardId", suffix: "testimony-7", visibleProp: "testimonies.7.visible" },
+                { label: "Testimony 9", propId: "testimonies.8.cardId", suffix: "testimony-8", visibleProp: "testimonies.8.visible" },
+                { label: "Testimony 10", propId: "testimonies.9.cardId", suffix: "testimony-9", visibleProp: "testimonies.9.visible" },
+                { label: "Testimony 11", propId: "testimonies.10.cardId", suffix: "testimony-10", visibleProp: "testimonies.10.visible" },
+                { label: "Testimony 12", propId: "testimonies.11.cardId", suffix: "testimony-11", visibleProp: "testimonies.11.visible" }
             ]
         }
     ]

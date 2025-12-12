@@ -4,6 +4,7 @@ import BuilderText from "@/app/page-builder-components/utils/builder/builder-tex
 import BuilderButton from "@/app/page-builder-components/utils/builder/builder-button";
 import { createUpdateHandler } from "../utils/component-helpers";
 import styles from "./banner-information.module.css";
+import { getContainerClasses } from "@/app/page-builder-components/utils/section-utils";
 
 export default function BannerInformation({
     title = "Information Banner",
@@ -20,6 +21,9 @@ export default function BannerInformation({
     sectionId,
     className = "",
     isVisible = true,
+    fullWidth,
+    removePaddingLeft,
+    removePaddingRight
 }) {
     const update = createUpdateHandler(onUpdate);
     const [isClosed, setIsClosed] = useState(false);
@@ -60,7 +64,7 @@ export default function BannerInformation({
             className={`${styles.banner} z-sm ${className}`}
             id={sectionId}
         >
-            <div className="container-grid" style={{ width: '100%' }}>
+            <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })} style={{ width: '100%' }}>
                 <div className="grid align-center">
                     <div className={`col-mobile-2 col-tablet-8 col-desktop-12 ${styles.content}`}>
                         <div
@@ -72,6 +76,8 @@ export default function BannerInformation({
                                 style={{
                                     display: isMarquee ? 'inline-block' : 'block',
                                     width: isMarquee ? 'auto' : '100%',
+                                    // Use CSS Custom Properties for animation
+                                    // Consider moving style logic to CSS module or styled-component if possible for cleaner JSX
                                     '--marquee-offset': `-${marqueeOffset}px`,
                                     '--marquee-duration': `${marqueeDuration}s`
                                 }}
@@ -103,19 +109,17 @@ export default function BannerInformation({
                             onIdChange={update('buttonId')}
                             suffix="button"
                         />
+                        <div className={styles.actions}>
+                            <button
+                                className="btn btn-icon btn-neutral btn-sm"
+                                onClick={() => setIsClosed(true)}
+                                aria-label="Close banner"
+                            >
+                                <XMarkIcon style={{ width: 20, height: 20 }} />
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div className={styles.actions}>
-
-                <button
-                    className="btn btn-icon btn-neutral btn-sm"
-                    onClick={() => setIsClosed(true)}
-                    aria-label="Close banner"
-                >
-                    <XMarkIcon style={{ width: 20, height: 20 }} />
-                </button>
             </div>
         </div>
     );

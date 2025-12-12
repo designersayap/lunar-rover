@@ -4,6 +4,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
 import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
 import styles from "./dialog-section.module.css";
+import { createUpdateHandler } from "../utils/component-helpers";
 
 export default function DialogSection({
     title,
@@ -20,6 +21,7 @@ export default function DialogSection({
     imageVisible,
 }) {
     // === State & Control ===
+    const update = createUpdateHandler(onUpdate);
     const [internalIsOpen, setInternalIsOpen] = useState(false);
     const [portalContainer, setPortalContainer] = useState(null);
 
@@ -36,7 +38,7 @@ export default function DialogSection({
 
     const toggleOpen = (value) => {
         if (isControlled) {
-            onUpdate && onUpdate({ isOpen: value });
+            update('isOpen')(value);
         } else {
             setInternalIsOpen(value);
         }
@@ -99,7 +101,7 @@ export default function DialogSection({
                                 id={imageId}
                                 sectionId={sectionId}
                                 isVisible={imageVisible}
-                                onIdChange={(val) => onUpdate && onUpdate({ imageId: val })}
+                                onIdChange={update('imageId')}
                                 suffix="image"
                             />
 
@@ -110,7 +112,7 @@ export default function DialogSection({
                                             tagName="h4"
                                             className={`h4 ${styles.title}`}
                                             content={title}
-                                            onChange={(val) => onUpdate?.({ title: val })}
+                                            onChange={update('title')}
                                             sectionId={sectionId}
                                         />
                                     )}
@@ -119,7 +121,7 @@ export default function DialogSection({
                                             tagName="p"
                                             className={`body-regular ${styles.description}`}
                                             content={description}
-                                            onChange={(val) => onUpdate?.({ description: val })}
+                                            onChange={update('description')}
                                             sectionId={sectionId}
                                         />
                                     )}

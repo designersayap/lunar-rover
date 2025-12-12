@@ -4,6 +4,7 @@ import BuilderButton from "@/app/page-builder-components/utils/builder/builder-b
 import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
+import { getContainerClasses } from "@/app/page-builder-components/utils/section-utils";
 
 /**
  * TerraBannerHero Component
@@ -29,7 +30,10 @@ export default function TerraBannerHero({
     buttonId,
     secondaryButtonId,
     onUpdate,
-    sectionId
+    sectionId,
+    fullWidth,
+    removePaddingLeft,
+    removePaddingRight
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -47,7 +51,7 @@ export default function TerraBannerHero({
                 />
             </div>
             <div className={styles.overlay}>
-                <div className={`container-grid ${styles.fullHeight}`}>
+                <div className={`${getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })} ${styles.fullHeight}`}>
                     <div className={`grid ${styles.fullHeight}`}>
                         <div className={`col-mobile-2 col-tablet-8 col-desktop-12 ${styles.content}`}>
                             <BuilderText

@@ -18,14 +18,8 @@ export default function DialogDefault({
     imageId,
     imageVisible,
     // List Items
-    items = componentDefaults.dialog.items,
-    item0Id, item1Id, item2Id, item3Id, item4Id, item5Id, item6Id, item7Id,
-    item0Visible, item1Visible, item2Visible, item3Visible, item4Visible, item5Visible, item6Visible, item7Visible,
+    items = componentDefaults.dialog.items
 }) {
-    // Map item IDs and visibility for easy access
-    const itemIds = [item0Id, item1Id, item2Id, item3Id, item4Id, item5Id, item6Id, item7Id];
-    const itemVisibility = [item0Visible, item1Visible, item2Visible, item3Visible, item4Visible, item5Visible, item6Visible, item7Visible];
-
     const updateItem = (index, field, value) => {
         if (!onUpdate) return;
         const newItems = [...items];
@@ -34,9 +28,7 @@ export default function DialogDefault({
     };
 
     const updateItemId = (index, newId) => {
-        if (onUpdate) {
-            onUpdate({ [`item${index}Id`]: newId });
-        }
+        updateItem(index, 'itemId', newId);
     };
 
     return (
@@ -61,9 +53,9 @@ export default function DialogDefault({
                         className={`${styles.listItem} body-regular ${i === items.length - 1 ? styles.lastItem : ''}`}
                         sectionId={sectionId}
                         suffix={`item-${i}`}
-                        id={itemIds[i]}
-                        isVisible={itemVisibility[i] !== false}
-                        onVisibilityChange={(val) => onUpdate && onUpdate({ [`item${i}Visible`]: val })}
+                        id={item.itemId}
+                        isVisible={item.visible !== false}
+                        onVisibilityChange={(val) => updateItem(i, 'visible', val)}
                         onIdChange={(val) => updateItemId(i, val)}
                         justify="flex-start"
                         fullWidth={true}

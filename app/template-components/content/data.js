@@ -97,7 +97,7 @@ export const componentDefaults = {
         image: "",
         imageId: "",
         imageVisible: true,
-        items: Array(8).fill({ label: "Label", image: "", url: "" })
+        items: Array(8).fill({ label: "Label", image: "", url: "", itemId: "", visible: true })
     },
     "dialog-accordion": {
         title: "Title",
@@ -136,7 +136,8 @@ export const componentDefaults = {
             avatarTargetDialogId: "",
             imageVisible: true,
             avatarVisible: true,
-            cardId: ""
+            cardId: "",
+            visible: true
         }),
         fullWidth: false
     },
