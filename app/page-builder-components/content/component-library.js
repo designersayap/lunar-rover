@@ -36,6 +36,34 @@ const LactoNavigation = dynamic(() => import("../../template-components/lacto/la
  */
 export const componentLibrary = {
 
+    "Lacto": [
+        {
+            id: "lacto-navigation",
+            name: "Lacto Navigation",
+            component: LactoNavigation,
+            thumbnail: "/images/thumbnails/placeholder.svg",
+            config: [
+                { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["lacto-navigation"].menu1Label },
+                { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["lacto-navigation"].menu1Url },
+                { name: "menu2Label", label: "Menu 2 Label", type: "text", default: componentDefaults["lacto-navigation"].menu2Label },
+                { name: "menu2Url", label: "Menu 2 URL", type: "text", default: componentDefaults["lacto-navigation"].menu2Url },
+                { name: "menu3Label", label: "Menu 3 Label", type: "text", default: componentDefaults["lacto-navigation"].menu3Label },
+                { name: "menu3Url", label: "Menu 3 URL", type: "text", default: componentDefaults["lacto-navigation"].menu3Url },
+                { name: "menu4Label", label: "Menu 4 Label", type: "text", default: componentDefaults["lacto-navigation"].menu4Label },
+                { name: "menu4Url", label: "Menu 4 URL", type: "text", default: componentDefaults["lacto-navigation"].menu4Url },
+            ],
+            images: [
+                { label: "Logo", propId: "logoId", suffix: "logo" }
+            ],
+            links: [
+                { label: "Menu 1", propId: "menu1Id", suffix: "menu-1", labelProp: "menu1Label", visibleProp: "menu1Visible" },
+                { label: "Menu 2", propId: "menu2Id", suffix: "menu-2", labelProp: "menu2Label", visibleProp: "menu2Visible" },
+                { label: "Menu 3", propId: "menu3Id", suffix: "menu-3", labelProp: "menu3Label", visibleProp: "menu3Visible" },
+                { label: "Menu 4", propId: "menu4Id", suffix: "menu-4", labelProp: "menu4Label", visibleProp: "menu4Visible" }
+            ]
+        }
+    ],
+
     "OSM": [
         {
             id: "banner-information",
@@ -80,54 +108,7 @@ export const componentLibrary = {
                 }
             ]
         },
-        {
-            id: "lacto-navigation",
-            name: "Navigation",
-            component: LactoNavigation,
-            thumbnail: "/images/thumbnails/placeholder.svg",
-            config: [
-                {
-                    name: "menuItems",
-                    label: "Menu Items",
-                    type: "list",
-                    default: componentDefaults["lacto-navigation"].menuItems
-                }
-            ],
-            images: [
-                {
-                    label: "Logo",
-                    propId: "logo.imageId",
-                    suffix: "logo",
-                    visibleProp: "logo.imageVisible"
-                }
-            ],
-            links: [
-                {
-                    label: "Menu 1",
-                    propId: "menuItems.0.linkId",
-                    suffix: "menu-0",
-                    visibleProp: "menuItems.0.linkVisible"
-                },
-                {
-                    label: "Menu 2",
-                    propId: "menuItems.1.linkId",
-                    suffix: "menu-1",
-                    visibleProp: "menuItems.1.linkVisible"
-                },
-                {
-                    label: "Menu 3",
-                    propId: "menuItems.2.linkId",
-                    suffix: "menu-2",
-                    visibleProp: "menuItems.2.linkVisible"
-                },
-                {
-                    label: "Menu 4",
-                    propId: "menuItems.3.linkId",
-                    suffix: "menu-3",
-                    visibleProp: "menuItems.3.linkVisible"
-                }
-            ]
-        }
+
     ],
     "Header": [
         {
@@ -559,56 +540,7 @@ export const componentLibrary = {
         }
     ],
 
-    "Lacto": [
-        {
-            id: "lacto-navigation",
-            name: "Navigation",
-            component: LactoNavigation,
-            thumbnail: "/images/thumbnails/placeholder.svg",
-            config: [
-                {
-                    name: "menuItems",
-                    label: "Menu Items",
-                    type: "list",
-                    default: componentDefaults["lacto-navigation"].menuItems
-                }
-            ],
-            images: [
-                {
-                    label: "Logo",
-                    propId: "logo.imageId",
-                    suffix: "logo",
-                    visibleProp: "logo.imageVisible"
-                }
-            ],
-            links: [
-                {
-                    label: "Menu 1",
-                    propId: "menuItems.0.linkId",
-                    suffix: "menu-0",
-                    visibleProp: "menuItems.0.linkVisible"
-                },
-                {
-                    label: "Menu 2",
-                    propId: "menuItems.1.linkId",
-                    suffix: "menu-1",
-                    visibleProp: "menuItems.1.linkVisible"
-                },
-                {
-                    label: "Menu 3",
-                    propId: "menuItems.2.linkId",
-                    suffix: "menu-2",
-                    visibleProp: "menuItems.2.linkVisible"
-                },
-                {
-                    label: "Menu 4",
-                    propId: "menuItems.3.linkId",
-                    suffix: "menu-3",
-                    visibleProp: "menuItems.3.linkVisible"
-                }
-            ]
-        }
-    ],
+
 
     "Testimonials": [
         {

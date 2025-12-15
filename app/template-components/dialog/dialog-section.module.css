@@ -8,18 +8,6 @@
     display: inline-block;
 }
 
-.overlay {
-    position: fixed;
-    inset: 0;
-    background-color: var(--background-neutral--alpha--black-50);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--padding-md);
-    animation: fadeIn 0.2s ease-out;
-    z-index: 9999;
-}
-
 .dialog {
     background-color: var(--background-neutral--default);
     border-radius: var(--border-radius-lg);

@@ -100,6 +100,16 @@ body {
   text-decoration: underline;
 }
 
+.link-nav {
+  color: var(--content-neutral--title);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.link-nav:hover {
+  color: var(--content-neutral--body);
+}
+
 /* Caption Classes */
 .caption-bold,
 .caption-regular,
@@ -408,6 +418,10 @@ body {
   object-fit: cover;
 }
 
+.object-contain {
+  object-fit: contain;
+}
+
 [data-tooltip]::after {
   content: attr(data-tooltip);
   position: absolute;
@@ -417,7 +431,7 @@ body {
   transform: translateX(-50%);
   background-color: var(--background-neutral--neutral-strong);
   color: var(--content-neutral--body-invert);
-  padding: 8px 12px;
+  padding: 4px 8px;
   border-radius: var(--border-radius-sm);
   font-size: var(--typography-font-size-caption-md);
   white-space: normal;
@@ -430,9 +444,12 @@ body {
   pointer-events: none;
   z-index: 999;
   font-weight: 500;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow--md);
   overflow-wrap: break-word;
   word-break: break-word;
+  font-size: 12px;
+  line-height: 1.4;
+  font-family: var(--font-family-body);
 }
 
 [data-tooltip]:hover::after {
@@ -528,4 +545,40 @@ body {
   gap: var(--gap-sm);
   flex-wrap: wrap;
   max-width: 100%;
+}
+
+.buttonWrapperRight {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  gap: var(--gap-sm);
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+/* ============================================
+   OVERLAY
+   ============================================ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--background-neutral--alpha--black-50);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+  z-index: 9999;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

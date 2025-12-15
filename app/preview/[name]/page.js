@@ -13,7 +13,7 @@ import TerraFeaturesImageLeft from "@/app/template-components/terra/terra-featur
 import TerraFeaturesImageRight from "@/app/template-components/terra/terra-features-image-right";
 import Dialog from "@/app/template-components/dialog/dialog-default";
 import TerraTestimony from "@/app/template-components/terra/terra-testimony";
-import LactoNavigation from "@/app/template-components/lacto/lacto-navigation";
+
 
 import { BuilderSelectionProvider } from "@/app/page-builder-components/utils/builder/builder-controls";
 
@@ -32,7 +32,7 @@ export default function ComponentPreviewPage() {
         "feature-right": TerraFeaturesImageRight,
         "dialog": Dialog,
         "terra-testimony": TerraTestimony,
-        "lacto-navigation": LactoNavigation,
+
     };
 
     const Component = components[name];

@@ -121,6 +121,33 @@ export const componentDefaults = {
         image: "",
         fullWidth: false
     },
+    "lacto-navigation": {
+        logo: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+        logoVisible: true,
+        logoId: "",
+
+        menu1Label: "Menu 1",
+        menu1Url: "#",
+        menu1OpenInNewTab: false,
+        menu1Id: "",
+
+        menu2Label: "Menu 2",
+        menu2Url: "#",
+        menu2OpenInNewTab: false,
+        menu2Id: "",
+
+        menu3Label: "Menu 3",
+        menu3Url: "#",
+        menu3OpenInNewTab: false,
+        menu3Id: "",
+
+        menu4Label: "Menu 4",
+        menu4Url: "#",
+        menu4OpenInNewTab: false,
+        menu4Id: "",
+        isSticky: true
+    },
+
     "terra-testimony": {
         testimonies: Array(12).fill({
             name: "People Name",
@@ -141,41 +168,7 @@ export const componentDefaults = {
         }),
         fullWidth: false
     },
-    "lacto-navigation": {
-        menuItems: [
-            {
-                label: "menu",
-                url: "",
-                linkId: "",
-                linkVisible: true
-            },
-            {
-                label: "menu",
-                url: "",
-                linkId: "",
-                linkVisible: true
-            },
-            {
-                label: "menu",
-                url: "",
-                linkId: "",
-                linkVisible: true
-            },
-            {
-                label: "menu",
-                url: "",
-                linkId: "",
-                linkVisible: true
-            }
-        ],
-        logo: {
-            image: "",
-            imageId: "",
-            imageVisible: true
-        },
-        isSticky: true,
-        fullWidth: true
-    }
+
 
 
 };

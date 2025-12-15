@@ -173,7 +173,7 @@ export default function TerraTestimony({
                                             content={item.name}
                                             onChange={(val) => updateTestimony(index, "name", val)}
                                             sectionId={sectionId}
-                                            title={item.name}
+                                            data-tooltip={item.name}
                                         />
                                         <BuilderText
                                             tagName="div"
@@ -181,7 +181,7 @@ export default function TerraTestimony({
                                             content={item.role}
                                             onChange={(val) => updateTestimony(index, "role", val)}
                                             sectionId={sectionId}
-                                            title={item.role}
+                                            data-tooltip={item.role}
                                         />
                                         <BuilderText
                                             tagName="div"
@@ -189,7 +189,7 @@ export default function TerraTestimony({
                                             content={item.description}
                                             onChange={(val) => updateTestimony(index, "description", val)}
                                             sectionId={sectionId}
-                                            title={item.description}
+                                            data-tooltip={item.description}
                                         />
                                     </div>
                                 </div>
