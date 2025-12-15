@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useContext } from "react";
 import styles from "../../../page.module.css";
-import { useBuilderSelection, BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
+import { useActiveOverlay, ActiveOverlayPortal } from "../hooks/use-active-overlay";
 
 export default function BuilderElement({
     tagName: Tag = "div",
@@ -15,42 +15,40 @@ export default function BuilderElement({
     onIdChange,
     isVisible = true
 }) {
-    // Context
-    const { activeElementId, setActiveElementId } = useContext(BuilderSelectionContext);
-
-    // Normalize sectionId
+    // Normalize user ID logic (keep existing normalization logic)
     const normalizedSectionId = sectionId?.replace(/-+$/, '') || '';
     const generatedId = normalizedSectionId && elementProps ? `${normalizedSectionId}-${elementProps}` : undefined;
     const normalizedId = id?.replace(/-+/g, '-') || '';
     const elementId = normalizedId || generatedId;
 
-    const isActive = activeElementId === elementId;
-    const prefix = normalizedSectionId ? `${normalizedSectionId}-` : "";
-    const handleClick = (e) => {
-        e.stopPropagation();
-        if (elementId) {
-            setActiveElementId(elementId);
-        }
-    };
+    // Use hook for active state and overlay
+    const {
+        wrapperRef,
+        overlayRect,
+        isActive,
+        handleActivate
+    } = useActiveOverlay(elementId);
 
     if (!isVisible && !isActive) return null;
 
     return (
-        <Tag
-            id={elementId}
-            className={`${className} ${isActive ? styles.activeWrapper : ''}`}
-            style={{ ...style, position: 'relative' }}
-            onClick={handleClick}
-        >
-            {isActive && <div className={styles.activeBorderOutline} />}
-            {isActive && (
-                <div className={styles.activeOverlay}>
-                    <div className={styles.overlayLabel}>
-                        <span className={styles.overlayIdText}>#{elementId}</span>
-                    </div>
-                </div>
-            )}
-            {children}
-        </Tag>
+        <>
+            <Tag
+                id={elementId}
+                ref={wrapperRef}
+                className={`${className} ${isActive ? styles.activeWrapper : ''}`}
+                style={{ ...style, position: 'relative' }}
+                onClick={handleActivate}
+            >
+                {isActive && <div className={styles.activeBorderOutline} />}
+                {children}
+            </Tag>
+
+            <ActiveOverlayPortal
+                isActive={isActive}
+                overlayRect={overlayRect}
+                elementId={elementId}
+            />
+        </>
     );
 }

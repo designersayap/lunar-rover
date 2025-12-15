@@ -99,7 +99,7 @@ export default function DialogAccordion({
                                 />
                             </button>
                             <div className={`${styles.accordionContent} ${openIndex === i ? styles.accordionContentOpen : ''}`}>
-                                <div className={styles.accordionInner}>
+                                <div className={`${styles.accordionInner} z-lg`}>
                                     <BuilderText
                                         tagName="p"
                                         className="body-regular"

@@ -75,7 +75,7 @@ export default function DialogSection({
     // === Render Logic ===
     const dialogContent = (
         <div
-            className={`${styles.overlay} z-xl ${className}`}
+            className={`${styles.overlay} z-lg ${className}`}
             style={{ display: isOpen ? 'flex' : 'none', pointerEvents: 'auto' }}
             onClick={(e) => e.target === e.currentTarget && toggleOpen(false)}
             data-section-id={sectionId}
@@ -91,7 +91,7 @@ export default function DialogSection({
                             aria-modal="true"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <button className={styles.closeButton} onClick={() => toggleOpen(false)} aria-label="Close dialog" data-dialog-close>
+                            <button className={`${styles.closeButton} z-lg`} onClick={() => toggleOpen(false)} aria-label="Close dialog" data-dialog-close>
                                 <XMarkIcon style={{ width: 20, height: 20 }} />
                             </button>
 

@@ -121,7 +121,7 @@ export default function LactoNavigation({
     ];
 
     return (
-        <nav className={`container-grid ${styles.navigationWrapper} ${isScrolled ? styles.scrolled : ''}`} id={sectionId}>
+        <nav className={`container-grid ${styles.navigationWrapper} z-sm ${isScrolled ? styles.scrolled : ''}`} id={sectionId}>
             <div className="grid align-center">
                 {/* ================= DESKTOP LAYOUT (12 COLS) ================= */}
                 {/* Row: [Menu 1] [Menu 2] [Logo] [Menu 3] [Menu 4] + [User Icon] */}
@@ -228,11 +228,11 @@ export default function LactoNavigation({
             <div className="overlay" onClick={() => setIsMobileMenuOpen(false)} style={{ display: isMobileMenuOpen ? 'flex' : 'none' }} />
 
 
-            <div className={`${styles.dialogWrapper} ${isMobileMenuOpen ? styles.open : ''}`}>
+            <div className={`${styles.dialogWrapper} z-lg ${isMobileMenuOpen ? styles.open : ''}`}>
                 <div className="container-grid">
                     <div className="grid">
                         <div className={`${styles.mobileDialog} col-12 col-mobile-4 col-tablet-8 col-desktop-6 offset-desktop-3`}>
-                            <button className={styles.closeButton} onClick={() => setIsMobileMenuOpen(false)}>
+                            <button className={`${styles.closeButton} z-sm`} onClick={() => setIsMobileMenuOpen(false)}>
                                 <XMarkIcon style={{ width: 24, height: 24 }} />
                             </button>
 

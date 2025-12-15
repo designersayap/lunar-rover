@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect, useRef, useContext } from "react";
 import BuilderText from "./builder-text";
 import { useBuilderSelection, BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
+import { useActiveOverlay, ActiveOverlayPortal } from "../hooks/use-active-overlay";
 import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid";
 import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
@@ -41,9 +42,7 @@ export default function BuilderButton({
     targetDialogId,
     onTargetDialogIdChange
 }) {
-    const buttonRef = useRef(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
-    const [overlayRect, setOverlayRect] = useState(null);
 
     // Extract the button variant class (e.g., btn-primary, btn-ghost) from className
     const variantClass = className.split(' ').find(c => c.startsWith('btn-') && !['btn-lg', 'btn-md', 'btn-sm', 'btn-icon'].includes(c)) || 'btn-default';
@@ -55,7 +54,7 @@ export default function BuilderButton({
     const normalizedId = id?.replace(/-+/g, '-') || '';
     const buttonId = normalizedId || generatedId;
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent } = useContext(BuilderSelectionContext);
-    const isActive = activeElementId === buttonId;
+
 
     // Unique ID for this button's popover
     const myPopoverId = `popover-${buttonId}`;
@@ -115,46 +114,32 @@ export default function BuilderButton({
         e.stopPropagation();
     };
 
-    // Update overlay position when active
+    // Use hook for active state and overlay
+    const {
+        wrapperRef,
+        overlayRect,
+        isActive,
+        handleActivate
+    } = useActiveOverlay(buttonId);
+
+
+
+    // Update popover position based on overlay rect from hook
     useEffect(() => {
-        if (isActive && buttonRef.current) {
-            const updatePosition = () => {
-                if (buttonRef.current) {
-                    const rect = buttonRef.current.getBoundingClientRect();
-                    setOverlayRect(rect);
-                    if (showSettings) {
-                        setPopoverPosition({
-                            top: rect.top,
-                            left: rect.left + rect.width / 2
-                        });
-                    }
-                }
-            };
-
-            updatePosition();
-            window.addEventListener('scroll', updatePosition, true);
-            window.addEventListener('resize', updatePosition);
-
-            return () => {
-                window.removeEventListener('scroll', updatePosition, true);
-                window.removeEventListener('resize', updatePosition);
-            };
+        if (isActive && overlayRect && showSettings) {
+            setPopoverPosition({
+                top: overlayRect.top,
+                left: overlayRect.left + overlayRect.width / 2
+            });
         }
-    }, [isActive, showSettings]);
+    }, [isActive, overlayRect, showSettings]);
 
     // If href is empty, we still render the button in builder mode to allow editing
     // if (!href) return null;
 
     if (!isVisible && !isActive) return null;
 
-    const handleClick = (e) => {
-        // Prevent navigation in builder
-        e.preventDefault();
-        e.stopPropagation();
-        if (buttonId) {
-            setActiveElementId(buttonId);
-        }
-    };
+
 
 
 
@@ -206,50 +191,18 @@ export default function BuilderButton({
     return (
         <>
             <Link
+                href={href}
                 id={buttonId}
-                href={linkType === 'url' ? (href || "#") : "#"}
-                className={`${className} ${isActive ? styles.activeWrapper : ''}`}
-                onClick={handleClick}
+                className={`btn ${className} ${isActive ? styles.activeWrapper : ''}`}
+                onClick={handleActivate}
                 style={{ ...style, opacity: isVisible ? 1 : 0.5 }}
                 data-tooltip={label}
                 data-dialog-trigger={linkType === 'dialog' ? "" : undefined}
                 data-dialog-target={linkType === 'dialog' ? targetDialogSectionId : undefined}
                 prefetch={false}
             >
-                {isActive && <div className={styles.activeBorderOutline} />}
-                <div ref={buttonRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
-                    {isActive && (
-                        <div
-                            className={styles.activeOverlay}
-                            style={{
-                                top: overlayRect ? Math.max(-24, 42 - overlayRect.top) : -24
-                            }}
-                        >
-                            <div className={styles.overlayLabel}>
-                                <span className={styles.overlayIdText}>#{buttonId}</span>
-                            </div>
+                <div ref={wrapperRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
 
-                            {/* specific trigger for dialog if selected */}
-                            {linkType === 'dialog' && (
-                                <button
-                                    type="button"
-                                    className={styles.settingsButton}
-                                    onClick={handleOpenDialog}
-                                    data-tooltip="Open Dialog"
-                                >
-                                    <ChatBubbleLeftEllipsisIcon className={styles.overlayIcon} />
-                                </button>
-                            )}
-
-                            <button
-                                type="button"
-                                className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                                onClick={handleSettingsClick}
-                            >
-                                <Cog6ToothIcon className={styles.overlayIcon} />
-                            </button>
-                        </div>
-                    )}
                     {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
                     <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
                         <BuilderText
@@ -265,27 +218,58 @@ export default function BuilderButton({
                     </div>
                     {iconRight && <span style={{ display: 'flex', flexShrink: 0 }}>{iconRight}</span>}
                 </div>
-            </Link>
+            </Link >
+
+            <ActiveOverlayPortal
+                isActive={isActive}
+                overlayRect={overlayRect}
+                elementId={buttonId}
+                actions={
+                    <>
+                        {/* specific trigger for dialog if selected */}
+                        {linkType === 'dialog' && (
+                            <button
+                                type="button"
+                                className={styles.settingsButton}
+                                onClick={handleOpenDialog}
+                                data-tooltip="Open Dialog"
+                            >
+                                <ChatBubbleLeftEllipsisIcon className={styles.overlayIcon} />
+                            </button>
+                        )}
+
+                        <button
+                            type="button"
+                            className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
+                            onClick={handleSettingsClick}
+                        >
+                            <Cog6ToothIcon className={styles.overlayIcon} />
+                        </button>
+                    </>
+                }
+            />
 
             {/* We render the popover outside the Link to avoid nesting issues */}
-            {isActive && (
-                <BuilderControlsPopover
-                    isOpen={showSettings}
-                    onClose={() => setActivePopoverId(null)}
-                    url={href}
-                    onUrlChange={onHrefChange}
-                    linkType={linkType}
-                    onLinkTypeChange={onLinkTypeChange}
-                    variant={variantClass.replace('btn-', '')}
-                    onVariantChange={onVariantChange}
-                    isVisible={isVisible}
-                    onVisibilityChange={onVisibilityChange}
-                    position={popoverPosition}
-                    dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
-                    targetDialogId={targetDialogId}
-                    onTargetDialogIdChange={onTargetDialogIdChange}
-                />
-            )}
+            {
+                isActive && (
+                    <BuilderControlsPopover
+                        isOpen={showSettings}
+                        onClose={() => setActivePopoverId(null)}
+                        url={href}
+                        onUrlChange={onHrefChange}
+                        linkType={linkType}
+                        onLinkTypeChange={onLinkTypeChange}
+                        variant={variantClass.replace('btn-', '')}
+                        onVariantChange={onVariantChange}
+                        isVisible={isVisible}
+                        onVisibilityChange={onVisibilityChange}
+                        position={popoverPosition}
+                        dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
+                        targetDialogId={targetDialogId}
+                        onTargetDialogIdChange={onTargetDialogIdChange}
+                    />
+                )
+            }
         </>
     );
 }

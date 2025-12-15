@@ -109,7 +109,7 @@ export default function BannerInformation({
                             onIdChange={update('buttonId')}
                             suffix="button"
                         />
-                        <div className={styles.actions}>
+                        <div className={`${styles.actions} z-sm`}>
                             <button
                                 className="btn btn-icon btn-neutral btn-sm"
                                 onClick={() => setIsClosed(true)}

@@ -570,7 +570,7 @@ body {
   align-items: center;
   justify-content: center;
   animation: fadeIn 0.2s ease-out;
-  z-index: 9999;
+  z-index: 4;
 }
 
 @keyframes fadeIn {

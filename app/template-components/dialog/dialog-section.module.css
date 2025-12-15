@@ -38,7 +38,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10;
     box-shadow: var(--shadow--sm);
 }
 
@@ -221,7 +220,6 @@
 
 .accordionInner {
     position: relative;
-    z-index: 1;
     min-height: 0;
     padding-left: calc(var(--size-icon-lg) + var(--gap-md));
     padding-bottom: 0;
