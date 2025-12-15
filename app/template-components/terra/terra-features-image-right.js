@@ -43,7 +43,7 @@ export default function TerraFeaturesImageRight({
             <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })}>
                 <div className="grid align-center">
                     {/* Content Column */}
-                    <div className={`${styles.content} col-mobile-2 col-tablet-8 col-desktop-6`}>
+                    <div className={`${styles.content} col-mobile-4 col-tablet-8 col-desktop-6`}>
                         <BuilderText
                             tagName="h2"
                             className={`h2 ${styles.title}`}

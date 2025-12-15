@@ -66,7 +66,7 @@ export default function BannerInformation({
         >
             <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })} style={{ width: '100%' }}>
                 <div className="grid align-center">
-                    <div className={`col-mobile-2 col-tablet-8 col-desktop-12 ${styles.content}`}>
+                    <div className={`col-mobile-4 col-tablet-8 col-desktop-12 ${styles.content}`}>
                         <div
                             className={`${styles.marqueeWrapper} ${isMarquee ? styles.marqueeMask : ''}`}
                             ref={textWrapperRef}

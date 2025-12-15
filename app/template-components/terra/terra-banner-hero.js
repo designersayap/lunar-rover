@@ -53,7 +53,7 @@ export default function TerraBannerHero({
             <div className={styles.overlay}>
                 <div className={`${getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })} ${styles.fullHeight}`}>
                     <div className={`grid ${styles.fullHeight}`}>
-                        <div className={`col-mobile-2 col-tablet-8 col-desktop-12 ${styles.content}`}>
+                        <div className={`col-mobile-4 col-tablet-8 col-desktop-12 ${styles.content}`}>
                             <BuilderText
                                 tagName="h1"
                                 className={`h1 ${styles.heroTitle}`}

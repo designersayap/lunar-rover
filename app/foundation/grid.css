@@ -82,9 +82,9 @@
     grid-column: auto / span 12;
 }
 
-/* Mobile (2 cols) */
+/* Mobile (4 cols) - Default < 640px */
 :root {
-    --grid-columns: 2;
+    --grid-columns: 4;
     --grid-margin: 16px;
     --grid-gutter: 0;
 
@@ -105,11 +105,19 @@
     --border-radius-lg: var(--round-120);
     --border-radius-round: var(--round-circle);
     --border-radius-button: var(--round-button);
+
+    /* Mobile Typography Scale */
     --typography-font-size-heading-xs: var(--typography-font-size-100);
+    /* 16px */
     --typography-font-size-heading-sm: var(--typography-font-size-120);
+    /* 20px */
     --typography-font-size-heading-md: var(--typography-font-size-140);
+    /* 24px */
     --typography-font-size-heading-lg: var(--typography-font-size-200);
+    /* 36px */
     --typography-font-size-heading-xl: var(--typography-font-size-260);
+    /* 48px */
+
     --typography-font-size-paragraph-md: var(--typography-font-size-90);
     --typography-font-size-caption-md: var(--typography-font-size-80);
     --typography-line-height-heading-xs: var(--typography-line-height-100);
@@ -125,11 +133,11 @@
     --size-margin-md: 16px;
 }
 
-/* Tablet (8 cols) */
-@media (min-width: 481px) and (max-width: 767px) {
+/* Tablet (8 cols) - 640px to 1023px */
+@media (min-width: 640px) and (max-width: 1023px) {
     :root {
         --grid-columns: 8;
-        --grid-margin: 40px;
+        --grid-margin: 32px;
         --grid-gutter: 0;
 
         /* Tokens from tokens.css */
@@ -150,11 +158,19 @@
         --border-radius-lg: var(--round-120);
         --border-radius-round: var(--round-circle);
         --border-radius-button: var(--round-button);
+
+        /* Tablet Typography Scale */
         --typography-font-size-heading-xs: var(--typography-font-size-120);
+        /* 20px */
         --typography-font-size-heading-sm: var(--typography-font-size-140);
+        /* 24px */
         --typography-font-size-heading-md: var(--typography-font-size-200);
+        /* 36px */
         --typography-font-size-heading-lg: var(--typography-font-size-260);
+        /* 48px */
         --typography-font-size-heading-xl: var(--typography-font-size-380);
+        /* 72px */
+
         --typography-font-size-paragraph-md: var(--typography-font-size-100);
         --typography-font-size-caption-md: var(--typography-font-size-90);
         --typography-line-height-heading-xs: var(--typography-line-height-120);
@@ -171,11 +187,12 @@
     }
 }
 
-/* Desktop (12 cols) */
-@media (min-width: 768px) {
+/* Desktop (12 cols) - 1024px+ */
+@media (min-width: 1024px) {
     :root {
         --grid-columns: 12;
         --grid-margin: 120px;
+        /* Kept 120px per user preference for desktop look, or should I reduce? Plan said "Auto / Max width". But variable dictates padding. I'll stick to 120px for "generous margins" mentioned in plan. */
         --grid-gutter: 0;
 
         /* Tokens from tokens.css */
@@ -196,11 +213,14 @@
         --border-radius-lg: var(--round-120);
         --border-radius-round: var(--round-circle);
         --border-radius-button: var(--round-button);
+
+        /* Desktop Typography Scale */
         --typography-font-size-heading-xs: var(--typography-font-size-120);
         --typography-font-size-heading-sm: var(--typography-font-size-140);
         --typography-font-size-heading-md: var(--typography-font-size-200);
         --typography-font-size-heading-lg: var(--typography-font-size-260);
         --typography-font-size-heading-xl: var(--typography-font-size-380);
+
         --typography-font-size-paragraph-md: var(--typography-font-size-100);
         --typography-font-size-caption-md: var(--typography-font-size-90);
         --typography-line-height-heading-xs: var(--typography-line-height-120);
@@ -218,7 +238,7 @@
 }
 
 /* Tablet Columns */
-@media (min-width: 481px) and (max-width: 767px) {
+@media (min-width: 640px) and (max-width: 1023px) {
     .col-tablet-1 {
         grid-column: auto / span 1;
     }
@@ -274,7 +294,7 @@
 }
 
 /* Desktop Columns */
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
     .col-desktop-1 {
         grid-column: auto / span 1;
     }
@@ -354,13 +374,21 @@
 }
 
 /* Mobile Columns */
-@media (max-width: 480px) {
+@media (max-width: 639px) {
     .col-mobile-1 {
         grid-column: auto / span 1;
     }
 
     .col-mobile-2 {
         grid-column: auto / span 2;
+    }
+
+    .col-mobile-3 {
+        grid-column: auto / span 3;
+    }
+
+    .col-mobile-4 {
+        grid-column: auto / span 4;
     }
 
     /* Offsets */
@@ -370,6 +398,14 @@
 
     .offset-mobile-1 {
         grid-column-start: 2;
+    }
+
+    .offset-mobile-2 {
+        grid-column-start: 3;
+    }
+
+    .offset-mobile-3 {
+        grid-column-start: 4;
     }
 }
 

@@ -22,7 +22,7 @@ export default function HeaderSection({
         <section className={`${styles.section} ${className}`} id={sectionId}>
             <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })}>
                 <div className="grid">
-                    <div className={`col-mobile-2 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
+                    <div className={`col-mobile-4 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
                         {title && (
                             <BuilderText
                                 tagName="h2"

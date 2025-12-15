@@ -6,7 +6,7 @@ import JSZip from 'jszip';
 // Essential classes whitelist
 const essentialClasses = [
     'container-grid', 'grid',
-    'col-mobile-1', 'col-mobile-2',
+    'col-mobile-1', 'col-mobile-2', 'col-mobile-3', 'col-mobile-4',
     'col-tablet-1', 'col-tablet-2', 'col-tablet-3', 'col-tablet-4',
     'col-tablet-5', 'col-tablet-6', 'col-tablet-7', 'col-tablet-8',
     'col-desktop-1', 'col-desktop-2', 'col-desktop-3', 'col-desktop-4',

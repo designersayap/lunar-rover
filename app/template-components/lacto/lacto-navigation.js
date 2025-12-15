@@ -198,7 +198,7 @@ export default function LactoNavigation({
                 {/* ================= MOBILE LAYOUT (2 COLS) ================= */}
 
                 {/* Logo: Col 1 */}
-                <div className={`col-mobile-1 col-tablet-4 ${styles.mobileNav} ${styles.mobileLogoWrapper}`}>
+                <div className={`col-mobile-2 col-tablet-4 ${styles.mobileNav} ${styles.mobileLogoWrapper}`}>
                     <BuilderImage
                         src={logo}
                         id={logoId} // Share ID? Or better to have distinct IDs if they were different images. Here it's same image.
@@ -213,7 +213,7 @@ export default function LactoNavigation({
                 </div>
 
                 {/* Burger: Col 1 Right */}
-                <div className={`col-mobile-1 col-tablet-4 ${styles.mobileNav} ${styles.mobileBurgerWrapper}`}>
+                <div className={`col-mobile-2 col-tablet-4 ${styles.mobileNav} ${styles.mobileBurgerWrapper}`}>
                     <button
                         className={styles.burgerButton}
                         onClick={() => setIsMobileMenuOpen(true)}
@@ -231,7 +231,7 @@ export default function LactoNavigation({
             <div className={`${styles.dialogWrapper} ${isMobileMenuOpen ? styles.open : ''}`}>
                 <div className="container-grid">
                     <div className="grid">
-                        <div className={`${styles.mobileDialog} col-12 col-mobile-2 col-tablet-8 col-desktop-6 offset-desktop-3`}>
+                        <div className={`${styles.mobileDialog} col-12 col-mobile-4 col-tablet-8 col-desktop-6 offset-desktop-3`}>
                             <button className={styles.closeButton} onClick={() => setIsMobileMenuOpen(false)}>
                                 <XMarkIcon style={{ width: 24, height: 24 }} />
                             </button>

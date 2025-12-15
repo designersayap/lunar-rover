@@ -43,7 +43,7 @@ export default function TerraFeaturesImageLeft({
             <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })}>
                 <div className="grid align-center">
                     {/* Image Column */}
-                    <div className={`imageWrapper ${styles.imageWrapper} col-mobile-2 col-tablet-8 col-desktop-6`}>
+                    <div className={`imageWrapper ${styles.imageWrapper} col-mobile-4 col-tablet-8 col-desktop-6`}>
                         <BuilderImage
                             src={image}
                             className="imagePlaceholder-1-1 shadow-md"
@@ -57,7 +57,7 @@ export default function TerraFeaturesImageLeft({
                     </div>
 
                     {/* Content Column */}
-                    <div className={`${styles.content} col-mobile-2 col-tablet-8 col-desktop-6`}>
+                    <div className={`${styles.content} col-mobile-4 col-tablet-8 col-desktop-6`}>
                         <BuilderText
                             tagName="h2"
                             className={`h2 ${styles.title}`}

@@ -35,7 +35,7 @@ export default function Media16x9({
             onUpdate={onUpdate}
         >
             <div className="grid">
-                <div className="col-mobile-2 col-tablet-8 col-desktop-12">
+                <div className="col-mobile-4 col-tablet-8 col-desktop-12">
                     <div className="imageWrapper">
                         <BuilderImage
                             src={image}
