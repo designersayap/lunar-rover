@@ -56,7 +56,7 @@ export default function ComponentsPopover({
                     Object.entries(filteredLibrary).map(([category, components]) => (
                         <div key={category} className={styles.categoryWrapper}>
                             <div className={styles.categoryHeader} style={{ cursor: 'default' }}>
-                                <span className="caption-bold">{category}</span>
+                                <span className="caption-regular">{category}</span>
                             </div>
                             <div className={styles.popoverGrid}>
                                 {components.map((comp) => (
@@ -79,7 +79,7 @@ export default function ComponentsPopover({
                                             />
                                         </div>
                                         <div className={styles.cardContent}>
-                                            <p className={styles.cardTitle}>
+                                            <p className={`${styles.cardTitle} caption-regular`}>
                                                 {comp.name}
                                             </p>
                                         </div>

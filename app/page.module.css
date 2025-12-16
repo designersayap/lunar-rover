@@ -2,7 +2,7 @@
 
 /* === VARIABLES === */
 :root {
-    --bg1: #282828;
+    --bg1: #1f1f1f;
     --bg2: #1A1A1A;
     --bg3: #3a3a3a;
     --bg4: #3f3f3f;
@@ -925,50 +925,61 @@
 }
 
 .popoverGrid {
-    padding: 0 16px 16px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    padding: 4px 16px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .popoverCard {
-    border: 1px solid var(--grey-100);
+    border: 1px solid var(--bdr);
     border-radius: 6px;
     overflow: hidden;
     text-align: left;
-    padding: 0;
+    padding: 10px;
     transition: all .2s;
-    background: var(--base-white);
+    background: var(--bg2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
 }
 
 .popoverCard:hover {
-    border-color: var(--brand-color-300);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
+    border-color: var(--grey-400);
+    transform: translateY(-1px);
+    background: var(--grey-500);
 }
 
 .cardImageWrapper {
-    aspect-ratio: 3/2;
-    width: 100%;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
     position: relative;
-    background: var(--grey-50);
+    background: var(--bg4);
+    border-radius: 2px;
 }
 
 .cardContent {
-    padding: 10px;
+    padding: 0;
+    flex: 1;
 }
 
 .cardTitle {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--grey-900);
+    color: var(--grey-200);
     margin: 0;
 }
 
+.popoverCard:hover .cardTitle {
+    color: var(--content-neutral--body-invert);
+}
+
 .categoryHeader {
-    padding: 12px 16px;
-    cursor: pointer;
+    padding: 8px 16px 0;
+    cursor: default;
     justify-content: space-between;
     user-select: none;
     color: var(--grey-300);
+    font-size: 13px;
+    border-bottom: none;
 }

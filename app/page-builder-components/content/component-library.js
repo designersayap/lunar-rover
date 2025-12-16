@@ -39,7 +39,7 @@ export const componentLibrary = {
     "Navigation": [
         {
             id: "lacto-navigation",
-            name: "Lacto Navigation",
+            name: "Lacto",
             component: LactoNavigation,
             thumbnail: "/images/thumbnails/placeholder.svg",
             config: [
@@ -247,7 +247,7 @@ export const componentLibrary = {
     "Dialog": [
         {
             id: "dialog",
-            name: "Dialog / Modal",
+            name: "Item List",
             component: Dialog,
             thumbnail: "/images/thumbnails/dialog.svg", // Placeholder or generic
             config: [
@@ -280,7 +280,7 @@ export const componentLibrary = {
         },
         {
             id: "dialog-accordion",
-            name: "Dialog / Accordion",
+            name: "Accordion",
             component: DialogAccordion,
             thumbnail: "/images/thumbnails/dialog.svg", // Placeholder
             config: [
@@ -312,7 +312,7 @@ export const componentLibrary = {
     "Media": [
         {
             id: "media-16-9",
-            name: "Media 16:9",
+            name: "16:9",
             component: Media16x9,
             thumbnail: "/images/thumbnails/placeholder.svg", // Placeholder
             config: [
@@ -336,7 +336,7 @@ export const componentLibrary = {
     "Hero Banner": [
         {
             id: "terra-banner-hero",
-            name: "Terra Banner Hero",
+            name: "Terra",
             component: TerraBannerHero,
             thumbnail: "/images/thumbnails/terra-cta.svg",
             config: [
@@ -493,59 +493,10 @@ export const componentLibrary = {
         },
 
     ],
-
-    "OSM": [
-        {
-            id: "banner-information",
-            name: "Info Banner",
-            component: BannerInformation,
-            thumbnail: "/images/thumbnails/banner-info.svg",
-            config: [
-                {
-                    name: "title",
-                    label: "Title",
-                    type: "text",
-                    default: "Information Banner"
-                },
-                {
-                    name: "buttonText",
-                    label: "Button Label",
-                    type: "text",
-                    default: "Label"
-                },
-                {
-                    name: "buttonLinkType",
-                    label: "Button Link Type",
-                    type: "select",
-                    options: ["url", "dialog"],
-                    default: "url"
-                },
-                {
-                    name: "buttonUrl",
-                    label: "Button URL",
-                    type: "text",
-                    default: ""
-                }
-            ],
-            buttons: [
-                {
-                    label: "Button",
-                    propId: "buttonId",
-                    suffix: "button",
-                    labelProp: "buttonText",
-                    visibleProp: "buttonVisible",
-                    linkTypeProp: "buttonLinkType"
-                }
-            ]
-        }
-    ],
-
-
-
     "Testimonials": [
         {
             id: "terra-testimony",
-            name: "Terra Testimony",
+            name: "Terra",
             component: TerraTestimony,
             thumbnail: "/images/thumbnails/placeholder.svg",
             config: [
