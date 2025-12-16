@@ -121,6 +121,14 @@ export const componentDefaults = {
         image: "",
         fullWidth: false
     },
+    "media-5-4": {
+        image: "",
+        fullWidth: false
+    },
+    "media-21-9": {
+        image: "",
+        fullWidth: false
+    },
     "lacto-navigation": {
         logo: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
         logoVisible: true,

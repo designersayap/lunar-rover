@@ -18,6 +18,8 @@ const BannerInformation = dynamic(() => import("../../template-components/osm/ba
 
 const TerraTestimony = dynamic(() => import("../../template-components/terra/terra-testimony"));
 const Media16x9 = dynamic(() => import("../../template-components/media/media-16-9"));
+const Media5x4 = dynamic(() => import("../../template-components/media/media-5-4"));
+const Media21x9 = dynamic(() => import("../../template-components/media/media-21-9"));
 const LactoNavigation = dynamic(() => import("../../template-components/lacto/lacto-navigation"));
 
 /**
@@ -321,6 +323,50 @@ export const componentLibrary = {
                     label: "Image",
                     type: "image",
                     default: componentDefaults["media-16-9"].image
+                }
+            ],
+            images: [
+                {
+                    label: "Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
+            ]
+        },
+        {
+            id: "media-5-4",
+            name: "5:4",
+            component: Media5x4,
+            thumbnail: "/images/thumbnails/placeholder.svg",
+            config: [
+                {
+                    name: "image",
+                    label: "Image",
+                    type: "image",
+                    default: componentDefaults["media-5-4"].image
+                }
+            ],
+            images: [
+                {
+                    label: "Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
+            ]
+        },
+        {
+            id: "media-21-9",
+            name: "21:9",
+            component: Media21x9,
+            thumbnail: "/images/thumbnails/placeholder.svg",
+            config: [
+                {
+                    name: "image",
+                    label: "Image",
+                    type: "image",
+                    default: componentDefaults["media-21-9"].image
                 }
             ],
             images: [
