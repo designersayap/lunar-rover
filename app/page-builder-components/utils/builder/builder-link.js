@@ -30,7 +30,12 @@ export default function BuilderLink({
     iconLeft,
     iconRight,
     justify = "center",
-    fullWidth = false
+    fullWidth = false,
+    // New Props for Link Type
+    linkType,
+    onLinkTypeChange,
+    targetDialogId,
+    onTargetDialogIdChange
 }) {
     // ID Sync Hook
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "link", onIdChange });
@@ -189,7 +194,11 @@ export default function BuilderLink({
                     url={href}
                     onUrlChange={onHrefChange}
                     showVariant={false}
-                    showLinkType={false}
+                    showLinkType={true}
+                    linkType={linkType}
+                    onLinkTypeChange={onLinkTypeChange}
+                    targetDialogId={targetDialogId}
+                    onTargetDialogIdChange={onTargetDialogIdChange}
                     isVisible={isVisible}
                     onVisibilityChange={onVisibilityChange}
                     position={popoverPosition}

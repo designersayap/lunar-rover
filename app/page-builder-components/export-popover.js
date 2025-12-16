@@ -7,7 +7,8 @@ export default function ExportPopover({
     onClose,
     onExport,
     onDownloadCsv,
-    position
+    position,
+    className = ""
 }) {
     const [csvLink, setCsvLink] = useState("");
 
@@ -25,7 +26,7 @@ export default function ExportPopover({
             isOpen={isOpen}
             onClose={onClose}
             position={position}
-            className={styles.exportPopover}
+            className={`${styles.exportPopover} ${className}`}
             width={362}
         >
             {/* Content */}

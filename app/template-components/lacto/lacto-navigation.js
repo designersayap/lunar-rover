@@ -18,24 +18,32 @@ export default function LactoNavigation({
     menu1Url = componentDefaults["lacto-navigation"].menu1Url,
     menu1OpenInNewTab = componentDefaults["lacto-navigation"].menu1OpenInNewTab,
     menu1Visible = true,
+    menu1LinkType = componentDefaults["lacto-navigation"].menu1LinkType,
+    menu1TargetDialogId = componentDefaults["lacto-navigation"].menu1TargetDialogId,
     menu1Id,
 
     menu2Label = componentDefaults["lacto-navigation"].menu2Label,
     menu2Url = componentDefaults["lacto-navigation"].menu2Url,
     menu2OpenInNewTab = componentDefaults["lacto-navigation"].menu2OpenInNewTab,
     menu2Visible = true,
+    menu2LinkType = componentDefaults["lacto-navigation"].menu2LinkType,
+    menu2TargetDialogId = componentDefaults["lacto-navigation"].menu2TargetDialogId,
     menu2Id,
 
     menu3Label = componentDefaults["lacto-navigation"].menu3Label,
     menu3Url = componentDefaults["lacto-navigation"].menu3Url,
     menu3OpenInNewTab = componentDefaults["lacto-navigation"].menu3OpenInNewTab,
     menu3Visible = true,
+    menu3LinkType = componentDefaults["lacto-navigation"].menu3LinkType,
+    menu3TargetDialogId = componentDefaults["lacto-navigation"].menu3TargetDialogId,
     menu3Id,
 
     menu4Label = componentDefaults["lacto-navigation"].menu4Label,
     menu4Url = componentDefaults["lacto-navigation"].menu4Url,
     menu4OpenInNewTab = componentDefaults["lacto-navigation"].menu4OpenInNewTab,
     menu4Visible = true,
+    menu4LinkType = componentDefaults["lacto-navigation"].menu4LinkType,
+    menu4TargetDialogId = componentDefaults["lacto-navigation"].menu4TargetDialogId,
     menu4Id,
 
     onUpdate
@@ -69,11 +77,15 @@ export default function LactoNavigation({
             url: menu1Url,
             openInNewTab: menu1OpenInNewTab,
             visible: menu1Visible,
+            linkType: menu1LinkType,
+            targetDialogId: menu1TargetDialogId,
             id: menu1Id,
             handlers: {
                 onLabelChange: update('menu1Label'),
                 onUrlChange: update('menu1Url'),
                 onOpenInNewTabChange: update('menu1OpenInNewTab'),
+                onLinkTypeChange: update('menu1LinkType'),
+                onTargetDialogIdChange: update('menu1TargetDialogId'),
                 onIdChange: update('menu1Id')
             },
             suffix: 'menu-1',
@@ -84,11 +96,15 @@ export default function LactoNavigation({
             url: menu2Url,
             openInNewTab: menu2OpenInNewTab,
             visible: menu2Visible,
+            linkType: menu2LinkType,
+            targetDialogId: menu2TargetDialogId,
             id: menu2Id,
             handlers: {
                 onLabelChange: update('menu2Label'),
                 onUrlChange: update('menu2Url'),
                 onOpenInNewTabChange: update('menu2OpenInNewTab'),
+                onLinkTypeChange: update('menu2LinkType'),
+                onTargetDialogIdChange: update('menu2TargetDialogId'),
                 onIdChange: update('menu2Id')
             },
             suffix: 'menu-2',
@@ -99,11 +115,15 @@ export default function LactoNavigation({
             url: menu3Url,
             openInNewTab: menu3OpenInNewTab,
             visible: menu3Visible,
+            linkType: menu3LinkType,
+            targetDialogId: menu3TargetDialogId,
             id: menu3Id,
             handlers: {
                 onLabelChange: update('menu3Label'),
                 onUrlChange: update('menu3Url'),
                 onOpenInNewTabChange: update('menu3OpenInNewTab'),
+                onLinkTypeChange: update('menu3LinkType'),
+                onTargetDialogIdChange: update('menu3TargetDialogId'),
                 onIdChange: update('menu3Id')
             },
             suffix: 'menu-3',
@@ -114,11 +134,15 @@ export default function LactoNavigation({
             url: menu4Url,
             openInNewTab: menu4OpenInNewTab,
             visible: menu4Visible,
+            linkType: menu4LinkType,
+            targetDialogId: menu4TargetDialogId,
             id: menu4Id,
             handlers: {
                 onLabelChange: update('menu4Label'),
                 onUrlChange: update('menu4Url'),
                 onOpenInNewTabChange: update('menu4OpenInNewTab'),
+                onLinkTypeChange: update('menu4LinkType'),
+                onTargetDialogIdChange: update('menu4TargetDialogId'),
                 onIdChange: update('menu4Id')
             },
             suffix: 'menu-4',
@@ -141,10 +165,10 @@ export default function LactoNavigation({
                         <div className={styles.truncatedText}>
                             <BuilderLink
                                 label={item.label}
-                                url={item.url}
+                                href={item.url}
                                 openInNewTab={item.openInNewTab}
                                 onLabelChange={item.handlers.onLabelChange}
-                                onUrlChange={item.handlers.onUrlChange}
+                                onHrefChange={item.handlers.onUrlChange}
                                 onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
                                 sectionId={sectionId}
                                 id={item.id}
@@ -153,6 +177,10 @@ export default function LactoNavigation({
                                 suffix={item.suffix}
                                 fullWidth={true}
                                 isVisible={item.visible}
+                                linkType={item.linkType}
+                                targetDialogId={item.targetDialogId}
+                                onLinkTypeChange={item.handlers.onLinkTypeChange}
+                                onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
                             />
                         </div>
                     </div>
@@ -181,10 +209,10 @@ export default function LactoNavigation({
                         <div className={styles.truncatedText}>
                             <BuilderLink
                                 label={item.label}
-                                url={item.url}
+                                href={item.url}
                                 openInNewTab={item.openInNewTab}
                                 onLabelChange={item.handlers.onLabelChange}
-                                onUrlChange={item.handlers.onUrlChange}
+                                onHrefChange={item.handlers.onUrlChange}
                                 onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
                                 sectionId={sectionId}
                                 id={item.id}
@@ -193,6 +221,10 @@ export default function LactoNavigation({
                                 suffix={item.suffix}
                                 fullWidth={true}
                                 isVisible={item.visible}
+                                linkType={item.linkType}
+                                targetDialogId={item.targetDialogId}
+                                onLinkTypeChange={item.handlers.onLinkTypeChange}
+                                onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
                             />
                         </div>
                     </div>
@@ -243,10 +275,10 @@ export default function LactoNavigation({
                                         <div key={`mobile-${item.mobileSuffix}`} className={styles.mobileMenuLink}>
                                             <BuilderLink
                                                 label={item.label}
-                                                url={item.url}
+                                                href={item.url}
                                                 openInNewTab={item.openInNewTab}
                                                 onLabelChange={item.handlers.onLabelChange}
-                                                onUrlChange={item.handlers.onUrlChange}
+                                                onHrefChange={item.handlers.onUrlChange}
                                                 onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
                                                 sectionId={sectionId}
                                                 id={undefined}
@@ -254,6 +286,10 @@ export default function LactoNavigation({
                                                 className={`${styles.mobileLinkText} body-bold link-nav`}
                                                 fullWidth={true}
                                                 isVisible={item.visible}
+                                                linkType={item.linkType}
+                                                targetDialogId={item.targetDialogId}
+                                                onLinkTypeChange={item.handlers.onLinkTypeChange}
+                                                onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
                                             />
                                         </div>
                                     ))}

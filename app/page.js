@@ -50,7 +50,6 @@ export default function TemplateGeneratorPage() {
   // Interface Visibility State
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   const [activeTab, setActiveTab] = useState("elements");
-  const [openCategories, setOpenCategories] = useState({ "Hero Banner": true });
 
   // Popover & Overlay State
   const [activePopoverId, setActivePopoverId] = useState(null);
@@ -148,12 +147,6 @@ export default function TemplateGeneratorPage() {
     showToast(`Theme switched to ${themeId}`);
   }, [showToast]);
 
-  // Categories
-  const toggleCategory = useCallback((category, forceOpen = false) => {
-    setOpenCategories(prev =>
-      forceOpen || !prev[category] ? { [category]: true } : {}
-    );
-  }, []);
 
   // Components
   const addComponent = useCallback((componentData, category) => {
@@ -311,8 +304,6 @@ export default function TemplateGeneratorPage() {
             onClose={closePopover}
             position={popoverPositions.components}
             componentLibrary={componentLibrary}
-            openCategories={openCategories}
-            toggleCategory={toggleCategory}
             addComponent={addComponent}
             className="z-system-modal-floating"
           />

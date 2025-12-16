@@ -8,7 +8,8 @@ export default function ThemePickerPopover({
     onSelectTheme,
     currentTheme,
     themes = [],
-    position
+    position,
+    className = ""
 }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedThemeId, setSelectedThemeId] = useState(currentTheme || "milku");
@@ -22,7 +23,7 @@ export default function ThemePickerPopover({
             isOpen={isOpen}
             onClose={onClose}
             position={position}
-            className={styles.themePickerPopover}
+            className={`${styles.themePickerPopover} ${className}`}
             width={320}
         >
             {/* Content */}
