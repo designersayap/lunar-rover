@@ -74,9 +74,8 @@ export default function BuilderControlsPopover({
         const popoverWidth = 320;
         const padding = 16;
         const windowWidth = window.innerWidth;
-        const sidebarWidth = 320;
         const topBarHeight = 42;
-        const minLeft = sidebarWidth + popoverWidth / 2 + padding;
+        const minLeft = popoverWidth / 2 + padding;
         const maxLeft = windowWidth - popoverWidth / 2 - padding;
         const constrainedLeft = Math.max(minLeft, Math.min(position.left, maxLeft));
 
@@ -84,7 +83,7 @@ export default function BuilderControlsPopover({
             // Flip: Position bottom relative to window bottom
             // Distance from screen bottom to element top = window.innerHeight - position.top
             // We want bottom to be at (element top) - (active overlay tag ~24px) - (padding 8px)
-            // So bottom value = (window.innerHeight - position.top) + 32
+            // So bottom value = (window.innerHeight - position.top) + 10
             const bottomVal = (window.innerHeight - position.top) + 32;
 
             popoverStyle = {

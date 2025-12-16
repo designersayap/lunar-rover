@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 import BuilderText from "./builder-text";
 import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
 import { useIdSync } from "../hooks/use-id-sync";
-import { Cog6ToothIcon } from "@heroicons/react/24/solid";
+import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid";
 import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 
@@ -41,7 +41,7 @@ export default function BuilderLink({
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "link", onIdChange });
 
     // Context
-    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId } = useContext(BuilderSelectionContext);
+    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent } = useContext(BuilderSelectionContext);
     const isActive = activeElementId === elementId;
 
     // Popover state
@@ -110,6 +110,33 @@ export default function BuilderLink({
         setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
     };
 
+    const handleOpenDialog = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Find the Dialog component
+        let dialogComponent;
+        if (targetDialogId) {
+            // Compare as strings to handle potential type mismatch (number vs string)
+            dialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
+        }
+
+        // Fallback to first if not found or not set
+        if (!dialogComponent) {
+            dialogComponent = selectedComponents?.find(c => c.id === 'dialog' || c.id === 'dialog-accordion');
+        }
+
+        if (dialogComponent) {
+            // Open it
+            if (updateComponent) {
+                updateComponent(dialogComponent.uniqueId, { isOpen: true });
+                // Optional: show toast or feedback?
+            }
+        } else {
+            alert("No Dialog component found on the page. Please add one from the Components menu.");
+        }
+    };
+
     // Render Portal for Active Overlay
     const renderActiveOverlay = () => {
         if (!isActive || !overlayRect) return null;
@@ -136,6 +163,16 @@ export default function BuilderLink({
                     <div className={styles.overlayLabel}>
                         <span className={styles.overlayIdText}>#{elementId}</span>
                     </div>
+                    {linkType === 'dialog' && (
+                        <button
+                            type="button"
+                            className={styles.settingsButton}
+                            onClick={handleOpenDialog}
+                            data-tooltip="Open Dialog"
+                        >
+                            <ChatBubbleLeftEllipsisIcon className={styles.overlayIcon} />
+                        </button>
+                    )}
                     <button
                         type="button"
                         className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
@@ -202,6 +239,7 @@ export default function BuilderLink({
                     isVisible={isVisible}
                     onVisibilityChange={onVisibilityChange}
                     position={popoverPosition}
+                    dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
                 />
             )}
         </>

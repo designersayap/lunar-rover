@@ -577,7 +577,7 @@
     border-color: var(--grey-400);
 }
 
-.themeOption:last-child {
+.themeList .themeOption:last-child {
     border-bottom: none;
 }
 

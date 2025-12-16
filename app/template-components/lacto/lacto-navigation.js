@@ -262,7 +262,7 @@ export default function LactoNavigation({
             {/* Mobile Menu Dialog - Rendered via Portal */}
             {portalContainer && createPortal(
                 <>
-                    <div className="overlay" onClick={() => setIsMobileMenuOpen(false)} style={{ display: isMobileMenuOpen ? 'flex' : 'none', pointerEvents: 'auto' }} />
+                    <div className="overlay z-system-modal-fullscreen" onClick={() => setIsMobileMenuOpen(false)} style={{ display: isMobileMenuOpen ? 'flex' : 'none', pointerEvents: 'auto' }} />
                     <div className={`${styles.dialogWrapper} z-system-modal-fullscreen ${isMobileMenuOpen ? styles.open : ''}`}>
                         <div className="container-grid">
                             <div className="grid">
