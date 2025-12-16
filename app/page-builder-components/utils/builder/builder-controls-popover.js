@@ -1,7 +1,7 @@
 import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
 import styles from "../../../page.module.css";
 import { createPortal } from "react-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 
 export default function BuilderControlsPopover({
     isOpen,
@@ -35,9 +35,14 @@ export default function BuilderControlsPopover({
     }, []);
 
     // Positioning Logic:
-    // Ensures the popover stays within the viewport and doesn't overlap the sidebar/topbar.
-    // Calculates a "constrained" position.
-    let popoverStyle = {
+    const containerRef = useRef(null);
+    const [isFlipped, setIsFlipped] = useState(false);
+
+    // Center by default if no position
+    const centerByDefault = !position;
+
+    // Calculate constrained position
+    let popoverStyle = centerByDefault ? {
         position: "fixed",
         top: "50%",
         left: "50%",
@@ -47,7 +52,23 @@ export default function BuilderControlsPopover({
         maxHeight: "none",
         margin: 0,
         pointerEvents: "auto"
-    };
+    } : {};
+
+    useLayoutEffect(() => {
+        if (position && containerRef.current && typeof window !== 'undefined') {
+            const rect = containerRef.current.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const spaceBelow = windowHeight - position.top;
+
+            // If popover height > space below, flip it
+            // Buffer of 20px
+            if (rect.height > spaceBelow - 20) {
+                setIsFlipped(true);
+            } else {
+                setIsFlipped(false);
+            }
+        }
+    }, [position, variants, linkType]); // Re-run when content might change height
 
     if (position && typeof window !== 'undefined') {
         const popoverWidth = 320;
@@ -59,21 +80,43 @@ export default function BuilderControlsPopover({
         const maxLeft = windowWidth - popoverWidth / 2 - padding;
         const constrainedLeft = Math.max(minLeft, Math.min(position.left, maxLeft));
 
-        // Top Boundary: Prevent overlapping the TopBar
-        const minTop = topBarHeight + padding;
-        const constrainedTop = Math.max(minTop, position.top);
+        if (isFlipped) {
+            // Flip: Position bottom relative to window bottom
+            // Distance from screen bottom to element top = window.innerHeight - position.top
+            // We want bottom to be at (element top) - (active overlay tag ~24px) - (padding 8px)
+            // So bottom value = (window.innerHeight - position.top) + 32
+            const bottomVal = (window.innerHeight - position.top) + 32;
 
-        popoverStyle = {
-            ...popoverStyle,
-            top: `${constrainedTop}px`,
-            left: `${constrainedLeft}px`,
-            transform: "translateX(-50%)"
-        };
+            popoverStyle = {
+                position: "fixed",
+                bottom: `${bottomVal}px`,
+                left: `${constrainedLeft}px`,
+                transform: "translateX(-50%)",
+                width: "320px",
+                margin: 0,
+                pointerEvents: "auto"
+            };
+        } else {
+            // Standard: Top Boundary Check
+            const minTop = topBarHeight + padding;
+            const constrainedTop = Math.max(minTop, position.top);
+
+            popoverStyle = {
+                position: "fixed",
+                top: `${constrainedTop}px`,
+                left: `${constrainedLeft}px`,
+                transform: "translateX(-50%)",
+                width: "320px",
+                margin: 0,
+                pointerEvents: "auto"
+            };
+        }
     }
 
     const content = (
         <div className={`${styles.popoverOverlay} z-system-modal-floating`} style={{ pointerEvents: "none" }}>
             <div
+                ref={containerRef}
                 className={styles.popoverContainer}
                 style={popoverStyle}
                 onClick={(e) => e.stopPropagation()}
