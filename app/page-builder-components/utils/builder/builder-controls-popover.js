@@ -24,7 +24,10 @@ export default function BuilderControlsPopover({
     fullWidth,
     removePaddingLeft,
     removePaddingRight,
-    onLayoutChange
+    onLayoutChange,
+    showPortraitToggle,
+    isPortrait,
+    onIsPortraitChange
 }) {
     const [mounted, setMounted] = useState(false);
 
@@ -218,6 +221,7 @@ export default function BuilderControlsPopover({
                         )}
 
 
+
                         {/* Section Layout Controls - Only show if onLayoutChange is provided */}
                         {onLayoutChange && (
                             <>
@@ -229,6 +233,24 @@ export default function BuilderControlsPopover({
                                             className={styles.toggleInput}
                                             checked={fullWidth === true || fullWidth === "true"}
                                             onChange={(e) => onLayoutChange({ fullWidth: e.target.checked })}
+                                        />
+                                        <span className={styles.toggleSlider}></span>
+                                    </label>
+                                </div>
+                            </>
+                        )}
+
+                        {/* Portrait Mode Toggle */}
+                        {showPortraitToggle && (
+                            <>
+                                <div className={styles.propertyRow} style={{ marginTop: '8px' }}>
+                                    <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Portrait</label>
+                                    <label className={styles.toggleSwitch}>
+                                        <input
+                                            type="checkbox"
+                                            className={styles.toggleInput}
+                                            checked={isPortrait === true}
+                                            onChange={(e) => onIsPortraitChange && onIsPortraitChange(e.target.checked)}
                                         />
                                         <span className={styles.toggleSlider}></span>
                                     </label>

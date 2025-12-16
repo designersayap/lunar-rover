@@ -300,8 +300,11 @@ body {
 .imagePlaceholder-1-1,
 .imagePlaceholder-4-5,
 .imagePlaceholder-5-4,
+.imagePlaceholder-3-4,
 .imagePlaceholder-4-3,
+.imagePlaceholder-9-16,
 .imagePlaceholder-16-9,
+.imagePlaceholder-9-21,
 .imagePlaceholder-21-9 {
   width: 100%;
   border-radius: var(--border-radius-md);
@@ -319,12 +322,24 @@ body {
   aspect-ratio: 5 / 4;
 }
 
+.imagePlaceholder-3-4 {
+  aspect-ratio: 3 / 4;
+}
+
 .imagePlaceholder-4-3 {
   aspect-ratio: 4 / 3;
 }
 
+.imagePlaceholder-9-16 {
+  aspect-ratio: 9 / 16;
+}
+
 .imagePlaceholder-16-9 {
   aspect-ratio: 16 / 9;
+}
+
+.imagePlaceholder-9-21 {
+  aspect-ratio: 9 / 21;
 }
 
 .imagePlaceholder-21-9 {

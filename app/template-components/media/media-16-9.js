@@ -19,7 +19,8 @@ export default function Media16x9({
     removePaddingRight,
     imageHref,
     imageLinkType,
-    imageTargetDialogId
+    imageTargetDialogId,
+    imageIsPortrait
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -51,6 +52,8 @@ export default function Media16x9({
                             onLinkTypeChange={update('imageLinkType')}
                             targetDialogId={imageTargetDialogId}
                             onTargetDialogIdChange={update('imageTargetDialogId')}
+                            isPortrait={imageIsPortrait}
+                            onIsPortraitChange={update('imageIsPortrait')}
                         />
                     </div>
                 </div>

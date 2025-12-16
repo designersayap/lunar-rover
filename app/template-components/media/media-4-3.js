@@ -5,11 +5,11 @@ import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
 
 /**
- * Media5x4 Component
+ * Media4x3 Component
  * Full width image using grid system
  */
-export default function Media5x4({
-    image = componentDefaults["media-5-4"].image,
+export default function Media4x3({
+    image = componentDefaults["media-4-3"].image,
     imageId,
     imageVisible,
     onUpdate,
@@ -40,7 +40,7 @@ export default function Media5x4({
                     <div className="imageWrapper">
                         <BuilderImage
                             src={image}
-                            className={`${styles.image} imagePlaceholder-5-4 object-cover`}
+                            className={`${styles.image} imagePlaceholder-4-3 object-cover`}
                             id={imageId}
                             sectionId={sectionId}
                             isVisible={imageVisible}

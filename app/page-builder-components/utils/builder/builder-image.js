@@ -31,7 +31,9 @@ export default function BuilderImage({
     onLinkTypeChange,
     targetDialogId,
     onTargetDialogIdChange,
-    disableSettings = false
+    disableSettings = false,
+    isPortrait,
+    onIsPortraitChange
 }) {
     // ID Sync Hook
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
@@ -208,12 +210,22 @@ export default function BuilderImage({
         'data-dialog-target': linkType === 'dialog' ? targetDialogSectionId : undefined
     } : {};
 
+    // Ratio logic
+    let finalClassName = `${isActive ? styles.activeWrapper : ''} ${className}`;
+    if (onIsPortraitChange && isPortrait) {
+        finalClassName = finalClassName
+            .replace('imagePlaceholder-4-3', 'imagePlaceholder-3-4')
+            .replace('imagePlaceholder-16-9', 'imagePlaceholder-9-16')
+            .replace('imagePlaceholder-21-9', 'imagePlaceholder-9-21')
+            .replace('imagePlaceholder-5-4', 'imagePlaceholder-4-5');
+    }
+
     return (
         <>
             <Wrapper
                 {...wrapperProps}
                 ref={wrapperRef}
-                className={`${isActive ? styles.activeWrapper : ''} ${className}`}
+                className={finalClassName}
                 style={{ position: 'relative', width: '100%', height: '100%', display: 'block' }}
                 onClick={handleClick}
             >
@@ -241,6 +253,9 @@ export default function BuilderImage({
                     targetDialogId={targetDialogId}
                     onTargetDialogIdChange={onTargetDialogIdChange}
                     showVariant={false}
+                    showPortraitToggle={!!onIsPortraitChange}
+                    isPortrait={isPortrait}
+                    onIsPortraitChange={onIsPortraitChange}
                 />
             )}
         </>
