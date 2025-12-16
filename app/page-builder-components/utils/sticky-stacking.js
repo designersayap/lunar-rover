@@ -15,12 +15,14 @@ export function useStickyStacking(components) {
     // We'll use a Map keyed by uniqueId
     // We we'll use a Map keyed by uniqueId
     const elementRefs = useRef(new Map());
+    const lastStickyStylesRef = useRef("");
 
     useEffect(() => {
         // 1. Identify sticky components in order
         const stickyComponents = components.filter(isComponentSticky);
 
         if (stickyComponents.length === 0) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setStickyStyles({});
             return;
         }
@@ -61,7 +63,9 @@ export function useStickyStacking(components) {
 
             // 3. Check if styles actually changed to prevent infinite loops
             // Simple JSON stringify comparison is sufficient for this flat structure
-            if (JSON.stringify(nextStyles) !== JSON.stringify(stickyStyles)) {
+            const nextStylesStr = JSON.stringify(nextStyles);
+            if (nextStylesStr !== lastStickyStylesRef.current) {
+                lastStickyStylesRef.current = nextStylesStr;
                 setStickyStyles(nextStyles);
             }
         };
@@ -81,7 +85,7 @@ export function useStickyStacking(components) {
 
         return () => ro.disconnect();
 
-    }, [components]); // Re-run when list structure changes
+    }, [components]);
 
     return {
         stickyStyles,

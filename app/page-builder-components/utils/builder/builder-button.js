@@ -64,12 +64,15 @@ export default function BuilderButton({
     const [tempId, setTempId] = useState("");
 
     useEffect(() => {
-        if (buttonId && buttonId.startsWith(prefix)) {
-            setTempId(buttonId.slice(prefix.length));
-        } else {
-            setTempId(buttonId);
+        const newTempId = (buttonId && buttonId.startsWith(prefix))
+            ? buttonId.slice(prefix.length)
+            : buttonId;
+
+        if (newTempId !== tempId) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setTempId(newTempId);
         }
-    }, [buttonId, prefix]);
+    }, [buttonId, prefix, tempId]);
 
     // Sync ID when sectionId changes
     const prevSectionIdRef = useRef(sectionId);
@@ -127,6 +130,7 @@ export default function BuilderButton({
     // Update popover position based on overlay rect from hook
     useEffect(() => {
         if (isActive && overlayRect && showSettings) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setPopoverPosition({
                 top: overlayRect.top,
                 left: overlayRect.left + overlayRect.width / 2
@@ -138,11 +142,6 @@ export default function BuilderButton({
     // if (!href) return null;
 
     if (!isVisible && !isActive) return null;
-
-
-
-
-
     const handleSettingsClick = (e) => {
         e.preventDefault();
         e.stopPropagation();

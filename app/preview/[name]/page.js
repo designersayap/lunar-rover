@@ -50,7 +50,7 @@ export default function ComponentPreviewPage() {
                 color: "black"
             }}>
                 <h1 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>Component Not Found</h1>
-                <p>The component "{name}" does not exist.</p>
+                <p className={styles.error}>Template &quot;{params.name}&quot; not found.</p>
                 <Link href="/" style={{ color: "blue", textDecoration: "underline" }}>
                     Go back home
                 </Link>

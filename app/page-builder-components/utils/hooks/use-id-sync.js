@@ -30,12 +30,15 @@ export function useIdSync({ id, sectionId, suffix, onIdChange }) {
 
     // Update tempId when elementId changes
     useEffect(() => {
-        if (elementId && elementId.startsWith(prefix)) {
-            setTempId(elementId.slice(prefix.length));
-        } else {
-            setTempId(elementId || "");
+        const newTempId = (elementId && elementId.startsWith(prefix))
+            ? elementId.slice(prefix.length)
+            : (elementId || "");
+
+        if (newTempId !== tempId) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setTempId(newTempId);
         }
-    }, [elementId, prefix]);
+    }, [elementId, prefix, tempId]);
 
     // Sync ID when sectionId changes
     useEffect(() => {

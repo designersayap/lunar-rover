@@ -379,7 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const csvUrl = "${csvLink || ''}";
     if (!csvUrl) return;
 
-    console.log("Syncing with Google Sheets:", csvUrl);
+
     
     async function fetchAndUpdateContent() {
         try {

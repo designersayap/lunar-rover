@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
@@ -36,13 +36,13 @@ export default function DialogSection({
         setPortalContainer(container);
     }, []);
 
-    const toggleOpen = (value) => {
+    const toggleOpen = useCallback((value) => {
         if (isControlled) {
             update('isOpen')(value);
         } else {
             setInternalIsOpen(value);
         }
-    };
+    }, [isControlled, update]);
 
     // === Effects ===
 
@@ -54,7 +54,9 @@ export default function DialogSection({
             // If in builder/canvas, lock canvas scroll
             const canvas = portalContainer.parentElement;
             if (canvas) {
+                // eslint-disable-next-line react-hooks/immutability
                 canvas.style.overflow = 'hidden';
+                // eslint-disable-next-line react-hooks/immutability
                 return () => { canvas.style.overflow = ''; };
             }
         } else {
@@ -70,7 +72,7 @@ export default function DialogSection({
         const handleEsc = (e) => e.key === 'Escape' && toggleOpen(false);
         window.addEventListener('keydown', handleEsc);
         return () => window.removeEventListener('keydown', handleEsc);
-    }, [isOpen]);
+    }, [isOpen, toggleOpen]);
 
     // === Render Logic ===
     const dialogContent = (

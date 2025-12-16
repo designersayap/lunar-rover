@@ -37,6 +37,7 @@ export default function BuilderText({
     // Sync internal state if prop changes (e.g. undo/redo or initial load)
     useEffect(() => {
         if (elementRef.current && elementRef.current.innerText !== content) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setText(content);
             if (document.activeElement !== elementRef.current) {
                 elementRef.current.innerText = content;

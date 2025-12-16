@@ -201,12 +201,9 @@ export default function LactoNavigation({
                 <div className={`col-mobile-2 col-tablet-4 ${styles.mobileNav} ${styles.mobileLogoWrapper}`}>
                     <BuilderImage
                         src={logo}
-                        id={logoId} // Share ID? Or better to have distinct IDs if they were different images. Here it's same image.
-                        sectionId={sectionId}
-                        // We share the logic but maybe passing same ID causes conflict in builder highlighting? 
-                        // Usually safe if they render same content.
+                        id={logoId}
                         isVisible={logoVisible}
-                        readOnly={true} // Read only in mobile to avoid double edit confusion, or allow edit.
+                        readOnly={true}
                         className="object-contain"
                         style={{ width: '74px', height: '32px' }}
                     />
@@ -246,7 +243,6 @@ export default function LactoNavigation({
                                         onUrlChange={item.handlers.onUrlChange}
                                         onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
                                         sectionId={sectionId}
-                                        // Use undefined ID + suffix to generate unique mobile ID "sectionId-mobile-menu-X"
                                         id={undefined}
                                         suffix={item.mobileSuffix}
                                         className={`${styles.mobileLinkText} body-bold link-nav`}

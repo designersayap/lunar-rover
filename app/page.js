@@ -117,7 +117,9 @@ export default function TemplateGeneratorPage() {
   useEffect(() => {
     const saved = loadTemplate(componentLibrary);
     if (saved) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedComponents(saved.components);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setAnalyticsData(saved.analytics);
     }
   }, []);

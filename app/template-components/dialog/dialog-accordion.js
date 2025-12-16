@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/solid';
 import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
 import BuilderElement from "@/app/page-builder-components/utils/builder/builder-element";
-import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
+
 import { componentDefaults } from "../content/data";
 import styles from "./dialog-section.module.css";
 import DialogSection from "./dialog-section";

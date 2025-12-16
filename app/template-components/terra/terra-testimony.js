@@ -72,18 +72,6 @@ export default function TerraTestimony({
         return () => container.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Auto-scroll timer - advance every 5 seconds
-    useEffect(() => {
-        const autoScrollInterval = setInterval(() => {
-            if (!scrollContainerRef.current) return;
-
-            const nextPage = (currentPage + 1) % totalPages;
-            scrollToPage(nextPage);
-        }, 5000); // 5 seconds
-
-        return () => clearInterval(autoScrollInterval);
-    }, [currentPage, totalPages]);
-
     // Handle dot click to scroll to specific page
     const scrollToPage = (pageIndex) => {
         if (!scrollContainerRef.current) return;
@@ -97,6 +85,18 @@ export default function TerraTestimony({
             behavior: 'smooth'
         });
     };
+
+    // Auto-scroll timer - advance every 5 seconds
+    useEffect(() => {
+        const autoScrollInterval = setInterval(() => {
+            if (!scrollContainerRef.current) return;
+
+            const nextPage = (currentPage + 1) % totalPages;
+            scrollToPage(nextPage);
+        }, 5000); // 5 seconds
+
+        return () => clearInterval(autoScrollInterval);
+    }, [currentPage, totalPages]);
 
     const visibleCount = testimonies.filter(t => t.visible !== false).length;
 
