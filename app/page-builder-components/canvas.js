@@ -69,7 +69,7 @@ export default function Canvas({
                 )}
             </div>
             {/* Portal container for dialogs - positioned relative to canvas */}
-            <div id="dialog-portal-root" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }} />
+            <div id="dialog-portal-root" className="z-system-modal-fullscreen" style={{ position: 'fixed', inset: 0, pointerEvents: 'none' }} />
         </div>
     );
 }

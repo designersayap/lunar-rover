@@ -23,7 +23,7 @@ export default function TopBar({
     const selectedThemeName = selectedTheme ? selectedTheme.name : "Themes";
 
     return (
-        <div className={styles.topBar}>
+        <div className={`${styles.topBar} z-layout-topbar`}>
             <div className={styles.topBarLeft}>
                 <Image
                     src="/logo.svg"

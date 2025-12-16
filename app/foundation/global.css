@@ -499,26 +499,56 @@ body {
   box-shadow: var(--shadow--md);
 }
 
-/* Z-Index */
-/* Level 1: Drawer, Sheet, Banner */
-.z-sm {
+/* Z-Index Hierarchy */
+
+/* Tier 1: Content Level */
+.z-hidden {
+  z-index: -1;
+}
+
+.z-content-1 {
   z-index: 1;
 }
 
-/* Level 2: */
-.z-md {
-  z-index: 2;
-}
-
-/* Level 3: App Bar, Menu */
-.z-lg {
+.z-content-2 {
   z-index: 4;
 }
 
-/* Level 4: Toast, Dragged, Dialog, Picker */
-.z-xl {
-  z-index: 8;
+.z-indicator {
+  z-index: 10;
 }
+
+/* Tier 2: Layout Level */
+.z-layout-scrim {
+  z-index: 150;
+}
+
+.z-layout-panel {
+  z-index: 160;
+}
+
+.z-layout-topbar {
+  z-index: 200;
+}
+
+/* Tier 3: Interaction Level */
+.z-interaction {
+  z-index: 999;
+}
+
+/* Tier 4: System Level */
+.z-system-toast {
+  z-index: 1000;
+}
+
+.z-system-modal-floating {
+  z-index: 1001;
+}
+
+.z-system-modal-fullscreen {
+  z-index: 9999 !important;
+}
+
 
 /* ============================================
    COMPONENT WRAPPERS

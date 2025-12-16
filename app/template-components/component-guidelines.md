@@ -291,3 +291,169 @@ Manages the visual stacking of sticky elements on the generic Canvas.
 
 - Persists state to `localStorage`.
 - Rehydrates component references from the library on load (since JSON only stores IDs).
+
+---
+
+## 7. Z-Index Hierarchy
+
+We use a strict **4-Tier Z-Index System** defined in `app/foundation/global.css`. never use arbitrary numeric values (e.g., `z-index: 50`) or legacy classes (`z-sm`, `z-dialog`).
+
+### **Tier 1: Content Level (1-10)**
+For stacking elements relative to normal content flow.
+- `.z-hidden` (`-1`): Hidden elements (e.g., drag images).
+- `.z-content-1` (`1`): Base overlays (Navigation bars, Banners).
+- `.z-content-2` (`4`): Focused content (Accordion items, active borders).
+- `.z-indicator` (`10`): Visual markers like Drag & Drop indicators.
+
+### **Tier 2: Layout Level (100-200)**
+For major layout structures that sit above all page content.
+- `.z-layout-scrim` (`150`): Backdrops for popovers/drawers.
+- `.z-layout-panel` (`160`): Non-modal panels (Sidebars, Bottom Sheets).
+- `.z-layout-topbar` (`200`): The Page Builder App Bar (Always top of layout).
+
+### **Tier 3: Interaction Level (900-999)**
+For active interaction states that must rise above layout.
+- `.z-interaction` (`999`): The "Active Element" overlay label/border in the builder.
+
+### **Tier 4: System Level (1000+)**
+For critical UI that must overlay everything.
+- `.z-system-toast` (`1000`): Toast notifications.
+- `.z-system-modal-floating` (`1001`): Floating popovers (Theme picker, Export menu).
+- `.z-system-modal-fullscreen` (`9999 !important`): Fullscreen blocking modals (Dialogs).
+
+**Rules:**
+1. **Always use the utility classes.** Avoid inline styles for `z-index`.
+2. **Context Matters:** If you need an element to be "on top", consider if it's "Content on top" vs "System Modal".
+3. **Sticky Stacking:** The `useStickyStacking` hook automatically manages values between **10 and 100** for pinned sections. Do not manually assign z-indices in this range.
+
+---
+
+## 8. Design Tokens & Colors
+
+All styling **must** use the CSS variables defined in `app/foundation/tokens.css`.
+**Never hardcover hex codes** (e.g., `#FFFFFF`, `#000000`). This ensures dark mode compatibility and theming consistency.
+
+### **Backgrounds**
+- `var(--background-neutral--default)`: Standard page background.
+- `var(--background-neutral--neutral-subtle)`: Subtle gray backgrounds (cards, sections).
+- `var(--background-brand--brand-strong)`: Primary brand color backgrounds.
+
+### **Content (Text & Icons)**
+- `var(--content-neutral--title)`: Main headings.
+- `var(--content-neutral--body)`: Standard body text.
+- `var(--content-neutral--caption)`: Helper text / metadata.
+- `var(--content-neutral--body-invert)`: Text on dark backgrounds.
+
+### **Borders (Stroke)**
+- `var(--stroke-neutral--neutral)`: Standard dividers and component borders.
+
+**Example:**
+```css
+.myCard {
+    background: var(--background-neutral--default);
+    border: 1px solid var(--stroke-neutral--neutral);
+    color: var(--content-neutral--body);
+}
+
+.myCardTitle {
+    color: var(--content-neutral--title);
+}
+```
+
+---
+
+## 9. Grid System
+
+The project uses a responsive grid system defined in `app/foundation/grid.css`.
+
+### **Container**
+Always wrap your content in a container to ensure proper max-width and margins.
+- `.container-grid`: Standard container (Max 1440px).
+- `.container-grid.container-full`: Full-width container (No padding).
+
+### **Grid Layout**
+Use `.grid` to create a grid context.
+- **Mobile (<640px)**: 4 Columns
+- **Tablet (640px-1023px)**: 8 Columns
+- **Desktop (1024px+)**: 12 Columns
+
+### **Column Classes**
+Use responsive column classes to define width.
+- **Mobile**: `.col-mobile-1` to `.col-mobile-4`
+- **Tablet**: `.col-tablet-1` to `.col-tablet-8`
+- **Desktop**: `.col-desktop-1` to `.col-desktop-12`
+
+### **Alignment Utilities**
+- **Justify**: `.justify-start`, `.justify-center`, `.justify-end`
+- **Align**: `.align-start`, `.align-center`, `.align-end`
+
+**Example:**
+```jsx
+<div className="container-grid">
+    <div className="grid align-center">
+        {/* Full width on mobile, half on desktop */}
+        <div className="col-mobile-4 col-desktop-6">
+            Left Content
+        </div>
+        <div className="col-mobile-4 col-desktop-6">
+            Right Content
+        </div>
+    </div>
+</div>
+```
+
+### **Responsive Spacing & Radius**
+You **must** use the responsive variables defined in `grid.css` for padding, gaps, and border radius. These variables automatically adjust based on the viewport (Mobile/Tablet/Desktop).
+
+**Padding:**
+- `var(--padding-xs)` to `var(--padding-2xl)`
+- Use for internal spacing of cards, sections, or containers.
+
+**Gaps:**
+- `var(--gap-xs)` to `var(--gap-2xl)`
+- Use for spacing between flex or grid items.
+
+**Border Radius:**
+- `var(--border-radius-sm)` (Small UI elements)
+- `var(--border-radius-md)` (Cards)
+- `var(--border-radius-lg)` (Large containers)
+- `var(--border-radius-button)` (Buttons)
+- `var(--border-radius-round)` (Circles)
+
+**Example:**
+```css
+.card {
+    padding: var(--padding-md);
+    gap: var(--gap-sm);
+    border-radius: var(--border-radius-md);
+}
+```
+
+---
+
+## 10. Global Typography & Utilities
+
+Standardize your component's look using the global classes from `app/foundation/global.css`.
+
+### **Typography**
+Do not set `font-size` or `font-weight` manually. Use these semantic classes:
+- **Headings**: `.h1` through `.h6` (Use `.h1` for main page titles, `.h3/.h4` for section titles).
+- **Subheaders**: `.subheader-h1`, `.subheader-h2` (Lighter weight headings).
+- **Body**: `.body-regular`, `.body-bold`, `.body-link`.
+- **Caption**: `.caption-regular`, `.caption-bold`, `.caption-link` (Small text).
+
+### **Buttons**
+Use the `.btn` base class with size and variant modifiers.
+- **Sizes**: `.btn-sm`, `.btn-md`, `.btn-lg`.
+- **Variants**:
+    - `.btn-primary`: Main Call-to-Action.
+    - `.btn-outline`: Secondary actions.
+    - `.btn-neutral`: Gray/Neutral actions.
+    - `.btn-ghost`: Text-only buttons (transparent).
+    - `.btn-icon`: Circular icon-only buttons.
+
+### **Helpers & Utilities**
+- **Text Truncation**: `.truncate-1-line`, `.truncate-2-lines`.
+- **Object Fit**: `.object-cover`, `.object-contain`.
+- **Shadows**: `.shadow-md`.
+- **Wrappers**: `.buttonWrapperLeft`, `.buttonWrapperCenter`, `.buttonWrapperRight`.

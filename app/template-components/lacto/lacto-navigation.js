@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import styles from './lacto-navigation.module.css';
 import BuilderImage from '@/app/page-builder-components/utils/builder/builder-image';
 import BuilderLink from '@/app/page-builder-components/utils/builder/builder-link';
@@ -42,6 +43,11 @@ export default function LactoNavigation({
     const update = createUpdateHandler(onUpdate);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [portalContainer, setPortalContainer] = useState(null);
+
+    useEffect(() => {
+        setPortalContainer(document.body);
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -121,7 +127,7 @@ export default function LactoNavigation({
     ];
 
     return (
-        <nav className={`container-grid ${styles.navigationWrapper} z-sm ${isScrolled ? styles.scrolled : ''}`} id={sectionId}>
+        <nav className={`container-grid ${styles.navigationWrapper} z-content-1 ${isScrolled ? styles.scrolled : ''}`} id={sectionId}>
             <div className="grid align-center">
                 {/* ================= DESKTOP LAYOUT (12 COLS) ================= */}
                 {/* Row: [Menu 1] [Menu 2] [Logo] [Menu 3] [Menu 4] + [User Icon] */}
@@ -221,41 +227,44 @@ export default function LactoNavigation({
 
             </div>
 
-            {/* Mobile Menu Dialog */}
-            <div className="overlay" onClick={() => setIsMobileMenuOpen(false)} style={{ display: isMobileMenuOpen ? 'flex' : 'none' }} />
+            {/* Mobile Menu Dialog - Rendered via Portal */}
+            {portalContainer && createPortal(
+                <>
+                    <div className="overlay" onClick={() => setIsMobileMenuOpen(false)} style={{ display: isMobileMenuOpen ? 'flex' : 'none', pointerEvents: 'auto' }} />
+                    <div className={`${styles.dialogWrapper} z-system-modal-fullscreen ${isMobileMenuOpen ? styles.open : ''}`}>
+                        <div className="container-grid">
+                            <div className="grid">
+                                <div className={`${styles.mobileDialog} col-12 col-mobile-4 col-tablet-8 col-desktop-6 offset-desktop-3`}>
+                                    <button className={`${styles.closeButton} z-content-1`} onClick={() => setIsMobileMenuOpen(false)}>
+                                        <XMarkIcon style={{ width: 24, height: 24 }} />
+                                    </button>
 
+                                    {menuItems.map((item) => (
+                                        <div key={`mobile-${item.mobileSuffix}`} className={styles.mobileMenuLink}>
+                                            <BuilderLink
+                                                label={item.label}
+                                                url={item.url}
+                                                openInNewTab={item.openInNewTab}
+                                                onLabelChange={item.handlers.onLabelChange}
+                                                onUrlChange={item.handlers.onUrlChange}
+                                                onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
+                                                sectionId={sectionId}
+                                                id={undefined}
+                                                suffix={item.mobileSuffix}
+                                                className={`${styles.mobileLinkText} body-bold link-nav`}
+                                                fullWidth={true}
+                                                isVisible={item.visible}
+                                            />
+                                        </div>
+                                    ))}
 
-            <div className={`${styles.dialogWrapper} z-lg ${isMobileMenuOpen ? styles.open : ''}`}>
-                <div className="container-grid">
-                    <div className="grid">
-                        <div className={`${styles.mobileDialog} col-12 col-mobile-4 col-tablet-8 col-desktop-6 offset-desktop-3`}>
-                            <button className={`${styles.closeButton} z-sm`} onClick={() => setIsMobileMenuOpen(false)}>
-                                <XMarkIcon style={{ width: 24, height: 24 }} />
-                            </button>
-
-                            {menuItems.map((item) => (
-                                <div key={`mobile-${item.mobileSuffix}`} className={styles.mobileMenuLink}>
-                                    <BuilderLink
-                                        label={item.label}
-                                        url={item.url}
-                                        openInNewTab={item.openInNewTab}
-                                        onLabelChange={item.handlers.onLabelChange}
-                                        onUrlChange={item.handlers.onUrlChange}
-                                        onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
-                                        sectionId={sectionId}
-                                        id={undefined}
-                                        suffix={item.mobileSuffix}
-                                        className={`${styles.mobileLinkText} body-bold link-nav`}
-                                        fullWidth={true}
-                                        isVisible={item.visible}
-                                    />
                                 </div>
-                            ))}
-
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </>,
+                portalContainer
+            )}
         </nav>
     );
 }

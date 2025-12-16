@@ -61,7 +61,7 @@ export default function BannerInformation({
 
     return (
         <div
-            className={`${styles.banner} z-sm ${className}`}
+            className={`${styles.banner} z-content-1 ${className}`}
             id={sectionId}
         >
             <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })} style={{ width: '100%' }}>
@@ -109,7 +109,7 @@ export default function BannerInformation({
                             onIdChange={update('buttonId')}
                             suffix="button"
                         />
-                        <div className={`${styles.actions} z-sm`}>
+                        <div className={`${styles.actions} z-content-1`}>
                             <button
                                 className="btn btn-icon btn-neutral btn-sm"
                                 onClick={() => setIsClosed(true)}

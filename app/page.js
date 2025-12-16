@@ -274,7 +274,7 @@ export default function TemplateGeneratorPage() {
         </div>
 
         {/* Hidden Drag Image */}
-        <div ref={dragImageRef} className={styles.customDragImage}>
+        <div ref={dragImageRef} className={`${styles.customDragImage} z-hidden`}>
           <div style={{ height: 60, width: "100%", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "var(--grey-50)", borderRadius: "var(--round-80)", border: "1px solid var(--grey-200)", overflow: "hidden" }}>
             <img ref={dragThumbnailRef} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
@@ -290,6 +290,7 @@ export default function TemplateGeneratorPage() {
             currentTheme={selectedThemeId}
             themes={themes}
             position={popoverPositions.theme}
+            className="z-system-modal-floating"
           />
         )}
 
@@ -300,6 +301,7 @@ export default function TemplateGeneratorPage() {
             onExport={handleExportConfirm}
             onDownloadCsv={onDownloadCsv}
             position={popoverPositions.export}
+            className="z-system-modal-floating"
           />
         )}
 
@@ -312,12 +314,13 @@ export default function TemplateGeneratorPage() {
             openCategories={openCategories}
             toggleCategory={toggleCategory}
             addComponent={addComponent}
+            className="z-system-modal-floating"
           />
         )}
 
         {/* Toaster */}
         {toaster.show && (
-          <div className={`${styles.toaster} ${toaster.type === "delete" ? styles.toasterDelete : ""}`}>
+          <div className={`${styles.toaster} ${toaster.type === "delete" ? styles.toasterDelete : ""} z-system-modal-floating`}>
             {toaster.type === "delete"
               ? <TrashIcon className={styles.toasterIcon} />
               : <BellAlertIcon className={styles.toasterIcon} />

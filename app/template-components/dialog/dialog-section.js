@@ -30,10 +30,9 @@ export default function DialogSection({
     const isOpen = isControlled ? controlledIsOpen : internalIsOpen;
 
     // === Portal Setup ===
-    // We render into #dialog-portal-root to escape parent overflow/z-index issues
+    // We render into document.body to ensure we escape any stacking contexts (like transforms in builder)
     useEffect(() => {
-        const container = document.getElementById('dialog-portal-root');
-        setPortalContainer(container);
+        setPortalContainer(document.body);
     }, []);
 
     const toggleOpen = useCallback((value) => {
@@ -77,7 +76,7 @@ export default function DialogSection({
     // === Render Logic ===
     const dialogContent = (
         <div
-            className={`${styles.overlay} z-lg ${className}`}
+            className={`overlay z-system-modal-fullscreen ${className}`}
             style={{ display: isOpen ? 'flex' : 'none', pointerEvents: 'auto' }}
             onClick={(e) => e.target === e.currentTarget && toggleOpen(false)}
             data-section-id={sectionId}
@@ -93,7 +92,7 @@ export default function DialogSection({
                             aria-modal="true"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <button className={`${styles.closeButton} z-lg`} onClick={() => toggleOpen(false)} aria-label="Close dialog" data-dialog-close>
+                            <button className={`${styles.closeButton} z-content-2`} onClick={() => toggleOpen(false)} aria-label="Close dialog" data-dialog-close>
                                 <XMarkIcon style={{ width: 20, height: 20 }} />
                             </button>
 

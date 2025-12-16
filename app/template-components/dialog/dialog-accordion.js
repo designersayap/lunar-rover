@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/solid';
 import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
 import BuilderElement from "@/app/page-builder-components/utils/builder/builder-element";
-
 import { componentDefaults } from "../content/data";
 import styles from "./dialog-section.module.css";
 import DialogSection from "./dialog-section";
@@ -99,7 +98,7 @@ export default function DialogAccordion({
                                 />
                             </button>
                             <div className={`${styles.accordionContent} ${openIndex === i ? styles.accordionContentOpen : ''}`}>
-                                <div className={`${styles.accordionInner} z-lg`}>
+                                <div className={`${styles.accordionInner} z-content-2`}>
                                     <BuilderText
                                         tagName="p"
                                         className="body-regular"

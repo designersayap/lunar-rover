@@ -79,12 +79,11 @@ export function ActiveOverlayPortal({ isActive, overlayRect, elementId, actions 
         left: overlayRect.left,
         width: overlayRect.width,
         height: overlayRect.height,
-        pointerEvents: 'none',
-        zIndex: 101
+        pointerEvents: 'none'
     };
 
     return createPortal(
-        <div style={anchorStyle}>
+        <div style={anchorStyle} className="z-interaction">
             <div className={styles.activeOverlay} style={{ pointerEvents: 'auto' }}>
                 <div className={styles.overlayLabel}>
                     <span className={styles.overlayIdText}>#{elementId}</span>
