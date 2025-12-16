@@ -85,7 +85,7 @@ export default function DialogSection({
             <div className="container-grid" style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                 <div className="grid" style={{ width: '100%' }}>
                     {/* Centered Modal Column */}
-                    <div className="col-1 col-tablet-6 col-desktop-6 offset-desktop-3 offset-tablet-1">
+                    <div className="col-mobile-4 col-tablet-6 col-desktop-6 offset-desktop-3 offset-tablet-1">
                         <div
                             className={styles.dialog}
                             role="dialog"

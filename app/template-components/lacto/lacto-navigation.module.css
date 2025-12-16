@@ -84,10 +84,11 @@
     position: fixed;
     inset: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     pointer-events: none;
     /* Content will re-enable events */
     visibility: hidden;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
 }
 
 .dialogWrapper.open {
@@ -97,18 +98,13 @@
 /* Mobile Dialog */
 .mobileDialog {
     position: relative;
-    /* Not fixed anymore */
     pointer-events: auto;
-    /* Enable interaction */
     background-color: var(--background-neutral--default);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
     width: 100%;
-    /* Fill the column span */
-    /* max-width: 500px; - Let grid control width, or keep as constraint? User said 'use mobile grid', likely implies full grid width */
     max-height: 80vh;
-    margin: 0 auto;
-    /* Center in col if smaller? */
+    margin: 0;
 
     /* Layout */
     display: flex;
@@ -118,31 +114,17 @@
 
     /* Animation */
     opacity: 0;
-    transform: scale(0.9);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
 }
 
 .dialogWrapper.open .mobileDialog {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0);
 }
 
 /* Dialog Header */
 
-
-.closeButton {
-    position: absolute;
-    top: var(--padding-sm);
-    right: var(--padding-sm);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: var(--padding-xs);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--content-neutral--title);
-}
 
 /* Dialog Content */
 

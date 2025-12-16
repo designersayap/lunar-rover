@@ -5,7 +5,7 @@ import BuilderImage from '@/app/page-builder-components/utils/builder/builder-im
 import BuilderLink from '@/app/page-builder-components/utils/builder/builder-link';
 import { createUpdateHandler } from '../utils/component-helpers';
 import { componentDefaults } from '../content/data';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
+import { Bars3Icon } from '@heroicons/react/24/solid';
 
 export default function LactoNavigation({
     sectionId,
@@ -266,11 +266,7 @@ export default function LactoNavigation({
                     <div className={`${styles.dialogWrapper} z-system-modal-fullscreen ${isMobileMenuOpen ? styles.open : ''}`}>
                         <div className="container-grid">
                             <div className="grid">
-                                <div className={`${styles.mobileDialog} col-12 col-mobile-4 col-tablet-8 col-desktop-6 offset-desktop-3`}>
-                                    <button className={`${styles.closeButton} z-content-1`} onClick={() => setIsMobileMenuOpen(false)}>
-                                        <XMarkIcon style={{ width: 24, height: 24 }} />
-                                    </button>
-
+                                <div className={`${styles.mobileDialog} col-12 col-mobile-4 col-tablet-4 col-desktop-6 offset-desktop-3 offset-tablet-2`}>
                                     {menuItems.map((item) => (
                                         <div key={`mobile-${item.mobileSuffix}`} className={styles.mobileMenuLink}>
                                             <BuilderLink
