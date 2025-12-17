@@ -122,7 +122,7 @@ export default function TerraTestimony({
                             <BuilderElement
                                 key={index}
                                 tagName="div"
-                                className={`col-mobile-3 col-tablet-4 col-desktop-4 ${styles.itemWrapper}`}
+                                className={styles.itemWrapper}
                                 id={item.cardId}
                                 sectionId={sectionId}
                                 onIdChange={(val) => updateCardId(index, val)}

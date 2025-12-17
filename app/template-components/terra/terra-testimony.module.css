@@ -21,14 +21,37 @@
 .itemWrapper {
     display: flex;
     justify-content: center;
-    flex: 0 0 65vw;
     scroll-snap-align: start;
     padding: var(--padding-md);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1440px) {
     .itemWrapper {
-        flex: 0 0 32%;
+        flex: 0 0 25%;
+    }
+}
+
+@media (min-width: 1280px) and (max-width: 1339px) {
+    .itemWrapper {
+        flex: 0 0 30%;
+    }
+}
+
+@media (min-width: 1024px) and (max-width:1279px) {
+    .itemWrapper {
+        flex: 0 0 40%;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .itemWrapper {
+        flex: 0 0 320px;
+    }
+}
+
+@media (max-width: 767px) {
+    .itemWrapper {
+        flex: 0 0 320px;
     }
 }
 
