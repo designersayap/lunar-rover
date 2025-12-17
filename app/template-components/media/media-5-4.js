@@ -20,7 +20,8 @@ export default function Media5x4({
     imageHref,
     imageLinkType,
     imageTargetDialogId,
-    imageIsPortrait
+    imageIsPortrait,
+    imageMobileRatio
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -54,6 +55,8 @@ export default function Media5x4({
                             onTargetDialogIdChange={update('imageTargetDialogId')}
                             isPortrait={imageIsPortrait}
                             onIsPortraitChange={update('imageIsPortrait')}
+                            mobileRatio={imageMobileRatio}
+                            onMobileRatioChange={update('imageMobileRatio')}
                         />
                     </div>
                 </div>

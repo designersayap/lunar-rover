@@ -27,7 +27,10 @@ export default function BuilderControlsPopover({
     onLayoutChange,
     showPortraitToggle,
     isPortrait,
-    onIsPortraitChange
+    onIsPortraitChange,
+    showMobileRatio,
+    mobileRatio,
+    onMobileRatioChange
 }) {
     const [mounted, setMounted] = useState(false);
 
@@ -255,6 +258,33 @@ export default function BuilderControlsPopover({
                                         />
                                         <span className={styles.toggleSlider}></span>
                                     </label>
+                                </div>
+                            </>
+                        )}
+
+                        {/* Mobile Aspect Ratio Selector */}
+                        {showMobileRatio && (
+                            <>
+                                <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
+                                    <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Aspect Ratio</label>
+                                    <div className={styles.selectWrapper}>
+                                        <select
+                                            className={`${styles.formInput} ${styles.formSelect}`}
+                                            value={mobileRatio || ''}
+                                            onChange={(e) => onMobileRatioChange && onMobileRatioChange(e.target.value)}
+                                        >
+                                            <option value="">Default</option>
+                                            <option value="1-1">1:1 Square</option>
+                                            <option value="4-5">4:5 Vertical</option>
+                                            <option value="3-4">3:4 Vertical</option>
+                                            <option value="9-16">9:16 Vertical</option>
+                                            <option value="16-9">16:9 Landscape</option>
+                                            <option value="4-3">4:3 Landscape</option>
+                                            <option value="21-9">21:9 Ultrawide</option>
+                                            <option value="5-4">5:4 Landscape</option>
+                                        </select>
+                                        <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
+                                    </div>
                                 </div>
                             </>
                         )}

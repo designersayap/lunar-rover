@@ -33,7 +33,9 @@ export default function BuilderImage({
     onTargetDialogIdChange,
     disableSettings = false,
     isPortrait,
-    onIsPortraitChange
+    onIsPortraitChange,
+    mobileRatio,
+    onMobileRatioChange
 }) {
     // ID Sync Hook
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
@@ -220,6 +222,10 @@ export default function BuilderImage({
             .replace('imagePlaceholder-5-4', 'imagePlaceholder-4-5');
     }
 
+    if (mobileRatio) {
+        finalClassName += ` mobile-aspect-${mobileRatio}`;
+    }
+
     return (
         <>
             <Wrapper
@@ -256,6 +262,9 @@ export default function BuilderImage({
                     showPortraitToggle={!!onIsPortraitChange}
                     isPortrait={isPortrait}
                     onIsPortraitChange={onIsPortraitChange}
+                    showMobileRatio={!!onMobileRatioChange}
+                    mobileRatio={mobileRatio}
+                    onMobileRatioChange={onMobileRatioChange}
                 />
             )}
         </>

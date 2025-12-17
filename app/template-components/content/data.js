@@ -120,22 +120,26 @@ export const componentDefaults = {
     "media-16-9": {
         image: "",
         fullWidth: false,
-        imageIsPortrait: false
+        imageIsPortrait: false,
+        imageMobileRatio: ""
     },
     "media-5-4": {
         image: "",
         fullWidth: false,
-        imageIsPortrait: false
+        imageIsPortrait: false,
+        imageMobileRatio: ""
     },
     "media-4-3": {
         image: "",
         fullWidth: false,
-        imageIsPortrait: false
+        imageIsPortrait: false,
+        imageMobileRatio: ""
     },
     "media-21-9": {
         image: "",
         fullWidth: false,
-        imageIsPortrait: false
+        imageIsPortrait: false,
+        imageMobileRatio: ""
     },
     "lacto-navigation": {
         logo: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",

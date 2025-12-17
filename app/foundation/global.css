@@ -557,7 +557,7 @@ body {
 }
 
 .z-system-modal-floating {
-  z-index: 10002;
+  z-index: 1001;
 }
 
 .z-system-modal-fullscreen {
@@ -625,5 +625,42 @@ body {
 
   to {
     opacity: 1;
+  }
+}
+
+/* ============================================
+   MOBILE ASPECT RATIO UTILITIES
+   ============================================ */
+@media (max-width: 767px) {
+  .mobile-aspect-1-1 {
+    aspect-ratio: 1 / 1 !important;
+  }
+
+  .mobile-aspect-4-5 {
+    aspect-ratio: 4 / 5 !important;
+  }
+
+  .mobile-aspect-3-4 {
+    aspect-ratio: 3 / 4 !important;
+  }
+
+  .mobile-aspect-9-16 {
+    aspect-ratio: 9 / 16 !important;
+  }
+
+  .mobile-aspect-16-9 {
+    aspect-ratio: 16 / 9 !important;
+  }
+
+  .mobile-aspect-4-3 {
+    aspect-ratio: 4 / 3 !important;
+  }
+
+  .mobile-aspect-21-9 {
+    aspect-ratio: 21 / 9 !important;
+  }
+
+  .mobile-aspect-5-4 {
+    aspect-ratio: 5 / 4 !important;
   }
 }
