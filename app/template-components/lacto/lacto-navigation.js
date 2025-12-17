@@ -181,6 +181,7 @@ export default function LactoNavigation({
                                 targetDialogId={item.targetDialogId}
                                 onLinkTypeChange={item.handlers.onLinkTypeChange}
                                 onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
+                                tooltipIfTruncated={true}
                             />
                         </div>
                     </div>
@@ -225,6 +226,7 @@ export default function LactoNavigation({
                                 targetDialogId={item.targetDialogId}
                                 onLinkTypeChange={item.handlers.onLinkTypeChange}
                                 onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
+                                tooltipIfTruncated={true}
                             />
                         </div>
                     </div>
@@ -286,6 +288,7 @@ export default function LactoNavigation({
                                                 targetDialogId={item.targetDialogId}
                                                 onLinkTypeChange={item.handlers.onLinkTypeChange}
                                                 onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
+                                                tooltipIfTruncated={true}
                                             />
                                         </div>
                                     ))}

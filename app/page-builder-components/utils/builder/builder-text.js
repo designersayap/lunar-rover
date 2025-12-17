@@ -55,6 +55,7 @@ export default function BuilderText({
     const handleBlur = (e) => {
         setIsEditing(false);
         const newText = e.target.innerText;
+        setText(newText);
         if (newText !== content && onChange) {
             onChange(newText);
         }
@@ -97,8 +98,8 @@ export default function BuilderText({
             const el = elementRef.current;
             if (el) {
                 const isOverflowing =
-                    el.scrollWidth > el.clientWidth + 1 ||
-                    el.scrollHeight > el.clientHeight + 1;
+                    el.scrollWidth > el.clientWidth + 2 ||
+                    el.scrollHeight > el.clientHeight + 2;
                 setIsTruncated(isOverflowing);
             }
         };

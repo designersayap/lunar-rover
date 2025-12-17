@@ -61,6 +61,7 @@ export default function DialogDefault({
                         fullWidth={true}
                         onLabelChange={(val) => updateItem(i, 'label', val)}
                         onHrefChange={(val) => updateItem(i, 'url', val)}
+                        tooltipIfTruncated={true}
                         iconLeft={
                             <div className={styles.itemIcon}>
                                 <BuilderImage className="imagePlaceholder-1-1" src={item.image} />

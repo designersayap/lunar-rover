@@ -35,7 +35,8 @@ export default function BuilderLink({
     linkType,
     onLinkTypeChange,
     targetDialogId,
-    onTargetDialogIdChange
+    onTargetDialogIdChange,
+    tooltipIfTruncated
 }) {
     // ID Sync Hook
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "link", onIdChange });
@@ -200,7 +201,7 @@ export default function BuilderLink({
                     href={href || "#"}
                     className={className}
                     style={{ opacity: isVisible ? 1 : 0.5, display: displayStyle, alignItems: 'center', justifyContent: justify, width: '100%', height: '100%' }}
-                    data-tooltip={label}
+                    data-tooltip={!tooltipIfTruncated ? label : undefined}
                 >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: justify, gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
                         {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
@@ -214,6 +215,7 @@ export default function BuilderLink({
                                 noId={true}
                                 className={!isActive ? "truncate-1-line" : ""}
                                 style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap', display: 'block' }}
+                                tooltipIfTruncated={tooltipIfTruncated}
                             />
                         </div>
                         {iconRight && <span style={{ display: 'flex', flexShrink: 0 }}>{iconRight}</span>}
