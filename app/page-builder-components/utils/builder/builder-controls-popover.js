@@ -243,7 +243,8 @@ export default function BuilderControlsPopover({
                         {/* Portrait Mode Toggle */}
                         {showPortraitToggle && (
                             <>
-                                <div className={styles.propertyRow} style={{ marginTop: '8px' }}>
+                                <div style={{ borderTop: '1px solid var(--bdr)', margin: '8px 0', width: '100%' }} />
+                                <div className={styles.propertyRow} style={{ marginTop: '0' }}>
                                     <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Portrait</label>
                                     <label className={styles.toggleSwitch}>
                                         <input

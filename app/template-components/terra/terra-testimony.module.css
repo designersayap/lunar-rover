@@ -21,14 +21,14 @@
 .itemWrapper {
     display: flex;
     justify-content: center;
-    flex: 0 0 85vw;
+    flex: 0 0 65vw;
     scroll-snap-align: start;
     padding: var(--padding-md);
 }
 
 @media (min-width: 768px) {
     .itemWrapper {
-        flex: 0 0 28%;
+        flex: 0 0 32%;
     }
 }
 
