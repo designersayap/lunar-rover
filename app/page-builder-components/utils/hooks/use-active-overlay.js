@@ -83,7 +83,7 @@ export function ActiveOverlayPortal({ isActive, overlayRect, elementId, actions 
     };
 
     return createPortal(
-        <div style={anchorStyle} className="z-interaction">
+        <div style={anchorStyle} className="z-system-modal-floating" data-builder-ui>
             <div className={styles.activeOverlay} style={{ pointerEvents: 'auto' }}>
                 <div className={styles.overlayLabel}>
                     <span className={styles.overlayIdText}>#{elementId}</span>

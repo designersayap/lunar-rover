@@ -557,7 +557,7 @@ body {
 }
 
 .z-system-modal-floating {
-  z-index: 1001;
+  z-index: 10002;
 }
 
 .z-system-modal-fullscreen {

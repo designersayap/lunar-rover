@@ -169,11 +169,11 @@ export default function TerraTestimony({
                                         </div>
                                         <BuilderText
                                             tagName="div"
-                                            className={`h6 truncate-1-line`}
+                                            className={`h6 truncate-1-line ${styles.name}`}
                                             content={item.name}
                                             onChange={(val) => updateTestimony(index, "name", val)}
                                             sectionId={sectionId}
-                                            data-tooltip={item.name}
+                                            tooltipIfTruncated={true}
                                         />
                                         <BuilderText
                                             tagName="div"
@@ -181,7 +181,7 @@ export default function TerraTestimony({
                                             content={item.role}
                                             onChange={(val) => updateTestimony(index, "role", val)}
                                             sectionId={sectionId}
-                                            data-tooltip={item.role}
+                                            tooltipIfTruncated={true}
                                         />
                                         <BuilderText
                                             tagName="div"
@@ -189,7 +189,7 @@ export default function TerraTestimony({
                                             content={item.description}
                                             onChange={(val) => updateTestimony(index, "description", val)}
                                             sectionId={sectionId}
-                                            data-tooltip={item.description}
+                                            tooltipIfTruncated={true}
                                         />
                                     </div>
                                 </div>

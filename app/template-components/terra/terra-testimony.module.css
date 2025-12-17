@@ -120,11 +120,17 @@
     overflow: hidden;
 }
 
+/* Name Text */
+.name {
+    max-width: 100%;
+    text-align: left;
+}
+
 /* Role Text */
 .role {
     width: 100%;
     opacity: 0.6;
-    text-align: center;
+    text-align: left;
     color: var(--content-neutral--caption);
     margin-bottom: var(--gap-xs);
 }
@@ -133,8 +139,9 @@
 .description {
     width: 100%;
     opacity: 0.8;
-    text-align: center;
+    text-align: left;
     color: var(--content-neutral--body);
+    word-break: break-word;
 }
 
 /* Pagination Dots */

@@ -147,12 +147,11 @@ export default function BuilderLink({
             left: overlayRect.left,
             width: overlayRect.width,
             height: overlayRect.height,
-            pointerEvents: 'none',
-            zIndex: 101
+            pointerEvents: 'none'
         };
 
         return createPortal(
-            <div style={anchorStyle}>
+            <div style={anchorStyle} className="z-system-modal-floating">
                 <div
                     className={styles.activeOverlay}
                     style={{
@@ -214,7 +213,7 @@ export default function BuilderLink({
                                 multiline={false}
                                 noId={true}
                                 className={!isActive ? "truncate-1-line" : ""}
-                                style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap' }}
+                                style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap', display: 'block' }}
                             />
                         </div>
                         {iconRight && <span style={{ display: 'flex', flexShrink: 0 }}>{iconRight}</span>}

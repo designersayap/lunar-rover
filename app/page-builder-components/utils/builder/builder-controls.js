@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 export const BuilderSelectionContext = createContext({
     activeElementId: null,
@@ -12,6 +12,21 @@ export const BuilderSelectionContext = createContext({
 export function BuilderSelectionProvider({ children }) {
     const [activeElementId, setActiveElementId] = useState(null);
     const [activePopoverId, setActivePopoverId] = useState(null);
+
+    // Close overlay/popover when clicking outside
+    useEffect(() => {
+        const handleWindowClick = (e) => {
+            // Check if click is inside a builder UI element (popover/overlay)
+            if (e.target.closest('[data-builder-ui]')) return;
+
+            // Otherwise, close everything
+            setActiveElementId(null);
+            setActivePopoverId(null);
+        };
+
+        window.addEventListener('click', handleWindowClick);
+        return () => window.removeEventListener('click', handleWindowClick);
+    }, []);
 
     return (
         <BuilderSelectionContext.Provider value={{
