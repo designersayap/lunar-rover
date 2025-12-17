@@ -1,14 +1,25 @@
 # Component Guidelines
 
-All components in `app/template-components` must support inline editing, dynamic property updates, and the project's architectural standards.
+This document outlines the standards for creating new **Template Components** in the Lunar Page Builder. All components in `app/template-components` must support inline editing, dynamic property updates, and strict architectural standards.
+
+## 📁 Directory Structure
+
+When creating a new component, you will touch three files across the project:
+
+1.  **The Component File**: `app/template-components/[category]/[name].js`
+2.  **Sidebar Config**: `app/page-builder-components/content/component-library.js`
+3.  **Default Data**: `app/template-components/content/data.js`
+
+---
 
 ## 1. Core Builder Components
 
-Use these primitives instead of standard HTML tags to enable builder functionality (ID generation, overlay, editing).
+**Do not use standard HTML tags** for editable content. Use these primitives from `app/page-builder-components/` to enable the "Builder" features (hover effects, click-to-edit, etc).
 
 ### `BuilderButton`
 **Primary component for Buttons AND Links.**
-Supports variants, custom URLs, and opening Dialogs.
+Supports variants, custom URLs, and standard Dialog triggers.
+
 ```javascript
 import BuilderButton from "@/app/page-builder-components/utils/builder/builder-button";
 
@@ -38,7 +49,8 @@ import BuilderButton from "@/app/page-builder-components/utils/builder/builder-b
 ```
 
 ### `BuilderImage`
-For images with upload, replacement, and link support.
+For images with upload, replacement, and link capabilities.
+
 ```javascript
 import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
 
@@ -65,7 +77,8 @@ import BuilderImage from "@/app/page-builder-components/utils/builder/builder-im
 ```
 
 ### `BuilderText`
-For all editable text content.
+For all editable text content (Headings, Paragraphs, Spans).
+
 ```javascript
 import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
 
@@ -80,7 +93,8 @@ import BuilderText from "@/app/page-builder-components/utils/builder/builder-tex
 ```
 
 ### `BuilderLink`
-Simplified link component, primarily for lists or footer links where button styling isn't needed.
+A simplified link component, primarily for lists (like Footer links) where button styling isn't needed.
+
 ```javascript
 import BuilderLink from "@/app/page-builder-components/utils/builder/builder-link";
 
@@ -193,10 +207,10 @@ export default function MyDialog({
 
 ## 4. Sidebar Configuration (`component-library.js`)
 
-You must define child elements in `component-library.js` so they appear in the Sidebar Layer Tree.
+You must define child elements in `app/page-builder-components/content/component-library.js` so they appear in the Sidebar Layer Tree.
 
 ```javascript
-// component-library.js
+// app/page-builder-components/content/component-library.js
 "My Category": [
     {
         id: "my-component",
@@ -239,7 +253,7 @@ You must define child elements in `component-library.js` so they appear in the S
 **Single Source of Truth.** All default values must be defined in `app/template-components/content/data.js`.
 
 ```javascript
-// data.js
+// app/template-components/content/data.js
 export const componentDefaults = {
     "my-component": {
         title: "Default Title",
@@ -252,7 +266,9 @@ export const componentDefaults = {
 
 ---
 
-## 6. Page Builder Utilities (`page-builder-components/utils`)
+## 6. Page Builder Utilities
+
+Located in `app/page-builder-components/utils`.
 
 ### Component Manager (`utils/component-manager.js`)
 Core logic for manipulating the component list.
