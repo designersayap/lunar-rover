@@ -160,7 +160,7 @@ export default function LactoNavigation({
                 {menuItems.slice(0, 2).map((item, index) => (
                     <div
                         key={`desktop-${item.suffix}`}
-                        className={`col-desktop-2 ${index === 0 ? 'offset-desktop-1' : ''} ${styles.desktopNav} ${styles.menuItemWrapper}`}
+                        className={`col-desktop-2 ${index === 0 ? 'offset-desktop-1 offset-tablet-1' : ''} ${styles.desktopNav} ${styles.menuItemWrapper}`}
                     >
                         <div className={styles.truncatedText}>
                             <BuilderLink
@@ -188,7 +188,7 @@ export default function LactoNavigation({
                 ))}
 
                 {/* Logo: Col 2 Center */}
-                <div className={`col-desktop-2 ${styles.desktopNav} ${styles.logoWrapper}`}>
+                <div className={`col-desktop-2 col-tablet-2 ${styles.desktopNav} ${styles.logoWrapper}`}>
                     <BuilderImage
                         src={logo}
                         id={logoId}
