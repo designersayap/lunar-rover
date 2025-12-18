@@ -5,7 +5,10 @@
 
 /* Cards Wrapper - Horizontal Scroll Container */
 .cardsWrapper {
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    /* Default/Fallback */
+    grid-auto-columns: 25%;
     justify-content: flex-start;
     overflow-x: auto;
     overflow-y: hidden;
@@ -26,33 +29,47 @@
     min-width: 0;
 }
 
-@media (min-width: 1440px) {
+@media (min-width: 1280px) {
+    .cardsWrapper {
+        grid-auto-columns: 25%;
+    }
+
     .itemWrapper {
-        flex: 0 0 25%;
+        width: 100%;
+        min-width: 0;
     }
 }
 
-@media (min-width: 1280px) and (max-width: 1439px) {
-    .itemWrapper {
-        flex: 0 0 30%;
+@media (min-width: 1024px) and (max-width: 1280px) {
+    .cardsWrapper {
+        grid-auto-columns: 30%;
     }
-}
 
-@media (min-width: 1024px) and (max-width:1279px) {
     .itemWrapper {
-        flex: 0 0 40%;
+        width: 100%;
+        min-width: 0;
     }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
+    .cardsWrapper {
+        grid-auto-columns: 320px;
+    }
+
     .itemWrapper {
-        flex: 0 0 320px;
+        width: 100%;
+        min-width: 0;
     }
 }
 
 @media (max-width: 767px) {
+    .cardsWrapper {
+        grid-auto-columns: 320px;
+    }
+
     .itemWrapper {
-        flex: 0 0 320px;
+        width: 100%;
+        min-width: 0;
     }
 }
 

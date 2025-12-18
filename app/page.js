@@ -131,13 +131,45 @@ export default function TemplateGeneratorPage() {
     return () => clearTimeout(timeoutId);
   }, [selectedComponents, analyticsData]);
 
-  // Responsive sidebar
+  // Responsive sidebar & Persistence
+  const isInitialized = useRef(false);
+
   useEffect(() => {
-    const handleResize = () => setIsSidebarVisible(window.innerWidth >= 1024);
-    handleResize();
+    // 1. Load preference from localStorage
+    const savedState = localStorage.getItem("lunar_sidebar_visible");
+
+    if (savedState !== null) {
+      setIsSidebarVisible(savedState === "true");
+    } else {
+      // Default behavior if no preference
+      setIsSidebarVisible(window.innerWidth >= 1024);
+    }
+
+    isInitialized.current = true;
+
+    // 2. Smarter Resize Handler
+    const handleResize = () => {
+      // Only auto-hide if we drop to mobile/tablet (< 1024px)
+      // On desktop, we respect the user's manual toggle (persisted state)
+      if (window.innerWidth < 1024) {
+        setIsSidebarVisible(false);
+      } else {
+        // Optional: If you want to auto-show on desktop return if it was never set manually? 
+        // For now, let's trust the persisted state on desktop resize events too, 
+        // essentially doing nothing unless we crossed the boundary to mobile.
+      }
+    };
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Save state to localStorage
+  useEffect(() => {
+    if (isInitialized.current) {
+      localStorage.setItem("lunar_sidebar_visible", isSidebarVisible);
+    }
+  }, [isSidebarVisible]);
 
   // ==================== EVENT HANDLERS ====================
 
