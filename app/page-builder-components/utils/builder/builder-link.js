@@ -36,7 +36,8 @@ export default function BuilderLink({
     onLinkTypeChange,
     targetDialogId,
     onTargetDialogIdChange,
-    tooltipIfTruncated
+    tooltipIfTruncated,
+    showLinkType = true
 }) {
     // ID Sync Hook
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "link", onIdChange });
@@ -152,7 +153,7 @@ export default function BuilderLink({
         };
 
         return createPortal(
-            <div style={anchorStyle} className="z-system-modal-floating">
+            <div style={anchorStyle} className="z-system-builder-overlay">
                 <div
                     className={styles.activeOverlay}
                     style={{
@@ -232,7 +233,7 @@ export default function BuilderLink({
                     url={href}
                     onUrlChange={onHrefChange}
                     showVariant={false}
-                    showLinkType={true}
+                    showLinkType={showLinkType}
                     linkType={linkType}
                     onLinkTypeChange={onLinkTypeChange}
                     targetDialogId={targetDialogId}

@@ -119,7 +119,7 @@ export default function BuilderControlsPopover({
     }
 
     const content = (
-        <div className={`${styles.popoverOverlay} z-system-modal-floating`} style={{ pointerEvents: "none" }} data-builder-ui>
+        <div className={`${styles.popoverOverlay} z-system-builder-overlay`} style={{ pointerEvents: "none" }} data-builder-ui>
             <div
                 ref={containerRef}
                 className={styles.popoverContainer}

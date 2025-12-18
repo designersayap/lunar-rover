@@ -62,6 +62,7 @@ export default function DialogDefault({
                         onLabelChange={(val) => updateItem(i, 'label', val)}
                         onHrefChange={(val) => updateItem(i, 'url', val)}
                         tooltipIfTruncated={true}
+                        showLinkType={false}
                         iconLeft={
                             <div className={styles.itemIcon}>
                                 <BuilderImage className="imagePlaceholder-1-1" src={item.image} />

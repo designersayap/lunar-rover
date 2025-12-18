@@ -23,6 +23,7 @@
     justify-content: center;
     scroll-snap-align: start;
     padding: var(--padding-md);
+    min-width: 0;
 }
 
 @media (min-width: 1440px) {
@@ -31,7 +32,7 @@
     }
 }
 
-@media (min-width: 1280px) and (max-width: 1339px) {
+@media (min-width: 1280px) and (max-width: 1439px) {
     .itemWrapper {
         flex: 0 0 30%;
     }
@@ -63,6 +64,7 @@
     background: var(--background-neutral--default);
     border-radius: var(--border-radius-lg);
     overflow: hidden;
+    transform: translateZ(0);
 }
 
 /* Background Image */
@@ -84,6 +86,7 @@
     background: var(--background-neutral--default);
     border-radius: var(--border-radius-md);
     backdrop-filter: blur(5.5px);
+    -webkit-backdrop-filter: blur(5.5px);
     padding: var(--padding-lg) var(--padding-sm) var(--padding-sm) var(--padding-sm);
     /* Desktop default */
     display: flex;
@@ -92,17 +95,11 @@
     pointer-events: auto;
 }
 
-/* tablet padding-top */
-@media (min-width: 481px) and (max-width: 767px) {
-    .terraTestimoniDescriptionCard {
-        padding-top: var(--padding-lg);
-    }
-}
 
 /* mobile padding-top */
-@media (max-width: 480px) {
+@media (max-width: 767px) {
     .terraTestimoniDescriptionCard {
-        padding-top: var(--padding-2xl);
+        padding-top: 40px;
     }
 }
 
