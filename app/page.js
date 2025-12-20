@@ -9,6 +9,7 @@ import TopBar from "@/app/page-builder-components/topbar";
 import Canvas from "@/app/page-builder-components/canvas";
 import ThemePickerPopover from "@/app/page-builder-components/theme-picker-popover";
 import ExportPopover from "@/app/page-builder-components/export-popover";
+import StagingPopover from "@/app/page-builder-components/staging-popover";
 import ComponentsPopover from "@/app/page-builder-components/components-popover";
 
 // Helper Utilities
@@ -210,6 +211,10 @@ export default function TemplateGeneratorPage() {
     togglePopover('export', position);
   }, [togglePopover]);
 
+  const handleStaging = useCallback((position) => {
+    togglePopover('staging', position);
+  }, [togglePopover]);
+
   const handleDirectExport = useCallback(async () => {
     try {
       showToast("Preparing export...", "info");
@@ -269,6 +274,8 @@ export default function TemplateGeneratorPage() {
           isExportPopoverOpen={activePopoverId === 'export'}
           selectedThemeId={selectedThemeId}
           themes={themes}
+          handleStaging={handleStaging}
+          isStagingPopoverOpen={activePopoverId === 'staging'}
         />
 
         {/* Main Content */}
@@ -337,6 +344,14 @@ export default function TemplateGeneratorPage() {
             position={popoverPositions.export}
             className="z-system-modal-floating"
             activeThemePath={themes.find(t => t.id === selectedThemeId)?.path || "/themes/theme.css"}
+          />
+        )}
+
+        {activePopoverId === 'staging' && (
+          <StagingPopover
+            selectedComponents={selectedComponents}
+            onClose={closePopover}
+            position={popoverPositions.staging}
           />
         )}
 

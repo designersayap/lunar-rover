@@ -3,9 +3,9 @@ import {
     ChevronDoubleRightIcon,
     ChevronDoubleLeftIcon,
     SwatchIcon,
-    CodeBracketIcon,
     RocketLaunchIcon,
     ChevronDownIcon,
+    DocumentPlusIcon,
 } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
 /**
@@ -20,7 +20,9 @@ export default function TopBar({
     isThemePickerOpen,
     isExportPopoverOpen,
     selectedThemeId,
-    themes = []
+    themes = [],
+    handleStaging,
+    isStagingPopoverOpen
 }) {
     const selectedTheme = themes.find(t => t.id === selectedThemeId);
     const selectedThemeName = selectedTheme ? selectedTheme.name : "Themes";
@@ -49,10 +51,17 @@ export default function TopBar({
                     )}
                 </button>
                 <button
-                    className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}
-                    data-tooltip="Import JSON"
+                    className={`${styles.topBarButton} ${styles.topBarButtonBordered} ${isStagingPopoverOpen ? styles.topBarButtonActive : ''}`}
+                    data-tooltip="Stage Preview"
+                    onClick={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        handleStaging({
+                            top: rect.bottom + 4,
+                            left: rect.left + rect.width / 2
+                        });
+                    }}
                 >
-                    <CodeBracketIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />
+                    <DocumentPlusIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />
                 </button>
                 <button
                     className={`${styles.generatorButton} ${styles.topBarButtonWide} ${isThemePickerOpen ? styles.topBarButtonActive : ''}`}
