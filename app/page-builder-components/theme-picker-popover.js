@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "../page.module.css";
-import BasePopover from "./utils/base-popover";
+import BasePopover from "./base-popover";
 
 export default function ThemePickerPopover({
     isOpen,

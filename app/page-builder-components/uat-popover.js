@@ -1,77 +1,90 @@
-import { useState, useEffect } from 'react';
-import { XMarkIcon, FolderIcon, DocumentPlusIcon } from '@heroicons/react/24/outline';
-import styles from '../page.module.css';
-import { handleStagePreview } from './utils/stage-preview';
-import BasePopover from './base-popover';
+import { useState, useEffect } from "react";
+import { FolderIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import styles from "../page.module.css";
+import BasePopover from "./base-popover";
+import { handleExportNextjs } from "./utils/export-nextjs";
 
-export default function StagingPopover({
-    position,
+export default function UATPopover({
+    isOpen,
     onClose,
-    selectedComponents
+    selectedComponents,
+    position,
+    className = "",
+    activeThemePath
 }) {
+    const [isExporting, setIsExporting] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
     const [folderName, setFolderName] = useState("");
     const [existingFolders, setExistingFolders] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
-        // Fetch existing staging folders
-        const fetchFolders = async () => {
+        if (isOpen) {
             setIsLoading(true);
-            try {
-                const res = await fetch('/api/staging-preview');
-                if (res.ok) {
-                    const data = await res.json();
-                    setExistingFolders(data.folders || []);
-                }
-            } catch (e) {
-                console.error("Failed to fetch folders", e);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+            // Fetch existing folders when popover opens
+            fetch('/api/save-preview')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.folders) {
+                        setExistingFolders(data.folders);
+                    }
+                })
+                .catch(err => console.error("Failed to fetch folders", err))
+                .finally(() => setIsLoading(false));
+        }
+    }, [isOpen]);
 
-        fetchFolders();
-    }, []);
-
-    const handleSave = async () => {
+    const onSaveClick = async () => {
         if (!folderName.trim()) {
-            alert("Please enter a folder name");
+            alert("Please enter a folder name.");
             return;
         }
 
         setIsSaving(true);
-        const success = await handleStagePreview(selectedComponents, folderName.trim());
-        setIsSaving(false);
-
-        if (success) {
+        try {
+            // Save: No Download + Save to specified folder
+            await handleExportNextjs(selectedComponents, activeThemePath, {
+                download: false,
+                savePreview: true,
+                previewFolder: folderName.trim()
+            });
+            // Update list and close
             onClose();
+        } catch (error) {
+            console.error("Save failed", error);
+            alert("Save failed. Check console for details.");
+        } finally {
+            setIsSaving(false);
         }
     };
 
-    if (!position) return null;
-
     return (
         <BasePopover
-            isOpen={true}
+            isOpen={isOpen}
             onClose={onClose}
             position={position}
+            className={`${styles.exportPopover} ${className}`}
         >
+            {/* Content */}
             <div className={styles.popoverContent}>
                 <div className={styles.exportInputWrapper} style={{ marginBottom: '16px' }}>
-                    <span className="caption-bold">New Staging Page</span>
+                    <span className="caption-bold">New UAT Project</span>
                     <div style={{ display: 'flex', gap: '8px' }}>
                         <input
                             type="text"
+                            value={folderName}
+                            onChange={(e) => {
+                                // Sanitize input: allow only alphanumeric, dash, and underscore
+                                const val = e.target.value.replace(/[^a-zA-Z0-9-_]/g, '');
+                                setFolderName(val);
+                            }}
                             className={styles.formInput}
                             placeholder="folder-name"
-                            value={folderName}
-                            onChange={(e) => setFolderName(e.target.value)}
                             style={{ flex: 1 }}
                         />
                     </div>
                     <p className={styles.exportHelperText} style={{ color: 'var(--content-neutral--caption)' }}>
-                        Creates <code>app/staging/{folderName || '...'}</code>
+                        Saves to <code>/public/testing-page/{folderName || '...'}</code>
                     </p>
                 </div>
 
@@ -90,7 +103,7 @@ export default function StagingPopover({
                             </div>
                         ) : existingFolders.length === 0 ? (
                             <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--grey-200)' }}>
-                                No existing staging pages found.
+                                No existing folders found.
                             </div>
                         ) : (
                             existingFolders.map(folder => (
@@ -117,14 +130,15 @@ export default function StagingPopover({
                 </div>
             </div>
 
+            {/* Footer */}
             <div className={styles.popoverFooter}>
                 <button
                     className={styles.generatorButton}
                     style={{ width: '100%' }}
-                    onClick={handleSave}
-                    disabled={isSaving}
+                    onClick={onSaveClick}
+                    disabled={isSaving || isExporting}
                 >
-                    {isSaving ? "Staging..." : "Create Staging"}
+                    {isSaving ? "Saving..." : "Create UAT Folder"}
                 </button>
             </div>
         </BasePopover>

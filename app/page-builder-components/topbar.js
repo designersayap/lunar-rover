@@ -51,11 +51,11 @@ export default function TopBar({
                     )}
                 </button>
                 <button
-                    className={`${styles.topBarButton} ${styles.topBarButtonBordered} ${isStagingPopoverOpen ? styles.topBarButtonActive : ''}`}
-                    data-tooltip="Stage Preview"
+                    className={`${styles.topBarButton} ${styles.topBarButtonBordered} ${isExportPopoverOpen ? styles.topBarButtonActive : ''}`}
+                    data-tooltip="Create UAT"
                     onClick={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
-                        handleStaging({
+                        handleExport({
                             top: rect.bottom + 4,
                             left: rect.left + rect.width / 2
                         });
@@ -88,16 +88,16 @@ export default function TopBar({
                         Export
                     </button>
                     <button
-                        className={`${styles.generatorButton} ${styles.splitButtonDropdown} ${isExportPopoverOpen ? styles.splitButtonActive : ''}`}
+                        className={`${styles.generatorButton} ${styles.splitButtonDropdown} ${isStagingPopoverOpen ? styles.splitButtonActive : ''}`}
                         onClick={(e) => {
                             e.stopPropagation();
                             const rect = e.currentTarget.getBoundingClientRect();
-                            handleExport({
+                            handleStaging({
                                 top: rect.bottom + 4,
                                 left: rect.right
                             });
                         }}
-                        data-tooltip="Save Options"
+                        data-tooltip="Stage Preview"
                     >
                         <ChevronDownIcon style={{ width: "12px", height: "12px", strokeWidth: 2 }} />
                     </button>

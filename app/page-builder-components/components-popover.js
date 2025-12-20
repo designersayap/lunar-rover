@@ -3,8 +3,8 @@ import {
     MagnifyingGlassIcon
 } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
-import { searchComponents } from "./utils/search";
-import BasePopover from "./utils/base-popover";
+import { searchComponents } from "./utils/component-manager";
+import BasePopover from "./base-popover";
 
 export default function ComponentsPopover({
     componentLibrary,

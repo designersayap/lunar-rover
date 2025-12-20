@@ -8,7 +8,7 @@ import Sidebar from "@/app/page-builder-components/sidebar";
 import TopBar from "@/app/page-builder-components/topbar";
 import Canvas from "@/app/page-builder-components/canvas";
 import ThemePickerPopover from "@/app/page-builder-components/theme-picker-popover";
-import ExportPopover from "@/app/page-builder-components/export-popover";
+import UATPopover from "@/app/page-builder-components/uat-popover";
 import StagingPopover from "@/app/page-builder-components/staging-popover";
 import ComponentsPopover from "@/app/page-builder-components/components-popover";
 
@@ -337,7 +337,7 @@ export default function TemplateGeneratorPage() {
         )}
 
         {activePopoverId === 'export' && (
-          <ExportPopover
+          <UATPopover
             isOpen
             onClose={closePopover}
             selectedComponents={selectedComponents}
