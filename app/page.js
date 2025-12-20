@@ -30,6 +30,7 @@ import {
   reorderComponents
 } from "@/app/page-builder-components/utils/component-manager";
 import { useToast, useDragDrop } from "@/app/page-builder-components/utils/hooks";
+import { handleExportNextjs } from "@/app/page-builder-components/utils/export-nextjs";
 
 /**
  * Template Generator Page
@@ -209,6 +210,22 @@ export default function TemplateGeneratorPage() {
     togglePopover('export', position);
   }, [togglePopover]);
 
+  const handleDirectExport = useCallback(async () => {
+    try {
+      showToast("Preparing export...", "info");
+      const activeThemePath = themes.find(t => t.id === selectedThemeId)?.path || "/themes/theme.css";
+
+      await handleExportNextjs(selectedComponents, activeThemePath, {
+        download: true,
+        savePreview: true
+      });
+      showToast("Export completed successfully");
+    } catch (error) {
+      console.error("Export failed", error);
+      showToast("Export failed", "error");
+    }
+  }, [selectedComponents, themes, selectedThemeId, showToast]);
+
 
 
   // Add Component Popover
@@ -246,6 +263,7 @@ export default function TemplateGeneratorPage() {
           isSidebarVisible={isSidebarVisible}
           setIsSidebarVisible={setIsSidebarVisible}
           handleExport={handleExport}
+          handleDirectExport={handleDirectExport}
           onThemeClick={(pos) => togglePopover('theme', pos)}
           isThemePickerOpen={activePopoverId === 'theme'}
           isExportPopoverOpen={activePopoverId === 'export'}

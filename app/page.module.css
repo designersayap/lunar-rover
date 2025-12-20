@@ -200,6 +200,64 @@
     cursor: not-allowed;
 }
 
+/* === SPLIT EXPORT BUTTON === */
+.splitButtonContainer {
+    display: flex;
+    align-items: center;
+    background: var(--bg3);
+    border-radius: 6px;
+    box-shadow: var(--shd-btn);
+    transition: background 0.2s;
+    height: var(--h-btn);
+    margin-right: -4px;
+    /* Adjust spacing if needed */
+}
+
+.splitButtonContainer:hover {
+    background: var(--bg4);
+}
+
+.splitButtonActive {
+    background: var(--bg4) !important;
+    box-shadow: var(--shd-active) !important;
+    transform: translateY(1px) !important;
+    /* Force active state to match theme button */
+}
+
+.splitButtonMain {
+    border-radius: 6px 0 0 6px;
+    box-shadow: none;
+    margin: 0;
+    background: transparent;
+    padding-right: 8px;
+    /* Reduce padding between text and divider */
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.splitButtonMain:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.splitButtonDropdown {
+    border-radius: 0 6px 6px 0;
+    box-shadow: none;
+    margin: 0;
+    background: transparent;
+    padding: 0 8px;
+    width: 28px;
+    /* Narrower than standard button */
+}
+
+.splitButtonDropdown:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.splitButtonDropdown:active {
+    background: var(--bg4) !important;
+    box-shadow: var(--shd-active) !important;
+    transform: translateY(1px) !important;
+}
+
 /* === LAYOUT === */
 .mainContent {
     display: flex;

@@ -15,6 +15,7 @@ export default function TopBar({
     isSidebarVisible,
     setIsSidebarVisible,
     handleExport,
+    handleDirectExport,
     onThemeClick,
     isThemePickerOpen,
     isExportPopoverOpen,
@@ -68,19 +69,30 @@ export default function TopBar({
                     <span className={`${styles.topBarButtonText} truncate-1-line`}>{selectedThemeName}</span>
                     <ChevronDownIcon style={{ width: "12px", height: "12px", marginLeft: "auto", strokeWidth: 2 }} />
                 </button>
-                <button
-                    className={`${styles.generatorButton} ${styles.topBarButtonExport} ${isExportPopoverOpen ? styles.topBarButtonActive : ''}`}
-                    onClick={(e) => {
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        handleExport({
-                            top: rect.bottom + 4,
-                            left: rect.left + rect.width / 2
-                        });
-                    }}
-                >
-                    <RocketLaunchIcon style={{ width: "16px", height: "16px" }} />
-                    Export
-                </button>
+                <div className={styles.splitButtonContainer}>
+                    <button
+                        className={`${styles.generatorButton} ${styles.splitButtonMain}`}
+                        onClick={handleDirectExport}
+                        data-tooltip="Quick Export (ZIP)"
+                    >
+                        <RocketLaunchIcon style={{ width: "16px", height: "16px" }} />
+                        Export
+                    </button>
+                    <button
+                        className={`${styles.generatorButton} ${styles.splitButtonDropdown} ${isExportPopoverOpen ? styles.splitButtonActive : ''}`}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            handleExport({
+                                top: rect.bottom + 4,
+                                left: rect.right
+                            });
+                        }}
+                        data-tooltip="Save Options"
+                    >
+                        <ChevronDownIcon style={{ width: "12px", height: "12px", strokeWidth: 2 }} />
+                    </button>
+                </div>
             </div>
         </div>
     );

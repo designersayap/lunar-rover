@@ -83,7 +83,7 @@ export default function ExportPopover({
             <div className={styles.popoverContent}>
                 <div style={{ padding: '16px', color: '#666' }}>
                     <p style={{ marginBottom: '16px', fontSize: '14px', textAlign: 'center' }}>
-                        Export your selected components.
+                        Save a preview of your page to a public folder.
                     </p>
 
                     <div style={{ marginBottom: '16px' }}>
@@ -137,11 +137,11 @@ export default function ExportPopover({
             </div>
 
             {/* Footer */}
-            <div className={`${styles.popoverFooter} ${styles.themePickerFooter}`} style={{ justifyContent: 'space-between', padding: '12px 16px', gap: '8px' }}>
+            <div className={`${styles.popoverFooter} ${styles.themePickerFooter}`} style={{ padding: '12px 16px' }}>
                 <button
                     className={styles.generatorAction}
                     style={{
-                        flex: 1,
+                        width: '100%',
                         background: '#f3f4f6',
                         color: '#374151',
                         border: '1px solid #e5e7eb',
@@ -154,15 +154,7 @@ export default function ExportPopover({
                     onClick={onSaveClick}
                     disabled={isSaving || isExporting}
                 >
-                    {isSaving ? "Saving..." : "Save Only"}
-                </button>
-                <button
-                    className={styles.generatorButton}
-                    style={{ flex: 1 }}
-                    onClick={onExportClick}
-                    disabled={isSaving || isExporting}
-                >
-                    {isExporting ? "Exporting..." : "Export ZIP"}
+                    {isSaving ? "Saving..." : "Save to Folder"}
                 </button>
             </div>
         </BasePopover>
