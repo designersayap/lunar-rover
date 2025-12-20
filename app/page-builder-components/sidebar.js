@@ -47,9 +47,6 @@ export default function Sidebar({
     };
 
     // ID Sanitization: Enforce URL-friendly format (lowercase, hyphens)
-    // - Replaces spaces with dashes
-    // - Removes duplicate dashes
-    // - Allows trailing dashes so users can type naturally before blur
     const sanitizeId = (value) => value.toLowerCase().trimStart().replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '');
 
     // ID Finalization: Cleanup when user finishes typing (removes trailing dashes)
@@ -64,8 +61,7 @@ export default function Sidebar({
         return null;
     };
 
-    // Search Filtering Logic
-    // Matches against: Component Name, Section ID, or any Child Element (Button/Image/Link) properties
+    // Search Filtering Logic: Matches against Component Name, Section ID, or Child properties
     const filteredComponents = useMemo(() => {
         if (!layerSearch.trim()) return selectedComponents;
         const searchLower = layerSearch.toLowerCase();

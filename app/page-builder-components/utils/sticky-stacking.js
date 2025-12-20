@@ -3,17 +3,13 @@ import { useState, useEffect, useRef } from 'react';
 import { isComponentSticky } from "./component-manager";
 
 /**
- * Hook to manage stacking of sticky elements
- * 
- * @param {Array} components - List of component items from the canvas
- * @returns {Object} map of uniqueId -> { top: number, zIndex: number }
+ * Hook to manage stacking of sticky elements.
  */
 export function useStickyStacking(components) {
     const [stickyStyles, setStickyStyles] = useState({});
 
     // We need to keep references to the DOM elements to measure height
     // We'll use a Map keyed by uniqueId
-    // We we'll use a Map keyed by uniqueId
     const elementRefs = useRef(new Map());
     const lastStickyStylesRef = useRef("");
 
@@ -31,9 +27,7 @@ export function useStickyStacking(components) {
         const newStyles = {};
         let currentTop = 0;
 
-        // Use a ResizeObserver to detect height changes? 
-        // For simplicity first, we calculate on effect. 
-        // A generic ResizeObserver loop would be better for distinct components.
+        // Use a ResizeObserver to detect height changes (simplified logic for now)
 
         const updateOffsets = () => {
             let offset = 0;
@@ -52,17 +46,13 @@ export function useStickyStacking(components) {
                 nextStyles[comp.uniqueId] = {
                     position: 'sticky',
                     top: offset,
-                    zIndex: 100 - index // Higher items get higher z-index (or lower? usually top item covers bottom item?)
-                    // Actually navigation should usually be on TOP of a banner.
-                    // The first item in the list is usually the 'top-most' content.
-                    // So z-index should descend.
+                    zIndex: 100 - index // Descending z-index so top items are above bottom items
                 };
 
                 offset += height;
             });
 
-            // 3. Check if styles actually changed to prevent infinite loops
-            // Simple JSON stringify comparison is sufficient for this flat structure
+            // Check if styles actually changed to prevent infinite loops
             const nextStylesStr = JSON.stringify(nextStyles);
             if (nextStylesStr !== lastStickyStylesRef.current) {
                 lastStickyStylesRef.current = nextStylesStr;

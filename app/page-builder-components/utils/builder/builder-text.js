@@ -2,16 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { useIdSync } from "../hooks/use-id-sync";
 
 /**
- * BuilderText Component
- * A contentEditable component that updates parent state on blur.
- * 
- * @param {string} content - The initial text content
- * @param {string} tagName - The HTML tag to render (p, h1, h2, etc.)
- * @param {string} className - CSS classes
- * @param {object} style - Inline styles
- * @param {function} onChange - Callback when text changes (value) => void
+ * BuilderText: A contentEditable component that updates parent state on blur.
  */
 export default function BuilderText({
     content = "",
@@ -24,18 +18,27 @@ export default function BuilderText({
     sectionId,
     suffix,
     noId = false,
+    id,
+    onIdChange,
     ...props
 }) {
     const [text, setText] = useState(content);
     const elementRef = useRef(null);
 
-    // Generate ID: {section_id}-{class_name}
-    // We take the first class from className as the "class_name" identifier
-    // If suffix is provided, we append it: {section_id}-{class_name}-{suffix}
+    // Generate ID using standardized hook
     const firstClass = className.split(" ")[0] || tagName;
-    const elementId = (sectionId && !noId) ? `${sectionId}-${firstClass}${suffix ? `-${suffix}` : ""}` : undefined;
+    const defaultSuffix = suffix || firstClass;
 
-    // Sync internal state if prop changes (e.g. undo/redo or initial load)
+    const { elementId: generatedId } = useIdSync({
+        id,
+        sectionId,
+        suffix: defaultSuffix,
+        onIdChange
+    });
+
+    const elementId = noId ? undefined : generatedId;
+
+    // Sync internal state if prop changes (undo/redo or initial load)
     useEffect(() => {
         if (elementRef.current && elementRef.current.innerText !== content) {
             // eslint-disable-next-line react-hooks/set-state-in-effect

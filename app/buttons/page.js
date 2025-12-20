@@ -1,9 +1,4 @@
 import { ArrowLongRightIcon, SparklesIcon } from "@heroicons/react/20/solid";
-
-/**
- * Buttons Showcase Page
- * Displays all button variants with their class names
- */
 export default function ButtonsPage() {
     const buttonVariants = [
         { name: "Primary", classes: "btn btn-primary" },

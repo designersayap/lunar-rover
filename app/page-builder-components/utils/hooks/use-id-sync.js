@@ -3,25 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Custom hook for ID synchronization when sectionId changes
- * Handles:
- * - Generating IDs from sectionId + suffix
- * - Updating IDs when parent sectionId changes
- * - Managing temporary ID state for editing
- * 
- * @param {Object} options - Hook options
- * @param {string} options.id - Custom ID (overrides generated)
- * @param {string} options.sectionId - Parent section ID
- * @param {string} options.suffix - ID suffix (e.g., 'button', 'image')
- * @param {Function} options.onIdChange - Callback when ID changes
- * @returns {Object} Hook state and helpers
+ * useIdSync: Synchronizes element IDs with parent section changes and handles unique ID generation.
  */
 export function useIdSync({ id, sectionId, suffix, onIdChange }) {
-    // Normalize sectionId by removing trailing dashes to prevent double dashes
+    // Normalize sectionId, generate fallback, and normalize stored ID
     const normalizedSectionId = sectionId?.replace(/-+$/, '') || '';
     const prefix = normalizedSectionId ? `${normalizedSectionId}-` : "";
     const generatedId = normalizedSectionId ? (suffix ? `${normalizedSectionId}-${suffix}` : `${normalizedSectionId}-element`) : undefined;
-    // Also normalize stored id prop to collapse consecutive dashes
     const normalizedId = id?.replace(/-+/g, '-') || '';
     const elementId = normalizedId || generatedId;
 

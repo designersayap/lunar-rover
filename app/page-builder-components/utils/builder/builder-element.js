@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useContext } from "react";
+import { useIdSync } from "../hooks/use-id-sync";
 import styles from "../../../page.module.css";
 import { useActiveOverlay, ActiveOverlayPortal } from "../hooks/use-active-overlay";
 
@@ -10,16 +10,18 @@ export default function BuilderElement({
     style = {},
     children,
     id,
-    elementProps,
+    elementProps, // serving as suffix
     sectionId,
     onIdChange,
     isVisible = true
 }) {
-    // Normalize user ID logic (keep existing normalization logic)
-    const normalizedSectionId = sectionId?.replace(/-+$/, '') || '';
-    const generatedId = normalizedSectionId && elementProps ? `${normalizedSectionId}-${elementProps}` : undefined;
-    const normalizedId = id?.replace(/-+/g, '-') || '';
-    const elementId = normalizedId || generatedId;
+    // Use standardized ID hook
+    const { elementId } = useIdSync({
+        id,
+        sectionId,
+        suffix: elementProps || "element",
+        onIdChange
+    });
 
     // Use hook for active state and overlay
     const {

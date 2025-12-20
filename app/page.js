@@ -14,8 +14,7 @@ import ComponentsPopover from "@/app/page-builder-components/components-popover"
 // Helper Utilities
 import { componentLibrary } from "@/app/page-builder-components/content/component-library";
 import { getThemes } from "@/app/page-builder-components/utils/get-themes";
-import { handleExportTemplate } from "@/app/page-builder-components/utils/export-template";
-import { handleExportCsv } from "@/app/page-builder-components/utils/export-csv";
+
 import { BuilderSelectionContext, calculatePopoverPosition } from "@/app/page-builder-components/utils/builder/builder-controls";
 import {
   loadTemplate,
@@ -210,14 +209,7 @@ export default function TemplateGeneratorPage() {
     togglePopover('export', position);
   }, [togglePopover]);
 
-  const handleExportConfirm = useCallback((csvLink) => {
-    handleExportTemplate(selectedComponents, csvLink, analyticsData);
-    closePopover();
-  }, [selectedComponents, analyticsData, closePopover]);
 
-  const onDownloadCsv = useCallback(() => {
-    handleExportCsv(selectedComponents);
-  }, [selectedComponents]);
 
   // Add Component Popover
   const handleAddClick = useCallback((rect) => {
@@ -323,10 +315,10 @@ export default function TemplateGeneratorPage() {
           <ExportPopover
             isOpen
             onClose={closePopover}
-            onExport={handleExportConfirm}
-            onDownloadCsv={onDownloadCsv}
+            selectedComponents={selectedComponents}
             position={popoverPositions.export}
             className="z-system-modal-floating"
+            activeThemePath={themes.find(t => t.id === selectedThemeId)?.path || "/themes/theme.css"}
           />
         )}
 

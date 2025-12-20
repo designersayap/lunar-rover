@@ -11,8 +11,7 @@ import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 
 /**
- * BuilderLink Component
- * Renders a link with consistent styling, ID generation, and editing capabilities.
+ * BuilderLink: Renders a link with consistent styling, ID generation, and editing capabilities.
  */
 export default function BuilderLink({
     label = "Link",
@@ -59,7 +58,6 @@ export default function BuilderLink({
     const displayStyle = fullWidth ? 'flex' : 'inline-flex';
     const widthStyle = fullWidth ? '100%' : undefined;
 
-    // Update overlay position when active
     // Update overlay position when active
     useEffect(() => {
         if (isActive && wrapperRef.current) {
@@ -197,31 +195,48 @@ export default function BuilderLink({
             >
                 {isActive && <div className={styles.activeBorderOutline} />}
 
-                <Link
-                    id={elementId}
-                    href={href || "#"}
-                    className={className}
-                    style={{ opacity: isVisible ? 1 : 0.5, display: displayStyle, alignItems: 'center', justifyContent: justify, width: '100%', height: '100%' }}
-                    data-tooltip={!tooltipIfTruncated ? label : undefined}
-                >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: justify, gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
-                        {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
-                        <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: justify }}>
-                            <BuilderText
-                                tagName="span"
-                                content={label}
-                                onChange={onLabelChange}
-                                placeholder="Link Label"
-                                multiline={false}
-                                noId={true}
-                                className={!isActive ? "truncate-1-line" : ""}
-                                style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap', display: 'block' }}
-                                tooltipIfTruncated={tooltipIfTruncated}
-                            />
-                        </div>
-                        {iconRight && <span style={{ display: 'flex', flexShrink: 0 }}>{iconRight}</span>}
-                    </div>
-                </Link>
+                {(() => {
+                    // Safety check: Next.js Link crashes with "https:" or other incomplete URLs during prefetch
+                    let safeHref = href || "#";
+                    try {
+                        // If it looks like an absolute URL (starts with protocol), verify it's valid
+                        if (/^[a-z]+:/i.test(safeHref)) {
+                            new URL(safeHref); // Will throw if invalid
+                        }
+                    } catch (e) {
+                        // If invalid (e.g. user currently typing "https:"), fallback to "#" to prevent crash
+                        safeHref = "#";
+                    }
+
+                    return (
+                        <Link
+                            id={elementId}
+                            href={safeHref}
+                            className={className}
+                            style={{ opacity: isVisible ? 1 : 0.5, display: displayStyle, alignItems: 'center', justifyContent: justify, width: '100%', height: '100%' }}
+                            data-tooltip={!tooltipIfTruncated ? label : undefined}
+                            prefetch={false} // Disable prefetch to be extra safe during editing
+                        >
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: justify, gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
+                                {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
+                                <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: justify }}>
+                                    <BuilderText
+                                        tagName="span"
+                                        content={label}
+                                        onChange={onLabelChange}
+                                        placeholder="Link Label"
+                                        multiline={false}
+                                        noId={true}
+                                        className={!isActive ? "truncate-1-line" : ""}
+                                        style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap', display: 'block' }}
+                                        tooltipIfTruncated={tooltipIfTruncated}
+                                    />
+                                </div>
+                                {iconRight && <span style={{ display: 'flex', flexShrink: 0 }}>{iconRight}</span>}
+                            </div>
+                        </Link>
+                    );
+                })()}
             </span>
 
             {renderActiveOverlay()}

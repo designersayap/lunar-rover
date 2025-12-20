@@ -9,22 +9,7 @@ import BuilderControlsPopover from "./builder-controls-popover";
 import { getContainerClasses } from "../section-utils";
 
 /**
- * BuilderSection Component
- * Wraps content with builder controls (selection, settings popup) and optional container styling.
- * 
- * Container Modes:
- * - Default (innerContainer=false): Container classes applied directly to root element
- * - Inner Container (innerContainer=true): Root element gets ID, inner wrapper gets container classes
- *   Use this when you need semantic HTML (e.g., <section id="...">) with flexible width control
- * 
- * @param {Object} props
- * @param {string} props.sectionId - Unique ID for the section
- * @param {boolean} props.fullWidth - Remove max-width constraint (1440px -> 100%)
- * @param {boolean} props.removePaddingLeft - Remove left padding from container
- * @param {boolean} props.removePaddingRight - Remove right padding from container
- * @param {Function} props.onUpdate - Callback when settings change
- * @param {string} props.tagName - HTML tag to render (default: "div")
- * @param {boolean} props.innerContainer - Use inner wrapper for container classes
+ * BuilderSection: Wraps content with builder controls (selection, settings) and container styling.
  */
 export default function BuilderSection({
     sectionId,
@@ -45,8 +30,7 @@ export default function BuilderSection({
     // Select context
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId } = useContext(BuilderSelectionContext);
 
-    // Use sectionId as the identifier. 
-    // Ensure sectionId is unique enough or use a prop if provided.
+    // Use sectionId as identifier (must be unique)
     const elementId = sectionId;
     const isActive = activeElementId === elementId;
     const myPopoverId = `popover-${elementId}`;

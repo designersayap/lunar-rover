@@ -10,16 +10,7 @@ import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 
 /**
- * BuilderButton Component
- * Renders a button or link with consistent styling and ID generation.
- * 
- * @param {string} label - Button text
- * @param {string} href - Link URL
- * @param {string} variant - ID variant suffix (e.g. 'cta', 'primary')
- * @param {string} sectionId - Parent section ID
- * @param {string} className - CSS classes
- * @param {function} onLabelChange - Callback when label changes
- * @param {function} onHrefChange - Callback when href changes (not yet implemented in UI but good to have)
+ * BuilderButton: Renders a button or link with consistent styling and ID generation.
  */
 export default function BuilderButton({
     label = "Label",
@@ -44,17 +35,16 @@ export default function BuilderButton({
 }) {
     const [popoverPosition, setPopoverPosition] = useState(null);
 
-    // Extract the button variant class (e.g., btn-primary, btn-ghost) from className
+    // Extract the button variant class from className
     const variantClass = className.split(' ').find(c => c.startsWith('btn-') && !['btn-lg', 'btn-md', 'btn-sm', 'btn-icon'].includes(c)) || 'btn-default';
 
-    // Normalize sectionId by removing trailing dashes to prevent double dashes
+    // Normalize sectionId and stored ID
     const normalizedSectionId = sectionId?.replace(/-+$/, '') || '';
     const generatedId = normalizedSectionId ? (suffix ? `${normalizedSectionId}-${suffix}` : `${normalizedSectionId}-${variantClass}`) : undefined;
-    // Also normalize stored id prop to collapse consecutive dashes
     const normalizedId = id?.replace(/-+/g, '-') || '';
     const buttonId = normalizedId || generatedId;
-    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent } = useContext(BuilderSelectionContext);
 
+    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent } = useContext(BuilderSelectionContext);
 
     // Unique ID for this button's popover
     const myPopoverId = `popover-${buttonId}`;
@@ -138,8 +128,7 @@ export default function BuilderButton({
         }
     }, [isActive, overlayRect, showSettings]);
 
-    // If href is empty, we still render the button in builder mode to allow editing
-    // if (!href) return null;
+    // If href is empty, render button to allow editing
 
     if (!isVisible && !isActive) return null;
     const handleSettingsClick = (e) => {

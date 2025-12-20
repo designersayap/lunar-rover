@@ -6,14 +6,7 @@ import { BuilderSelectionContext } from "@/app/page-builder-components/utils/bui
 import styles from "../../../page.module.css";
 
 /**
- * Custom hook for managing active element overlay
- * Provides:
- * - Overlay position tracking
- * - Active state management
- * - Portal rendering helper
- * 
- * @param {string} elementId - The unique ID of the element
- * @returns {Object} Hook state and helpers
+ * useActiveOverlay: Manages position tracking and active state for the builder overlay.
  */
 export function useActiveOverlay(elementId) {
     const wrapperRef = useRef(null);
@@ -63,12 +56,7 @@ export function useActiveOverlay(elementId) {
 }
 
 /**
- * Renders the active overlay portal
- * @param {Object} props - Component props
- * @param {boolean} props.isActive - Whether element is active
- * @param {DOMRect} props.overlayRect - Position rect
- * @param {string} props.elementId - Element ID to display
- * @param {React.ReactNode} props.actions - Optional action buttons
+ * ActiveOverlayPortal: Renders the active overlay UI via a portal.
  */
 export function ActiveOverlayPortal({ isActive, overlayRect, elementId, actions }) {
     if (!isActive || !overlayRect) return null;

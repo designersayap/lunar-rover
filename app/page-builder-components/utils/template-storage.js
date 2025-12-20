@@ -11,9 +11,7 @@ export const DEFAULT_ANALYTICS = {
 };
 
 /**
- * Load saved template from localStorage
- * @param {Object} componentLibrary - The component library to rehydrate from
- * @returns {{ components: Array, analytics: Object } | null}
+ * Load saved template from localStorage.
  */
 export function loadTemplate(componentLibrary) {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -43,9 +41,7 @@ export function loadTemplate(componentLibrary) {
 }
 
 /**
- * Save template to localStorage
- * @param {Array} components - Selected components
- * @param {Object} analytics - Analytics data
+ * Save template to localStorage.
  */
 export function saveTemplate(components, analytics) {
     const hasData = components.length || Object.values(analytics).some(v => v);

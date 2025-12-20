@@ -3,15 +3,7 @@
 import { useState, useCallback, useRef } from "react";
 
 /**
- * Custom hook for drag and drop functionality
- * Handles:
- * - Drag state management
- * - Custom drag image
- * - Drop target tracking
- * 
- * @param {Object} options - Hook options
- * @param {Function} options.onReorder - Callback when items are reordered
- * @returns {Object} Hook state and helpers
+ * useDragDrop: Handles drag-and-drop state, custom drag images, and drop target tracking.
  */
 export function useDragDrop({ onReorder }) {
     const [draggedIndex, setDraggedIndex] = useState(null);

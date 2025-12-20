@@ -46,9 +46,6 @@ export function useBuilderSelection() {
 
 /**
  * Calculate popover position within viewport bounds
- * @param {DOMRect} triggerRect - Bounding rect of trigger element
- * @param {Object} options - Width/height/padding options
- * @returns {{ top: number, left: number }}
  */
 export function calculatePopoverPosition(triggerRect, options = {}) {
     const { width = 362, height = 500, padding = 12 } = options;

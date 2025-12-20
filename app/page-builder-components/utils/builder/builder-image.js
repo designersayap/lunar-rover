@@ -9,10 +9,9 @@ import BuilderControlsPopover from "./builder-controls-popover";
 import styles from "../../../page.module.css";
 
 /**
- * BuilderImage Component
- * Renders an image with consistent styling and placeholder support.
+ * BuilderImage: Renders an image with consistent styling and placeholder support.
  */
-const defaultPlaceholder = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg"; // Change this to any URL to use a remote image as placeholder
+export const defaultPlaceholder = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg"; // Change this to any URL to use a remote image as placeholder
 
 export default function BuilderImage({
     src,

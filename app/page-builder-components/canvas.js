@@ -10,9 +10,7 @@ export default function Canvas({
 }) {
     const { setActiveElementId } = useBuilderSelection();
 
-    // Sort components for display: Pinned items first, then others
-    // We use useMemo to prevent creating a new array reference on every render,
-    // which would cause an infinite loop in the useStickyStacking hook.
+    // Sort components for display: Pinned items first, then others (memoized to prevent infinite loops)
     const displayComponents = useMemo(() => [
         ...selectedComponents.filter(c => isComponentSticky(c)),
         ...selectedComponents.filter(c => !isComponentSticky(c))

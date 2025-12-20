@@ -37,11 +37,7 @@ const ANALYTICS_SECTIONS = [
 ];
 
 /**
- * SidebarAnalyticsTab Component
- * Renders the analytics configuration form in the sidebar.
- * 
- * @param {Object} analyticsData - Current analytics data
- * @param {Function} setAnalyticsData - Function to update analytics data
+ * SidebarAnalyticsTab: Renders the analytics configuration form in the sidebar.
  */
 export default function SidebarAnalyticsTab({ analyticsData, setAnalyticsData }) {
     return (

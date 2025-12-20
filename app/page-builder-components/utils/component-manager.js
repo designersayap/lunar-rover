@@ -2,11 +2,7 @@
 import { componentDefaults } from "@/app/template-components/content/data";
 
 /**
- * Add a new component to the list
- * @param {Array} components - Current components array
- * @param {Object} componentData - Component data from library
- * @param {string} sectionId - Generated section ID
- * @returns {Array} New components array
+ * Add a new component to the list.
  */
 export function addComponentToList(components, componentData, sectionId) {
     // Build initial props from config defaults
@@ -40,10 +36,7 @@ export function addComponentToList(components, componentData, sectionId) {
 }
 
 /**
- * Remove a component from the list
- * @param {Array} components - Current components array
- * @param {number} uniqueId - Unique ID of component to remove
- * @returns {Array} New components array
+ * Remove a component from the list.
  */
 export function removeComponentFromList(components, uniqueId) {
     return components.filter(c => c.uniqueId !== uniqueId);
@@ -51,8 +44,7 @@ export function removeComponentFromList(components, uniqueId) {
 
 
 /**
- * Helper to set value at path immutably
- * Supports dot notation for nested objects and arrays
+ * Helper to set value at path immutably (supports dot notation).
  */
 function setIn(obj, path, value) {
     if (!path || path.length === 0) return value;
@@ -85,8 +77,7 @@ function setIn(obj, path, value) {
 }
 
 /**
- * Helper to get value at path
- * Supports dot notation for nested objects and arrays
+ * Helper to get value at path (supports dot notation).
  */
 export function getValueAt(obj, path) {
     if (!path || !obj) return undefined;
@@ -106,11 +97,7 @@ export function getValueAt(obj, path) {
 }
 
 /**
- * Update component props
- * @param {Array} components - Current components array
- * @param {number} uniqueId - Unique ID of component to update
- * @param {Object} newProps - New props to merge
- * @returns {Array} New components array
+ * Update component props.
  */
 export function updateComponentProps(components, uniqueId, newProps) {
     return components.map(c => {
@@ -134,11 +121,7 @@ export function updateComponentProps(components, uniqueId, newProps) {
 }
 
 /**
- * Recursively update IDs in props when section ID changes
- * @param {Object} props - Component props
- * @param {string} oldPrefix - Old ID prefix (e.g. "old-section-")
- * @param {string} newPrefix - New ID prefix (e.g. "new-section-")
- * @returns {Object} Updated props
+ * Recursively update IDs in props when section ID changes.
  */
 function recursivelyUpdateIds(props, oldPrefix, newPrefix) {
     if (!props || typeof props !== 'object') return props;
@@ -166,11 +149,7 @@ function recursivelyUpdateIds(props, oldPrefix, newPrefix) {
 }
 
 /**
- * Update component section ID
- * @param {Array} components - Current components array
- * @param {number} uniqueId - Unique ID of component to update
- * @param {string} newSectionId - New section ID
- * @returns {Array} New components array
+ * Update component section ID.
  */
 export function updateComponentSectionId(components, uniqueId, newSectionId) {
     return components.map(c => {
@@ -195,19 +174,14 @@ export function updateComponentSectionId(components, uniqueId, newSectionId) {
 }
 
 /**
- * Helper to check if a component is sticky (pinned)
- * Checks both props and defaults
+ * Helper to check if a component is sticky (pinned).
  */
 export const isComponentSticky = (comp) => {
     return comp.props?.isSticky ?? componentDefaults[comp.id]?.isSticky ?? false;
 };
 
 /**
- * Reorder components via drag and drop
- * @param {Array} components - Current components array
- * @param {number} fromIndex - Source index
- * @param {number} toIndex - Target index
- * @returns {Array} New components array
+ * Reorder components via drag and drop.
  */
 export function reorderComponents(components, fromIndex, toIndex) {
     if (fromIndex === toIndex) return components;
@@ -256,9 +230,7 @@ export function reorderComponents(components, fromIndex, toIndex) {
 }
 
 /**
- * Generate unique section ID from category name
- * @param {string} category - Category name
- * @returns {string} Section ID like "hero-banner-1234"
+ * Generate unique section ID from category name.
  */
 export function generateSectionId(category) {
     const slug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');

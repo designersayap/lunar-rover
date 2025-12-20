@@ -1,8 +1,5 @@
 /**
  * Filters the component library based on a search query.
- * @param {string} query - The search query.
- * @param {object} library - The component library object.
- * @returns {object} - The filtered component library.
  */
 export const searchComponents = (query, library) => {
     if (!query) return library;
