@@ -5,17 +5,12 @@ const GlobalHeaderTitle = dynamic(() => import("../../template-components/header
 const GlobalHeaderTitleButton = dynamic(() => import("../../template-components/header/header-title-button"));
 const GlobalHeaderTitleDescription = dynamic(() => import("../../template-components/header/header-title-description"));
 const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../template-components/header/header-title-description-button"));
-
 const TerraBannerHero = dynamic(() => import("@/app/template-components/terra/terra-banner-hero"));
 const TerraFeaturesImageLeft = dynamic(() => import("@/app/template-components/terra/terra-features-image-left"));
 const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/terra/terra-features-image-right"));
 const Dialog = dynamic(() => import("../../template-components/dialog/dialog-default"));
 const DialogAccordion = dynamic(() => import("../../template-components/dialog/dialog-accordion"));
 const BannerInformation = dynamic(() => import("../../template-components/osm/banner-information"));
-
-// Template Component Imports (Dynamic Loading for Performance)
-// These components are loaded only when needed to reduce initial bundle size
-
 const TerraTestimony = dynamic(() => import("../../template-components/terra/terra-testimony"));
 const Media16x9 = dynamic(() => import("../../template-components/media/media-16-9"));
 const Media5x4 = dynamic(() => import('@/app/template-components/media/media-5-4'));
@@ -23,20 +18,6 @@ const Media4x3 = dynamic(() => import('@/app/template-components/media/media-4-3
 const Media21x9 = dynamic(() => import('@/app/template-components/media/media-21-9'));
 const LactoNavigation = dynamic(() => import("../../template-components/lacto/lacto-navigation"));
 
-/**
- * Component Library Definitions
- * Maps internal IDs to React Components and defines their editable properties.
- * 
- * Structure:
- * - Category Name: [ List of Components ]
- * - Component: {
- *     id: Unique string ID,
- *     name: Display name in UI,
- *     component: The React Component,
- *     config: [ Editable Props for the Sidebar Settings Panel ],
- *     buttons/images/links: [ Child Elements shown in the Sidebar Layer Tree ]
- * }
- */
 export const componentLibrary = {
 
     "Navigation": [

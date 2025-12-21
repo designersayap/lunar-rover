@@ -43,6 +43,12 @@ export async function POST(request) {
             fs.mkdirSync(targetDir, { recursive: true });
         }
 
+        // Handle data.js: Create only if it doesn't exist
+        const dataFilePath = path.join(targetDir, 'data.js');
+        if (!fs.existsSync(dataFilePath)) {
+            fs.writeFileSync(dataFilePath, 'export const data = {};');
+        }
+
         const filePath = path.join(targetDir, 'page.js');
         fs.writeFileSync(filePath, fileContent);
 

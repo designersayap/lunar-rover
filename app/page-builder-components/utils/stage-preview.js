@@ -6,8 +6,11 @@ import { componentDefaults } from '@/app/template-components/content/data';
  * generateStagingPageContent: Generates the content for app/staging/[name]/page.js
  * Imports components directly from '@/app/template-components/...' using COMPONENT_PATHS
  */
-export const generateStagingPageContent = (selectedComponents) => {
+export const generateStagingPageContent = (selectedComponents, folderName) => {
     let pageContent = `"use client";\n\n`;
+
+    // Import staging data overrides
+    pageContent += `import { data as stagingData } from "./data";\n`;
 
     // 1. Collect Imports
     // We map component names to their import paths
@@ -35,6 +38,26 @@ export const generateStagingPageContent = (selectedComponents) => {
     });
 
     pageContent += `\nexport default function StagingPage() {\n`;
+
+    // Inject handleUpdate
+    pageContent += `
+    const handleUpdate = async (uniqueId, newData) => {
+        try {
+            await fetch('/api/save-staging-data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    folderName: "${folderName}",
+                    componentId: uniqueId,
+                    updates: newData
+                })
+            });
+            console.log("Saved update for", uniqueId);
+        } catch (e) {
+            console.error("Failed to save update", e);
+        }
+    };\n\n`;
+
     pageContent += `  return (\n`;
     pageContent += `    <main className="flex min-h-screen flex-col items-center justify-between">\n`;
 
@@ -79,7 +102,11 @@ export const generateStagingPageContent = (selectedComponents) => {
             }
         }).filter(Boolean).join(' ');
 
-        let componentJSX = `<${componentName} ${propsString} />`;
+        // Add override spread and handler
+        const overrideString = `{...stagingData['${finalSectionId}']}`;
+        const onUpdateString = `onUpdate={(newData) => handleUpdate('${finalSectionId}', newData)}`;
+
+        let componentJSX = `<${componentName} ${propsString} ${overrideString} ${onUpdateString} />`;
 
         // Sticky Wrapper
         if (item.isSticky) {
@@ -101,7 +128,7 @@ export const generateStagingPageContent = (selectedComponents) => {
 
 export const handleStagePreview = async (selectedComponents, folderName) => {
     try {
-        const fileContent = generateStagingPageContent(selectedComponents);
+        const fileContent = generateStagingPageContent(selectedComponents, folderName);
 
         const res = await fetch('/api/staging-preview', {
             method: 'POST',
