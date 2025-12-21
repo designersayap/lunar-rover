@@ -68,7 +68,7 @@ export default function StagingPopover({
                             className={styles.formInput}
                             placeholder="folder-name"
                             value={folderName}
-                            onChange={(e) => setFolderName(e.target.value)}
+                            onChange={(e) => setFolderName(e.target.value.replace(/\s/g, '-'))}
                             style={{ flex: 1 }}
                         />
                     </div>
@@ -99,18 +99,9 @@ export default function StagingPopover({
                                 <div
                                     key={folder}
                                     onClick={() => setFolderName(folder)}
-                                    style={{
-                                        padding: '8px 12px',
-                                        cursor: 'pointer',
-                                        borderBottom: '1px solid var(--bdr)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '8px',
-                                        fontSize: '13px',
-                                        background: folderName === folder ? 'var(--bg4)' : 'transparent'
-                                    }}
+                                    className={`${styles.folderItem} ${folderName === folder ? styles.folderItemActive : ''}`}
                                 >
-                                    <FolderIcon style={{ width: '14px', height: '14px', color: 'var(--grey-200)' }} />
+                                    <FolderIcon className={styles.folderIcon} />
                                     {folder}
                                 </div>
                             ))

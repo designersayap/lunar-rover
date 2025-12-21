@@ -661,6 +661,37 @@
     margin-bottom: var(--gap-xs);
 }
 
+/* === FOLDER LIST ITEMS === */
+.folderItem {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    background: transparent;
+    color: inherit;
+    transition: background 0.2s;
+    color: var(--grey-300);
+}
+
+.folderItemActive {
+    background: var(--grey-500);
+    color: var(--content-neutral--body-invert);
+}
+
+.folderItemActive .folderIcon {
+    width: 12px;
+    height: 12px;
+    color: var(--grey-200);
+}
+
+.folderItem .folderIcon {
+    width: 12px;
+    height: 12px;
+    color: var(--grey-200);
+}
+
 /* === EXPORT === */
 .exportInputWrapper {
     gap: var(--gap-xs);

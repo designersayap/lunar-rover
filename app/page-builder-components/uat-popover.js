@@ -75,7 +75,7 @@ export default function UATPopover({
                             value={folderName}
                             onChange={(e) => {
                                 // Sanitize input: allow only alphanumeric, dash, and underscore
-                                const val = e.target.value.replace(/[^a-zA-Z0-9-_]/g, '');
+                                const val = e.target.value.replace(/[^a-zA-Z0-9-_]/g, '-');
                                 setFolderName(val);
                             }}
                             className={styles.formInput}
@@ -110,18 +110,9 @@ export default function UATPopover({
                                 <div
                                     key={folder}
                                     onClick={() => setFolderName(folder)}
-                                    style={{
-                                        padding: '8px 12px',
-                                        cursor: 'pointer',
-                                        borderBottom: '1px solid var(--bdr)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '8px',
-                                        fontSize: '13px',
-                                        background: folderName === folder ? 'var(--bg4)' : 'transparent'
-                                    }}
+                                    className={`${styles.folderItem} ${folderName === folder ? styles.folderItemActive : ''}`}
                                 >
-                                    <FolderIcon style={{ width: '14px', height: '14px', color: 'var(--grey-200)' }} />
+                                    <FolderIcon className={styles.folderIcon} />
                                     {folder}
                                 </div>
                             ))
