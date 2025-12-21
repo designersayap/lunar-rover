@@ -76,7 +76,6 @@ export default function TopBar({
                 >
                     <SwatchIcon style={{ width: "16px", height: "16px", flexShrink: 0 }} />
                     <span className={`${styles.topBarButtonText} truncate-1-line`}>{selectedThemeName}</span>
-                    <ChevronDownIcon style={{ width: "12px", height: "12px", marginLeft: "auto", strokeWidth: 2 }} />
                 </button>
                 <div className={styles.splitButtonContainer}>
                     <button

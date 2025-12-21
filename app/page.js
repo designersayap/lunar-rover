@@ -352,6 +352,7 @@ export default function TemplateGeneratorPage() {
             selectedComponents={selectedComponents}
             onClose={closePopover}
             position={popoverPositions.staging}
+            className="z-system-modal-floating"
           />
         )}
 

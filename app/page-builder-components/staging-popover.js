@@ -7,7 +7,8 @@ import BasePopover from './base-popover';
 export default function StagingPopover({
     position,
     onClose,
-    selectedComponents
+    selectedComponents,
+    className
 }) {
     const [folderName, setFolderName] = useState("");
     const [existingFolders, setExistingFolders] = useState([]);
@@ -56,6 +57,7 @@ export default function StagingPopover({
             isOpen={true}
             onClose={onClose}
             position={position}
+            className={className}
         >
             <div className={styles.popoverContent}>
                 <div className={styles.exportInputWrapper} style={{ marginBottom: '16px' }}>
