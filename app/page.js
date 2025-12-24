@@ -30,7 +30,7 @@ import {
   updateComponentSectionId,
   reorderComponents
 } from "@/app/page-builder-components/utils/component-manager";
-import { useToast, useDragDrop } from "@/app/page-builder-components/utils/hooks";
+import { useToast, useDragDrop, useViewportBreakpoint } from "@/app/page-builder-components/utils/hooks";
 import { handleExportNextjs } from "@/app/page-builder-components/utils/export-nextjs";
 
 /**
@@ -63,6 +63,9 @@ export default function TemplateGeneratorPage() {
 
   // Toast Notifications
   const { toast: toaster, showToast } = useToast();
+
+  // Viewport Breakpoint
+  const { activeBreakpoint, setActiveBreakpoint } = useViewportBreakpoint();
 
   // Drag and Drop Logic
   const {
@@ -222,7 +225,8 @@ export default function TemplateGeneratorPage() {
 
       await handleExportNextjs(selectedComponents, activeThemePath, {
         download: true,
-        savePreview: true
+        savePreview: true,
+        analytics: analyticsData
       });
       showToast("Export completed successfully");
     } catch (error) {
@@ -276,6 +280,8 @@ export default function TemplateGeneratorPage() {
           themes={themes}
           handleStaging={handleStaging}
           isStagingPopoverOpen={activePopoverId === 'staging'}
+          activeBreakpoint={activeBreakpoint}
+          onBreakpointChange={setActiveBreakpoint}
         />
 
         {/* Main Content */}
@@ -289,6 +295,7 @@ export default function TemplateGeneratorPage() {
             dropTargetIndex={dropTargetIndex}
             setDraggedItemIndex={setDraggedIndex}
             updateComponent={updateComponent}
+            activeBreakpoint={activeBreakpoint}
           />
 
           {isSidebarVisible && (
@@ -344,12 +351,14 @@ export default function TemplateGeneratorPage() {
             position={popoverPositions.export}
             className="z-system-modal-floating"
             activeThemePath={themes.find(t => t.id === selectedThemeId)?.path || "/themes/theme.css"}
+            analyticsData={analyticsData}
           />
         )}
 
         {activePopoverId === 'staging' && (
           <StagingPopover
             selectedComponents={selectedComponents}
+            analyticsData={analyticsData}
             onClose={closePopover}
             position={popoverPositions.staging}
             className="z-system-modal-floating"

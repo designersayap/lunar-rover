@@ -8,6 +8,7 @@ export default function StagingPopover({
     position,
     onClose,
     selectedComponents,
+    analyticsData,
     className
 }) {
     const [folderName, setFolderName] = useState("");
@@ -41,7 +42,7 @@ export default function StagingPopover({
         }
 
         setIsSaving(true);
-        const success = await handleStagePreview(selectedComponents, folderName.trim());
+        const success = await handleStagePreview(selectedComponents, folderName.trim(), analyticsData);
         setIsSaving(false);
 
         if (success) {

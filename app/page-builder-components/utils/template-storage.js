@@ -3,11 +3,19 @@
 const STORAGE_KEY = 'lunar-template-builder';
 
 export const DEFAULT_ANALYTICS = {
+    websiteTitle: "",
+    favicon: "",
+    canonicalUrl: "",
     metaDescription: "",
-    googleAnalyticsId: "",
+    metaKeywords: "",
+    metaTag: "",
+    ogTitle: "",
+    ogDescription: "",
+    ogImage: "",
+    googleTagManagerId: "",
     tikTokPixel: "",
     metaPixel: "",
-    hotjarId: ""
+    microsoftClarityId: ""
 };
 
 /**

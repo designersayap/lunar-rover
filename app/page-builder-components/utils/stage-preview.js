@@ -53,7 +53,9 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
         } catch (e) {
             console.error("Failed to save update", e);
         }
-    };\n\n`;
+    };
+
+`;
 
     pageContent += `  return (\n`;
     pageContent += `    <main className="flex min-h-screen flex-col items-center justify-between">\n`;
@@ -121,14 +123,100 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
     return pageContent;
 };
 
-export const handleStagePreview = async (selectedComponents, folderName) => {
+export const generateStagingLayoutContent = (analytics = {}) => {
+    const title = analytics.websiteTitle || "Lunar Staging";
+    const description = analytics.metaDescription || "Staging Preview";
+    const keywords = analytics.metaKeywords || "";
+    const favicon = analytics.favicon || "";
+    const canonicalUrl = analytics.canonicalUrl || "";
+    const ogTitle = analytics.ogTitle || "";
+    const ogDescription = analytics.ogDescription || "";
+    const ogImage = analytics.ogImage || "";
+
+    // Scripts
+    const gtmId = analytics.googleTagManagerId;
+    const clarityId = analytics.microsoftClarityId;
+    const tiktokId = analytics.tikTokPixel;
+    const metaPixelId = analytics.metaPixel;
+
+    const hasScripts = gtmId || clarityId || tiktokId || metaPixelId;
+
+    return `${hasScripts ? 'import Script from "next/script";' : ''}
+
+export const metadata = {
+  title: "${title.replace(/"/g, '\\"')}",
+  description: "${description.replace(/"/g, '\\"')}",
+  ${keywords ? `keywords: "${keywords.replace(/"/g, '\\"')}",` : ''}
+  ${favicon ? `icons: { icon: "${favicon.replace(/"/g, '\\"')}" },` : ''}
+  ${canonicalUrl ? `alternates: { canonical: "${canonicalUrl.replace(/"/g, '\\"')}" },` : ''}
+  openGraph: {
+    ${ogTitle ? `title: "${ogTitle.replace(/"/g, '\\"')}",` : ''}
+    ${ogDescription ? `description: "${ogDescription.replace(/"/g, '\\"')}",` : ''}
+    ${ogImage ? `images: [{ url: "${ogImage.replace(/"/g, '\\"')}" }],` : ''}
+  },
+};
+
+export default function StagingLayout({ children }) {
+  return (
+    <>
+      {children}
+      
+      {/* Analytics Scripts */}
+      ${gtmId ? `
+      <Script id="gtm" strategy="afterInteractive">
+        {\`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','${gtmId}');\`}
+      </Script>` : ''}
+
+      ${clarityId ? `
+      <Script id="microsoft-clarity" strategy="afterInteractive">
+        {\`(function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "${clarityId}");\`}
+      </Script>` : ''}
+
+      ${tiktokId ? `
+      <Script id="tiktok-pixel" strategy="afterInteractive">
+        {\`!function (w, d, t) {
+          w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t.align=2,ttq.push([t].concat(Array.prototype.slice.call(e,0)))};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq.setAndDefer(t,e),n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
+          ttq.load('${tiktokId}');
+          ttq.page();
+        }(window, document, 'ttq');\`}
+      </Script>` : ''}
+
+      ${metaPixelId ? `
+      <Script id="meta-pixel" strategy="afterInteractive">
+        {\`!function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '${metaPixelId}');
+        fbq('track', 'PageView');\`}
+      </Script>` : ''}
+    </>
+  );
+}
+`;
+};
+
+export const handleStagePreview = async (selectedComponents, folderName, analytics) => {
     try {
         const fileContent = generateStagingPageContent(selectedComponents, folderName);
+        const layoutContent = generateStagingLayoutContent(analytics);
 
         const res = await fetch('/api/staging-preview', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ folderName, fileContent })
+            body: JSON.stringify({ folderName, fileContent, layoutContent })
         });
 
         if (res.ok) {
