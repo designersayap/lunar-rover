@@ -74,7 +74,6 @@ export default function BannerInformation({
                                 style={{
                                     display: isMarquee ? 'inline-block' : 'block',
                                     width: isMarquee ? 'auto' : '100%',
-                                    width: isMarquee ? 'auto' : '100%',
                                     '--marquee-offset': `-${marqueeOffset}px`,
                                     '--marquee-duration': `${marqueeDuration}s`
                                 }}

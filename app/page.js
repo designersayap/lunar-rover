@@ -30,7 +30,7 @@ import {
   updateComponentSectionId,
   reorderComponents
 } from "@/app/page-builder-components/utils/component-manager";
-import { useToast, useDragDrop, useViewportBreakpoint } from "@/app/page-builder-components/utils/hooks";
+import { useToast, useDragDrop } from "@/app/page-builder-components/utils/hooks";
 import { handleExportNextjs } from "@/app/page-builder-components/utils/export-nextjs";
 
 /**
@@ -64,8 +64,7 @@ export default function TemplateGeneratorPage() {
   // Toast Notifications
   const { toast: toaster, showToast } = useToast();
 
-  // Viewport Breakpoint
-  const { activeBreakpoint, setActiveBreakpoint } = useViewportBreakpoint();
+
 
   // Drag and Drop Logic
   const {
@@ -280,8 +279,6 @@ export default function TemplateGeneratorPage() {
           themes={themes}
           handleStaging={handleStaging}
           isStagingPopoverOpen={activePopoverId === 'staging'}
-          activeBreakpoint={activeBreakpoint}
-          onBreakpointChange={setActiveBreakpoint}
         />
 
         {/* Main Content */}
@@ -295,7 +292,7 @@ export default function TemplateGeneratorPage() {
             dropTargetIndex={dropTargetIndex}
             setDraggedItemIndex={setDraggedIndex}
             updateComponent={updateComponent}
-            activeBreakpoint={activeBreakpoint}
+
           />
 
           {isSidebarVisible && (

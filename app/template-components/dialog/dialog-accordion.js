@@ -8,6 +8,7 @@ import DialogSection from "./dialog-section";
 
 export default function DialogAccordion({
     title = "Title",
+    description = "Description",
     isOpen,
     onUpdate,
     sectionId,

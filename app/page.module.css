@@ -155,13 +155,7 @@
     background: var(--grey-400);
 }
 
-/* Breakpoint Controls */
-.breakpointControls {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    background: var(--bg2);
-}
+
 
 .topBarButtonActive {
     background: var(--bg3);
@@ -292,17 +286,6 @@
     width: 100%;
     background: var(--base-white);
     transition: width 0.3s ease, max-width 0.3s ease;
-}
-
-/* Breakpoint-specific canvas widths */
-.canvasMobile .canvasInner {
-    max-width: 375px;
-    margin: 0 auto;
-}
-
-.canvasTablet .canvasInner {
-    max-width: 768px;
-    margin: 0 auto;
 }
 
 .canvasDesktop .canvasInner {

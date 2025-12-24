@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './lacto-navigation.module.css';
 import BuilderImage from '@/app/page-builder-components/utils/builder/builder-image';
