@@ -15,12 +15,10 @@ export default function DialogSection({
     sectionId,
 
     className = "",
-    // New Props for Image
     image,
     imageId,
     imageVisible,
 }) {
-    // === State & Control ===
     const update = createUpdateHandler(onUpdate);
     const [internalIsOpen, setInternalIsOpen] = useState(false);
     const [portalContainer, setPortalContainer] = useState(null);
@@ -29,7 +27,6 @@ export default function DialogSection({
     const isControlled = controlledIsOpen !== undefined;
     const isOpen = isControlled ? controlledIsOpen : internalIsOpen;
 
-    // === Portal Setup ===
     // We render into document.body to ensure we escape any stacking contexts (like transforms in builder)
     useEffect(() => {
         setPortalContainer(document.body);
@@ -42,8 +39,6 @@ export default function DialogSection({
             setInternalIsOpen(value);
         }
     }, [isControlled, update]);
-
-    // === Effects ===
 
     // 1. Lock Body Scroll when Open
     useEffect(() => {
@@ -73,7 +68,6 @@ export default function DialogSection({
         return () => window.removeEventListener('keydown', handleEsc);
     }, [isOpen, toggleOpen]);
 
-    // === Render Logic ===
     const dialogContent = (
         <div
             className={`overlay z-system-modal-fullscreen ${className}`}

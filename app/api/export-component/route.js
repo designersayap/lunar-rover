@@ -27,7 +27,6 @@ export async function POST(request) {
 
         const fullPath = path.join(process.cwd(), filePath);
 
-
         // Check if it is an image/binary asset or external URL
         const isExternal = filePath.startsWith('http');
         const ext = path.extname(filePath.split('?')[0]).toLowerCase();
@@ -59,15 +58,13 @@ export async function POST(request) {
 
         let content = fs.readFileSync(fullPath, 'utf8');
 
-
-
-        // 1. Remove Builder Imports
+        // Remove Builder Imports
         content = content.replace(/import\s+.*?\s+from\s+['"]@\/app\/page-builder-components\/utils\/builder\/.*?['"];?\n?/g, '');
         content = content.replace(/import\s+{\s*createUpdateHandler\s*}\s+from\s+['"].*?['"];?\n?/g, '');
         content = content.replace(/import\s+{\s*getContainerClasses\s*}\s+from\s+['"].*?['"];?\n?/g, '');
         content = content.replace(/import\s+styles\s+from\s+['"](.*?)['"];?/g, "import styles from '$1';");
 
-        // 2. Remove Builder Props & Hooks
+        // Remove Builder Props & Hooks
         content = content.replace(/onUpdate=\{[^}]+\}/g, '');
 
         // Remove `createUpdateHandler` initialization
@@ -84,7 +81,7 @@ export async function POST(request) {
         content = content.replace(/\bupdate\s*,\s*/g, '');
         content = content.replace(/\[\s*update\s*\]/g, '[]');
 
-        // 3. Transform <BuilderText /> to HTML tags
+        // Transform <BuilderText /> to HTML tags
         const builderTextRegex = /<BuilderText([\s\S]*?)\/>/g;
         content = content.replace(builderTextRegex, (match, attrs) => {
             const tagNameMatch = attrs.match(/tagName="([^"]+)"/);
@@ -125,7 +122,7 @@ export async function POST(request) {
             return `<${tagName}${classNameAttr}${idAttr}${styleAttr}>{${contentValue}}</${tagName}>`;
         });
 
-        // 4. Pre-clean: Remove callbacks and complex props to simplify regex matching
+        // Pre-clean: Remove callbacks and complex props to simplify regex matching
         const builderCallbacks = [
             'onIdChange', 'onLabelChange', 'onVisibilityChange',
             'onHrefChange', 'onVariantChange', 'onLinkTypeChange',
@@ -138,10 +135,9 @@ export async function POST(request) {
         const callbackRegex = new RegExp(callbackPattern, 'g');
         content = content.replace(callbackRegex, '');
 
-
         content = content.replace(/(iconRight|iconLeft)={((?:[^{}]|{(?:[^{}]|{[^{}]*})*})*)}/g, '');
 
-        // 5. Transform <BuilderButton /> to <Link>
+        // Transform <BuilderButton /> to <Link>
         const builderButtonRegex = /<BuilderButton([\s\S]*?)\/>/g;
         content = content.replace(builderButtonRegex, (match, attrs) => {
             const labelMatch = attrs.match(/label={((?:[^{}]|{[^}]*})*)}/);
@@ -239,7 +235,7 @@ export async function POST(request) {
             }
         });
 
-        // 6. Transform <BuilderLink /> to <Link>
+        // Transform <BuilderLink /> to <Link>
         const builderLinkRegex = /<BuilderLink([\s\S]*?)\/>/g;
         content = content.replace(builderLinkRegex, (match, attrs) => {
             const labelMatch = attrs.match(/label={((?:[^{}]|{[^}]*})*)}/);
@@ -324,7 +320,7 @@ export async function POST(request) {
             }
         });
 
-        // 7. Transform <BuilderImage /> to <img/>, <video/>, or <audio/>
+        // Transform <BuilderImage /> to <img/>, <video/>, or <audio/>
         const builderImageRegex = /<BuilderImage([\s\S]*?)\/>/g;
         content = content.replace(builderImageRegex, (match, attrs) => {
             const srcMatch = attrs.match(/src={([^}]+)}/) || attrs.match(/src="([^"]+)"/);
@@ -433,7 +429,7 @@ export async function POST(request) {
             }
         });
 
-        // 8. Transform <BuilderElement /> to <div>
+        // Transform <BuilderElement /> to <div>
         content = content.replace(/<BuilderElement([\s\S]*?)>/g, (match, attrs) => {
             const tagNameMatch = attrs.match(/tagName="([^"]+)"/);
             const tagName = tagNameMatch ? tagNameMatch[1] : 'div';
@@ -476,7 +472,7 @@ export async function POST(request) {
         });
 
         content = content.replace(/<\/BuilderElement\s*>/g, '</div>'); // Assuming default is div.
-        // 9. Transform <BuilderSection /> to <section>
+        // Transform <BuilderSection /> to <section>
         const sectionRegex = /<BuilderSection([\s\S]*?)>([\s\S]*?)<\/BuilderSection\s*>/g;
         content = content.replace(sectionRegex, (match, attrs, children) => {
             const tagNameMatch = attrs.match(/tagName="([^"]+)"/);
@@ -529,7 +525,7 @@ export async function POST(request) {
             }
         });
 
-        // 10. Inject Dialog Effects
+        // Inject Dialog Effects
         if (filePath.endsWith('dialog-section.js')) {
             const effectInjection = `
     useEffect(() => {
@@ -582,12 +578,12 @@ export async function POST(request) {
             }
         }
 
-        // 11. Ensure Link import exists
+        // Ensure Link import exists
         if (content.includes('<Link') && !content.includes('import Link')) {
             content = "import Link from 'next/link';\n" + content;
         }
 
-        // 12. Inject Helper Functions
+        // Inject Helper Functions
         if (content.includes('getContainerClasses') && !content.includes('function getContainerClasses')) {
             const helperFn = `
 function getContainerClasses({ removePaddingLeft, removePaddingRight, fullWidth }) {

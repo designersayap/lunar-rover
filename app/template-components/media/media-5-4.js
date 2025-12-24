@@ -6,7 +6,6 @@ import { createUpdateHandler } from "../utils/component-helpers";
 
 /**
  * Media5x4 Component
- * Full width image using grid system
  */
 export default function Media5x4({
     image = componentDefaults["media-5-4"].image,

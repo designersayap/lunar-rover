@@ -127,7 +127,6 @@ export default function BuilderControlsPopover({
                 <div className={styles.popoverContent}>
                     <div className={styles.popoverProperties}>
 
-                        {/* Link Type Selector - only show for buttons */}
                         {showLinkType && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Link Type</label>
@@ -164,7 +163,6 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
-                        {/* URL Input - always show for links, or when linkType is 'url' for buttons */}
                         {((linkType === 'url' || !showLinkType) && showUrl) && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>URL</label>
@@ -178,7 +176,6 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
-                        {/* Dialog Target Selection */}
                         {linkType === 'dialog' && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Dialog</label>
@@ -198,7 +195,6 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
-                        {/* Variant Select */}
                         {showVariant && (
                             <>
                                 <div style={{ borderTop: '1px solid var(--bdr)', margin: '8px 0', width: '100%' }} />
@@ -222,7 +218,6 @@ export default function BuilderControlsPopover({
 
 
 
-                        {/* Section Layout Controls - Only show if onLayoutChange is provided */}
                         {onLayoutChange && (
                             <>
                                 <div className={styles.propertyRow}>
@@ -240,7 +235,6 @@ export default function BuilderControlsPopover({
                             </>
                         )}
 
-                        {/* Portrait Mode Toggle */}
                         {showPortraitToggle && (
                             <>
                                 <div style={{ borderTop: '1px solid var(--bdr)', margin: '8px 0', width: '100%' }} />
@@ -259,7 +253,6 @@ export default function BuilderControlsPopover({
                             </>
                         )}
 
-                        {/* Mobile Aspect Ratio Selector */}
                         {showMobileRatio && (
                             <>
                                 <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>

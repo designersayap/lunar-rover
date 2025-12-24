@@ -9,7 +9,6 @@ import DialogSection from "./dialog-section";
 export default function DialogDefault({
     title = "Title",
     description = "Description",
-
     isOpen,
     onUpdate,
     sectionId,
@@ -17,7 +16,6 @@ export default function DialogDefault({
     image,
     imageId,
     imageVisible,
-    // List Items
     items = componentDefaults.dialog.items
 }) {
     const updateItem = (index, field, value) => {
@@ -43,7 +41,6 @@ export default function DialogDefault({
             imageId={imageId}
             imageVisible={imageVisible}
         >
-
             <div className={styles.listContainer}>
                 {items.map((item, i) => (
                     <BuilderLink

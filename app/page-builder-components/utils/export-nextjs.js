@@ -18,7 +18,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
     const componentsFolder = zip.folder("components");
     const errors = [];
 
-    // Track imports for page.js and files for preview
+    // Track imports and preview files
     const imports = new Map();
     const previewMap = new Map();
 
@@ -50,7 +50,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         processedFiles.add(filename);
 
         try {
-            // If content is provided (optional optimization), use it. otherwise fetch.
+            // If content is provided, use it. otherwise fetch.
             let content = currentBytes;
             if (!content) {
                 const response = await fetch('/api/export-component', {
@@ -62,14 +62,11 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                     const data = await response.json();
                     content = data.content;
 
-                    // Handle binary content (unlikely for JS, but supported)
+                    // Handle binary content
                     if (data.isBinary) {
-                        // This path is unlikely for .js files, but keeping the structure from the instruction.
-                        // If a JS file is somehow marked as binary, this would handle it.
                         componentsFolder.file(filename, content, { base64: true });
                         previewMap.set(`components/${filename}`, { path: `components/${filename}`, content, base64: true });
                     } else {
-                        // This is the standard path for JS content.
                         componentsFolder.file(filename, content);
                         previewMap.set(`components/${filename}`, { path: `components/${filename}`, content });
                     }
@@ -78,11 +75,9 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                     throw new Error(`Failed to fetch component: ${filePath}. Status: ${response.status}. Error: ${errText}`);
                 }
             } else {
-                // If content was provided via currentBytes, just add it.
                 componentsFolder.file(filename, content);
                 previewMap.set(`components/${filename}`, { path: `components/${filename}`, content });
             }
-
 
             // B. Fetch CSS Module
             const cssPath = filePath.replace('.js', '.module.css');
@@ -118,10 +113,9 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                 // This is crucial for components that import another component's CSS module (e.g. media-21-9 imports media-16-9.module.css)
                 if (importPath.endsWith('.css') && !importPath.endsWith('.module.css')) continue;
 
-                // Resolve relative path. 
+                // Resolve relative path
                 const currentDir = filePath.substring(0, filePath.lastIndexOf('/'));
 
-                // Resolve relative path using simple stack logic
                 const resolvePath = (base, relative) => {
                     const stack = base.split('/');
                     const parts = relative.split('/');
@@ -133,12 +127,10 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                     return stack.join('/');
                 };
 
-                // If it aliases '@/', handled differently. But for relative:
                 let depFilePath = importPath;
                 if (importPath.startsWith('.')) {
                     depFilePath = resolvePath(currentDir, importPath);
                 } else if (importPath.startsWith('@/')) {
-                    // Start from root app
                     depFilePath = importPath.replace('@/', '');
                 }
 
@@ -150,15 +142,12 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                 await processComponent(depFilePath);
 
                 // REWRITE IMPORT IN CONTENT
-                // Since we flatten everything to ./components/
-                // The new import path is just "./[basename]"
                 const depFilename = depFilePath.split('/').pop();
 
                 // If it's a CSS module, keep extension. If JS, remove .js
                 const newImportName = isCssModule ? depFilename : depFilename.replace('.js', '');
                 const newImportPath = `./${newImportName}`;
 
-                // Replace the specific import path in content with the new basename-only path
                 content = content.replace(`from "${importPath}"`, `from "${newImportPath}"`);
                 content = content.replace(`from '${importPath}'`, `from '${newImportPath}'`);
             }
@@ -196,23 +185,17 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         if (!item.props) item.props = {};
 
         // INJECT DEFAULT PLACEHOLDER for empty images
-        // If an image prop implies an image but is empty, use the system default placeholder.
         Object.keys(item.props).forEach(key => {
             const val = item.props[key];
-            // Heuristic for image props: naming convention or if default was an empty string
             const defVal = (componentDefaults[item.id] || componentDefaults[item.componentName] || {})[key];
-
-            // If the prop is 'image'/'logo'/'avatar' etc OR the default value is explicitly an empty string (implying image field)
             const isImageKey = /image|logo|avatar|icon|background/i.test(key);
 
-            // If it's an image key and value is empty
             if (isImageKey && (!val || val === "")) {
                 item.props[key] = defaultPlaceholder;
             }
         });
 
         // --- Image Scanning & Bundling ---
-        // Recursively find and bundle image/media paths (strings ending in media extensions).
         const findImagesToCheck = (obj) => {
             let found = [];
             if (!obj) return found;
@@ -315,8 +298,6 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                 if (uniqueName) {
                     const targetPath = `assets/${uniqueName}`;
 
-
-
                     // Update component references to point to the new local asset path.
                     // 1. Update props passed to page.js
                     const updateProps = (obj) => {
@@ -337,14 +318,12 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                     };
                     updateProps(item); // Update the item (which feeds props) in place
 
-                    // Inject default prop into 'item' if it relies on default value, ensuring explicit path passing
+                    // Inject default prop into 'item' if it relies on default value
                     const injectDefaultProp = (defaults, currentProps) => {
                         Object.keys(defaults).forEach(key => {
                             const defVal = defaults[key];
                             if (typeof defVal === 'string' && (defVal === imgPath || defVal.includes(imgPath))) {
-                                // If currentProps doesn't have it (using default), OR has it unchanged
                                 if (currentProps[key] === undefined || currentProps[key] === defVal) {
-                                    // We construct the new value.
                                     let newVal = defVal;
                                     if (defVal === imgPath) newVal = `/${targetPath}`;
                                     else newVal = defVal.replace(imgPath, `/${targetPath}`);
@@ -359,13 +338,9 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                     injectDefaultProp(compDefaults, item.props);
 
                     // 2. Update Hardcoded strings in the Component File 
-                    // (e.g. default props or variables inside the component)
                     const compFile = componentsFolder.file(filename);
                     if (compFile) {
                         let tempContent = await compFile.async("string");
-                        // Be careful with replacement
-                        // Replace "oldPath" with "/newPath"
-                        // Escape regex special chars
                         const escapedPath = imgPath.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
                         const regex = new RegExp(`(["'])${escapedPath}(["'])`, 'g');
                         tempContent = tempContent.replace(regex, `$1/${targetPath}$2`);
@@ -534,13 +509,11 @@ export default function RootLayout({ children }) {
         delete props.config; // Configuration specs
         delete props.isOpen; // Fix: Remove uncontrolled state prop
 
-        // Explicitly pass sectionId from the item level to props (redundant but safe after merge)
-        const finalSectionId = item.sectionId || item.uniqueId;
         if (finalSectionId) {
             props.sectionId = finalSectionId;
         }
 
-        // Fix Target ID references (map uniqueId -> sectionId)
+        // Fix Target ID references
         Object.keys(props).forEach(key => {
             // Address ID mapping
             if (key.includes('TargetDialogId') && props[key]) {
@@ -645,7 +618,6 @@ export default function RootLayout({ children }) {
 ${foundationCSS}
 
 /* Typography Defaults (Restored for Export) - REMOVED (Handled by Component Styles) */
-/* h1, h2, h3, h4, h5, h6, p margins are now managed by component-level styles */
 ` });
             fileList.push({
                 path: "app/layout.js", content: `import { Inter } from "next/font/google";

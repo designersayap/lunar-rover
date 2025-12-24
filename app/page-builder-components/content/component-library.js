@@ -92,7 +92,6 @@ export const componentLibrary = {
                 }
             ]
         },
-
     ],
     "Header": [
         {
@@ -101,7 +100,6 @@ export const componentLibrary = {
             component: GlobalHeaderTitle,
             thumbnail: "/images/thumbnails/header-title.svg",
         },
-
         {
             id: "header-title-button",
             name: "Title, Button",
@@ -167,7 +165,6 @@ export const componentLibrary = {
             component: GlobalHeaderTitleDescription,
             thumbnail: "/images/thumbnails/header-title-desc.svg",
         },
-
         {
             id: "header-title-description-button",
             name: "Title, Description, Button",
@@ -235,7 +232,6 @@ export const componentLibrary = {
             component: Dialog,
             thumbnail: "/images/thumbnails/dialog.svg", // Placeholder or generic
             config: [
-
                 {
                     name: "items",
                     label: "List Items",
@@ -294,7 +290,6 @@ export const componentLibrary = {
         }
     ],
     "Media": [
-
         {
             id: "media-21-9",
             name: "21:9",
@@ -548,7 +543,6 @@ export const componentLibrary = {
                 }
             ]
         },
-
     ],
     "Testimonials": [
         {

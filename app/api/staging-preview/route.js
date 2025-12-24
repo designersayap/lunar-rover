@@ -53,7 +53,6 @@ export async function POST(request) {
         fs.writeFileSync(filePath, fileContent);
 
         return NextResponse.json({ success: true, path: `/staging/${folderName}` });
-
     } catch (error) {
         console.error('Error creating staging page:', error);
         return NextResponse.json({ error: error.message }, { status: 500 });

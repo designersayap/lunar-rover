@@ -6,7 +6,6 @@ import { createUpdateHandler } from "../utils/component-helpers";
 
 /**
  * Media21x9 Component
- * Full width image using grid system
  */
 export default function Media21x9({
     image = componentDefaults["media-21-9"].image,

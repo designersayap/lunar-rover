@@ -1,9 +1,5 @@
 /**
  * Component Default Values (Single Source of Truth)
- * 
- * These values are used when a component is first added to the canvas.
- * They also serve as fallbacks if a prop is undefined.
- * 
  * Keys match the 'id' in component-library.js.
  */
 export const componentDefaults = {
@@ -62,7 +58,6 @@ export const componentDefaults = {
         secondaryButtonId: "",
         image: ""
     },
-
     "feature-left": {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
@@ -175,7 +170,6 @@ export const componentDefaults = {
         menu4Id: "",
         isSticky: true
     },
-
     "terra-testimony": {
         testimonies: Array(12).fill({
             name: "People Name",
@@ -196,7 +190,4 @@ export const componentDefaults = {
         }),
         fullWidth: false
     },
-
-
-
 };

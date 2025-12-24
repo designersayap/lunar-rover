@@ -5,9 +5,6 @@ import { createPortal } from "react-dom";
 import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
 import styles from "../../../page.module.css";
 
-/**
- * useActiveOverlay: Manages position tracking and active state for the builder overlay.
- */
 export function useActiveOverlay(elementId) {
     const wrapperRef = useRef(null);
     const [overlayRect, setOverlayRect] = useState(null);
@@ -15,7 +12,6 @@ export function useActiveOverlay(elementId) {
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId } = useContext(BuilderSelectionContext);
     const isActive = activeElementId === elementId;
 
-    // Update overlay position when active
     useEffect(() => {
         if (isActive && wrapperRef.current) {
             const updatePosition = () => {
@@ -35,7 +31,6 @@ export function useActiveOverlay(elementId) {
         }
     }, [isActive]);
 
-    // Handle click to activate element
     const handleActivate = (e) => {
         e?.preventDefault();
         e?.stopPropagation();
@@ -55,9 +50,6 @@ export function useActiveOverlay(elementId) {
     };
 }
 
-/**
- * ActiveOverlayPortal: Renders the active overlay UI via a portal.
- */
 export function ActiveOverlayPortal({ isActive, overlayRect, elementId, actions }) {
     if (!isActive || !overlayRect) return null;
 

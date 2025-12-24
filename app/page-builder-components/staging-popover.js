@@ -16,7 +16,6 @@ export default function StagingPopover({
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
-        // Fetch existing staging folders
         const fetchFolders = async () => {
             setIsLoading(true);
             try {

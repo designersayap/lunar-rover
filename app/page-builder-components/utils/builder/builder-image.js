@@ -36,21 +36,17 @@ export default function BuilderImage({
     mobileRatio,
     onMobileRatioChange
 }) {
-    // ID Sync Hook
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
 
-    // Context
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent } = useContext(BuilderSelectionContext);
     const isActive = activeElementId === elementId;
     const myPopoverId = `popover-${elementId}`;
     const showSettings = activePopoverId === myPopoverId;
 
-    // Overlay position
     const wrapperRef = useRef(null);
     const [overlayRect, setOverlayRect] = useState(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
 
-    // Update overlay position when active
     useEffect(() => {
         if (isActive && wrapperRef.current) {
             const updatePosition = () => {
@@ -106,20 +102,17 @@ export default function BuilderImage({
         e.preventDefault();
         e.stopPropagation();
 
-        // Find the Dialog component
         let dialogComponent;
         if (targetDialogId) {
             // Compare as strings to handle potential type mismatch (number vs string)
             dialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
         }
 
-        // Fallback to first if not found or not set
         if (!dialogComponent) {
             dialogComponent = selectedComponents?.find(c => c.id === 'dialog' || c.id === 'dialog-accordion');
         }
 
         if (dialogComponent) {
-            // Open it
             if (updateComponent) {
                 updateComponent(dialogComponent.uniqueId, { isOpen: true });
             }
@@ -128,7 +121,6 @@ export default function BuilderImage({
         }
     };
 
-    // Render Portal for Active Overlay
     const renderActiveOverlay = () => {
         if (!isActive || !overlayRect) return null;
 
@@ -155,7 +147,6 @@ export default function BuilderImage({
                         <span className={styles.overlayIdText}>#{elementId}</span>
                     </div>
 
-                    {/* specific trigger for dialog if selected */}
                     {linkType === 'dialog' && (
                         <button
                             type="button"
@@ -167,7 +158,6 @@ export default function BuilderImage({
                         </button>
                     )}
 
-                    {/* Show simple settings toggle if NOT disabled */}
                     {!disableSettings && (
                         <button
                             type="button"
@@ -197,7 +187,6 @@ export default function BuilderImage({
 
     let targetDialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
 
-    // Fallback if not found (matching logic)
     if (!targetDialogComponent && linkType === 'dialog') {
         targetDialogComponent = selectedComponents?.find(c => c.id === 'dialog' || c.id === 'dialog-accordion');
     }
@@ -211,7 +200,6 @@ export default function BuilderImage({
         'data-dialog-target': linkType === 'dialog' ? targetDialogSectionId : undefined
     } : {};
 
-    // Ratio logic
     let finalClassName = `${isActive ? styles.activeWrapper : ''} ${className}`;
     if (onIsPortraitChange && isPortrait) {
         finalClassName = finalClassName

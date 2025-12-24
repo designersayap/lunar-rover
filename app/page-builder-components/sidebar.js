@@ -46,13 +46,9 @@ export default function Sidebar({
         }));
     };
 
-    // ID Sanitization: Enforce URL-friendly format (lowercase, hyphens)
     const sanitizeId = (value) => value.toLowerCase().trimStart().replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '');
-
-    // ID Finalization: Cleanup when user finishes typing (removes trailing dashes)
     const sanitizeIdFinal = (value) => sanitizeId(value).replace(/-+$/, '');
 
-    // Helper to find component definition
     const getComponentDef = (id) => {
         for (const category of Object.values(componentLibrary)) {
             const found = category.find(c => c.id === id);
@@ -61,7 +57,7 @@ export default function Sidebar({
         return null;
     };
 
-    // Search Filtering Logic: Matches against Component Name, Section ID, or Child properties
+    // Search Filtering Logic
     const filteredComponents = useMemo(() => {
         if (!layerSearch.trim()) return selectedComponents;
         const searchLower = layerSearch.toLowerCase();
@@ -176,7 +172,6 @@ export default function Sidebar({
                                             opacity: draggedIndex === originalIndex ? 0.5 : 1,
                                             borderTop: isTarget && !isDragDown ? '2px solid var(--brand-color-300)' : 'none',
                                             borderBottom: isTarget && isDragDown ? '2px solid var(--brand-color-300)' : 'none',
-                                            transition: 'all 0.2s ease',
                                             transition: 'all 0.2s ease',
                                             cursor: 'grab'
                                         }}

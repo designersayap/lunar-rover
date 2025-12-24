@@ -9,11 +9,10 @@ import { Bars3Icon } from '@heroicons/react/24/solid';
 
 export default function LactoNavigation({
     sectionId,
-    // Logo
     logo = componentDefaults["lacto-navigation"].logo,
     logoId,
     logoVisible,
-    // Menu Items
+
     menu1Label = componentDefaults["lacto-navigation"].menu1Label,
     menu1Url = componentDefaults["lacto-navigation"].menu1Url,
     menu1OpenInNewTab = componentDefaults["lacto-navigation"].menu1OpenInNewTab,
@@ -68,9 +67,8 @@ export default function LactoNavigation({
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    });
 
-    // Helper to structure menu items logic
     const menuItems = [
         {
             label: menu1Label,
@@ -153,10 +151,6 @@ export default function LactoNavigation({
     return (
         <nav className={`container-grid ${styles.navigationWrapper} z-content-1 ${isScrolled ? styles.scrolled : ''}`} id={sectionId}>
             <div className="grid align-center">
-                {/* ================= DESKTOP LAYOUT (12 COLS) ================= */}
-                {/* Row: [Menu 1] [Menu 2] [Logo] [Menu 3] [Menu 4] + [User Icon] */}
-
-                {/* First 2 Items */}
                 {menuItems.slice(0, 2).map((item, index) => (
                     <div
                         key={`desktop-${item.suffix}`}
@@ -187,7 +181,6 @@ export default function LactoNavigation({
                     </div>
                 ))}
 
-                {/* Logo: Col 2 Center */}
                 <div className={`col-desktop-2 col-tablet-2 ${styles.desktopNav} ${styles.logoWrapper}`}>
                     <BuilderImage
                         src={logo}
@@ -201,7 +194,6 @@ export default function LactoNavigation({
                     />
                 </div>
 
-                {/* Last 2 Items */}
                 {menuItems.slice(2, 4).map((item) => (
                     <div
                         key={`desktop-${item.suffix}`}
@@ -232,12 +224,7 @@ export default function LactoNavigation({
                     </div>
                 ))}
 
-
-
-
-                {/* ================= MOBILE LAYOUT (2 COLS) ================= */}
-
-                {/* Logo: Col 1 */}
+                {/* Mobile Layout */}
                 <div className={`col-mobile-2 col-tablet-4 ${styles.mobileNav} ${styles.mobileLogoWrapper}`}>
                     <BuilderImage
                         src={logo}
@@ -249,7 +236,6 @@ export default function LactoNavigation({
                     />
                 </div>
 
-                {/* Burger: Col 1 Right */}
                 <div className={`col-mobile-2 col-tablet-4 ${styles.mobileNav} ${styles.mobileBurgerWrapper}`}>
                     <button
                         className={styles.burgerButton}
@@ -259,47 +245,49 @@ export default function LactoNavigation({
                     </button>
                 </div>
 
-            </div>
+            </div >
 
             {/* Mobile Menu Dialog - Rendered via Portal */}
-            {portalContainer && createPortal(
-                <>
-                    <div className="overlay z-system-modal-fullscreen" onClick={() => setIsMobileMenuOpen(false)} style={{ display: isMobileMenuOpen ? 'flex' : 'none', pointerEvents: 'auto' }} />
-                    <div className={`${styles.dialogWrapper} z-system-modal-fullscreen ${isMobileMenuOpen ? styles.open : ''}`}>
-                        <div className="container-grid">
-                            <div className="grid">
-                                <div className={`${styles.mobileDialog} col-12 col-mobile-4 col-tablet-4 col-desktop-6 offset-desktop-3 offset-tablet-2`}>
-                                    {menuItems.map((item) => (
-                                        <div key={`mobile-${item.mobileSuffix}`} className={styles.mobileMenuLink}>
-                                            <BuilderLink
-                                                label={item.label}
-                                                href={item.url}
-                                                openInNewTab={item.openInNewTab}
-                                                onLabelChange={item.handlers.onLabelChange}
-                                                onHrefChange={item.handlers.onUrlChange}
-                                                onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
-                                                sectionId={sectionId}
-                                                id={undefined}
-                                                suffix={item.mobileSuffix}
-                                                className={`${styles.mobileLinkText} body-bold link-nav`}
-                                                fullWidth={true}
-                                                isVisible={item.visible}
-                                                linkType={item.linkType}
-                                                targetDialogId={item.targetDialogId}
-                                                onLinkTypeChange={item.handlers.onLinkTypeChange}
-                                                onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
-                                                tooltipIfTruncated={true}
-                                            />
-                                        </div>
-                                    ))}
+            {
+                portalContainer && createPortal(
+                    <>
+                        <div className="overlay z-system-modal-fullscreen" onClick={() => setIsMobileMenuOpen(false)} style={{ display: isMobileMenuOpen ? 'flex' : 'none', pointerEvents: 'auto' }} />
+                        <div className={`${styles.dialogWrapper} z-system-modal-fullscreen ${isMobileMenuOpen ? styles.open : ''}`}>
+                            <div className="container-grid">
+                                <div className="grid">
+                                    <div className={`${styles.mobileDialog} col-12 col-mobile-4 col-tablet-4 col-desktop-6 offset-desktop-3 offset-tablet-2`}>
+                                        {menuItems.map((item) => (
+                                            <div key={`mobile-${item.mobileSuffix}`} className={styles.mobileMenuLink}>
+                                                <BuilderLink
+                                                    label={item.label}
+                                                    href={item.url}
+                                                    openInNewTab={item.openInNewTab}
+                                                    onLabelChange={item.handlers.onLabelChange}
+                                                    onHrefChange={item.handlers.onUrlChange}
+                                                    onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
+                                                    sectionId={sectionId}
+                                                    id={undefined}
+                                                    suffix={item.mobileSuffix}
+                                                    className={`${styles.mobileLinkText} body-bold link-nav`}
+                                                    fullWidth={true}
+                                                    isVisible={item.visible}
+                                                    linkType={item.linkType}
+                                                    targetDialogId={item.targetDialogId}
+                                                    onLinkTypeChange={item.handlers.onLinkTypeChange}
+                                                    onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
+                                                    tooltipIfTruncated={true}
+                                                />
+                                            </div>
+                                        ))}
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </>,
-                portalContainer
-            )}
-        </nav>
+                    </>,
+                    portalContainer
+                )
+            }
+        </nav >
     );
 }

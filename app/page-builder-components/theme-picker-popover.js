@@ -28,7 +28,6 @@ export default function ThemePickerPopover({
         >
             {/* Content */}
             <div className={`${styles.popoverContent} ${styles.themePickerContent}`}>
-                {/* Search */}
                 <div className={styles.themePickerSearchContainer}>
                     <input
                         type="text"
@@ -39,7 +38,6 @@ export default function ThemePickerPopover({
                     />
                 </div>
 
-                {/* Theme List */}
                 <div className={styles.themeList}>
                     {filteredThemes.map(theme => (
                         <label

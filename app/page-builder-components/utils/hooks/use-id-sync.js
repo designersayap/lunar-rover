@@ -2,11 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/**
- * useIdSync: Synchronizes element IDs with parent section changes and handles unique ID generation.
- */
 export function useIdSync({ id, sectionId, suffix, onIdChange }) {
-    // Normalize sectionId, generate fallback, and normalize stored ID
     const normalizedSectionId = sectionId?.replace(/-+$/, '') || '';
     const prefix = normalizedSectionId ? `${normalizedSectionId}-` : "";
     const generatedId = normalizedSectionId ? (suffix ? `${normalizedSectionId}-${suffix}` : `${normalizedSectionId}-element`) : undefined;
@@ -16,7 +12,6 @@ export function useIdSync({ id, sectionId, suffix, onIdChange }) {
     const [tempId, setTempId] = useState("");
     const prevSectionIdRef = useRef(sectionId);
 
-    // Update tempId when elementId changes
     useEffect(() => {
         const newTempId = (elementId && elementId.startsWith(prefix))
             ? elementId.slice(prefix.length)
@@ -28,7 +23,6 @@ export function useIdSync({ id, sectionId, suffix, onIdChange }) {
         }
     }, [elementId, prefix, tempId]);
 
-    // Sync ID when sectionId changes
     useEffect(() => {
         const prevSectionId = prevSectionIdRef.current;
         if (prevSectionId && prevSectionId !== sectionId) {

@@ -1,7 +1,7 @@
 import styles from "../page.module.css";
 
 /**
- * BasePopover: Shared wrapper for all popover components with consistent styling and positioning.
+ * BasePopover: Shared popover wrapper.
  */
 export default function BasePopover({
     isOpen,

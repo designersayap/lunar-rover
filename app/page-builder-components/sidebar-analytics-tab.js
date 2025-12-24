@@ -37,7 +37,7 @@ const ANALYTICS_SECTIONS = [
 ];
 
 /**
- * SidebarAnalyticsTab: Renders the analytics configuration form in the sidebar.
+ * SidebarAnalyticsTab: Analytics configuration form.
  */
 export default function SidebarAnalyticsTab({ analyticsData, setAnalyticsData }) {
     return (

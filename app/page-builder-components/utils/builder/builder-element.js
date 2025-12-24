@@ -10,12 +10,11 @@ export default function BuilderElement({
     style = {},
     children,
     id,
-    elementProps, // serving as suffix
+    elementProps,
     sectionId,
     onIdChange,
     isVisible = true
 }) {
-    // Use standardized ID hook
     const { elementId } = useIdSync({
         id,
         sectionId,
@@ -23,7 +22,6 @@ export default function BuilderElement({
         onIdChange
     });
 
-    // Use hook for active state and overlay
     const {
         wrapperRef,
         overlayRect,

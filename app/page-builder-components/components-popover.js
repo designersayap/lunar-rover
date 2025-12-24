@@ -22,7 +22,6 @@ export default function ComponentsPopover({
     );
 
     useEffect(() => {
-        // No auto-expand needed anymore
     }, [filteredLibrary, elementSearch]);
 
     return (

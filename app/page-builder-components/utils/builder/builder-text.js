@@ -25,7 +25,6 @@ export default function BuilderText({
     const [text, setText] = useState(content);
     const elementRef = useRef(null);
 
-    // Generate ID using standardized hook
     const firstClass = className.split(" ")[0] || tagName;
     const defaultSuffix = suffix || firstClass;
 
@@ -90,7 +89,6 @@ export default function BuilderText({
 
     // Check for truncation if enabled
     const [isTruncated, setIsTruncated] = useState(false);
-    // Tooltip logic
     const [isHovered, setIsHovered] = useState(false);
     const [tooltipPos, setTooltipPos] = useState({ top: 0, left: 0 });
 
@@ -120,7 +118,6 @@ export default function BuilderText({
     const activeProps = { ...props };
     delete activeProps.tooltipIfTruncated;
 
-    // Handle hover for tooltip positioning
     const handleMouseEnter = () => {
         if (!isTruncated || isEditing) return;
 
@@ -138,7 +135,6 @@ export default function BuilderText({
         setIsHovered(false);
     };
 
-    // Portal Tooltip Content
     const tooltipContent = (isHovered && isTruncated && !isEditing) ? (
         <div className="z-system-modal-floating" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: 0, overflow: 'visible', pointerEvents: 'none' }}>
             <div style={{

@@ -33,7 +33,6 @@ export default function TerraTestimony({
 
     const visibleCardsString = testimonies.map(t => t.visible).join(',');
 
-    // Calculate total pages based on viewport width
     useEffect(() => {
         const calculatePages = () => {
             if (!scrollContainerRef.current) return;
@@ -56,7 +55,6 @@ export default function TerraTestimony({
         };
     }, [testimonies.length, visibleCardsString]);
 
-    // Track scroll position to update active page
     useEffect(() => {
         const container = scrollContainerRef.current;
         if (!container) return;
@@ -72,7 +70,6 @@ export default function TerraTestimony({
         return () => container.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Handle dot click to scroll to specific page
     const scrollToPage = (pageIndex) => {
         if (!scrollContainerRef.current) return;
 
@@ -86,7 +83,6 @@ export default function TerraTestimony({
         });
     };
 
-    // Auto-scroll timer - advance every 5 seconds
     useEffect(() => {
         const autoScrollInterval = setInterval(() => {
             if (!scrollContainerRef.current) return;

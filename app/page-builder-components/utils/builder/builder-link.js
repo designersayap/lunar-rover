@@ -30,7 +30,6 @@ export default function BuilderLink({
     iconRight,
     justify = "center",
     fullWidth = false,
-    // New Props for Link Type
     linkType,
     onLinkTypeChange,
     targetDialogId,
@@ -38,27 +37,21 @@ export default function BuilderLink({
     tooltipIfTruncated,
     showLinkType = true
 }) {
-    // ID Sync Hook
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "link", onIdChange });
 
-    // Context
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent } = useContext(BuilderSelectionContext);
     const isActive = activeElementId === elementId;
 
-    // Popover state
     const myPopoverId = `popover-${elementId}`;
     const showSettings = activePopoverId === myPopoverId;
     const [popoverPosition, setPopoverPosition] = useState(null);
 
-    // Overlay position
     const wrapperRef = useRef(null);
     const [overlayRect, setOverlayRect] = useState(null);
 
-    // Display style
     const displayStyle = fullWidth ? 'flex' : 'inline-flex';
     const widthStyle = fullWidth ? '100%' : undefined;
 
-    // Update overlay position when active
     useEffect(() => {
         if (isActive && wrapperRef.current) {
             const updatePosition = () => {
@@ -114,30 +107,25 @@ export default function BuilderLink({
         e.preventDefault();
         e.stopPropagation();
 
-        // Find the Dialog component
         let dialogComponent;
         if (targetDialogId) {
             // Compare as strings to handle potential type mismatch (number vs string)
             dialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
         }
 
-        // Fallback to first if not found or not set
         if (!dialogComponent) {
             dialogComponent = selectedComponents?.find(c => c.id === 'dialog' || c.id === 'dialog-accordion');
         }
 
         if (dialogComponent) {
-            // Open it
             if (updateComponent) {
                 updateComponent(dialogComponent.uniqueId, { isOpen: true });
-                // Optional: show toast or feedback?
             }
         } else {
             alert("No Dialog component found on the page. Please add one from the Components menu.");
         }
     };
 
-    // Render Portal for Active Overlay
     const renderActiveOverlay = () => {
         if (!isActive || !overlayRect) return null;
 
@@ -196,15 +184,13 @@ export default function BuilderLink({
                 {isActive && <div className={styles.activeBorderOutline} />}
 
                 {(() => {
-                    // Safety check: Next.js Link crashes with "https:" or other incomplete URLs during prefetch
                     let safeHref = href || "#";
                     try {
-                        // If it looks like an absolute URL (starts with protocol), verify it's valid
                         if (/^[a-z]+:/i.test(safeHref)) {
                             new URL(safeHref); // Will throw if invalid
                         }
                     } catch (e) {
-                        // If invalid (e.g. user currently typing "https:"), fallback to "#" to prevent crash
+                        // Fallback to "#" to prevent crash
                         safeHref = "#";
                     }
 

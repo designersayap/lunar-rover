@@ -55,7 +55,6 @@ export async function POST(request) {
         fs.writeFileSync(dataFilePath, newFileContent);
 
         return NextResponse.json({ success: true });
-
     } catch (error) {
         console.error('Error saving staging data:', error);
         return NextResponse.json({ error: error.message }, { status: 500 });

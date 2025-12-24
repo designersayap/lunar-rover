@@ -27,7 +27,6 @@ export default function BuilderSection({
     const sectionRef = useRef(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
 
-    // Select context
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId } = useContext(BuilderSelectionContext);
 
     // Use sectionId as identifier (must be unique)
@@ -36,7 +35,6 @@ export default function BuilderSection({
     const myPopoverId = `popover-${elementId}`;
     const showSettings = activePopoverId === myPopoverId;
 
-    // Update overlay position when active
     const [overlayRect, setOverlayRect] = useState(null);
 
     useEffect(() => {
@@ -89,21 +87,18 @@ export default function BuilderSection({
 
         setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
     };
-
     const handleLayoutChange = (changes) => {
         if (onUpdate) {
             onUpdate(changes);
         }
     };
 
-    // Generate container classes based on layout props
     const containerClasses = getContainerClasses({
         fullWidth: fullWidth === true || fullWidth === "true",
         removePaddingLeft,
         removePaddingRight
     });
 
-    // Apply classes to root or inner wrapper based on innerContainer mode
     const rootContainerClasses = !innerContainer ? containerClasses : "";
     const innerContainerClasses = innerContainer ? containerClasses : "";
 
@@ -122,7 +117,6 @@ export default function BuilderSection({
             >
                 {isActive && <div className={styles.activeBorderOutline} />}
 
-                {/* Active Overlay */}
                 {isActive && (
                     <div
                         className={styles.activeOverlay}
@@ -144,16 +138,16 @@ export default function BuilderSection({
                 )}
 
 
-                {innerContainer ? (
-                    <div className={innerContainerClasses}>
-                        {children}
-                    </div>
-                ) : (
-                    children
-                )}
-            </Tag>
+                {
+                    innerContainer ? (
+                        <div className={innerContainerClasses} >
+                            {children}
+                        </div>
+                    ) : (
+                        children
+                    )}
+            </Tag >
 
-            {/* Popover */}
             {isActive && (
                 <BuilderControlsPopover
                     isOpen={showSettings}
@@ -163,13 +157,13 @@ export default function BuilderSection({
                     removePaddingLeft={removePaddingLeft}
                     removePaddingRight={removePaddingRight}
                     onLayoutChange={handleLayoutChange}
-                    // Hide link/variant controls
                     showLinkType={false}
                     showVariant={false}
                     showUrl={false}
                     url={""}
                 />
-            )}
+            )
+            }
         </>
     );
 }

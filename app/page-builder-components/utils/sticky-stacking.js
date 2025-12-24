@@ -8,13 +8,11 @@ import { isComponentSticky } from "./component-manager";
 export function useStickyStacking(components) {
     const [stickyStyles, setStickyStyles] = useState({});
 
-    // We need to keep references to the DOM elements to measure height
-    // We'll use a Map keyed by uniqueId
     const elementRefs = useRef(new Map());
     const lastStickyStylesRef = useRef("");
 
     useEffect(() => {
-        // 1. Identify sticky components in order
+        // Identify sticky components
         const stickyComponents = components.filter(isComponentSticky);
 
         if (stickyComponents.length === 0) {
@@ -23,11 +21,8 @@ export function useStickyStacking(components) {
             return;
         }
 
-        // 2. Measure heights and calculate offsets
         const newStyles = {};
         let currentTop = 0;
-
-        // Use a ResizeObserver to detect height changes (simplified logic for now)
 
         const updateOffsets = () => {
             let offset = 0;
@@ -36,17 +31,11 @@ export function useStickyStacking(components) {
             stickyComponents.forEach((comp, index) => {
                 const el = elementRefs.current.get(comp.uniqueId);
                 const height = el ? el.offsetHeight : 0;
-                // Add specific adjustment for Nav vs Banner if needed? 
-                // No, standard flow: sticky 1 is top 0. sticky 2 is top H1.
-
-                // However, we want them to stack relative to the viewport top
-                // So Sticky 1 gets top: 0
-                // Sticky 2 gets top: Sticky1Height
 
                 nextStyles[comp.uniqueId] = {
                     position: 'sticky',
                     top: offset,
-                    zIndex: 100 - index // Descending z-index so top items are above bottom items
+                    zIndex: 100 - index
                 };
 
                 offset += height;

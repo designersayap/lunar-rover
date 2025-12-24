@@ -3,8 +3,7 @@ import { COMPONENT_PATHS } from './component-paths';
 import { componentDefaults } from '@/app/template-components/content/data';
 
 /**
- * generateStagingPageContent: Generates the content for app/staging/[name]/page.js
- * Imports components directly from '@/app/template-components/...' using COMPONENT_PATHS
+ * Generate content for staging page.
  */
 export const generateStagingPageContent = (selectedComponents, folderName) => {
     let pageContent = `"use client";\n\n`;
@@ -12,15 +11,13 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
     // Import staging data overrides
     pageContent += `import { data as stagingData } from "./data";\n`;
 
-    // 1. Collect Imports
-    // We map component names to their import paths
+    // Collect Imports
     const imports = new Map();
 
     selectedComponents.forEach(item => {
         const filePath = COMPONENT_PATHS[item.id];
         if (!filePath) return;
 
-        // Convert file path (e.g. "app/template-components/foo.js") to import path ("@/app/template-components/foo")
         const importPath = filePath.replace('.js', '').replace('app/', '@/app/');
 
         const filename = filePath.split('/').pop();
@@ -75,7 +72,6 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
         // Prepare Props
         const props = { ...item, ...(item.props || {}) };
 
-        // Clean internal props
         delete props.id;
         delete props.name;
         delete props.componentId;
@@ -84,7 +80,7 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
         delete props.uniqueId;
         delete props.config;
         delete props.isOpen;
-        delete props.sectionId; // Will use item.sectionId below
+        delete props.sectionId;
 
         const finalSectionId = item.sectionId || item.uniqueId;
         if (finalSectionId) {
@@ -108,7 +104,6 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
 
         let componentJSX = `<${componentName} ${propsString} ${overrideString} ${onUpdateString} />`;
 
-        // Sticky Wrapper
         if (item.isSticky) {
             componentJSX = `
       <div style={{ position: 'sticky', top: 0, zIndex: 1000, width: '100%' }}>

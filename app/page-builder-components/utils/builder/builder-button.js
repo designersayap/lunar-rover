@@ -35,10 +35,8 @@ export default function BuilderButton({
 }) {
     const [popoverPosition, setPopoverPosition] = useState(null);
 
-    // Extract the button variant class from className
     const variantClass = className.split(' ').find(c => c.startsWith('btn-') && !['btn-lg', 'btn-md', 'btn-sm', 'btn-icon'].includes(c)) || 'btn-default';
 
-    // Normalize sectionId and stored ID
     const normalizedSectionId = sectionId?.replace(/-+$/, '') || '';
     const generatedId = normalizedSectionId ? (suffix ? `${normalizedSectionId}-${suffix}` : `${normalizedSectionId}-${variantClass}`) : undefined;
     const normalizedId = id?.replace(/-+/g, '-') || '';
@@ -46,7 +44,6 @@ export default function BuilderButton({
 
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent } = useContext(BuilderSelectionContext);
 
-    // Unique ID for this button's popover
     const myPopoverId = `popover-${buttonId}`;
     const showSettings = activePopoverId === myPopoverId;
 
@@ -64,7 +61,6 @@ export default function BuilderButton({
         }
     }, [buttonId, prefix, tempId]);
 
-    // Sync ID when sectionId changes
     const prevSectionIdRef = useRef(sectionId);
     useEffect(() => {
         const prevSectionId = prevSectionIdRef.current;
@@ -82,13 +78,11 @@ export default function BuilderButton({
     }, [sectionId, buttonId, onIdChange]);
 
     const handleIdChange = (e) => {
-        // Replace spaces with underscores
         const newValue = e.target.value.replace(/\s/g, '-');
         setTempId(newValue);
     };
 
     const handleIdBlur = () => {
-        // If empty, revert to original ID (suffix)
         if (!tempId || tempId.trim() === '') {
             setTempId(buttonId.startsWith(prefix) ? buttonId.slice(prefix.length) : buttonId);
             return;
@@ -107,17 +101,12 @@ export default function BuilderButton({
         e.stopPropagation();
     };
 
-    // Use hook for active state and overlay
     const {
         wrapperRef,
         overlayRect,
         isActive,
         handleActivate
     } = useActiveOverlay(buttonId);
-
-
-
-    // Update popover position based on overlay rect from hook
     useEffect(() => {
         if (isActive && overlayRect && showSettings) {
             // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -128,8 +117,6 @@ export default function BuilderButton({
         }
     }, [isActive, overlayRect, showSettings]);
 
-    // If href is empty, render button to allow editing
-
     if (!isVisible && !isActive) return null;
     const handleSettingsClick = (e) => {
         e.preventDefault();
@@ -137,30 +124,23 @@ export default function BuilderButton({
 
         setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
     };
-
-
-
     const handleOpenDialog = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        // Find the Dialog component
         let dialogComponent;
         if (targetDialogId) {
             // Compare as strings to handle potential type mismatch (number vs string)
             dialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
         }
 
-        // Fallback to first if not found or not set
         if (!dialogComponent) {
             dialogComponent = selectedComponents?.find(c => c.id === 'dialog' || c.id === 'dialog-accordion');
         }
 
         if (dialogComponent) {
-            // Open it
             if (updateComponent) {
                 updateComponent(dialogComponent.uniqueId, { isOpen: true });
-                // Optional: show toast or feedback?
             }
         } else {
             alert("No Dialog component found on the page. Please add one from the Components menu.");
@@ -169,7 +149,6 @@ export default function BuilderButton({
 
     let targetDialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
 
-    // Fallback if not found (matching handleOpenDialog logic)
     if (!targetDialogComponent && linkType === 'dialog') {
         targetDialogComponent = selectedComponents?.find(c => c.id === 'dialog' || c.id === 'dialog-accordion');
     }
@@ -214,7 +193,6 @@ export default function BuilderButton({
                 elementId={buttonId}
                 actions={
                     <>
-                        {/* specific trigger for dialog if selected */}
                         {linkType === 'dialog' && (
                             <button
                                 type="button"
@@ -237,7 +215,6 @@ export default function BuilderButton({
                 }
             />
 
-            {/* We render the popover outside the Link to avoid nesting issues */}
             {
                 isActive && (
                     <BuilderControlsPopover

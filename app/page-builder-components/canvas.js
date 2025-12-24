@@ -10,7 +10,7 @@ export default function Canvas({
 }) {
     const { setActiveElementId } = useBuilderSelection();
 
-    // Sort components for display: Pinned items first, then others (memoized to prevent infinite loops)
+    // Sort components: Pinned items first
     const displayComponents = useMemo(() => [
         ...selectedComponents.filter(c => isComponentSticky(c)),
         ...selectedComponents.filter(c => !isComponentSticky(c))
@@ -52,9 +52,6 @@ export default function Canvas({
                                     style={stickyStyle}
                                     ref={(el) => setRef(item.uniqueId, el)}
                                 >
-                                    {/* Removed Control Buttons per user request */}
-
-                                    {/* Render Component */}
                                     <Component
                                         {...item.props}
                                         sectionId={item.sectionId}
@@ -66,7 +63,7 @@ export default function Canvas({
                     </div>
                 )}
             </div>
-            {/* Portal container for dialogs - positioned relative to canvas */}
+            {/* Portal container for dialogs */}
             <div id="dialog-portal-root" className="z-system-modal-fullscreen" style={{ position: 'fixed', inset: 0, pointerEvents: 'none' }} />
         </div>
     );

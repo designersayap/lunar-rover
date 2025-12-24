@@ -2,9 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 
-/**
- * useToast: Manages toast notification state and auto-hide functionality.
- */
 export function useToast({ duration = 3000 } = {}) {
     const [toast, setToast] = useState({
         show: false,
@@ -12,17 +9,14 @@ export function useToast({ duration = 3000 } = {}) {
         type: "success"
     });
 
-    // Show toast
     const showToast = useCallback((message, type = "success") => {
         setToast({ show: true, message, type });
     }, []);
 
-    // Hide toast
     const hideToast = useCallback(() => {
         setToast(t => ({ ...t, show: false }));
     }, []);
 
-    // Auto-hide
     useEffect(() => {
         if (!toast.show) return;
         const timeoutId = setTimeout(hideToast, duration);

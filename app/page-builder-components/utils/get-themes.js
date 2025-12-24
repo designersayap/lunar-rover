@@ -13,7 +13,6 @@ export async function getThemes() {
             .filter(file => file.endsWith(".css") && file !== "theme.css")
             .map(file => {
                 const id = file.replace(".css", "");
-                // Convert kebab-case to Title Case
                 const name = id
                     .split("-")
                     .map(word => word.charAt(0).toUpperCase() + word.slice(1))

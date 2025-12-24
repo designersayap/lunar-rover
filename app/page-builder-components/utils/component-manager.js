@@ -5,7 +5,7 @@ import { componentDefaults } from "@/app/template-components/content/data";
  * Add a new component to the list.
  */
 export function addComponentToList(components, componentData, sectionId) {
-    // Build initial props from config defaults
+    // Build initial props
     const initialProps = {};
     componentData.config?.forEach(prop => {
         initialProps[prop.name] = prop.default;
@@ -18,16 +18,12 @@ export function addComponentToList(components, componentData, sectionId) {
         props: { ...initialProps, ...(componentData.props || {}) }
     };
 
-    // Pinned components (isSticky: true) always go to the specific "Pinned Section" at top
-    // We check defaults if not present in passed props (though it should be merged)
     const isSticky = Boolean(initialProps.isSticky);
 
     if (isSticky) {
-        // Find existing pinned items by checking their props
         const pinnedItems = components.filter(c => c.props?.isSticky);
         const otherItems = components.filter(c => !c.props?.isSticky);
 
-        // Add new pinned item at the end of the pinned group
         return [...pinnedItems, newItem, ...otherItems];
     }
 
@@ -44,14 +40,14 @@ export function removeComponentFromList(components, uniqueId) {
 
 
 /**
- * Helper to set value at path immutably (supports dot notation).
+ * Set value at path immutably.
  */
 function setIn(obj, path, value) {
     if (!path || path.length === 0) return value;
 
     const [head, ...rest] = Array.isArray(path) ? path : path.split('.');
 
-    // Handle the leaf case
+    // Handle leaf case
     if (rest.length === 0) {
         if (Array.isArray(obj)) {
             const newArr = [...obj];
@@ -77,12 +73,11 @@ function setIn(obj, path, value) {
 }
 
 /**
- * Helper to get value at path (supports dot notation).
+ * Get value at path.
  */
 export function getValueAt(obj, path) {
     if (!path || !obj) return undefined;
 
-    // If path is a key that exists directly, return it (optimization/fallback)
     if (Object.prototype.hasOwnProperty.call(obj, path)) return obj[path];
 
     const parts = path.split('.');
@@ -108,10 +103,8 @@ export function updateComponentProps(components, uniqueId, newProps) {
         Object.keys(newProps).forEach(key => {
             const value = newProps[key];
             if (key.includes('.')) {
-                // Handle nested update (e.g. "menuItems.0.linkVisible")
                 updatedProps = setIn(updatedProps, key, value);
             } else {
-                // Standard shallow update
                 updatedProps[key] = value;
             }
         });
@@ -154,13 +147,11 @@ function recursivelyUpdateIds(props, oldPrefix, newPrefix) {
 export function updateComponentSectionId(components, uniqueId, newSectionId) {
     return components.map(c => {
         if (c.uniqueId === uniqueId) {
-            // Calculate prefixes - normalize by removing trailing dashes
             const oldSectionId = c.sectionId?.replace(/-+$/, '') || '';
             const normalizedNewSectionId = newSectionId?.replace(/-+$/, '') || '';
             const oldPrefix = `${oldSectionId}-`;
             const newPrefix = `${normalizedNewSectionId}-`;
 
-            // Recursively update props that start with the old prefix
             const updatedProps = recursivelyUpdateIds(c.props, oldPrefix, newPrefix);
 
             return {
@@ -196,27 +187,17 @@ export function reorderComponents(components, fromIndex, toIndex) {
     // Calculate boundaries
     const pinnedCount = pinnedItems.length;
 
-    // SCENARIO 1: Dragging a PINNED item
     if (isPinned) {
-        // If user tries to drop outside pinned zone, clamp to valid range
         let targetIndex = toIndex;
         if (targetIndex >= pinnedCount) targetIndex = pinnedCount - 1;
 
         const newPinned = [...pinnedItems];
-        // We need to find the *relative* index within the pinned list
         const fromRelative = pinnedItems.findIndex(c => c.uniqueId === item.uniqueId);
-        // Remove from old pos
         newPinned.splice(fromRelative, 1);
-        // Insert at new pos
         newPinned.splice(targetIndex, 0, item);
 
         return [...newPinned, ...otherItems];
-    }
-
-    // SCENARIO 2: Dragging a NORMAL item
-    else {
-        // If user tries to drop inside pinned zone, clamp to valid range (start of unpinned)
-        // Adjust target index because the unified list includes pinned items at start
+    } else {
         let targetRelative = toIndex - pinnedCount;
         if (targetRelative < 0) targetRelative = 0;
 
@@ -252,9 +233,7 @@ export const searchComponents = (query, library) => {
 
         const filteredComponents = library[category].filter(component => {
             const lowerName = component.name.toLowerCase();
-            // Combine category and component name for search
             const combinedSearchableText = `${lowerCategory} ${lowerName}`;
-            // Check if all query terms are present in the combined text
             return queryTerms.every(term => combinedSearchableText.includes(term));
         });
 

@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
@@ -31,7 +30,7 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Invalid files data' }, { status: 400 });
         }
 
-        // 1. Setup and validate secure preview directory path
+        // Setup and validate secure preview directory path
         const rawFolder = folderName || `export-${Date.now()}`;
 
         if (!/^[a-zA-Z0-9-_]+$/.test(rawFolder)) {
@@ -45,7 +44,7 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Safety block' }, { status: 400 });
         }
 
-        // 2. Clean existing preview directory
+        // Clean existing preview directory
         if (fs.existsSync(PREVIEW_DIR)) {
             const existingFiles = fs.readdirSync(PREVIEW_DIR);
             for (const file of existingFiles) {
@@ -56,7 +55,7 @@ export async function POST(request) {
             fs.mkdirSync(PREVIEW_DIR, { recursive: true });
         }
 
-        // 3. Write files
+        // Write files
         for (const file of files) {
             const safePath = file.path
                 .replace(/^(\.\.(\/|\\|$))+/, '')
@@ -80,7 +79,6 @@ export async function POST(request) {
         }
 
         return NextResponse.json({ success: true, path: '/testing-page' });
-
     } catch (error) {
         console.error('Error saving preview files:', error);
         return NextResponse.json({ error: error.message }, { status: 500 });

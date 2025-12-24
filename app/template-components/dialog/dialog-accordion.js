@@ -8,8 +8,6 @@ import DialogSection from "./dialog-section";
 
 export default function DialogAccordion({
     title = "Title",
-    description = "Description",
-
     isOpen,
     onUpdate,
     sectionId,
@@ -19,7 +17,6 @@ export default function DialogAccordion({
     imageId,
     imageVisible,
 
-    // Accordion Items
     items = componentDefaults["dialog-accordion"]?.items || [],
     item0Id, item1Id, item2Id, item3Id, item4Id, item5Id, item6Id, item7Id,
     item0Visible = true, item1Visible = true, item2Visible = true, item3Visible = true,

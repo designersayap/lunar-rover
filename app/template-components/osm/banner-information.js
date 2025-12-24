@@ -9,7 +9,6 @@ import { getContainerClasses } from "@/app/page-builder-components/utils/section
 export default function BannerInformation({
     title = "Information Banner",
 
-    // Button Props
     buttonText = "Label",
     buttonUrl = "",
     buttonLinkType = "url",
@@ -33,7 +32,6 @@ export default function BannerInformation({
     const textWrapperRef = useRef(null);
     const textRef = useRef(null);
 
-    // Check for overflow to toggle marquee
     useEffect(() => {
         const checkOverflow = () => {
             if (textWrapperRef.current && textRef.current) {
@@ -76,8 +74,7 @@ export default function BannerInformation({
                                 style={{
                                     display: isMarquee ? 'inline-block' : 'block',
                                     width: isMarquee ? 'auto' : '100%',
-                                    // Use CSS Custom Properties for animation
-                                    // Consider moving style logic to CSS module or styled-component if possible for cleaner JSX
+                                    width: isMarquee ? 'auto' : '100%',
                                     '--marquee-offset': `-${marqueeOffset}px`,
                                     '--marquee-duration': `${marqueeDuration}s`
                                 }}

@@ -16,10 +16,7 @@ export function BuilderSelectionProvider({ children }) {
     // Close overlay/popover when clicking outside
     useEffect(() => {
         const handleWindowClick = (e) => {
-            // Check if click is inside a builder UI element (popover/overlay)
             if (e.target.closest('[data-builder-ui]')) return;
-
-            // Otherwise, close everything
             setActiveElementId(null);
             setActivePopoverId(null);
         };

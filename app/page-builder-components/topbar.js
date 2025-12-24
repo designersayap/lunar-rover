@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
 /**
- * TopBar: Renders the top navigation bar with theme picker and export controls.
+ * TopBar: Navigation and controls.
  */
 export default function TopBar({
     isSidebarVisible,
