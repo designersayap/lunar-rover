@@ -10,7 +10,8 @@ export default function UATPopover({
     selectedComponents,
     position,
     className = "",
-    activeThemePath
+    activeThemePath,
+    analyticsData
 }) {
     const [isExporting, setIsExporting] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -46,7 +47,8 @@ export default function UATPopover({
             await handleExportNextjs(selectedComponents, activeThemePath, {
                 download: false,
                 savePreview: true,
-                previewFolder: folderName.trim()
+                previewFolder: folderName.trim(),
+                analytics: analyticsData
             });
             // Update list and close
             onClose();

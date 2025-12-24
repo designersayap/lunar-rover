@@ -6,7 +6,8 @@ import { useStickyStacking } from "./utils/sticky-stacking";
 
 export default function Canvas({
     selectedComponents,
-    updateComponent
+    updateComponent,
+    activeBreakpoint = 'desktop'
 }) {
     const { setActiveElementId } = useBuilderSelection();
 
@@ -18,8 +19,14 @@ export default function Canvas({
 
     const { stickyStyles, setRef } = useStickyStacking(displayComponents);
 
+    // Generate breakpoint-specific className
+    const canvasClassName = `${styles.canvas} ${activeBreakpoint === 'mobile' ? styles.canvasMobile :
+        activeBreakpoint === 'tablet' ? styles.canvasTablet :
+            styles.canvasDesktop
+        }`;
+
     return (
-        <div className={styles.canvas} onClick={() => setActiveElementId(null)}>
+        <div className={canvasClassName} onClick={() => setActiveElementId(null)}>
             {/* Canvas Content */}
             <div className={styles.canvasInner}>
                 {displayComponents.length === 0 ? (

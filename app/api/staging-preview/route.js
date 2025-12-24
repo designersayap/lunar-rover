@@ -24,7 +24,7 @@ export async function GET() {
 
 export async function POST(request) {
     try {
-        const { folderName, fileContent } = await request.json();
+        const { folderName, fileContent, layoutContent } = await request.json();
 
         if (!folderName || !fileContent) {
             return NextResponse.json({ error: 'Missing folderName or fileContent' }, { status: 400 });
@@ -51,6 +51,12 @@ export async function POST(request) {
 
         const filePath = path.join(targetDir, 'page.js');
         fs.writeFileSync(filePath, fileContent);
+
+        // Handle layout.js
+        if (layoutContent) {
+            const layoutFilePath = path.join(targetDir, 'layout.js');
+            fs.writeFileSync(layoutFilePath, layoutContent);
+        }
 
         return NextResponse.json({ success: true, path: `/staging/${folderName}` });
 

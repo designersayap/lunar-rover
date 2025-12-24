@@ -94,7 +94,7 @@ export default function Sidebar({
                         className={`${styles.tab} ${activeTab === "analytics" ? styles.tabActive : styles.tabInactive} `}
                         onClick={() => setActiveTab("analytics")}
                     >
-                        Analytics
+                        Settings
                     </button>
                 </div>
             </div>

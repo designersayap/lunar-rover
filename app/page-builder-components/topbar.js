@@ -6,6 +6,9 @@ import {
     RocketLaunchIcon,
     ChevronDownIcon,
     DocumentPlusIcon,
+    DevicePhoneMobileIcon,
+    DeviceTabletIcon,
+    ComputerDesktopIcon,
 } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
 /**
@@ -22,7 +25,9 @@ export default function TopBar({
     selectedThemeId,
     themes = [],
     handleStaging,
-    isStagingPopoverOpen
+    isStagingPopoverOpen,
+    activeBreakpoint,
+    onBreakpointChange
 }) {
     const selectedTheme = themes.find(t => t.id === selectedThemeId);
     const selectedThemeName = selectedTheme ? selectedTheme.name : "Themes";
@@ -38,6 +43,32 @@ export default function TopBar({
                 />
                 <h1 className={`body-bold ${styles.logo}`}>Lunar</h1>
             </div>
+
+            {/* Breakpoint Controls */}
+            <div className={styles.breakpointControls}>
+                <button
+                    onClick={() => onBreakpointChange('mobile')}
+                    className={`${styles.topBarButton} ${activeBreakpoint === 'mobile' ? styles.topBarButtonActive : ''}`}
+                    data-tooltip="Mobile View"
+                >
+                    <DevicePhoneMobileIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />
+                </button>
+                <button
+                    onClick={() => onBreakpointChange('tablet')}
+                    className={`${styles.topBarButton} ${activeBreakpoint === 'tablet' ? styles.topBarButtonActive : ''}`}
+                    data-tooltip="Tablet View"
+                >
+                    <DeviceTabletIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />
+                </button>
+                <button
+                    onClick={() => onBreakpointChange('desktop')}
+                    className={`${styles.topBarButton} ${activeBreakpoint === 'desktop' ? styles.topBarButtonActive : ''}`}
+                    data-tooltip="Desktop View"
+                >
+                    <ComputerDesktopIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />
+                </button>
+            </div>
+
             <div className={styles.topBarRight}>
                 <button
                     onClick={() => setIsSidebarVisible(!isSidebarVisible)}
@@ -50,6 +81,7 @@ export default function TopBar({
                         <ChevronDoubleLeftIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />
                     )}
                 </button>
+
                 <button
                     className={`${styles.topBarButton} ${styles.topBarButtonBordered} ${isExportPopoverOpen ? styles.topBarButtonActive : ''}`}
                     data-tooltip="Create UAT"

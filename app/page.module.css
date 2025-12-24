@@ -155,6 +155,19 @@
     background: var(--grey-400);
 }
 
+/* Breakpoint Controls */
+.breakpointControls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg2);
+}
+
+.topBarButtonActive {
+    background: var(--bg3);
+    border-radius: 4px;
+}
+
 .topBarButtonWide {
     max-width: 134px;
 }
@@ -270,7 +283,33 @@
     overflow-y: auto;
     background: var(--base-white);
     position: relative;
+    display: flex;
+    justify-content: center;
+    background: var(--bg2);
 }
+
+.canvasInner {
+    width: 100%;
+    background: var(--base-white);
+    transition: width 0.3s ease, max-width 0.3s ease;
+}
+
+/* Breakpoint-specific canvas widths */
+.canvasMobile .canvasInner {
+    max-width: 375px;
+    margin: 0 auto;
+}
+
+.canvasTablet .canvasInner {
+    max-width: 768px;
+    margin: 0 auto;
+}
+
+.canvasDesktop .canvasInner {
+    width: 100%;
+    max-width: none;
+}
+
 
 .emptyState {
     min-height: 80vh;
