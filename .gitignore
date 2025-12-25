@@ -34,4 +34,4 @@ test-root-injection.js
 
 # user requests
 public/uat-files/daru-test
-app/staging-files/daru-test
+app/staging/daru-test
