@@ -174,7 +174,7 @@ export default function BuilderImage({
     };
 
     const imageSrc = src || defaultPlaceholder;
-    const isPlaceholder = !src || src === defaultPlaceholder;
+    const isPlaceholder = !src || src === defaultPlaceholder || (typeof src === 'string' && src.includes('placeholder_falj5i'));
     const finalStyle = {
         width: "100%",
         height: "100%",

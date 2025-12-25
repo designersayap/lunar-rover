@@ -1,10 +1,8 @@
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './lacto-navigation.module.css';
-import BuilderImage from '@/app/page-builder-components/utils/builder/builder-image';
-import BuilderLink from '@/app/page-builder-components/utils/builder/builder-link';
-import { createUpdateHandler } from '../utils/component-helpers';
-import { componentDefaults } from '../content/data';
+import { componentDefaults } from './data';
 import { Bars3Icon } from '@heroicons/react/24/solid';
 
 
@@ -48,7 +46,7 @@ export default function LactoNavigation({
 
     onUpdate
 }) {
-    const update = createUpdateHandler(onUpdate);
+    
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [portalContainer, setPortalContainer] = useState(null);
@@ -88,13 +86,12 @@ export default function LactoNavigation({
             targetDialogId: menu1TargetDialogId,
             id: menu1Id,
             handlers: {
-                onLabelChange: update('menu1Label'),
-                onUrlChange: update('menu1Url'),
-                onOpenInNewTabChange: update('menu1OpenInNewTab'),
-                onLinkTypeChange: update('menu1LinkType'),
-                onTargetDialogIdChange: update('menu1TargetDialogId'),
-                onIdChange: update('menu1Id')
-            },
+                
+                
+                
+                
+                
+                },
             suffix: 'menu-1',
             mobileSuffix: 'mobile-menu-1'
         },
@@ -107,13 +104,12 @@ export default function LactoNavigation({
             targetDialogId: menu2TargetDialogId,
             id: menu2Id,
             handlers: {
-                onLabelChange: update('menu2Label'),
-                onUrlChange: update('menu2Url'),
-                onOpenInNewTabChange: update('menu2OpenInNewTab'),
-                onLinkTypeChange: update('menu2LinkType'),
-                onTargetDialogIdChange: update('menu2TargetDialogId'),
-                onIdChange: update('menu2Id')
-            },
+                
+                
+                
+                
+                
+                },
             suffix: 'menu-2',
             mobileSuffix: 'mobile-menu-2'
         },
@@ -126,13 +122,12 @@ export default function LactoNavigation({
             targetDialogId: menu3TargetDialogId,
             id: menu3Id,
             handlers: {
-                onLabelChange: update('menu3Label'),
-                onUrlChange: update('menu3Url'),
-                onOpenInNewTabChange: update('menu3OpenInNewTab'),
-                onLinkTypeChange: update('menu3LinkType'),
-                onTargetDialogIdChange: update('menu3TargetDialogId'),
-                onIdChange: update('menu3Id')
-            },
+                
+                
+                
+                
+                
+                },
             suffix: 'menu-3',
             mobileSuffix: 'mobile-menu-3'
         },
@@ -145,13 +140,12 @@ export default function LactoNavigation({
             targetDialogId: menu4TargetDialogId,
             id: menu4Id,
             handlers: {
-                onLabelChange: update('menu4Label'),
-                onUrlChange: update('menu4Url'),
-                onOpenInNewTabChange: update('menu4OpenInNewTab'),
-                onLinkTypeChange: update('menu4LinkType'),
-                onTargetDialogIdChange: update('menu4TargetDialogId'),
-                onIdChange: update('menu4Id')
-            },
+                
+                
+                
+                
+                
+                },
             suffix: 'menu-4',
             mobileSuffix: 'mobile-menu-4'
         }
@@ -166,42 +160,24 @@ export default function LactoNavigation({
                         className={`col-desktop-2 ${index === 0 ? 'offset-desktop-1 offset-tablet-1' : ''} ${styles.desktopNav} ${styles.menuItemWrapper}`}
                     >
                         <div className={styles.truncatedText}>
-                            <BuilderLink
-                                label={item.label}
-                                href={item.url}
-                                openInNewTab={item.openInNewTab}
-                                onLabelChange={item.handlers.onLabelChange}
-                                onHrefChange={item.handlers.onUrlChange}
-                                onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
-                                sectionId={sectionId}
-                                id={item.id}
-                                onIdChange={item.handlers.onIdChange}
-                                className="body-bold link-nav"
-                                suffix={item.suffix}
-                                fullWidth={true}
-                                isVisible={item.visible}
-                                linkType={item.linkType}
-                                targetDialogId={item.targetDialogId}
-                                onLinkTypeChange={item.handlers.onLinkTypeChange}
-                                onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
-                                tooltipIfTruncated={true}
-                            />
+                            <Link href={(
+                   (item.linkType === 'dialog' && item.targetDialogId)
+                     ? '#' + item.targetDialogId
+                     : (item.url || "#")
+                )} className="body-bold link-nav" id={(item.id || (typeof sectionId !== 'undefined' && sectionId ? `${sectionId}-link` : undefined))} onClick={(e) => { if (item.linkType === 'dialog' && item.targetDialogId) { window.location.hash = '#' + item.targetDialogId; } }}>{item.label}</Link>
                         </div>
                     </div>
                 ))}
 
                 <div className={`col-desktop-2 col-tablet-2 ${styles.desktopNav} ${styles.logoWrapper}`}>
                     <div className={styles.logoContainer}>
-                        <BuilderImage
-                            src={logo}
-                            id={logoId}
-                            sectionId={sectionId}
-                            onIdChange={update('logoId')}
-                            isVisible={logoVisible}
-                            suffix="logo"
-                            className={styles.logoImage}
-                            style={logoStyle}
-                        />
+                        {(logoVisible ?? true) && ((logo && /\.(mp4|webm|ogv)(\?.*)?$/i.test(logo)) ? (
+                    <video src={logo} controls autoPlay muted loop playsInline className={styles.logoImage} id={(logoId || (typeof sectionId !== 'undefined' && sectionId ? `${sectionId}-logo` : undefined))} style={logoStyle} />
+                ) : (logo && /\.(mp3|wav)(\?.*)?$/i.test(logo)) ? (
+                    <audio src={logo} controls className={styles.logoImage} id={(logoId || (typeof sectionId !== 'undefined' && sectionId ? `${sectionId}-logo` : undefined))} style={logoStyle} />
+                ) : (
+                    <img src={logo || null} alt="" className={styles.logoImage} id={(logoId || (typeof sectionId !== 'undefined' && sectionId ? `${sectionId}-logo` : undefined))} style={logoStyle} />
+                ))}
                     </div>
                 </div>
 
@@ -211,26 +187,11 @@ export default function LactoNavigation({
                         className={`col-desktop-2 ${styles.desktopNav} ${styles.menuItemWrapper}`}
                     >
                         <div className={styles.truncatedText}>
-                            <BuilderLink
-                                label={item.label}
-                                href={item.url}
-                                openInNewTab={item.openInNewTab}
-                                onLabelChange={item.handlers.onLabelChange}
-                                onHrefChange={item.handlers.onUrlChange}
-                                onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
-                                sectionId={sectionId}
-                                id={item.id}
-                                onIdChange={item.handlers.onIdChange}
-                                className="body-bold link-nav"
-                                suffix={item.suffix}
-                                fullWidth={true}
-                                isVisible={item.visible}
-                                linkType={item.linkType}
-                                targetDialogId={item.targetDialogId}
-                                onLinkTypeChange={item.handlers.onLinkTypeChange}
-                                onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
-                                tooltipIfTruncated={true}
-                            />
+                            <Link href={(
+                   (item.linkType === 'dialog' && item.targetDialogId)
+                     ? '#' + item.targetDialogId
+                     : (item.url || "#")
+                )} className="body-bold link-nav" id={(item.id || (typeof sectionId !== 'undefined' && sectionId ? `${sectionId}-link` : undefined))} onClick={(e) => { if (item.linkType === 'dialog' && item.targetDialogId) { window.location.hash = '#' + item.targetDialogId; } }}>{item.label}</Link>
                         </div>
                     </div>
                 ))}
@@ -238,14 +199,13 @@ export default function LactoNavigation({
                 {/* Mobile Layout */}
                 <div className={`col-mobile-2 col-tablet-4 ${styles.mobileNav} ${styles.mobileLogoWrapper}`}>
                     <div className={styles.logoContainer}>
-                        <BuilderImage
-                            src={logo}
-                            id={logoId}
-                            isVisible={logoVisible}
-                            readOnly={true}
-                            className={styles.logoImage}
-                            style={logoStyle}
-                        />
+                        {(logoVisible ?? true) && ((logo && /\.(mp4|webm|ogv)(\?.*)?$/i.test(logo)) ? (
+                    <video src={logo} controls autoPlay muted loop playsInline className={styles.logoImage} id={(logoId || (typeof sectionId !== 'undefined' && sectionId ? `${sectionId}-image` : undefined))} style={logoStyle} />
+                ) : (logo && /\.(mp3|wav)(\?.*)?$/i.test(logo)) ? (
+                    <audio src={logo} controls className={styles.logoImage} id={(logoId || (typeof sectionId !== 'undefined' && sectionId ? `${sectionId}-image` : undefined))} style={logoStyle} />
+                ) : (
+                    <img src={logo || null} alt="" className={styles.logoImage} id={(logoId || (typeof sectionId !== 'undefined' && sectionId ? `${sectionId}-image` : undefined))} style={logoStyle} />
+                ))}
                     </div>
                 </div>
 
@@ -271,25 +231,11 @@ export default function LactoNavigation({
                                     <div className={`${styles.mobileDialog} col-12 col-mobile-4 col-tablet-4 col-desktop-6 offset-desktop-3 offset-tablet-2`}>
                                         {menuItems.map((item) => (
                                             <div key={`mobile-${item.mobileSuffix}`} className={styles.mobileMenuLink}>
-                                                <BuilderLink
-                                                    label={item.label}
-                                                    href={item.url}
-                                                    openInNewTab={item.openInNewTab}
-                                                    onLabelChange={item.handlers.onLabelChange}
-                                                    onHrefChange={item.handlers.onUrlChange}
-                                                    onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
-                                                    sectionId={sectionId}
-                                                    id={undefined}
-                                                    suffix={item.mobileSuffix}
-                                                    className={`${styles.mobileLinkText} body-bold link-nav`}
-                                                    fullWidth={true}
-                                                    isVisible={item.visible}
-                                                    linkType={item.linkType}
-                                                    targetDialogId={item.targetDialogId}
-                                                    onLinkTypeChange={item.handlers.onLinkTypeChange}
-                                                    onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
-                                                    tooltipIfTruncated={true}
-                                                />
+                                                <Link href={(
+                   (item.linkType === 'dialog' && item.targetDialogId)
+                     ? '#' + item.targetDialogId
+                     : (item.url || "#")
+                )} className={`${styles.mobileLinkText} body-bold link-nav`} id={(typeof sectionId !== 'undefined' && sectionId ? `${sectionId}-link` : undefined)} onClick={(e) => { if (item.linkType === 'dialog' && item.targetDialogId) { window.location.hash = '#' + item.targetDialogId; } }}>{item.label}</Link>
                                             </div>
                                         ))}
 

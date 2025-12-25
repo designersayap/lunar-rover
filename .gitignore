@@ -29,4 +29,7 @@ ts-debug.log*
 .vercel
 
 # generated previews
-/public/testing-page/
+
+# local tests
+test-export-logic.js
+test-root-injection.js

@@ -96,7 +96,8 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
 
             // C. Find and Process Dependencies (Recursive) - Match standard imports
             // We need a loop because regex.exec is stateful
-            const importRegex = /import\s+(?:[\w{},*\s]+)\s+from\s+['"](\.[^'"]+)['"]/g;
+            // FIXED: capture generic path (matched group 1) to support aliases like matching "@/..."
+            const importRegex = /import\s+(?:[\w{},*\s]+)\s+from\s+['"]([^'"]+)['"]/g;
             let match;
 
             // We collect replacements to do them after the loop to avoid messing up regex indices if content changes length (though we replace text so we should be careful)
@@ -106,6 +107,10 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
             for (const match of matches) {
                 const fullImport = match[0];
                 const importPath = match[1];
+
+                // Filter: Only process relative paths (.) and project aliases (@/)
+                // Ignore external packages (next, react, etc.)
+                if (!importPath.startsWith('.') && !importPath.startsWith('@/')) continue;
 
                 // Ignore CSS/Style imports locally (handled by step B or global styles), but ALLOW .module.css
                 // This is crucial for components that import another component's CSS module
@@ -162,7 +167,58 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         }
     };
 
-    for (const item of selectedComponents) {
+    // Deep clone components ONCE to ensure consistent modifications (placeholders, etc.)
+    // This allows both the bundler loop and the page generator loop to see the updated props.
+    const processedComponents = JSON.parse(JSON.stringify(selectedComponents));
+
+    // --- Placeholders Injection (Do this upfront) ---
+    const injectPlaceholders = (obj) => {
+        if (!obj || typeof obj !== 'object') return;
+
+        if (Array.isArray(obj)) {
+            obj.forEach(subItem => injectPlaceholders(subItem));
+            return;
+        }
+
+        Object.keys(obj).forEach(key => {
+            const val = obj[key];
+            const isImageKey = /image|logo|avatar|icon|background/i.test(key) && !/id$/i.test(key);
+
+            if (isImageKey && (!val || val === "")) {
+                obj[key] = defaultPlaceholder;
+            } else if (typeof val === 'object' && val !== null) {
+                injectPlaceholders(val);
+            }
+        });
+    };
+
+    processedComponents.forEach(item => {
+        // 1. Merge missing image defaults
+        // Some components (like TerraFeatures) might not have the property saved if it relies on the default.
+        // We find the default config and ensure those keys exist on the item so the injector can find them.
+        const compDefaults = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
+
+        Object.keys(compDefaults).forEach(key => {
+            const isImageKey = /image|logo|avatar|icon|background/i.test(key) && !/id$/i.test(key);
+            // If it's an image key AND it's missing from the item (undefined), copy it from defaults.
+            // We check both root and props to be safe, but we inject into root for consistency with the loop below.
+            const valInItem = item[key];
+            const valInProps = item.props ? item.props[key] : undefined;
+
+            if (isImageKey && valInItem === undefined && valInProps === undefined) {
+                // If the default is empty string, injectPlaceholders will catch it.
+                // If it has a value, it will be used.
+                item[key] = compDefaults[key];
+            }
+        });
+
+        // Run injection on the root of the clone
+        injectPlaceholders(item);
+        // Ensure props object exists
+        if (!item.props) item.props = {};
+    });
+
+    for (const item of processedComponents) {
         const filePath = COMPONENT_PATHS[item.id];
         if (!filePath) {
             console.warn(`No source path found for component: ${item.id}`);
@@ -181,21 +237,8 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
             .join('');
         imports.set(componentName, `./components/${filename}`);
 
-        // Initialize props
-        if (!item.props) item.props = {};
-
-        // INJECT DEFAULT PLACEHOLDER for empty images
-        Object.keys(item.props).forEach(key => {
-            const val = item.props[key];
-            const defVal = (componentDefaults[item.id] || componentDefaults[item.componentName] || {})[key];
-            const isImageKey = /image|logo|avatar|icon|background/i.test(key);
-
-            if (isImageKey && (!val || val === "")) {
-                item.props[key] = defaultPlaceholder;
-            }
-        });
-
         // --- Image Scanning & Bundling ---
+        // Use the PRE-PROCESSED item which already has placeholders injected
         const findImagesToCheck = (obj) => {
             let found = [];
             if (!obj) return found;
@@ -225,9 +268,6 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         // Bundle Defaults too (finding by item.id or componentName)
         const compDefaults = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
 
-        // Ensure item.props exists so we can inject into it later
-        if (!item.props) item.props = {};
-
         const defaultImages = findImagesToCheck(compDefaults);
         defaultImages.forEach(img => {
             if (!imagesToBundle.includes(img)) imagesToBundle.push(img);
@@ -237,7 +277,9 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
             if (processedFiles.has(imgPath)) continue; // Avoid re-fetching same image
 
             // Skip bundling for the system default placeholder (keep as remote URL)
-            if (imgPath === defaultPlaceholder) continue;
+            // Skip bundling for the system default placeholder (keep as remote URL)
+            // Use robust check to prevent renaming (which would break detection logic)
+            if (imgPath === defaultPlaceholder || (typeof imgPath === 'string' && imgPath.includes('placeholder_falj5i'))) continue;
 
             processedFiles.add(imgPath);
 
@@ -546,7 +588,7 @@ export default function RootLayout({ children }) {
 
     // Map uniqueIds to sectionIds for resolving "Target Dialog" links
     const sectionIdMap = new Map();
-    selectedComponents.forEach(comp => {
+    processedComponents.forEach(comp => {
         if (comp.uniqueId) {
             // Use sectionId if available, otherwise fallback to uniqueId
             const finalId = comp.sectionId || comp.uniqueId;
@@ -555,7 +597,7 @@ export default function RootLayout({ children }) {
     });
 
     // Render Instances
-    selectedComponents.forEach(item => {
+    processedComponents.forEach(item => {
         const filePath = COMPONENT_PATHS[item.id];
         if (!filePath) return;
 
@@ -567,6 +609,7 @@ export default function RootLayout({ children }) {
 
         // Merge props from root item and nested props to ensure robust data passing
         // Some implementations might store data at root, some in props. We capture both.
+        // USE CLONE (item itself is now the clone from processedComponents)
         const props = { ...item, ...(item.props || {}) };
 
         // Check for stickiness before deleting the prop
@@ -582,6 +625,7 @@ export default function RootLayout({ children }) {
         delete props.config; // Configuration specs
         delete props.isOpen; // Fix: Remove uncontrolled state prop
 
+        const finalSectionId = sectionIdMap.get(String(item.uniqueId));
         if (finalSectionId) {
             props.sectionId = finalSectionId;
         }

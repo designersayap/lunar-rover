@@ -41,14 +41,11 @@ export default function BuilderLink({
 
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent } = useContext(BuilderSelectionContext);
     const isActive = activeElementId === elementId;
-
     const myPopoverId = `popover-${elementId}`;
     const showSettings = activePopoverId === myPopoverId;
     const [popoverPosition, setPopoverPosition] = useState(null);
-
     const wrapperRef = useRef(null);
     const [overlayRect, setOverlayRect] = useState(null);
-
     const displayStyle = fullWidth ? 'flex' : 'inline-flex';
     const widthStyle = fullWidth ? '100%' : undefined;
 

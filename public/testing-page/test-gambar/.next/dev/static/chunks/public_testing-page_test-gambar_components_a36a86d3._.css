@@ -1,0 +1,486 @@
+/* [project]/public/testing-page/test-gambar/components/lacto-navigation.module.css [app-client] (css) */
+.lacto-navigation-module__bn30PG__navigationWrapper {
+  width: 100%;
+  padding-top: var(--padding-xs);
+  padding-bottom: var(--padding-xs);
+  background-color: #0000;
+  transition: background-color .3s;
+  position: relative;
+}
+
+.lacto-navigation-module__bn30PG__scrolled {
+  visibility: inherit;
+}
+
+.lacto-navigation-module__bn30PG__navigationWrapper.lacto-navigation-module__bn30PG__scrolled {
+  background-color: var(--background-neutral--default);
+}
+
+.lacto-navigation-module__bn30PG__mobileNav {
+  display: none !important;
+}
+
+.lacto-navigation-module__bn30PG__menuItemWrapper {
+  min-width: 0;
+  height: 100%;
+  padding: 0 var(--padding-xs);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.lacto-navigation-module__bn30PG__truncatedText {
+  text-align: center;
+  width: 100%;
+}
+
+.lacto-navigation-module__bn30PG__logoWrapper {
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  display: flex;
+}
+
+.lacto-navigation-module__bn30PG__logoContainer {
+  width: 132px;
+  height: 56px;
+}
+
+.lacto-navigation-module__bn30PG__logoImage {
+  width: 100%;
+  height: 100%;
+}
+
+.lacto-navigation-module__bn30PG__mobileHeader {
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  display: flex;
+}
+
+.lacto-navigation-module__bn30PG__burgerButton {
+  cursor: pointer;
+  padding: var(--padding-xs);
+  color: var(--content-neutral--title);
+  background: none;
+  border: none;
+  justify-content: flex-end;
+  align-items: center;
+  display: flex;
+}
+
+.lacto-navigation-module__bn30PG__mobileLogoWrapper {
+  justify-content: flex-start;
+  align-items: center;
+  display: flex;
+}
+
+.lacto-navigation-module__bn30PG__mobileBurgerWrapper {
+  justify-content: flex-end;
+  align-items: center;
+  display: flex;
+}
+
+.lacto-navigation-module__bn30PG__dialogWrapper {
+  pointer-events: none;
+  visibility: hidden;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  align-items: flex-end;
+  display: flex;
+  position: fixed;
+  inset: 0;
+}
+
+.lacto-navigation-module__bn30PG__dialogWrapper.lacto-navigation-module__bn30PG__open {
+  visibility: visible;
+}
+
+.lacto-navigation-module__bn30PG__mobileDialog {
+  pointer-events: auto;
+  background-color: var(--background-neutral--default);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-height: 80vh;
+  padding: var(--padding-md);
+  opacity: 0;
+  flex-direction: column;
+  margin: 0;
+  transition: transform .3s cubic-bezier(.4, 0, .2, 1), opacity .3s;
+  display: flex;
+  position: relative;
+  overflow-y: auto;
+  transform: translateY(100%);
+}
+
+.lacto-navigation-module__bn30PG__dialogWrapper.lacto-navigation-module__bn30PG__open .lacto-navigation-module__bn30PG__mobileDialog {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.lacto-navigation-module__bn30PG__mobileMenuLink {
+  padding: var(--padding-sm);
+  border-bottom: 1px solid var(--stroke-neutral--neutral);
+}
+
+.lacto-navigation-module__bn30PG__mobileMenuLink:last-child {
+  border-bottom: none;
+}
+
+.lacto-navigation-module__bn30PG__mobileLinkText {
+  width: 100%;
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .lacto-navigation-module__bn30PG__desktopNav {
+    display: none !important;
+  }
+
+  .lacto-navigation-module__bn30PG__mobileNav {
+    display: flex !important;
+  }
+
+  .lacto-navigation-module__bn30PG__navigationWrapper .lacto-navigation-module__bn30PG__grid {
+    display: grid;
+  }
+
+  .lacto-navigation-module__bn30PG__logoContainer {
+    width: 74px;
+    height: 32px;
+  }
+}
+
+/* [project]/public/testing-page/test-gambar/components/media-16-9.module.css [app-client] (css) */
+.media-16-9-module__wKoMrW__container {
+  width: 100%;
+  padding: var(--padding-sm) 0;
+  position: relative;
+}
+
+.media-16-9-module__wKoMrW__image {
+  height: auto;
+  display: block;
+}
+
+/* [project]/public/testing-page/test-gambar/components/terra-banner-hero.module.css [app-client] (css) */
+.terra-banner-hero-module__H4lmKW__hero {
+  text-align: center;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.terra-banner-hero-module__H4lmKW__hero .terra-banner-hero-module__H4lmKW__backgroundImage, .terra-banner-hero-module__H4lmKW__overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.terra-banner-hero-module__H4lmKW__image {
+  width: 100%;
+  height: 100%;
+}
+
+.terra-banner-hero-module__H4lmKW__hero > * {
+  position: relative;
+}
+
+.terra-banner-hero-module__H4lmKW__content {
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+}
+
+.terra-banner-hero-module__H4lmKW__heroTitle {
+  margin-bottom: var(--gap-md);
+  margin-top: calc(var(--space-240) * 2.5);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+@media (max-width: 1023px) {
+  .terra-banner-hero-module__H4lmKW__heroTitle {
+    margin-top: var(--gap-lg);
+  }
+}
+
+.terra-banner-hero-module__H4lmKW__fullHeight {
+  height: 100%;
+}
+
+.terra-banner-hero-module__H4lmKW__heroSubtitle {
+  margin-bottom: var(--gap-2xl);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.terra-banner-hero-module__H4lmKW__iconLeft, .terra-banner-hero-module__H4lmKW__iconRight {
+  width: var(--size-icon-md);
+  height: var(--size-icon-md);
+}
+
+/* [project]/public/testing-page/test-gambar/components/terra-features-image-left.module.css [app-client] (css) */
+.terra-features-image-left-module__ehZOLW__container {
+  padding: var(--padding-2xl) 0;
+}
+
+.terra-features-image-left-module__ehZOLW__imageWrapper {
+  order: 1;
+}
+
+.terra-features-image-left-module__ehZOLW__content {
+  padding: var(--padding-md);
+  flex-direction: column;
+  order: 2;
+  justify-content: center;
+  align-items: flex-start;
+  display: flex;
+}
+
+.terra-features-image-left-module__ehZOLW__title {
+  color: var(--content-neutral--title);
+  margin: 0 0 var(--gap-lg) 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.terra-features-image-left-module__ehZOLW__description {
+  color: var(--content-neutral--caption);
+  margin: 0 0 var(--gap-sm) 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+@media (max-width: 767px) {
+  .terra-features-image-left-module__ehZOLW__imageWrapper {
+    order: 2;
+  }
+
+  .terra-features-image-left-module__ehZOLW__content {
+    order: 1;
+  }
+}
+
+/* [project]/public/testing-page/test-gambar/components/terra-features-image-right.module.css [app-client] (css) */
+.terra-features-image-right-module__pcaYnq__container {
+  padding: var(--padding-2xl) 0;
+}
+
+.terra-features-image-right-module__pcaYnq__imageWrapper {
+  order: 2;
+}
+
+.terra-features-image-right-module__pcaYnq__content {
+  padding: var(--padding-md);
+  flex-direction: column;
+  order: 1;
+  justify-content: center;
+  align-items: flex-start;
+  display: flex;
+}
+
+.terra-features-image-right-module__pcaYnq__title {
+  color: var(--content-neutral--title);
+  margin: 0 0 var(--gap-lg) 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.terra-features-image-right-module__pcaYnq__description {
+  color: var(--content-neutral--caption);
+  margin: 0 0 var(--gap-sm) 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+@media (max-width: 767px) {
+  .terra-features-image-right-module__pcaYnq__imageWrapper {
+    order: 2;
+  }
+
+  .terra-features-image-right-module__pcaYnq__content {
+    order: 1;
+  }
+}
+
+/* [project]/public/testing-page/test-gambar/components/terra-testimony.module.css [app-client] (css) */
+.terra-testimony-module__B3tC1G__container {
+  padding: var(--padding-xl) 0;
+}
+
+.terra-testimony-module__B3tC1G__cardsWrapper {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  grid-auto-columns: 25%;
+  grid-auto-flow: column;
+  justify-content: flex-start;
+  display: grid;
+  overflow: auto hidden;
+}
+
+.terra-testimony-module__B3tC1G__cardsWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.terra-testimony-module__B3tC1G__itemWrapper {
+  scroll-snap-align: start;
+  padding: var(--padding-md);
+  justify-content: center;
+  min-width: 0;
+  display: flex;
+}
+
+@media (min-width: 1280px) {
+  .terra-testimony-module__B3tC1G__cardsWrapper {
+    grid-auto-columns: 25%;
+  }
+
+  .terra-testimony-module__B3tC1G__itemWrapper {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1280px) {
+  .terra-testimony-module__B3tC1G__cardsWrapper {
+    grid-auto-columns: 30%;
+  }
+
+  .terra-testimony-module__B3tC1G__itemWrapper {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .terra-testimony-module__B3tC1G__cardsWrapper {
+    grid-auto-columns: 320px;
+  }
+
+  .terra-testimony-module__B3tC1G__itemWrapper {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .terra-testimony-module__B3tC1G__cardsWrapper {
+    grid-auto-columns: 320px;
+  }
+
+  .terra-testimony-module__B3tC1G__itemWrapper {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.terra-testimony-module__B3tC1G__card {
+  aspect-ratio: 4 / 5;
+  background: var(--background-neutral--default);
+  border-radius: var(--border-radius-lg);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.terra-testimony-module__B3tC1G__terraTestimoniImage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.terra-testimony-module__B3tC1G__terraTestimoniDescriptionCard {
+  bottom: var(--padding-sm);
+  left: var(--padding-sm);
+  right: var(--padding-sm);
+  background: var(--background-neutral--default);
+  border-radius: var(--border-radius-md);
+  -webkit-backdrop-filter: blur(5.5px);
+  padding: var(--padding-lg) var(--padding-sm) var(--padding-sm) var(--padding-sm);
+  pointer-events: auto;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+  position: absolute;
+}
+
+@media (max-width: 767px) {
+  .terra-testimony-module__B3tC1G__terraTestimoniDescriptionCard {
+    padding-top: 40px;
+  }
+}
+
+.terra-testimony-module__B3tC1G__avatarImg {
+  border: 4px solid var(--background-neutral--default);
+  width: 52px;
+  height: 52px;
+  box-shadow: var(--shadow--button);
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+}
+
+.terra-testimony-module__B3tC1G__name {
+  text-align: left;
+  max-width: 100%;
+}
+
+.terra-testimony-module__B3tC1G__role {
+  opacity: .6;
+  text-align: left;
+  max-width: 100%;
+  color: var(--content-neutral--caption);
+  margin-bottom: var(--gap-xs);
+}
+
+.terra-testimony-module__B3tC1G__description {
+  opacity: .8;
+  text-align: left;
+  max-width: 100%;
+  color: var(--content-neutral--body);
+  word-break: break-word;
+}
+
+.terra-testimony-module__B3tC1G__paginator {
+  justify-content: center;
+  gap: var(--gap-sm);
+  margin-top: var(--gap-sm);
+  display: flex;
+}
+
+@media (max-width: 1023px) {
+  .terra-testimony-module__B3tC1G__paginator {
+    display: none;
+  }
+}
+
+.terra-testimony-module__B3tC1G__dot {
+  border-radius: var(--border-radius-lg);
+  background: var(--background-neutral--neutral-subtle);
+  cursor: pointer;
+  width: 40px;
+  height: 4px;
+  transition: background .3s, opacity .3s;
+}
+
+.terra-testimony-module__B3tC1G__dot:hover {
+  opacity: .7;
+}
+
+.terra-testimony-module__B3tC1G__activeDot {
+  background: var(--background-brand--button--primary-default);
+}
+
+/*# sourceMappingURL=public_testing-page_test-gambar_components_a36a86d3._.css.map*/

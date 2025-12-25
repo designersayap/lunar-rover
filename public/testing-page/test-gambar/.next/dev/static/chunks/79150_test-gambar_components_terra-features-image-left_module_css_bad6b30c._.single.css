@@ -1,0 +1,43 @@
+/* [project]/public/testing-page/test-gambar/components/terra-features-image-left.module.css [app-client] (css) */
+.terra-features-image-left-module__ehZOLW__container {
+  padding: var(--padding-2xl) 0;
+}
+
+.terra-features-image-left-module__ehZOLW__imageWrapper {
+  order: 1;
+}
+
+.terra-features-image-left-module__ehZOLW__content {
+  padding: var(--padding-md);
+  flex-direction: column;
+  order: 2;
+  justify-content: center;
+  align-items: flex-start;
+  display: flex;
+}
+
+.terra-features-image-left-module__ehZOLW__title {
+  color: var(--content-neutral--title);
+  margin: 0 0 var(--gap-lg) 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.terra-features-image-left-module__ehZOLW__description {
+  color: var(--content-neutral--caption);
+  margin: 0 0 var(--gap-sm) 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+@media (max-width: 767px) {
+  .terra-features-image-left-module__ehZOLW__imageWrapper {
+    order: 2;
+  }
+
+  .terra-features-image-left-module__ehZOLW__content {
+    order: 1;
+  }
+}
+
+/*# sourceMappingURL=79150_test-gambar_components_terra-features-image-left_module_css_bad6b30c._.single.css.map*/

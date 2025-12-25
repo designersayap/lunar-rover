@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/public/testing-page/test-gambar/components/media-16-9.module.css"],"sourcesContent":[".container {\n    width: 100%;\n    position: relative;\n    padding: var(--padding-sm) 0;\n}\n\n\n.image {\n    height: auto;\n    display: block;\n}"],"names":[],"mappings":"AAAA;;;;;;AAOA"}}]
+}

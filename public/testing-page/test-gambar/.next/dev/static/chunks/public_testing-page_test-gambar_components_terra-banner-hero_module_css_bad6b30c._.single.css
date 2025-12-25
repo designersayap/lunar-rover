@@ -1,0 +1,63 @@
+/* [project]/public/testing-page/test-gambar/components/terra-banner-hero.module.css [app-client] (css) */
+.terra-banner-hero-module__H4lmKW__hero {
+  text-align: center;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.terra-banner-hero-module__H4lmKW__hero .terra-banner-hero-module__H4lmKW__backgroundImage, .terra-banner-hero-module__H4lmKW__overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.terra-banner-hero-module__H4lmKW__image {
+  width: 100%;
+  height: 100%;
+}
+
+.terra-banner-hero-module__H4lmKW__hero > * {
+  position: relative;
+}
+
+.terra-banner-hero-module__H4lmKW__content {
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+}
+
+.terra-banner-hero-module__H4lmKW__heroTitle {
+  margin-bottom: var(--gap-md);
+  margin-top: calc(var(--space-240) * 2.5);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+@media (max-width: 1023px) {
+  .terra-banner-hero-module__H4lmKW__heroTitle {
+    margin-top: var(--gap-lg);
+  }
+}
+
+.terra-banner-hero-module__H4lmKW__fullHeight {
+  height: 100%;
+}
+
+.terra-banner-hero-module__H4lmKW__heroSubtitle {
+  margin-bottom: var(--gap-2xl);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.terra-banner-hero-module__H4lmKW__iconLeft, .terra-banner-hero-module__H4lmKW__iconRight {
+  width: var(--size-icon-md);
+  height: var(--size-icon-md);
+}
+
+/*# sourceMappingURL=public_testing-page_test-gambar_components_terra-banner-hero_module_css_bad6b30c._.single.css.map*/
