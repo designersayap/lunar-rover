@@ -28,8 +28,10 @@ ts-debug.log*
 # vercel
 .vercel
 
-# generated previews
-
 # local tests
 test-export-logic.js
 test-root-injection.js
+
+# user requests
+public/uat-files/daru-test
+app/staging-files/daru-test

@@ -4,7 +4,7 @@
     width: 100%;
     padding-top: var(--padding-xs);
     padding-bottom: var(--padding-xs);
-    background-color: transparent;
+    background-color: var(--background-neutral--default);
     transition: background-color 0.3s ease;
     position: relative;
 }
@@ -15,7 +15,12 @@
 }
 
 .navigationWrapper.scrolled {
-    background-color: var(--background-neutral--default);
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    /* Blue-ish glass shadow */
 }
 
 /* Desktop Styles */

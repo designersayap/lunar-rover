@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+// Force HMR update for hydration synchronization
 import { createPortal } from 'react-dom';
 import styles from './lacto-navigation.module.css';
 import BuilderImage from '@/app/page-builder-components/utils/builder/builder-image';
@@ -158,107 +159,109 @@ export default function LactoNavigation({
     ];
 
     return (
-        <nav className={`container-grid ${styles.navigationWrapper} z-content-1 ${isScrolled ? styles.scrolled : ''}`} id={sectionId}>
-            <div className="grid align-center">
-                {menuItems.slice(0, 2).map((item, index) => (
-                    <div
-                        key={`desktop-${item.suffix}`}
-                        className={`col-desktop-2 ${index === 0 ? 'offset-desktop-1 offset-tablet-1' : ''} ${styles.desktopNav} ${styles.menuItemWrapper}`}
-                    >
-                        <div className={styles.truncatedText}>
-                            <BuilderLink
-                                label={item.label}
-                                href={item.url}
-                                openInNewTab={item.openInNewTab}
-                                onLabelChange={item.handlers.onLabelChange}
-                                onHrefChange={item.handlers.onUrlChange}
-                                onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
+        <nav className={`${styles.navigationWrapper} z-content-1 ${isScrolled ? styles.scrolled : ''}`} id={sectionId}>
+            <div className="container-grid">
+                <div className="grid align-center">
+                    {menuItems.slice(0, 2).map((item, index) => (
+                        <div
+                            key={`desktop-${item.suffix}`}
+                            className={`col-desktop-2 ${index === 0 ? 'offset-desktop-1 offset-tablet-1' : ''} ${styles.desktopNav} ${styles.menuItemWrapper}`}
+                        >
+                            <div className={styles.truncatedText}>
+                                <BuilderLink
+                                    label={item.label}
+                                    href={item.url}
+                                    openInNewTab={item.openInNewTab}
+                                    onLabelChange={item.handlers.onLabelChange}
+                                    onHrefChange={item.handlers.onUrlChange}
+                                    onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
+                                    sectionId={sectionId}
+                                    id={item.id}
+                                    onIdChange={item.handlers.onIdChange}
+                                    className="body-bold link-nav"
+                                    suffix={item.suffix}
+                                    fullWidth={true}
+                                    isVisible={item.visible}
+                                    linkType={item.linkType}
+                                    targetDialogId={item.targetDialogId}
+                                    onLinkTypeChange={item.handlers.onLinkTypeChange}
+                                    onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
+                                    tooltipIfTruncated={true}
+                                />
+                            </div>
+                        </div>
+                    ))}
+
+                    <div className={`col-desktop-2 col-tablet-2 ${styles.desktopNav} ${styles.logoWrapper}`}>
+                        <div className={styles.logoContainer}>
+                            <BuilderImage
+                                src={logo}
+                                id={logoId}
                                 sectionId={sectionId}
-                                id={item.id}
-                                onIdChange={item.handlers.onIdChange}
-                                className="body-bold link-nav"
-                                suffix={item.suffix}
-                                fullWidth={true}
-                                isVisible={item.visible}
-                                linkType={item.linkType}
-                                targetDialogId={item.targetDialogId}
-                                onLinkTypeChange={item.handlers.onLinkTypeChange}
-                                onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
-                                tooltipIfTruncated={true}
+                                onIdChange={update('logoId')}
+                                isVisible={logoVisible}
+                                suffix="logo"
+                                className={styles.logoImage}
+                                style={logoStyle}
                             />
                         </div>
                     </div>
-                ))}
 
-                <div className={`col-desktop-2 col-tablet-2 ${styles.desktopNav} ${styles.logoWrapper}`}>
-                    <div className={styles.logoContainer}>
-                        <BuilderImage
-                            src={logo}
-                            id={logoId}
-                            sectionId={sectionId}
-                            onIdChange={update('logoId')}
-                            isVisible={logoVisible}
-                            suffix="logo"
-                            className={styles.logoImage}
-                            style={logoStyle}
-                        />
-                    </div>
-                </div>
+                    {menuItems.slice(2, 4).map((item) => (
+                        <div
+                            key={`desktop-${item.suffix}`}
+                            className={`col-desktop-2 ${styles.desktopNav} ${styles.menuItemWrapper}`}
+                        >
+                            <div className={styles.truncatedText}>
+                                <BuilderLink
+                                    label={item.label}
+                                    href={item.url}
+                                    openInNewTab={item.openInNewTab}
+                                    onLabelChange={item.handlers.onLabelChange}
+                                    onHrefChange={item.handlers.onUrlChange}
+                                    onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
+                                    sectionId={sectionId}
+                                    id={item.id}
+                                    onIdChange={item.handlers.onIdChange}
+                                    className="body-bold link-nav"
+                                    suffix={item.suffix}
+                                    fullWidth={true}
+                                    isVisible={item.visible}
+                                    linkType={item.linkType}
+                                    targetDialogId={item.targetDialogId}
+                                    onLinkTypeChange={item.handlers.onLinkTypeChange}
+                                    onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
+                                    tooltipIfTruncated={true}
+                                />
+                            </div>
+                        </div>
+                    ))}
 
-                {menuItems.slice(2, 4).map((item) => (
-                    <div
-                        key={`desktop-${item.suffix}`}
-                        className={`col-desktop-2 ${styles.desktopNav} ${styles.menuItemWrapper}`}
-                    >
-                        <div className={styles.truncatedText}>
-                            <BuilderLink
-                                label={item.label}
-                                href={item.url}
-                                openInNewTab={item.openInNewTab}
-                                onLabelChange={item.handlers.onLabelChange}
-                                onHrefChange={item.handlers.onUrlChange}
-                                onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
-                                sectionId={sectionId}
-                                id={item.id}
-                                onIdChange={item.handlers.onIdChange}
-                                className="body-bold link-nav"
-                                suffix={item.suffix}
-                                fullWidth={true}
-                                isVisible={item.visible}
-                                linkType={item.linkType}
-                                targetDialogId={item.targetDialogId}
-                                onLinkTypeChange={item.handlers.onLinkTypeChange}
-                                onTargetDialogIdChange={item.handlers.onTargetDialogIdChange}
-                                tooltipIfTruncated={true}
+                    {/* Mobile Layout */}
+                    <div className={`col-mobile-2 col-tablet-4 ${styles.mobileNav} ${styles.mobileLogoWrapper}`}>
+                        <div className={styles.logoContainer}>
+                            <BuilderImage
+                                src={logo}
+                                id={logoId}
+                                isVisible={logoVisible}
+                                readOnly={true}
+                                className={styles.logoImage}
+                                style={logoStyle}
                             />
                         </div>
                     </div>
-                ))}
 
-                {/* Mobile Layout */}
-                <div className={`col-mobile-2 col-tablet-4 ${styles.mobileNav} ${styles.mobileLogoWrapper}`}>
-                    <div className={styles.logoContainer}>
-                        <BuilderImage
-                            src={logo}
-                            id={logoId}
-                            isVisible={logoVisible}
-                            readOnly={true}
-                            className={styles.logoImage}
-                            style={logoStyle}
-                        />
+                    <div className={`col-mobile-2 col-tablet-4 ${styles.mobileNav} ${styles.mobileBurgerWrapper}`}>
+                        <button
+                            className={styles.burgerButton}
+                            onClick={() => setIsMobileMenuOpen(true)}
+                        >
+                            <Bars3Icon style={{ width: 24, height: 24 }} />
+                        </button>
                     </div>
-                </div>
 
-                <div className={`col-mobile-2 col-tablet-4 ${styles.mobileNav} ${styles.mobileBurgerWrapper}`}>
-                    <button
-                        className={styles.burgerButton}
-                        onClick={() => setIsMobileMenuOpen(true)}
-                    >
-                        <Bars3Icon style={{ width: 24, height: 24 }} />
-                    </button>
-                </div>
-
-            </div >
+                </div >
+            </div>
 
             {/* Mobile Menu Dialog - Rendered via Portal */}
             {

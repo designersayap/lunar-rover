@@ -73,7 +73,7 @@ export default function StagingPopover({
                         />
                     </div>
                     <p className={styles.exportHelperText} style={{ color: 'var(--content-neutral--caption)' }}>
-                        Creates <code>app/staging/{folderName || '...'}</code>
+                        Creates <code>app/staging-files/{folderName || '...'}</code>
                     </p>
                 </div>
 

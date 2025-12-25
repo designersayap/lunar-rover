@@ -4,7 +4,7 @@ import path from 'path';
 
 export async function GET() {
     try {
-        const STAGING_DIR = path.join(process.cwd(), 'app', 'staging');
+        const STAGING_DIR = path.join(process.cwd(), 'app', 'staging-files');
 
         if (!fs.existsSync(STAGING_DIR)) {
             return NextResponse.json({ folders: [] });
@@ -30,7 +30,7 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Missing folderName or fileContent' }, { status: 400 });
         }
 
-        const STAGING_DIR = path.join(process.cwd(), 'app', 'staging');
+        const STAGING_DIR = path.join(process.cwd(), 'app', 'staging-files');
 
         // Security check for folder name
         if (!/^[a-zA-Z0-9-_]+$/.test(folderName)) {
@@ -58,7 +58,7 @@ export async function POST(request) {
             fs.writeFileSync(layoutFilePath, layoutContent);
         }
 
-        return NextResponse.json({ success: true, path: `/staging/${folderName}` });
+        return NextResponse.json({ success: true, path: `/staging-files/${folderName}` });
     } catch (error) {
         console.error('Error creating staging page:', error);
         return NextResponse.json({ error: error.message }, { status: 500 });

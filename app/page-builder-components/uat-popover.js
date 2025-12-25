@@ -86,7 +86,7 @@ export default function UATPopover({
                         />
                     </div>
                     <p className={styles.exportHelperText} style={{ color: 'var(--content-neutral--caption)' }}>
-                        Saves to <code>/public/testing-page/{folderName || '...'}</code>
+                        Saves to <code>/public/uat-files/{folderName || '...'}</code>
                     </p>
                 </div>
 

@@ -41,6 +41,25 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         console.error("Error fetching utils", e);
     }
 
+    // 1b. Fetch Sticky Manager
+    try {
+        const stickyRes = await fetch('/api/export-component', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ filePath: 'app/page-builder-components/utils/sticky-manager.js' })
+        });
+        if (stickyRes.ok) {
+            const { content } = await stickyRes.json();
+            zip.folder("utils").file("sticky-manager.js", content);
+            previewMap.set("utils/sticky-manager.js", { path: "utils/sticky-manager.js", content });
+        } else {
+            console.warn("Could not fetch sticky-manager.js");
+            errors.push("Missing utils/sticky-manager.js");
+        }
+    } catch (e) {
+        console.error("Error fetching sticky manager", e);
+    }
+
     // 2. Process Components (Fetch JS, CSS, and Dependencies)
     const processedFiles = new Set();
 
@@ -581,6 +600,8 @@ export default function RootLayout({ children }) {
         const importPath = path.replace('./components', '@/components');
         pageContent += `import ${name} from "${importPath}";\n`;
     });
+    // Import Sticky Manager
+    pageContent += `import StickyManager from "@/utils/sticky-manager";\n`;
 
     pageContent += `\nexport default function ExportedPage() {\n`;
     pageContent += `  return (\n`;
@@ -596,8 +617,20 @@ export default function RootLayout({ children }) {
         }
     });
 
+    // Pre-calculate Sticky Indices
+    const stickyIndices = [];
+    processedComponents.forEach((item, index) => {
+        const compDefaults = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
+        const isSticky = item.props?.isSticky ?? compDefaults.isSticky ?? false;
+        if (isSticky) {
+            stickyIndices.push(index);
+        }
+    });
+
+    pageContent += `      <StickyManager stickyIndices={[${stickyIndices.join(',')}]}>\n`;
+
     // Render Instances
-    processedComponents.forEach(item => {
+    processedComponents.forEach((item) => {
         const filePath = COMPONENT_PATHS[item.id];
         if (!filePath) return;
 
@@ -664,6 +697,8 @@ export default function RootLayout({ children }) {
         let componentJSX = `<${componentName} ${propsString} />`;
 
         // Apply Sticky Wrapper if needed
+        // REMOVED: Managed by StickyManager
+        /*
         if (isSticky) {
             // Use inline style for sticky positioning (z-index 1000)
             componentJSX = `
@@ -671,10 +706,12 @@ export default function RootLayout({ children }) {
         ${componentJSX}
       </div>`;
         }
+        */
 
         pageContent += `      ${componentJSX}\n`;
     });
 
+    pageContent += `      </StickyManager>\n`;
     pageContent += `    </main>\n`;
     pageContent += `  );\n`;
     pageContent += `}\n`;
@@ -832,11 +869,11 @@ export default function RootLayout({ children }) {
             });
 
             if (previewRes.ok) {
-                console.log(`Preview files saved to public/testing-page/${folderName}`);
+                console.log(`Preview files saved to public/uat-files/${folderName}`);
                 if (download) {
-                    alert(`Export Successful!\n\nZIP Downloaded.\n\nFiles also saved to:\npublic/testing-page/${folderName}`);
+                    alert(`Export Successful!\n\nZIP Downloaded.\n\nFiles also saved to:\npublic/uat-files/${folderName}`);
                 } else {
-                    alert(`Project Saved!\n\nFiles saved to:\npublic/testing-page/${folderName}`);
+                    alert(`Project Saved!\n\nFiles saved to:\npublic/uat-files/${folderName}`);
                 }
             } else {
                 console.warn("Failed to save preview files");

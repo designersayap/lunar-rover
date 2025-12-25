@@ -33,6 +33,8 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
     imports.forEach((path, name) => {
         pageContent += `import ${name} from "${path}";\n`;
     });
+    // Import Sticky Manager
+    pageContent += `import StickyManager from "@/app/page-builder-components/utils/sticky-manager";\n`;
 
     pageContent += `\nexport default function StagingPage() {\n`;
 
@@ -59,6 +61,19 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
 
     pageContent += `  return (\n`;
     pageContent += `    <main className="flex min-h-screen flex-col items-center justify-between">\n`;
+
+    // Pre-calculate Sticky Indices
+    const stickyIndices = [];
+    selectedComponents.forEach((item, index) => {
+        const compDefaults = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
+        // Access props directly as they appear in the builder object (item.props)
+        const isSticky = item.props?.isSticky ?? compDefaults.isSticky ?? false;
+        if (isSticky) {
+            stickyIndices.push(index);
+        }
+    });
+
+    pageContent += `      <StickyManager stickyIndices={[${stickyIndices.join(',')}]}>\n`;
 
     // 2. Render Components
     selectedComponents.forEach(item => {
@@ -107,15 +122,13 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
         let componentJSX = `<${componentName} ${propsString} ${overrideString} ${onUpdateString} />`;
 
         if (item.isSticky) {
-            componentJSX = `
-      <div style={{ position: 'sticky', top: 0, zIndex: 1000, width: '100%' }}>
-        ${componentJSX}
-      </div>`;
+            // REMOVED: Managed by StickyManager
         }
 
         pageContent += `      ${componentJSX}\n`;
     });
 
+    pageContent += `      </StickyManager>\n`;
     pageContent += `    </main>\n`;
     pageContent += `  );\n`;
     pageContent += `}\n`;

@@ -4,7 +4,7 @@ import path from 'path';
 
 export async function GET() {
     try {
-        const PREVIEW_DIR = path.join(process.cwd(), 'public', 'testing-page');
+        const PREVIEW_DIR = path.join(process.cwd(), 'public', 'uat-files');
 
         if (!fs.existsSync(PREVIEW_DIR)) {
             return NextResponse.json({ folders: [] });
@@ -37,7 +37,7 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Invalid folder name' }, { status: 400 });
         }
 
-        const PREVIEW_DIR = path.join(process.cwd(), 'public', 'testing-page', rawFolder);
+        const PREVIEW_DIR = path.join(process.cwd(), 'public', 'uat-files', rawFolder);
 
         if (PREVIEW_DIR.length < process.cwd().length + 10) {
             console.error("Safety Block: Path too short", PREVIEW_DIR);
@@ -78,7 +78,7 @@ export async function POST(request) {
             fs.writeFileSync(fullPath, content);
         }
 
-        return NextResponse.json({ success: true, path: '/testing-page' });
+        return NextResponse.json({ success: true, path: '/uat-files' });
     } catch (error) {
         console.error('Error saving preview files:', error);
         return NextResponse.json({ error: error.message }, { status: 500 });
