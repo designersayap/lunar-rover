@@ -545,7 +545,7 @@ export default function RootLayout({ children }) {
         ${fontLink}
         
         {/* Favicon */}
-        <link rel="icon" href="${favicon}" />
+        ${favicon ? `<link rel="icon" href="${favicon}" />` : ''}
         
         {/* Open Graph */}
         <meta property="og:title" content="${ogTitle.replace(/"/g, '\\"')}" />
@@ -553,7 +553,7 @@ export default function RootLayout({ children }) {
         <meta property="og:image" content="${ogImage}" />
 
         {/* Canonical URL */}
-        <link rel="canonical" href="${canonicalUrl}" />
+        ${canonicalUrl ? `<link rel="canonical" href="${canonicalUrl}" />` : ''}
         ${customMetaTags}
       </head>
       <body>
