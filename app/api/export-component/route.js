@@ -51,7 +51,10 @@ export async function POST(request) {
             return NextResponse.json({ content: null }, { headers: getCacheHeaders(false) });
         }
 
-        content = cleanBuilderContent(content);
+        // Only clean builder content for JS/TS files
+        if (['.js', '.jsx', '.ts', '.tsx'].includes(ext)) {
+            content = cleanBuilderContent(content);
+        }
         return NextResponse.json({ content }, { headers: getCacheHeaders(false) });
     } catch (error) {
         log('Export error', error);
