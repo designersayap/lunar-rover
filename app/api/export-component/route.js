@@ -5,13 +5,21 @@ import path from 'path';
 
 export async function POST(request) {
     try {
-        const { filePath } = await request.json();
+        // Use a completely new variable name to break Turbopack cache
+        let { filePath: requestedPath } = await request.json();
 
-        if (!filePath) {
+        if (!requestedPath) {
             return NextResponse.json({ error: 'File path is required' }, { status: 400 });
         }
 
-        // Security: Prevent accessing files outside allowed directories
+        // Fix: Handle root-relative paths (e.g. /images/...) -> public/images/...
+        // "finalPath" replaces "filePath" usage entirely
+        let finalPath = requestedPath;
+        if (finalPath.startsWith('/') && !finalPath.startsWith('//')) {
+            finalPath = `public${finalPath}`;
+        }
+
+        // Security: Prevent accessing files outside allowed directories (unless external)
         const allowedDirs = [
             'app/template-components',
             'app/foundation',
@@ -19,44 +27,47 @@ export async function POST(request) {
             'public'
         ];
 
-        const isAllowed = allowedDirs.some(dir => filePath.startsWith(dir)) || filePath.endsWith('.css');
+        // Check if external - using finalPath
+        const isExternalUrl = finalPath.startsWith('http://') || finalPath.startsWith('https://');
+        const isAllowed = isExternalUrl || allowedDirs.some(dir => finalPath.startsWith(dir)) || finalPath.endsWith('.css');
 
         if (!isAllowed) {
             return NextResponse.json({ error: 'Invalid file path' }, { status: 403 });
         }
 
-        const fullPath = path.join(process.cwd(), filePath);
+        const systemFullPath = path.join(process.cwd(), finalPath);
 
         // Check if it is an image/binary asset or external URL
-        const isExternal = filePath.startsWith('http');
-        const ext = path.extname(filePath.split('?')[0]).toLowerCase();
+        const ext = path.extname(finalPath.split('?')[0]).toLowerCase();
         const binaryExts = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.ico', '.mp4', '.webm', '.ogv', '.mp3', '.wav'];
-        const isBinary = binaryExts.includes(ext) || isExternal;
+        const isBinary = binaryExts.includes(ext) || isExternalUrl;
 
         if (isBinary) {
             let buffer;
-            if (isExternal) {
+            if (isExternalUrl) {
                 // Proxy external image
-                const response = await fetch(filePath);
-                if (!response.ok) throw new Error(`Failed to fetch external asset: ${filePath}`);
+                const response = await fetch(finalPath);
+                if (!response.ok) throw new Error(`Failed to fetch external asset: ${finalPath}`);
                 const arrayBuffer = await response.arrayBuffer();
                 buffer = Buffer.from(arrayBuffer);
             } else {
-                if (!fs.existsSync(fullPath)) {
-                    return NextResponse.json({ error: 'File not found' }, { status: 404 });
+                if (!fs.existsSync(systemFullPath)) {
+                    // Soft 404: Return null content to avoid console errors for optional files
+                    return NextResponse.json({ content: null });
                 }
-                buffer = fs.readFileSync(fullPath);
+                buffer = fs.readFileSync(systemFullPath);
             }
 
             const content = buffer.toString('base64');
             return NextResponse.json({ content, isBinary: true });
         }
 
-        if (!fs.existsSync(fullPath)) {
-            return NextResponse.json({ error: 'File not found' }, { status: 404 });
+        if (!fs.existsSync(systemFullPath)) {
+            // Soft 404: Return null content
+            return NextResponse.json({ content: null });
         }
 
-        let content = fs.readFileSync(fullPath, 'utf8');
+        let content = fs.readFileSync(systemFullPath, 'utf8');
 
         // Remove Builder Imports
         content = content.replace(/import\s+.*?\s+from\s+['"]@\/app\/page-builder-components\/utils\/builder\/.*?['"];?\n?/g, '');
@@ -135,7 +146,10 @@ export async function POST(request) {
         const callbackRegex = new RegExp(callbackPattern, 'g');
         content = content.replace(callbackRegex, '');
 
+        content = content.replace(/(iconRight|iconLeft)={((?:[^{}]|{(?:[^{}]|{[^{}]*})*})*})*}/g, '');
+        // Fix: simple closing check wasn't robust, just rely on the above regex or simplify
         content = content.replace(/(iconRight|iconLeft)={((?:[^{}]|{(?:[^{}]|{[^{}]*})*})*)}/g, '');
+
 
         // Transform <BuilderButton /> to <Link>
         const builderButtonRegex = /<BuilderButton([\s\S]*?)\/>/g;
@@ -526,7 +540,7 @@ export async function POST(request) {
         });
 
         // Inject Dialog Effects
-        if (filePath.endsWith('dialog-section.js')) {
+        if (finalPath.endsWith('dialog-section.js')) {
             const effectInjection = `
     useEffect(() => {
         if (typeof window !== 'undefined' && sectionId) {

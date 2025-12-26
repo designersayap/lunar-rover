@@ -108,8 +108,10 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                 });
                 if (cssRes.ok) {
                     const { content: cssContent } = await cssRes.json();
-                    componentsFolder.file(filename.replace('.js', '.module.css'), cssContent);
-                    previewMap.set(`components/${filename.replace('.js', '.module.css')}`, { path: `components/${filename.replace('.js', '.module.css')}`, content: cssContent });
+                    if (cssContent) {
+                        componentsFolder.file(filename.replace('.js', '.module.css'), cssContent);
+                        previewMap.set(`components/${filename.replace('.js', '.module.css')}`, { path: `components/${filename.replace('.js', '.module.css')}`, content: cssContent });
+                    }
                 }
             } catch (ignore) { /* CSS is optional */ }
 
@@ -507,11 +509,14 @@ ${foundationCSS}
 
     const hasScripts = gtmId || clarityId || tiktokId || metaPixelId;
 
-    appFolder.file("layout.js", `import { Inter } from "next/font/google";
-import "./globals.css";
-${hasScripts ? 'import Script from "next/script";' : ''}
+    // Generate Layout
+    // We need to inject the Google Fonts link here
+    const fontLink = `<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />`;
 
-const inter = Inter({ subsets: ["latin"] });
+    appFolder.file("layout.js", `import "./globals.css";
+${hasScripts ? 'import Script from "next/script";' : ''}
 
 export const metadata = {
   title: "${title.replace(/"/g, '\\"')}",
@@ -526,23 +531,32 @@ export const metadata = {
   },
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@600&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
-          rel="stylesheet"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        ${fontLink}
+        
+        {/* Favicon */}
+        <link rel="icon" href="${favicon}" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="${ogTitle.replace(/"/g, '\\"')}" />
+        <meta property="og:description" content="${ogDescription.replace(/"/g, '\\"')}" />
+        <meta property="og:image" content="${ogImage}" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="${canonicalUrl}" />
         ${customMetaTags}
       </head>
-      <body className={inter.className}>
+      <body>
         {children}
         
         {/* Analytics Scripts */}
@@ -553,7 +567,8 @@ export default function RootLayout({ children }) {
           j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
           })(window,document,'script','dataLayer','${gtmId}');\`}
-        </Script>` : ''}
+        </Script>
+        ` : ''}
 
         ${clarityId ? `
         <Script id="microsoft-clarity" strategy="afterInteractive">
@@ -793,10 +808,17 @@ export const metadata = {
   },
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

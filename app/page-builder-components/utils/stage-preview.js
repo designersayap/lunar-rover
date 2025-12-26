@@ -62,10 +62,18 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
     pageContent += `  return (\n`;
     pageContent += `    <main className="flex min-h-screen flex-col items-center justify-between">\n`;
 
-    // Pre-calculate Sticky Indices
     const stickyIndices = [];
     selectedComponents.forEach((item, index) => {
+
         const compDefaults = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
+
+        // Merge defaults into item if missing
+        Object.keys(compDefaults).forEach(key => {
+            if (item[key] === undefined && (item.props && item.props[key] === undefined)) {
+                item[key] = compDefaults[key];
+            }
+        });
+
         // Access props directly as they appear in the builder object (item.props)
         const isSticky = item.props?.isSticky ?? compDefaults.isSticky ?? false;
         if (isSticky) {
@@ -167,6 +175,13 @@ export const metadata = {
     ${ogDescription ? `description: "${ogDescription.replace(/"/g, '\\"')}",` : ''}
     ${ogImage ? `images: [{ url: "${ogImage.replace(/"/g, '\\"')}" }],` : ''}
   },
+};
+
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function StagingLayout({ children }) {

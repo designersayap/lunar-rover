@@ -41,8 +41,12 @@ export default function TerraTestimony({
             const containerWidth = container.scrollWidth;
             const viewportWidth = container.clientWidth;
 
-            const pages = Math.ceil(containerWidth / viewportWidth);
-            setTotalPages(pages);
+            if (containerWidth && viewportWidth > 0) {
+                const pages = Math.ceil(containerWidth / viewportWidth);
+                setTotalPages(Number.isFinite(pages) ? Math.max(1, pages) : 1);
+            } else {
+                setTotalPages(1);
+            }
         };
 
         // Delay calculation slightly to ensure DOM has updated

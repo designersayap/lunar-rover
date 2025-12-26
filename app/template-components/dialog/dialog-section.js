@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -60,7 +62,6 @@ export default function DialogSection({
         }
     }, [isOpen, portalContainer]);
 
-    // 2. Escape Key to Close
     useEffect(() => {
         if (!isOpen) return;
         const handleEsc = (e) => e.key === 'Escape' && toggleOpen(false);

@@ -639,33 +639,41 @@ body {
 @media (max-width: 767px) {
   .mobile-aspect-1-1 {
     aspect-ratio: 1 / 1 !important;
+    height: auto !important;
   }
 
   .mobile-aspect-4-5 {
     aspect-ratio: 4 / 5 !important;
+    height: auto !important;
   }
 
   .mobile-aspect-3-4 {
     aspect-ratio: 3 / 4 !important;
+    height: auto !important;
   }
 
   .mobile-aspect-9-16 {
     aspect-ratio: 9 / 16 !important;
+    height: auto !important;
   }
 
   .mobile-aspect-16-9 {
     aspect-ratio: 16 / 9 !important;
+    height: auto !important;
   }
 
   .mobile-aspect-4-3 {
     aspect-ratio: 4 / 3 !important;
+    height: auto !important;
   }
 
   .mobile-aspect-21-9 {
     aspect-ratio: 21 / 9 !important;
+    height: auto !important;
   }
 
   .mobile-aspect-5-4 {
     aspect-ratio: 5 / 4 !important;
+    height: auto !important;
   }
 }
