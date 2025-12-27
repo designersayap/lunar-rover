@@ -159,9 +159,11 @@ const BuilderLink = ({ label, href, openInNewTab, className, style, children, li
   
   const content = (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: justify || 'center', width: '100%', height: '100%', gap: 'inherit' }}>
-         {iconLeft && <span>{iconLeft}</span>}
-         {label || children}
-         {iconRight && <span>{iconRight}</span>}
+         {iconLeft && <span style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>{iconLeft}</span>}
+         <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: justify || 'center' }}>
+            {label || children}
+         </div>
+         {iconRight && <span style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>{iconRight}</span>}
       </div>
   );
 
