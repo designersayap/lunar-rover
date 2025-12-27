@@ -664,7 +664,10 @@ export default function RootLayout({ children }) {
         const isSticky = props.isSticky;
 
         // Cleanup metadata fields that should not be passed as props
-        delete props.id; // Internal ID
+        // Cleanup metadata fields that should not be passed as props
+        if (props.id === item.id && !item.props?.id) {
+            delete props.id; // Internal ID (only remove if not manually set)
+        }
         delete props.name; // Component Name
         delete props.componentId; // Component Type ID
         delete props.category;

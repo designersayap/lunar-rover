@@ -108,10 +108,13 @@ const BuilderText = ({ tagName = 'p', content, className, style, children }) => 
   if (hasBuilderButton) {
     shims.push(`
 // Shim for BuilderButton
-const BuilderButton = ({ label, href, openInNewTab, className, style, children, linkType, targetDialogId }) => {
+const BuilderButton = ({ label, href, openInNewTab, className, style, children, linkType, targetDialogId, id, sectionId, suffix }) => {
+  const finalId = id || (sectionId && suffix ? sectionId + '-' + suffix : undefined);
+
   if (linkType === 'dialog' && targetDialogId) {
     return (
       <button
+        id={finalId}
         className={className}
         style={style}
         onClick={(e) => {
@@ -125,6 +128,7 @@ const BuilderButton = ({ label, href, openInNewTab, className, style, children, 
   }
   return (
     <Link 
+      id={finalId}
       href={href || '#'} 
       className={className} 
       style={style}
@@ -139,10 +143,13 @@ const BuilderButton = ({ label, href, openInNewTab, className, style, children, 
   if (hasBuilderLink) {
     shims.push(`
 // Shim for BuilderLink
-const BuilderLink = ({ label, href, openInNewTab, className, style, children, linkType, targetDialogId }) => {
+const BuilderLink = ({ label, href, openInNewTab, className, style, children, linkType, targetDialogId, id, sectionId, suffix }) => {
+  const finalId = id || (sectionId && suffix ? sectionId + '-' + suffix : undefined);
+  
   if (linkType === 'dialog' && targetDialogId) {
     return (
       <button
+        id={finalId}
         className={className}
         style={{ ...style, cursor: 'pointer', background: 'none', border: 'none', padding: 0, font: 'inherit' }}
         onClick={(e) => {
@@ -156,6 +163,7 @@ const BuilderLink = ({ label, href, openInNewTab, className, style, children, li
   }
   return (
     <Link 
+      id={finalId}
       href={href || '#'} 
       className={className} 
       style={style}
@@ -169,7 +177,8 @@ const BuilderLink = ({ label, href, openInNewTab, className, style, children, li
 
   if (hasBuilderImage) {
     shims.push(`
-const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType, openInNewTab, targetDialogId }) => {
+const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType, openInNewTab, targetDialogId, id, sectionId, suffix }) => {
+  const finalId = id || (sectionId && suffix ? sectionId + '-' + suffix : undefined);
   let finalClassName = className || '';
   if (mobileRatio) {
      finalClassName += \` mobile-aspect-\${mobileRatio}\`;
@@ -184,6 +193,7 @@ const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType,
 
   const imgElement = (
     <img 
+      id={finalId}
       src={src} 
       alt={alt || ''} 
       className={finalClassName} 
@@ -206,6 +216,7 @@ const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType,
                 }}
             >
                 <img 
+                    id={finalId}
                     src={src} 
                     alt={alt || ''} 
                     style={{ ...defaultStyle, ...style, width: '100%', height: '100%' }} 
@@ -222,6 +233,7 @@ const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType,
          style={{ display: 'block', width: '100%', height: '100%' }}
       >
         <img 
+            id={finalId}
             src={src} 
             alt={alt || ''} 
             style={{ ...defaultStyle, ...style }} 
