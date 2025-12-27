@@ -23,7 +23,7 @@ export default function UATPopover({
         if (isOpen) {
             setIsLoading(true);
             // Fetch existing folders when popover opens
-            fetch('/api/save-preview')
+            fetch('/api/uat-preview')
                 .then(res => res.json())
                 .then(data => {
                     if (data.folders) {

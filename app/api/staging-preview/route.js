@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { cleanBuilderContent } from '../export-component/helpers';
 
 export async function GET() {
     try {
@@ -24,7 +25,14 @@ export async function GET() {
 
 export async function POST(request) {
     try {
-        const { folderName, fileContent, layoutContent } = await request.json();
+        let { folderName, fileContent, layoutContent } = await request.json();
+
+        if (fileContent) {
+            fileContent = cleanBuilderContent(fileContent);
+        }
+        if (layoutContent) {
+            layoutContent = cleanBuilderContent(layoutContent);
+        }
 
         if (!folderName || !fileContent) {
             return NextResponse.json({ error: 'Missing folderName or fileContent' }, { status: 400 });

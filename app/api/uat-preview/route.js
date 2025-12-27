@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { cleanBuilderContent } from '../export-component/helpers';
 
 export async function GET() {
     try {
@@ -73,6 +74,10 @@ export async function POST(request) {
                 content = Buffer.from(file.content, 'base64');
             } else {
                 content = file.content;
+                // Apply builder cleanup for JS/TS files
+                if (/\.(js|jsx|ts|tsx)$/.test(file.path)) {
+                    content = cleanBuilderContent(content);
+                }
             }
 
             fs.writeFileSync(fullPath, content);

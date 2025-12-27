@@ -41,12 +41,14 @@ export function log(...args) {
 
 /** Clean Builder‑specific imports and props from component source */
 export function cleanBuilderContent(src) {
-    const hasBuilderLink = src.includes('BuilderLink');
-    const hasBuilderImage = src.includes('BuilderImage');
-    const hasBuilderSection = src.includes('BuilderSection');
-    const hasBuilderText = src.includes('BuilderText');
-    const hasBuilderButton = src.includes('BuilderButton');
-    const hasBuilderElement = src.includes('BuilderElement');
+    const hasShim = (name) => new RegExp(`const\\s+${name}\\s*=`).test(src);
+
+    const hasBuilderLink = src.includes('BuilderLink') && !hasShim('BuilderLink');
+    const hasBuilderImage = src.includes('BuilderImage') && !hasShim('BuilderImage');
+    const hasBuilderSection = src.includes('BuilderSection') && !hasShim('BuilderSection');
+    const hasBuilderText = src.includes('BuilderText') && !hasShim('BuilderText');
+    const hasBuilderButton = src.includes('BuilderButton') && !hasShim('BuilderButton');
+    const hasBuilderElement = src.includes('BuilderElement') && !hasShim('BuilderElement');
 
     // Remove Builder imports
     src = src.replace(/import\s+.*?\s+from\s+['"]@\/app\/page-builder-components\/utils\/builder\/.*?['"];?\n?/g, '');
@@ -134,13 +136,16 @@ const BuilderLink = ({ label, href, openInNewTab, className, style, children }) 
 
     if (hasBuilderImage) {
         shims.push(`
-// Shim for BuilderImage
-const BuilderImage = ({ src, alt, className, style }) => {
+const BuilderImage = ({ src, alt, className, style, mobileRatio }) => {
+  let finalClassName = className || '';
+  if (mobileRatio) {
+     finalClassName += \` mobile-aspect-\${mobileRatio}\`;
+  }
   return (
     <img 
       src={src} 
       alt={alt || ''} 
-      className={className} 
+      className={finalClassName} 
       style={style} 
     />
   );

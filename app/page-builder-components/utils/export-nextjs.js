@@ -884,7 +884,7 @@ export default function RootLayout({ children }) {
 
 
             const folderName = previewFolder || `preview-${new Date().toISOString().replace(/[:.]/g, '-')}`;
-            const previewRes = await fetch('/api/save-preview', {
+            const previewRes = await fetch('/api/uat-preview', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ files: fileList, folderName })
