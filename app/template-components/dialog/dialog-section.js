@@ -35,12 +35,13 @@ export default function DialogSection({
     }, []);
 
     const toggleOpen = useCallback((value) => {
+        const newValue = value === undefined ? !isOpen : value;
         if (isControlled) {
-            update('isOpen')(value);
+            update('isOpen')(newValue);
         } else {
-            setInternalIsOpen(value);
+            setInternalIsOpen(newValue);
         }
-    }, [isControlled, update]);
+    }, [isControlled, update, isOpen]);
 
     // 1. Lock Body Scroll when Open
     useEffect(() => {
@@ -68,6 +69,16 @@ export default function DialogSection({
         window.addEventListener('keydown', handleEsc);
         return () => window.removeEventListener('keydown', handleEsc);
     }, [isOpen, toggleOpen]);
+
+    useEffect(() => {
+        const handleOpenDialog = (e) => {
+            if (e.detail?.id === sectionId) {
+                toggleOpen(true);
+            }
+        };
+        window.addEventListener('lunar:open-dialog', handleOpenDialog);
+        return () => window.removeEventListener('lunar:open-dialog', handleOpenDialog);
+    }, [sectionId, toggleOpen]);
 
     const dialogContent = (
         <div
