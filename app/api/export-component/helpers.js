@@ -182,6 +182,7 @@ const BuilderLink = ({ label, href, openInNewTab, className, style, children, li
     shims.push(`
 const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType, openInNewTab, targetDialogId, id, sectionId, suffix }) => {
   const finalId = id || (sectionId && suffix ? sectionId + '-' + suffix : undefined);
+  const effectiveAlt = (!alt || alt === '#') && sectionId ? sectionId : (alt || '');
   let finalClassName = className || '';
   if (mobileRatio) {
      finalClassName += \` mobile-aspect-\${mobileRatio}\`;
@@ -198,7 +199,7 @@ const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType,
     <img 
       id={finalId}
       src={src} 
-      alt={alt || ''} 
+      alt={effectiveAlt} 
       className={finalClassName} 
       style={{ ...defaultStyle, ...style }} 
     />
@@ -221,7 +222,7 @@ const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType,
                 <img 
                     id={finalId}
                     src={src} 
-                    alt={alt || ''} 
+                    alt={effectiveAlt} 
                     style={{ ...defaultStyle, ...style, width: '100%', height: '100%' }} 
                 />
             </button>
@@ -238,7 +239,7 @@ const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType,
         <img 
             id={finalId}
             src={src} 
-            alt={alt || ''} 
+            alt={effectiveAlt} 
             style={{ ...defaultStyle, ...style }} 
         />
       </Link>
