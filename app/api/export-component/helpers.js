@@ -78,13 +78,14 @@ export function cleanBuilderContent(src) {
   if (hasBuilderSection) {
     shims.push(`
 // Shim for BuilderSection
-const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth, style, children, id }) => {
+const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth, style, children, id, sectionId }) => {
   const Tag = tagName;
+  const finalId = id || sectionId;
   const containerClass = \`container-grid \${fullWidth ? 'container-full' : ''}\`;
   
   if (innerContainer) {
     return (
-      <Tag id={id} className={className} style={style}>
+      <Tag id={finalId} className={className} style={style}>
         <div className={containerClass}>
           {children}
         </div>
@@ -92,16 +93,17 @@ const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth,
     );
   }
 
-  return <Tag id={id} className={\`\${containerClass} \${className || ''}\`} style={style}>{children}</Tag>;
+  return <Tag id={finalId} className={\`\${containerClass} \${className || ''}\`} style={style}>{children}</Tag>;
 };`);
   }
 
   if (hasBuilderText) {
     shims.push(`
 // Shim for BuilderText
-const BuilderText = ({ tagName = 'p', content, className, style, children }) => {
+const BuilderText = ({ tagName = 'p', content, className, style, children, id, sectionId, suffix }) => {
   const Tag = tagName;
-  return <Tag className={className} style={style}>{content || children}</Tag>;
+  const finalId = id || (sectionId && suffix ? sectionId + '-' + suffix : undefined);
+  return <Tag id={finalId} className={className} style={style}>{content || children}</Tag>;
 };`);
   }
 
@@ -249,9 +251,11 @@ const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType,
   if (hasBuilderElement) {
     shims.push(`
 // Shim for BuilderElement
-const BuilderElement = ({ tagName = 'div', className, style, children, id }) => {
+const BuilderElement = ({ tagName = 'div', className, style, children, id, sectionId, elementProps }) => {
   const Tag = tagName;
-  return <Tag id={id} className={className} style={style}>{children}</Tag>;
+  const suffix = elementProps || 'element';
+  const finalId = id || (sectionId ? sectionId + '-' + suffix : undefined);
+  return <Tag id={finalId} className={className} style={style}>{children}</Tag>;
 };`);
   }
 
