@@ -66,7 +66,7 @@ export function cleanBuilderContent(src) {
     let shims = [];
 
     // Ensure Link is imported if not present but needed
-    if ((hasBuilderLink || hasBuilderButton) && !src.includes("from 'next/link'") && !src.includes('from "next/link"')) {
+    if ((hasBuilderLink || hasBuilderButton || hasBuilderImage) && !src.includes("from 'next/link'") && !src.includes('from "next/link"')) {
         src = "import Link from 'next/link';\n" + src;
     }
 
@@ -136,19 +136,47 @@ const BuilderLink = ({ label, href, openInNewTab, className, style, children }) 
 
     if (hasBuilderImage) {
         shims.push(`
-const BuilderImage = ({ src, alt, className, style, mobileRatio }) => {
+const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType, openInNewTab }) => {
   let finalClassName = className || '';
   if (mobileRatio) {
      finalClassName += \` mobile-aspect-\${mobileRatio}\`;
   }
-  return (
+  
+  const defaultStyle = {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    display: "block",
+  };
+
+  const imgElement = (
     <img 
       src={src} 
       alt={alt || ''} 
       className={finalClassName} 
-      style={style} 
+      style={{ ...defaultStyle, ...style }} 
     />
   );
+
+  if (href) {
+    const isNewTab = linkType === 'external' || openInNewTab;
+    return (
+      <Link 
+         href={href} 
+         target={isNewTab ? '_blank' : undefined}
+         className={finalClassName}
+         style={{ display: 'block', width: '100%', height: '100%' }}
+      >
+        <img 
+            src={src} 
+            alt={alt || ''} 
+            style={{ ...defaultStyle, ...style }} 
+        />
+      </Link>
+    );
+  }
+
+  return imgElement;
 };`);
     }
 
