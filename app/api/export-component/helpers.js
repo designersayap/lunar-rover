@@ -80,7 +80,8 @@ export function cleanBuilderContent(src) {
 // Shim for BuilderSection
 const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth, style, children, id, sectionId }) => {
   const Tag = tagName;
-  const finalId = id || sectionId;
+  const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
+  const finalId = id || normalizedSectionId;
   const containerClass = \`container-grid \${fullWidth ? 'container-full' : ''}\`;
   
   if (innerContainer) {
@@ -102,8 +103,9 @@ const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth,
 // Shim for BuilderText
 const BuilderText = ({ tagName = 'p', content, className, style, children, id, sectionId, suffix }) => {
   const Tag = tagName;
+  const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
   const effectiveSuffix = suffix || (className ? className.split(' ')[0] : tagName);
-  const finalId = id || (sectionId ? sectionId + '-' + effectiveSuffix : undefined);
+  const finalId = id || (normalizedSectionId ? normalizedSectionId + '-' + effectiveSuffix : undefined);
   return <Tag id={finalId} className={className} style={style}>{content || children}</Tag>;
 };`);
   }
@@ -112,7 +114,8 @@ const BuilderText = ({ tagName = 'p', content, className, style, children, id, s
     shims.push(`
 // Shim for BuilderButton
 const BuilderButton = ({ label, href, openInNewTab, className, style, children, linkType, targetDialogId, id, sectionId, suffix }) => {
-  const finalId = id || (sectionId && suffix ? sectionId + '-' + suffix : undefined);
+  const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
+  const finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
 
   if (linkType === 'dialog' && targetDialogId) {
     return (
@@ -147,7 +150,8 @@ const BuilderButton = ({ label, href, openInNewTab, className, style, children, 
     shims.push(`
 // Shim for BuilderLink
 const BuilderLink = ({ label, href, openInNewTab, className, style, children, linkType, targetDialogId, id, sectionId, suffix }) => {
-  const finalId = id || (sectionId && suffix ? sectionId + '-' + suffix : undefined);
+  const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
+  const finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   
   if (linkType === 'dialog' && targetDialogId) {
     return (
@@ -181,8 +185,9 @@ const BuilderLink = ({ label, href, openInNewTab, className, style, children, li
   if (hasBuilderImage) {
     shims.push(`
 const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType, openInNewTab, targetDialogId, id, sectionId, suffix }) => {
-  const finalId = id || (sectionId && suffix ? sectionId + '-' + suffix : undefined);
-  const effectiveAlt = (!alt || alt === '#') && sectionId ? sectionId : (alt || '');
+  const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
+  const finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
+  const effectiveAlt = (!alt || alt === '#') && normalizedSectionId ? normalizedSectionId : (alt || '');
   let finalClassName = className || '';
   if (mobileRatio) {
      finalClassName += \` mobile-aspect-\${mobileRatio}\`;
@@ -255,8 +260,9 @@ const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType,
 // Shim for BuilderElement
 const BuilderElement = ({ tagName = 'div', className, style, children, id, sectionId, elementProps }) => {
   const Tag = tagName;
+  const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
   const suffix = elementProps || 'element';
-  const finalId = id || (sectionId ? sectionId + '-' + suffix : undefined);
+  const finalId = id || (normalizedSectionId ? normalizedSectionId + '-' + suffix : undefined);
   return <Tag id={finalId} className={className} style={style}>{children}</Tag>;
 };`);
   }
