@@ -159,17 +159,18 @@ const BuilderLink = ({ label, href, openInNewTab, className, style, children, li
   
   if (linkType === 'dialog' && targetDialogId) {
     return (
-      <button
+      <a
         id={finalId}
+        href="#"
         className={className}
-        style={{ ...style, cursor: 'pointer', background: 'none', border: 'none', padding: 0, font: 'inherit' }}
+        style={style}
         onClick={(e) => {
             e.preventDefault();
             openDialog(targetDialogId);
         }}
       >
         {label || children}
-      </button>
+      </a>
     );
   }
   return (
