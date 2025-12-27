@@ -513,7 +513,14 @@ ${foundationCSS}
     // We need to inject the Google Fonts link here
     const fontLink = `<link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />`;
+<link
+  href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@600&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+  rel="stylesheet"
+/>`;
 
     appFolder.file("layout.js", `import "./globals.css";
 ${hasScripts ? 'import Script from "next/script";' : ''}
@@ -792,11 +799,8 @@ ${foundationCSS}
 /* Typography Defaults (Restored for Export) - REMOVED (Handled by Component Styles) */
 ` });
             fileList.push({
-                path: "app/layout.js", content: `import { Inter } from "next/font/google";
-import "./globals.css";
+                path: "app/layout.js", content: `import "./globals.css";
 ${hasScripts ? 'import Script from "next/script";' : ''}
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "${title.replace(/"/g, '\\"')}",
@@ -822,19 +826,21 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@600&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
-          rel="stylesheet"
-        />
+        ${fontLink}
+        
+        {/* Favicon */}
+        ${favicon ? `<link rel="icon" href="${favicon}" />` : ''}
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="${ogTitle.replace(/"/g, '\\"')}" />
+        <meta property="og:description" content="${ogDescription.replace(/"/g, '\\"')}" />
+        <meta property="og:image" content="${ogImage}" />
+
+        {/* Canonical URL */}
+        ${canonicalUrl ? `<link rel="canonical" href="${canonicalUrl}" />` : ''}
         ${customMetaTags}
       </head>
-      <body className={inter.className}>
+      <body>
         {children}
         
         {/* Analytics Scripts */}
