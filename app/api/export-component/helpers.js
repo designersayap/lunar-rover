@@ -102,7 +102,8 @@ const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth,
 // Shim for BuilderText
 const BuilderText = ({ tagName = 'p', content, className, style, children, id, sectionId, suffix }) => {
   const Tag = tagName;
-  const finalId = id || (sectionId && suffix ? sectionId + '-' + suffix : undefined);
+  const effectiveSuffix = suffix || (className ? className.split(' ')[0] : tagName);
+  const finalId = id || (sectionId ? sectionId + '-' + effectiveSuffix : undefined);
   return <Tag id={finalId} className={className} style={style}>{content || children}</Tag>;
 };`);
   }
