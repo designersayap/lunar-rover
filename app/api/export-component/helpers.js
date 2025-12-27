@@ -152,11 +152,19 @@ const BuilderButton = ({ label, href, openInNewTab, className, style, children, 
   if (hasBuilderLink) {
     shims.push(`
 // Shim for BuilderLink
-const BuilderLink = ({ label, href, openInNewTab, className, style, children, linkType, targetDialogId, id, sectionId, suffix }) => {
+const BuilderLink = ({ label, href, openInNewTab, className, style, children, linkType, targetDialogId, id, sectionId, suffix, iconLeft, iconRight, justify }) => {
   const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
   
+  const content = (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: justify || 'center', width: '100%', height: '100%', gap: 'inherit' }}>
+         {iconLeft && <span>{iconLeft}</span>}
+         {label || children}
+         {iconRight && <span>{iconRight}</span>}
+      </div>
+  );
+
   if (linkType === 'dialog' && targetDialogId) {
     return (
       <a
@@ -169,7 +177,7 @@ const BuilderLink = ({ label, href, openInNewTab, className, style, children, li
             openDialog(targetDialogId);
         }}
       >
-        {label || children}
+        {content}
       </a>
     );
   }
@@ -181,7 +189,7 @@ const BuilderLink = ({ label, href, openInNewTab, className, style, children, li
       style={style}
       target={openInNewTab ? '_blank' : undefined}
     >
-      {label || children}
+      {content}
     </Link>
   );
 };`);
