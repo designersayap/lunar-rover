@@ -38,7 +38,7 @@ export default function BuilderImage({
 }) {
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
 
-    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent } = useContext(BuilderSelectionContext);
+    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
     const isActive = activeElementId === elementId;
     const myPopoverId = `popover-${elementId}`;
     const showSettings = activePopoverId === myPopoverId;
@@ -113,6 +113,13 @@ export default function BuilderImage({
         }
 
         if (dialogComponent) {
+            // Dispatch global event for immediate client-side handling (Staging/Live)
+            if (dialogComponent.sectionId) {
+                window.dispatchEvent(new CustomEvent('lunar:open-dialog', {
+                    detail: { id: dialogComponent.sectionId }
+                }));
+            }
+
             if (updateComponent) {
                 updateComponent(dialogComponent.uniqueId, { isOpen: true });
             }
@@ -158,7 +165,7 @@ export default function BuilderImage({
                         </button>
                     )}
 
-                    {!disableSettings && (
+                    {(!disableSettings && (!isStaging || linkType !== 'dialog')) && (
                         <button
                             type="button"
                             className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
@@ -241,6 +248,7 @@ export default function BuilderImage({
                     onUrlChange={onHrefChange}
                     linkType={linkType}
                     onLinkTypeChange={onLinkTypeChange}
+                    showLinkType={!isStaging}
                     position={popoverPosition}
                     dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
                     targetDialogId={targetDialogId}

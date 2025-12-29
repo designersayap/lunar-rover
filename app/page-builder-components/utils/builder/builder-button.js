@@ -42,7 +42,7 @@ export default function BuilderButton({
     const normalizedId = id?.replace(/-+/g, '-') || '';
     const buttonId = normalizedId || generatedId;
 
-    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent } = useContext(BuilderSelectionContext);
+    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
 
     const myPopoverId = `popover-${buttonId}`;
     const showSettings = activePopoverId === myPopoverId;
@@ -139,6 +139,14 @@ export default function BuilderButton({
         }
 
         if (dialogComponent) {
+            // Dispatch global event for immediate client-side handling (Staging/Live)
+            if (dialogComponent.sectionId) {
+                window.dispatchEvent(new CustomEvent('lunar:open-dialog', {
+                    detail: { id: dialogComponent.sectionId }
+                }));
+            }
+
+            // Also persist state if in Builder (for saving/exporting state)
             if (updateComponent) {
                 updateComponent(dialogComponent.uniqueId, { isOpen: true });
             }
@@ -204,13 +212,15 @@ export default function BuilderButton({
                             </button>
                         )}
 
-                        <button
-                            type="button"
-                            className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                            onClick={handleSettingsClick}
-                        >
-                            <Cog6ToothIcon className={styles.overlayIcon} />
-                        </button>
+                        {(!isStaging || linkType !== 'dialog') && (
+                            <button
+                                type="button"
+                                className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
+                                onClick={handleSettingsClick}
+                            >
+                                <Cog6ToothIcon className={styles.overlayIcon} />
+                            </button>
+                        )}
                     </>
                 }
             />
@@ -232,6 +242,8 @@ export default function BuilderButton({
                         dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
                         targetDialogId={targetDialogId}
                         onTargetDialogIdChange={onTargetDialogIdChange}
+                        showLinkType={!isStaging}
+                        showVariant={!isStaging}
                     />
                 )
             }

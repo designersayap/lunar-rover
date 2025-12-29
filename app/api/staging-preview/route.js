@@ -27,13 +27,6 @@ export async function POST(request) {
     try {
         let { folderName, fileContent, layoutContent } = await request.json();
 
-        if (fileContent) {
-            fileContent = cleanBuilderContent(fileContent);
-        }
-        if (layoutContent) {
-            layoutContent = cleanBuilderContent(layoutContent);
-        }
-
         if (!folderName || !fileContent) {
             return NextResponse.json({ error: 'Missing folderName or fileContent' }, { status: 400 });
         }

@@ -33,10 +33,17 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
     imports.forEach((path, name) => {
         pageContent += `import ${name} from "${path}";\n`;
     });
-    // Import Sticky Manager
     pageContent += `import StickyManager from "@/app/page-builder-components/utils/sticky-manager";\n`;
+    pageContent += `import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";\n`;
+    pageContent += `import { useState } from "react";\n`;
 
     pageContent += `\nexport default function StagingPage() {\n`;
+
+    // Staging State for Context
+    pageContent += `
+    const [activeElementId, setActiveElementId] = useState(null);
+    const [activePopoverId, setActivePopoverId] = useState(null);
+    `;
 
     // Inject handleUpdate
     pageContent += `
@@ -59,9 +66,6 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
 
 `;
 
-    pageContent += `  return (\n`;
-    pageContent += `    <main className="flex min-h-screen flex-col items-center justify-between">\n`;
-
     const stickyIndices = [];
     selectedComponents.forEach((item, index) => {
 
@@ -81,7 +85,32 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
         }
     });
 
+    pageContent += `
+    const stagingComponents = ${JSON.stringify(selectedComponents.map(c => ({
+        ...c,
+        id: c.id,
+        uniqueId: c.uniqueId,
+        sectionId: c.sectionId,
+        componentName: c.componentName
+        // Minimal data needed for lookups
+    })))};
+
+    const contextValue = {
+        activeElementId,
+        setActiveElementId,
+        activePopoverId,
+        setActivePopoverId,
+        selectedComponents: stagingComponents,
+        updateComponent: handleUpdate,
+        isStaging: true
+    };
+    `;
+
+    pageContent += `  return (\n`;
+    pageContent += `    <main className="flex min-h-screen flex-col items-center justify-between">\n`;
+    pageContent += `      <BuilderSelectionContext.Provider value={contextValue}>\n`;
     pageContent += `      <StickyManager stickyIndices={[${stickyIndices.join(',')}]}>\n`;
+
 
     // 2. Render Components
     selectedComponents.forEach(item => {
@@ -137,6 +166,7 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
     });
 
     pageContent += `      </StickyManager>\n`;
+    pageContent += `      </BuilderSelectionContext.Provider>\n`;
     pageContent += `    </main>\n`;
     pageContent += `  );\n`;
     pageContent += `}\n`;

@@ -39,7 +39,7 @@ export default function BuilderLink({
 }) {
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "link", onIdChange });
 
-    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent } = useContext(BuilderSelectionContext);
+    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
     const isActive = activeElementId === elementId;
     const myPopoverId = `popover-${elementId}`;
     const showSettings = activePopoverId === myPopoverId;
@@ -115,6 +115,13 @@ export default function BuilderLink({
         }
 
         if (dialogComponent) {
+            // Dispatch global event for immediate client-side handling (Staging/Live)
+            if (dialogComponent.sectionId) {
+                window.dispatchEvent(new CustomEvent('lunar:open-dialog', {
+                    detail: { id: dialogComponent.sectionId }
+                }));
+            }
+
             if (updateComponent) {
                 updateComponent(dialogComponent.uniqueId, { isOpen: true });
             }
@@ -157,13 +164,15 @@ export default function BuilderLink({
                             <ChatBubbleLeftEllipsisIcon className={styles.overlayIcon} />
                         </button>
                     )}
-                    <button
-                        type="button"
-                        className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                        onClick={handleSettingsClick}
-                    >
-                        <Cog6ToothIcon className={styles.overlayIcon} />
-                    </button>
+                    {(!isStaging || linkType !== 'dialog') && (
+                        <button
+                            type="button"
+                            className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
+                            onClick={handleSettingsClick}
+                        >
+                            <Cog6ToothIcon className={styles.overlayIcon} />
+                        </button>
+                    )}
                 </div>
             </div>,
             document.body
@@ -231,7 +240,7 @@ export default function BuilderLink({
                     url={href}
                     onUrlChange={onHrefChange}
                     showVariant={false}
-                    showLinkType={showLinkType}
+                    showLinkType={showLinkType && !isStaging}
                     linkType={linkType}
                     onLinkTypeChange={onLinkTypeChange}
                     targetDialogId={targetDialogId}
