@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useRef, useEffect, useState } from "react";
+import { useContext, useRef, useEffect, useState, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
 import { useIdSync } from "../hooks/use-id-sync";
@@ -11,7 +11,13 @@ import styles from "../../../page.module.css";
 /**
  * BuilderImage: Renders an image with consistent styling and placeholder support.
  */
-export const defaultPlaceholder = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg"; // Change this to any URL to use a remote image as placeholder
+import { DEFAULT_PLACEHOLDER_IMAGE, IMAGE_PORTRAIT_RATIO_MAP } from "@/app/constants";
+
+/**
+ * BuilderImage: Renders an image with consistent styling and placeholder support.
+ */
+export const defaultPlaceholder = DEFAULT_PLACEHOLDER_IMAGE; // Keep export for backward compatibility if needed, or just use the constant internally
+
 
 export default function BuilderImage({
     src,
@@ -49,8 +55,13 @@ export default function BuilderImage({
     const [overlayRect, setOverlayRect] = useState(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
 
-    useEffect(() => {
+    // Use layout effect to prevent visual jitter on selection
+    const { useLayoutEffect } = require('react'); // Ensure we have this (or import at top)
+    const safeUseLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
+    safeUseLayoutEffect(() => {
         if (isActive && wrapperRef.current) {
+            let rafId;
             const updatePosition = () => {
                 if (wrapperRef.current) {
                     const rect = wrapperRef.current.getBoundingClientRect();
@@ -64,13 +75,19 @@ export default function BuilderImage({
                 }
             };
 
+            const onScrollOrResize = () => {
+                cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(updatePosition);
+            };
+
             updatePosition();
-            window.addEventListener('scroll', updatePosition, true);
-            window.addEventListener('resize', updatePosition);
+            window.addEventListener('scroll', onScrollOrResize, true);
+            window.addEventListener('resize', onScrollOrResize);
 
             return () => {
-                window.removeEventListener('scroll', updatePosition, true);
-                window.removeEventListener('resize', updatePosition);
+                window.removeEventListener('scroll', onScrollOrResize, true);
+                window.removeEventListener('resize', onScrollOrResize);
+                cancelAnimationFrame(rafId);
             };
         }
     }, [isActive, showSettings]);
@@ -211,11 +228,9 @@ export default function BuilderImage({
 
     let finalClassName = `${isActive ? styles.activeWrapper : ''} ${className}`;
     if (onIsPortraitChange && isPortrait) {
-        finalClassName = finalClassName
-            .replace('imagePlaceholder-4-3', 'imagePlaceholder-3-4')
-            .replace('imagePlaceholder-16-9', 'imagePlaceholder-9-16')
-            .replace('imagePlaceholder-21-9', 'imagePlaceholder-9-21')
-            .replace('imagePlaceholder-5-4', 'imagePlaceholder-4-5');
+        Object.entries(IMAGE_PORTRAIT_RATIO_MAP).forEach(([landscape, portrait]) => {
+            finalClassName = finalClassName.replace(landscape, portrait);
+        });
     }
 
     if (mobileRatio) {

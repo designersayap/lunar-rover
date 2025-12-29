@@ -37,11 +37,35 @@ export default function TerraBannerHero({
 }) {
     const update = createUpdateHandler(onUpdate);
 
+    // Group props for cleaner logic (Internal Refactor)
+    // We maintain default values from componentDefaults to ensure stability
+    const defaults = componentDefaults["terra-banner-hero"];
+
+    const primaryButton = {
+        text: buttonText || defaults.buttonText,
+        url: buttonUrl || defaults.buttonUrl,
+        visible: buttonVisible !== undefined ? buttonVisible : defaults.buttonVisible,
+        style: buttonStyle,
+        linkType: buttonLinkType,
+        targetDialogId: buttonTargetDialogId,
+        id: buttonId
+    };
+
+    const secondaryButton = {
+        text: secondaryButtonText || defaults.secondaryButtonText,
+        url: secondaryButtonUrl || defaults.secondaryButtonUrl,
+        visible: secondaryButtonVisible !== undefined ? secondaryButtonVisible : defaults.secondaryButtonVisible,
+        style: secondaryButtonStyle,
+        linkType: secondaryButtonLinkType,
+        targetDialogId: secondaryButtonTargetDialogId,
+        id: secondaryButtonId
+    };
+
     return (
         <main className={`${styles.hero} imagePlaceholder-5-4`} id={sectionId}>
             <div className={styles.backgroundImage}>
                 <BuilderImage
-                    src={image}
+                    src={image || defaults.image}
                     onSrcChange={update('image')}
                     className={`${styles.image} object-cover`}
                     id={imageId}
@@ -58,51 +82,51 @@ export default function TerraBannerHero({
                             <BuilderText
                                 tagName="h1"
                                 className={`h1 ${styles.heroTitle}`}
-                                content={title}
+                                content={title || defaults.title}
                                 onChange={update('title')}
                                 sectionId={sectionId}
                             />
                             <BuilderText
                                 tagName="p"
                                 className={`subheader-h1 ${styles.heroSubtitle}`}
-                                content={subtitle}
+                                content={subtitle || defaults.subtitle}
                                 onChange={update('subtitle')}
                                 sectionId={sectionId}
                             />
                             <div className="buttonWrapperCenter">
                                 <BuilderButton
-                                    label={buttonText}
-                                    href={buttonUrl}
-                                    isVisible={buttonVisible}
+                                    label={primaryButton.text}
+                                    href={primaryButton.url}
+                                    isVisible={primaryButton.visible}
                                     sectionId={sectionId}
-                                    className={`btn btn-${buttonStyle} btn-md`}
+                                    className={`btn btn-${primaryButton.style} btn-md`}
                                     onLabelChange={update('buttonText')}
                                     onHrefChange={update('buttonUrl')}
                                     onVisibilityChange={update('buttonVisible')}
                                     onVariantChange={update('buttonStyle')}
-                                    linkType={buttonLinkType}
+                                    linkType={primaryButton.linkType}
                                     onLinkTypeChange={update('buttonLinkType')}
-                                    targetDialogId={buttonTargetDialogId}
+                                    targetDialogId={primaryButton.targetDialogId}
                                     onTargetDialogIdChange={update('buttonTargetDialogId')}
-                                    id={buttonId}
+                                    id={primaryButton.id}
                                     onIdChange={update('buttonId')}
                                     suffix="button"
                                 />
                                 <BuilderButton
-                                    label={secondaryButtonText}
-                                    href={secondaryButtonUrl}
-                                    isVisible={secondaryButtonVisible}
+                                    label={secondaryButton.text}
+                                    href={secondaryButton.url}
+                                    isVisible={secondaryButton.visible}
                                     sectionId={sectionId}
-                                    className={`btn btn-${secondaryButtonStyle} btn-md`}
+                                    className={`btn btn-${secondaryButton.style} btn-md`}
                                     onLabelChange={update('secondaryButtonText')}
                                     onHrefChange={update('secondaryButtonUrl')}
                                     onVisibilityChange={update('secondaryButtonVisible')}
                                     onVariantChange={update('secondaryButtonStyle')}
-                                    linkType={secondaryButtonLinkType}
+                                    linkType={secondaryButton.linkType}
                                     onLinkTypeChange={update('secondaryButtonLinkType')}
-                                    targetDialogId={secondaryButtonTargetDialogId}
+                                    targetDialogId={secondaryButton.targetDialogId}
                                     onTargetDialogIdChange={update('secondaryButtonTargetDialogId')}
-                                    id={secondaryButtonId}
+                                    id={secondaryButton.id}
                                     onIdChange={update('secondaryButtonId')}
                                     suffix="secondary-button"
                                 />

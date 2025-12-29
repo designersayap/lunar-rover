@@ -36,13 +36,7 @@ export default function BuilderControlsPopover({
     mobileRatio,
     onMobileRatioChange
 }) {
-    const [mounted, setMounted] = useState(false);
 
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setMounted(true);
-        return () => setMounted(false);
-    }, []);
 
     // Positioning Logic:
     const containerRef = useRef(null);
@@ -304,7 +298,7 @@ export default function BuilderControlsPopover({
         </div >
     );
 
-    if (!mounted || !isOpen) return null;
+    if (!isOpen || typeof document === 'undefined') return null;
 
     return createPortal(content, document.body);
 }

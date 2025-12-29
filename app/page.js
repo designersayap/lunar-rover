@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { useRef, useMemo } from "react";
 import { BellAlertIcon, TrashIcon } from "@heroicons/react/24/solid";
 import styles from "./page.module.css";
 
@@ -14,59 +14,54 @@ import ComponentsPopover from "@/app/page-builder-components/components-popover"
 
 // Helper Utilities
 import { componentLibrary } from "@/app/page-builder-components/content/component-library";
-import { getThemes } from "@/app/page-builder-components/utils/get-themes";
+import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
 
-import { BuilderSelectionContext, calculatePopoverPosition } from "@/app/page-builder-components/utils/builder/builder-controls";
-import {
-  loadTemplate,
-  saveTemplate,
-  DEFAULT_ANALYTICS
-} from "@/app/page-builder-components/utils/template-storage";
-import {
-  addComponentToList,
-  removeComponentFromList,
-  generateSectionId,
-  updateComponentProps,
-  updateComponentSectionId,
-  reorderComponents
-} from "@/app/page-builder-components/utils/component-manager";
-import { useToast, useDragDrop } from "@/app/page-builder-components/utils/hooks";
-import { handleExportNextjs } from "@/app/page-builder-components/utils/export-nextjs";
+// Hook
+import { useTemplateLogic } from "@/app/page-builder-components/utils/hooks";
 
 /**
  * Template Generator Page
  * Main page for building landing page templates
  */
 export default function TemplateGeneratorPage() {
-  // ==================== STATE MANAGEMENT ====================
+  const containerRef = useRef(null);
 
-  // Data Sources
-  const [selectedComponents, setSelectedComponents] = useState([]);
-  const [analyticsData, setAnalyticsData] = useState(DEFAULT_ANALYTICS);
+  const { state, actions } = useTemplateLogic();
 
-  // Theme Selection
-  const [themes, setThemes] = useState([]);
-  const [selectedThemeId, setSelectedThemeId] = useState("theme");
+  // Destructure state for easier access in render
+  const {
+    selectedComponents,
+    analyticsData,
+    themes,
+    selectedThemeId,
+    isSidebarVisible,
+    activeTab,
+    activePopoverId,
+    popoverPositions,
+    activeElementId,
+    toaster,
+    dragDrop
+  } = state;
 
-  // Interface Visibility State
-  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
-  const [activeTab, setActiveTab] = useState("elements");
+  const {
+    setAnalyticsData,
+    setIsSidebarVisible,
+    setActiveTab,
+    setActiveElementId,
+    setActivePopoverId,
+    handleThemeSelect,
+    handleExport,
+    handleStaging,
+    handleDirectExport,
+    addComponent,
+    removeComponent,
+    updateComponent,
+    updateSectionId,
+    handleAddClick,
+    closePopover,
+    togglePopover
+  } = actions;
 
-  // Popover & Overlay State
-  const [activePopoverId, setActivePopoverId] = useState(null);
-  const [popoverPositions, setPopoverPositions] = useState({});
-
-  // Selection State
-  const [activeElementId, setActiveElementId] = useState(null);
-
-  // ==================== HOOKS ====================
-
-  // Toast Notifications
-  const { toast: toaster, showToast } = useToast();
-
-
-
-  // Drag and Drop Logic
   const {
     draggedIndex,
     dropTargetIndex,
@@ -78,179 +73,9 @@ export default function TemplateGeneratorPage() {
     handleDragOver,
     handleDragEnd,
     handleDrop
-  } = useDragDrop({
-    onReorder: (fromIndex, toIndex) => {
-      setSelectedComponents(prev => reorderComponents(prev, fromIndex, toIndex));
-    }
-  });
+  } = dragDrop;
 
-  // ==================== DOM REFERENCES ====================
-
-  const containerRef = useRef(null);
-
-  const togglePopover = useCallback((id, position) => {
-    if (position) {
-      setPopoverPositions(prev => ({ ...prev, [id]: position }));
-    }
-    setActivePopoverId(prev => prev === id ? null : id);
-  }, []);
-
-  const closePopover = useCallback(() => {
-    setActivePopoverId(null);
-  }, []);
-
-  // ==================== INITIALIZATION & SIDE EFFECTS ====================
-
-  // Load themes on mount
-  useEffect(() => {
-    getThemes().then(setThemes);
-  }, []);
-
-  // Apply theme stylesheet
-  useEffect(() => {
-    const themeLink = document.getElementById("theme-stylesheet");
-    if (themeLink && themes.length) {
-      const theme = themes.find(t => t.id === selectedThemeId);
-      themeLink.href = theme?.path || "/themes/theme.css";
-    }
-  }, [selectedThemeId, themes]);
-
-  // Load saved template on mount
-  useEffect(() => {
-    const saved = loadTemplate(componentLibrary);
-    if (saved) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setSelectedComponents(saved.components);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setAnalyticsData(saved.analytics);
-    }
-  }, []);
-
-  // Auto-save template (debounced)
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      saveTemplate(selectedComponents, analyticsData);
-    }, 1000);
-    return () => clearTimeout(timeoutId);
-  }, [selectedComponents, analyticsData]);
-
-  // Responsive sidebar & Persistence
-  const isInitialized = useRef(false);
-
-  useEffect(() => {
-    // 1. Load preference from localStorage
-    const savedState = localStorage.getItem("lunar_sidebar_visible");
-
-    if (savedState !== null) {
-      setIsSidebarVisible(savedState === "true");
-    } else {
-      // Default behavior if no preference
-      setIsSidebarVisible(window.innerWidth >= 1024);
-    }
-
-    isInitialized.current = true;
-
-    // 2. Smarter Resize Handler
-    const handleResize = () => {
-      // Only auto-hide if we drop to mobile/tablet (< 1024px)
-      // On desktop, we respect the user's manual toggle (persisted state)
-      if (window.innerWidth < 1024) {
-        setIsSidebarVisible(false);
-      } else {
-        // Optional: If you want to auto-show on desktop return if it was never set manually? 
-        // For now, let's trust the persisted state on desktop resize events too, 
-        // essentially doing nothing unless we crossed the boundary to mobile.
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Save state to localStorage
-  useEffect(() => {
-    if (isInitialized.current) {
-      localStorage.setItem("lunar_sidebar_visible", isSidebarVisible);
-    }
-  }, [isSidebarVisible]);
-
-  // ==================== EVENT HANDLERS ====================
-
-  // Theme
-  const handleThemeSelect = useCallback((themeId) => {
-    setSelectedThemeId(themeId);
-    showToast(`Theme switched to ${themeId}`);
-  }, [showToast]);
-
-
-  // Components
-  const addComponent = useCallback((componentData, category) => {
-    const sectionId = generateSectionId(category);
-    setSelectedComponents(prev => addComponentToList(prev, componentData, sectionId));
-    showToast(`${componentData.name} added`);
-  }, [showToast]);
-
-  const removeComponent = useCallback((uniqueId) => {
-    const comp = selectedComponents.find(c => c.uniqueId === uniqueId);
-    if (comp) {
-      showToast(`${comp.name} deleted`, "delete");
-      setSelectedComponents(prev => removeComponentFromList(prev, uniqueId));
-    }
-  }, [selectedComponents, showToast]);
-
-
-
-  const updateComponent = useCallback((uniqueId, newProps) => {
-    setSelectedComponents(prev => updateComponentProps(prev, uniqueId, newProps));
-  }, []);
-
-  const updateSectionId = useCallback((uniqueId, newId) => {
-    setSelectedComponents(prev => updateComponentSectionId(prev, uniqueId, newId));
-  }, []);
-
-  // Export
-  const handleExport = useCallback((position) => {
-    togglePopover('export', position);
-  }, [togglePopover]);
-
-  const handleStaging = useCallback((position) => {
-    togglePopover('staging', position);
-  }, [togglePopover]);
-
-  const handleDirectExport = useCallback(async () => {
-    try {
-      showToast("Preparing export...", "info");
-      const activeThemePath = themes.find(t => t.id === selectedThemeId)?.path || "/themes/theme.css";
-
-      await handleExportNextjs(selectedComponents, activeThemePath, {
-        download: true,
-        savePreview: true,
-        analytics: analyticsData
-      });
-      showToast("Export completed successfully");
-    } catch (error) {
-      console.error("Export failed", error);
-      showToast("Export failed", "error");
-    }
-  }, [selectedComponents, themes, selectedThemeId, showToast]);
-
-
-
-  // Add Component Popover
-  const handleAddClick = useCallback((rect) => {
-    if (rect) {
-      const position = calculatePopoverPosition(rect, { padding: 4 });
-      // Adjust for BasePopover centering (it applies translateX(-50%))
-      // calculation returns left edge, so we add width/2 to get center
-      position.left += 181;
-      togglePopover('components', position);
-    } else {
-      togglePopover('components');
-    }
-  }, [togglePopover]);
-
-  // ==================== CONTEXT PROVIDERS ====================
-
+  // Context
   const selectionContext = useMemo(() => ({
     activeElementId,
     setActiveElementId,
@@ -258,9 +83,7 @@ export default function TemplateGeneratorPage() {
     setActivePopoverId,
     selectedComponents,
     updateComponent
-  }), [activeElementId, activePopoverId, selectedComponents, updateComponent]);
-
-  // ==================== RENDER ====================
+  }), [activeElementId, activePopoverId, selectedComponents, updateComponent, setActiveElementId, setActivePopoverId]);
 
   return (
     <div className={styles.container} ref={containerRef}>
