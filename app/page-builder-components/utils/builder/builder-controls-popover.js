@@ -8,6 +8,9 @@ export default function BuilderControlsPopover({
     onClose,
     url,
     onUrlChange,
+    imageSrc,
+    onImageSrcChange,
+    showImageSrc = false,
     linkType = 'url',
     onLinkTypeChange,
     variant,
@@ -21,6 +24,7 @@ export default function BuilderControlsPopover({
     dialogOptions = [],
     targetDialogId,
     onTargetDialogIdChange,
+    showDialogSelector = true,
     fullWidth,
     removePaddingLeft,
     removePaddingRight,
@@ -163,7 +167,8 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
-                        {((linkType === 'url' || !showLinkType) && showUrl) && (
+                        {/* URL INPUT (Hidden if showImageSrc is true) */}
+                        {((linkType === 'url' || !showLinkType) && showUrl && !showImageSrc) && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>URL</label>
                                 <input
@@ -176,7 +181,21 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
-                        {linkType === 'dialog' && (
+                        {/* IMAGE SOURCE INPUT (Only if showImageSrc is true) */}
+                        {showImageSrc && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Image Source</label>
+                                <input
+                                    type="text"
+                                    className={`${styles.formInput}`}
+                                    value={imageSrc || ''}
+                                    onChange={(e) => onImageSrcChange && onImageSrcChange(e.target.value)}
+                                    placeholder="https://example.com/image.jpg"
+                                />
+                            </div>
+                        )}
+
+                        {(linkType === 'dialog' && showDialogSelector) && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Dialog</label>
                                 <div className={styles.selectWrapper}>

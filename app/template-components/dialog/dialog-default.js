@@ -62,7 +62,7 @@ export default function DialogDefault({
                         showLinkType={false}
                         iconLeft={
                             <div className={styles.itemIcon}>
-                                <BuilderImage className="imagePlaceholder-1-1" src={item.image} />
+                                <BuilderImage className="imagePlaceholder-1-1" src={item.image} onSrcChange={(val) => updateItem(i, 'image', val)} />
                             </div>
                         }
                         iconRight={<ArrowRightIcon className={styles.itemArrow} />}

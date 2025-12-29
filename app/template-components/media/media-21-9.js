@@ -40,6 +40,7 @@ export default function Media21x9({
                     <div className="imageWrapper">
                         <BuilderImage
                             src={image}
+                            onSrcChange={update('image')}
                             className={`${styles.image} imagePlaceholder-21-9 object-cover`}
                             id={imageId}
                             sectionId={sectionId}

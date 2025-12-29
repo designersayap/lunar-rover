@@ -40,6 +40,7 @@ export default function Media5x4({
                     <div className="imageWrapper">
                         <BuilderImage
                             src={image}
+                            onSrcChange={update('image')}
                             className={`${styles.image} imagePlaceholder-5-4 object-cover`}
                             id={imageId}
                             sectionId={sectionId}

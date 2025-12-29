@@ -42,6 +42,7 @@ export default function TerraBannerHero({
             <div className={styles.backgroundImage}>
                 <BuilderImage
                     src={image}
+                    onSrcChange={update('image')}
                     className={`${styles.image} object-cover`}
                     id={imageId}
                     sectionId={sectionId}

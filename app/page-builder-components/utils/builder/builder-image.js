@@ -15,6 +15,7 @@ export const defaultPlaceholder = "https://res.cloudinary.com/difjtkwvg/image/up
 
 export default function BuilderImage({
     src,
+    onSrcChange,
     alt = "#",
     className = "",
     style = {},
@@ -39,6 +40,7 @@ export default function BuilderImage({
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
 
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
+
     const isActive = activeElementId === elementId;
     const myPopoverId = `popover-${elementId}`;
     const showSettings = activePopoverId === myPopoverId;
@@ -138,7 +140,7 @@ export default function BuilderImage({
             width: overlayRect.width,
             height: overlayRect.height,
             pointerEvents: 'none',
-            zIndex: 101
+            zIndex: 10002 // z-system-builder-overlay
         };
 
         return createPortal(
@@ -165,7 +167,7 @@ export default function BuilderImage({
                         </button>
                     )}
 
-                    {(!disableSettings && (!isStaging || linkType !== 'dialog')) && (
+                    {(!disableSettings && (!isStaging || (linkType !== 'dialog' || true))) && (
                         <button
                             type="button"
                             className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
@@ -246,18 +248,23 @@ export default function BuilderImage({
                     onClose={() => setActivePopoverId(null)}
                     url={href}
                     onUrlChange={onHrefChange}
+                    imageSrc={src}
+                    onImageSrcChange={onSrcChange}
                     linkType={linkType}
                     onLinkTypeChange={onLinkTypeChange}
                     showLinkType={!isStaging}
+                    showUrl={!isStaging}
+                    showImageSrc={isStaging}
                     position={popoverPosition}
                     dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
                     targetDialogId={targetDialogId}
                     onTargetDialogIdChange={onTargetDialogIdChange}
+                    showDialogSelector={!isStaging}
                     showVariant={false}
-                    showPortraitToggle={!!onIsPortraitChange}
+                    showPortraitToggle={!isStaging && !!onIsPortraitChange}
                     isPortrait={isPortrait}
                     onIsPortraitChange={onIsPortraitChange}
-                    showMobileRatio={!!onMobileRatioChange}
+                    showMobileRatio={!isStaging && !!onMobileRatioChange}
                     mobileRatio={mobileRatio}
                     onMobileRatioChange={onMobileRatioChange}
                 />

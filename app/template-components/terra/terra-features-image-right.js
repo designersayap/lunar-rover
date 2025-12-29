@@ -103,6 +103,7 @@ export default function TerraFeaturesImageRight({
                     <div className={`imageWrapper ${styles.imageWrapper} col-mobile-4 col-tablet-8 col-desktop-6`}>
                         <BuilderImage
                             src={image}
+                            onSrcChange={update('image')}
                             className={`imagePlaceholder-1-1 shadow-md ${styles.image}`}
                             style={{ height: "auto" }}
                             id={imageId}

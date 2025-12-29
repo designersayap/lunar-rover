@@ -196,6 +196,7 @@ export default function LactoNavigation({
                         <div className={styles.logoContainer}>
                             <BuilderImage
                                 src={logo}
+                                onSrcChange={update('logo')}
                                 id={logoId}
                                 sectionId={sectionId}
                                 onIdChange={update('logoId')}

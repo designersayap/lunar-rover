@@ -41,6 +41,7 @@ export default function Media4x3({
                     <div className="imageWrapper">
                         <BuilderImage
                             src={image}
+                            onSrcChange={update('image')}
                             className={`${styles.image} imagePlaceholder-4-3 object-cover`}
                             id={imageId}
                             sectionId={sectionId}

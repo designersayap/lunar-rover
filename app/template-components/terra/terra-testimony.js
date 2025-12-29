@@ -132,6 +132,7 @@ export default function TerraTestimony({
                                 <div className={styles.card}>
                                     <BuilderImage
                                         src={item.image}
+                                        onSrcChange={(val) => updateTestimony(index, "image", val)}
                                         className={`${styles.terraTestimoniImage} imagePlaceholder-4-5 object-cover`}
                                         id={item.imageId}
                                         sectionId={sectionId}
@@ -151,6 +152,7 @@ export default function TerraTestimony({
                                         <div className={`imageWrapper ${styles.avatarImg}`}>
                                             <BuilderImage
                                                 src={item.avatar}
+                                                onSrcChange={(val) => updateTestimony(index, "avatar", val)}
                                                 className={'imagePlaceholder-1-1 object-cover'}
                                                 id={item.avatarId}
                                                 style={{ borderRadius: "var(--border-radius-round)" }}
