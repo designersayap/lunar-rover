@@ -1,1 +1,243 @@
-export const data = {};
+export const data = {
+    "navigation-3838": {
+        "logo": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1766991829/logo-ekonomi_zofnp8.png",
+        "menu1Label": "Beranda",
+        "menu2Label": "Syarat & Ketentuan",
+        "menu3Label": "Cara Klaim",
+        "menu4Label": "Testimony"
+    },
+    "media-8539": {
+        "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767000408/objek_banner_utama_jp3nmi.png"
+    },
+    "media-6924": {
+        "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767000648/banner_TNC_ekksxd.jpg"
+    },
+    "feature-split-2921": {
+        "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767000541/banner-cara-klaim_z48lhs.png",
+        "title": "Beli Sabun Krim Ekonomi, Temukan Kode Unik di Dalamnya!",
+        "subtitle": "Klaim hadiahnya dengan klik tombol di bawah ini.",
+        "buttonText": "Klaim Hadiah"
+    },
+    "testimonials-1593": {
+        "testimonies": [
+            {
+                "name": "People Name",
+                "role": "Role",
+                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1766991825/terra-testimoni-image_hkwwlu.png",
+                "imageUrl": "",
+                "imageLinkType": "url",
+                "imageTargetDialogId": "",
+                "avatar": "",
+                "avatarUrl": "",
+                "avatarLinkType": "url",
+                "avatarTargetDialogId": "",
+                "imageVisible": true,
+                "avatarVisible": true,
+                "cardId": "",
+                "visible": true
+            },
+            {
+                "name": "People Name",
+                "role": "Role",
+                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1766991827/terra-testimoni-image-1_hvzrdq.png",
+                "imageUrl": "",
+                "imageLinkType": "url",
+                "imageTargetDialogId": "",
+                "avatar": "",
+                "avatarUrl": "",
+                "avatarLinkType": "url",
+                "avatarTargetDialogId": "",
+                "imageVisible": true,
+                "avatarVisible": true,
+                "cardId": "",
+                "visible": true
+            },
+            {
+                "name": "People Name",
+                "role": "Role",
+                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1766991826/terra-testimoni-image-2_ojwiv6.png",
+                "imageUrl": "",
+                "imageLinkType": "url",
+                "imageTargetDialogId": "",
+                "avatar": "",
+                "avatarUrl": "",
+                "avatarLinkType": "url",
+                "avatarTargetDialogId": "",
+                "imageVisible": true,
+                "avatarVisible": true,
+                "cardId": "",
+                "visible": true
+            },
+            {
+                "name": "People Name",
+                "role": "Role",
+                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1766991827/terra-testimoni-image-3_wt3pxw.png",
+                "imageUrl": "",
+                "imageLinkType": "url",
+                "imageTargetDialogId": "",
+                "avatar": "",
+                "avatarUrl": "",
+                "avatarLinkType": "url",
+                "avatarTargetDialogId": "",
+                "imageVisible": true,
+                "avatarVisible": true,
+                "cardId": "",
+                "visible": true
+            },
+            {
+                "name": "People Name",
+                "role": "Role",
+                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1766991827/terra-testimoni-image-4_yx3haz.png",
+                "imageUrl": "",
+                "imageLinkType": "url",
+                "imageTargetDialogId": "",
+                "avatar": "",
+                "avatarUrl": "",
+                "avatarLinkType": "url",
+                "avatarTargetDialogId": "",
+                "imageVisible": true,
+                "avatarVisible": true,
+                "cardId": "",
+                "visible": true
+            },
+            {
+                "name": "People Name",
+                "role": "Role",
+                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1766991828/terra-testimoni-image-5_hmfruy.png",
+                "imageUrl": "",
+                "imageLinkType": "url",
+                "imageTargetDialogId": "",
+                "avatar": "",
+                "avatarUrl": "",
+                "avatarLinkType": "url",
+                "avatarTargetDialogId": "",
+                "imageVisible": true,
+                "avatarVisible": true,
+                "cardId": "",
+                "visible": true
+            },
+            {
+                "name": "People Name",
+                "role": "Role",
+                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1766991828/terra-testimoni-image-6_t6atzy.png",
+                "imageUrl": "",
+                "imageLinkType": "url",
+                "imageTargetDialogId": "",
+                "avatar": "",
+                "avatarUrl": "",
+                "avatarLinkType": "url",
+                "avatarTargetDialogId": "",
+                "imageVisible": true,
+                "avatarVisible": true,
+                "cardId": "",
+                "visible": true
+            },
+            {
+                "name": "People Name",
+                "role": "Role",
+                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1766991827/terra-testimoni-image-3_wt3pxw.png",
+                "imageUrl": "",
+                "imageLinkType": "url",
+                "imageTargetDialogId": "",
+                "avatar": "",
+                "avatarUrl": "",
+                "avatarLinkType": "url",
+                "avatarTargetDialogId": "",
+                "imageVisible": true,
+                "avatarVisible": true,
+                "cardId": "",
+                "visible": true
+            },
+            {
+                "name": "People Name",
+                "role": "Role",
+                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                "image": "",
+                "imageUrl": "",
+                "imageLinkType": "url",
+                "imageTargetDialogId": "",
+                "avatar": "",
+                "avatarUrl": "",
+                "avatarLinkType": "url",
+                "avatarTargetDialogId": "",
+                "imageVisible": true,
+                "avatarVisible": true,
+                "cardId": "",
+                "visible": false
+            },
+            {
+                "name": "People Name",
+                "role": "Role",
+                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                "image": "",
+                "imageUrl": "",
+                "imageLinkType": "url",
+                "imageTargetDialogId": "",
+                "avatar": "",
+                "avatarUrl": "",
+                "avatarLinkType": "url",
+                "avatarTargetDialogId": "",
+                "imageVisible": true,
+                "avatarVisible": true,
+                "cardId": "",
+                "visible": false
+            },
+            {
+                "name": "People Name",
+                "role": "Role",
+                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                "image": "",
+                "imageUrl": "",
+                "imageLinkType": "url",
+                "imageTargetDialogId": "",
+                "avatar": "",
+                "avatarUrl": "",
+                "avatarLinkType": "url",
+                "avatarTargetDialogId": "",
+                "imageVisible": true,
+                "avatarVisible": true,
+                "cardId": "",
+                "visible": false
+            },
+            {
+                "name": "People Name",
+                "role": "Role",
+                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                "image": "",
+                "imageUrl": "",
+                "imageLinkType": "url",
+                "imageTargetDialogId": "",
+                "avatar": "",
+                "avatarUrl": "",
+                "avatarLinkType": "url",
+                "avatarTargetDialogId": "",
+                "imageVisible": true,
+                "avatarVisible": true,
+                "cardId": "",
+                "visible": false
+            }
+        ]
+    },
+    "media-9040": {
+        "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767000409/banner-product-desktop_zww0og.png"
+    },
+    "1767001369568": {
+        "isOpen": true
+    },
+    "header-7102": {
+        "title": "Total Hadiah Milliaran Menantimu!",
+        "subtitle": "Batas Penukaran Hadiah 31 JULI 2026\nBeli Sabun Krim Ekonomi bertanda khusus\ndan kirimkan kode uniknya ke Whatsapp WINGS Customer Care (021 50 957 507) atau klik tombol dibawah ini untuk klaim sekarang!",
+        "buttonText": "Klaim Hadiah"
+    },
+    "osm-1222": {
+        "title": "Waspada penipuan! Hubungi hanya WhatsApp resmi: 021-50957907, 081119765007, 081119765008. Di luar nomor tersebut bukan tanggung jawab Penyelenggara."
+    }
+};

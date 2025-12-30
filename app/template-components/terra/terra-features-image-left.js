@@ -46,7 +46,7 @@ export default function TerraFeaturesImageLeft({
                         <BuilderImage
                             src={image}
                             onSrcChange={update('image')}
-                            className={`imagePlaceholder-1-1 shadow-md ${styles.image}`}
+                            className={`imagePlaceholder-1-1`}
                             style={{ height: "auto" }}
                             id={imageId}
                             sectionId={sectionId}

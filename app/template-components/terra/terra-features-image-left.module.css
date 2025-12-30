@@ -40,7 +40,3 @@
         order: 1;
     }
 }
-
-.image {
-    border-radius: var(--border-radius-md);
-}

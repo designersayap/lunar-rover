@@ -1,10 +1,10 @@
 
 
 export const metadata = {
-  title: "Lunar Staging",
+  title: "Gebyar Berkah Ekonomi",
   description: "Staging Preview",
   
-  
+  icons: { icon: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1766991826/favicon-ekonomi_mg5xwv.ico" },
   
   openGraph: {
     
