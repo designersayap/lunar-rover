@@ -1,6 +1,6 @@
 
 import { COMPONENT_PATHS } from './component-paths';
-import { componentDefaults } from '@/app/template-components/content/data';
+import { componentDefaults } from '@/app/templates/content/data';
 
 /**
  * Generate content for staging page.

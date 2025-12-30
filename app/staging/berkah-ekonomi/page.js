@@ -1,15 +1,15 @@
 "use client";
 
 import { data as stagingData } from "./data";
-import BannerInformation from "@/app/template-components/osm/banner-information";
-import LactoNavigation from "@/app/template-components/lacto/lacto-navigation";
-import Media219 from "@/app/template-components/media/media-21-9";
-import HeaderTitleDescriptionButton from "@/app/template-components/header/header-title-description-button";
-import Media169 from "@/app/template-components/media/media-16-9";
-import TerraFeaturesImageLeft from "@/app/template-components/terra/terra-features-image-left";
-import HeaderTitleDescription from "@/app/template-components/header/header-title-description";
-import TerraTestimony from "@/app/template-components/terra/terra-testimony";
-import DialogAccordion from "@/app/template-components/dialog/dialog-accordion";
+import BannerInformation from "@/app/templates/osm/banner-information";
+import LactoNavigation from "@/app/templates/lacto/lacto-navigation";
+import Media219 from "@/app/templates/media/media-21-9";
+import HeaderTitleDescriptionButton from "@/app/templates/header/header-title-description-button";
+import Media169 from "@/app/templates/media/media-16-9";
+import TerraFeaturesImageLeft from "@/app/templates/terra/terra-features-image-left";
+import HeaderTitleDescription from "@/app/templates/header/header-title-description";
+import TerraTestimony from "@/app/templates/terra/terra-testimony";
+import DialogAccordion from "@/app/templates/dialog/dialog-accordion";
 import StickyManager from "@/app/page-builder/utils/sticky-manager";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { useState } from "react";

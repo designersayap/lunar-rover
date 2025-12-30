@@ -1,7 +1,7 @@
 
 import JSZip from 'jszip';
 import { COMPONENT_PATHS } from './component-paths';
-import { componentDefaults } from '@/app/template-components/content/data';
+import { componentDefaults } from '@/app/templates/content/data';
 import { defaultPlaceholder } from '@/app/page-builder/utils/builder/builder-image';
 
 /**

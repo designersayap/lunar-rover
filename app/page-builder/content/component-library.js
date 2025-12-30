@@ -1,22 +1,22 @@
 import dynamic from "next/dynamic";
-import { componentDefaults } from "../../template-components/content/data";
+import { componentDefaults } from "../../templates/content/data";
 
-const GlobalHeaderTitle = dynamic(() => import("../../template-components/header/header-title"));
-const GlobalHeaderTitleButton = dynamic(() => import("../../template-components/header/header-title-button"));
-const GlobalHeaderTitleDescription = dynamic(() => import("../../template-components/header/header-title-description"));
-const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../template-components/header/header-title-description-button"));
-const TerraBannerHero = dynamic(() => import("@/app/template-components/terra/terra-banner-hero"));
-const TerraFeaturesImageLeft = dynamic(() => import("@/app/template-components/terra/terra-features-image-left"));
-const TerraFeaturesImageRight = dynamic(() => import("@/app/template-components/terra/terra-features-image-right"));
-const Dialog = dynamic(() => import("../../template-components/dialog/dialog-default"));
-const DialogAccordion = dynamic(() => import("../../template-components/dialog/dialog-accordion"));
-const BannerInformation = dynamic(() => import("../../template-components/osm/banner-information"));
-const TerraTestimony = dynamic(() => import("../../template-components/terra/terra-testimony"));
-const Media16x9 = dynamic(() => import("../../template-components/media/media-16-9"));
-const Media5x4 = dynamic(() => import('@/app/template-components/media/media-5-4'));
-const Media4x3 = dynamic(() => import('@/app/template-components/media/media-4-3'));
-const Media21x9 = dynamic(() => import('@/app/template-components/media/media-21-9'));
-const LactoNavigation = dynamic(() => import("../../template-components/lacto/lacto-navigation"));
+const GlobalHeaderTitle = dynamic(() => import("../../templates/header/header-title"));
+const GlobalHeaderTitleButton = dynamic(() => import("../../templates/header/header-title-button"));
+const GlobalHeaderTitleDescription = dynamic(() => import("../../templates/header/header-title-description"));
+const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../templates/header/header-title-description-button"));
+const TerraBannerHero = dynamic(() => import("@/app/templates/terra/terra-banner-hero"));
+const TerraFeaturesImageLeft = dynamic(() => import("@/app/templates/terra/terra-features-image-left"));
+const TerraFeaturesImageRight = dynamic(() => import("@/app/templates/terra/terra-features-image-right"));
+const Dialog = dynamic(() => import("../../templates/dialog/dialog-default"));
+const DialogAccordion = dynamic(() => import("../../templates/dialog/dialog-accordion"));
+const BannerInformation = dynamic(() => import("../../templates/osm/banner-information"));
+const TerraTestimony = dynamic(() => import("../../templates/terra/terra-testimony"));
+const Media16x9 = dynamic(() => import("../../templates/media/media-16-9"));
+const Media5x4 = dynamic(() => import('@/app/templates/media/media-5-4'));
+const Media4x3 = dynamic(() => import('@/app/templates/media/media-4-3'));
+const Media21x9 = dynamic(() => import('@/app/templates/media/media-21-9'));
+const LactoNavigation = dynamic(() => import("../../templates/lacto/lacto-navigation"));
 
 export const componentLibrary = {
 

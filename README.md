@@ -1,6 +1,6 @@
 # Lunar: Template Generator
 
-A powerful **Page Builder** application built with Next.js 15, allowing users to drag-and-drop pre-designed components to craft and export responsive landing pages effectively.
+A powerful **Page Builder** application built with Next.js 15, allowing users to drag-and-drop pre-designed templates to craft and export responsive landing pages effectively.
 
 ## 🚀 Getting Started
 
@@ -30,7 +30,7 @@ npm start
 
 ## 📁 Project Structure
 
-The project separates the **Builder UI** (the editor itself) from the **Template Components** (the blocks you build with).
+The project separates the **Builder UI** (the editor itself) from the **Templates** (the blocks you build with).
 
 ```text
 lunar/
@@ -41,10 +41,12 @@ lunar/
 │   │   ├── grid.css              # Grid layout system
 │   │   └── accent-color.css      # Theme accent handling
 │   ├── page-builder/  # 🛠️ Builder Interface (The Editor)
+│   │   ├── content/
+│   │   │   └── component-library.js # 📚 Component Registry
 │   │   ├── sidebar.js            # Component library & settings sidebar
 │   │   ├── canvas.js             # Drag & drop workspace
 │   │   └── ...                   # Toolbars, popovers, utilities
-│   ├── template-components/      # 🧱 Building Blocks (Content)
+│   ├── templates/      # 🧱 Building Blocks (Content)
 │   │   ├── header/               # Navbars and headers
 │   │   ├── terra/                # Feature sections & heroes
 │   │   ├── content/              # Text content blocks
@@ -73,7 +75,7 @@ The **Template Generator** (`app/page.js`) provides:
 -   **Export**: Download your created page as a CSV or clean HTML/CSS template.
 -   **Analytics**: Basic settings for tracking codes.
 
-## 📝 Template Components
+## 📝 Templates
 
 Pre-built responsive sections available to use:
 

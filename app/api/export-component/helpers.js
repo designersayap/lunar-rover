@@ -4,7 +4,7 @@ import { promises as fs } from 'fs';
 
 
 export const ALLOWED_DIRS = [
-  path.resolve(process.cwd(), 'app/template-components'),
+  path.resolve(process.cwd(), 'app/templates'),
   path.resolve(process.cwd(), 'app/foundation'),
   path.resolve(process.cwd(), 'app/page-builder'),
   path.resolve(process.cwd(), 'public')

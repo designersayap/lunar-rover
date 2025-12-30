@@ -8,7 +8,7 @@
   },
   "include": [
     "app/**/*",
-    "template-components/**/*",
+    "templates/**/*",
     "lib/**/*"
   ],
   "exclude": [

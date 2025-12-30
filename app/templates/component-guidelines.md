@@ -1,14 +1,14 @@
 # Component Guidelines
 
-This document outlines the standards for creating new **Template Components** in the Lunar Page Builder. All components in `app/template-components` must support inline editing, dynamic property updates, and strict architectural standards.
+This document outlines the standards for creating new **Template Components** in the Lunar Page Builder. All components in `app/templates` must support inline editing, dynamic property updates, and strict architectural standards.
 
 ## 📁 Directory Structure
 
 When creating a new component, you will touch three files across the project:
 
-1.  **The Component File**: `app/template-components/[category]/[name].js`
+1.  **The Component File**: `app/templates/[category]/[name].js`
 2.  **Sidebar Config**: `app/page-builder/content/component-library.js`
-3.  **Default Data**: `app/template-components/content/data.js`
+3.  **Default Data**: `app/templates/content/data.js`
 
 ---
 
@@ -113,7 +113,7 @@ import BuilderLink from "@/app/page-builder/utils/builder/builder-link";
 
 ## 2. Component Helpers (`component-helpers.js`)
 
-Use helper utilities from `app/template-components/utils/component-helpers.js` to reduce boilerplate code in your components.
+Use helper utilities from `app/templates/utils/component-helpers.js` to reduce boilerplate code in your components.
 
 ### `createUpdateHandler`
 
@@ -250,10 +250,10 @@ You must define child elements in `app/page-builder/content/component-library.js
 
 ## 5. Default Values (`data.js`)
 
-**Single Source of Truth.** All default values must be defined in `app/template-components/content/data.js`.
+**Single Source of Truth.** All default values must be defined in `app/templates/content/data.js`.
 
 ```javascript
-// app/template-components/content/data.js
+// app/templates/content/data.js
 export const componentDefaults = {
     "my-component": {
         title: "Default Title",

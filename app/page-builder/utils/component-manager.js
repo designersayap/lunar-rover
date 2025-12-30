@@ -1,5 +1,5 @@
 // Component management utilities for the template builder
-import { componentDefaults } from "@/app/template-components/content/data";
+import { componentDefaults } from "@/app/templates/content/data";
 
 /**
  * Add a new component to the list.
