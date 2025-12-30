@@ -7,7 +7,8 @@ export const data = {
         "menu4Label": "Testimony"
     },
     "media-8539": {
-        "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767000408/objek_banner_utama_jp3nmi.png"
+        "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767000408/objek_banner_utama_jp3nmi.png",
+        "imageMobileSrc": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1766991828/mobile-hero-berkahekonomi_rhi1vv.png"
     },
     "media-6924": {
         "image": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767000648/banner_TNC_ekksxd.jpg"
