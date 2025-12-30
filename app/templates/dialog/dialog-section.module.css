@@ -19,19 +19,23 @@
     flex-direction: column;
     overflow-y: auto;
     animation: scaleIn 0.2s ease-out;
-    padding-bottom: var(--padding-xl);
+    padding-bottom: var(--padding-sm);
 }
 
 /* Controls & Content */
 .closeButton {
-    position: absolute;
+    position: sticky;
     top: var(--padding-xs);
-    right: var(--padding-xs);
+    align-self: flex-end;
+    margin-right: var(--padding-xs);
+    margin-bottom: calc(var(--size-button-sm) * -1);
+    z-index: 20;
     background: var(--background-neutral--default);
     border: none;
     cursor: pointer;
     width: var(--size-button-sm);
     height: var(--size-button-sm);
+    flex-shrink: 0;
     border-radius: var(--border-radius-round);
     color: var(--content-neutral--caption);
     transition: background-color 0.2s;
@@ -99,7 +103,6 @@
 .listContainer {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
     flex: 1;
     padding: 0 var(--padding-md);
     gap: var(--gap-xs);
@@ -154,7 +157,6 @@
 .accordionContainer {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
     flex: 1;
     padding: 0 var(--padding-md);
 }

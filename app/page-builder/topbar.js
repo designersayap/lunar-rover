@@ -53,7 +53,7 @@ export default function TopBar({
 
                 <button
                     className={`${styles.topBarButton} ${styles.topBarButtonBordered} ${isExportPopoverOpen ? styles.topBarButtonActive : ''}`}
-                    data-tooltip="Create UAT"
+                    data-tooltip="UAT File"
                     onClick={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
                         handleExport({

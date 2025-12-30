@@ -39,11 +39,11 @@ export default function BuilderText({
 
     // Sync internal state if prop changes (undo/redo or initial load)
     useEffect(() => {
-        if (elementRef.current && elementRef.current.innerText !== content) {
+        if (elementRef.current && elementRef.current.innerHTML !== content) {
             // eslint-disable-next-line react-hooks/set-state-in-effect
             setText(content);
             if (document.activeElement !== elementRef.current) {
-                elementRef.current.innerText = content;
+                elementRef.current.innerHTML = content;
             }
         }
     }, [content]);
@@ -56,7 +56,7 @@ export default function BuilderText({
 
     const handleBlur = (e) => {
         setIsEditing(false);
-        const newText = e.target.innerText;
+        const newText = e.target.innerHTML;
         setText(newText);
         if (newText !== content && onChange) {
             onChange(newText);
@@ -69,7 +69,61 @@ export default function BuilderText({
         document.execCommand("insertText", false, plainText);
     };
 
+    const toggleBold = (targetClass) => {
+        const selection = window.getSelection();
+        if (!selection.rangeCount) return;
+        const range = selection.getRangeAt(0);
+
+        if (targetClass) {
+            let node = range.commonAncestorContainer;
+            if (node.nodeType === 3) node = node.parentElement;
+
+            let existingSpan = null;
+            let current = node;
+            while (current && current !== elementRef.current) {
+                if (current.classList && current.classList.contains(targetClass)) {
+                    existingSpan = current;
+                    break;
+                }
+                current = current.parentElement;
+            }
+
+            if (existingSpan) {
+                // Unwrap
+                const parent = existingSpan.parentNode;
+                while (existingSpan.firstChild) {
+                    parent.insertBefore(existingSpan.firstChild, existingSpan);
+                }
+                parent.removeChild(existingSpan);
+            } else {
+                // Wrap
+                if (range.collapsed) return;
+                const span = document.createElement('span');
+                span.className = targetClass;
+                span.appendChild(range.extractContents());
+                range.insertNode(span);
+
+                selection.removeAllRanges();
+                const newRange = document.createRange();
+                newRange.selectNodeContents(span);
+                selection.addRange(newRange);
+            }
+        } else {
+            document.execCommand('bold');
+        }
+    };
+
     const handleKeyDown = (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+            e.preventDefault();
+            let targetClass = null;
+            if (className.includes('body-regular')) targetClass = 'body-bold';
+            else if (className.includes('caption-regular')) targetClass = 'caption-bold';
+
+            toggleBold(targetClass);
+            return;
+        }
+
         if (!multiline && e.key === "Enter") {
             e.preventDefault();
             e.target.blur();
@@ -172,6 +226,7 @@ export default function BuilderText({
                 style={{ ...style, outline: "none", cursor: "default", minWidth: "1em", minHeight: "1em" }}
                 contentEditable
                 suppressContentEditableWarning={true}
+                suppressHydrationWarning={true}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 onPaste={handlePaste}
@@ -180,9 +235,8 @@ export default function BuilderText({
                 onMouseLeave={handleMouseLeave}
                 data-placeholder={placeholder}
                 {...activeProps}
-            >
-                {text}
-            </Tag>
+                dangerouslySetInnerHTML={{ __html: text }}
+            />
             {tooltipContent && createPortal(tooltipContent, document.body)}
         </>
     );
