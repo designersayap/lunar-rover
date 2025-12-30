@@ -71,18 +71,6 @@ export default function StickyManager({ children, stickyIndices = [] }) {
 
                 const topOffset = offsets[index] || 0;
 
-                // We wrap sticky items in a div to manage position/ref
-                // zIndex is set to prioritize earlier items (top of page) being on top of later items?
-                // Actually usually top items (header) should be on top of scrolling content.
-                // Standard: 1000. Stack decrementing?
-                // If Item 0 is Sticky (TopBar), Item 1 is Sticky (Nav).
-                // Nav slides UNDER TopBar? No, Nav slides UP TO TopBar.
-                // Both are visible.
-                // zIndex considerations: 
-                // Using 1000 - index ensures the first item is 'higher' if they overlap?
-                // Actually, if they stack perfectly, z-index doesn't matter much unless shadow.
-                // Let's use 1000.
-
                 return (
                     <div
                         ref={el => refs.current[index] = el}

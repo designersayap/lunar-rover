@@ -199,7 +199,7 @@ const BuilderLink = ({ label, href, openInNewTab, className, style, children, li
 
   if (hasBuilderImage) {
     shims.push(`
-const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType, openInNewTab, targetDialogId, id, sectionId, suffix }) => {
+const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href, linkType, openInNewTab, targetDialogId, id, sectionId, suffix }) => {
   const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
@@ -216,7 +216,22 @@ const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType,
     display: "block",
   };
 
-  const imgElement = (
+  const imageContent = (
+    <>
+      {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
+      <img 
+        id={finalId}
+        src={src} 
+        alt={effectiveAlt} 
+        className={finalClassName} 
+        style={{ ...defaultStyle, ...style }} 
+      />
+    </>
+  );
+
+  const imgElement = mobileSrc ? (
+     <picture style={{ display: 'contents' }}>{imageContent}</picture>
+  ) : (
     <img 
       id={finalId}
       src={src} 
@@ -240,12 +255,13 @@ const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType,
                      openDialog(targetDialogId);
                 }}
             >
+                {mobileSrc ? <picture style={{ display: 'contents' }}>{imageContent}</picture> : 
                 <img 
                     id={finalId}
                     src={src} 
                     alt={effectiveAlt} 
                     style={{ ...defaultStyle, ...style, width: '100%', height: '100%' }} 
-                />
+                />}
             </button>
         );
     }
@@ -257,12 +273,13 @@ const BuilderImage = ({ src, alt, className, style, mobileRatio, href, linkType,
          className={finalClassName}
          style={{ display: 'block', width: '100%', height: '100%' }}
       >
+        {mobileSrc ? <picture style={{ display: 'contents' }}>{imageContent}</picture> :
         <img 
             id={finalId}
             src={src} 
             alt={effectiveAlt} 
             style={{ ...defaultStyle, ...style }} 
-        />
+        />}
       </Link>
     );
   }

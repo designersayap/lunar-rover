@@ -123,7 +123,7 @@
 .avatarImg {
     width: 52px;
     height: 52px;
-
+    background-color: var(--background-neutral--default);
     position: absolute;
     top: 0;
     left: 50%;

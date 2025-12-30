@@ -34,7 +34,10 @@ export default function BuilderControlsPopover({
     onIsPortraitChange,
     showMobileRatio,
     mobileRatio,
-    onMobileRatioChange
+    onMobileRatioChange,
+    mobileImageSrc,
+    onMobileImageSrcChange,
+    showMobileImageSrc = false,
 }) {
 
 
@@ -289,7 +292,21 @@ export default function BuilderControlsPopover({
                                         <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
                                     </div>
                                 </div>
+
                             </>
+                        )}
+
+                        {showMobileImageSrc && mobileRatio && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: '8px' }}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Image Source</label>
+                                <input
+                                    type="text"
+                                    className={`${styles.formInput}`}
+                                    value={mobileImageSrc || ''}
+                                    onChange={(e) => onMobileImageSrcChange && onMobileImageSrcChange(e.target.value)}
+                                    placeholder="Optional mobile image URL"
+                                />
+                            </div>
                         )}
 
                     </div>

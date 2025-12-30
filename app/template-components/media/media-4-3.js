@@ -21,7 +21,8 @@ export default function Media4x3({
     imageLinkType,
     imageTargetDialogId,
     imageIsPortrait,
-    imageMobileRatio
+    imageMobileRatio,
+    imageMobileSrc
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -58,6 +59,8 @@ export default function Media4x3({
                             onIsPortraitChange={update('imageIsPortrait')}
                             mobileRatio={imageMobileRatio}
                             onMobileRatioChange={update('imageMobileRatio')}
+                            mobileSrc={imageMobileSrc}
+                            onMobileSrcChange={update('imageMobileSrc')}
                         />
                     </div>
                 </div>

@@ -41,7 +41,9 @@ export default function BuilderImage({
     isPortrait,
     onIsPortraitChange,
     mobileRatio,
-    onMobileRatioChange
+    onMobileRatioChange,
+    mobileSrc,
+    onMobileSrcChange
 }) {
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
 
@@ -237,6 +239,18 @@ export default function BuilderImage({
         finalClassName += ` mobile-aspect-${mobileRatio}`;
     }
 
+    const imageContent = (
+        <>
+            {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
+            <img
+                id={elementId}
+                src={imageSrc}
+                alt={(!alt || alt === "#") && sectionId ? sectionId : alt}
+                style={finalStyle}
+            />
+        </>
+    );
+
     return (
         <>
             <Wrapper
@@ -247,12 +261,13 @@ export default function BuilderImage({
                 onClick={handleClick}
             >
                 {isActive && <div className={styles.activeBorderOutline} />}
-                <img
-                    id={elementId}
-                    src={imageSrc}
-                    alt={(!alt || alt === "#") && sectionId ? sectionId : alt}
-                    style={finalStyle}
-                />
+                {mobileSrc ? (
+                    <picture style={{ display: 'contents' }}>
+                        {imageContent}
+                    </picture>
+                ) : (
+                    imageContent
+                )}
             </Wrapper>
 
             {renderActiveOverlay()}
@@ -282,6 +297,9 @@ export default function BuilderImage({
                     showMobileRatio={!isStaging && !!onMobileRatioChange}
                     mobileRatio={mobileRatio}
                     onMobileRatioChange={onMobileRatioChange}
+                    showMobileImageSrc={isStaging && !!onMobileSrcChange}
+                    mobileImageSrc={mobileSrc}
+                    onMobileImageSrcChange={onMobileSrcChange}
                 />
             )}
         </>

@@ -113,7 +113,7 @@ export const data = {
                 "imageUrl": "",
                 "imageLinkType": "url",
                 "imageTargetDialogId": "",
-                "avatar": "",
+                "avatar": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1766991827/gold_vsdgbz.png",
                 "avatarUrl": "",
                 "avatarLinkType": "url",
                 "avatarTargetDialogId": "",
