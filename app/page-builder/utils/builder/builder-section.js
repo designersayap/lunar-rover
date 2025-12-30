@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useRef, useContext, useEffect } from "react";
-import { useBuilderSelection, BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
+import { useBuilderSelection, BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";

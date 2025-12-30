@@ -15,7 +15,7 @@ import Dialog from "@/app/template-components/dialog/dialog-default";
 import TerraTestimony from "@/app/template-components/terra/terra-testimony";
 
 
-import { BuilderSelectionProvider } from "@/app/page-builder-components/utils/builder/builder-controls";
+import { BuilderSelectionProvider } from "@/app/page-builder/utils/builder/builder-controls";
 
 export default function ComponentPreviewPage() {
     const params = useParams();

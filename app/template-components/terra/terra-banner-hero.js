@@ -1,10 +1,10 @@
 import styles from "./terra-banner-hero.module.css";
-import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
-import BuilderButton from "@/app/page-builder-components/utils/builder/builder-button";
-import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
+import BuilderText from "@/app/page-builder/utils/builder/builder-text";
+import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
+import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
-import { getContainerClasses } from "@/app/page-builder-components/utils/section-utils";
+import { getContainerClasses } from "@/app/page-builder/utils/section-utils";
 
 /**
  * TerraBannerHero Component

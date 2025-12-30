@@ -1,6 +1,6 @@
 import styles from "./header-section.module.css";
-import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
-import { getContainerClasses } from "@/app/page-builder-components/utils/section-utils";
+import BuilderText from "@/app/page-builder/utils/builder/builder-text";
+import { getContainerClasses } from "@/app/page-builder/utils/section-utils";
 import { createUpdateHandler } from "../utils/component-helpers";
 
 export default function HeaderSection({

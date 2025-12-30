@@ -6,7 +6,7 @@ import { promises as fs } from 'fs';
 export const ALLOWED_DIRS = [
   path.resolve(process.cwd(), 'app/template-components'),
   path.resolve(process.cwd(), 'app/foundation'),
-  path.resolve(process.cwd(), 'app/page-builder-components'),
+  path.resolve(process.cwd(), 'app/page-builder'),
   path.resolve(process.cwd(), 'public')
 ];
 
@@ -51,7 +51,7 @@ export function cleanBuilderContent(src) {
   const hasBuilderElement = src.includes('BuilderElement') && !hasShim('BuilderElement');
 
   // Remove Builder imports
-  src = src.replace(/import\s+.*?\s+from\s+['"]@\/app\/page-builder-components\/utils\/builder\/.*?['"];?\n?/g, '');
+  src = src.replace(/import\s+.*?\s+from\s+['"]@\/app\/page-builder\/utils\/builder\/.*?['"];?\n?/g, '');
 
   // Remove generic imports that are not needed (keep CSS imports)
   // src = src.replace(/import\s+{[^}]*}\s+from\s+['"][^'\"]+['"];?\n?/g, '');
@@ -199,12 +199,25 @@ const BuilderLink = ({ label, href, openInNewTab, className, style, children, li
 
   if (hasBuilderImage) {
     shims.push(`
-const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href, linkType, openInNewTab, targetDialogId, id, sectionId, suffix }) => {
+const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href, linkType, openInNewTab, targetDialogId, id, sectionId, suffix, isPortrait }) => {
   const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
   const effectiveAlt = (!alt || alt === '#') && normalizedSectionId ? normalizedSectionId : (alt || '');
   let finalClassName = className || '';
+  
+  if (isPortrait === true || String(isPortrait) === 'true') {
+    const portraitMap = {
+        'imagePlaceholder-4-3': 'imagePlaceholder-3-4',
+        'imagePlaceholder-16-9': 'imagePlaceholder-9-16',
+        'imagePlaceholder-21-9': 'imagePlaceholder-9-21',
+        'imagePlaceholder-5-4': 'imagePlaceholder-4-5'
+    };
+    Object.entries(portraitMap).forEach(([landscape, portrait]) => {
+        finalClassName = finalClassName.replace(landscape, portrait);
+    });
+  }
+
   if (mobileRatio) {
      finalClassName += \` mobile-aspect-\${mobileRatio}\`;
   }

@@ -3,8 +3,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
-import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
+import BuilderText from "@/app/page-builder/utils/builder/builder-text";
+import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
 import styles from "./dialog-section.module.css";
 import { createUpdateHandler } from "../utils/component-helpers";
 

@@ -1,6 +1,6 @@
 import styles from "./media.module.css";
-import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
-import BuilderSection from "@/app/page-builder-components/utils/builder/builder-section";
+import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
+import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
 

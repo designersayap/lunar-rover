@@ -2,7 +2,7 @@
 import JSZip from 'jszip';
 import { COMPONENT_PATHS } from './component-paths';
 import { componentDefaults } from '@/app/template-components/content/data';
-import { defaultPlaceholder } from '@/app/page-builder-components/utils/builder/builder-image';
+import { defaultPlaceholder } from '@/app/page-builder/utils/builder/builder-image';
 
 /**
  * handleExportNextjs: Exports selected components as a clean Next.js project structure (Partial).
@@ -27,7 +27,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         const utilsRes = await fetch('/api/export-component', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ filePath: 'app/page-builder-components/utils/section-utils.js' })
+            body: JSON.stringify({ filePath: 'app/page-builder/utils/section-utils.js' })
         });
         if (utilsRes.ok) {
             const { content } = await utilsRes.json();
@@ -46,7 +46,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         const stickyRes = await fetch('/api/export-component', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ filePath: 'app/page-builder-components/utils/sticky-manager.js' })
+            body: JSON.stringify({ filePath: 'app/page-builder/utils/sticky-manager.js' })
         });
         if (stickyRes.ok) {
             const { content } = await stickyRes.json();

@@ -25,7 +25,7 @@ export const componentLibrary = {
             id: "lacto-navigation",
             name: "Lacto",
             component: LactoNavigation,
-            thumbnail: "/images/thumbnails/placeholder.svg",
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
             config: [
                 { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["lacto-navigation"].menu1Label },
                 { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["lacto-navigation"].menu1Url },
@@ -53,7 +53,7 @@ export const componentLibrary = {
             id: "banner-information",
             name: "Info Banner",
             component: BannerInformation,
-            thumbnail: "/images/thumbnails/banner-info.svg",
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
             config: [
                 {
                     name: "title",
@@ -98,13 +98,13 @@ export const componentLibrary = {
             id: "header-title",
             name: "Title",
             component: GlobalHeaderTitle,
-            thumbnail: "/images/thumbnails/header-title.svg",
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
         },
         {
             id: "header-title-button",
             name: "Title, Button",
             component: GlobalHeaderTitleButton,
-            thumbnail: "/images/thumbnails/header-title-button.svg",
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -163,13 +163,13 @@ export const componentLibrary = {
             id: "header-title-description",
             name: "Title, Description",
             component: GlobalHeaderTitleDescription,
-            thumbnail: "/images/thumbnails/header-title-desc.svg",
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
         },
         {
             id: "header-title-description-button",
             name: "Title, Description, Button",
             component: GlobalHeaderTitleButtonDescription,
-            thumbnail: "/images/thumbnails/header-title-desc-button.svg",
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -230,7 +230,7 @@ export const componentLibrary = {
             id: "dialog",
             name: "Item List",
             component: Dialog,
-            thumbnail: "/images/thumbnails/dialog.svg", // Placeholder or generic
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
             config: [
                 {
                     name: "items",
@@ -262,7 +262,7 @@ export const componentLibrary = {
             id: "dialog-accordion",
             name: "Accordion",
             component: DialogAccordion,
-            thumbnail: "/images/thumbnails/dialog.svg", // Placeholder
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
             config: [
                 {
                     name: "image",
@@ -294,7 +294,7 @@ export const componentLibrary = {
             id: "media-21-9",
             name: "21:9",
             component: Media21x9,
-            thumbnail: "/images/thumbnails/placeholder.svg",
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
             config: [
                 {
                     name: "image",
@@ -316,7 +316,7 @@ export const componentLibrary = {
             id: "media-16-9",
             name: "16:9",
             component: Media16x9,
-            thumbnail: "/images/thumbnails/placeholder.svg", // Placeholder
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
             config: [
                 {
                     name: "image",
@@ -338,7 +338,7 @@ export const componentLibrary = {
             id: "media-5-4",
             name: "5:4",
             component: Media5x4,
-            thumbnail: "/images/thumbnails/placeholder.svg",
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
             config: [
                 {
                     name: "image",
@@ -360,7 +360,7 @@ export const componentLibrary = {
             id: "media-4-3",
             name: "4:3",
             component: Media4x3,
-            thumbnail: "/images/thumbnails/placeholder.svg",
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
             config: [
                 {
                     name: "fullWidth",
@@ -390,7 +390,7 @@ export const componentLibrary = {
             id: "terra-banner-hero",
             name: "Terra",
             component: TerraBannerHero,
-            thumbnail: "/images/thumbnails/terra-cta.svg",
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -453,7 +453,7 @@ export const componentLibrary = {
             id: "feature-left",
             name: "Terra - Image Left",
             component: TerraFeaturesImageLeft,
-            thumbnail: "/images/thumbnails/terra-image-left.svg",
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -514,7 +514,7 @@ export const componentLibrary = {
             id: "feature-right",
             name: "Terra - Image Right",
             component: TerraFeaturesImageRight,
-            thumbnail: "/images/thumbnails/terra-image-right.svg",
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -549,7 +549,7 @@ export const componentLibrary = {
             id: "terra-testimony",
             name: "Terra",
             component: TerraTestimony,
-            thumbnail: "/images/thumbnails/placeholder.svg",
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
             config: [
                 {
                     name: "testimonies",

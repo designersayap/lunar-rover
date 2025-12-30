@@ -10,8 +10,8 @@ import TerraFeaturesImageLeft from "@/app/template-components/terra/terra-featur
 import HeaderTitleDescription from "@/app/template-components/header/header-title-description";
 import TerraTestimony from "@/app/template-components/terra/terra-testimony";
 import DialogAccordion from "@/app/template-components/dialog/dialog-accordion";
-import StickyManager from "@/app/page-builder-components/utils/sticky-manager";
-import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
+import StickyManager from "@/app/page-builder/utils/sticky-manager";
+import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { useState } from "react";
 
 export default function StagingPage() {

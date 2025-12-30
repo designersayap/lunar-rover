@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
-import BuilderButton from "@/app/page-builder-components/utils/builder/builder-button";
+import BuilderText from "@/app/page-builder/utils/builder/builder-text";
+import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
 import { createUpdateHandler } from "../utils/component-helpers";
 import styles from "./banner-information.module.css";
-import { getContainerClasses } from "@/app/page-builder-components/utils/section-utils";
+import { getContainerClasses } from "@/app/page-builder/utils/section-utils";
 
 export default function BannerInformation({
     title = "Information Banner",

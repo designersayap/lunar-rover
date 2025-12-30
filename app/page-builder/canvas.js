@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { isComponentSticky } from "./utils/component-manager";
-import { useBuilderSelection } from "@/app/page-builder-components/utils/builder/builder-controls";
+import { useBuilderSelection } from "@/app/page-builder/utils/builder/builder-controls";
 import styles from "../page.module.css";
 import { useStickyStacking } from "./utils/sticky-stacking";
 

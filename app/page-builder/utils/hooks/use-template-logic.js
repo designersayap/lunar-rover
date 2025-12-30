@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useToast, useDragDrop } from "@/app/page-builder-components/utils/hooks";
-import { getThemes } from "@/app/page-builder-components/utils/get-themes";
-import { componentLibrary } from "@/app/page-builder-components/content/component-library";
+import { useToast, useDragDrop } from "@/app/page-builder/utils/hooks";
+import { getThemes } from "@/app/page-builder/utils/get-themes";
+import { componentLibrary } from "@/app/page-builder/content/component-library";
 import {
     loadTemplate,
     saveTemplate,
     DEFAULT_ANALYTICS
-} from "@/app/page-builder-components/utils/template-storage";
+} from "@/app/page-builder/utils/template-storage";
 import {
     addComponentToList,
     removeComponentFromList,
@@ -14,9 +14,9 @@ import {
     updateComponentProps,
     updateComponentSectionId,
     reorderComponents
-} from "@/app/page-builder-components/utils/component-manager";
-import { handleExportNextjs } from "@/app/page-builder-components/utils/export-nextjs";
-import { calculatePopoverPosition } from "@/app/page-builder-components/utils/builder/builder-controls";
+} from "@/app/page-builder/utils/component-manager";
+import { handleExportNextjs } from "@/app/page-builder/utils/export-nextjs";
+import { calculatePopoverPosition } from "@/app/page-builder/utils/builder/builder-controls";
 
 export function useTemplateLogic() {
     // ==================== STATE MANAGEMENT ====================

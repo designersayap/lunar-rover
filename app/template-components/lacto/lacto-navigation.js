@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 // Force HMR update for hydration synchronization
 import { createPortal } from 'react-dom';
 import styles from './lacto-navigation.module.css';
-import BuilderImage from '@/app/page-builder-components/utils/builder/builder-image';
-import BuilderLink from '@/app/page-builder-components/utils/builder/builder-link';
+import BuilderImage from '@/app/page-builder/utils/builder/builder-image';
+import BuilderLink from '@/app/page-builder/utils/builder/builder-link';
 import { createUpdateHandler } from '../utils/component-helpers';
 import { componentDefaults } from '../content/data';
 import { Bars3Icon } from '@heroicons/react/24/solid';

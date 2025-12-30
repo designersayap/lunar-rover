@@ -40,7 +40,7 @@ lunar/
 │   │   ├── global.css            # Base typography & utilities
 │   │   ├── grid.css              # Grid layout system
 │   │   └── accent-color.css      # Theme accent handling
-│   ├── page-builder-components/  # 🛠️ Builder Interface (The Editor)
+│   ├── page-builder/  # 🛠️ Builder Interface (The Editor)
 │   │   ├── sidebar.js            # Component library & settings sidebar
 │   │   ├── canvas.js             # Drag & drop workspace
 │   │   └── ...                   # Toolbars, popovers, utilities

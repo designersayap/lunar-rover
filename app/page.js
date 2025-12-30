@@ -4,20 +4,20 @@ import { BellAlertIcon, TrashIcon } from "@heroicons/react/24/solid";
 import styles from "./page.module.css";
 
 // Feature Components
-import Sidebar from "@/app/page-builder-components/sidebar";
-import TopBar from "@/app/page-builder-components/topbar";
-import Canvas from "@/app/page-builder-components/canvas";
-import ThemePickerPopover from "@/app/page-builder-components/theme-picker-popover";
-import UATPopover from "@/app/page-builder-components/uat-popover";
-import StagingPopover from "@/app/page-builder-components/staging-popover";
-import ComponentsPopover from "@/app/page-builder-components/components-popover";
+import Sidebar from "@/app/page-builder/sidebar";
+import TopBar from "@/app/page-builder/topbar";
+import Canvas from "@/app/page-builder/canvas";
+import ThemePickerPopover from "@/app/page-builder/theme-picker-popover";
+import UATPopover from "@/app/page-builder/uat-popover";
+import StagingPopover from "@/app/page-builder/staging-popover";
+import ComponentsPopover from "@/app/page-builder/components-popover";
 
 // Helper Utilities
-import { componentLibrary } from "@/app/page-builder-components/content/component-library";
-import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
+import { componentLibrary } from "@/app/page-builder/content/component-library";
+import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 
 // Hook
-import { useTemplateLogic } from "@/app/page-builder-components/utils/hooks";
+import { useTemplateLogic } from "@/app/page-builder/utils/hooks";
 
 /**
  * Template Generator Page

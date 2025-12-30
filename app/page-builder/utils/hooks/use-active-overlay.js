@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useContext } from "react";
 import { createPortal } from "react-dom";
-import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
+import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import styles from "../../../page.module.css";
 
 export function useActiveOverlay(elementId) {

@@ -33,8 +33,8 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
     imports.forEach((path, name) => {
         pageContent += `import ${name} from "${path}";\n`;
     });
-    pageContent += `import StickyManager from "@/app/page-builder-components/utils/sticky-manager";\n`;
-    pageContent += `import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";\n`;
+    pageContent += `import StickyManager from "@/app/page-builder/utils/sticky-manager";\n`;
+    pageContent += `import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";\n`;
     pageContent += `import { useState } from "react";\n`;
 
     pageContent += `\nexport default function StagingPage() {\n`;

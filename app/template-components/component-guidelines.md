@@ -7,21 +7,21 @@ This document outlines the standards for creating new **Template Components** in
 When creating a new component, you will touch three files across the project:
 
 1.  **The Component File**: `app/template-components/[category]/[name].js`
-2.  **Sidebar Config**: `app/page-builder-components/content/component-library.js`
+2.  **Sidebar Config**: `app/page-builder/content/component-library.js`
 3.  **Default Data**: `app/template-components/content/data.js`
 
 ---
 
 ## 1. Core Builder Components
 
-**Do not use standard HTML tags** for editable content. Use these primitives from `app/page-builder-components/` to enable the "Builder" features (hover effects, click-to-edit, etc).
+**Do not use standard HTML tags** for editable content. Use these primitives from `app/page-builder/` to enable the "Builder" features (hover effects, click-to-edit, etc).
 
 ### `BuilderButton`
 **Primary component for Buttons AND Links.**
 Supports variants, custom URLs, and standard Dialog triggers.
 
 ```javascript
-import BuilderButton from "@/app/page-builder-components/utils/builder/builder-button";
+import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
 
 <BuilderButton
     label={buttonText}
@@ -52,7 +52,7 @@ import BuilderButton from "@/app/page-builder-components/utils/builder/builder-b
 For images with upload, replacement, and link capabilities.
 
 ```javascript
-import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
+import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
 
 <BuilderImage
     src={image}
@@ -80,7 +80,7 @@ import BuilderImage from "@/app/page-builder-components/utils/builder/builder-im
 For all editable text content (Headings, Paragraphs, Spans).
 
 ```javascript
-import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
+import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 
 <BuilderText
     tagName="h2"
@@ -96,7 +96,7 @@ import BuilderText from "@/app/page-builder-components/utils/builder/builder-tex
 A simplified link component, primarily for lists (like Footer links) where button styling isn't needed.
 
 ```javascript
-import BuilderLink from "@/app/page-builder-components/utils/builder/builder-link";
+import BuilderLink from "@/app/page-builder/utils/builder/builder-link";
 
 <BuilderLink
     label={item.label}
@@ -207,10 +207,10 @@ export default function MyDialog({
 
 ## 4. Sidebar Configuration (`component-library.js`)
 
-You must define child elements in `app/page-builder-components/content/component-library.js` so they appear in the Sidebar Layer Tree.
+You must define child elements in `app/page-builder/content/component-library.js` so they appear in the Sidebar Layer Tree.
 
 ```javascript
-// app/page-builder-components/content/component-library.js
+// app/page-builder/content/component-library.js
 "My Category": [
     {
         id: "my-component",
@@ -268,7 +268,7 @@ export const componentDefaults = {
 
 ## 6. Page Builder Utilities
 
-Located in `app/page-builder-components/utils`.
+Located in `app/page-builder/utils`.
 
 ### Component Manager (`utils/component-manager.js`)
 Core logic for manipulating the component list.

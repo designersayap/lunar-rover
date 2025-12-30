@@ -1,69 +1,56 @@
 "use client";
 
-import { useContext, useRef, useEffect, useState, useLayoutEffect } from "react";
+import Link from "next/link";
+import { useState, useContext, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { BuilderSelectionContext } from "@/app/page-builder-components/utils/builder/builder-controls";
+import BuilderText from "./builder-text";
+import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { useIdSync } from "../hooks/use-id-sync";
 import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid";
-import BuilderControlsPopover from "./builder-controls-popover";
 import styles from "../../../page.module.css";
+import BuilderControlsPopover from "./builder-controls-popover";
 
 /**
- * BuilderImage: Renders an image with consistent styling and placeholder support.
+ * BuilderLink: Renders a link with consistent styling, ID generation, and editing capabilities.
  */
-import { DEFAULT_PLACEHOLDER_IMAGE, IMAGE_PORTRAIT_RATIO_MAP } from "@/app/constants";
-
-/**
- * BuilderImage: Renders an image with consistent styling and placeholder support.
- */
-export const defaultPlaceholder = DEFAULT_PLACEHOLDER_IMAGE; // Keep export for backward compatibility if needed, or just use the constant internally
-
-
-export default function BuilderImage({
-    src,
-    onSrcChange,
-    alt = "#",
-    className = "",
-    style = {},
+export default function BuilderLink({
+    label = "Link",
     id,
-    sectionId,
-    isVisible = true,
-    onVisibilityChange,
-    onIdChange,
+    href = "#",
     suffix,
-    href,
+    sectionId,
+    className = "",
+    onLabelChange,
+    onIdChange,
     onHrefChange,
-    linkType = 'url',
+    onVisibilityChange,
+    isVisible = true,
+    style = {},
+    iconLeft,
+    iconRight,
+    justify = "center",
+    fullWidth = false,
+    linkType,
     onLinkTypeChange,
     targetDialogId,
     onTargetDialogIdChange,
-    disableSettings = false,
-    isPortrait,
-    onIsPortraitChange,
-    mobileRatio,
-    onMobileRatioChange,
-    mobileSrc,
-    onMobileSrcChange
+    tooltipIfTruncated,
+    showLinkType = true
 }) {
-    const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
+    const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "link", onIdChange });
 
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
-
     const isActive = activeElementId === elementId;
     const myPopoverId = `popover-${elementId}`;
     const showSettings = activePopoverId === myPopoverId;
-
+    const [popoverPosition, setPopoverPosition] = useState(null);
     const wrapperRef = useRef(null);
     const [overlayRect, setOverlayRect] = useState(null);
-    const [popoverPosition, setPopoverPosition] = useState(null);
+    const displayStyle = fullWidth ? 'flex' : 'inline-flex';
+    const widthStyle = fullWidth ? '100%' : undefined;
 
-    // Use layout effect to prevent visual jitter on selection
-    const { useLayoutEffect } = require('react'); // Ensure we have this (or import at top)
-    const safeUseLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
-
-    safeUseLayoutEffect(() => {
+    useEffect(() => {
         if (isActive && wrapperRef.current) {
-            let rafId;
             const updatePosition = () => {
                 if (wrapperRef.current) {
                     const rect = wrapperRef.current.getBoundingClientRect();
@@ -77,19 +64,13 @@ export default function BuilderImage({
                 }
             };
 
-            const onScrollOrResize = () => {
-                cancelAnimationFrame(rafId);
-                rafId = requestAnimationFrame(updatePosition);
-            };
-
             updatePosition();
-            window.addEventListener('scroll', onScrollOrResize, true);
-            window.addEventListener('resize', onScrollOrResize);
+            window.addEventListener('scroll', updatePosition, true);
+            window.addEventListener('resize', updatePosition);
 
             return () => {
-                window.removeEventListener('scroll', onScrollOrResize, true);
-                window.removeEventListener('resize', onScrollOrResize);
-                cancelAnimationFrame(rafId);
+                window.removeEventListener('scroll', updatePosition, true);
+                window.removeEventListener('resize', updatePosition);
             };
         }
     }, [isActive, showSettings]);
@@ -158,12 +139,11 @@ export default function BuilderImage({
             left: overlayRect.left,
             width: overlayRect.width,
             height: overlayRect.height,
-            pointerEvents: 'none',
-            zIndex: 10002 // z-system-builder-overlay
+            pointerEvents: 'none'
         };
 
         return createPortal(
-            <div style={anchorStyle}>
+            <div style={anchorStyle} className="z-system-builder-overlay">
                 <div
                     className={styles.activeOverlay}
                     style={{
@@ -174,7 +154,6 @@ export default function BuilderImage({
                     <div className={styles.overlayLabel}>
                         <span className={styles.overlayIdText}>#{elementId}</span>
                     </div>
-
                     {linkType === 'dialog' && (
                         <button
                             type="button"
@@ -185,8 +164,7 @@ export default function BuilderImage({
                             <ChatBubbleLeftEllipsisIcon className={styles.overlayIcon} />
                         </button>
                     )}
-
-                    {(!disableSettings && (!isStaging || (linkType !== 'dialog' || true))) && (
+                    {(!isStaging || linkType !== 'dialog') && (
                         <button
                             type="button"
                             className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
@@ -201,74 +179,57 @@ export default function BuilderImage({
         );
     };
 
-    const imageSrc = src || defaultPlaceholder;
-    const isPlaceholder = !src || src === defaultPlaceholder || (typeof src === 'string' && src.includes('placeholder_falj5i'));
-    const finalStyle = {
-        width: "100%",
-        height: "100%",
-        objectFit: "cover",
-        display: "block",
-        backgroundColor: isPlaceholder ? "#676767" : "transparent",
-        opacity: isVisible ? 1 : 0.5,
-        ...style
-    };
-
-    let targetDialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
-
-    if (!targetDialogComponent && linkType === 'dialog') {
-        targetDialogComponent = selectedComponents?.find(c => c.id === 'dialog' || c.id === 'dialog-accordion');
-    }
-
-    const targetDialogSectionId = targetDialogComponent?.sectionId;
-
-    const Wrapper = href || linkType === 'dialog' ? 'a' : 'div';
-    const wrapperProps = href || linkType === 'dialog' ? {
-        href: href || "#",
-        'data-dialog-trigger': linkType === 'dialog' ? "" : undefined,
-        'data-dialog-target': linkType === 'dialog' ? targetDialogSectionId : undefined
-    } : {};
-
-    let finalClassName = `${isActive ? styles.activeWrapper : ''} ${className}`;
-    if (onIsPortraitChange && isPortrait) {
-        Object.entries(IMAGE_PORTRAIT_RATIO_MAP).forEach(([landscape, portrait]) => {
-            finalClassName = finalClassName.replace(landscape, portrait);
-        });
-    }
-
-    if (mobileRatio) {
-        finalClassName += ` mobile-aspect-${mobileRatio}`;
-    }
-
-    const imageContent = (
-        <>
-            {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
-            <img
-                id={elementId}
-                src={imageSrc}
-                alt={(!alt || alt === "#") && sectionId ? sectionId : alt}
-                style={finalStyle}
-            />
-        </>
-    );
-
     return (
         <>
-            <Wrapper
-                {...wrapperProps}
+            <span
                 ref={wrapperRef}
-                className={finalClassName}
-                style={{ position: 'relative', width: '100%', height: '100%', display: 'block' }}
+                className={`${isActive ? styles.activeWrapper : ''}`}
+                style={{ display: displayStyle, position: 'relative', height: '100%', width: widthStyle, ...style }}
                 onClick={handleClick}
             >
                 {isActive && <div className={styles.activeBorderOutline} />}
-                {mobileSrc ? (
-                    <picture style={{ display: 'contents' }}>
-                        {imageContent}
-                    </picture>
-                ) : (
-                    imageContent
-                )}
-            </Wrapper>
+
+                {(() => {
+                    let safeHref = href || "#";
+                    try {
+                        if (/^[a-z]+:/i.test(safeHref)) {
+                            new URL(safeHref); // Will throw if invalid
+                        }
+                    } catch (e) {
+                        // Fallback to "#" to prevent crash
+                        safeHref = "#";
+                    }
+
+                    return (
+                        <Link
+                            id={elementId}
+                            href={safeHref}
+                            className={className}
+                            style={{ opacity: isVisible ? 1 : 0.5, display: displayStyle, alignItems: 'center', justifyContent: justify, width: '100%', height: '100%' }}
+                            data-tooltip={!tooltipIfTruncated ? label : undefined}
+                            prefetch={false} // Disable prefetch to be extra safe during editing
+                        >
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: justify, gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
+                                {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
+                                <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: justify }}>
+                                    <BuilderText
+                                        tagName="span"
+                                        content={label}
+                                        onChange={onLabelChange}
+                                        placeholder="Link Label"
+                                        multiline={false}
+                                        noId={true}
+                                        className={!isActive ? "truncate-1-line" : ""}
+                                        style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap', display: 'block' }}
+                                        tooltipIfTruncated={tooltipIfTruncated}
+                                    />
+                                </div>
+                                {iconRight && <span style={{ display: 'flex', flexShrink: 0 }}>{iconRight}</span>}
+                            </div>
+                        </Link>
+                    );
+                })()}
+            </span>
 
             {renderActiveOverlay()}
 
@@ -278,28 +239,16 @@ export default function BuilderImage({
                     onClose={() => setActivePopoverId(null)}
                     url={href}
                     onUrlChange={onHrefChange}
-                    imageSrc={src}
-                    onImageSrcChange={onSrcChange}
+                    showVariant={false}
+                    showLinkType={showLinkType && !isStaging}
                     linkType={linkType}
                     onLinkTypeChange={onLinkTypeChange}
-                    showLinkType={!isStaging}
-                    showUrl={!isStaging}
-                    showImageSrc={isStaging}
-                    position={popoverPosition}
-                    dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
                     targetDialogId={targetDialogId}
                     onTargetDialogIdChange={onTargetDialogIdChange}
-                    showDialogSelector={!isStaging}
-                    showVariant={false}
-                    showPortraitToggle={!isStaging && !!onIsPortraitChange}
-                    isPortrait={isPortrait}
-                    onIsPortraitChange={onIsPortraitChange}
-                    showMobileRatio={!isStaging && !!onMobileRatioChange}
-                    mobileRatio={mobileRatio}
-                    onMobileRatioChange={onMobileRatioChange}
-                    showMobileImageSrc={isStaging && !!onMobileSrcChange}
-                    mobileImageSrc={mobileSrc}
-                    onMobileImageSrcChange={onMobileSrcChange}
+                    isVisible={isVisible}
+                    onVisibilityChange={onVisibilityChange}
+                    position={popoverPosition}
+                    dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
                 />
             )}
         </>

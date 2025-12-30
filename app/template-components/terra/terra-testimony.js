@@ -2,10 +2,10 @@
 
 import { useRef, useState, useEffect } from "react";
 import styles from "./terra-testimony.module.css";
-import BuilderImage from "@/app/page-builder-components/utils/builder/builder-image";
-import BuilderText from "@/app/page-builder-components/utils/builder/builder-text";
-import BuilderSection from "@/app/page-builder-components/utils/builder/builder-section";
-import BuilderElement from "@/app/page-builder-components/utils/builder/builder-element";
+import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
+import BuilderText from "@/app/page-builder/utils/builder/builder-text";
+import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
+import BuilderElement from "@/app/page-builder/utils/builder/builder-element";
 import { componentDefaults } from "../content/data";
 
 export default function TerraTestimony({
