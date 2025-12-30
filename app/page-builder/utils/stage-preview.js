@@ -141,10 +141,14 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
             props.sectionId = finalSectionId;
         }
 
+        // Cleanup internal props that shouldn't be passed
+        delete props.props;
+        delete props.component;
+
         const propsString = Object.entries(props).map(([key, value]) => {
             if (value === undefined || value === null) return '';
             if (typeof value === 'string') {
-                return `${key}="${value}"`;
+                return `${key}={${JSON.stringify(value)}}`;
             } else if (typeof value === 'boolean') {
                 return value ? `${key}` : `${key}={false}`;
             } else {

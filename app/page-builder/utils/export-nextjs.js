@@ -710,7 +710,7 @@ export default function RootLayout({ children }) {
         const propsString = Object.entries(props).map(([key, value]) => {
             if (value === undefined || value === null) return '';
             if (typeof value === 'string') {
-                return `${key}="${value}"`;
+                return `${key}={${JSON.stringify(value)}}`;
             } else if (typeof value === 'boolean') {
                 return value ? `${key}` : `${key}={false}`;
             } else {
