@@ -4,7 +4,7 @@
     width: 100%;
     padding-top: var(--padding-xs);
     padding-bottom: var(--padding-xs);
-    background-color: var(--background-neutral--default);
+    background-color: transparent;
     transition: background-color 0.3s ease;
     position: relative;
 }

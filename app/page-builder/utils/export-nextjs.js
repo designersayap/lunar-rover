@@ -628,6 +628,8 @@ export default function RootLayout({ children }) {
     pageContent += `\nexport default function ExportedPage() {\n`;
     pageContent += `  return (\n`;
     pageContent += `    <main className="flex min-h-screen flex-col items-center justify-between">\n`;
+    pageContent += `      <div id="canvas-background-root" style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'auto', overflow: 'hidden' }} />\n`;
+    pageContent += `      <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>\n`;
 
     // Map uniqueIds to sectionIds for resolving "Target Dialog" links
     const sectionIdMap = new Map();
@@ -737,6 +739,7 @@ export default function RootLayout({ children }) {
     });
 
     pageContent += `      </StickyManager>\n`;
+    pageContent += `      </div>\n`;
     pageContent += `    </main>\n`;
     pageContent += `  );\n`;
     pageContent += `}\n`;

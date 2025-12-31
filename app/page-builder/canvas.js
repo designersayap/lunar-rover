@@ -22,9 +22,10 @@ export default function Canvas({
     const canvasClassName = `${styles.canvas} ${styles.canvasDesktop}`;
 
     return (
-        <div className={canvasClassName} onClick={() => setActiveElementId(null)}>
+        <div id="canvas-scroll-container" className={canvasClassName} onClick={() => setActiveElementId(null)}>
             {/* Canvas Content */}
             <div className={styles.canvasInner}>
+                <div id="canvas-background-root" className={styles.canvasBackgroundRoot} />
                 {displayComponents.length === 0 ? (
                     <div className={styles.emptyState}>
                         <div className={styles.emptyStateText}>

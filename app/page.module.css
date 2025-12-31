@@ -304,11 +304,22 @@
     text-align: center;
 }
 
+
+.canvasBackgroundRoot {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
 /* === COMPONENT WRAPPER === */
 .componentWrapper {
     position: relative;
-    background: var(--background-neutral--default);
+    background: transparent;
+    /* Changed from variable to allow background visibility */
     transition: border-color .2s, transform .2s;
+    z-index: 1;
 }
 
 /* Drop indicator */

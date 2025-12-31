@@ -22,6 +22,7 @@ export const COMPONENT_PATHS = {
     "media-21-9": "app/templates/media/media-21-9.js",
 
     "lacto-navigation": "app/templates/lacto/lacto-navigation.js",
+    "full-body": "app/templates/background/full-body.js",
 
     "terra-testimony": "app/templates/terra/terra-testimony.js"
 };

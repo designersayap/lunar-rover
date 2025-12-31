@@ -109,6 +109,8 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
     pageContent += `  return (\n`;
     pageContent += `    <main className="flex min-h-screen flex-col items-center justify-between">\n`;
     pageContent += `      <BuilderSelectionContext.Provider value={contextValue}>\n`;
+    pageContent += `      <div id="canvas-background-root" style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'auto', overflow: 'hidden' }} />\n`;
+    pageContent += `      <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>\n`;
     pageContent += `      <StickyManager stickyIndices={[${stickyIndices.join(',')}]}>\n`;
 
 
@@ -170,6 +172,7 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
     });
 
     pageContent += `      </StickyManager>\n`;
+    pageContent += `      </div>\n`;
     pageContent += `      </BuilderSelectionContext.Provider>\n`;
     pageContent += `    </main>\n`;
     pageContent += `  );\n`;

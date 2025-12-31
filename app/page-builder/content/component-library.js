@@ -17,8 +17,33 @@ const Media5x4 = dynamic(() => import('@/app/templates/media/media-5-4'));
 const Media4x3 = dynamic(() => import('@/app/templates/media/media-4-3'));
 const Media21x9 = dynamic(() => import('@/app/templates/media/media-21-9'));
 const LactoNavigation = dynamic(() => import("../../templates/lacto/lacto-navigation"));
+const FullBody = dynamic(() => import("@/app/templates/background/full-body"));
 
 export const componentLibrary = {
+    "Background": [
+        {
+            id: "full-body",
+            name: "Full Body",
+            component: FullBody,
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            config: [
+                {
+                    name: "image",
+                    label: "Background Image",
+                    type: "image",
+                    default: componentDefaults["full-body"]?.image
+                }
+            ],
+            images: [
+                {
+                    label: "Background",
+                    propId: "imageId",
+                    suffix: "bg",
+                    visibleProp: "imageVisible"
+                }
+            ]
+        }
+    ],
 
     "Navigation": [
         {

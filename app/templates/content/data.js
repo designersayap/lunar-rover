@@ -3,6 +3,9 @@
  * Keys match the 'id' in component-library.js.
  */
 export const componentDefaults = {
+    "full-body": {
+        image: ""
+    },
 
     "header-title": {
         title: "Title"
