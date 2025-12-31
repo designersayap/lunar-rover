@@ -59,7 +59,8 @@ export default function TemplateGeneratorPage() {
     updateSectionId,
     handleAddClick,
     closePopover,
-    togglePopover
+    togglePopover,
+    setSelectedComponents
   } = actions;
 
   const {
@@ -182,6 +183,7 @@ export default function TemplateGeneratorPage() {
             onClose={closePopover}
             position={popoverPositions.staging}
             className="z-system-modal-floating"
+            onRestore={setSelectedComponents}
           />
         )}
 

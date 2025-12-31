@@ -249,7 +249,8 @@ export function useTemplateLogic() {
             updateSectionId,
             handleAddClick,
             closePopover,
-            togglePopover
+            togglePopover,
+            setSelectedComponents
         }
     };
 }

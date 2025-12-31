@@ -1,20 +1,23 @@
 import { useState, useEffect } from 'react';
-import { XMarkIcon, FolderIcon, DocumentPlusIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, FolderIcon, DocumentPlusIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import styles from '../page.module.css';
 import { handleStagePreview } from './utils/stage-preview';
 import BasePopover from './base-popover';
+import { componentLibrary } from './content/component-library';
 
 export default function StagingPopover({
     position,
     onClose,
     selectedComponents,
     analyticsData,
-    className
+    className,
+    onRestore  // Inject ability to restore
 }) {
     const [folderName, setFolderName] = useState("");
     const [existingFolders, setExistingFolders] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [isRestoring, setIsRestoring] = useState(false);
 
     useEffect(() => {
         const fetchFolders = async () => {
@@ -47,6 +50,56 @@ export default function StagingPopover({
 
         if (success) {
             onClose();
+        }
+    };
+
+    const handleRestore = async (e, folder) => {
+        e.stopPropagation(); // Prevent clicking the folder item
+        if (!confirm(`Replace current canvas with content from '${folder}'?`)) return;
+
+        setIsRestoring(true);
+        try {
+            const res = await fetch(`/api/load-staging-data?folder=${folder}`);
+            if (res.ok) {
+                const data = await res.json();
+                if (data.components) {
+                    if (onRestore) {
+                        // Rehydrate components with their render functions/classes
+                        const rehydrated = data.components.map(item => {
+                            // Find definition in library
+                            let definition = null;
+                            for (const category of Object.values(componentLibrary)) {
+                                const found = category.find(c => c.id === item.id);
+                                if (found) {
+                                    definition = found;
+                                    break;
+                                }
+                            }
+
+                            if (definition) {
+                                return {
+                                    ...item,
+                                    component: definition.component
+                                };
+                            } else {
+                                console.warn(`Component definition not found for id: ${item.id}`);
+                                return item;
+                            }
+                        });
+
+                        onRestore(rehydrated);
+                        onClose();
+                        alert("Restored successfully!");
+                    }
+                }
+            } else {
+                alert("Failed to load staging data");
+            }
+        } catch (e) {
+            console.error("Error restoring", e);
+            alert("Error restoring staging data");
+        } finally {
+            setIsRestoring(false);
         }
     };
 
@@ -103,6 +156,14 @@ export default function StagingPopover({
                                 >
                                     <FolderIcon className={styles.folderIcon} />
                                     {folder}
+                                    <button
+                                        className={styles.iconButton}
+                                        style={{ marginLeft: 'auto', padding: '4px' }}
+                                        title="Restore to Builder"
+                                        onClick={(e) => handleRestore(e, folder)}
+                                    >
+                                        <ArrowPathIcon style={{ width: '16px', height: '16px' }} />
+                                    </button>
                                 </div>
                             ))
                         )}

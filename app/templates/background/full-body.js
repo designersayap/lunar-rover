@@ -16,16 +16,10 @@ export default function FullBody({ image, imageId, imageVisible, sectionId, onUp
     if (!mounted) return null;
 
     const portalRoot = document.getElementById("canvas-background-root");
-
-    // Fallback: If root not found (e.g. in other contexts), return null or render inline (but inline might break layout)
     if (!portalRoot) return null;
-
-    // We render the wrapper into the portal root
-    // The previous implementation had a wrapper div with styles.container.
-    // We keep that to maintain style structure.
     return createPortal(
         <div className={styles.container}>
-            <div className={`container-grid container-full ${styles.imageWrapper}`}>
+            <div className={`container-grid container-full`}>
                 <BuilderImage
                     src={image}
                     onSrcChange={update('image')}
