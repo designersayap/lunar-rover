@@ -10,7 +10,6 @@
     position: relative;
 }
 
-/* Main Content Wrapper */
 .content {
     display: flex;
     justify-content: center;
@@ -18,7 +17,6 @@
     flex: 1;
     min-width: 0;
     gap: var(--padding-xs);
-    /* Add padding right to prevent overlap with absolute close button */
     padding-right: 40px;
 }
 
@@ -29,7 +27,6 @@
     white-space: nowrap;
 }
 
-/* Marquee Logic */
 .marqueeWrapper {
     flex: 0 1 auto;
     min-width: 0;
@@ -63,7 +60,6 @@
     }
 }
 
-/* Pause on interaction */
 .marqueeWrapper:hover .marquee,
 .marqueeWrapper:focus-within .marquee {
     animation-play-state: paused;

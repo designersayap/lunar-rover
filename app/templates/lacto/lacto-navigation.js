@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// Force HMR update for hydration synchronization
 import { createPortal } from 'react-dom';
 import styles from './lacto-navigation.module.css';
 import BuilderImage from '@/app/page-builder/utils/builder/builder-image';
@@ -95,7 +94,6 @@ export default function LactoNavigation({
             canvasContainer.addEventListener('scroll', handleScroll);
         }
 
-        // Initial check
         handleScroll();
 
         return () => {

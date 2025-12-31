@@ -4,9 +4,6 @@ import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
 import HeaderSection from "./header-section";
 
-/**
- * Centered Header Section - Title with Button
- */
 export default function GlobalHeaderTitleButton({
     title = componentDefaults["header-title-button"].title,
     subtitle = componentDefaults["header-title-button"].subtitle,

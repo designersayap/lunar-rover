@@ -1,6 +1,3 @@
-/**
- * Helper utilities for template components
- */
 
 /**
  * Creates an update handler function for component props
