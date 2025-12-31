@@ -44,13 +44,15 @@ export default function BuilderImage({
     mobileRatio,
     onMobileRatioChange,
     mobileSrc,
-    onMobileSrcChange
+    onMobileSrcChange,
+    isActive: isActiveProp // New prop to force active state
 }) {
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
 
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
 
-    const isActive = activeElementId === elementId;
+    const isSelfActive = activeElementId === elementId;
+    const isActive = typeof isActiveProp !== 'undefined' ? isActiveProp : isSelfActive;
     const myPopoverId = `popover-${elementId}`;
     const showSettings = activePopoverId === myPopoverId;
 
