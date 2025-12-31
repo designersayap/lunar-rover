@@ -2,7 +2,7 @@ export const data = {
     "navigation-3838": {
         "logo": "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1766991829/logo-ekonomi_zofnp8.png",
         "menu1Label": "Beranda",
-        "menu2Label": "Syarat & Ketentuan",
+        "menu2Label": "Syarat &amp; Ketentuan",
         "menu3Label": "Cara Klaim",
         "menu4Label": "Testimony"
     },
@@ -234,7 +234,7 @@ export const data = {
         "isOpen": true
     },
     "header-7102": {
-        "title": "Total Hadiah Milliaran Menantimu!",
+        "title": "Total Hadiah Miliaran Menantimu!",
         "subtitle": "Batas Penukaran Hadiah 31 JULI 2026\nBeli Sabun Krim Ekonomi bertanda khusus\ndan kirimkan kode uniknya ke Whatsapp WINGS Customer Care (021 50 957 507) atau klik tombol dibawah ini untuk klaim sekarang!",
         "buttonText": "Klaim Hadiah"
     },
