@@ -7,9 +7,6 @@ import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
 import { getContainerClasses } from "@/app/page-builder/utils/section-utils";
 
-/**
- * TerraFeaturesImageRight Component
- */
 export default function TerraFeaturesImageRight({
     title = componentDefaults["feature-right"].title,
     subtitle = componentDefaults["feature-right"].subtitle,

@@ -4,10 +4,6 @@ import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
 
-/**
- * Media4x3 Component
- * Full width image using grid system
- */
 export default function Media4x3({
     image = componentDefaults["media-4-3"].image,
     imageId,

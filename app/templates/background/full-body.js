@@ -28,6 +28,7 @@ export default function FullBody({ image, imageId, imageVisible, sectionId, onUp
             <div className={`container-grid container-full ${styles.imageWrapper}`}>
                 <BuilderImage
                     src={image}
+                    onSrcChange={update('image')}
                     alt="Background Image"
                     className={styles.image}
                     isVisible={imageVisible}
@@ -35,6 +36,7 @@ export default function FullBody({ image, imageId, imageVisible, sectionId, onUp
                     id={imageId}
                     onIdChange={update('imageId')}
                     suffix="full-body-bg"
+                    showLinkControls={false}
                 />
             </div>
         </div>,

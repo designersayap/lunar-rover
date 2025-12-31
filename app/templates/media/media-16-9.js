@@ -4,9 +4,6 @@ import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
 
-/**
- * Media16x9 Component
- */
 export default function Media16x9({
     image = componentDefaults["media-16-9"].image,
     imageId,

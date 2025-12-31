@@ -4,9 +4,6 @@ import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
 
-/**
- * Media5x4 Component
- */
 export default function Media5x4({
     image = componentDefaults["media-5-4"].image,
     imageId,

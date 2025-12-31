@@ -88,7 +88,6 @@
     left: 0;
 }
 
-/* Description Card Container */
 .terraTestimoniDescriptionCard {
     position: absolute;
     bottom: var(--padding-sm);
@@ -99,15 +98,12 @@
     backdrop-filter: blur(5.5px);
     -webkit-backdrop-filter: blur(5.5px);
     padding: var(--padding-lg) var(--padding-sm) var(--padding-sm) var(--padding-sm);
-    /* Desktop default */
     display: flex;
     flex-direction: column;
     align-items: center;
     pointer-events: auto;
 }
 
-
-/* mobile padding-top */
 @media (max-width: 767px) {
     .terraTestimoniDescriptionCard {
         padding-top: 40px;
@@ -128,13 +124,11 @@
     overflow: hidden;
 }
 
-/* Name Text */
 .name {
     max-width: 100%;
     text-align: left;
 }
 
-/* Role Text */
 .role {
     max-width: 100%;
     opacity: 0.6;
@@ -143,7 +137,6 @@
     margin-bottom: var(--gap-xs);
 }
 
-/* Description Text */
 .description {
     max-width: 100%;
     opacity: 0.8;
@@ -152,7 +145,6 @@
     word-break: break-word;
 }
 
-/* Pagination Dots */
 .paginator {
     display: flex;
     justify-content: center;
@@ -160,7 +152,6 @@
     margin-top: var(--gap-sm);
 }
 
-/* Hide paginator on mobile and tablet */
 @media (max-width: 1023px) {
     .paginator {
         display: none;

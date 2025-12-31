@@ -6,9 +6,6 @@ import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
 import { getContainerClasses } from "@/app/page-builder/utils/section-utils";
 
-/**
- * TerraBannerHero Component
- */
 export default function TerraBannerHero({
     title = componentDefaults["terra-banner-hero"].title,
     subtitle = componentDefaults["terra-banner-hero"].subtitle,
@@ -37,8 +34,6 @@ export default function TerraBannerHero({
 }) {
     const update = createUpdateHandler(onUpdate);
 
-    // Group props for cleaner logic (Internal Refactor)
-    // We maintain default values from componentDefaults to ensure stability
     const defaults = componentDefaults["terra-banner-hero"];
 
     const primaryButton = {

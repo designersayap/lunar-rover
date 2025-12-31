@@ -38,6 +38,7 @@ export default function BuilderImage({
     targetDialogId,
     onTargetDialogIdChange,
     disableSettings = false,
+    showLinkControls = true,
     isPortrait,
     onIsPortraitChange,
     mobileRatio,
@@ -282,9 +283,10 @@ export default function BuilderImage({
                     onImageSrcChange={onSrcChange}
                     linkType={linkType}
                     onLinkTypeChange={onLinkTypeChange}
-                    showLinkType={!isStaging}
-                    showUrl={!isStaging}
-                    showImageSrc={isStaging}
+                    showLinkType={!isStaging && showLinkControls}
+                    showUrl={!isStaging && showLinkControls}
+                    showImageSrc={!isStaging || isStaging} /* Always show if valid, logic inside handles context */
+
                     position={popoverPosition}
                     dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
                     targetDialogId={targetDialogId}

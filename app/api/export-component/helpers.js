@@ -108,7 +108,11 @@ const BuilderText = ({ tagName = 'p', content, className, style, children, id, s
   const effectiveSuffix = suffix || (className ? className.split(' ')[0] : tagName);
   let finalId = id || (normalizedSectionId ? normalizedSectionId + '-' + effectiveSuffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
-  return <Tag id={finalId} className={className} style={style}>{content || children}</Tag>;
+
+  if (content) {
+    return <Tag id={finalId} className={className} style={style} dangerouslySetInnerHTML={{ __html: content }} />;
+  }
+  return <Tag id={finalId} className={className} style={style}>{children}</Tag>;
 };`);
   }
 
