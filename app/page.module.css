@@ -1,6 +1,11 @@
-/* PAGE BUILDER STYLES - Dark theme UI */
+/* PAGE BUILDER STYLES - Dark theme UI
+   Refactored and Grouped by Function
+*/
 
-/* === VARIABLES === */
+/* =========================================
+   1. VARIABLES & GLOBAL
+   ========================================= */
+
 :root {
     --bg1: #1f1f1f;
     --bg2: #1A1A1A;
@@ -27,8 +32,54 @@
     font-family: var(--font-family-body);
 }
 
-/* === FORM BASE CLASSES === */
-/* Base input - shared by all text inputs, textareas, selects */
+
+/* =========================================
+   2. LAYOUT & GRID
+   ========================================= */
+
+.mainContent {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: var(--w-sidebar);
+    background: linear-gradient(to top, #111, var(--bg1));
+    border-left: 1px solid #2A2A2A;
+    overflow-y: auto;
+    padding: 0 var(--space-80);
+}
+
+.canvas {
+    flex: 1;
+    overflow-y: auto;
+    background: var(--bg2);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.canvasInner {
+    width: 100%;
+    background: var(--base-white);
+    transition: width 0.3s ease, max-width 0.3s ease;
+    position: relative;
+    min-height: 100%;
+}
+
+.canvasDesktop .canvasInner {
+    width: 100%;
+    max-width: none;
+}
+
+
+/* =========================================
+   3. UI PRIMITIVES
+   ========================================= */
+
+/* --- Inputs & Forms --- */
 
 .formInputTitle {
     color: var(--grey-200);
@@ -59,7 +110,6 @@
     color: var(--grey-400);
 }
 
-/* Textarea variant */
 .formTextarea {
     resize: none;
     font-family: inherit;
@@ -67,454 +117,30 @@
     height: 80px;
 }
 
-/* Select/dropdown variant */
 .formSelect {
     cursor: pointer;
     appearance: none;
     padding-right: 2.5em;
 }
 
-/* === FLEX HELPERS (reused patterns) === */
-.topBarLeft,
-.topBarRight,
-
-.popoverHeader,
-.propertyRow,
-.analyticsHeader,
-.searchRow,
-.treeRow,
-.treeChevron,
-.treeIconWrapper,
-.settingsButton,
-.categoryHeader,
-.toaster {
-    display: flex;
-    align-items: center;
-}
-
-.categoryWrapper,
-.treeGroup,
-.treeContainer,
-.analyticsContainer,
-.analyticsSection,
-.popoverProperties,
-.exportInputWrapper,
-.themeList,
-.customDragImage {
-    display: flex;
-    flex-direction: column;
-}
-
-/* === TOP BAR === */
-.topBar {
-    background: var(--bg1);
-    border-bottom: 1px solid var(--bdr);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    align-items: center;
-    height: var(--h-topbar);
-    height: var(--h-topbar);
+.selectWrapper {
     position: relative;
-}
-
-.topBarLeft {
-    gap: var(--space-60);
-    padding: 0 var(--space-100);
-}
-
-.topBarRight {
-    gap: 8px;
-    padding-right: 16px;
-}
-
-.logo {
-    padding: 0;
-    color: var(--base-white);
-}
-
-.topBarButton,
-.topBarButtonWide,
-.topBarButtonExport {
-    height: 40px;
-    padding: 0;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
-}
-
-.topBarButton {
-    width: 36px;
-}
-
-.topBarButton:hover {
-    background: var(--grey-400);
-}
-
-.topBarButtonActive {
-    background: var(--bg3);
-    border-radius: 4px;
-}
-
-.topBarButtonWide {
-    max-width: 134px;
-}
-
-.topBarButtonText {
-    max-width: 80px;
-    text-align: left;
-}
-
-/* === GENERATOR BUTTON === */
-.generatorButton {
-    gap: var(--space-60);
-    font-size: var(--typography-font-size-90);
-    color: var(--base-white);
-    height: var(--h-btn);
-    border: none;
-    border-radius: 6px;
-    margin: 0;
-    background: var(--bg3);
-    box-shadow: var(--shd-btn);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background 0.2s;
-    padding: 0 var(--space-60);
-}
-
-.generatorButton:hover {
-    background: var(--bg4);
-}
-
-.generatorButton:active:not(:disabled),
-.topBarButtonActive,
-.generatorButtonActive {
-    background: var(--bg4);
-    box-shadow: var(--shd-active);
-    transform: translateY(1px);
-}
-
-.generatorButton:disabled {
-    opacity: .5;
-    cursor: not-allowed;
-}
-
-/* === SPLIT EXPORT BUTTON === */
-.splitButtonContainer {
-    display: flex;
-    align-items: center;
-    background: var(--bg3);
-    border-radius: 6px;
-    box-shadow: var(--shd-btn);
-    transition: background 0.2s;
-    height: var(--h-btn);
-    margin-right: -4px;
-    /* Adjust spacing if needed */
-}
-
-.splitButtonContainer:hover {
-    background: var(--bg4);
-}
-
-.splitButtonActive {
-    background: var(--bg4) !important;
-    box-shadow: var(--shd-active) !important;
-    transform: translateY(1px) !important;
-    /* Force active state to match theme button */
-}
-
-.splitButtonMain {
-    border-radius: 6px 0 0 6px;
-    box-shadow: none;
-    margin: 0;
-    background: transparent;
-    padding-right: 8px;
-    /* Reduce padding between text and divider */
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.splitButtonMain:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.splitButtonDropdown {
-    border-radius: 0 6px 6px 0;
-    box-shadow: none;
-    margin: 0;
-    background: transparent;
-    padding: 0 8px;
-    width: 28px;
-    /* Narrower than standard button */
-}
-
-.splitButtonDropdown:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.splitButtonDropdown:active {
-    background: var(--bg4) !important;
-    box-shadow: var(--shd-active) !important;
-    transform: translateY(1px) !important;
-}
-
-/* === LAYOUT === */
-.mainContent {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-}
-
-.canvas {
-    flex: 1;
-    overflow-y: auto;
-    background: var(--base-white);
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    background: var(--bg2);
-}
-
-.canvasInner {
     width: 100%;
-    background: var(--base-white);
-    transition: width 0.3s ease, max-width 0.3s ease;
-    position: relative;
-    min-height: 100%;
 }
 
-.canvasDesktop .canvasInner {
-    width: 100%;
-    max-width: none;
-}
-
-
-.emptyState {
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--background-neutral--default);
-}
-
-.emptyStateText {
-    text-align: center;
-}
-
-
-.canvasBackgroundRoot {
+.selectIcon {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     pointer-events: none;
-    overflow: hidden;
-}
-
-/* === COMPONENT WRAPPER === */
-.componentWrapper {
-    position: relative;
-    background: transparent;
-    /* Changed from variable to allow background visibility */
-    transition: border-color .2s, transform .2s;
-    z-index: 1;
-}
-
-/* Drop indicator */
-.dropIndicator {
-    position: absolute;
-    top: -12px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--brand-color-300);
-    height: 2px;
-    background: var(--brand-color-300);
-    pointer-events: none;
-}
-
-.dropIndicatorCircle {
-    position: absolute;
-    left: -6px;
-    top: -5px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 2px solid var(--brand-color-300);
-    background: var(--base-white);
-}
-
-
-
-/* === SIDEBAR === */
-.sidebar {
-    width: var(--w-sidebar);
-    background: linear-gradient(to top, #111, var(--bg1));
-    border-left: 1px solid #2A2A2A;
-    overflow-y: auto;
-    padding: 0 var(--space-80);
-}
-
-.tabs {
-    display: flex;
-    border-bottom: 1px solid var(--bdr);
-    margin: 0 calc(-1 * var(--space-80));
-}
-
-.tab {
-    padding: var(--space-80);
-    border: none;
-    background: transparent;
-    font-weight: var(--font-weight-regular);
-    font-size: var(--typography-font-size-90);
-    cursor: pointer;
-    margin-bottom: -1px;
-    border-bottom: 1px solid transparent;
-}
-
-.tabActive {
-    color: var(--base-white);
-    border-bottom-color: var(--base-white);
-}
-
-.tabInactive {
     color: var(--grey-200);
+    width: 16px;
+    height: 16px;
 }
 
-/* === DARK INPUTS === */
+/* --- Toggles --- */
 
-.analyticsTextarea {
-    min-height: 80px;
-}
-
-.sidebarEmptyState {
-    padding: var(--space-80) 0;
-    text-align: center;
-    color: var(--content-neutral--body-subtle);
-    font-size: var(--typography-font-size-90);
-}
-
-/* === ACCORDION === */
-.accordionContent {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows .3s ease-out;
-}
-
-.accordionContentOpen {
-    grid-template-rows: 1fr;
-}
-
-.accordionInner {
-    overflow: hidden;
-}
-
-.customDragImage {
-    position: absolute;
-    top: -1000px;
-    left: -1000px;
-    background: var(--background-neutral--default);
-    padding: var(--space-60);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
-    border: 1px solid var(--grey-200);
-    align-items: center;
-    gap: var(--space-40);
-    width: 100px;
-    gap: var(--space-40);
-    width: 100px;
-}
-
-/* === POPOVER === */
-.popoverOverlay {
-    position: fixed;
-    inset: 0;
-}
-
-.popoverContainer {
-    background: var(--bg1);
-    border: 1px solid var(--bdr);
-    border-radius: 8px;
-    width: var(--w-pop);
-    max-width: 90%;
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    box-shadow: var(--shd-pop);
-    overflow: hidden;
-}
-
-.popoverHeader {
-    padding: var(--padding-sm);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--bdr);
-}
-
-.popoverTitle {
-    font-weight: 600;
-    font-size: var(--typography-font-size-80);
-    color: var(--content-neutral--title);
-    margin: 0;
-}
-
-.popoverClose {
-    background: transparent;
-    border: none;
-    color: var(--content-neutral--caption);
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.1s;
-}
-
-.popoverClose:hover {
-    background: var(--bg-hover);
-    color: var(--content-neutral--title);
-}
-
-.popoverContent {
-    padding: var(--padding-sm);
-    overflow-y: auto;
-    flex: 1;
-}
-
-.popoverProperties {
-    gap: var(--gap-sm);
-    color: var(--content-neutral--title);
-    position: relative;
-}
-
-.popoverProperties .propertySelect {
-    background-image: none;
-}
-
-.propertyRow {
-    justify-content: space-between;
-}
-
-.propertyRowStacked {
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.popoverFooter {
-    padding: var(--padding-sm);
-}
-
-/* === TOGGLE === */
 .toggleSwitch {
     position: relative;
     display: inline-block;
@@ -557,75 +183,645 @@
     transform: translateX(20px);
 }
 
-/* === SELECT (uses formInput + formInputLight + formSelect base) === */
-/* propertySelect uses base classes, no additional styles needed */
 
-.selectWrapper {
+/* =========================================
+   4. TOP BAR
+   ========================================= */
+
+.topBar {
+    background: var(--bg1);
+    border-bottom: 1px solid var(--bdr);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--h-topbar);
     position: relative;
+}
+
+.topBarLeft {
+    gap: var(--space-60);
+    padding: 0 var(--space-100);
+}
+
+.topBarRight {
+    gap: 8px;
+    padding-right: 16px;
+}
+
+.logo {
+    padding: 0;
+    color: var(--base-white);
+}
+
+/* Base TopBar Button */
+.topBarButton,
+.topBarButtonWide,
+.topBarButtonExport {
+    height: 40px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.topBarButton {
+    width: 36px;
+}
+
+.topBarButton:hover {
+    background: var(--grey-400);
+}
+
+.topBarButtonActive {
+    background: var(--bg3);
+    border-radius: 4px;
+}
+
+.topBarButtonWide {
+    max-width: 134px;
+}
+
+.topBarButtonText {
+    max-width: 80px;
+    text-align: left;
+}
+
+/* Generator Button */
+.generatorButton {
+    gap: var(--space-60);
+    font-size: var(--typography-font-size-90);
+    color: var(--base-white);
+    height: var(--h-btn);
+    border: none;
+    border-radius: 6px;
+    margin: 0;
+    background: var(--bg3);
+    box-shadow: var(--shd-btn);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    padding: 0 var(--space-60);
+}
+
+.generatorButton:hover {
+    background: var(--bg4);
+}
+
+.generatorButton:active:not(:disabled),
+.topBarButtonActive,
+.generatorButtonActive {
+    background: var(--bg4);
+    box-shadow: var(--shd-active);
+    transform: translateY(1px);
+}
+
+.generatorButton:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* Split Export Button */
+.splitButtonContainer {
+    display: flex;
+    align-items: center;
+    background: var(--bg3);
+    border-radius: 6px;
+    box-shadow: var(--shd-btn);
+    transition: background 0.2s;
+    height: var(--h-btn);
+    margin-right: -4px;
+}
+
+.splitButtonContainer:hover {
+    background: var(--bg4);
+}
+
+.splitButtonActive {
+    background: var(--bg4) !important;
+    box-shadow: var(--shd-active) !important;
+    transform: translateY(1px) !important;
+}
+
+.splitButtonMain {
+    border-radius: 6px 0 0 6px;
+    box-shadow: none;
+    margin: 0;
+    background: transparent;
+    padding-right: 8px;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.splitButtonMain:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.splitButtonDropdown {
+    border-radius: 0 6px 6px 0;
+    box-shadow: none;
+    margin: 0;
+    background: transparent;
+    padding: 0 8px;
+    width: 28px;
+}
+
+.splitButtonDropdown:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.splitButtonDropdown:active {
+    background: var(--bg4) !important;
+    box-shadow: var(--shd-active) !important;
+    transform: translateY(1px) !important;
+}
+
+
+/* =========================================
+   5. SIDEBAR & NAVIGATION
+   ========================================= */
+
+/* --- Tabs --- */
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--bdr);
+    margin: 0 calc(-1 * var(--space-80));
+}
+
+.tab {
+    padding: var(--space-80);
+    border: none;
+    background: transparent;
+    font-weight: var(--font-weight-regular);
+    font-size: var(--typography-font-size-90);
+    cursor: pointer;
+    margin-bottom: -1px;
+    border-bottom: 1px solid transparent;
+}
+
+.tabActive {
+    color: var(--base-white);
+    border-bottom-color: var(--base-white);
+}
+
+.tabInactive {
+    color: var(--grey-200);
+}
+
+.sidebarEmptyState {
+    padding: var(--space-80) 0;
+    text-align: center;
+    color: var(--content-neutral--body-subtle);
+    font-size: var(--typography-font-size-90);
+}
+
+/* --- Tree / Folder Structure --- */
+
+.treeContainer {
+    padding: 8px 0;
+    gap: 2px;
+}
+
+.treeRow {
+    gap: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background .1s;
+    height: var(--h-input);
+    position: relative;
+    user-select: none;
+}
+
+.treeRowActive .treeIcon,
+.treeRowActive .treeInputInline,
+.treeRowActive .treeChevronIcon {
+    color: var(--content-neutral--body-invert);
+}
+
+.treeRowNested {
+    padding-left: 16px;
+}
+
+.treeChildren {
+    margin-left: 10px;
+    border-left: .75px solid var(--grey-300);
+}
+
+/* Tree Icons & Chevron */
+
+.treeChevron {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-right: 4px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.treeChevron:hover {
+    background: var(--grey-400);
+    color: var(--base-white);
+}
+
+.treeChevron:hover .treeChevronIcon {
+    color: var(--base-white);
+}
+
+.treeChevronIcon {
+    width: 12px;
+    height: 12px;
+    color: var(--grey-300);
+    transition: transform .15s ease;
+}
+
+.treeChevronExpanded {
+    transform: rotate(90deg);
+}
+
+.treeIconWrapper {
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    opacity: .7;
+}
+
+.treeIcon {
+    width: 14px;
+    height: 14px;
+    color: var(--grey-300);
+}
+
+/* Tree Inputs & Buttons */
+
+.treeInputInline {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: monospace;
+    font-size: 13px;
+    color: var(--grey-200);
+    flex: 1;
+    min-width: 0;
+}
+
+.treeInputInline:focus {
+    color: var(--base-white);
+}
+
+.sidebarAddButton {
+    padding: 0;
+    width: var(--h-btn);
+}
+
+.sidebarAddButton:hover {
+    background: var(--bg4);
+}
+
+.sidebarAddIcon {
+    width: 16px;
+    height: 16px;
+}
+
+.sidebarDeleteButton {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--grey-200);
+    padding: 4px;
+    border-radius: 4px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+.treeRow:hover .sidebarDeleteButton {
+    display: flex;
+}
+
+.sidebarDeleteButton:hover {
+    color: var(--grey-300);
+}
+
+.treeDeleteIcon {
+    width: 20px;
+    height: 20px;
+}
+
+.sidebarDeleteButton .iconSolid {
+    display: none;
+}
+
+.sidebarDeleteButton:hover .iconOutline {
+    display: none;
+}
+
+.sidebarDeleteButton:hover .iconSolid {
+    display: block;
+}
+
+/* --- Sidebar Search --- */
+
+.searchRow {
+    gap: 8px;
+    padding-top: var(--padding-sm);
+}
+
+.searchRow .searchBar {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.searchInputWrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.searchInputWrapper .searchBar {
+    padding-left: 32px;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 8px;
+    width: 16px;
+    height: 16px;
+    color: var(--grey-400);
+    pointer-events: none;
+}
+
+
+/* =========================================
+   6. CANVAS & EDITOR
+   ========================================= */
+
+.emptyState {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-neutral--default);
+}
+
+.emptyStateText {
+    text-align: center;
+}
+
+.canvasBackgroundRoot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.componentWrapper {
+    position: relative;
+    background: transparent;
+    transition: border-color .2s, transform .2s;
+    z-index: 1;
+}
+
+
+
+.customDragImage {
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+    background: var(--background-neutral--default);
+    padding: var(--space-60);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
+    border: 1px solid var(--grey-200);
+    align-items: center;
+    gap: var(--space-40);
+    width: 100px;
+}
+
+
+/* --- Builder Control Overlays --- */
+
+.activeWrapper {
+    position: relative;
+}
+
+.activeBorderOutline {
+    position: absolute;
+    inset: 0;
+    border: 1px solid #404040;
+    border-radius: 1px;
+    pointer-events: none;
+}
+
+.activeOverlay {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #404040;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1;
+    height: 20px;
+    white-space: nowrap;
+    border: 1px solid #fff3;
+    min-width: 100px;
+    box-shadow: var(--shadow--md)
+}
+
+.overlayLabel {
+    gap: 4px;
+    padding: 0 8px;
+    height: 100%;
+    font-family: var(--font-family-caption);
+    font-size: 10px;
+    line-height: var(--typography-line-height-caption-md);
+    font-weight: var(--font-weight-regular);
+    border-right: 1px solid rgba(255, 255, 255, .2);
+    flex-grow: 1;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+
+
+.overlayIdText {
+    color: white;
+    font-family: monospace;
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.settingsButton {
+    justify-content: center;
+    width: 20px;
+    height: 100%;
+    flex-shrink: 0;
+    cursor: pointer;
+    border: none;
+    color: var(--base-white);
+    padding: 0;
+    background: var(--bg3);
+    box-shadow: var(--shd-btn);
+    transition: background 0.2s;
+    border-radius: 0 4px 4px 0;
+}
+
+.settingsButton svg {
+    width: 12px;
+    height: 12px;
+}
+
+.settingsButton:hover {
+    background: #4a4949;
+}
+
+.settingsButton:active,
+.settingsButtonActive {
+    background: #3b3b3b;
+}
+
+
+/* =========================================
+   7. POPOVERS & OVERLAYS
+   ========================================= */
+
+/* --- Generic Popover --- */
+
+.popoverOverlay {
+    position: fixed;
+    inset: 0;
+}
+
+.popoverContainer {
+    background: var(--bg1);
+    border: 1px solid var(--bdr);
+    border-radius: 8px;
+    width: var(--w-pop);
+    max-width: 90%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shd-pop);
+    overflow: hidden;
+}
+
+
+
+.popoverContent {
+    padding: var(--padding-sm);
+    overflow-y: auto;
+    flex: 1;
+}
+
+.popoverFooter {
+    padding: var(--padding-sm);
+}
+
+.popoverProperties {
+    gap: var(--gap-sm);
+    color: var(--content-neutral--title);
+    position: relative;
+}
+
+.propertyRow {
+    justify-content: space-between;
+}
+
+.propertyRowStacked {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* --- Components Library Popover --- */
+
+.componentsPopover {
+    position: fixed;
+    background: var(--bg1);
+    border: 1px solid var(--bdr);
+    box-shadow: var(--shd-pop);
+}
+
+.popoverGrid {
+    padding: 4px 16px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.popoverCard {
+    border: 1px solid var(--bdr);
+    border-radius: 6px;
+    overflow: hidden;
+    text-align: left;
+    padding: 10px;
+    transition: all .2s;
+    background: var(--bg2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
     width: 100%;
 }
 
-.selectIcon {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    color: var(--grey-200);
-    width: 16px;
-    height: 16px;
+.popoverCard:hover {
+    border-color: var(--grey-400);
+    transform: translateY(-1px);
+    background: var(--grey-500);
 }
 
-/* === TOASTER === */
-.toaster {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--background-neutral--neutral-strong);
+.popoverCard:hover .cardTitle {
     color: var(--content-neutral--body-invert);
-    padding: 12px 16px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
-    font-family: var(--font-family-body);
-    font-size: 14px;
-    font-weight: 500;
-    animation: slideUp .3s ease-out;
-    gap: 12px;
 }
 
-.toasterDelete {
-    background: var(--background-brand--danger-strong);
+.cardImageWrapper {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    position: relative;
+    background: var(--bg4);
+    border-radius: 2px;
 }
 
-.toasterIcon {
-    width: 16px;
-    height: 16px;
+.cardContent {
+    padding: 0;
+    flex: 1;
 }
 
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translate(-50%, 20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-    }
+.cardTitle {
+    color: var(--grey-200);
+    margin: 0;
 }
 
-/* === ANALYTICS === */
-.analyticsSection {
-    gap: var(--space-60);
-    margin: var(--padding-sm) 0;
-}
+/* --- Theme & Export Popovers --- */
 
-.analyticsHeader {
-    gap: var(--space-60);
-}
-
-/* === THEME PICKER === */
 .themePickerPopover,
 .exportPopover {
     position: absolute;
@@ -676,8 +872,6 @@
     border-bottom: none;
 }
 
-
-
 .themeOptionInput {
     margin-right: 12px;
     width: 16px;
@@ -686,9 +880,7 @@
     cursor: pointer;
 }
 
-.themePickerFooter {
-    padding-top: 8px;
-}
+
 
 .themePickerContent {
     padding: var(--padding-sm) var(--padding-sm);
@@ -698,7 +890,8 @@
     margin-bottom: var(--gap-xs);
 }
 
-/* === FOLDER LIST ITEMS === */
+/* --- Folder List Items (inside popover?) --- */
+
 .folderItem {
     padding: 8px 12px;
     cursor: pointer;
@@ -729,375 +922,120 @@
     color: var(--grey-200);
 }
 
-/* === EXPORT === */
+/* --- Export Specifics --- */
+
 .exportInputWrapper {
     gap: var(--gap-xs);
 }
 
-.exportTextarea {
+
+
+
+/* =========================================
+   8. MISC COMPONENTS
+   ========================================= */
+
+/* --- Analytics --- */
+
+.analyticsSection {
+    gap: var(--space-60);
+    margin: var(--padding-sm) 0;
+}
+
+.analyticsHeader {
+    gap: var(--space-60);
+}
+
+.analyticsTextarea {
     min-height: 80px;
-    max-height: 240px;
 }
 
+/* --- Accordion --- */
 
-
-.exportHelperText {
-    font-size: 12px;
-    line-height: 16px;
-    font-family: var(--font-family-body);
+.accordionContent {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .3s ease-out;
 }
 
-.exportLink {
-    color: var(--grey-200);
-    font-weight: 600;
-    text-decoration: underline;
-    cursor: pointer;
+.accordionContentOpen {
+    grid-template-rows: 1fr;
 }
 
-.exportLinkText {
-    color: var(--content-neutral--caption);
-    font-weight: 400;
+.accordionInner {
+    overflow: hidden;
 }
 
-/* === BUILDER CONTROLS === */
-.activeWrapper {
-    position: relative;
-}
+/* --- Toaster --- */
 
-.activeBorderOutline {
-    position: absolute;
-    inset: 0;
-    border: 1px solid #404040;
-    border-radius: 1px;
-    pointer-events: none;
-}
-
-.activeOverlay {
-    position: absolute;
-    top: -24px;
+.toaster {
+    position: fixed;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #404040;
-    color: white;
-    border-radius: 4px;
-    font-size: 12px;
-    line-height: 1;
-    height: 20px;
-    white-space: nowrap;
-    border: 1px solid #fff3;
-    min-width: 100px;
-    box-shadow: var(--shadow--md)
-}
-
-.overlayLabel {
-    gap: 4px;
-    padding: 0 8px;
-    height: 100%;
-    font-family: var(--font-family-caption);
-    font-size: 10px;
-    line-height: var(--typography-line-height-caption-md);
-    font-weight: var(--font-weight-regular);
-    border-right: 1px solid rgba(255, 255, 255, .2);
-    flex-grow: 1;
-    min-width: 0;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-}
-
-.overlayInput {
-    background: transparent;
-    border: none;
-    color: white;
-    font-family: var(--font-family-caption);
-    font-size: 10px;
-    line-height: var(--typography-line-height-caption-md);
-    font-weight: var(--font-weight-regular);
-    width: 100%;
-    outline: none;
-    padding: 0;
-    margin: 0;
-}
-
-.overlayIdText {
-    color: white;
-    font-family: monospace;
-    font-size: 10px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.settingsButton {
-    justify-content: center;
-    width: 20px;
-    height: 100%;
-    flex-shrink: 0;
-    cursor: pointer;
-    border: none;
-    color: var(--base-white);
-    padding: 0;
-    background: var(--bg3);
-    box-shadow: var(--shd-btn);
-    transition: background 0.2s;
-    border-radius: 0 4px 4px 0;
-}
-
-.settingsButton svg {
-    width: 12px;
-    height: 12px;
-}
-
-.settingsButton:hover {
-    background: #4a4949;
-    /* Lighter than overlay #404040 */
-}
-
-.settingsButton:active,
-.settingsButtonActive {
-    background: #3b3b3b;
-}
-
-/* === SIDEBAR TREE === */
-.treeContainer {
-    padding: 8px 0;
-    gap: 2px;
-}
-
-.searchRow {
-    gap: 8px;
-    padding-top: var(--padding-sm);
-}
-
-.searchRow .searchBar {
-    flex: 1;
-    margin-bottom: 0;
-}
-
-.searchInputWrapper {
-    position: relative;
-    flex: 1;
-    display: flex;
-    align-items: center;
-}
-
-.searchInputWrapper .searchBar {
-    padding-left: 32px;
-}
-
-.searchIcon {
-    position: absolute;
-    left: 8px;
-    width: 16px;
-    height: 16px;
-    color: var(--grey-400);
-    pointer-events: none;
-}
-
-.treeRow {
-    gap: 8px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background .1s;
-    height: var(--h-input);
-    position: relative;
-    user-select: none;
-}
-
-.treeChevron {
-    background: none;
-    border: none;
-    padding: 0;
-    margin-right: 4px;
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-}
-
-.treeChevron:hover {
-    background: var(--grey-400);
-    color: var(--base-white);
-}
-
-.treeChevron:hover .treeChevronIcon {
-    color: var(--base-white);
-}
-
-.treeChevronIcon {
-    width: 12px;
-    height: 12px;
-    color: var(--grey-300);
-    transition: transform .15s ease;
-}
-
-.treeChevronExpanded {
-    transform: rotate(90deg);
-}
-
-.treeRowActive .treeIcon,
-.treeRowActive .treeInputInline,
-.treeRowActive .treeChevronIcon {
+    background: var(--background-neutral--neutral-strong);
     color: var(--content-neutral--body-invert);
-}
-
-.sidebarDeleteButton {
-    position: absolute;
-    right: 4px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--grey-200);
-    padding: 4px;
-    border-radius: 4px;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-}
-
-.treeRow:hover .sidebarDeleteButton {
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+    font-family: var(--font-family-body);
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideUp .3s ease-out;
+    gap: 12px;
     display: flex;
+    align-items: center;
 }
 
-.sidebarDeleteButton:hover {
-    color: var(--grey-300);
+.toasterDelete {
+    background: var(--background-brand--danger-strong);
 }
 
-
-.treeDeleteIcon {
-    width: 20px;
-    height: 20px;
-}
-
-.sidebarDeleteButton .iconSolid {
-    display: none;
-}
-
-.sidebarDeleteButton:hover .iconOutline {
-    display: none;
-}
-
-.sidebarDeleteButton:hover .iconSolid {
-    display: block;
-}
-
-.treeRowNested {
-    padding-left: 16px;
-}
-
-.treeChildren {
-    margin-left: 10px;
-    border-left: .75px solid var(--grey-300);
-}
-
-.treeIconWrapper {
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-    opacity: .7;
-}
-
-.treeIcon {
-    width: 14px;
-    height: 14px;
-    color: var(--grey-300);
-}
-
-.treeInputInline {
-    background: transparent;
-    border: none;
-    outline: none;
-    font-family: monospace;
-    font-size: 13px;
-    color: var(--grey-200);
-    flex: 1;
-    min-width: 0;
-}
-
-.treeInputInline:focus {
-    color: var(--base-white);
-}
-
-.sidebarAddButton {
-    padding: 0;
-    width: var(--h-btn);
-}
-
-.sidebarAddButton:hover {
-    background: var(--bg4);
-}
-
-.sidebarAddIcon {
+.toasterIcon {
     width: 16px;
     height: 16px;
 }
 
-/* === COMPONENTS POPOVER === */
-.componentsPopover {
-    position: fixed;
-    background: var(--bg1);
-    border: 1px solid var(--bdr);
-    box-shadow: var(--shd-pop);
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
 }
 
-.popoverGrid {
-    padding: 4px 16px 8px;
+/* --- Flex / Grid / Utils --- */
+
+.topBarLeft,
+.topBarRight,
+.popoverHeader,
+.propertyRow,
+.analyticsHeader,
+.searchRow,
+.treeRow,
+.treeChevron,
+.treeIconWrapper,
+.settingsButton,
+.categoryHeader {
+    display: flex;
+    align-items: center;
+}
+
+.categoryWrapper,
+.treeGroup,
+.treeContainer,
+.analyticsContainer,
+.analyticsSection,
+.popoverProperties,
+.exportInputWrapper,
+.themeList,
+.customDragImage {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-}
-
-.popoverCard {
-    border: 1px solid var(--bdr);
-    border-radius: 6px;
-    overflow: hidden;
-    text-align: left;
-    padding: 10px;
-    transition: all .2s;
-    background: var(--bg2);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-}
-
-.popoverCard:hover {
-    border-color: var(--grey-400);
-    transform: translateY(-1px);
-    background: var(--grey-500);
-}
-
-.cardImageWrapper {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
-    position: relative;
-    background: var(--bg4);
-    border-radius: 2px;
-}
-
-.cardContent {
-    padding: 0;
-    flex: 1;
-}
-
-.cardTitle {
-    color: var(--grey-200);
-    margin: 0;
-}
-
-.popoverCard:hover .cardTitle {
-    color: var(--content-neutral--body-invert);
 }
 
 .categoryHeader {
