@@ -24,7 +24,7 @@ export default function FullBody({ image, imageId, imageVisible, sectionId, onUp
     if (!portalRoot) return null;
     return createPortal(
         <div className={styles.container}>
-            <div className={`container-grid container-full`}>
+            <div className={`container-grid container-full`} style={{ height: '100%' }}>
                 <BuilderImage
                     src={image}
                     isActive={isSectionActive} // Pass active state
