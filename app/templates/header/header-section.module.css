@@ -17,7 +17,7 @@
 }
 
 .subtitle {
-    color: var(--content-neutral--caption);
+    color: var(--content-neutral--body);
     overflow-wrap: break-word;
     word-break: break-word;
 }

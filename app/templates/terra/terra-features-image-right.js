@@ -51,7 +51,7 @@ export default function TerraFeaturesImageRight({
                         <BuilderText
                             tagName="p"
                             className={`subheader-h2 ${styles.description}`}
-                            style={{ color: "var(--content-neutral--caption)", marginBottom: "var(--gap-md)" }}
+                            style={{ color: "var(--content-neutral--body)", marginBottom: "var(--gap-md)" }}
                             content={subtitle}
                             onChange={update('subtitle')}
                             sectionId={sectionId}

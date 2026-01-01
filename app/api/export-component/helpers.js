@@ -51,7 +51,7 @@ export function cleanBuilderContent(src) {
   const hasBuilderElement = src.includes('BuilderElement') && !hasShim('BuilderElement');
 
   // Remove Builder imports
-  src = src.replace(/import\s+.*?\s+from\s+['"]@\/app\/page-builder\/utils\/builder\/.*?['"];?\n?/g, '');
+  src = src.replace(/import\s+.*?\s+from\s+['"]@\/app\/page-builder\/utils\/builder\/(?!builder-controls).*?['"];?\n?/g, '');
 
   // Remove generic imports that are not needed (keep CSS imports)
   // src = src.replace(/import\s+{[^}]*}\s+from\s+['"][^'\"]+['"];?\n?/g, '');
