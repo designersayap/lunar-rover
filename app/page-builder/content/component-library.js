@@ -547,6 +547,26 @@ export const componentLibrary = {
                     type: "select",
                     options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
                     default: componentDefaults["feature-right"].buttonStyle
+                },
+                {
+                    name: "buttonLinkType",
+                    label: "Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: componentDefaults["feature-right"].buttonLinkType
+                },
+                {
+                    name: "secondaryButtonLinkType",
+                    label: "Secondary Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: componentDefaults["feature-right"].secondaryButtonLinkType
+                },
+                {
+                    name: "secondaryButtonText",
+                    label: "Secondary Button Text",
+                    type: "text",
+                    default: componentDefaults["feature-right"].secondaryButtonText
                 }
             ],
             buttons: [
@@ -557,6 +577,14 @@ export const componentLibrary = {
                     labelProp: "buttonText",
                     visibleProp: "buttonVisible",
                     linkTypeProp: "buttonLinkType"
+                },
+                {
+                    label: "Secondary Button",
+                    propId: "secondaryButtonId",
+                    suffix: "secondary-button",
+                    labelProp: "secondaryButtonText",
+                    visibleProp: "secondaryButtonVisible",
+                    linkTypeProp: "secondaryButtonLinkType"
                 }
             ],
             images: [

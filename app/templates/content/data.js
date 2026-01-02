@@ -86,6 +86,11 @@ export const componentDefaults = {
         buttonVisible: true,
         buttonLinkType: "url",
         buttonId: "",
+        secondaryButtonText: "Label",
+        secondaryButtonUrl: "",
+        secondaryButtonVisible: true,
+        secondaryButtonLinkType: "url",
+        secondaryButtonId: "",
         image: ""
     },
     "dialog": {
