@@ -8,15 +8,9 @@ import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/s
 import BuilderControlsPopover from "./builder-controls-popover";
 import styles from "../../../page.module.css";
 
-/**
- * BuilderImage: Renders an image with consistent styling and placeholder support.
- */
 import { DEFAULT_PLACEHOLDER_IMAGE, IMAGE_PORTRAIT_RATIO_MAP } from "@/app/constants";
 
-/**
- * BuilderImage: Renders an image with consistent styling and placeholder support.
- */
-export const defaultPlaceholder = DEFAULT_PLACEHOLDER_IMAGE; // Keep export for backward compatibility if needed, or just use the constant internally
+export const defaultPlaceholder = DEFAULT_PLACEHOLDER_IMAGE;
 
 
 export default function BuilderImage({
@@ -45,7 +39,7 @@ export default function BuilderImage({
     onMobileRatioChange,
     mobileSrc,
     onMobileSrcChange,
-    isActive: isActiveProp // New prop to force active state
+    isActive: isActiveProp
 }) {
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
 
@@ -162,7 +156,7 @@ export default function BuilderImage({
             width: overlayRect.width,
             height: overlayRect.height,
             pointerEvents: 'none',
-            zIndex: 10002 // z-system-builder-overlay
+            zIndex: 10002
         };
 
         return createPortal(
@@ -287,7 +281,7 @@ export default function BuilderImage({
                     onLinkTypeChange={onLinkTypeChange}
                     showLinkType={!isStaging && showLinkControls}
                     showUrl={!isStaging && showLinkControls}
-                    showImageSrc={!isStaging || isStaging} /* Always show if valid, logic inside handles context */
+                    showImageSrc={!isStaging || isStaging}
 
                     position={popoverPosition}
                     dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}

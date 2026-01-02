@@ -8,9 +8,6 @@ import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 import { getContainerClasses } from "../section-utils";
 
-/**
- * BuilderSection: Wraps content with builder controls (selection, settings) and container styling.
- */
 export default function BuilderSection({
     sectionId,
     fullWidth = false,

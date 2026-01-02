@@ -10,9 +10,6 @@ import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/s
 import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 
-/**
- * BuilderLink: Renders a link with consistent styling, ID generation, and editing capabilities.
- */
 export default function BuilderLink({
     label = "Link",
     id,

@@ -4,9 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useIdSync } from "../hooks/use-id-sync";
 
-/**
- * BuilderText: A contentEditable component that updates parent state on blur.
- */
 export default function BuilderText({
     content = "",
     tagName = "p",
@@ -57,9 +54,13 @@ export default function BuilderText({
     const handleBlur = (e) => {
         setIsEditing(false);
         const newText = e.target.innerHTML;
-        setText(newText);
-        if (newText !== content && onChange) {
-            onChange(newText);
+        // Normalize &amp; to & to avoid double escaping in certain contexts
+        // while preserving other HTML entities/tags
+        const normalizedText = newText.replace(/&amp;/g, "&");
+
+        setText(normalizedText);
+        if (normalizedText !== content && onChange) {
+            onChange(normalizedText);
         }
     };
 
