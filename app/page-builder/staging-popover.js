@@ -157,8 +157,8 @@ export default function StagingPopover({
                                     <FolderIcon className={styles.folderIcon} />
                                     {folder}
                                     <button
-                                        className={styles.iconButton}
-                                        style={{ marginLeft: 'auto', padding: '4px' }}
+                                        className={`${styles.generatorButton} ${styles.sidebarAddButton}`}
+                                        style={{ marginLeft: 'auto' }}
                                         title="Restore to Builder"
                                         onClick={(e) => handleRestore(e, folder)}
                                     >
