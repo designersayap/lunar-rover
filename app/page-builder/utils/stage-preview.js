@@ -78,10 +78,30 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
             }
         });
 
-        // Access props directly as they appear in the builder object (item.props)
+        // Determine stickiness
         const isSticky = item.props?.isSticky ?? compDefaults.isSticky ?? false;
+
+        // Store stickiness for sorting
+        item._isSticky = isSticky;
+
         if (isSticky) {
             stickyIndices.push(index);
+        }
+    });
+
+    // Sort components: Sticky items first!
+    // This mimics the behavior in the Page Builder Canvas
+    selectedComponents.sort((a, b) => {
+        if (a._isSticky && !b._isSticky) return -1;
+        if (!a._isSticky && b._isSticky) return 1;
+        return 0; // Maintain relative order
+    });
+
+    // Re-calculate indices after sort (since order changed)
+    const sortedStickyIndices = [];
+    selectedComponents.forEach((item, index) => {
+        if (item._isSticky) {
+            sortedStickyIndices.push(index);
         }
     });
 
@@ -107,11 +127,11 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
     `;
 
     pageContent += `  return (\n`;
-    pageContent += `    <main style={{ position: 'relative', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>\n`;
+    pageContent += `    <main style={{ position: 'relative', minHeight: '100vh', width: '100%', overflowX: 'clip' }}>\n`;
     pageContent += `      <BuilderSelectionContext.Provider value={contextValue}>\n`;
     pageContent += `      <div id="canvas-background-root" style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'auto', overflow: 'hidden' }} />\n`;
     pageContent += `      <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>\n`;
-    pageContent += `      <StickyManager stickyIndices={[${stickyIndices.join(',')}]}>\n`;
+    pageContent += `      <StickyManager stickyIndices={[${sortedStickyIndices.join(',')}]}>\n`;
 
 
     // 2. Render Components

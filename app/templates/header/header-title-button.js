@@ -34,43 +34,47 @@ export default function GlobalHeaderTitleButton({
             sectionId={sectionId}
         >
             <div className="buttonWrapperCenter">
-                <BuilderButton
-                    label={buttonText}
-                    href={buttonUrl}
-                    isVisible={buttonVisible}
-                    sectionId={sectionId}
-                    className={`btn btn-${buttonStyle} btn-md`}
-                    iconRight={<ArrowLongRightIcon />}
-                    onLabelChange={update('buttonText')}
-                    onHrefChange={update('buttonUrl')}
-                    onVisibilityChange={update('buttonVisible')}
-                    onVariantChange={update('buttonStyle')}
-                    linkType={buttonLinkType}
-                    onLinkTypeChange={update('buttonLinkType')}
-                    targetDialogId={buttonTargetDialogId}
-                    onTargetDialogIdChange={update('buttonTargetDialogId')}
-                    id={buttonId}
-                    onIdChange={update('buttonId')}
-                    suffix="button"
-                />
-                <BuilderButton
-                    label={secondaryButtonText}
-                    href={secondaryButtonUrl}
-                    isVisible={secondaryButtonVisible}
-                    sectionId={sectionId}
-                    className={`btn btn-${secondaryButtonStyle} btn-md`}
-                    onLabelChange={update('secondaryButtonText')}
-                    onHrefChange={update('secondaryButtonUrl')}
-                    onVisibilityChange={update('secondaryButtonVisible')}
-                    onVariantChange={update('secondaryButtonStyle')}
-                    linkType={secondaryButtonLinkType}
-                    onLinkTypeChange={update('secondaryButtonLinkType')}
-                    targetDialogId={secondaryButtonTargetDialogId}
-                    onTargetDialogIdChange={update('secondaryButtonTargetDialogId')}
-                    id={secondaryButtonId}
-                    onIdChange={update('secondaryButtonId')}
-                    suffix="secondary-button"
-                />
+                {buttonVisible && (
+                    <BuilderButton
+                        label={buttonText}
+                        href={buttonUrl}
+                        isVisible={buttonVisible}
+                        sectionId={sectionId}
+                        className={`btn btn-${buttonStyle} btn-md`}
+                        iconRight={<ArrowLongRightIcon />}
+                        onLabelChange={update('buttonText')}
+                        onHrefChange={update('buttonUrl')}
+                        onVisibilityChange={update('buttonVisible')}
+                        onVariantChange={update('buttonStyle')}
+                        linkType={buttonLinkType}
+                        onLinkTypeChange={update('buttonLinkType')}
+                        targetDialogId={buttonTargetDialogId}
+                        onTargetDialogIdChange={update('buttonTargetDialogId')}
+                        id={buttonId}
+                        onIdChange={update('buttonId')}
+                        suffix="button"
+                    />
+                )}
+                {secondaryButtonVisible && (
+                    <BuilderButton
+                        label={secondaryButtonText}
+                        href={secondaryButtonUrl}
+                        isVisible={secondaryButtonVisible}
+                        sectionId={sectionId}
+                        className={`btn btn-${secondaryButtonStyle} btn-md`}
+                        onLabelChange={update('secondaryButtonText')}
+                        onHrefChange={update('secondaryButtonUrl')}
+                        onVisibilityChange={update('secondaryButtonVisible')}
+                        onVariantChange={update('secondaryButtonStyle')}
+                        linkType={secondaryButtonLinkType}
+                        onLinkTypeChange={update('secondaryButtonLinkType')}
+                        targetDialogId={secondaryButtonTargetDialogId}
+                        onTargetDialogIdChange={update('secondaryButtonTargetDialogId')}
+                        id={secondaryButtonId}
+                        onIdChange={update('secondaryButtonId')}
+                        suffix="secondary-button"
+                    />
+                )}
             </div>
         </HeaderSection>
     );

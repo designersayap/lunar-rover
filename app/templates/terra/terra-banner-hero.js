@@ -89,42 +89,46 @@ export default function TerraBannerHero({
                                 sectionId={sectionId}
                             />
                             <div className="buttonWrapperCenter">
-                                <BuilderButton
-                                    label={primaryButton.text}
-                                    href={primaryButton.url}
-                                    isVisible={primaryButton.visible}
-                                    sectionId={sectionId}
-                                    className={`btn btn-${primaryButton.style} btn-md`}
-                                    onLabelChange={update('buttonText')}
-                                    onHrefChange={update('buttonUrl')}
-                                    onVisibilityChange={update('buttonVisible')}
-                                    onVariantChange={update('buttonStyle')}
-                                    linkType={primaryButton.linkType}
-                                    onLinkTypeChange={update('buttonLinkType')}
-                                    targetDialogId={primaryButton.targetDialogId}
-                                    onTargetDialogIdChange={update('buttonTargetDialogId')}
-                                    id={primaryButton.id}
-                                    onIdChange={update('buttonId')}
-                                    suffix="button"
-                                />
-                                <BuilderButton
-                                    label={secondaryButton.text}
-                                    href={secondaryButton.url}
-                                    isVisible={secondaryButton.visible}
-                                    sectionId={sectionId}
-                                    className={`btn btn-${secondaryButton.style} btn-md`}
-                                    onLabelChange={update('secondaryButtonText')}
-                                    onHrefChange={update('secondaryButtonUrl')}
-                                    onVisibilityChange={update('secondaryButtonVisible')}
-                                    onVariantChange={update('secondaryButtonStyle')}
-                                    linkType={secondaryButton.linkType}
-                                    onLinkTypeChange={update('secondaryButtonLinkType')}
-                                    targetDialogId={secondaryButton.targetDialogId}
-                                    onTargetDialogIdChange={update('secondaryButtonTargetDialogId')}
-                                    id={secondaryButton.id}
-                                    onIdChange={update('secondaryButtonId')}
-                                    suffix="secondary-button"
-                                />
+                                {primaryButton.visible && (
+                                    <BuilderButton
+                                        label={primaryButton.text}
+                                        href={primaryButton.url}
+                                        isVisible={primaryButton.visible}
+                                        sectionId={sectionId}
+                                        className={`btn btn-${primaryButton.style} btn-md`}
+                                        onLabelChange={update('buttonText')}
+                                        onHrefChange={update('buttonUrl')}
+                                        onVisibilityChange={update('buttonVisible')}
+                                        onVariantChange={update('buttonStyle')}
+                                        linkType={primaryButton.linkType}
+                                        onLinkTypeChange={update('buttonLinkType')}
+                                        targetDialogId={primaryButton.targetDialogId}
+                                        onTargetDialogIdChange={update('buttonTargetDialogId')}
+                                        id={primaryButton.id}
+                                        onIdChange={update('buttonId')}
+                                        suffix="button"
+                                    />
+                                )}
+                                {secondaryButton.visible && (
+                                    <BuilderButton
+                                        label={secondaryButton.text}
+                                        href={secondaryButton.url}
+                                        isVisible={secondaryButton.visible}
+                                        sectionId={sectionId}
+                                        className={`btn btn-${secondaryButton.style} btn-md`}
+                                        onLabelChange={update('secondaryButtonText')}
+                                        onHrefChange={update('secondaryButtonUrl')}
+                                        onVisibilityChange={update('secondaryButtonVisible')}
+                                        onVariantChange={update('secondaryButtonStyle')}
+                                        linkType={secondaryButton.linkType}
+                                        onLinkTypeChange={update('secondaryButtonLinkType')}
+                                        targetDialogId={secondaryButton.targetDialogId}
+                                        onTargetDialogIdChange={update('secondaryButtonTargetDialogId')}
+                                        id={secondaryButton.id}
+                                        onIdChange={update('secondaryButtonId')}
+                                        suffix="secondary-button"
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>

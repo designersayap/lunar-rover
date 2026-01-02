@@ -239,6 +239,19 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         if (!item.props) item.props = {};
     });
 
+    // Sort components: Sticky items first
+    processedComponents.sort((a, b) => {
+        const getSticky = (item) => {
+            const defs = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
+            return item.props?.isSticky ?? defs.isSticky ?? false;
+        };
+        const aSticky = getSticky(a);
+        const bSticky = getSticky(b);
+        if (aSticky && !bSticky) return -1;
+        if (!aSticky && bSticky) return 1;
+        return 0;
+    });
+
     for (const item of processedComponents) {
         const filePath = COMPONENT_PATHS[item.id];
         if (!filePath) {
@@ -627,7 +640,7 @@ export default function RootLayout({ children }) {
 
     pageContent += `\nexport default function ExportedPage() {\n`;
     pageContent += `  return (\n`;
-    pageContent += `    <main style={{ position: 'relative', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>\n`;
+    pageContent += `    <main style={{ position: 'relative', minHeight: '100vh', width: '100%', overflowX: 'clip' }}>\n`;
     pageContent += `      <div id="canvas-background-root" style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'auto', overflow: 'hidden' }} />\n`;
     pageContent += `      <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>\n`;
 
