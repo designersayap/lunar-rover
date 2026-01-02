@@ -89,6 +89,9 @@ import BuilderText from "@/app/page-builder/utils/builder/builder-text";
     onChange={(val) => onUpdate?.({ title: val })}
     sectionId={sectionId}
     // No suffix needed for text unless multiple valid texts exist in one block
+    
+    // Note: BuilderText automatically normalizes HTML entities (like &amp;) on save
+    // to prevent double-escaping issues.
 />
 ```
 
@@ -178,6 +181,19 @@ const update = createUpdateHandler(onUpdate);
 - Ensures consistency across components
 - Automatically handles `onUpdate` existence checks
 
+### `openDialog`
+
+Helper to programmatic open a dialog (e.g., from a custom button handler).
+
+```javascript
+import { openDialog } from "../utils/component-helpers";
+
+// ...
+const handleClick = () => {
+    openDialog(targetDialogId);
+};
+```
+
 ---
 
 ## 3. Standard Dialog Structure
@@ -242,7 +258,15 @@ You must define child elements in `app/page-builder/content/component-library.js
             }
         ],
         links: [
-            { label: "Link 1", propId: "link1Id", suffix: "link-1" }
+            { label: "Link 1", propId: "link1Id", suffix: "link-1" },
+            { 
+                label: "Secondary Button", 
+                propId: "secondaryButtonId", 
+                suffix: "secondary-button", 
+                labelProp: "secondaryButtonText", 
+                visibleProp: "secondaryButtonVisible", 
+                linkTypeProp: "secondaryButtonLinkType" 
+            }
         ]
     }
 ]
@@ -259,6 +283,11 @@ export const componentDefaults = {
         title: "Default Title",
         buttonText: "Click Me",
         buttonLinkType: "url",
+        buttonText: "Click Me",
+        buttonLinkType: "url",
+        secondaryButtonText: "Learn More",
+        secondaryButtonVisible: true,
+        secondaryButtonLinkType: "url",
         // ...
     }
 }

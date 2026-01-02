@@ -736,18 +736,6 @@ export default function RootLayout({ children }) {
         // Render Component
         let componentJSX = `<${componentName} ${propsString} />`;
 
-        // Apply Sticky Wrapper if needed
-        // REMOVED: Managed by StickyManager
-        /*
-        if (isSticky) {
-            // Use inline style for sticky positioning (z-index 1000)
-            componentJSX = `
-      <div style={{ position: 'sticky', top: 0, zIndex: 1000, width: '100%' }}>
-        ${componentJSX}
-      </div>`;
-        }
-        */
-
         pageContent += `      ${componentJSX}\n`;
     });
 
@@ -776,12 +764,6 @@ export default function RootLayout({ children }) {
     if (savePreview) {
         try {
             const fileList = Array.from(previewMap.values());
-
-            // Add Project Files (generated in step 4) to list
-            // ... (rest of files logic remains same but needs to be inside if)
-
-            // NOTE: Since I am replacing the block, I need to include the fileList logic again or structure it better.
-            // Let's just wrap the whole previous block logic.
 
             fileList.push({
                 path: "package.json", content: JSON.stringify({

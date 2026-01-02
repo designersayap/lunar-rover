@@ -8,9 +8,7 @@ import {
     DocumentPlusIcon,
 } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
-/**
- * TopBar: Navigation and controls.
- */
+
 export default function TopBar({
     isSidebarVisible,
     setIsSidebarVisible,

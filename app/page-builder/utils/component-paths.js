@@ -1,6 +1,3 @@
-/**
- * Component File Path Registry: Maps component IDs to their source file paths.
- */
 export const COMPONENT_PATHS = {
     "header-title": "app/templates/header/header-title.js",
     "header-title-button": "app/templates/header/header-title-button.js",

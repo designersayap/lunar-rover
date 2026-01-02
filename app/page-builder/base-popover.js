@@ -1,8 +1,5 @@
 import styles from "../page.module.css";
 
-/**
- * BasePopover: Shared popover wrapper.
- */
 export default function BasePopover({
     isOpen,
     onClose,

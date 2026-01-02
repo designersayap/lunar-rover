@@ -1,5 +1,3 @@
-// Template storage utilities for localStorage persistence
-
 const STORAGE_KEY = 'lunar-template-builder';
 
 export const DEFAULT_ANALYTICS = {

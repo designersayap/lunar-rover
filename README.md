@@ -1,13 +1,20 @@
-# Lunar: Template Generator
+# Lunar: Page Builder & Template Generator
 
-A powerful **Page Builder** application built with Next.js 15, allowing users to drag-and-drop pre-designed templates to craft and export responsive landing pages effectively.
+A powerful **Visual Page Builder** built with **Next.js 15**, designed to create, stage, and export production-ready landing pages.
 
-## 🚀 Getting Started
+## 🚀 Key Features
+
+- **Visual Editor**: Drag-and-drop canvas with inline text editing and real-time property updates.
+- **Component Library**: A curated set of high-quality UI blocks (Headers, Heroes, Features, Testimonials).
+- **Theming Engine**: Instant theme switching (`Krim Ekonomi`, `Milku`, etc.) via CSS variable swaps.
+- **Staging Environment**: Generate live preview links (`/staging/[name]`) to share your work-in-progress.
+- **Production Export**: Export your page as a standalone Next.js project zip file, clean and ready to deploy.
+
+## 🛠️ Getting Started
 
 ### Installation
 
 ```bash
-cd nextjs-app
 npm install
 ```
 
@@ -19,79 +26,78 @@ Run the development server:
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to start building.
+Open [http://localhost:3000](http://localhost:3000).
 
-### Build for Production
+## 📁 Project Architecture
 
-```bash
-npm run build
-npm start
-```
-
-## 📁 Project Structure
-
-The project separates the **Builder UI** (the editor itself) from the **Templates** (the blocks you build with).
+The project is strictly organized to separate the **Builder Core** from the **Content**.
 
 ```text
 lunar/
 ├── app/
-│   ├── foundation/               # 🎨 Design System Core
-│   │   ├── tokens.css            # Semantic design tokens
-│   │   ├── global.css            # Base typography & utilities
-│   │   ├── grid.css              # Grid layout system
+│   ├── foundation/               # 🎨 Design System (The "Truth")
+│   │   ├── tokens.css            # Semantic design tokens (Colors, Spacing)
+│   │   ├── global.css            # Base typography & UI utilities
+│   │   ├── grid.css              # Responsive Grid System
 │   │   └── accent-color.css      # Theme accent handling
-│   ├── page-builder/  # 🛠️ Builder Interface (The Editor)
-│   │   ├── content/
-│   │   │   └── component-library.js # 📚 Component Registry
-│   │   ├── sidebar.js            # Component library & settings sidebar
-│   │   ├── canvas.js             # Drag & drop workspace
-│   │   └── ...                   # Toolbars, popovers, utilities
-│   ├── templates/      # 🧱 Building Blocks (Content)
-│   │   ├── header/               # Navbars and headers
-│   │   ├── terra/                # Feature sections & heroes
-│   │   ├── content/              # Text content blocks
-│   │   └── ...                   # Other UI sections
-│   ├── layout.js                 # App Root
-│   └── page.js                   # Main Builder Page Entry
-├── public/                       # Static assets
-└── package.json
+│   │
+│   ├── page-builder/             # ⚙️ The Application Core
+│   │   ├── content/              # Sidebar Configuration
+│   │   ├── utils/                # Logic (Export, Staging, Drag & Drop)
+│   │   ├── canvas.js             # The main editor workspace
+│   │   └── ...                   # Toolbars, Popovers, UI controls
+│   │
+│   ├── templates/                # 🧱 The Components (Building Blocks)
+│   │   ├── header/, terra/       # Component Categories
+│   │   ├── content/data.js       # DEFAULT DATA (Single Source of Truth)
+│   │   └── ...
+│   │
+│   ├── staging/                  # 🎭 Generated Staging Pages
+│   └── api/                      # Backend routes for File I/O (Export/Staging)
+│
+├── public/
+│   └── themes/                   # 🌗 CSS Theme Definitions
+└── ...
 ```
 
-## 🎨 Design System Foundation
+## 🧩 Creating Components
 
-The design system is located in `app/foundation/`:
+We use a specific architecture to ensure components work in the Builder, Staging, and Export environments.
 
--   **`tokens.css`**: Maps semantic names (e.g., `--color-primary`) to values.
--   **`global.css`**: Contains reusable typography classes (e.g., `.heading-xl`, `.body-md`) and button styles.
--   **`grid.css`**: A comprehensive grid system for responsive layouts.
+> **Read the detailed guide:** [Component Guidelines](app/templates/component-guidelines.md)
 
-## 🛠️ Page Builder Features
+### Core Primitives
+Do not use standard HTML elements for editable content. Use our "Builder" primitives:
 
-The **Template Generator** (`app/page.js`) provides:
+- **`BuilderText`**: For editable headings, paragraphs, and spans. Supports bolding (`Cmd+B`) and prevents double-escaping.
+- **`BuilderButton`**: For buttons and links. Handles variants (`primary`, `ghost`, etc.) and interactions (Dialog triggers).
+- **`BuilderImage`**: For images. Supports uploading, replacement, and linking.
 
--   **Drag & Drop Canvas**: Visually assemble pages.
--   **Component Library**: A sidebar of available components (Headers, Features, etc.).
--   **Theme Picker**: Switch between different visual themes instantly.
--   **Export**: Download your created page as a CSV or clean HTML/CSS template.
--   **Analytics**: Basic settings for tracking codes.
+## 🎨 Theming System
 
-## 📝 Templates
+Themes are defined as simple CSS files in `public/themes/`.
 
-Pre-built responsive sections available to use:
+1.  **Structure**: A theme file overrides CSS variables defined in `foundation/tokens.css`.
+2.  **Application**: The Page Builder dynamically swaps the `<link id="theme-stylesheet">` href to preview themes instantly.
+3.  **Persistance**: The selected theme path is passed to Staging and Export functions to ensure consistency.
 
--   **Terra Series**: Feature-rich sections like 3-column USPs, Image-Left/Right features.
--   **Headers**: Various navigation bar styles.
--   **Content**: Simple text and hero blocks.
+## 🎭 Staging & Export
+
+### Staging
+The staging feature (`/api/staging-preview`) creates a real Next.js route under `app/staging/[name]`.
+- Generates a physical `page.js` file implementing the selected components.
+- Injects a `useEffect` to apply the current theme.
+- Enables interactivity validation before export.
+
+### Export
+The export engine (`utils/export-nextjs.js`) bundles your page into a ZIP file.
+- **Dependency Tracing**: Scans imports to bundle only used components.
+- **Asset Bundling**: Downloads and packages external images into `public/assets`.
+- **Clean Output**: Generates a clean `package.json` and folder structure ready for immediate deployment.
 
 ## 💻 Tech Stack
 
 -   **Next.js 15** (App Router)
 -   **React 19**
--   **CSS Modules** for scoped styling
--   **Heroicons** for UI iconography
--   **Google Fonts** (Poppins, Lato, Plus Jakarta Sans)
-
-## 📖 Learn More
-
--   [Next.js Documentation](https://nextjs.org/docs)
--   [React Documentation](https://react.dev)
+-   **CSS Modules** (Scoped styling)
+-   **Heroicons** (Iconography)

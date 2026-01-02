@@ -2,9 +2,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { isComponentSticky } from "./component-manager";
 
-/**
- * Hook to manage stacking of sticky elements.
- */
 export function useStickyStacking(components) {
     const [stickyStyles, setStickyStyles] = useState({});
 

@@ -1,7 +1,3 @@
-
-/**
- * Generate utility classes for section containers.
- */
 export function getContainerClasses({ removePaddingLeft, removePaddingRight, fullWidth }) {
     const classes = ["container-grid"];
 

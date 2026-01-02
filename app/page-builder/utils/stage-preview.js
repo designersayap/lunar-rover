@@ -2,9 +2,6 @@
 import { COMPONENT_PATHS } from './component-paths';
 import { componentDefaults } from '@/app/templates/content/data';
 
-/**
- * Generate content for staging page.
- */
 export const generateStagingPageContent = (selectedComponents, folderName, activeThemePath) => {
     let pageContent = `"use client";\n\n`;
 
