@@ -52,7 +52,8 @@
 
     /* Button Content */
     --content-neutral--button--primary: var(--text--primary-button);
-    --content-neutral--button--neutral: var(--grey-500);
+    --content-neutral--button--neutral: var(--text--neutral-button);
+    --content-neutral--button--outline: var(--text--outline-button);
     --content-neutral--button--ghost: var(--grey-400);
 
     /* Brand Content */

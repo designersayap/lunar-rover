@@ -190,7 +190,7 @@ strong {
 /* Button Variants */
 .btn-primary {
   background-color: var(--background-brand--button--primary-default);
-  color: var(--text--primary-button);
+  color: var(--content-neutral--button--primary);
   border: 1px solid var(--stroke--primary-button);
 }
 
@@ -205,13 +205,9 @@ strong {
   box-shadow: none;
 }
 
-.btn-ghost-neutral:hover {
-  color: var(--content-neutral--button--neutral);
-}
-
 .btn-neutral {
   background-color: var(--background-neutral--button--neutral-default);
-  color: var(--content-neutral--button--primary);
+  color: var(--content-neutral--button--neutral);
 }
 
 .btn-neutral:hover {
@@ -221,8 +217,8 @@ strong {
 
 .btn-outline {
   background-color: var(--background-neutral--button--invert-default);
-  border: 1px solid var(--stroke--neutral-button);
-  color: var(--content-neutral--button--neutral);
+  border: 1px solid var(--stroke--outline-button);
+  color: var(--content-neutral--button--outline);
 }
 
 .btn-outline:hover {

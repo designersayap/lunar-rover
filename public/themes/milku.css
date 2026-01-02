@@ -114,5 +114,6 @@
     /* Button */
     --text--primary-button: var(--grey-500);
     --stroke--primary-button: var(--grey-500);
+    --text--neutral-button: var(--base-white);
     --stroke--neutral-button: var(--grey-500);
 }
