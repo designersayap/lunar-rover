@@ -5,7 +5,7 @@ import { componentDefaults } from '@/app/templates/content/data';
 /**
  * Generate content for staging page.
  */
-export const generateStagingPageContent = (selectedComponents, folderName) => {
+export const generateStagingPageContent = (selectedComponents, folderName, activeThemePath) => {
     let pageContent = `"use client";\n\n`;
 
     // Import staging data overrides
@@ -35,9 +35,21 @@ export const generateStagingPageContent = (selectedComponents, folderName) => {
     });
     pageContent += `import StickyManager from "@/app/page-builder/utils/sticky-manager";\n`;
     pageContent += `import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";\n`;
-    pageContent += `import { useState } from "react";\n`;
+    pageContent += `import { useState, useEffect } from "react";\n`;
 
     pageContent += `\nexport default function StagingPage() {\n`;
+
+    // Inject Theme Effect
+    if (activeThemePath) {
+        pageContent += `
+    useEffect(() => {
+        const themeLink = document.getElementById("theme-stylesheet");
+        if (themeLink) {
+            themeLink.href = "${activeThemePath}";
+        }
+    }, []);
+    `;
+    }
 
     // Staging State for Context
     pageContent += `
@@ -293,9 +305,9 @@ export default function StagingLayout({ children }) {
 `;
 };
 
-export const handleStagePreview = async (selectedComponents, folderName, analytics) => {
+export const handleStagePreview = async (selectedComponents, folderName, analytics, activeThemePath) => {
     try {
-        const fileContent = generateStagingPageContent(selectedComponents, folderName);
+        const fileContent = generateStagingPageContent(selectedComponents, folderName, activeThemePath);
         const layoutContent = generateStagingLayoutContent(analytics);
 
         const res = await fetch('/api/staging-preview', {

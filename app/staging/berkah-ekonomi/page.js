@@ -13,10 +13,17 @@ import DialogAccordion from "@/app/templates/dialog/dialog-accordion";
 import FullBody from "@/app/templates/background/full-body";
 import StickyManager from "@/app/page-builder/utils/sticky-manager";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function StagingPage() {
 
+    useEffect(() => {
+        const themeLink = document.getElementById("theme-stylesheet");
+        if (themeLink) {
+            themeLink.href = "/themes/krim-ekonomi.css";
+        }
+    }, []);
+    
     const [activeElementId, setActiveElementId] = useState(null);
     const [activePopoverId, setActivePopoverId] = useState(null);
     

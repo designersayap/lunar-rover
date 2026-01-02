@@ -95,7 +95,7 @@ export default function TerraBannerHero({
                                         href={primaryButton.url}
                                         isVisible={primaryButton.visible}
                                         sectionId={sectionId}
-                                        className={`btn btn-${primaryButton.style} btn-md`}
+                                        className={`btn btn-${primaryButton.style} btn-lg`}
                                         onLabelChange={update('buttonText')}
                                         onHrefChange={update('buttonUrl')}
                                         onVisibilityChange={update('buttonVisible')}
@@ -115,7 +115,7 @@ export default function TerraBannerHero({
                                         href={secondaryButton.url}
                                         isVisible={secondaryButton.visible}
                                         sectionId={sectionId}
-                                        className={`btn btn-${secondaryButton.style} btn-md`}
+                                        className={`btn btn-${secondaryButton.style} btn-lg`}
                                         onLabelChange={update('secondaryButtonText')}
                                         onHrefChange={update('secondaryButtonUrl')}
                                         onVisibilityChange={update('secondaryButtonVisible')}

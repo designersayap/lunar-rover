@@ -11,7 +11,8 @@ export default function StagingPopover({
     selectedComponents,
     analyticsData,
     className,
-    onRestore  // Inject ability to restore
+    onRestore,  // Inject ability to restore
+    activeThemePath
 }) {
     const [folderName, setFolderName] = useState("");
     const [existingFolders, setExistingFolders] = useState([]);
@@ -45,7 +46,7 @@ export default function StagingPopover({
         }
 
         setIsSaving(true);
-        const success = await handleStagePreview(selectedComponents, folderName.trim(), analyticsData);
+        const success = await handleStagePreview(selectedComponents, folderName.trim(), analyticsData, activeThemePath);
         setIsSaving(false);
 
         if (success) {

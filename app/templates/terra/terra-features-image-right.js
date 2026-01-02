@@ -63,7 +63,7 @@ export default function TerraFeaturesImageRight({
                                     href={buttonUrl}
                                     isVisible={buttonVisible}
                                     sectionId={sectionId}
-                                    className={`btn btn-${buttonStyle || 'primary'} btn-md`}
+                                    className={`btn btn-${buttonStyle || 'primary'} btn-lg`}
                                     iconRight={<ArrowLongRightIcon />}
                                     onLabelChange={update('buttonText')}
                                     onHrefChange={update('buttonUrl')}
@@ -84,7 +84,7 @@ export default function TerraFeaturesImageRight({
                                     href={secondaryButtonUrl}
                                     isVisible={secondaryButtonVisible}
                                     sectionId={sectionId}
-                                    className={`btn btn-${secondaryButtonStyle} btn-md`}
+                                    className={`btn btn-${secondaryButtonStyle} btn-lg`}
                                     onLabelChange={update('secondaryButtonText')}
                                     onHrefChange={update('secondaryButtonUrl')}
                                     onVisibilityChange={update('secondaryButtonVisible')}

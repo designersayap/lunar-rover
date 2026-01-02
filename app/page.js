@@ -184,6 +184,7 @@ export default function TemplateGeneratorPage() {
             position={popoverPositions.staging}
             className="z-system-modal-floating"
             onRestore={setSelectedComponents}
+            activeThemePath={themes.find(t => t.id === selectedThemeId)?.path || "/themes/theme.css"}
           />
         )}
 

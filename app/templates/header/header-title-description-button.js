@@ -42,7 +42,7 @@ export default function GlobalHeaderTitleButtonDescription({
                         href={buttonUrl}
                         isVisible={buttonVisible}
                         sectionId={sectionId}
-                        className={`btn btn-${buttonStyle} btn-md`}
+                        className={`btn btn-${buttonStyle} btn-lg`}
                         iconRight={<ArrowLongRightIcon />}
                         onLabelChange={update('buttonText')}
                         onHrefChange={update('buttonUrl')}
@@ -63,7 +63,7 @@ export default function GlobalHeaderTitleButtonDescription({
                         href={secondaryButtonUrl}
                         isVisible={secondaryButtonVisible}
                         sectionId={sectionId}
-                        className={`btn btn-${secondaryButtonStyle} btn-md`}
+                        className={`btn btn-${secondaryButtonStyle} btn-lg`}
                         onLabelChange={update('secondaryButtonText')}
                         onHrefChange={update('secondaryButtonUrl')}
                         onVisibilityChange={update('secondaryButtonVisible')}
