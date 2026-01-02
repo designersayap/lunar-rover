@@ -105,16 +105,6 @@ strong {
   text-decoration: underline;
 }
 
-.link-nav {
-  color: var(--content-neutral--title);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.link-nav:hover {
-  color: var(--content-neutral--body);
-}
-
 /* Caption Classes */
 .caption-bold,
 .caption-regular,

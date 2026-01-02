@@ -54,6 +54,17 @@
     height: 100%;
 }
 
+.linkNav {
+    color: var(--grey-500);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.linkNav:hover {
+    color: var(--content-neutral--body);
+}
+
+
 .mobileHeader {
     display: flex;
     justify-content: space-between;
@@ -69,7 +80,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    color: var(--content-neutral--title);
+    color: var(--grey-500);
 }
 
 .mobileLogoWrapper {

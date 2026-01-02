@@ -44,9 +44,9 @@
     /* Content */
 
     /* Neutral Content */
-    --content-neutral--title: var(--grey-500);
-    --content-neutral--body: var(--grey-400);
-    --content-neutral--caption: var(--grey-300);
+    --content-neutral--title: var(--typography-title);
+    --content-neutral--body: var(--typography-body);
+    --content-neutral--caption: var(--typography-caption);
     --content-neutral--body-subtle: var(--grey-200);
     --content-neutral--body-invert: var(--base-white);
 

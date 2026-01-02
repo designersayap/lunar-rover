@@ -1,8 +1,4 @@
 :root {
-    /* ============================================
-       PRIMITIVES - Design System Foundation
-       ============================================ */
-
     /* Brand Colors */
     --brand-color-500: #D59807FF;
     --brand-color-400: #F6B10EFF;
@@ -12,13 +8,7 @@
     --brand-color-75: #FDE1A2FF;
     --brand-color-50: #FEF8E8FF;
 
-    /* Custom Colors */
-    --text--primary-button: var(--grey-500);
-    --stroke--primary-button: var(--grey-500);
-    --stroke--neutral-button: var(--grey-500);
-
     /* System Colors */
-
     --system-color-green-500: #1B683EFF;
     --system-color-green-300: #2BAA66FF;
     --system-color-green-50: #EAF7F0FF;
@@ -111,4 +101,18 @@
     --font-weight-bold: 600;
     --font-weight-regular: 300;
     --font-weight-action: 600;
+
+    /* ============================================
+       Custom Colors
+       ============================================ */
+
+    /* Typography */
+    --typography-title: var(--grey-500);
+    --typography-body: var(--grey-400);
+    --typography-caption: var(--grey-300);
+
+    /* Button */
+    --text--primary-button: var(--grey-500);
+    --stroke--primary-button: var(--grey-500);
+    --stroke--neutral-button: var(--grey-500);
 }

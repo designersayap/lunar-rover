@@ -235,7 +235,7 @@ export const data = {
     },
     "header-7102": {
         "title": "Total Hadiah Miliaran Menantimu!",
-        "subtitle": "Batas Penukaran Hadiah 31 JULI 2026\nBeli Sabun Krim Ekonomi bertanda khusus\ndan kirimkan kode uniknya ke Whatsapp WINGS Customer Care (021 50 957 507) atau klik tombol dibawah ini untuk klaim sekarang!",
+        "subtitle": "<b>Batas Penukaran Hadiah 31 JULI 2026</b>&nbsp;<div>Beli Sabun Krim Ekonomi bertanda khusus\ndan kirimkan kode uniknya ke Whatsapp WINGS Customer Care (021 50 957 507) atau klik tombol dibawah ini untuk klaim sekarang!</div>",
         "buttonText": "Klaim Hadiah"
     },
     "osm-1222": {

@@ -35,7 +35,7 @@ export default function HeaderSection({
                         )}
                         {subtitle && (
                             <BuilderText
-                                tagName="p"
+                                tagName="div"
                                 className={`subheader-h1 ${styles.subtitle}`}
                                 style={subtitleStyle}
                                 content={subtitle}

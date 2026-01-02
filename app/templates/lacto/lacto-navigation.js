@@ -203,7 +203,7 @@ export default function LactoNavigation({
                                     sectionId={sectionId}
                                     id={item.id}
                                     onIdChange={item.handlers.onIdChange}
-                                    className="body-bold link-nav"
+                                    className={`${styles.linkNav} body-bold`}
                                     suffix={item.suffix}
                                     fullWidth={true}
                                     isVisible={item.visible}
@@ -249,7 +249,7 @@ export default function LactoNavigation({
                                     sectionId={sectionId}
                                     id={item.id}
                                     onIdChange={item.handlers.onIdChange}
-                                    className="body-bold link-nav"
+                                    className={`${styles.linkNav} body-bold`}
                                     suffix={item.suffix}
                                     fullWidth={true}
                                     isVisible={item.visible}
@@ -310,7 +310,7 @@ export default function LactoNavigation({
                                                     sectionId={sectionId}
                                                     id={undefined}
                                                     suffix={item.mobileSuffix}
-                                                    className={`${styles.mobileLinkText} body-bold link-nav`}
+                                                    className={`${styles.mobileLinkText} ${styles.linkNav} body-bold`}
                                                     fullWidth={true}
                                                     isVisible={item.visible}
                                                     linkType={item.linkType}
