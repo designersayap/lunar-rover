@@ -240,5 +240,8 @@ export const data = {
     },
     "osm-1222": {
         "title": "Waspada penipuan! Hubungi hanya WhatsApp resmi: 021-50957907, 081119765007, 081119765008. Di luar nomor tersebut bukan tanggung jawab Penyelenggara."
+    },
+    "keterangan-promo": {
+        "title": "Total Hadiah Miliaran Menantimu&!"
     }
 };
