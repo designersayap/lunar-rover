@@ -34,20 +34,12 @@
 }
 
 .socialIcon {
-    width: 24px;
-    height: 24px;
-    background-color: var(--content-neutral--body);
-    transition: background-color 0.2s ease;
-    mask-repeat: no-repeat;
-    mask-position: center;
-    mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    -webkit-mask-size: contain;
+    color: var(--content-neutral--body);
+    transition: color 0.2s ease;
 }
 
 .socialIcon:hover {
-    background-color: var(--content-neutral--body);
+    color: var(--content-neutral--title);
 }
 
 .column {
@@ -75,9 +67,4 @@
 
 .linkFooter:hover {
     color: var(--content-neutral--body);
-}
-
-/* Mobile & Tablet adjustments */
-@media (max-width: 1023px) {
-    /* No adjustments needed for grid layout */
 }

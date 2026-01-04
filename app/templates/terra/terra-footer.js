@@ -8,19 +8,19 @@ import { getContainerClasses } from "@/app/page-builder/utils/section-utils";
 
 const SocialIcons = {
     facebook: (
-        <div style={{ maskImage: "url(/images/social/facebook.svg)", WebkitMaskImage: "url(/images/social/facebook.svg)" }} className={`${styles.socialIcon} icon-social`} />
+        <div className={`${styles.socialIcon} icon-social-mask icon-social-facebook`} />
     ),
     twitter: (
-        <div style={{ maskImage: "url(/images/social/x.svg)", WebkitMaskImage: "url(/images/social/x.svg)" }} className={`${styles.socialIcon} icon-social`} />
+        <div className={`${styles.socialIcon} icon-social-mask icon-social-x`} />
     ),
     instagram: (
-        <div style={{ maskImage: "url(/images/social/instagram.svg)", WebkitMaskImage: "url(/images/social/instagram.svg)" }} className={`${styles.socialIcon} icon-social`} />
+        <div className={`${styles.socialIcon} icon-social-mask icon-social-instagram`} />
     ),
     tiktok: (
-        <div style={{ maskImage: "url(/images/social/tiktok.svg)", WebkitMaskImage: "url(/images/social/tiktok.svg)" }} className={`${styles.socialIcon} icon-social`} />
+        <div className={`${styles.socialIcon} icon-social-mask icon-social-tiktok`} />
     ),
     youtube: (
-        <div style={{ maskImage: "url(/images/social/youtube.svg)", WebkitMaskImage: "url(/images/social/youtube.svg)" }} className={`${styles.socialIcon} icon-social`} />
+        <div className={`${styles.socialIcon} icon-social-mask icon-social-youtube`} />
     ),
 };
 
@@ -116,7 +116,7 @@ export default function TerraFooter({
                         <div className={styles.column}>
                             <BuilderText
                                 tagName="p"
-                                className={"body-bold"}
+                                className={"body-bold truncate-1-line"}
                                 content={findUsOnTitle || defaults.findUsOnTitle}
                                 onChange={update('findUsOnTitle')}
                                 sectionId={sectionId}
@@ -180,6 +180,8 @@ export default function TerraFooter({
                                             }
                                             className={`${styles.linkFooter} body-regular`}
                                             suffix={`link-${index + 1}`}
+                                            fullWidth={true}
+                                            tooltipIfTruncated={true}
                                         />
                                     </div>
                                 ))}
@@ -192,7 +194,7 @@ export default function TerraFooter({
                         <div className={styles.column}>
                             <BuilderText
                                 tagName="p"
-                                className={"body-bold"}
+                                className={"body-bold truncate-1-line"}
                                 content={resourcesTitle || defaults.resourcesTitle}
                                 onChange={update('resourcesTitle')}
                                 sectionId={sectionId}
@@ -232,6 +234,8 @@ export default function TerraFooter({
                                             justify="flex-start"
                                             className={`${styles.linkFooter} body-regular`}
                                             suffix={`res-${index + 1}`}
+                                            fullWidth={true}
+                                            tooltipIfTruncated={true}
                                         />
                                     </div>
                                 ))}

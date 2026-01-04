@@ -341,9 +341,46 @@ strong {
    ============================================ */
 
 .icon-social {
-  width: var(--size-icon-md);
-  height: var(--size-icon-md);
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
   fill: currentColor;
+}
+
+.icon-social-mask {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+  background-color: currentColor;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}
+
+.icon-social-facebook {
+  mask-image: url('/images/social/facebook.svg');
+  -webkit-mask-image: url('/images/social/facebook.svg');
+}
+
+.icon-social-x {
+  mask-image: url('/images/social/x.svg');
+  -webkit-mask-image: url('/images/social/x.svg');
+}
+
+.icon-social-instagram {
+  mask-image: url('/images/social/instagram.svg');
+  -webkit-mask-image: url('/images/social/instagram.svg');
+}
+
+.icon-social-tiktok {
+  mask-image: url('/images/social/tiktok.svg');
+  -webkit-mask-image: url('/images/social/tiktok.svg');
+}
+
+.icon-social-youtube {
+  mask-image: url('/images/social/youtube.svg');
+  -webkit-mask-image: url('/images/social/youtube.svg');
 }
 
 /* ============================================
