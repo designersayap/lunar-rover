@@ -1,7 +1,3 @@
-/**
- * Component Default Values (Single Source of Truth)
- * Keys match the 'id' in component-library.js.
- */
 export const componentDefaults = {
     "full-body": {
         image: ""
@@ -60,6 +56,70 @@ export const componentDefaults = {
         secondaryButtonLinkType: "url",
         secondaryButtonId: "",
         image: ""
+    },
+    "terra-footer": {
+        image: "",
+        copyrightText: "Copyright © 2025 all rights reserved",
+        findUsOnTitle: "Available at",
+        resourcesTitle: "About Us",
+        socialLinks: [
+            { platform: 'facebook', url: '', visible: true, id: '' },
+            { platform: 'twitter', url: '', visible: true, id: '' },
+            { platform: 'instagram', url: '', visible: true, id: '' },
+            { platform: 'tiktok', url: '', visible: true, id: '' },
+            { platform: 'youtube', url: '', visible: true, id: '' }
+        ],
+        findUsOnLinks: [{
+            label: "marketplace 1",
+            url: "",
+            visible: true,
+            id: "",
+            image: "",
+            imageId: "",
+            linkType: "url",
+            targetDialogId: ""
+        },
+        {
+            label: "marketplace 2",
+            url: "",
+            visible: true,
+            id: "",
+            image: "",
+            imageId: "",
+            linkType: "url",
+            targetDialogId: ""
+        },
+        {
+            label: "marketplace 3",
+            url: "", visible: true,
+            id: "", image: "",
+            imageId: "",
+            linkType: "url",
+            targetDialogId: ""
+        }
+        ],
+        resourceLinks: [{
+            label: "Privacy Policy",
+            url: "", visible: true,
+            id: "",
+            linkType: "url",
+            targetDialogId: ""
+        },
+        {
+            label: "Terms & Condition",
+            url: "", visible: true,
+            id: "",
+            linkType: "url",
+            targetDialogId: ""
+        },
+        {
+            label: "Contact Us",
+            url: "", visible: true,
+            id: "",
+            linkType: "url",
+            targetDialogId: ""
+        }
+        ]
     },
     "feature-left": {
         title: "Title",

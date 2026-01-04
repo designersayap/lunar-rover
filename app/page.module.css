@@ -1013,7 +1013,6 @@
 .topBarLeft,
 .topBarRight,
 .popoverHeader,
-.propertyRow,
 .analyticsHeader,
 .searchRow,
 .treeRow,
@@ -1023,6 +1022,11 @@
 .categoryHeader {
     display: flex;
     align-items: center;
+}
+
+.propertyRow {
+    display: flex;
+    align-items: left;
 }
 
 .categoryWrapper,

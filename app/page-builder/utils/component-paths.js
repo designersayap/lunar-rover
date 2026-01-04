@@ -21,5 +21,7 @@ export const COMPONENT_PATHS = {
     "lacto-navigation": "app/templates/lacto/lacto-navigation.js",
     "full-body": "app/templates/background/full-body.js",
 
-    "terra-testimony": "app/templates/terra/terra-testimony.js"
+    "terra-testimony": "app/templates/terra/terra-testimony.js",
+
+    "terra-footer": "app/templates/terra/terra-footer.js"
 };

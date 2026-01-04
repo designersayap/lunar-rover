@@ -18,6 +18,7 @@ const Media4x3 = dynamic(() => import('@/app/templates/media/media-4-3'));
 const Media21x9 = dynamic(() => import('@/app/templates/media/media-21-9'));
 const LactoNavigation = dynamic(() => import("../../templates/lacto/lacto-navigation"));
 const FullBody = dynamic(() => import("@/app/templates/background/full-body"));
+const TerraFooter = dynamic(() => import("@/app/templates/terra/terra-footer"));
 
 export const componentLibrary = {
     "Background": [
@@ -624,6 +625,61 @@ export const componentLibrary = {
                 { label: "Testimony 10", propId: "testimonies.9.cardId", suffix: "testimony-9", visibleProp: "testimonies.9.visible" },
                 { label: "Testimony 11", propId: "testimonies.10.cardId", suffix: "testimony-10", visibleProp: "testimonies.10.visible" },
                 { label: "Testimony 12", propId: "testimonies.11.cardId", suffix: "testimony-11", visibleProp: "testimonies.11.visible" }
+            ]
+        }
+    ],
+    "Footer": [
+        {
+            id: "terra-footer",
+            name: "Terra - Footer",
+            component: TerraFooter,
+            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            config: [
+                {
+                    name: "image",
+                    label: "Logo",
+                    type: "image",
+                    default: componentDefaults["terra-footer"]?.image
+                },
+                {
+                    name: "socialLinks",
+                    label: "Social Links",
+                    type: "list",
+                    default: componentDefaults["terra-footer"]?.socialLinks
+                },
+                {
+                    name: "findUsOnLinks",
+                    label: "Find Us On Links",
+                    type: "list",
+                    default: componentDefaults["terra-footer"]?.findUsOnLinks
+                },
+                {
+                    name: "resourceLinks",
+                    label: "Resource Links",
+                    type: "list",
+                    default: componentDefaults["terra-footer"]?.resourceLinks
+                }
+            ],
+            images: [
+                {
+                    label: "Logo",
+                    propId: "imageId",
+                    suffix: "logo",
+                    visibleProp: "imageVisible"
+                }
+            ],
+            links: [
+                { label: "Facebook", propId: "socialLinks.0.id", suffix: "social-fb", visibleProp: "socialLinks.0.visible" },
+                { label: "Twitter", propId: "socialLinks.1.id", suffix: "social-x", visibleProp: "socialLinks.1.visible" },
+                { label: "Instagram", propId: "socialLinks.2.id", suffix: "social-ig", visibleProp: "socialLinks.2.visible" },
+                { label: "TikTok", propId: "socialLinks.3.id", suffix: "social-tiktok", visibleProp: "socialLinks.3.visible" },
+                { label: "YouTube", propId: "socialLinks.4.id", suffix: "social-yt", visibleProp: "socialLinks.4.visible" },
+                { label: "Find Us 1", propId: "findUsOnLinks.0.id", suffix: "link-1", visibleProp: "findUsOnLinks.0.visible" },
+                { label: "Find Us 2", propId: "findUsOnLinks.1.id", suffix: "link-2", visibleProp: "findUsOnLinks.1.visible" },
+                { label: "Find Us 3", propId: "findUsOnLinks.2.id", suffix: "link-3", visibleProp: "findUsOnLinks.2.visible" },
+                { label: "Resource 1", propId: "resourceLinks.0.id", suffix: "link-4", visibleProp: "resourceLinks.0.visible" },
+                { label: "Resource 2", propId: "resourceLinks.1.id", suffix: "link-5", visibleProp: "resourceLinks.1.visible" },
+                { label: "Resource 3", propId: "resourceLinks.2.id", suffix: "link-6", visibleProp: "resourceLinks.2.visible" }
             ]
         }
     ]
