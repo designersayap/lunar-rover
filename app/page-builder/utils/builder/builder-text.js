@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import { createPortal } from "react-dom";
 import { useIdSync } from "../hooks/use-id-sync";
 
-export default function BuilderText({
+function BuilderTextComponent({
     content = "",
     tagName = "p",
     className = "",
@@ -21,6 +21,12 @@ export default function BuilderText({
 }) {
     const [text, setText] = useState(content);
     const elementRef = useRef(null);
+
+    // Use a ref for onChange to keep it stable
+    const onChangeRef = useRef(onChange);
+    useEffect(() => {
+        onChangeRef.current = onChange;
+    });
 
     const firstClass = className.split(" ")[0] || tagName;
     const defaultSuffix = suffix || firstClass;
@@ -59,8 +65,8 @@ export default function BuilderText({
         const normalizedText = newText.replace(/&amp;/g, "&");
 
         setText(normalizedText);
-        if (normalizedText !== content && onChange) {
-            onChange(normalizedText);
+        if (normalizedText !== content && onChangeRef.current) {
+            onChangeRef.current(normalizedText);
         }
     };
 
@@ -242,3 +248,40 @@ export default function BuilderText({
         </>
     );
 }
+
+// Compare props to avoid re-rendering while editing
+const arePropsEqual = (prevProps, nextProps) => {
+    // 1. Primitive props
+    if (
+        prevProps.content !== nextProps.content ||
+        prevProps.tagName !== nextProps.tagName ||
+        prevProps.className !== nextProps.className ||
+        prevProps.placeholder !== nextProps.placeholder ||
+        prevProps.sectionId !== nextProps.sectionId ||
+        prevProps.suffix !== nextProps.suffix ||
+        prevProps.noId !== nextProps.noId ||
+        prevProps.id !== nextProps.id ||
+        prevProps.multiline !== nextProps.multiline ||
+        prevProps.tooltipIfTruncated !== nextProps.tooltipIfTruncated
+    ) {
+        return false;
+    }
+
+    // 2. Style (deep match)
+    const prevStyle = prevProps.style || {};
+    const nextStyle = nextProps.style || {};
+    const prevKeys = Object.keys(prevStyle);
+    const nextKeys = Object.keys(nextStyle);
+
+    if (prevKeys.length !== nextKeys.length) return false;
+
+    for (let key of prevKeys) {
+        if (prevStyle[key] !== nextStyle[key]) return false;
+    }
+
+    // 3. Ignore onChange (handled by ref) and onIdChange (assuming stability or unimportant for render)
+    // We intentionally return TRUE here if all other visual props are equal.
+    return true;
+};
+
+export default memo(BuilderTextComponent, arePropsEqual);
