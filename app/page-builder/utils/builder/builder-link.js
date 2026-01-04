@@ -32,7 +32,8 @@ export default function BuilderLink({
     targetDialogId,
     onTargetDialogIdChange,
     tooltipIfTruncated,
-    showLinkType = true
+    showLinkType = true,
+    hideLabel = false
 }) {
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "link", onIdChange });
 
@@ -208,19 +209,21 @@ export default function BuilderLink({
                         >
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: justify, gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
                                 {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
-                                <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: justify }}>
-                                    <BuilderText
-                                        tagName="span"
-                                        content={label}
-                                        onChange={onLabelChange}
-                                        placeholder="Link Label"
-                                        multiline={false}
-                                        noId={true}
-                                        className={!isActive ? "truncate-1-line" : ""}
-                                        style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap', display: 'block' }}
-                                        tooltipIfTruncated={tooltipIfTruncated}
-                                    />
-                                </div>
+                                {!hideLabel && (
+                                    <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: justify }}>
+                                        <BuilderText
+                                            tagName="span"
+                                            content={label}
+                                            onChange={onLabelChange}
+                                            placeholder="Link Label"
+                                            multiline={false}
+                                            noId={true}
+                                            className={!isActive ? "truncate-1-line" : ""}
+                                            style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap', display: 'block' }}
+                                            tooltipIfTruncated={tooltipIfTruncated}
+                                        />
+                                    </div>
+                                )}
                                 {iconRight && <span style={{ display: 'flex', flexShrink: 0 }}>{iconRight}</span>}
                             </div>
                         </Link>

@@ -99,7 +99,7 @@ export default function TerraFooter({
                                                 newLinks[index].visible = val;
                                                 update('socialLinks')(newLinks);
                                             }}
-                                            label=""
+                                            hideLabel={true}
                                             iconLeft={SocialIcons[link.platform] || null}
                                             className={styles.socialLink}
                                             tooltipIfTruncated={true}
@@ -156,7 +156,7 @@ export default function TerraFooter({
                                             }}
                                             justify="flex-start"
                                             iconLeft={
-                                                <div className="icon-social" style={{ marginRight: 12, position: 'relative' }}>
+                                                <div className="icon-social" style={{ position: 'relative' }}>
                                                     <BuilderImage
                                                         src={link.image}
                                                         onSrcChange={(val) => {

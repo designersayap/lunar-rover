@@ -30,7 +30,7 @@
 
 .socialWrapper {
     display: flex;
-    gap: var(--gap-sm);
+    gap: var(--gap-md);
 }
 
 .socialIcon {
@@ -63,6 +63,7 @@
     color: var(--content-neutral--body);
     text-decoration: none;
     transition: color 0.2s;
+    gap: var(--gap-sm);
 }
 
 .linkFooter:hover {
