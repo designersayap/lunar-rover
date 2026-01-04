@@ -34,7 +34,7 @@
 }
 
 .socialIcon {
-    color: var(--content-neutral--body-subtle);
+    color: var(--content-neutral--body);
     transition: color 0.2s ease;
 }
 
