@@ -62,6 +62,80 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
 
     // 2. Process Components (Fetch JS, CSS, and Dependencies)
     const processedFiles = new Set();
+    const bundledImages = new Map(); // Track bundled image paths -> unique filenames
+
+    const bundleAsset = async (imgPath) => {
+        // Check if already bundled
+        if (bundledImages.has(imgPath)) {
+            return bundledImages.get(imgPath);
+        }
+        // Ensure we don't process it as a generic file again if tracked elsewhere
+        if (processedFiles.has(imgPath)) return null;
+
+        processedFiles.add(imgPath);
+
+        try {
+            // Skip bundling for the system default placeholder
+            if (imgPath === defaultPlaceholder || (typeof imgPath === 'string' && imgPath.includes('placeholder_falj5i'))) {
+                return null;
+            }
+
+            let uniqueName;
+            let dataContent;
+            let isBase64 = false;
+
+            if (imgPath.startsWith('blob:') || imgPath.startsWith('http')) {
+                // Handle Blob or External URL
+                const res = await fetch(imgPath);
+                const blob = await res.blob();
+                const arrayBuffer = await blob.arrayBuffer();
+
+                let ext = 'png';
+                if (blob.type === 'image/jpeg') ext = 'jpg';
+                else if (blob.type === 'image/svg+xml') ext = 'svg';
+                else if (blob.type === 'image/gif') ext = 'gif';
+                else if (blob.type === 'image/webp') ext = 'webp';
+
+                dataContent = arrayBuffer;
+                uniqueName = `upload-${Math.random().toString(36).substr(2, 8)}.${ext}`;
+
+                zip.folder("public").folder("assets").file(uniqueName, dataContent);
+
+                const base64 = btoa(
+                    new Uint8Array(arrayBuffer)
+                        .reduce((data, byte) => data + String.fromCharCode(byte), '')
+                );
+                previewMap.set(`public/assets/${uniqueName}`, { path: `public/assets/${uniqueName}`, content: base64, base64: true });
+
+            } else {
+                // Handle Server-Side Asset
+                const res = await fetch('/api/export-component', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filePath: imgPath })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.isBinary && data.content) {
+                        const cleanName = imgPath.split('/').pop().split('?')[0];
+                        uniqueName = `asset-${Math.random().toString(36).substr(2, 5)}-${cleanName}`;
+
+                        zip.folder("public").folder("assets").file(uniqueName, data.content, { base64: true });
+                        previewMap.set(`public/assets/${uniqueName}`, { path: `public/assets/${uniqueName}`, content: data.content, base64: true });
+                    }
+                }
+            }
+
+            if (uniqueName) {
+                bundledImages.set(imgPath, uniqueName);
+                return uniqueName;
+            }
+        } catch (e) {
+            console.warn("Failed to bundle image:", imgPath, e);
+        }
+        return null;
+    };
 
     const processComponent = async (filePath, currentBytes = null) => {
         const filename = filePath.split('/').pop();
@@ -308,124 +382,57 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         });
 
         for (const imgPath of imagesToBundle) {
-            if (processedFiles.has(imgPath)) continue; // Avoid re-fetching same image
+            const uniqueName = await bundleAsset(imgPath);
 
-            // Skip bundling for the system default placeholder (keep as remote URL)
-            // Skip bundling for the system default placeholder (keep as remote URL)
-            // Use robust check to prevent renaming (which would break detection logic)
-            if (imgPath === defaultPlaceholder || (typeof imgPath === 'string' && imgPath.includes('placeholder_falj5i'))) continue;
+            if (uniqueName) {
+                const targetPath = `assets/${uniqueName}`;
 
-            processedFiles.add(imgPath);
-
-            try {
-                let uniqueName;
-                let dataContent;
-                let isBase64 = false;
-
-                if (imgPath.startsWith('blob:') || imgPath.startsWith('http')) {
-                    // Handle Blob or External URL (Client-Side Fetch)
-                    const res = await fetch(imgPath);
-                    const blob = await res.blob();
-                    const arrayBuffer = await blob.arrayBuffer();
-
-                    // Determine extension from MIME
-                    let ext = 'png';
-                    if (blob.type === 'image/jpeg') ext = 'jpg';
-                    else if (blob.type === 'image/svg+xml') ext = 'svg';
-                    else if (blob.type === 'image/gif') ext = 'gif';
-                    else if (blob.type === 'image/webp') ext = 'webp';
-
-                    dataContent = arrayBuffer;
-                    isBase64 = false; // JSZip handles arraybuffer
-
-                    // Create name
-                    uniqueName = `upload-${Math.random().toString(36).substr(2, 8)}.${ext}`;
-
-                    // Add to ZIP (ArrayBuffer)
-                    zip.folder("public").folder("assets").file(uniqueName, dataContent);
-
-                    // For Preview (needs Base64 for simplicity in this architecture?)
-                    const base64 = btoa(
-                        new Uint8Array(arrayBuffer)
-                            .reduce((data, byte) => data + String.fromCharCode(byte), '')
-                    );
-                    previewMap.set(`public/assets/${uniqueName}`, { path: `public/assets/${uniqueName}`, content: base64, base64: true });
-
-                } else {
-                    // Handle Server-Side Asset
-                    const res = await fetch('/api/export-component', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ filePath: imgPath })
-                    });
-
-                    if (res.ok) {
-                        const data = await res.json();
-                        if (data.isBinary && data.content) {
-                            const cleanName = imgPath.split('/').pop().split('?')[0];
-                            uniqueName = `asset-${Math.random().toString(36).substr(2, 5)}-${cleanName}`;
-
-                            zip.folder("public").folder("assets").file(uniqueName, data.content, { base64: true });
-                            previewMap.set(`public/assets/${uniqueName}`, { path: `public/assets/${uniqueName}`, content: data.content, base64: true });
+                // Update component references to point to the new local asset path.
+                // 1. Update props passed to page.js
+                const updateProps = (obj) => {
+                    Object.keys(obj).forEach(key => {
+                        const val = obj[key];
+                        if (typeof val === 'string') {
+                            if (val === imgPath) {
+                                obj[key] = `/${targetPath}`;
+                            } else if (val.includes(imgPath)) {
+                                obj[key] = val.replace(imgPath, `/${targetPath}`);
+                            }
+                        } else if (typeof val === 'object' && val !== null) {
+                            updateProps(val);
                         }
-                    }
-                }
+                    });
+                };
+                updateProps(item);
 
-                if (uniqueName) {
-                    const targetPath = `assets/${uniqueName}`;
+                // Inject default prop into 'item' if it relies on default value
+                const injectDefaultProp = (defaults, currentProps) => {
+                    Object.keys(defaults).forEach(key => {
+                        const defVal = defaults[key];
+                        if (typeof defVal === 'string' && (defVal === imgPath || defVal.includes(imgPath))) {
+                            if (currentProps[key] === undefined || currentProps[key] === defVal) {
+                                let newVal = defVal;
+                                if (defVal === imgPath) newVal = `/${targetPath}`;
+                                else newVal = defVal.replace(imgPath, `/${targetPath}`);
 
-                    // Update component references to point to the new local asset path.
-                    // 1. Update props passed to page.js
-                    const updateProps = (obj) => {
-                        Object.keys(obj).forEach(key => {
-                            const val = obj[key];
-                            if (typeof val === 'string') {
-                                if (val === imgPath) {
-                                    obj[key] = `/${targetPath}`;
-                                } else if (val.includes(imgPath)) {
-                                    // Handle partials like url(...)
-                                    // Careful not to replace substrings that are not paths
-                                    obj[key] = val.replace(imgPath, `/${targetPath}`);
-                                }
-                            } else if (typeof val === 'object' && val !== null) {
-                                updateProps(val);
+                                currentProps[key] = newVal;
                             }
-                        });
-                    };
-                    updateProps(item); // Update the item (which feeds props) in place
+                        } else if (typeof defVal === 'object' && defVal !== null) {
+                        }
+                    });
+                };
+                injectDefaultProp(compDefaults, item.props);
 
-                    // Inject default prop into 'item' if it relies on default value
-                    const injectDefaultProp = (defaults, currentProps) => {
-                        Object.keys(defaults).forEach(key => {
-                            const defVal = defaults[key];
-                            if (typeof defVal === 'string' && (defVal === imgPath || defVal.includes(imgPath))) {
-                                if (currentProps[key] === undefined || currentProps[key] === defVal) {
-                                    let newVal = defVal;
-                                    if (defVal === imgPath) newVal = `/${targetPath}`;
-                                    else newVal = defVal.replace(imgPath, `/${targetPath}`);
-
-                                    currentProps[key] = newVal;
-                                }
-                            } else if (typeof defVal === 'object' && defVal !== null) {
-                                // Recurse if needed (though props are usually flat-ish)
-                            }
-                        });
-                    };
-                    injectDefaultProp(compDefaults, item.props);
-
-                    // 2. Update Hardcoded strings in the Component File 
-                    const compFile = componentsFolder.file(filename);
-                    if (compFile) {
-                        let tempContent = await compFile.async("string");
-                        const escapedPath = imgPath.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-                        const regex = new RegExp(`(["'])${escapedPath}(["'])`, 'g');
-                        tempContent = tempContent.replace(regex, `$1/${targetPath}$2`);
-                        componentsFolder.file(filename, tempContent);
-                        previewMap.set(`components/${filename}`, { path: `components/${filename}`, content: tempContent });
-                    }
+                // 2. Update Hardcoded strings in the Component File 
+                const compFile = componentsFolder.file(filename);
+                if (compFile) {
+                    let tempContent = await compFile.async("string");
+                    const escapedPath = imgPath.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                    const regex = new RegExp(`(["'])${escapedPath}(["'])`, 'g');
+                    tempContent = tempContent.replace(regex, `$1/${targetPath}$2`);
+                    componentsFolder.file(filename, tempContent);
+                    previewMap.set(`components/${filename}`, { path: `components/${filename}`, content: tempContent });
                 }
-            } catch (e) {
-                console.warn("Failed to bundle image:", imgPath, e);
             }
         }
     }
@@ -459,6 +466,29 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
             }
         } catch (e) {
             console.error(`Failed to fetch foundation: ${path}`, e);
+        }
+    }
+
+    // --- 3b. Scan & Bundle Assets in Foundation CSS (e.g. social icons in global.css) ---
+    const cssUrlRegex = /url\(['"]?([^'")]+)['"]?\)/g;
+    const cssMatches = [...foundationCSS.matchAll(cssUrlRegex)];
+    // Deduplicate to avoid processing same URL multiple times
+    const uniqueCssAssets = new Set(cssMatches.map(m => m[1]));
+
+    for (const assetPath of uniqueCssAssets) {
+        // Skip data URIs or empty
+        if (!assetPath || assetPath.startsWith('data:')) continue;
+
+        try {
+            const uniqueName = await bundleAsset(assetPath);
+            if (uniqueName) {
+                const escapedPath = assetPath.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                // Replace all occurrences of this URL in the CSS
+                const replaceRegex = new RegExp(`url\\(['"]?${escapedPath}['"]?\\)`, 'g');
+                foundationCSS = foundationCSS.replace(replaceRegex, `url('/assets/${uniqueName}')`);
+            }
+        } catch (e) {
+            console.warn("Failed to bundle CSS asset:", assetPath, e);
         }
     }
 
