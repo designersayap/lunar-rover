@@ -33,7 +33,7 @@ body {
 
 .link,
 .builder-text a {
-  color: inherit !important;
+  color: inherit;
   text-decoration: underline;
   cursor: pointer;
 }

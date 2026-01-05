@@ -62,26 +62,11 @@ function BuilderTextComponent({
         setIsEditing(false);
         const newText = e.target.innerHTML;
         // Normalize &amp; to & to avoid double escaping in certain contexts
-        // Normalize &amp; to & to avoid double escaping in certain contexts
         const normalizedText = newText.replace(/&amp;/g, "&");
 
-        // Ensure all links have the 'link' class
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = normalizedText;
-        const links = tempDiv.getElementsByTagName('a');
-        let hasChanges = false;
-        for (let i = 0; i < links.length; i++) {
-            if (!links[i].classList.contains('link')) {
-                links[i].classList.add('link');
-                hasChanges = true;
-            }
-        }
-
-        const finalText = hasChanges ? tempDiv.innerHTML : normalizedText;
-
-        setText(finalText);
-        if (finalText !== content && onChangeRef.current) {
-            onChangeRef.current(finalText);
+        setText(normalizedText);
+        if (normalizedText !== content && onChangeRef.current) {
+            onChangeRef.current(normalizedText);
         }
     };
 
@@ -97,9 +82,7 @@ function BuilderTextComponent({
                 const urlRegex = /^(http(s)?:\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/i;
 
                 if (urlRegex.test(plainText)) {
-                    // Use insertHTML to include the class="link" immediately
-                    const linkHtml = `<a href="${plainText}" class="link">${plainText}</a>`;
-                    document.execCommand("insertHTML", false, linkHtml);
+                    document.execCommand("createLink", false, plainText);
                     return;
                 }
             }

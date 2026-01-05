@@ -245,7 +245,8 @@ export const data = {
         "title": "Total Hadiah Miliaran Menantimu!",
         "buttonUrl": "https://api.whatsapp.com/send?phone=622150957907&text=Hi%2C%20saya%20ingin%20klaim%20hadiah%20Sabun%20Krim%20Ekonomi%2C%20mohon%20bantuannya%20ya",
         "buttonIconLeft": "AcademicCapIcon",
-        "buttonIconRight": "ArrowSmallRightIcon"
+        "buttonIconRight": "ArrowSmallRightIcon",
+        "subtitle": "<b>Batas Penukaran Hadiah 31 JULI 2026</b><div>Beli Sabun Krim Ekonomi bertanda&nbsp;khusus, kirim kode uniknya ke WhatsApp WINGS Customer Care, atau klik tombol di bawah untuk klaim.</div>"
     },
     "1767581751543": {
         "isOpen": true
