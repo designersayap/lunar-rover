@@ -62,7 +62,6 @@ function BuilderTextComponent({
         setIsEditing(false);
         const newText = e.target.innerHTML;
         // Normalize &amp; to & to avoid double escaping in certain contexts
-        // while preserving other HTML entities/tags
         const normalizedText = newText.replace(/&amp;/g, "&");
 
         setText(normalizedText);
@@ -80,7 +79,6 @@ function BuilderTextComponent({
             const selection = window.getSelection();
             if (selection.toString().length > 0) {
                 // Simple regex for URL validation (http/https required)
-                // eslint-disable-next-line no-useless-escape
                 const urlRegex = /^(http(s)?:\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/i;
 
                 if (urlRegex.test(plainText)) {
@@ -154,7 +152,7 @@ function BuilderTextComponent({
                 const range = selection.getRangeAt(0);
                 const textNode = range.startContainer;
 
-                if (textNode.nodeType === 3) { // Text node
+                if (textNode.nodeType === 3) {
                     const text = textNode.textContent;
                     const offset = range.startOffset;
 
