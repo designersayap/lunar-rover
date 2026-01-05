@@ -31,6 +31,13 @@ body {
   /* Default to a. b. c. as requested */
 }
 
+.link,
+.builder-text a {
+  color: inherit !important;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 b,
 strong {
   font-weight: bold;
@@ -98,16 +105,14 @@ strong {
 
 /* Body Classes */
 .body-bold,
-.body-regular,
-.body-link {
+.body-regular {
   font-family: var(--font-family-body);
   font-size: var(--typography-font-size-paragraph-md);
   line-height: var(--typography-line-height-paragraph-md);
   word-wrap: break-word;
 }
 
-.body-bold,
-.body-link {
+.body-bold {
   font-weight: var(--font-weight-bold);
 }
 
@@ -115,22 +120,18 @@ strong {
   font-weight: var(--font-weight-regular);
 }
 
-.body-link {
-  text-decoration: underline;
-}
+
 
 /* Caption Classes */
 .caption-bold,
-.caption-regular,
-.caption-link {
+.caption-regular {
   font-family: var(--font-family-caption);
   font-size: var(--typography-font-size-caption-md);
   line-height: var(--typography-line-height-caption-md);
   word-wrap: break-word;
 }
 
-.caption-bold,
-.caption-link {
+.caption-bold {
   font-weight: var(--font-weight-bold);
 }
 
@@ -138,9 +139,7 @@ strong {
   font-weight: var(--font-weight-regular);
 }
 
-.caption-link {
-  text-decoration: underline;
-}
+
 
 /* Button Text Classes */
 .button-md {

@@ -484,8 +484,8 @@ Standardize your component's look using the global classes from `app/foundation/
 Do not set `font-size` or `font-weight` manually. Use these semantic classes:
 - **Headings**: `.h1` through `.h6` (Use `.h1` for main page titles, `.h3/.h4` for section titles).
 - **Subheaders**: `.subheader-h1`, `.subheader-h2` (Lighter weight headings).
-- **Body**: `.body-regular`, `.body-bold`, `.body-link`.
-- **Caption**: `.caption-regular`, `.caption-bold`, `.caption-link` (Small text).
+- **Body**: `.body-regular`, `.body-bold`.
+- **Caption**: `.caption-regular`, `.caption-bold` (Small text).
 
 ### **Buttons**
 Use the `.btn` base class with size and variant modifiers.
