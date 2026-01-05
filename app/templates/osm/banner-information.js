@@ -4,17 +4,18 @@ import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
 import { createUpdateHandler } from "../utils/component-helpers";
 import styles from "./banner-information.module.css";
+import { componentDefaults } from "../content/data";
 import { getContainerClasses } from "@/app/page-builder/utils/section-utils";
 
 export default function BannerInformation({
     title = "Information Banner",
 
-    buttonText = "Label",
-    buttonUrl = "",
-    buttonLinkType = "url",
-    buttonTargetDialogId = "",
+    buttonText = componentDefaults["banner-information"].buttonText,
+    buttonUrl = componentDefaults["banner-information"].buttonUrl,
+    buttonLinkType = componentDefaults["banner-information"].buttonLinkType || "url",
+    buttonTargetDialogId = componentDefaults["banner-information"].buttonTargetDialogId,
     buttonId,
-    buttonVisible = true,
+    buttonVisible = componentDefaults["banner-information"].buttonVisible,
 
     onUpdate,
     sectionId,
@@ -88,23 +89,25 @@ export default function BannerInformation({
                                 />
                             </div>
                         </div>
-                        <BuilderButton
-                            label={buttonText}
-                            href={buttonUrl}
-                            isVisible={buttonVisible}
-                            sectionId={sectionId}
-                            className="btn btn-outline btn-sm"
-                            onLabelChange={update('buttonText')}
-                            onHrefChange={update('buttonUrl')}
-                            onVisibilityChange={update('buttonVisible')}
-                            linkType={buttonLinkType}
-                            onLinkTypeChange={update('buttonLinkType')}
-                            targetDialogId={buttonTargetDialogId}
-                            onTargetDialogIdChange={update('buttonTargetDialogId')}
-                            id={buttonId}
-                            onIdChange={update('buttonId')}
-                            suffix="button"
-                        />
+                        {buttonVisible && (
+                            <BuilderButton
+                                label={buttonText}
+                                href={buttonUrl}
+                                isVisible={buttonVisible}
+                                sectionId={sectionId}
+                                className="btn btn-outline btn-sm"
+                                onLabelChange={update('buttonText')}
+                                onHrefChange={update('buttonUrl')}
+                                onVisibilityChange={update('buttonVisible')}
+                                linkType={buttonLinkType}
+                                onLinkTypeChange={update('buttonLinkType')}
+                                targetDialogId={buttonTargetDialogId}
+                                onTargetDialogIdChange={update('buttonTargetDialogId')}
+                                id={buttonId}
+                                onIdChange={update('buttonId')}
+                                suffix="button"
+                            />
+                        )}
                         <div className={`${styles.actions} z-content-1`}>
                             <button
                                 className="btn btn-icon btn-neutral btn-sm"

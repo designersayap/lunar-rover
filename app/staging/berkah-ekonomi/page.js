@@ -20,7 +20,7 @@ export default function StagingPage() {
     useEffect(() => {
         const themeLink = document.getElementById("theme-stylesheet");
         if (themeLink) {
-            themeLink.href = "/themes/theme.css";
+            themeLink.href = "/themes/milku.css";
         }
     }, []);
     
