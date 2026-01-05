@@ -40,13 +40,8 @@ export default function TerraBannerHero({
     const update = createUpdateHandler(onUpdate);
 
     // Helper to resolve icon string to component
-    const resolveIcon = (iconName) => {
-        if (typeof iconName === 'string' && HeroIcons[iconName]) {
-            const Icon = HeroIcons[iconName];
-            return <Icon className="w-5 h-5" />;
-        }
-        return iconName;
-    };
+    // Helper to resolve icon string to component
+    // Removed: BuilderButton now handles icon resolution
 
     const defaults = componentDefaults["terra-banner-hero"];
 
@@ -110,8 +105,8 @@ export default function TerraBannerHero({
                                         isVisible={primaryButton.visible}
                                         sectionId={sectionId}
                                         className={`btn btn-${primaryButton.style} btn-lg`}
-                                        iconLeft={resolveIcon(buttonIconLeft)}
-                                        iconRight={resolveIcon(buttonIconRight)}
+                                        iconLeft={buttonIconLeft}
+                                        iconRight={buttonIconRight}
                                         onLabelChange={update('buttonText')}
                                         onHrefChange={update('buttonUrl')}
                                         onVisibilityChange={update('buttonVisible')}
@@ -142,8 +137,8 @@ export default function TerraBannerHero({
                                         onLinkTypeChange={update('secondaryButtonLinkType')}
                                         targetDialogId={secondaryButton.targetDialogId}
                                         onTargetDialogIdChange={update('secondaryButtonTargetDialogId')}
-                                        iconLeft={resolveIcon(secondaryButtonIconLeft)}
-                                        iconRight={resolveIcon(secondaryButtonIconRight)}
+                                        iconLeft={secondaryButtonIconLeft}
+                                        iconRight={secondaryButtonIconRight}
                                         onIconLeftChange={update('secondaryButtonIconLeft')}
                                         onIconRightChange={update('secondaryButtonIconRight')}
                                         id={secondaryButton.id}
