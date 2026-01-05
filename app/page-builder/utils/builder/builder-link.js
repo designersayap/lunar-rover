@@ -221,6 +221,7 @@ export default function BuilderLink({
                                             className={!isActive ? "truncate-1-line" : ""}
                                             style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap', display: 'block' }}
                                             tooltipIfTruncated={tooltipIfTruncated}
+                                            disableLinkPaste={true}
                                         />
                                     </div>
                                 )}

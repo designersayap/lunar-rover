@@ -206,6 +206,7 @@ export default function BuilderButton({
                             noId={true}
                             className={!isActive ? "truncate-1-line" : ""}
                             style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap' }}
+                            disableLinkPaste={true}
                         />
                     </div>
                     {renderIcon(iconRight) && (

@@ -17,6 +17,7 @@ function BuilderTextComponent({
     noId = false,
     id,
     onIdChange,
+    disableLinkPaste = false,
     ...props
 }) {
     const [text, setText] = useState(content);
@@ -73,6 +74,22 @@ function BuilderTextComponent({
     const handlePaste = (e) => {
         e.preventDefault();
         const plainText = e.clipboardData.getData("text/plain");
+
+        // Auto-link on paste
+        if (!disableLinkPaste) {
+            const selection = window.getSelection();
+            if (selection.toString().length > 0) {
+                // Simple regex for URL validation (http/https required)
+                // eslint-disable-next-line no-useless-escape
+                const urlRegex = /^(http(s)?:\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/i;
+
+                if (urlRegex.test(plainText)) {
+                    document.execCommand("createLink", false, plainText);
+                    return;
+                }
+            }
+        }
+
         document.execCommand("insertText", false, plainText);
     };
 
@@ -173,11 +190,6 @@ function BuilderTextComponent({
 
                             document.execCommand('insertOrderedList');
 
-                            // Force alpha type
-                            // insertOrderedList usually creates <ol>. We want <ol type="a"> or rely on CSS.
-                            // The CSS we added sets list-style-type: lower-alpha for .builder-text ol
-                            // So standard insertOrderedList should be enough visual-wise.
-                            // If we want to be explicit in HTML:
                             const selection = window.getSelection();
                             if (selection.rangeCount > 0) {
                                 const newNode = selection.anchorNode;
@@ -328,6 +340,7 @@ const arePropsEqual = (prevProps, nextProps) => {
         prevProps.noId !== nextProps.noId ||
         prevProps.id !== nextProps.id ||
         prevProps.multiline !== nextProps.multiline ||
+        prevProps.disableLinkPaste !== nextProps.disableLinkPaste ||
         prevProps.tooltipIfTruncated !== nextProps.tooltipIfTruncated
     ) {
         return false;
