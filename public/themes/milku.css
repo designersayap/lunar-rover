@@ -2,22 +2,22 @@
 @font-face {
     font-family: 'Montserrat';
     font-style: normal;
-    font-weight: 300;
-    src: url('/fonts/montserrat-300.ttf') format('truetype');
+    font-weight: 400;
+    src: url('/fonts/Montserrat/Montserrat-Regular.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Montserrat';
     font-style: normal;
-    font-weight: 600;
-    src: url('/fonts/montserrat-600.ttf') format('truetype');
+    font-weight: 500;
+    src: url('/fonts/Montserrat/Montserrat-Medium.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Montserrat';
     font-style: normal;
     font-weight: 700;
-    src: url('/fonts/montserrat-700.ttf') format('truetype');
+    src: url('/fonts/Montserrat/Montserrat-Bold.ttf') format('truetype');
 }
 
 :root {
@@ -124,9 +124,9 @@
     --font-family-action: var(--font-body), sans-serif;
 
     /* Typography - Font Weights */
-    --font-weight-bold: 600;
-    --font-weight-regular: 300;
-    --font-weight-action: 600;
+    --font-weight-bold: 700;
+    --font-weight-regular: 400;
+    --font-weight-action: 500;
 
     /* ============================================
        Custom Colors

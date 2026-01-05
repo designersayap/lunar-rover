@@ -4,28 +4,21 @@
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
-    src: url('/fonts/lato-400.ttf') format('truetype');
+    src: url('/fonts/Lato/Lato-Regular.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Lato';
     font-style: normal;
     font-weight: 700;
-    src: url('/fonts/lato-700.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 600;
-    src: url('/fonts/poppins-600.ttf') format('truetype');
+    src: url('/fonts/Lato/Lato-Bold.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 700;
-    src: url('/fonts/poppins-700.ttf') format('truetype');
+    src: url('/fonts/Poppins/Poppins-Bold.ttf') format('truetype');
 }
 
 :root {
@@ -133,9 +126,9 @@
     --font-family-action: var(--font-body), sans-serif;
 
     /* Typography - Font Weights */
-    --font-weight-bold: 600;
+    --font-weight-bold: 700;
     --font-weight-regular: 400;
-    --font-weight-action: 600;
+    --font-weight-action: 400;
 
     /* ============================================
        Custom Colors

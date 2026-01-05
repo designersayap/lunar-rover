@@ -132,7 +132,6 @@ strong {
 .button-md {
   font-family: var(--font-family-action);
   font-size: var(--typography-font-size-paragraph-md);
-  font-weight: var(--font-weight-bold);
   line-height: var(--typography-line-height-paragraph-md);
   word-wrap: break-word;
 }
@@ -140,7 +139,6 @@ strong {
 .button-lg {
   font-family: var(--font-family-action);
   font-size: var(--typography-font-size-heading-xs);
-  font-weight: var(--font-weight-bold);
   line-height: var(--typography-line-height-heading-xs);
   word-wrap: break-word;
 }
