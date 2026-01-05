@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import * as HeroIcons from "@heroicons/react/24/solid";
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
 import { createUpdateHandler } from "../utils/component-helpers";
@@ -34,6 +35,15 @@ export default function BannerInformation({
     const [marqueeDuration, setMarqueeDuration] = useState(10); // Default duration
     const textWrapperRef = useRef(null);
     const textRef = useRef(null);
+
+    // Helper to resolve icon string to component
+    const resolveIcon = (iconName) => {
+        if (typeof iconName === 'string' && HeroIcons[iconName]) {
+            const Icon = HeroIcons[iconName];
+            return <Icon className="w-5 h-5" />;
+        }
+        return iconName;
+    };
 
     useEffect(() => {
         const checkOverflow = () => {
@@ -105,8 +115,8 @@ export default function BannerInformation({
                                 onLinkTypeChange={update('buttonLinkType')}
                                 targetDialogId={buttonTargetDialogId}
                                 onTargetDialogIdChange={update('buttonTargetDialogId')}
-                                iconLeft={buttonIconLeft}
-                                iconRight={buttonIconRight}
+                                iconLeft={resolveIcon(buttonIconLeft)}
+                                iconRight={resolveIcon(buttonIconRight)}
                                 onIconLeftChange={update('buttonIconLeft')}
                                 onIconRightChange={update('buttonIconRight')}
                                 id={buttonId}

@@ -1,3 +1,4 @@
+import * as HeroIcons from "@heroicons/react/24/solid";
 import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
@@ -29,6 +30,15 @@ export default function GlobalHeaderTitleButtonDescription({
 }) {
     const update = createUpdateHandler(onUpdate);
 
+    // Helper to resolve icon string to component
+    const resolveIcon = (iconName) => {
+        if (typeof iconName === 'string' && HeroIcons[iconName]) {
+            const Icon = HeroIcons[iconName];
+            return <Icon className="w-5 h-5" />;
+        }
+        return iconName;
+    };
+
     return (
         <HeaderSection
             title={title}
@@ -46,8 +56,8 @@ export default function GlobalHeaderTitleButtonDescription({
                         isVisible={buttonVisible}
                         sectionId={sectionId}
                         className={`btn btn-${buttonStyle} btn-lg`}
-                        iconLeft={buttonIconLeft}
-                        iconRight={buttonIconRight}
+                        iconLeft={resolveIcon(buttonIconLeft)}
+                        iconRight={resolveIcon(buttonIconRight)}
                         onLabelChange={update('buttonText')}
                         onHrefChange={update('buttonUrl')}
                         onVisibilityChange={update('buttonVisible')}
@@ -78,8 +88,8 @@ export default function GlobalHeaderTitleButtonDescription({
                         onLinkTypeChange={update('secondaryButtonLinkType')}
                         targetDialogId={secondaryButtonTargetDialogId}
                         onTargetDialogIdChange={update('secondaryButtonTargetDialogId')}
-                        iconLeft={secondaryButtonIconLeft}
-                        iconRight={secondaryButtonIconRight}
+                        iconLeft={resolveIcon(secondaryButtonIconLeft)}
+                        iconRight={resolveIcon(secondaryButtonIconRight)}
                         onIconLeftChange={update('secondaryButtonIconLeft')}
                         onIconRightChange={update('secondaryButtonIconRight')}
                         id={secondaryButtonId}
