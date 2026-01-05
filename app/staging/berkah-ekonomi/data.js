@@ -253,19 +253,19 @@ export const data = {
     "dialog-t&c": {
         "items": [
             {
-                "title": "Accordion Title",
-                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                "title": "Periode Program",
+                "content": "<span class=\"body-bold\">1 Januari 2026 – 30 Juni 2026</span>"
+            },
+            {
+                "title": "Hadiah",
+                "content": "a. Selama periode Program, Peserta yang beruntung akan mendapatkan hadiah berupa 30 Paket Umroh dan 3000 Emas @ 0,5g (“Hadiah”).<div>b. Batas Penukaran Hadiah: <span class=\"body-bold\">31 Juli 2026 jam 23.59 WIB</span></div>"
             },
             {
                 "title": "Accordion Title",
-                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            },
-            {
-                "title": "Cara Mendapatkan Hadiah",
                 "content": "WDSFSAFSDAFASF"
             },
             {
-                "title": "Ketenturan Umum",
+                "title": "Accordion Title",
                 "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
             },
             {

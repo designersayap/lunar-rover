@@ -1,10 +1,67 @@
-import { useState } from 'react';
+import { useState, memo, useRef, useCallback } from 'react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/solid';
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderElement from "@/app/page-builder/utils/builder/builder-element";
 import { componentDefaults } from "../content/data";
 import styles from "./dialog-section.module.css";
 import DialogSection from "./dialog-section";
+
+const AccordionItem = memo(({
+    index,
+    item,
+    isOpen,
+    sectionId,
+    itemId,
+    onToggle,
+    onUpdate,
+    onIdChange
+}) => {
+    return (
+        <BuilderElement
+            tagName="div"
+            className={styles.accordionItem}
+            sectionId={sectionId}
+            id={itemId}
+            elementProps={`accordion-${index}`}
+            onIdChange={onIdChange}
+        >
+            <button
+                className={styles.accordionHeader}
+                onClick={(e) => {
+                    e.stopPropagation(); // Prevent BuilderElement select if clicking header
+                    onToggle();
+                }}
+            >
+                <div className={styles.iconContainer}>
+                    {isOpen ? (
+                        <MinusIcon className={styles.accordionIcon} />
+                    ) : (
+                        <PlusIcon className={styles.accordionIcon} />
+                    )}
+                </div>
+                <BuilderText
+                    tagName="span"
+                    className={`body-bold ${styles.accordionTitle}`}
+                    content={item.title}
+                    onChange={(val) => onUpdate('title', val)}
+                    sectionId={sectionId}
+                />
+            </button>
+            <div className={`${styles.accordionContent} ${isOpen ? styles.accordionContentOpen : ''}`}>
+                <div className={`${styles.accordionInner} z-content-2`}>
+                    <BuilderText
+                        tagName="div"
+                        className="body-regular"
+                        content={item.content}
+                        onChange={(val) => onUpdate('content', val)}
+                        sectionId={sectionId}
+                        multiline={true}
+                    />
+                </div>
+            </div>
+        </BuilderElement>
+    );
+});
 
 export default function DialogAccordion({
     title = "Title",
@@ -31,22 +88,30 @@ export default function DialogAccordion({
         item4Visible, item5Visible, item6Visible, item7Visible
     ];
 
-    const toggleAccordion = (index) => {
+    // Use refs to keep callbacks stable for memoized children
+    const onUpdateRef = useRef(onUpdate);
+    onUpdateRef.current = onUpdate;
+
+    const itemsRef = useRef(items);
+    itemsRef.current = items;
+
+    const toggleAccordion = useCallback((index) => {
         setOpenIndex(prev => prev === index ? null : index);
-    };
+    }, []);
 
-    const updateItem = (index, field, value) => {
-        if (!onUpdate) return;
-        const newItems = [...items];
-        newItems[index] = { ...newItems[index], [field]: value };
-        onUpdate({ items: newItems });
-    };
+    const updateItem = useCallback((index, field, value) => {
+        if (!onUpdateRef.current) return;
+        const currentItems = [...itemsRef.current];
+        currentItems[index] = { ...currentItems[index], [field]: value };
+        onUpdateRef.current({ items: currentItems });
+    }, []);
 
-    const updateItemId = (index, newId) => {
-        if (onUpdate) {
-            onUpdate({ [`item${index}Id`]: newId });
+    const updateItemId = useCallback((index, newId) => {
+        if (onUpdateRef.current) {
+            onUpdateRef.current({ [`item${index}Id`]: newId });
         }
-    };
+    }, []);
+
 
     return (
         <DialogSection
@@ -64,50 +129,17 @@ export default function DialogAccordion({
                 {items.slice(0, 8).map((item, i) => (
                     // Check visibility
                     itemVisibility[i] !== false && (
-                        <BuilderElement
+                        <AccordionItem
                             key={i}
-                            tagName="div"
-                            className={styles.accordionItem}
+                            index={i}
+                            item={item}
+                            isOpen={openIndex === i}
                             sectionId={sectionId}
-                            id={itemIds[i]}
-                            elementProps={`accordion-${i}`}
+                            itemId={itemIds[i]}
+                            onToggle={() => toggleAccordion(i)}
+                            onUpdate={(field, val) => updateItem(i, field, val)}
                             onIdChange={(val) => updateItemId(i, val)}
-                        >
-                            <button
-                                className={styles.accordionHeader}
-                                onClick={(e) => {
-                                    e.stopPropagation(); // Prevent BuilderElement select if clicking header
-                                    toggleAccordion(i);
-                                }}
-                            >
-                                <div className={styles.iconContainer}>
-                                    {openIndex === i ? (
-                                        <MinusIcon className={styles.accordionIcon} />
-                                    ) : (
-                                        <PlusIcon className={styles.accordionIcon} />
-                                    )}
-                                </div>
-                                <BuilderText
-                                    tagName="span"
-                                    className={`body-bold ${styles.accordionTitle}`}
-                                    content={item.title}
-                                    onChange={(val) => updateItem(i, 'title', val)}
-                                    sectionId={sectionId}
-                                />
-                            </button>
-                            <div className={`${styles.accordionContent} ${openIndex === i ? styles.accordionContentOpen : ''}`}>
-                                <div className={`${styles.accordionInner} z-content-2`}>
-                                    <BuilderText
-                                        tagName="p"
-                                        className="body-regular"
-                                        content={item.content}
-                                        onChange={(val) => updateItem(i, 'content', val)}
-                                        sectionId={sectionId}
-                                        multiline={true}
-                                    />
-                                </div>
-                            </div>
-                        </BuilderElement>
+                        />
                     )
                 ))}
             </div>
