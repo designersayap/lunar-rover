@@ -1,4 +1,39 @@
+/* Fonts */
+
+@font-face {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/lato-400.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/fonts/lato-700.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    src: url('/fonts/poppins-600.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/fonts/poppins-700.ttf') format('truetype');
+}
+
 :root {
+
+    /* Font Variables */
+    --font-heading: 'Poppins', sans-serif;
+    --font-body: 'Lato', sans-serif;
+
     /* Brand Colors */
     --brand-color-500: #0B582BFF;
     --brand-color-400: #0D6531FF;
@@ -91,11 +126,11 @@
     --typography-line-height-380: 80px;
 
     /* Typography - Font Families */
-    --font-family-heading: var(--font-poppins), sans-serif;
-    --font-family-body: var(--font-lato), sans-serif;
-    --font-family-caption: var(--font-lato), sans-serif;
-    --font-family-overline: var(--font-lato), sans-serif;
-    --font-family-action: var(--font-lato), sans-serif;
+    --font-family-heading: var(--font-heading), sans-serif;
+    --font-family-body: var(--font-body), sans-serif;
+    --font-family-caption: var(--font-body), sans-serif;
+    --font-family-overline: var(--font-body), sans-serif;
+    --font-family-action: var(--font-body), sans-serif;
 
     /* Typography - Font Weights */
     --font-weight-bold: 600;
