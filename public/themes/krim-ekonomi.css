@@ -91,11 +91,11 @@
     --typography-line-height-380: 80px;
 
     /* Typography - Font Families */
-    --font-family-heading: 'Poppins', sans-serif;
-    --font-family-body: 'Lato', sans-serif;
-    --font-family-caption: 'Lato', sans-serif;
-    --font-family-overline: 'Lato', sans-serif;
-    --font-family-action: 'Lato', sans-serif;
+    --font-family-heading: var(--font-poppins), sans-serif;
+    --font-family-body: var(--font-lato), sans-serif;
+    --font-family-caption: var(--font-lato), sans-serif;
+    --font-family-overline: var(--font-lato), sans-serif;
+    --font-family-action: var(--font-lato), sans-serif;
 
     /* Typography - Font Weights */
     --font-weight-bold: 600;
