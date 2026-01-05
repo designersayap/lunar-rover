@@ -8,6 +8,7 @@ import { useActiveOverlay, ActiveOverlayPortal } from "../hooks/use-active-overl
 import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid";
 import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
+import { Icons } from "./builder-icons";
 
 export default function BuilderButton({
     label = "Label",
@@ -23,8 +24,10 @@ export default function BuilderButton({
     onVisibilityChange,
     isVisible = true,
     style = {},
-    iconLeft,
-    iconRight,
+    iconLeft, // Now expected to be a string name or null
+    iconRight, // Now expected to be a string name or null
+    onIconLeftChange,
+    onIconRightChange,
     linkType = 'url',
     onLinkTypeChange,
     targetDialogId,
@@ -160,6 +163,19 @@ export default function BuilderButton({
 
     const targetDialogSectionId = targetDialogComponent?.sectionId;
 
+    // Resolve Icons
+    const renderIcon = (icon) => {
+        if (!icon) return null;
+        if (typeof icon === 'string' && Icons[icon]) {
+            const IconComponent = Icons[icon];
+            return <IconComponent className="w-5 h-5" />;
+        }
+        return icon;
+    };
+
+    const leftIconDropdown = iconLeft; // The prop passed from parent (string or JSX)
+    const rightIconDropdown = iconRight;
+
     return (
         <>
             <Link
@@ -175,7 +191,11 @@ export default function BuilderButton({
             >
                 <div ref={wrapperRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
 
-                    {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
+                    {renderIcon(iconLeft) && (
+                        <span style={{ display: 'flex', flexShrink: 0 }}>
+                            {renderIcon(iconLeft)}
+                        </span>
+                    )}
                     <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
                         <BuilderText
                             tagName="span"
@@ -188,7 +208,11 @@ export default function BuilderButton({
                             style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap' }}
                         />
                     </div>
-                    {iconRight && <span style={{ display: 'flex', flexShrink: 0 }}>{iconRight}</span>}
+                    {renderIcon(iconRight) && (
+                        <span style={{ display: 'flex', flexShrink: 0 }}>
+                            {renderIcon(iconRight)}
+                        </span>
+                    )}
                 </div>
             </Link >
 
@@ -241,6 +265,10 @@ export default function BuilderButton({
                         onTargetDialogIdChange={onTargetDialogIdChange}
                         showLinkType={!isStaging}
                         showVariant={!isStaging}
+                        iconLeft={iconLeft}
+                        onIconLeftChange={onIconLeftChange}
+                        iconRight={iconRight}
+                        onIconRightChange={onIconRightChange}
                     />
                 )
             }

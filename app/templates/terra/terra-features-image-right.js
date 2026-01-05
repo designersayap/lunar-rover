@@ -2,7 +2,6 @@ import styles from "./terra-features-image-right.module.css";
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
 import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
-import { ArrowLongRightIcon } from "@heroicons/react/20/solid";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
 import { getContainerClasses } from "@/app/page-builder/utils/section-utils";
@@ -15,11 +14,15 @@ export default function TerraFeaturesImageRight({
     buttonVisible = componentDefaults["feature-right"].buttonVisible,
     buttonLinkType = componentDefaults["feature-right"].buttonLinkType || "url",
     buttonTargetDialogId = componentDefaults["feature-right"].buttonTargetDialogId,
+    buttonIconLeft = componentDefaults["feature-right"].buttonIconLeft,
+    buttonIconRight = componentDefaults["feature-right"].buttonIconRight || "ArrowLongRightIcon",
     secondaryButtonText = componentDefaults["feature-right"].secondaryButtonText,
     secondaryButtonUrl = componentDefaults["feature-right"].secondaryButtonUrl,
     secondaryButtonVisible = componentDefaults["feature-right"].secondaryButtonVisible,
     secondaryButtonLinkType = componentDefaults["feature-right"].secondaryButtonLinkType || "url",
     secondaryButtonTargetDialogId = componentDefaults["feature-right"].secondaryButtonTargetDialogId,
+    secondaryButtonIconLeft = componentDefaults["feature-right"].secondaryButtonIconLeft,
+    secondaryButtonIconRight = componentDefaults["feature-right"].secondaryButtonIconRight,
     image = componentDefaults["feature-right"].image,
     imageId,
     imageVisible,
@@ -64,7 +67,8 @@ export default function TerraFeaturesImageRight({
                                     isVisible={buttonVisible}
                                     sectionId={sectionId}
                                     className={`btn btn-${buttonStyle || 'primary'} btn-lg`}
-                                    iconRight={<ArrowLongRightIcon />}
+                                    iconLeft={buttonIconLeft}
+                                    iconRight={buttonIconRight}
                                     onLabelChange={update('buttonText')}
                                     onHrefChange={update('buttonUrl')}
                                     onVisibilityChange={update('buttonVisible')}
@@ -73,6 +77,8 @@ export default function TerraFeaturesImageRight({
                                     onLinkTypeChange={update('buttonLinkType')}
                                     targetDialogId={buttonTargetDialogId}
                                     onTargetDialogIdChange={update('buttonTargetDialogId')}
+                                    onIconLeftChange={update('buttonIconLeft')}
+                                    onIconRightChange={update('buttonIconRight')}
                                     id={buttonId}
                                     onIdChange={update('buttonId')}
                                     suffix="button"
@@ -93,6 +99,10 @@ export default function TerraFeaturesImageRight({
                                     onLinkTypeChange={update('secondaryButtonLinkType')}
                                     targetDialogId={secondaryButtonTargetDialogId}
                                     onTargetDialogIdChange={update('secondaryButtonTargetDialogId')}
+                                    iconLeft={secondaryButtonIconLeft}
+                                    iconRight={secondaryButtonIconRight}
+                                    onIconLeftChange={update('secondaryButtonIconLeft')}
+                                    onIconRightChange={update('secondaryButtonIconRight')}
                                     id={secondaryButtonId}
                                     onIdChange={update('secondaryButtonId')}
                                     suffix="secondary-button"

@@ -14,6 +14,8 @@ export default function BannerInformation({
     buttonUrl = componentDefaults["banner-information"].buttonUrl,
     buttonLinkType = componentDefaults["banner-information"].buttonLinkType || "url",
     buttonTargetDialogId = componentDefaults["banner-information"].buttonTargetDialogId,
+    buttonIconLeft = componentDefaults["banner-information"].buttonIconLeft,
+    buttonIconRight = componentDefaults["banner-information"].buttonIconRight,
     buttonId,
     buttonVisible = componentDefaults["banner-information"].buttonVisible,
 
@@ -103,6 +105,10 @@ export default function BannerInformation({
                                 onLinkTypeChange={update('buttonLinkType')}
                                 targetDialogId={buttonTargetDialogId}
                                 onTargetDialogIdChange={update('buttonTargetDialogId')}
+                                iconLeft={buttonIconLeft}
+                                iconRight={buttonIconRight}
+                                onIconLeftChange={update('buttonIconLeft')}
+                                onIconRightChange={update('buttonIconRight')}
                                 id={buttonId}
                                 onIdChange={update('buttonId')}
                                 suffix="button"

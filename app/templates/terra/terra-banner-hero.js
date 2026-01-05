@@ -19,6 +19,10 @@ export default function TerraBannerHero({
     secondaryButtonVisible = componentDefaults["terra-banner-hero"].secondaryButtonVisible,
     secondaryButtonLinkType = "url",
     secondaryButtonTargetDialogId = componentDefaults["terra-banner-hero"].secondaryButtonTargetDialogId,
+    buttonIconLeft = componentDefaults["terra-banner-hero"].buttonIconLeft,
+    buttonIconRight = componentDefaults["terra-banner-hero"].buttonIconRight,
+    secondaryButtonIconLeft = componentDefaults["terra-banner-hero"].secondaryButtonIconLeft,
+    secondaryButtonIconRight = componentDefaults["terra-banner-hero"].secondaryButtonIconRight,
     image = componentDefaults["terra-banner-hero"].image,
     imageId,
     imageVisible,
@@ -96,6 +100,8 @@ export default function TerraBannerHero({
                                         isVisible={primaryButton.visible}
                                         sectionId={sectionId}
                                         className={`btn btn-${primaryButton.style} btn-lg`}
+                                        iconLeft={buttonIconLeft}
+                                        iconRight={buttonIconRight}
                                         onLabelChange={update('buttonText')}
                                         onHrefChange={update('buttonUrl')}
                                         onVisibilityChange={update('buttonVisible')}
@@ -104,6 +110,8 @@ export default function TerraBannerHero({
                                         onLinkTypeChange={update('buttonLinkType')}
                                         targetDialogId={primaryButton.targetDialogId}
                                         onTargetDialogIdChange={update('buttonTargetDialogId')}
+                                        onIconLeftChange={update('buttonIconLeft')}
+                                        onIconRightChange={update('buttonIconRight')}
                                         id={primaryButton.id}
                                         onIdChange={update('buttonId')}
                                         suffix="button"
@@ -124,6 +132,10 @@ export default function TerraBannerHero({
                                         onLinkTypeChange={update('secondaryButtonLinkType')}
                                         targetDialogId={secondaryButton.targetDialogId}
                                         onTargetDialogIdChange={update('secondaryButtonTargetDialogId')}
+                                        iconLeft={secondaryButtonIconLeft}
+                                        iconRight={secondaryButtonIconRight}
+                                        onIconLeftChange={update('secondaryButtonIconLeft')}
+                                        onIconRightChange={update('secondaryButtonIconRight')}
                                         id={secondaryButton.id}
                                         onIdChange={update('secondaryButtonId')}
                                         suffix="secondary-button"

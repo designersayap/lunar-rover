@@ -2,6 +2,7 @@ import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
 import styles from "../../../page.module.css";
 import { createPortal } from "react-dom";
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
+import { IconNames } from "./builder-icons";
 
 export default function BuilderControlsPopover({
     isOpen,
@@ -38,6 +39,10 @@ export default function BuilderControlsPopover({
     mobileImageSrc,
     onMobileImageSrcChange,
     showMobileImageSrc = false,
+    iconLeft,
+    onIconLeftChange,
+    iconRight,
+    onIconRightChange
 }) {
 
 
@@ -232,6 +237,44 @@ export default function BuilderControlsPopover({
                             </>
                         )}
 
+
+                        {onIconLeftChange && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Icon Left</label>
+                                <div className={styles.selectWrapper}>
+                                    <select
+                                        className={`${styles.formInput} ${styles.formSelect}`}
+                                        value={iconLeft || ''}
+                                        onChange={(e) => onIconLeftChange && onIconLeftChange(e.target.value || null)}
+                                    >
+                                        <option value="">None</option>
+                                        {IconNames.map(icon => (
+                                            <option key={icon} value={icon}>{icon}</option>
+                                        ))}
+                                    </select>
+                                    <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
+                                </div>
+                            </div>
+                        )}
+
+                        {onIconRightChange && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Icon Right</label>
+                                <div className={styles.selectWrapper}>
+                                    <select
+                                        className={`${styles.formInput} ${styles.formSelect}`}
+                                        value={iconRight || ''}
+                                        onChange={(e) => onIconRightChange && onIconRightChange(e.target.value || null)}
+                                    >
+                                        <option value="">None</option>
+                                        {IconNames.map(icon => (
+                                            <option key={icon} value={icon}>{icon}</option>
+                                        ))}
+                                    </select>
+                                    <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
+                                </div>
+                            </div>
+                        )}
 
 
                         {onLayoutChange && (

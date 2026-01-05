@@ -1,4 +1,3 @@
-import { ArrowLongRightIcon } from "@heroicons/react/20/solid";
 import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
@@ -12,11 +11,15 @@ export default function GlobalHeaderTitleButtonDescription({
     buttonVisible = componentDefaults["header-title-description-button"].buttonVisible,
     buttonLinkType = componentDefaults["header-title-description-button"].buttonLinkType || "url",
     buttonTargetDialogId = componentDefaults["header-title-description-button"].buttonTargetDialogId,
+    buttonIconLeft = componentDefaults["header-title-description-button"].buttonIconLeft,
+    buttonIconRight = componentDefaults["header-title-description-button"].buttonIconRight || "ArrowLongRightIcon",
     secondaryButtonText = componentDefaults["header-title-description-button"].secondaryButtonText,
     secondaryButtonUrl = componentDefaults["header-title-description-button"].secondaryButtonUrl,
     secondaryButtonVisible = componentDefaults["header-title-description-button"].secondaryButtonVisible,
     secondaryButtonLinkType = componentDefaults["header-title-description-button"].secondaryButtonLinkType || "url",
     secondaryButtonTargetDialogId = componentDefaults["header-title-description-button"].secondaryButtonTargetDialogId,
+    secondaryButtonIconLeft = componentDefaults["header-title-description-button"].secondaryButtonIconLeft,
+    secondaryButtonIconRight = componentDefaults["header-title-description-button"].secondaryButtonIconRight,
     buttonId,
     secondaryButtonId,
     buttonStyle = "primary",
@@ -43,7 +46,8 @@ export default function GlobalHeaderTitleButtonDescription({
                         isVisible={buttonVisible}
                         sectionId={sectionId}
                         className={`btn btn-${buttonStyle} btn-lg`}
-                        iconRight={<ArrowLongRightIcon />}
+                        iconLeft={buttonIconLeft}
+                        iconRight={buttonIconRight}
                         onLabelChange={update('buttonText')}
                         onHrefChange={update('buttonUrl')}
                         onVisibilityChange={update('buttonVisible')}
@@ -52,6 +56,8 @@ export default function GlobalHeaderTitleButtonDescription({
                         onLinkTypeChange={update('buttonLinkType')}
                         targetDialogId={buttonTargetDialogId}
                         onTargetDialogIdChange={update('buttonTargetDialogId')}
+                        onIconLeftChange={update('buttonIconLeft')}
+                        onIconRightChange={update('buttonIconRight')}
                         id={buttonId}
                         onIdChange={update('buttonId')}
                         suffix="button"
@@ -72,6 +78,10 @@ export default function GlobalHeaderTitleButtonDescription({
                         onLinkTypeChange={update('secondaryButtonLinkType')}
                         targetDialogId={secondaryButtonTargetDialogId}
                         onTargetDialogIdChange={update('secondaryButtonTargetDialogId')}
+                        iconLeft={secondaryButtonIconLeft}
+                        iconRight={secondaryButtonIconRight}
+                        onIconLeftChange={update('secondaryButtonIconLeft')}
+                        onIconRightChange={update('secondaryButtonIconRight')}
                         id={secondaryButtonId}
                         onIdChange={update('secondaryButtonId')}
                         suffix="secondary-button"

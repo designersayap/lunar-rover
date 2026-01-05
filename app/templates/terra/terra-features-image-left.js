@@ -2,7 +2,6 @@ import styles from "./terra-features-image-left.module.css";
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
 import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
-import { ArrowLongRightIcon } from "@heroicons/react/20/solid";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
 import { getContainerClasses } from "@/app/page-builder/utils/section-utils";
@@ -15,11 +14,15 @@ export default function TerraFeaturesImageLeft({
     buttonVisible = componentDefaults["feature-left"].buttonVisible,
     buttonLinkType = componentDefaults["feature-left"].buttonLinkType || "url",
     buttonTargetDialogId = componentDefaults["feature-left"].buttonTargetDialogId,
+    buttonIconLeft = componentDefaults["feature-left"].buttonIconLeft,
+    buttonIconRight = componentDefaults["feature-left"].buttonIconRight || "ArrowLongRightIcon",
     secondaryButtonText = componentDefaults["feature-left"].secondaryButtonText,
     secondaryButtonUrl = componentDefaults["feature-left"].secondaryButtonUrl,
     secondaryButtonVisible = componentDefaults["feature-left"].secondaryButtonVisible,
     secondaryButtonLinkType = componentDefaults["feature-left"].secondaryButtonLinkType || "url",
     secondaryButtonTargetDialogId = componentDefaults["feature-left"].secondaryButtonTargetDialogId,
+    secondaryButtonIconLeft = componentDefaults["feature-left"].secondaryButtonIconLeft,
+    secondaryButtonIconRight = componentDefaults["feature-left"].secondaryButtonIconRight,
     image = componentDefaults["feature-left"].image,
     imageId,
     imageVisible,
@@ -78,7 +81,8 @@ export default function TerraFeaturesImageLeft({
                                     isVisible={buttonVisible}
                                     sectionId={sectionId}
                                     className={`btn btn-${buttonStyle} btn-lg`}
-                                    iconRight={<ArrowLongRightIcon />}
+                                    iconLeft={buttonIconLeft}
+                                    iconRight={buttonIconRight}
                                     onLabelChange={update('buttonText')}
                                     onHrefChange={update('buttonUrl')}
                                     onVisibilityChange={update('buttonVisible')}
@@ -87,6 +91,8 @@ export default function TerraFeaturesImageLeft({
                                     onLinkTypeChange={update('buttonLinkType')}
                                     targetDialogId={buttonTargetDialogId}
                                     onTargetDialogIdChange={update('buttonTargetDialogId')}
+                                    onIconLeftChange={update('buttonIconLeft')}
+                                    onIconRightChange={update('buttonIconRight')}
                                     id={buttonId}
                                     onIdChange={update('buttonId')}
                                     suffix="button"
@@ -107,6 +113,10 @@ export default function TerraFeaturesImageLeft({
                                     onLinkTypeChange={update('secondaryButtonLinkType')}
                                     targetDialogId={secondaryButtonTargetDialogId}
                                     onTargetDialogIdChange={update('secondaryButtonTargetDialogId')}
+                                    iconLeft={secondaryButtonIconLeft}
+                                    iconRight={secondaryButtonIconRight}
+                                    onIconLeftChange={update('secondaryButtonIconLeft')}
+                                    onIconRightChange={update('secondaryButtonIconRight')}
                                     id={secondaryButtonId}
                                     onIdChange={update('secondaryButtonId')}
                                     suffix="secondary-button"
