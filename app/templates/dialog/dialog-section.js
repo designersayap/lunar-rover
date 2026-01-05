@@ -115,20 +115,22 @@ export default function DialogSection({
                                 <div className={styles.textContainer}>
                                     {title && (
                                         <BuilderText
-                                            tagName="h4"
+                                            tagName="div"
                                             className={`h4 ${styles.title}`}
                                             content={title}
                                             onChange={update('title')}
                                             sectionId={sectionId}
+                                            suffix="title"
                                         />
                                     )}
                                     {description && (
                                         <BuilderText
-                                            tagName="p"
+                                            tagName="div"
                                             className={`body-regular ${styles.description}`}
                                             content={description}
                                             onChange={update('description')}
                                             sectionId={sectionId}
+                                            suffix="description"
                                         />
                                     )}
                                 </div>

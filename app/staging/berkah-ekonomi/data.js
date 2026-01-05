@@ -242,7 +242,10 @@ export const data = {
         "title": "Waspada penipuan! Hubungi hanya WhatsApp resmi: 021-50957907, 081119765007, 081119765008. Di luar nomor tersebut bukan tanggung jawab Penyelenggara."
     },
     "keterangan-promo": {
-        "title": "asdsafeagesdfgdsadwqfdwafgdewfgewa"
+        "title": "Total Hadiah Miliaran Menantimu!",
+        "buttonUrl": "https://api.whatsapp.com/send?phone=622150957907&text=Hi%2C%20saya%20ingin%20klaim%20hadiah%20Sabun%20Krim%20Ekonomi%2C%20mohon%20bantuannya%20ya",
+        "buttonIconLeft": "AcademicCapIcon",
+        "buttonIconRight": "ArrowSmallRightIcon"
     },
     "1767581751543": {
         "isOpen": true
@@ -258,11 +261,11 @@ export const data = {
                 "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
             },
             {
-                "title": "Accordion Title",
+                "title": "Cara Mendapatkan Hadiah",
                 "content": "WDSFSAFSDAFASF"
             },
             {
-                "title": "Accordion Title",
+                "title": "Ketenturan Umum",
                 "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
             },
             {
@@ -282,6 +285,7 @@ export const data = {
                 "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
             }
         ],
-        "title": "dwFDASFSA"
+        "title": "Syarat dan Ketentuan Program Promosi<div>Sabun Krim Serbaguna Ekonomi</div><div>\"GEBYAR BERKAH UMROH, PESTA EMAS\"</div>",
+        "description": "Program Promosi Sabun Krim Ekonomi <span class=\"body-bold\">\"Gebyar Berkah Umroh, Pesta Emas\"</span> ini diselenggarakan oleh <span class=\"body-bold\">PT. Sayap Mas Utama</span> bersama-sama <span class=\"body-bold\">PT. Wings Surya</span> berkedudukan di DKI Jakarta dan Surabaya, selaku produsen sabun krim deterjen dengan merek dagang “EKONOMI” (“<span class=\"body-bold\">Penyelenggara</span>”), dan PT. Bintang Pratama yang ditunjuk sebagai agency / operator penyelenggara undian (“<span class=\"body-bold\">Agency Penyelenggara</span>”).<div><br></div><div>Program ditujukan bagi konsumen yang membeli produk Sabun Krim Serbaguna Ekonomi (“<span class=\"body-bold\">Peserta</span>”).</div><div><br></div><div>Peserta yang berpartisipasi dalam Program ini wajib membaca, memahami dan mematuhi syarat dan ketentuan yang diuraikan di bawah ini termasuk perubahannya (jika ada) yang dibuat oleh pihak Penyelenggara dari waktu ke waktu (“<span class=\"body-bold\">Syarat dan Ketentuan</span>”).</div>"
     }
 };

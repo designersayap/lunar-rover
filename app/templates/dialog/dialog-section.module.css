@@ -47,7 +47,7 @@
 
 .closeButton:hover {
     background-color: var(--background-neutral--default);
-    color: var(--content-neutral--title);
+    color: var(--content-neutral--body);
 }
 
 .textContainer {
@@ -59,7 +59,7 @@
 
 .title {
     margin: 0;
-    color: var(--content-neutral--title);
+    color: var(--content-neutral--body);
 }
 
 .description {
@@ -186,7 +186,7 @@
 
 .accordionTitle {
     flex: 1;
-    color: var(--content-neutral--title);
+    color: var(--content-neutral--body);
     font-weight: 600;
 }
 
