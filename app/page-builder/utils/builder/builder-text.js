@@ -152,28 +152,10 @@ function BuilderTextComponent({
                         // Remove the trigger characters
                         const triggerLength = (bulletMatch || alphaMatch)[0].length;
                         range.setStart(textNode, offset - triggerLength + 1); // +1 because we haven't typed the space yet, but we want to replace the trigger chars
-                        // Actually, since we preventDefault on space, the space isn't in the DOM yet.
-                        // We need to remove the characters BEFORE the caret.
-
-                        // Correct logic:
-                        // The text currently in DOM is just "*" or "a.". The space is the key being pressed.
-                        // So we want to remove the "*" or "a." from the text node.
 
                         // Let's refine the range removal
                         const charsToRemove = (bulletMatch || alphaMatch)[1].length + 1; // trigger char(s) + the dot for alpha
-                        // Wait, regex match includes the dot in group 0.
-                        // bulletMatch[0] is "*" (length 1)
-                        // alphaMatch[0] is "a." (length 2)
 
-                        /* 
-                           Wait, text.slice(0, offset) gets the text BEFORE the caret.
-                           The regex checks if that text is exactly the trigger.
-                           Since ' ' is the key being pressed, it's NOT in the text yet.
-                           So we match against the text already there.
-                           
-                           But users might type "* " (asterisk then space).
-                           e.key is " ".
-                        */
 
                         if (bulletMatch && bulletMatch[0] === "*") { // simplified check
                             // Remove the '*'
