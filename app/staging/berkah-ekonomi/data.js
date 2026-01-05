@@ -242,6 +242,46 @@ export const data = {
         "title": "Waspada penipuan! Hubungi hanya WhatsApp resmi: 021-50957907, 081119765007, 081119765008. Di luar nomor tersebut bukan tanggung jawab Penyelenggara."
     },
     "keterangan-promo": {
-        "title": "Total Hadiah Miliaran Menantimu&!"
+        "title": "asdsafeagesdfgdsadwqfdwafgdewfgewa"
+    },
+    "1767581751543": {
+        "isOpen": true
+    },
+    "dialog-t&c": {
+        "items": [
+            {
+                "title": "Accordion Title",
+                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            },
+            {
+                "title": "Accordion Title",
+                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            },
+            {
+                "title": "Accordion Title",
+                "content": "WDSFSAFSDAFASF"
+            },
+            {
+                "title": "Accordion Title",
+                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            },
+            {
+                "title": "Accordion Title",
+                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            },
+            {
+                "title": "Accordion Title",
+                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            },
+            {
+                "title": "Accordion Title",
+                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            },
+            {
+                "title": "Accordion Title",
+                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            }
+        ],
+        "title": "dwFDASFSA"
     }
 };
