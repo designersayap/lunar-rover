@@ -258,11 +258,11 @@ export const data = {
             },
             {
                 "title": "Hadiah",
-                "content": "a. Selama periode Program, Peserta yang beruntung akan mendapatkan hadiah berupa 30 Paket Umroh dan 3000 Emas @ 0,5g (“Hadiah”).<div>b. Batas Penukaran Hadiah: <span class=\"body-bold\">31 Juli 2026 jam 23.59 WIB</span></div>"
+                "content": "kjljlkjljl"
             },
             {
                 "title": "Accordion Title",
-                "content": "WDSFSAFSDAFASF"
+                "content": "<ol type=\"a\"><li>fghfghfghft</li><li>gnghnghng</li><li><br></li></ol>"
             },
             {
                 "title": "Accordion Title",
