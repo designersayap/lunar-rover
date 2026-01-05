@@ -12,7 +12,7 @@ export default function GlobalHeaderTitleButton({
     buttonLinkType = componentDefaults["header-title-button"].buttonLinkType || "url",
     buttonTargetDialogId = componentDefaults["header-title-button"].buttonTargetDialogId,
     buttonIconLeft = componentDefaults["header-title-button"].buttonIconLeft,
-    buttonIconRight = componentDefaults["header-title-button"].buttonIconRight || "ArrowLongRightIcon",
+    buttonIconRight = componentDefaults["header-title-button"].buttonIconRight,
     secondaryButtonText = componentDefaults["header-title-button"].secondaryButtonText,
     secondaryButtonUrl = componentDefaults["header-title-button"].secondaryButtonUrl,
     secondaryButtonVisible = componentDefaults["header-title-button"].secondaryButtonVisible,

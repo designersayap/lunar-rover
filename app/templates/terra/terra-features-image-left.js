@@ -15,7 +15,7 @@ export default function TerraFeaturesImageLeft({
     buttonLinkType = componentDefaults["feature-left"].buttonLinkType || "url",
     buttonTargetDialogId = componentDefaults["feature-left"].buttonTargetDialogId,
     buttonIconLeft = componentDefaults["feature-left"].buttonIconLeft,
-    buttonIconRight = componentDefaults["feature-left"].buttonIconRight || "ArrowLongRightIcon",
+    buttonIconRight = componentDefaults["feature-left"].buttonIconRight,
     secondaryButtonText = componentDefaults["feature-left"].secondaryButtonText,
     secondaryButtonUrl = componentDefaults["feature-left"].secondaryButtonUrl,
     secondaryButtonVisible = componentDefaults["feature-left"].secondaryButtonVisible,
