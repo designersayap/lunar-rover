@@ -7,8 +7,8 @@ export const COMPONENT_PATHS = {
     "hero-terra-banner": "app/templates/terra/terra-banner-hero.js",
     "osm-banner": "app/templates/osm/banner-information.js",
 
-    "feature-image-left": "app/templates/terra/terra-features-image-left.js",
-    "feature-image-right": "app/templates/terra/terra-features-image-right.js",
+    "feature-image-left": "app/templates/feature/feature-image-left.js",
+    "feature-image-right": "app/templates/feature/feature-image-right.js",
 
     "dialog-item-list": "app/templates/dialog/dialog-default.js",
     "dialog-accordion": "app/templates/dialog/dialog-accordion.js",

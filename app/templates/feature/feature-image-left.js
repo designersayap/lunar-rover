@@ -1,5 +1,5 @@
 import * as HeroIcons from "@heroicons/react/24/solid";
-import styles from "./terra-features-image-left.module.css";
+import styles from "./feature-image-left.module.css";
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
 import BuilderImage from "@/app/page-builder/utils/builder/builder-image";

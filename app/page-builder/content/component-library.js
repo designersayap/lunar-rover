@@ -3,8 +3,8 @@ import { componentDefaults } from "../../templates/content/data";
 
 const HeaderSection = dynamic(() => import("@/app/templates/header/section"));
 const HeroTerraBanner = dynamic(() => import("@/app/templates/terra/terra-banner-hero"));
-const FeatureImageLeft = dynamic(() => import("@/app/templates/terra/terra-features-image-left"));
-const FeatureImageRight = dynamic(() => import("@/app/templates/terra/terra-features-image-right"));
+const FeatureImageLeft = dynamic(() => import("@/app/templates/feature/feature-image-left"));
+const FeatureImageRight = dynamic(() => import("@/app/templates/feature/feature-image-right"));
 const DialogItemList = dynamic(() => import("../../templates/dialog/dialog-item-list"));
 const DialogAccordion = dynamic(() => import("../../templates/dialog/dialog-accordion"));
 const OsmBanner = dynamic(() => import("../../templates/osm/banner-information"));
