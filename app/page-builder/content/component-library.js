@@ -13,7 +13,7 @@ const Media16x9 = dynamic(() => import("../../templates/media/media-16-9"));
 const Media5x4 = dynamic(() => import('@/app/templates/media/media-5-4'));
 const Media4x3 = dynamic(() => import('@/app/templates/media/media-4-3'));
 const Media21x9 = dynamic(() => import('@/app/templates/media/media-21-9'));
-const NavigationCenter = dynamic(() => import("../../templates/lacto/lacto-navigation"));
+const NavigationCenter = dynamic(() => import("../../templates/navigation/navigation-center"));
 const BackgroundFullBody = dynamic(() => import("@/app/templates/background/full-body"));
 const FooterTerra = dynamic(() => import("@/app/templates/terra/terra-footer"));
 

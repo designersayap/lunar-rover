@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import styles from './lacto-navigation.module.css';
+import styles from './navigation-center.module.css';
 import BuilderImage from '@/app/page-builder/utils/builder/builder-image';
 import BuilderLink from '@/app/page-builder/utils/builder/builder-link';
 import { createUpdateHandler } from '../utils/component-helpers';
