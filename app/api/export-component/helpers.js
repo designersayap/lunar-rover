@@ -117,6 +117,21 @@ const BuilderText = ({ tagName = 'p', content, className, style, children, id, s
   }
 
   if (hasBuilderButton) {
+    if (!src.includes('import * as HeroIcons')) {
+      const useClientRegex = /^(['"]use client['"];?)\s*/;
+      if (useClientRegex.test(src)) {
+        src = src.replace(useClientRegex, '$1\nimport * as HeroIcons from \'@heroicons/react/24/solid\';\n');
+      } else {
+        // Try to find first import
+        const firstImport = src.indexOf('import ');
+        if (firstImport !== -1) {
+          src = src.slice(0, firstImport) + "import * as HeroIcons from '@heroicons/react/24/solid';\n" + src.slice(firstImport);
+        } else {
+          src = "import * as HeroIcons from '@heroicons/react/24/solid';\n" + src;
+        }
+      }
+    }
+
     shims.push(`
 // Shim for BuilderButton
 const BuilderButton = ({ label, href, openInNewTab, className, style, children, linkType, targetDialogId, id, sectionId, suffix, iconLeft, iconRight }) => {
@@ -124,13 +139,23 @@ const BuilderButton = ({ label, href, openInNewTab, className, style, children, 
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
 
+  // Resolve Icons
+  const renderIcon = (icon) => {
+      if (!icon) return null;
+      if (typeof icon === 'string' && HeroIcons[icon]) {
+          const IconComponent = HeroIcons[icon];
+          return <IconComponent className="w-5 h-5" />;
+      }
+      return icon;
+  };
+
   const content = (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', gap: 'inherit' }}>
-         {iconLeft && <span style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>{iconLeft}</span>}
+         {renderIcon(iconLeft) && <span style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>{renderIcon(iconLeft)}</span>}
          <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {label || children}
          </div>
-         {iconRight && <span style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>{iconRight}</span>}
+         {renderIcon(iconRight) && <span style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>{renderIcon(iconRight)}</span>}
       </div>
   );
 
