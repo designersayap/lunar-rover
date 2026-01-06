@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { useEffect, useState, useContext } from "react"; // Added useContext
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls"; // Added import
 
-export default function FullBody({ image, imageId, imageVisible, sectionId, onUpdate }) {
+export default function BackgroundFullBody({ image, imageId, imageVisible, sectionId, onUpdate }) {
     const update = createUpdateHandler(onUpdate);
     const [mounted, setMounted] = useState(false);
     const { activeElementId } = useContext(BuilderSelectionContext); // Get context

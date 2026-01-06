@@ -2,15 +2,15 @@ export const COMPONENT_PATHS = {
     "header-title": "app/templates/header/header-title.js",
     "header-title-button": "app/templates/header/header-title-button.js",
     "header-title-description": "app/templates/header/header-title-description.js",
-    "section": "app/templates/header/section.js",
+    "header-section": "app/templates/header/section.js",
 
-    "terra-banner-hero": "app/templates/terra/terra-banner-hero.js",
-    "banner-information": "app/templates/osm/banner-information.js",
+    "hero-terra-banner": "app/templates/terra/terra-banner-hero.js",
+    "osm-banner": "app/templates/osm/banner-information.js",
 
-    "feature-left": "app/templates/terra/terra-features-image-left.js",
-    "feature-right": "app/templates/terra/terra-features-image-right.js",
+    "feature-image-left": "app/templates/terra/terra-features-image-left.js",
+    "feature-image-right": "app/templates/terra/terra-features-image-right.js",
 
-    "dialog": "app/templates/dialog/dialog-default.js",
+    "dialog-item-list": "app/templates/dialog/dialog-default.js",
     "dialog-accordion": "app/templates/dialog/dialog-accordion.js",
 
     "media-16-9": "app/templates/media/media-16-9.js",
@@ -18,10 +18,10 @@ export const COMPONENT_PATHS = {
     "media-4-3": "app/templates/media/media-4-3.js",
     "media-21-9": "app/templates/media/media-21-9.js",
 
-    "lacto-navigation": "app/templates/lacto/lacto-navigation.js",
-    "full-body": "app/templates/background/full-body.js",
+    "navigation-center": "app/templates/lacto/lacto-navigation.js",
+    "background-full-body": "app/templates/background/full-body.js",
 
-    "terra-testimony": "app/templates/terra/terra-testimony.js",
+    "testimonial-terra": "app/templates/terra/terra-testimony.js",
 
-    "terra-footer": "app/templates/terra/terra-footer.js"
+    "footer-terra": "app/templates/terra/terra-footer.js"
 };

@@ -8,8 +8,8 @@ import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
 import BuilderElement from "@/app/page-builder/utils/builder/builder-element";
 import { componentDefaults } from "../content/data";
 
-export default function TerraTestimony({
-    testimonies = componentDefaults["terra-testimony"].testimonies,
+export default function TestimonialTerra({
+    testimonies = componentDefaults["testimonial-terra"].testimonies,
     sectionId,
     onUpdate,
     fullWidth,

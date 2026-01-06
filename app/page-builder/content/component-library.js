@@ -1,35 +1,35 @@
 import dynamic from "next/dynamic";
 import { componentDefaults } from "../../templates/content/data";
 
-const Section = dynamic(() => import("@/app/templates/header/section"));
-const TerraBannerHero = dynamic(() => import("@/app/templates/terra/terra-banner-hero"));
-const TerraFeaturesImageLeft = dynamic(() => import("@/app/templates/terra/terra-features-image-left"));
-const TerraFeaturesImageRight = dynamic(() => import("@/app/templates/terra/terra-features-image-right"));
-const Dialog = dynamic(() => import("../../templates/dialog/dialog-default"));
+const HeaderSection = dynamic(() => import("@/app/templates/header/section"));
+const HeroTerraBanner = dynamic(() => import("@/app/templates/terra/terra-banner-hero"));
+const FeatureImageLeft = dynamic(() => import("@/app/templates/terra/terra-features-image-left"));
+const FeatureImageRight = dynamic(() => import("@/app/templates/terra/terra-features-image-right"));
+const DialogItemList = dynamic(() => import("../../templates/dialog/dialog-item-list"));
 const DialogAccordion = dynamic(() => import("../../templates/dialog/dialog-accordion"));
-const BannerInformation = dynamic(() => import("../../templates/osm/banner-information"));
-const TerraTestimony = dynamic(() => import("../../templates/terra/terra-testimony"));
+const OsmBanner = dynamic(() => import("../../templates/osm/banner-information"));
+const TestimonialTerra = dynamic(() => import("../../templates/terra/terra-testimony"));
 const Media16x9 = dynamic(() => import("../../templates/media/media-16-9"));
 const Media5x4 = dynamic(() => import('@/app/templates/media/media-5-4'));
 const Media4x3 = dynamic(() => import('@/app/templates/media/media-4-3'));
 const Media21x9 = dynamic(() => import('@/app/templates/media/media-21-9'));
-const LactoNavigation = dynamic(() => import("../../templates/lacto/lacto-navigation"));
-const FullBody = dynamic(() => import("@/app/templates/background/full-body"));
-const TerraFooter = dynamic(() => import("@/app/templates/terra/terra-footer"));
+const NavigationCenter = dynamic(() => import("../../templates/lacto/lacto-navigation"));
+const BackgroundFullBody = dynamic(() => import("@/app/templates/background/full-body"));
+const FooterTerra = dynamic(() => import("@/app/templates/terra/terra-footer"));
 
 export const componentLibrary = {
     "Background": [
         {
-            id: "full-body",
+            id: "background-full-body",
             name: "Background - Full Body",
-            component: FullBody,
-            thumbnail: "/images/thumbnails/bg.svg",
+            component: BackgroundFullBody,
+            thumbnail: "/images/thumbnails/background-full-body.svg",
             config: [
                 {
                     name: "image",
                     label: "Background Image",
                     type: "image",
-                    default: componentDefaults["full-body"]?.image
+                    default: componentDefaults["background-full-body"]?.image
                 }
             ],
             images: [
@@ -42,22 +42,21 @@ export const componentLibrary = {
             ]
         }
     ],
-
     "Navigation": [
         {
-            id: "lacto-navigation",
-            name: "Lacto - Navigation",
-            component: LactoNavigation,
-            thumbnail: "/images/thumbnails/navigation.svg",
+            id: "navigation-center",
+            name: "Navigation - Center",
+            component: NavigationCenter,
+            thumbnail: "/images/thumbnails/navigation-center.svg",
             config: [
-                { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["lacto-navigation"].menu1Label },
-                { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["lacto-navigation"].menu1Url },
-                { name: "menu2Label", label: "Menu 2 Label", type: "text", default: componentDefaults["lacto-navigation"].menu2Label },
-                { name: "menu2Url", label: "Menu 2 URL", type: "text", default: componentDefaults["lacto-navigation"].menu2Url },
-                { name: "menu3Label", label: "Menu 3 Label", type: "text", default: componentDefaults["lacto-navigation"].menu3Label },
-                { name: "menu3Url", label: "Menu 3 URL", type: "text", default: componentDefaults["lacto-navigation"].menu3Url },
-                { name: "menu4Label", label: "Menu 4 Label", type: "text", default: componentDefaults["lacto-navigation"].menu4Label },
-                { name: "menu4Url", label: "Menu 4 URL", type: "text", default: componentDefaults["lacto-navigation"].menu4Url },
+                { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["navigation-center"].menu1Label },
+                { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["navigation-center"].menu1Url },
+                { name: "menu2Label", label: "Menu 2 Label", type: "text", default: componentDefaults["navigation-center"].menu2Label },
+                { name: "menu2Url", label: "Menu 2 URL", type: "text", default: componentDefaults["navigation-center"].menu2Url },
+                { name: "menu3Label", label: "Menu 3 Label", type: "text", default: componentDefaults["navigation-center"].menu3Label },
+                { name: "menu3Url", label: "Menu 3 URL", type: "text", default: componentDefaults["navigation-center"].menu3Url },
+                { name: "menu4Label", label: "Menu 4 Label", type: "text", default: componentDefaults["navigation-center"].menu4Label },
+                { name: "menu4Url", label: "Menu 4 URL", type: "text", default: componentDefaults["navigation-center"].menu4Url },
             ],
             images: [
                 { label: "Logo", propId: "logoId", suffix: "logo" }
@@ -70,38 +69,37 @@ export const componentLibrary = {
             ]
         }
     ],
-
     "OSM": [
         {
-            id: "banner-information",
-            name: "Banner Information",
-            component: BannerInformation,
-            thumbnail: "/images/thumbnails/osm.svg",
+            id: "osm-banner",
+            name: "OSM - Banner",
+            component: OsmBanner,
+            thumbnail: "/images/thumbnails/osm-banner.svg",
             config: [
                 {
                     name: "title",
                     label: "Title",
                     type: "text",
-                    default: componentDefaults["banner-information"].title
+                    default: componentDefaults["osm-banner"].title
                 },
                 {
                     name: "buttonText",
                     label: "Button Label",
                     type: "text",
-                    default: componentDefaults["banner-information"].buttonText
+                    default: componentDefaults["osm-banner"].buttonText
                 },
                 {
                     name: "buttonLinkType",
                     label: "Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: componentDefaults["banner-information"].buttonLinkType
+                    default: componentDefaults["osm-banner"].buttonLinkType
                 },
                 {
                     name: "buttonUrl",
                     label: "Button URL",
                     type: "text",
-                    default: componentDefaults["banner-information"].buttonUrl
+                    default: componentDefaults["osm-banner"].buttonUrl
                 }
             ],
             texts: [
@@ -132,37 +130,37 @@ export const componentLibrary = {
     ],
     "Hero": [
         {
-            id: "terra-banner-hero",
-            name: "Hero - Default",
-            component: TerraBannerHero,
-            thumbnail: "/images/thumbnails/hero-banner.svg",
+            id: "hero-terra-banner",
+            name: "Hero - Terra Banner",
+            component: HeroTerraBanner,
+            thumbnail: "/images/thumbnails/hero-terra-banner.svg",
             config: [
                 {
                     name: "buttonStyle",
                     label: "Button Style",
                     type: "select",
                     options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: componentDefaults["terra-banner-hero"].buttonStyle
+                    default: componentDefaults["hero-terra-banner"].buttonStyle
                 },
                 {
                     name: "buttonLinkType",
                     label: "Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: componentDefaults["terra-banner-hero"].buttonLinkType
+                    default: componentDefaults["hero-terra-banner"].buttonLinkType
                 },
                 {
                     name: "secondaryButtonLinkType",
                     label: "Secondary Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: componentDefaults["terra-banner-hero"].secondaryButtonLinkType
+                    default: componentDefaults["hero-terra-banner"].secondaryButtonLinkType
                 },
                 {
                     name: "image",
                     label: "Image",
                     type: "image",
-                    default: componentDefaults["terra-banner-hero"].image
+                    default: componentDefaults["hero-terra-banner"].image
                 }
             ],
             texts: [
@@ -210,43 +208,43 @@ export const componentLibrary = {
     "Header": [
 
         {
-            id: "section",
+            id: "header-section",
             name: "Header - Section",
-            component: Section,
-            thumbnail: "/images/thumbnails/header-title.svg",
+            component: HeaderSection,
+            thumbnail: "/images/thumbnails/header-section.svg",
             config: [
                 {
                     name: "buttonStyle",
                     label: "Button Style",
                     type: "select",
                     options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: componentDefaults["section"].buttonStyle
+                    default: componentDefaults["header-section"].buttonStyle
                 },
                 {
                     name: "buttonLinkType",
                     label: "Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: componentDefaults["section"].buttonLinkType
+                    default: componentDefaults["header-section"].buttonLinkType
                 },
                 {
                     name: "secondaryButtonLinkType",
                     label: "Secondary Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: componentDefaults["section"].secondaryButtonLinkType
+                    default: componentDefaults["header-section"].secondaryButtonLinkType
                 },
                 {
                     name: "buttonText",
                     label: "Button Text",
                     type: "text",
-                    default: componentDefaults["section"].buttonText
+                    default: componentDefaults["header-section"].buttonText
                 },
                 {
                     name: "secondaryButtonText",
                     label: "Secondary Button Text",
                     type: "text",
-                    default: componentDefaults["section"].secondaryButtonText
+                    default: componentDefaults["header-section"].secondaryButtonText
                 }
             ],
             texts: [
@@ -284,18 +282,351 @@ export const componentLibrary = {
             ]
         },
     ],
+    "Media": [
+        {
+            id: "media-21-9",
+            name: "Media - 21:9",
+            component: Media21x9,
+            thumbnail: "/images/thumbnails/media-219.svg",
+            config: [
+                {
+                    name: "image",
+                    label: "Image",
+                    type: "image",
+                    default: componentDefaults["media-21-9"].image
+                }
+            ],
+            images: [
+                {
+                    label: "Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
+            ]
+        },
+        {
+            id: "media-16-9",
+            name: "Media - 16:9",
+            component: Media16x9,
+            thumbnail: "/images/thumbnails/media-169.svg",
+            config: [
+                {
+                    name: "image",
+                    label: "Image",
+                    type: "image",
+                    default: componentDefaults["media-16-9"].image
+                }
+            ],
+            images: [
+                {
+                    label: "Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
+            ]
+        },
+        {
+            id: "media-5-4",
+            name: "Media - 5:4",
+            component: Media5x4,
+            thumbnail: "/images/thumbnails/media-54.svg",
+            config: [
+                {
+                    name: "image",
+                    label: "Image",
+                    type: "image",
+                    default: componentDefaults["media-5-4"].image
+                }
+            ],
+            images: [
+                {
+                    label: "Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
+            ]
+        },
+        {
+            id: "media-4-3",
+            name: "Media - 4:3",
+            component: Media4x3,
+            thumbnail: "/images/thumbnails/media-43.svg",
+            config: [
+                {
+                    name: "fullWidth",
+                    label: "Full Width",
+                    type: "boolean",
+                    default: componentDefaults["media-4-3"].fullWidth
+                },
+                {
+                    name: "image",
+                    label: "Image",
+                    type: "image",
+                    default: componentDefaults["media-4-3"].image
+                }
+            ],
+            images: [
+                {
+                    label: "Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
+            ]
+        }
+    ],
+    "Feature": [
+        {
+            id: "feature-image-left",
+            name: "Feature - Image Left",
+            component: FeatureImageLeft,
+            thumbnail: "/images/thumbnails/feature-image-left.svg",
+            config: [
+                {
+                    name: "buttonStyle",
+                    label: "Button Style",
+                    type: "select",
+                    options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
+                    default: componentDefaults["feature-image-left"].buttonStyle
+                },
+                {
+                    name: "buttonLinkType",
+                    label: "Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: componentDefaults["feature-image-left"].buttonLinkType
+                },
+                {
+                    name: "secondaryButtonLinkType",
+                    label: "Secondary Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: componentDefaults["feature-image-left"].secondaryButtonLinkType
+                },
+                {
+                    name: "secondaryButtonText",
+                    label: "Secondary Button Text",
+                    type: "text",
+                    default: componentDefaults["feature-image-left"].secondaryButtonText
+                }
+            ],
+            texts: [
+                {
+                    label: "Title",
+                    propId: "titleId",
+                    suffix: "title",
+                    visibleProp: "titleVisible",
+                },
+                {
+                    label: "Description",
+                    propId: "subtitleId",
+                    suffix: "subtitle",
+                    visibleProp: "subtitleVisible",
+                }
+            ],
+            buttons: [
+                {
+                    label: "Button",
+                    propId: "buttonId",
+                    suffix: "button",
+                    labelProp: "buttonText",
+                    visibleProp: "buttonVisible",
+                    linkTypeProp: "buttonLinkType"
+                },
+                {
+                    label: "Secondary Button",
+                    propId: "secondaryButtonId",
+                    suffix: "secondary-button",
+                    labelProp: "secondaryButtonText",
+                    visibleProp: "secondaryButtonVisible",
+                    linkTypeProp: "secondaryButtonLinkType"
+                }
+            ],
+            images: [
+                {
+                    label: "Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
+            ]
+        },
+        {
+            id: "feature-image-right",
+            name: "Feature - Image Right",
+            component: FeatureImageRight,
+            thumbnail: "/images/thumbnails/feature-image-right.svg",
+            config: [
+                {
+                    name: "buttonStyle",
+                    label: "Button Style",
+                    type: "select",
+                    options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
+                    default: componentDefaults["feature-image-right"].buttonStyle
+                },
+                {
+                    name: "buttonLinkType",
+                    label: "Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: componentDefaults["feature-image-right"].buttonLinkType
+                },
+                {
+                    name: "secondaryButtonLinkType",
+                    label: "Secondary Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: componentDefaults["feature-image-right"].secondaryButtonLinkType
+                },
+                {
+                    name: "secondaryButtonText",
+                    label: "Secondary Button Text",
+                    type: "text",
+                    default: componentDefaults["feature-image-right"].secondaryButtonText
+                }
+            ],
+            texts: [
+                {
+                    label: "Title",
+                    propId: "titleId",
+                    suffix: "title",
+                    visibleProp: "titleVisible",
+                },
+                {
+                    label: "Description",
+                    propId: "subtitleId",
+                    suffix: "subtitle",
+                    visibleProp: "subtitleVisible",
+                }
+            ],
+            buttons: [
+                {
+                    label: "Button",
+                    propId: "buttonId",
+                    suffix: "button",
+                    labelProp: "buttonText",
+                    visibleProp: "buttonVisible",
+                    linkTypeProp: "buttonLinkType"
+                },
+                {
+                    label: "Secondary Button",
+                    propId: "secondaryButtonId",
+                    suffix: "secondary-button",
+                    labelProp: "secondaryButtonText",
+                    visibleProp: "secondaryButtonVisible",
+                    linkTypeProp: "secondaryButtonLinkType"
+                }
+            ],
+            images: [
+                {
+                    label: "Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
+            ]
+        },
+    ],
+    "Testimonial": [
+        {
+            id: "testimonial-terra",
+            name: "Testimonial - Terra",
+            component: TestimonialTerra,
+            thumbnail: "/images/thumbnails/testimonial-terra.svg",
+            config: [
+                {
+                    name: "testimonies",
+                    label: "Testimonies",
+                    type: "list",
+                    default: componentDefaults["testimonial-terra"].testimonies
+                }
+            ],
+            links: [
+                { label: "Testimony 1", propId: "testimonies.0.cardId", suffix: "testimony-0", visibleProp: "testimonies.0.visible" },
+                { label: "Testimony 2", propId: "testimonies.1.cardId", suffix: "testimony-1", visibleProp: "testimonies.1.visible" },
+                { label: "Testimony 3", propId: "testimonies.2.cardId", suffix: "testimony-2", visibleProp: "testimonies.2.visible" },
+                { label: "Testimony 4", propId: "testimonies.3.cardId", suffix: "testimony-3", visibleProp: "testimonies.3.visible" },
+                { label: "Testimony 5", propId: "testimonies.4.cardId", suffix: "testimony-4", visibleProp: "testimonies.4.visible" },
+                { label: "Testimony 6", propId: "testimonies.5.cardId", suffix: "testimony-5", visibleProp: "testimonies.5.visible" },
+                { label: "Testimony 7", propId: "testimonies.6.cardId", suffix: "testimony-6", visibleProp: "testimonies.6.visible" },
+                { label: "Testimony 8", propId: "testimonies.7.cardId", suffix: "testimony-7", visibleProp: "testimonies.7.visible" },
+                { label: "Testimony 9", propId: "testimonies.8.cardId", suffix: "testimony-8", visibleProp: "testimonies.8.visible" },
+                { label: "Testimony 10", propId: "testimonies.9.cardId", suffix: "testimony-9", visibleProp: "testimonies.9.visible" },
+                { label: "Testimony 11", propId: "testimonies.10.cardId", suffix: "testimony-10", visibleProp: "testimonies.10.visible" },
+                { label: "Testimony 12", propId: "testimonies.11.cardId", suffix: "testimony-11", visibleProp: "testimonies.11.visible" }
+            ]
+        }
+    ],
+    "Footer": [
+        {
+            id: "footer-terra",
+            name: "Footer - Terra",
+            component: FooterTerra,
+            thumbnail: "/images/thumbnails/footer-terra.svg",
+            config: [
+                {
+                    name: "image",
+                    label: "Logo",
+                    type: "image",
+                    default: componentDefaults["footer-terra"]?.image
+                },
+                {
+                    name: "socialLinks",
+                    label: "Social Links",
+                    type: "list",
+                    default: componentDefaults["footer-terra"]?.socialLinks
+                },
+                {
+                    name: "findUsOnLinks",
+                    label: "Find Us On Links",
+                    type: "list",
+                    default: componentDefaults["footer-terra"]?.findUsOnLinks
+                },
+                {
+                    name: "resourceLinks",
+                    label: "Resource Links",
+                    type: "list",
+                    default: componentDefaults["footer-terra"]?.resourceLinks
+                }
+            ],
+            images: [
+                {
+                    label: "Logo",
+                    propId: "imageId",
+                    suffix: "logo",
+                    visibleProp: "imageVisible"
+                }
+            ],
+            links: [
+                { label: "Facebook", propId: "socialLinks.0.id", suffix: "social-fb", visibleProp: "socialLinks.0.visible" },
+                { label: "Twitter", propId: "socialLinks.1.id", suffix: "social-x", visibleProp: "socialLinks.1.visible" },
+                { label: "Instagram", propId: "socialLinks.2.id", suffix: "social-ig", visibleProp: "socialLinks.2.visible" },
+                { label: "TikTok", propId: "socialLinks.3.id", suffix: "social-tiktok", visibleProp: "socialLinks.3.visible" },
+                { label: "YouTube", propId: "socialLinks.4.id", suffix: "social-yt", visibleProp: "socialLinks.4.visible" },
+                { label: "Find Us 1", propId: "findUsOnLinks.0.id", suffix: "link-1", visibleProp: "findUsOnLinks.0.visible" },
+                { label: "Find Us 2", propId: "findUsOnLinks.1.id", suffix: "link-2", visibleProp: "findUsOnLinks.1.visible" },
+                { label: "Find Us 3", propId: "findUsOnLinks.2.id", suffix: "link-3", visibleProp: "findUsOnLinks.2.visible" },
+                { label: "Resource 1", propId: "resourceLinks.0.id", suffix: "link-4", visibleProp: "resourceLinks.0.visible" },
+                { label: "Resource 2", propId: "resourceLinks.1.id", suffix: "link-5", visibleProp: "resourceLinks.1.visible" },
+                { label: "Resource 3", propId: "resourceLinks.2.id", suffix: "link-6", visibleProp: "resourceLinks.2.visible" }
+            ]
+        }
+    ],
     "Dialog": [
         {
-            id: "dialog",
+            id: "dialog-item-list",
             name: "Dialog - Item List",
-            component: Dialog,
-            thumbnail: "/images/thumbnails/dialog.svg",
+            component: DialogItemList,
+            thumbnail: "/images/thumbnails/dialog-item-list.svg",
             config: [
                 {
                     name: "items",
                     label: "List Items",
                     type: "list", // Special type: Renders a list editor in the sidebar
-                    default: componentDefaults["dialog"].items
+                    default: componentDefaults["dialog-item-list"].items
                 }
             ],
             images: [
@@ -321,7 +652,7 @@ export const componentLibrary = {
             id: "dialog-accordion",
             name: "Dialog - Accordion",
             component: DialogAccordion,
-            thumbnail: "/images/thumbnails/dialog.svg",
+            thumbnail: "/images/thumbnails/dialog-item-list.svg",
             config: [
                 {
                     name: "image",
@@ -348,338 +679,4 @@ export const componentLibrary = {
             ]
         }
     ],
-    "Media": [
-        {
-            id: "media-21-9",
-            name: "Media Ratio - 21:9",
-            component: Media21x9,
-            thumbnail: "/images/thumbnails/media219.svg",
-            config: [
-                {
-                    name: "image",
-                    label: "Image",
-                    type: "image",
-                    default: componentDefaults["media-21-9"].image
-                }
-            ],
-            images: [
-                {
-                    label: "Image",
-                    propId: "imageId",
-                    suffix: "image",
-                    visibleProp: "imageVisible"
-                }
-            ]
-        },
-        {
-            id: "media-16-9",
-            name: "Media Ratio - 16:9",
-            component: Media16x9,
-            thumbnail: "/images/thumbnails/media169.svg",
-            config: [
-                {
-                    name: "image",
-                    label: "Image",
-                    type: "image",
-                    default: componentDefaults["media-16-9"].image
-                }
-            ],
-            images: [
-                {
-                    label: "Image",
-                    propId: "imageId",
-                    suffix: "image",
-                    visibleProp: "imageVisible"
-                }
-            ]
-        },
-        {
-            id: "media-5-4",
-            name: "Media Ratio - 5:4",
-            component: Media5x4,
-            thumbnail: "/images/thumbnails/media54.svg",
-            config: [
-                {
-                    name: "image",
-                    label: "Image",
-                    type: "image",
-                    default: componentDefaults["media-5-4"].image
-                }
-            ],
-            images: [
-                {
-                    label: "Image",
-                    propId: "imageId",
-                    suffix: "image",
-                    visibleProp: "imageVisible"
-                }
-            ]
-        },
-        {
-            id: "media-4-3",
-            name: "Media Ratio - 4:3",
-            component: Media4x3,
-            thumbnail: "/images/thumbnails/media43.svg",
-            config: [
-                {
-                    name: "fullWidth",
-                    label: "Full Width",
-                    type: "boolean",
-                    default: componentDefaults["media-4-3"].fullWidth
-                },
-                {
-                    name: "image",
-                    label: "Image",
-                    type: "image",
-                    default: componentDefaults["media-4-3"].image
-                }
-            ],
-            images: [
-                {
-                    label: "Image",
-                    propId: "imageId",
-                    suffix: "image",
-                    visibleProp: "imageVisible"
-                }
-            ]
-        }
-    ],
-
-    "Feature - Split": [
-        {
-            id: "feature-left",
-            name: "Terra - Image Left",
-            component: TerraFeaturesImageLeft,
-            thumbnail: "/images/thumbnails/feature-split-img-left.svg",
-            config: [
-                {
-                    name: "buttonStyle",
-                    label: "Button Style",
-                    type: "select",
-                    options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: componentDefaults["feature-left"].buttonStyle
-                },
-                {
-                    name: "buttonLinkType",
-                    label: "Button Link Type",
-                    type: "select",
-                    options: ["url", "dialog"],
-                    default: componentDefaults["feature-left"].buttonLinkType
-                },
-                {
-                    name: "secondaryButtonLinkType",
-                    label: "Secondary Button Link Type",
-                    type: "select",
-                    options: ["url", "dialog"],
-                    default: componentDefaults["feature-left"].secondaryButtonLinkType
-                },
-                {
-                    name: "secondaryButtonText",
-                    label: "Secondary Button Text",
-                    type: "text",
-                    default: componentDefaults["feature-left"].secondaryButtonText
-                }
-            ],
-            texts: [
-                {
-                    label: "Title",
-                    propId: "titleId",
-                    suffix: "title",
-                    visibleProp: "titleVisible",
-                },
-                {
-                    label: "Description",
-                    propId: "subtitleId",
-                    suffix: "subtitle",
-                    visibleProp: "subtitleVisible",
-                }
-            ],
-            buttons: [
-                {
-                    label: "Button",
-                    propId: "buttonId",
-                    suffix: "button",
-                    labelProp: "buttonText",
-                    visibleProp: "buttonVisible",
-                    linkTypeProp: "buttonLinkType"
-                },
-                {
-                    label: "Secondary Button",
-                    propId: "secondaryButtonId",
-                    suffix: "secondary-button",
-                    labelProp: "secondaryButtonText",
-                    visibleProp: "secondaryButtonVisible",
-                    linkTypeProp: "secondaryButtonLinkType"
-                }
-            ],
-            images: [
-                {
-                    label: "Image",
-                    propId: "imageId",
-                    suffix: "image",
-                    visibleProp: "imageVisible"
-                }
-            ]
-        },
-        {
-            id: "feature-right",
-            name: "Terra - Image Right",
-            component: TerraFeaturesImageRight,
-            thumbnail: "/images/thumbnails/feature-split-img-right.svg",
-            config: [
-                {
-                    name: "buttonStyle",
-                    label: "Button Style",
-                    type: "select",
-                    options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: componentDefaults["feature-right"].buttonStyle
-                },
-                {
-                    name: "buttonLinkType",
-                    label: "Button Link Type",
-                    type: "select",
-                    options: ["url", "dialog"],
-                    default: componentDefaults["feature-right"].buttonLinkType
-                },
-                {
-                    name: "secondaryButtonLinkType",
-                    label: "Secondary Button Link Type",
-                    type: "select",
-                    options: ["url", "dialog"],
-                    default: componentDefaults["feature-right"].secondaryButtonLinkType
-                },
-                {
-                    name: "secondaryButtonText",
-                    label: "Secondary Button Text",
-                    type: "text",
-                    default: componentDefaults["feature-right"].secondaryButtonText
-                }
-            ],
-            texts: [
-                {
-                    label: "Title",
-                    propId: "titleId",
-                    suffix: "title",
-                    visibleProp: "titleVisible",
-                },
-                {
-                    label: "Description",
-                    propId: "subtitleId",
-                    suffix: "subtitle",
-                    visibleProp: "subtitleVisible",
-                }
-            ],
-            buttons: [
-                {
-                    label: "Button",
-                    propId: "buttonId",
-                    suffix: "button",
-                    labelProp: "buttonText",
-                    visibleProp: "buttonVisible",
-                    linkTypeProp: "buttonLinkType"
-                },
-                {
-                    label: "Secondary Button",
-                    propId: "secondaryButtonId",
-                    suffix: "secondary-button",
-                    labelProp: "secondaryButtonText",
-                    visibleProp: "secondaryButtonVisible",
-                    linkTypeProp: "secondaryButtonLinkType"
-                }
-            ],
-            images: [
-                {
-                    label: "Image",
-                    propId: "imageId",
-                    suffix: "image",
-                    visibleProp: "imageVisible"
-                }
-            ]
-        },
-    ],
-    "Testimonials": [
-        {
-            id: "terra-testimony",
-            name: "Terra - Testimony",
-            component: TerraTestimony,
-            thumbnail: "/images/thumbnails/terra-testimonial.svg",
-            config: [
-                {
-                    name: "testimonies",
-                    label: "Testimonies",
-                    type: "list",
-                    default: componentDefaults["terra-testimony"].testimonies
-                }
-            ],
-            links: [
-                { label: "Testimony 1", propId: "testimonies.0.cardId", suffix: "testimony-0", visibleProp: "testimonies.0.visible" },
-                { label: "Testimony 2", propId: "testimonies.1.cardId", suffix: "testimony-1", visibleProp: "testimonies.1.visible" },
-                { label: "Testimony 3", propId: "testimonies.2.cardId", suffix: "testimony-2", visibleProp: "testimonies.2.visible" },
-                { label: "Testimony 4", propId: "testimonies.3.cardId", suffix: "testimony-3", visibleProp: "testimonies.3.visible" },
-                { label: "Testimony 5", propId: "testimonies.4.cardId", suffix: "testimony-4", visibleProp: "testimonies.4.visible" },
-                { label: "Testimony 6", propId: "testimonies.5.cardId", suffix: "testimony-5", visibleProp: "testimonies.5.visible" },
-                { label: "Testimony 7", propId: "testimonies.6.cardId", suffix: "testimony-6", visibleProp: "testimonies.6.visible" },
-                { label: "Testimony 8", propId: "testimonies.7.cardId", suffix: "testimony-7", visibleProp: "testimonies.7.visible" },
-                { label: "Testimony 9", propId: "testimonies.8.cardId", suffix: "testimony-8", visibleProp: "testimonies.8.visible" },
-                { label: "Testimony 10", propId: "testimonies.9.cardId", suffix: "testimony-9", visibleProp: "testimonies.9.visible" },
-                { label: "Testimony 11", propId: "testimonies.10.cardId", suffix: "testimony-10", visibleProp: "testimonies.10.visible" },
-                { label: "Testimony 12", propId: "testimonies.11.cardId", suffix: "testimony-11", visibleProp: "testimonies.11.visible" }
-            ]
-        }
-    ],
-    "Footer": [
-        {
-            id: "terra-footer",
-            name: "Terra - Footer",
-            component: TerraFooter,
-            thumbnail: "/images/thumbnails/terra-footer.svg",
-            config: [
-                {
-                    name: "image",
-                    label: "Logo",
-                    type: "image",
-                    default: componentDefaults["terra-footer"]?.image
-                },
-                {
-                    name: "socialLinks",
-                    label: "Social Links",
-                    type: "list",
-                    default: componentDefaults["terra-footer"]?.socialLinks
-                },
-                {
-                    name: "findUsOnLinks",
-                    label: "Find Us On Links",
-                    type: "list",
-                    default: componentDefaults["terra-footer"]?.findUsOnLinks
-                },
-                {
-                    name: "resourceLinks",
-                    label: "Resource Links",
-                    type: "list",
-                    default: componentDefaults["terra-footer"]?.resourceLinks
-                }
-            ],
-            images: [
-                {
-                    label: "Logo",
-                    propId: "imageId",
-                    suffix: "logo",
-                    visibleProp: "imageVisible"
-                }
-            ],
-            links: [
-                { label: "Facebook", propId: "socialLinks.0.id", suffix: "social-fb", visibleProp: "socialLinks.0.visible" },
-                { label: "Twitter", propId: "socialLinks.1.id", suffix: "social-x", visibleProp: "socialLinks.1.visible" },
-                { label: "Instagram", propId: "socialLinks.2.id", suffix: "social-ig", visibleProp: "socialLinks.2.visible" },
-                { label: "TikTok", propId: "socialLinks.3.id", suffix: "social-tiktok", visibleProp: "socialLinks.3.visible" },
-                { label: "YouTube", propId: "socialLinks.4.id", suffix: "social-yt", visibleProp: "socialLinks.4.visible" },
-                { label: "Find Us 1", propId: "findUsOnLinks.0.id", suffix: "link-1", visibleProp: "findUsOnLinks.0.visible" },
-                { label: "Find Us 2", propId: "findUsOnLinks.1.id", suffix: "link-2", visibleProp: "findUsOnLinks.1.visible" },
-                { label: "Find Us 3", propId: "findUsOnLinks.2.id", suffix: "link-3", visibleProp: "findUsOnLinks.2.visible" },
-                { label: "Resource 1", propId: "resourceLinks.0.id", suffix: "link-4", visibleProp: "resourceLinks.0.visible" },
-                { label: "Resource 2", propId: "resourceLinks.1.id", suffix: "link-5", visibleProp: "resourceLinks.1.visible" },
-                { label: "Resource 3", propId: "resourceLinks.2.id", suffix: "link-6", visibleProp: "resourceLinks.2.visible" }
-            ]
-        }
-    ]
 };

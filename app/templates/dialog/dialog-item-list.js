@@ -6,7 +6,7 @@ import { componentDefaults } from "../content/data";
 import styles from "./dialog-section.module.css";
 import DialogSection from "./dialog-section";
 
-export default function DialogDefault({
+export default function DialogItemList({
     title = "Title",
     description = "Description",
     isOpen,
@@ -16,7 +16,7 @@ export default function DialogDefault({
     image,
     imageId,
     imageVisible,
-    items = componentDefaults.dialog.items
+    items = componentDefaults["dialog-item-list"].items
 }) {
     const updateItem = (index, field, value) => {
         if (!onUpdate) return;

@@ -7,24 +7,24 @@ import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
 import { getContainerClasses } from "@/app/page-builder/utils/section-utils";
 
-export default function TerraBannerHero({
-    title = componentDefaults["terra-banner-hero"].title,
-    subtitle = componentDefaults["terra-banner-hero"].subtitle,
-    buttonText = componentDefaults["terra-banner-hero"].buttonText,
-    buttonUrl = componentDefaults["terra-banner-hero"].buttonUrl,
-    buttonVisible = componentDefaults["terra-banner-hero"].buttonVisible,
+export default function HeroTerraBanner({
+    title = componentDefaults["hero-terra-banner"].title,
+    subtitle = componentDefaults["hero-terra-banner"].subtitle,
+    buttonText = componentDefaults["hero-terra-banner"].buttonText,
+    buttonUrl = componentDefaults["hero-terra-banner"].buttonUrl,
+    buttonVisible = componentDefaults["hero-terra-banner"].buttonVisible,
     buttonLinkType = "url",
-    buttonTargetDialogId = componentDefaults["terra-banner-hero"].buttonTargetDialogId,
-    secondaryButtonText = componentDefaults["terra-banner-hero"].secondaryButtonText,
-    secondaryButtonUrl = componentDefaults["terra-banner-hero"].secondaryButtonUrl,
-    secondaryButtonVisible = componentDefaults["terra-banner-hero"].secondaryButtonVisible,
+    buttonTargetDialogId = componentDefaults["hero-terra-banner"].buttonTargetDialogId,
+    secondaryButtonText = componentDefaults["hero-terra-banner"].secondaryButtonText,
+    secondaryButtonUrl = componentDefaults["hero-terra-banner"].secondaryButtonUrl,
+    secondaryButtonVisible = componentDefaults["hero-terra-banner"].secondaryButtonVisible,
     secondaryButtonLinkType = "url",
-    secondaryButtonTargetDialogId = componentDefaults["terra-banner-hero"].secondaryButtonTargetDialogId,
-    buttonIconLeft = componentDefaults["terra-banner-hero"].buttonIconLeft,
-    buttonIconRight = componentDefaults["terra-banner-hero"].buttonIconRight,
-    secondaryButtonIconLeft = componentDefaults["terra-banner-hero"].secondaryButtonIconLeft,
-    secondaryButtonIconRight = componentDefaults["terra-banner-hero"].secondaryButtonIconRight,
-    image = componentDefaults["terra-banner-hero"].image,
+    secondaryButtonTargetDialogId = componentDefaults["hero-terra-banner"].secondaryButtonTargetDialogId,
+    buttonIconLeft = componentDefaults["hero-terra-banner"].buttonIconLeft,
+    buttonIconRight = componentDefaults["hero-terra-banner"].buttonIconRight,
+    secondaryButtonIconLeft = componentDefaults["hero-terra-banner"].secondaryButtonIconLeft,
+    secondaryButtonIconRight = componentDefaults["hero-terra-banner"].secondaryButtonIconRight,
+    image = componentDefaults["hero-terra-banner"].image,
     imageId,
     imageVisible,
     buttonStyle = "primary",
@@ -47,7 +47,7 @@ export default function TerraBannerHero({
     // Helper to resolve icon string to component
     // Removed: BuilderButton now handles icon resolution
 
-    const defaults = componentDefaults["terra-banner-hero"];
+    const defaults = componentDefaults["hero-terra-banner"];
 
     const primaryButton = {
         text: buttonText || defaults.buttonText,

@@ -1,9 +1,9 @@
 export const componentDefaults = {
-    "full-body": {
+    "background-full-body": {
         image: ""
     },
 
-    "section": {
+    "header-section": {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         titleVisible: true,
@@ -20,7 +20,7 @@ export const componentDefaults = {
         secondaryButtonLinkType: "url",
         secondaryButtonId: ""
     },
-    "terra-banner-hero": {
+    "hero-terra-banner": {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         titleVisible: true,
@@ -38,7 +38,7 @@ export const componentDefaults = {
         secondaryButtonId: "",
         image: ""
     },
-    "terra-footer": {
+    "footer-terra": {
         image: "",
         copyrightText: "Copyright © 2025 all rights reserved",
         findUsOnTitle: "Available at",
@@ -102,7 +102,7 @@ export const componentDefaults = {
         }
         ]
     },
-    "feature-left": {
+    "feature-image-left": {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         titleVisible: true,
@@ -120,7 +120,7 @@ export const componentDefaults = {
         secondaryButtonId: "",
         image: ""
     },
-    "feature-right": {
+    "feature-image-right": {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         titleVisible: true,
@@ -138,7 +138,7 @@ export const componentDefaults = {
         secondaryButtonId: "",
         image: ""
     },
-    "dialog": {
+    "dialog-item-list": {
         title: "Title",
         description: "Description",
 
@@ -155,7 +155,7 @@ export const componentDefaults = {
         imageVisible: true,
         items: Array(8).fill({ title: "Accordion Title", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." })
     },
-    "banner-information": {
+    "osm-banner": {
         title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         buttonText: "Label",
         buttonUrl: "",
@@ -189,7 +189,7 @@ export const componentDefaults = {
         imageIsPortrait: false,
         imageMobileRatio: ""
     },
-    "lacto-navigation": {
+    "navigation-center": {
         logo: "",
         logoVisible: true,
         logoId: "",
@@ -223,7 +223,7 @@ export const componentDefaults = {
         menu4Id: "",
         isSticky: true
     },
-    "terra-testimony": {
+    "testimonial-terra": {
         testimonies: Array(12).fill({
             name: "People Name",
             role: "Role",

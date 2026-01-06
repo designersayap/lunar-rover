@@ -8,17 +8,17 @@ import styles from "./banner-information.module.css";
 import { componentDefaults } from "../content/data";
 import { getContainerClasses } from "@/app/page-builder/utils/section-utils";
 
-export default function BannerInformation({
+export default function OsmBanner({
     title = "Information Banner",
 
-    buttonText = componentDefaults["banner-information"].buttonText,
-    buttonUrl = componentDefaults["banner-information"].buttonUrl,
-    buttonLinkType = componentDefaults["banner-information"].buttonLinkType || "url",
-    buttonTargetDialogId = componentDefaults["banner-information"].buttonTargetDialogId,
-    buttonIconLeft = componentDefaults["banner-information"].buttonIconLeft,
-    buttonIconRight = componentDefaults["banner-information"].buttonIconRight,
+    buttonText = componentDefaults["osm-banner"].buttonText,
+    buttonUrl = componentDefaults["osm-banner"].buttonUrl,
+    buttonLinkType = componentDefaults["osm-banner"].buttonLinkType || "url",
+    buttonTargetDialogId = componentDefaults["osm-banner"].buttonTargetDialogId,
+    buttonIconLeft = componentDefaults["osm-banner"].buttonIconLeft,
+    buttonIconRight = componentDefaults["osm-banner"].buttonIconRight,
     buttonId,
-    buttonVisible = componentDefaults["banner-information"].buttonVisible,
+    buttonVisible = componentDefaults["osm-banner"].buttonVisible,
 
     onUpdate,
     sectionId,

@@ -24,16 +24,16 @@ const SocialIcons = {
     ),
 };
 
-export default function TerraFooter({
-    image = componentDefaults["terra-footer"].image,
+export default function FooterTerra({
+    image = componentDefaults["footer-terra"].image,
     imageId,
     imageVisible,
-    copyrightText = componentDefaults["terra-footer"].copyrightText,
-    socialLinks = componentDefaults["terra-footer"].socialLinks,
-    findUsOnTitle = componentDefaults["terra-footer"].findUsOnTitle,
-    findUsOnLinks = componentDefaults["terra-footer"].findUsOnLinks,
-    resourcesTitle = componentDefaults["terra-footer"].resourcesTitle,
-    resourceLinks = componentDefaults["terra-footer"].resourceLinks,
+    copyrightText = componentDefaults["footer-terra"].copyrightText,
+    socialLinks = componentDefaults["footer-terra"].socialLinks,
+    findUsOnTitle = componentDefaults["footer-terra"].findUsOnTitle,
+    findUsOnLinks = componentDefaults["footer-terra"].findUsOnLinks,
+    resourcesTitle = componentDefaults["footer-terra"].resourcesTitle,
+    resourceLinks = componentDefaults["footer-terra"].resourceLinks,
     onUpdate,
     sectionId,
     fullWidth,
@@ -41,7 +41,7 @@ export default function TerraFooter({
     removePaddingRight
 }) {
     const update = createUpdateHandler(onUpdate);
-    const defaults = componentDefaults["terra-footer"];
+    const defaults = componentDefaults["footer-terra"];
 
     return (
         <footer className={styles.footer} id={sectionId}>
