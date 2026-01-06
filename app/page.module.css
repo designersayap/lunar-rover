@@ -721,6 +721,18 @@
     inset: 0;
 }
 
+@keyframes popoverIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px) scale(0.99);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
 .popoverContainer {
     background: var(--bg1);
     border: 1px solid var(--bdr);
@@ -732,6 +744,7 @@
     flex-direction: column;
     box-shadow: var(--shd-pop);
     overflow: hidden;
+    animation: popoverIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 
@@ -770,44 +783,83 @@
     box-shadow: var(--shd-pop);
 }
 
-.popoverGrid {
-    padding: 4px 16px 8px;
+/* Custom Header */
+.popoverHeaderCustom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 16px 12px;
+}
+
+.popoverTitleCustom {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--base-white);
+}
+
+.closeButtonCustom {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: var(--grey-300);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.closeButtonCustom:hover {
+    color: var(--base-white);
+}
+
+.closeIconCustom {
+    width: 20px;
+    height: 20px;
+}
+
+.popoverList {
+    padding: 0 16px 16px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
 }
 
 .popoverCard {
-    border: 1px solid var(--bdr);
-    border-radius: 6px;
+    border: none;
+    border-bottom: 1px solid var(--bdr);
+    border-radius: 0;
     overflow: hidden;
     text-align: left;
-    padding: 10px;
-    transition: all .2s;
-    background: var(--bg2);
+    padding: 12px 0;
+    transition: all .5s;
+    background: transparent;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
     width: 100%;
+    cursor: pointer;
+}
+
+.popoverCard:last-child {
+    border-bottom: none;
 }
 
 .popoverCard:hover {
-    border-color: var(--grey-400);
-    transform: translateY(-1px);
-    background: var(--grey-500);
+    background: transparent;
 }
 
 .popoverCard:hover .cardTitle {
-    color: var(--content-neutral--body-invert);
+    color: var(--base-white);
 }
 
 .cardImageWrapper {
-    width: 24px;
-    height: 24px;
+    width: 52px;
+    height: 52px;
     flex-shrink: 0;
     position: relative;
-    background: var(--bg4);
-    border-radius: 2px;
+    background: var(--bg3);
+    border-radius: 6px;
+    border: 1px solid var(--bdr);
+    padding: 6px;
 }
 
 .cardContent {
@@ -818,6 +870,7 @@
 .cardTitle {
     color: var(--grey-200);
     margin: 0;
+    font-size: 14px;
 }
 
 /* --- Theme & Export Popovers --- */

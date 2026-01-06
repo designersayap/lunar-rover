@@ -24,9 +24,9 @@ export const componentLibrary = {
     "Background": [
         {
             id: "full-body",
-            name: "Full Body",
+            name: "Image Body Background",
             component: FullBody,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            thumbnail: "/images/thumbnails/bg.svg",
             config: [
                 {
                     name: "image",
@@ -49,9 +49,9 @@ export const componentLibrary = {
     "Navigation": [
         {
             id: "lacto-navigation",
-            name: "Lacto",
+            name: "Lacto - Navigation",
             component: LactoNavigation,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            thumbnail: "/images/thumbnails/navigation.svg",
             config: [
                 { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["lacto-navigation"].menu1Label },
                 { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["lacto-navigation"].menu1Url },
@@ -77,9 +77,9 @@ export const componentLibrary = {
     "OSM": [
         {
             id: "banner-information",
-            name: "Info Banner",
+            name: "OSM Banner",
             component: BannerInformation,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            thumbnail: "/images/thumbnails/osm.svg",
             config: [
                 {
                     name: "title",
@@ -119,56 +119,44 @@ export const componentLibrary = {
             ]
         },
     ],
-    "Header": [
+    "Hero": [
         {
-            id: "header-title",
-            name: "Title",
-            component: GlobalHeaderTitle,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
-        },
-        {
-            id: "header-title-button",
-            name: "Title, Button",
-            component: GlobalHeaderTitleButton,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            id: "terra-banner-hero",
+            name: "Hero - Default",
+            component: TerraBannerHero,
+            thumbnail: "/images/thumbnails/hero-banner.svg",
             config: [
                 {
                     name: "buttonStyle",
                     label: "Button Style",
                     type: "select",
                     options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: componentDefaults["header-title-button"].buttonStyle
+                    default: componentDefaults["terra-banner-hero"].buttonStyle
                 },
                 {
                     name: "buttonLinkType",
                     label: "Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: componentDefaults["header-title-button"].buttonLinkType
+                    default: componentDefaults["terra-banner-hero"].buttonLinkType
                 },
                 {
                     name: "secondaryButtonLinkType",
                     label: "Secondary Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: componentDefaults["header-title-button"].secondaryButtonLinkType
+                    default: componentDefaults["terra-banner-hero"].secondaryButtonLinkType
                 },
                 {
-                    name: "buttonText",
-                    label: "Button Text",
-                    type: "text",
-                    default: componentDefaults["header-title-button"].buttonText
-                },
-                {
-                    name: "secondaryButtonText",
-                    label: "Secondary Button Text",
-                    type: "text",
-                    default: componentDefaults["header-title-button"].secondaryButtonText
+                    name: "image",
+                    label: "Image",
+                    type: "image",
+                    default: componentDefaults["terra-banner-hero"].image
                 }
             ],
             buttons: [
                 {
-                    label: "Button",
+                    label: "Primary Button",
                     propId: "buttonId",
                     suffix: "button",
                     labelProp: "buttonText",
@@ -183,19 +171,24 @@ export const componentLibrary = {
                     visibleProp: "secondaryButtonVisible",
                     linkTypeProp: "secondaryButtonLinkType"
                 }
+            ],
+            images: [
+                {
+                    label: "Hero Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
             ]
         },
-        {
-            id: "header-title-description",
-            name: "Title, Description",
-            component: GlobalHeaderTitleDescription,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
-        },
+    ],
+    "Header": [
+
         {
             id: "header-title-description-button",
-            name: "Title, Description, Button",
+            name: "Header - Title, Description, Button",
             component: GlobalHeaderTitleButtonDescription,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            thumbnail: "/images/thumbnails/header-title.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -254,9 +247,9 @@ export const componentLibrary = {
     "Dialog": [
         {
             id: "dialog",
-            name: "Item List",
+            name: "Dialog - Item List",
             component: Dialog,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            thumbnail: "/images/thumbnails/dialog.svg",
             config: [
                 {
                     name: "items",
@@ -286,9 +279,9 @@ export const componentLibrary = {
         },
         {
             id: "dialog-accordion",
-            name: "Accordion",
+            name: "Dialog - Accordion",
             component: DialogAccordion,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            thumbnail: "/images/thumbnails/dialog.svg",
             config: [
                 {
                     name: "image",
@@ -318,9 +311,9 @@ export const componentLibrary = {
     "Media": [
         {
             id: "media-21-9",
-            name: "21:9",
+            name: "Media Ratio - 21:9",
             component: Media21x9,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            thumbnail: "/images/thumbnails/media.svg",
             config: [
                 {
                     name: "image",
@@ -340,9 +333,9 @@ export const componentLibrary = {
         },
         {
             id: "media-16-9",
-            name: "16:9",
+            name: "Media Ratio - 16:9",
             component: Media16x9,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            thumbnail: "/images/thumbnails/media.svg",
             config: [
                 {
                     name: "image",
@@ -362,9 +355,9 @@ export const componentLibrary = {
         },
         {
             id: "media-5-4",
-            name: "5:4",
+            name: "Media Ratio - 5:4",
             component: Media5x4,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            thumbnail: "/images/thumbnails/media.svg",
             config: [
                 {
                     name: "image",
@@ -384,9 +377,9 @@ export const componentLibrary = {
         },
         {
             id: "media-4-3",
-            name: "4:3",
+            name: "Media Ratio - 4:3",
             component: Media4x3,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            thumbnail: "/images/thumbnails/media.svg",
             config: [
                 {
                     name: "fullWidth",
@@ -411,75 +404,13 @@ export const componentLibrary = {
             ]
         }
     ],
-    "Hero Banner": [
-        {
-            id: "terra-banner-hero",
-            name: "Terra",
-            component: TerraBannerHero,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
-            config: [
-                {
-                    name: "buttonStyle",
-                    label: "Button Style",
-                    type: "select",
-                    options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: componentDefaults["terra-banner-hero"].buttonStyle
-                },
-                {
-                    name: "buttonLinkType",
-                    label: "Button Link Type",
-                    type: "select",
-                    options: ["url", "dialog"],
-                    default: componentDefaults["terra-banner-hero"].buttonLinkType
-                },
-                {
-                    name: "secondaryButtonLinkType",
-                    label: "Secondary Button Link Type",
-                    type: "select",
-                    options: ["url", "dialog"],
-                    default: componentDefaults["terra-banner-hero"].secondaryButtonLinkType
-                },
-                {
-                    name: "image",
-                    label: "Image",
-                    type: "image",
-                    default: componentDefaults["terra-banner-hero"].image
-                }
-            ],
-            buttons: [
-                {
-                    label: "Primary Button",
-                    propId: "buttonId",
-                    suffix: "button",
-                    labelProp: "buttonText",
-                    visibleProp: "buttonVisible",
-                    linkTypeProp: "buttonLinkType"
-                },
-                {
-                    label: "Secondary Button",
-                    propId: "secondaryButtonId",
-                    suffix: "secondary-button",
-                    labelProp: "secondaryButtonText",
-                    visibleProp: "secondaryButtonVisible",
-                    linkTypeProp: "secondaryButtonLinkType"
-                }
-            ],
-            images: [
-                {
-                    label: "Hero Image",
-                    propId: "imageId",
-                    suffix: "image",
-                    visibleProp: "imageVisible"
-                }
-            ]
-        },
-    ],
+
     "Feature - Split": [
         {
             id: "feature-left",
             name: "Terra - Image Left",
             component: TerraFeaturesImageLeft,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            thumbnail: "/images/thumbnails/feature-split-img-left.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -540,7 +471,7 @@ export const componentLibrary = {
             id: "feature-right",
             name: "Terra - Image Right",
             component: TerraFeaturesImageRight,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            thumbnail: "/images/thumbnails/feature-split-img-right.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -601,9 +532,9 @@ export const componentLibrary = {
     "Testimonials": [
         {
             id: "terra-testimony",
-            name: "Terra",
+            name: "Terra - Testimony",
             component: TerraTestimony,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            thumbnail: "/images/thumbnails/terra-testimonial.svg",
             config: [
                 {
                     name: "testimonies",
@@ -633,7 +564,7 @@ export const componentLibrary = {
             id: "terra-footer",
             name: "Terra - Footer",
             component: TerraFooter,
-            thumbnail: "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg",
+            thumbnail: "/images/thumbnails/terra-footer.svg",
             config: [
                 {
                     name: "image",

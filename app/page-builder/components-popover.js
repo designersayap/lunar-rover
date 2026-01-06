@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import {
-    MagnifyingGlassIcon
+    MagnifyingGlassIcon,
+    XMarkIcon
 } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
 import { searchComponents } from "./utils/component-manager";
@@ -32,13 +33,19 @@ export default function ComponentsPopover({
             className={`${styles.componentsPopover} ${className}`}
             width={362}
         >
-            <div style={{ padding: '12px 16px' }}>
+            <div className={styles.popoverHeaderCustom}>
+                <span className={styles.popoverTitleCustom}>Add</span>
+                <button onClick={onClose} className={styles.closeButtonCustom}>
+                    <XMarkIcon className={styles.closeIconCustom} />
+                </button>
+            </div>
+            <div style={{ padding: '0 16px 16px' }}>
                 <div className={styles.searchInputWrapper}>
                     <MagnifyingGlassIcon className={styles.searchIcon} />
                     <input
                         className={`${styles.formInput} ${styles.searchBar}`}
                         type="text"
-                        placeholder="Search elements"
+                        placeholder="Search Section"
                         value={elementSearch}
                         onChange={(e) => setElementSearch(e.target.value)}
                         autoFocus
@@ -52,41 +59,37 @@ export default function ComponentsPopover({
                         No elements found
                     </div>
                 ) : (
-                    Object.entries(filteredLibrary).map(([category, components]) => (
-                        <div key={category} className={styles.categoryWrapper}>
-                            <div className={styles.categoryHeader} style={{ cursor: 'default' }}>
-                                <span className="caption-regular">{category}</span>
-                            </div>
-                            <div className={styles.popoverGrid}>
-                                {components.map((comp) => (
-                                    <button
-                                        key={comp.id}
-                                        onClick={(e) => {
-                                            addComponent(comp, category, e);
-                                        }}
-                                        className={styles.popoverCard}
-                                    >
-                                        <div className={styles.cardImageWrapper}>
-                                            <img
-                                                src={comp.thumbnail}
-                                                alt={comp.name}
-                                                style={{
-                                                    width: "100%",
-                                                    height: "100%",
-                                                    objectFit: "cover"
-                                                }}
-                                            />
-                                        </div>
-                                        <div className={styles.cardContent}>
-                                            <p className={`${styles.cardTitle} caption-regular`}>
-                                                {comp.name}
-                                            </p>
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    ))
+                    <div className={styles.popoverList}>
+                        {Object.values(filteredLibrary).flatMap(components => components).map((comp) => (
+                            <button
+                                key={comp.id}
+                                onClick={(e) => {
+                                    // Find category for this component (since we flattened the list)
+                                    const category = Object.keys(filteredLibrary).find(cat =>
+                                        filteredLibrary[cat].some(c => c.id === comp.id)
+                                    );
+                                    addComponent(comp, category, e);
+                                }}
+                                className={styles.popoverCard}
+                            >
+                                <img
+                                    src={comp.thumbnail}
+                                    alt={comp.name}
+                                    style={{
+                                        width: "52px",
+                                        height: "52px",
+                                        objectFit: "contain",
+                                        flexShrink: 0
+                                    }}
+                                />
+                                <div className={styles.cardContent}>
+                                    <p className={`${styles.cardTitle} caption-regular`}>
+                                        {comp.name}
+                                    </p>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
                 )}
             </div>
         </BasePopover>
