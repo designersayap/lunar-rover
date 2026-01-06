@@ -2,10 +2,10 @@ export const COMPONENT_PATHS = {
     "header-title": "app/templates/header/header-title.js",
     "header-title-button": "app/templates/header/header-title-button.js",
     "header-title-description": "app/templates/header/header-title-description.js",
-    "header-section": "app/templates/header/section.js",
+    "header-section": "app/templates/header/header-section.js",
 
     "hero-terra-banner": "app/templates/terra/terra-banner-hero.js",
-    "osm-banner": "app/templates/osm/banner-information.js",
+    "osm-banner": "app/templates/osm/osm-banner.js",
 
     "feature-image-left": "app/templates/feature/feature-image-left.js",
     "feature-image-right": "app/templates/feature/feature-image-right.js",

@@ -4,7 +4,7 @@ import * as HeroIcons from "@heroicons/react/24/solid";
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
 import { createUpdateHandler } from "../utils/component-helpers";
-import styles from "./banner-information.module.css";
+import styles from "./osm-banner.module.css";
 import { componentDefaults } from "../content/data";
 import { getContainerClasses } from "@/app/page-builder/utils/section-utils";
 
@@ -89,6 +89,7 @@ export default function OsmBanner({
                                     onChange={update('title')}
                                     sectionId={sectionId}
                                     multiline={false}
+                                    suffix="title"
                                 />
                             </div>
                         </div>

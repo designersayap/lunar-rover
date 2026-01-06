@@ -1,13 +1,13 @@
 import dynamic from "next/dynamic";
 import { componentDefaults } from "../../templates/content/data";
 
-const HeaderSection = dynamic(() => import("@/app/templates/header/section"));
+const HeaderSection = dynamic(() => import("@/app/templates/header/header-section"));
 const HeroTerraBanner = dynamic(() => import("@/app/templates/terra/terra-banner-hero"));
 const FeatureImageLeft = dynamic(() => import("@/app/templates/feature/feature-image-left"));
 const FeatureImageRight = dynamic(() => import("@/app/templates/feature/feature-image-right"));
 const DialogItemList = dynamic(() => import("../../templates/dialog/dialog-item-list"));
 const DialogAccordion = dynamic(() => import("../../templates/dialog/dialog-accordion"));
-const OsmBanner = dynamic(() => import("../../templates/osm/banner-information"));
+const OsmBanner = dynamic(() => import("../../templates/osm/osm-banner"));
 const TestimonialTerra = dynamic(() => import("../../templates/terra/terra-testimony"));
 const Media16x9 = dynamic(() => import("../../templates/media/media-16-9"));
 const Media5x4 = dynamic(() => import('@/app/templates/media/media-5-4'));
@@ -102,20 +102,7 @@ export const componentLibrary = {
                     default: componentDefaults["osm-banner"].buttonUrl
                 }
             ],
-            texts: [
-                {
-                    label: "Title",
-                    propId: "titleId",
-                    suffix: "title",
-                    visibleProp: "titleVisible",
-                },
-                {
-                    label: "Description",
-                    propId: "subtitleId",
-                    suffix: "subtitle",
-                    visibleProp: "subtitleVisible",
-                }
-            ],
+
             buttons: [
                 {
                     label: "Button",
