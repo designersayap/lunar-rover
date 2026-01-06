@@ -313,7 +313,7 @@ export const componentLibrary = {
             id: "media-21-9",
             name: "Media Ratio - 21:9",
             component: Media21x9,
-            thumbnail: "/images/thumbnails/media.svg",
+            thumbnail: "/images/thumbnails/media219.svg",
             config: [
                 {
                     name: "image",
@@ -335,7 +335,7 @@ export const componentLibrary = {
             id: "media-16-9",
             name: "Media Ratio - 16:9",
             component: Media16x9,
-            thumbnail: "/images/thumbnails/media.svg",
+            thumbnail: "/images/thumbnails/media169.svg",
             config: [
                 {
                     name: "image",
@@ -357,7 +357,7 @@ export const componentLibrary = {
             id: "media-5-4",
             name: "Media Ratio - 5:4",
             component: Media5x4,
-            thumbnail: "/images/thumbnails/media.svg",
+            thumbnail: "/images/thumbnails/media54.svg",
             config: [
                 {
                     name: "image",
@@ -379,7 +379,7 @@ export const componentLibrary = {
             id: "media-4-3",
             name: "Media Ratio - 4:3",
             component: Media4x3,
-            thumbnail: "/images/thumbnails/media.svg",
+            thumbnail: "/images/thumbnails/media43.svg",
             config: [
                 {
                     name: "fullWidth",
