@@ -1,10 +1,7 @@
 import dynamic from "next/dynamic";
 import { componentDefaults } from "../../templates/content/data";
 
-const GlobalHeaderTitle = dynamic(() => import("../../templates/header/header-title"));
-const GlobalHeaderTitleButton = dynamic(() => import("../../templates/header/header-title-button"));
-const GlobalHeaderTitleDescription = dynamic(() => import("../../templates/header/header-title-description"));
-const GlobalHeaderTitleButtonDescription = dynamic(() => import("../../templates/header/header-title-description-button"));
+const Section = dynamic(() => import("@/app/templates/header/section"));
 const TerraBannerHero = dynamic(() => import("@/app/templates/terra/terra-banner-hero"));
 const TerraFeaturesImageLeft = dynamic(() => import("@/app/templates/terra/terra-features-image-left"));
 const TerraFeaturesImageRight = dynamic(() => import("@/app/templates/terra/terra-features-image-right"));
@@ -24,7 +21,7 @@ export const componentLibrary = {
     "Background": [
         {
             id: "full-body",
-            name: "Image Body Background",
+            name: "Background - Full Body",
             component: FullBody,
             thumbnail: "/images/thumbnails/bg.svg",
             config: [
@@ -77,7 +74,7 @@ export const componentLibrary = {
     "OSM": [
         {
             id: "banner-information",
-            name: "OSM Banner",
+            name: "Banner Information",
             component: BannerInformation,
             thumbnail: "/images/thumbnails/osm.svg",
             config: [
@@ -105,6 +102,20 @@ export const componentLibrary = {
                     label: "Button URL",
                     type: "text",
                     default: componentDefaults["banner-information"].buttonUrl
+                }
+            ],
+            texts: [
+                {
+                    label: "Title",
+                    propId: "titleId",
+                    suffix: "title",
+                    visibleProp: "titleVisible",
+                },
+                {
+                    label: "Description",
+                    propId: "subtitleId",
+                    suffix: "subtitle",
+                    visibleProp: "subtitleVisible",
                 }
             ],
             buttons: [
@@ -154,6 +165,20 @@ export const componentLibrary = {
                     default: componentDefaults["terra-banner-hero"].image
                 }
             ],
+            texts: [
+                {
+                    label: "Title",
+                    propId: "titleId",
+                    suffix: "title",
+                    visibleProp: "titleVisible",
+                },
+                {
+                    label: "Description",
+                    propId: "subtitleId",
+                    suffix: "subtitle",
+                    visibleProp: "subtitleVisible",
+                }
+            ],
             buttons: [
                 {
                     label: "Primary Button",
@@ -185,9 +210,9 @@ export const componentLibrary = {
     "Header": [
 
         {
-            id: "header-title-description-button",
-            name: "Header - Title, Description, Button",
-            component: GlobalHeaderTitleButtonDescription,
+            id: "section",
+            name: "Header - Section",
+            component: Section,
             thumbnail: "/images/thumbnails/header-title.svg",
             config: [
                 {
@@ -195,35 +220,50 @@ export const componentLibrary = {
                     label: "Button Style",
                     type: "select",
                     options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
-                    default: componentDefaults["header-title-description-button"].buttonStyle
+                    default: componentDefaults["section"].buttonStyle
                 },
                 {
                     name: "buttonLinkType",
                     label: "Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: componentDefaults["header-title-description-button"].buttonLinkType
+                    default: componentDefaults["section"].buttonLinkType
                 },
                 {
                     name: "secondaryButtonLinkType",
                     label: "Secondary Button Link Type",
                     type: "select",
                     options: ["url", "dialog"],
-                    default: componentDefaults["header-title-description-button"].secondaryButtonLinkType
+                    default: componentDefaults["section"].secondaryButtonLinkType
                 },
                 {
                     name: "buttonText",
                     label: "Button Text",
                     type: "text",
-                    default: componentDefaults["header-title-description-button"].buttonText
+                    default: componentDefaults["section"].buttonText
                 },
                 {
                     name: "secondaryButtonText",
                     label: "Secondary Button Text",
                     type: "text",
-                    default: componentDefaults["header-title-description-button"].secondaryButtonText
+                    default: componentDefaults["section"].secondaryButtonText
                 }
             ],
+            texts: [
+                {
+                    label: "Title",
+                    propId: "titleId",
+                    suffix: "title",
+                    visibleProp: "titleVisible",
+                },
+                {
+                    label: "Description",
+                    propId: "subtitleId",
+                    suffix: "subtitle",
+                    visibleProp: "subtitleVisible",
+                }
+            ],
+
             buttons: [
                 {
                     label: "Button",
@@ -440,6 +480,20 @@ export const componentLibrary = {
                     default: componentDefaults["feature-left"].secondaryButtonText
                 }
             ],
+            texts: [
+                {
+                    label: "Title",
+                    propId: "titleId",
+                    suffix: "title",
+                    visibleProp: "titleVisible",
+                },
+                {
+                    label: "Description",
+                    propId: "subtitleId",
+                    suffix: "subtitle",
+                    visibleProp: "subtitleVisible",
+                }
+            ],
             buttons: [
                 {
                     label: "Button",
@@ -499,6 +553,20 @@ export const componentLibrary = {
                     label: "Secondary Button Text",
                     type: "text",
                     default: componentDefaults["feature-right"].secondaryButtonText
+                }
+            ],
+            texts: [
+                {
+                    label: "Title",
+                    propId: "titleId",
+                    suffix: "title",
+                    visibleProp: "titleVisible",
+                },
+                {
+                    label: "Description",
+                    propId: "subtitleId",
+                    suffix: "subtitle",
+                    visibleProp: "subtitleVisible",
                 }
             ],
             buttons: [

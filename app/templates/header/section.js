@@ -1,41 +1,35 @@
 import * as HeroIcons from "@heroicons/react/24/solid";
-import styles from "./terra-features-image-right.module.css";
-import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
-import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
+import styles from "./section.module.css";
+import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import { getContainerClasses } from "@/app/page-builder/utils/section-utils";
 
-export default function TerraFeaturesImageRight({
-    title = componentDefaults["feature-right"].title,
-    subtitle = componentDefaults["feature-right"].subtitle,
-    buttonText = componentDefaults["feature-right"].buttonText,
-    buttonUrl = componentDefaults["feature-right"].buttonUrl,
-    buttonVisible = componentDefaults["feature-right"].buttonVisible,
-    buttonLinkType = componentDefaults["feature-right"].buttonLinkType || "url",
-    buttonTargetDialogId = componentDefaults["feature-right"].buttonTargetDialogId,
-    buttonIconLeft = componentDefaults["feature-right"].buttonIconLeft,
-    buttonIconRight = componentDefaults["feature-right"].buttonIconRight,
-    secondaryButtonText = componentDefaults["feature-right"].secondaryButtonText,
-    secondaryButtonUrl = componentDefaults["feature-right"].secondaryButtonUrl,
-    secondaryButtonVisible = componentDefaults["feature-right"].secondaryButtonVisible,
-    secondaryButtonLinkType = componentDefaults["feature-right"].secondaryButtonLinkType || "url",
-    secondaryButtonTargetDialogId = componentDefaults["feature-right"].secondaryButtonTargetDialogId,
-    secondaryButtonIconLeft = componentDefaults["feature-right"].secondaryButtonIconLeft,
-    secondaryButtonIconRight = componentDefaults["feature-right"].secondaryButtonIconRight,
-    image = componentDefaults["feature-right"].image,
-    imageId,
-    imageVisible,
-    buttonStyle = "primary",
-    secondaryButtonStyle = "ghost",
+export default function Section({
+    title = componentDefaults["section"].title,
+    subtitle = componentDefaults["section"].subtitle,
+    sectionId,
+    // Button props...
+    buttonText = componentDefaults["section"].buttonText,
+    buttonUrl = componentDefaults["section"].buttonUrl,
+    buttonVisible = componentDefaults["section"].buttonVisible,
+    buttonLinkType = componentDefaults["section"].buttonLinkType || "url",
+    buttonTargetDialogId = componentDefaults["section"].buttonTargetDialogId,
+    buttonIconLeft = componentDefaults["section"].buttonIconLeft,
+    buttonIconRight = componentDefaults["section"].buttonIconRight,
+    secondaryButtonText = componentDefaults["section"].secondaryButtonText,
+    secondaryButtonUrl = componentDefaults["section"].secondaryButtonUrl,
+    secondaryButtonVisible = componentDefaults["section"].secondaryButtonVisible,
+    secondaryButtonLinkType = componentDefaults["section"].secondaryButtonLinkType || "url",
+    secondaryButtonTargetDialogId = componentDefaults["section"].secondaryButtonTargetDialogId,
+    secondaryButtonIconLeft = componentDefaults["section"].secondaryButtonIconLeft,
+    secondaryButtonIconRight = componentDefaults["section"].secondaryButtonIconRight,
     buttonId,
     secondaryButtonId,
+    buttonStyle = "primary",
+    secondaryButtonStyle = "ghost",
     onUpdate,
-    sectionId,
-    fullWidth,
-    removePaddingLeft,
-    removePaddingRight,
     titleVisible = true,
     subtitleVisible = true,
     titleId,
@@ -44,15 +38,15 @@ export default function TerraFeaturesImageRight({
     const update = createUpdateHandler(onUpdate);
 
     return (
-        <section className={styles.container} id={sectionId}>
-            <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })}>
-                <div className="grid align-center">
-                    <div className={`${styles.content} col-mobile-4 col-tablet-8 col-desktop-6`}>
+        <section className={`${styles.section}`} id={sectionId}>
+            <div className={getContainerClasses({})}>
+                <div className="grid">
+                    <div className={`col-mobile-4 col-tablet-8 col-desktop-8 offset-desktop-2 ${styles.content}`}>
                         {titleVisible && (
                             <BuilderText
                                 tagName="h2"
                                 className={`h2 ${styles.title}`}
-                                style={{ marginBottom: "var(--gap-sm)" }}
+                                style={{ marginBottom: "var(--gap-md)" }}
                                 content={title}
                                 onChange={update('title')}
                                 sectionId={sectionId}
@@ -63,9 +57,9 @@ export default function TerraFeaturesImageRight({
                         )}
                         {subtitleVisible && (
                             <BuilderText
-                                tagName="p"
-                                className={`subheader-h2 ${styles.description}`}
-                                style={{ color: "var(--content-neutral--body)", marginBottom: "var(--gap-md)" }}
+                                tagName="div"
+                                className={`subheader-h1 ${styles.subtitle}`}
+                                style={{ marginBottom: "var(--gap-lg)" }}
                                 content={subtitle}
                                 onChange={update('subtitle')}
                                 sectionId={sectionId}
@@ -74,14 +68,14 @@ export default function TerraFeaturesImageRight({
                                 onIdChange={update('subtitleId')}
                             />
                         )}
-                        <div className="buttonWrapperLeft">
+                        <div className="buttonWrapperCenter">
                             {buttonVisible && (
                                 <BuilderButton
                                     label={buttonText}
                                     href={buttonUrl}
                                     isVisible={buttonVisible}
                                     sectionId={sectionId}
-                                    className={`btn btn-${buttonStyle || 'primary'} btn-lg`}
+                                    className={`btn btn-${buttonStyle} btn-lg`}
                                     iconLeft={buttonIconLeft}
                                     iconRight={buttonIconRight}
                                     onLabelChange={update('buttonText')}
@@ -124,20 +118,6 @@ export default function TerraFeaturesImageRight({
                                 />
                             )}
                         </div>
-                    </div>
-
-                    <div className={`imageWrapper ${styles.imageWrapper} col-mobile-4 col-tablet-8 col-desktop-6`}>
-                        <BuilderImage
-                            src={image}
-                            onSrcChange={update('image')}
-                            className={`imagePlaceholder-1-1`}
-                            style={{ height: "auto" }}
-                            id={imageId}
-                            sectionId={sectionId}
-                            isVisible={imageVisible}
-                            onIdChange={update('imageId')}
-                            suffix="image"
-                        />
                     </div>
                 </div>
             </div>

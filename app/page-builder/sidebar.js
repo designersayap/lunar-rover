@@ -137,7 +137,8 @@ export default function Sidebar({
                                 const allButtons = def?.buttons || [];
                                 const allImages = (def?.images || []).map(img => ({ ...img, type: 'image' }));
                                 const allLinks = (def?.links || []).map(link => ({ ...link, type: 'link' }));
-                                const allChildren = [...allButtons, ...allImages, ...allLinks];
+                                const allTexts = (def?.texts || []).map(text => ({ ...text, type: 'text' }));
+                                const allChildren = [...allTexts, ...allButtons, ...allImages, ...allLinks];
                                 const isActive = activeElementId === comp.sectionId;
                                 const originalIndex = selectedComponents.findIndex(c => c.uniqueId === comp.uniqueId);
 

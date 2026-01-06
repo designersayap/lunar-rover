@@ -35,7 +35,11 @@ export default function TerraFeaturesImageLeft({
     sectionId,
     fullWidth,
     removePaddingLeft,
-    removePaddingRight
+    removePaddingRight,
+    titleVisible = true,
+    subtitleVisible = true,
+    titleId,
+    subtitleId
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -58,22 +62,32 @@ export default function TerraFeaturesImageLeft({
                     </div>
 
                     <div className={`${styles.content} col-mobile-4 col-tablet-8 col-desktop-6`}>
-                        <BuilderText
-                            tagName="h2"
-                            className={`h2 ${styles.title}`}
-                            style={{ marginBottom: "var(--gap-sm)" }}
-                            content={title}
-                            onChange={update('title')}
-                            sectionId={sectionId}
-                        />
-                        <BuilderText
-                            tagName="p"
-                            className="subheader-h2"
-                            style={{ color: "var(--content-neutral--body)", marginBottom: "var(--gap-md)" }}
-                            content={subtitle}
-                            onChange={update('subtitle')}
-                            sectionId={sectionId}
-                        />
+                        {titleVisible && (
+                            <BuilderText
+                                tagName="h2"
+                                className={`h2 ${styles.title}`}
+                                style={{ marginBottom: "var(--gap-sm)" }}
+                                content={title}
+                                onChange={update('title')}
+                                sectionId={sectionId}
+                                id={titleId}
+                                suffix="title"
+                                onIdChange={update('titleId')}
+                            />
+                        )}
+                        {subtitleVisible && (
+                            <BuilderText
+                                tagName="p"
+                                className="subheader-h2"
+                                style={{ color: "var(--content-neutral--body)", marginBottom: "var(--gap-md)" }}
+                                content={subtitle}
+                                onChange={update('subtitle')}
+                                sectionId={sectionId}
+                                id={subtitleId}
+                                suffix="subtitle"
+                                onIdChange={update('subtitleId')}
+                            />
+                        )}
                         <div className="buttonWrapperLeft">
                             {buttonVisible && (
                                 <BuilderButton

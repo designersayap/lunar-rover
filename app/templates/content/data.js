@@ -3,33 +3,12 @@ export const componentDefaults = {
         image: ""
     },
 
-    "header-title": {
-        title: "Title"
-    },
-    "header-title-description": {
+    "section": {
         title: "Title",
-        subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-    },
-    "header-title-button": {
-        title: "Title",
-        buttonStyle: "primary",
-        buttonText: "Label",
-        buttonUrl: "",
-        buttonVisible: true,
-        buttonLinkType: "url",
-        buttonTargetDialogId: "",
-        buttonId: "",
-        secondaryButtonText: "Label",
-        secondaryButtonUrl: "",
-        secondaryButtonVisible: true,
-        secondaryButtonLinkType: "url",
-        secondaryButtonTargetDialogId: "",
-        secondaryButtonId: ""
-    },
-    "header-title-description-button": {
-        title: "Title",
-        buttonStyle: "primary",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+        titleVisible: true,
+        subtitleVisible: true,
+        buttonStyle: "primary",
         buttonText: "Label",
         buttonUrl: "",
         buttonVisible: true,
@@ -44,6 +23,8 @@ export const componentDefaults = {
     "terra-banner-hero": {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+        titleVisible: true,
+        subtitleVisible: true,
         buttonStyle: "primary",
         buttonText: "Label",
         buttonUrl: "",
@@ -124,6 +105,8 @@ export const componentDefaults = {
     "feature-left": {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+        titleVisible: true,
+        subtitleVisible: true,
         buttonStyle: "primary",
         buttonText: "Label",
         buttonUrl: "",
@@ -140,6 +123,8 @@ export const componentDefaults = {
     "feature-right": {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+        titleVisible: true,
+        subtitleVisible: true,
         buttonStyle: "primary",
         buttonText: "Label",
         buttonUrl: "",

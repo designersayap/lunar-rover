@@ -35,7 +35,11 @@ export default function TerraBannerHero({
     sectionId,
     fullWidth,
     removePaddingLeft,
-    removePaddingRight
+    removePaddingRight,
+    titleVisible = true,
+    subtitleVisible = true,
+    titleId,
+    subtitleId
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -83,20 +87,30 @@ export default function TerraBannerHero({
                 <div className={`${getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })} ${styles.fullHeight}`}>
                     <div className={`grid ${styles.fullHeight}`}>
                         <div className={`col-mobile-4 col-tablet-8 col-desktop-12 ${styles.content}`}>
-                            <BuilderText
-                                tagName="h1"
-                                className={`h1 ${styles.heroTitle}`}
-                                content={title || defaults.title}
-                                onChange={update('title')}
-                                sectionId={sectionId}
-                            />
-                            <BuilderText
-                                tagName="p"
-                                className={`subheader-h1 ${styles.heroSubtitle}`}
-                                content={subtitle || defaults.subtitle}
-                                onChange={update('subtitle')}
-                                sectionId={sectionId}
-                            />
+                            {titleVisible && (
+                                <BuilderText
+                                    tagName="h1"
+                                    className={`h1 ${styles.heroTitle}`}
+                                    content={title || defaults.title}
+                                    onChange={update('title')}
+                                    sectionId={sectionId}
+                                    id={titleId}
+                                    suffix="title"
+                                    onIdChange={update('titleId')}
+                                />
+                            )}
+                            {subtitleVisible && (
+                                <BuilderText
+                                    tagName="p"
+                                    className={`subheader-h1 ${styles.heroSubtitle}`}
+                                    content={subtitle || defaults.subtitle}
+                                    onChange={update('subtitle')}
+                                    sectionId={sectionId}
+                                    id={subtitleId}
+                                    suffix="subtitle"
+                                    onIdChange={update('subtitleId')}
+                                />
+                            )}
                             <div className="buttonWrapperCenter">
                                 {primaryButton.visible && (
                                     <BuilderButton
