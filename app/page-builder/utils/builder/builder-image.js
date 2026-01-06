@@ -39,7 +39,8 @@ export default function BuilderImage({
     onMobileRatioChange,
     mobileSrc,
     onMobileSrcChange,
-    isActive: isActiveProp
+    isActive: isActiveProp,
+    alwaysShowSrc = false
 }) {
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
 
@@ -281,7 +282,7 @@ export default function BuilderImage({
                     onLinkTypeChange={onLinkTypeChange}
                     showLinkType={!isStaging && showLinkControls}
                     showUrl={!isStaging && showLinkControls}
-                    showImageSrc={!isStaging || isStaging}
+                    showImageSrc={isStaging || alwaysShowSrc}
 
                     position={popoverPosition}
                     dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}

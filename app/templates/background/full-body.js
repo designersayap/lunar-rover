@@ -35,9 +35,10 @@ export default function FullBody({ image, imageId, imageVisible, sectionId, onUp
                     sectionId={sectionId}
                     id={imageId}
                     onIdChange={update('imageId')}
-                    suffix="full-body-bg"
+                    suffix="bg"
                     showLinkControls={false}
                     style={{ objectPosition: 'top center' }}
+                    alwaysShowSrc={true}
                 />
             </div>
         </div>,
