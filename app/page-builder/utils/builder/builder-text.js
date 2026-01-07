@@ -158,47 +158,234 @@ function BuilderTextComponent({
 
                     // Check for bullet list "* "
                     const bulletMatch = text.slice(0, offset).match(/^([*])\s*$/); // matches "*"
+                    // Check for standard numbered list "1. "
+                    const numberMatch = text.slice(0, offset).match(/^([0-9]+)\.\s*$/); // matches "1.", "10.", etc.
                     // Check for alpha numbered list "a. "
                     const alphaMatch = text.slice(0, offset).match(/^([a-z])\.\s*$/); // matches "a.", "b.", etc.
 
-                    if (bulletMatch || alphaMatch) {
+                    if (bulletMatch || numberMatch || alphaMatch) {
                         e.preventDefault();
 
+                        // Common match object (re-evaluated to handle numberMatch)
+                        const match = bulletMatch || numberMatch || alphaMatch;
+
                         // Remove the trigger characters
-                        const triggerLength = (bulletMatch || alphaMatch)[0].length;
-                        range.setStart(textNode, offset - triggerLength + 1); // +1 because we haven't typed the space yet, but we want to replace the trigger chars
+                        const triggerLength = match[0].length;
+                        range.setStart(textNode, offset - triggerLength);
+                        range.setEnd(textNode, offset);
+                        range.deleteContents();
 
-                        // Let's refine the range removal
-                        const charsToRemove = (bulletMatch || alphaMatch)[1].length + 1; // trigger char(s) + the dot for alpha
+                        // Check nesting
+                        let parentLi = textNode.parentNode;
+                        while (parentLi && parentLi !== elementRef.current && parentLi.nodeName !== 'LI') {
+                            parentLi = parentLi.parentNode;
+                        }
+                        const isInsideList = parentLi && parentLi.nodeName === 'LI';
 
+                        if (isInsideList) {
+                            const currentList = parentLi.parentNode;
 
-                        if (bulletMatch && bulletMatch[0] === "*") { // simplified check
-                            // Remove the '*'
-                            range.setStart(textNode, offset - 1);
-                            range.setEnd(textNode, offset);
-                            range.deleteContents();
+                            // Nesting logic using Manual DOM Manipulation
+                            const previousLi = parentLi.previousElementSibling;
 
-                            document.execCommand('insertUnorderedList');
-                        } else if (alphaMatch) {
-                            // Remove the 'a.'
-                            const trigger = alphaMatch[0]; // e.g. "a."
-                            range.setStart(textNode, offset - trigger.length);
-                            range.setEnd(textNode, offset);
-                            range.deleteContents();
+                            if (previousLi) {
+                                // Define target structure based on trigger
+                                const targetTag = bulletMatch ? 'UL' : 'OL';
+                                // 'a' for alpha, null for numeric/bullet
+                                const targetType = alphaMatch ? 'a' : null;
 
-                            document.execCommand('insertOrderedList');
+                                let targetList = previousLi.lastElementChild;
+                                let isCompatible = false;
 
-                            const selection = window.getSelection();
-                            if (selection.rangeCount > 0) {
-                                const newNode = selection.anchorNode;
-                                // find closest ol
-                                let current = newNode;
-                                while (current && current.nodeName !== 'OL') {
-                                    current = current.parentNode;
-                                    if (current === elementRef.current) break;
+                                // Check if the previous item already has a nested list we can append to
+                                if (targetList && targetList.nodeName === targetTag) {
+                                    if (targetTag === 'OL') {
+                                        const currentType = targetList.getAttribute('type');
+                                        // Strict compatibility check:
+                                        // If we want alpha, existing must be alpha. 
+                                        // If we want numeric (null/undefined), existing must be numeric (null/undefined).
+                                        if (targetType === 'a') {
+                                            isCompatible = currentType === 'a';
+                                        } else {
+                                            // We want standard numeric
+                                            isCompatible = !currentType;
+                                        }
+                                    } else {
+                                        // UL matches UL
+                                        isCompatible = true;
+                                    }
                                 }
-                                if (current && current.nodeName === 'OL') {
-                                    current.setAttribute('type', 'a');
+
+                                if (!isCompatible) {
+                                    // Create a new nested list if none exists or it's incompatible
+                                    targetList = document.createElement(targetTag);
+                                    if (targetType) {
+                                        targetList.setAttribute('type', targetType);
+                                    }
+                                    previousLi.appendChild(targetList);
+                                }
+
+                                // Move the current list item into the target list
+                                targetList.appendChild(parentLi);
+                                // Moving the node clears selection, so we must restore it to the correct position.
+                                try {
+                                    const newRange = document.createRange();
+                                    // offset includes the trigger length which was deleted.
+                                    newRange.setStart(textNode, offset - triggerLength);
+                                    newRange.setEnd(textNode, offset - triggerLength);
+                                    selection.removeAllRanges();
+                                    selection.addRange(newRange);
+                                } catch (err) {
+                                    console.warn("Failed to restore selection after manual indent:", err);
+                                }
+                            }
+                        } else {
+                            // New list creation
+                            if (bulletMatch) {
+                                document.execCommand('insertUnorderedList');
+                            } else {
+                                document.execCommand('insertOrderedList');
+                                if (alphaMatch) {
+                                    // Fix for alpha
+                                    const selection = window.getSelection();
+                                    if (selection.rangeCount > 0) {
+                                        let current = selection.anchorNode;
+                                        while (current && current.nodeName !== 'OL') {
+                                            current = current.parentNode;
+                                            if (current === elementRef.current) break;
+                                        }
+                                        if (current && current.nodeName === 'OL') {
+                                            current.setAttribute('type', 'a');
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!multiline && e.key === " ") {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const textNode = range.startContainer;
+
+                if (textNode.nodeType === 3) {
+                    const text = textNode.textContent;
+                    const offset = range.startOffset;
+
+                    // Check for bullet list "* "
+                    const bulletMatch = text.slice(0, offset).match(/^([*])\s*$/); // matches "*"
+                    // Check for standard numbered list "1. "
+                    const numberMatch = text.slice(0, offset).match(/^([0-9]+)\.\s*$/); // matches "1.", "10.", etc.
+                    // Check for alpha numbered list "a. "
+                    const alphaMatch = text.slice(0, offset).match(/^([a-z])\.\s*$/); // matches "a.", "b.", etc.
+
+                    if (bulletMatch || numberMatch || alphaMatch) {
+                        e.preventDefault();
+
+                        // Common match object (re-evaluated to handle numberMatch)
+                        const match = bulletMatch || numberMatch || alphaMatch;
+
+                        // Remove the trigger characters
+                        const triggerLength = match[0].length;
+                        range.setStart(textNode, offset - triggerLength);
+                        range.setEnd(textNode, offset);
+                        range.deleteContents();
+
+                        // Check nesting
+                        let parentLi = textNode.parentNode;
+                        while (parentLi && parentLi !== elementRef.current && parentLi.nodeName !== 'LI') {
+                            parentLi = parentLi.parentNode;
+                        }
+                        const isInsideList = parentLi && parentLi.nodeName === 'LI';
+
+                        if (isInsideList) {
+                            const currentList = parentLi.parentNode;
+
+                            // Nesting logic
+
+                            // Capture state before indent
+                            const previousList = parentLi.parentNode;
+
+                            document.execCommand('indent');
+
+                            // Hybrid detection: 1. Check if parentLi moved. 2. Fallback to selection.
+                            let newList = null;
+
+                            // 1. Check if parentLi parent changed
+                            if (parentLi && parentLi.parentNode && parentLi.parentNode !== previousList && (parentLi.parentNode.nodeName === 'UL' || parentLi.parentNode.nodeName === 'OL')) {
+                                newList = parentLi.parentNode;
+                            }
+
+                            // 2. Fallback to selection if previous check failed or parentLi ref became stale
+                            if (!newList) {
+                                const selection = window.getSelection();
+                                if (selection.rangeCount > 0) {
+                                    let node = selection.anchorNode;
+                                    while (node && node !== elementRef.current) {
+                                        if (node.nodeName === 'UL' || node.nodeName === 'OL') {
+                                            newList = node;
+                                            break;
+                                        }
+                                        node = node.parentNode;
+                                    }
+                                }
+                            }
+
+                            // We must verify that the found list is indeed a NEW nested list.
+                            if (newList && previousList && newList !== previousList) {
+                                if (bulletMatch) {
+                                    if (newList.nodeName !== 'UL') {
+                                        const ul = document.createElement('ul');
+                                        // Copy children
+                                        while (newList.firstChild) ul.appendChild(newList.firstChild);
+                                        newList.parentNode.replaceChild(ul, newList);
+                                        // Note: replacing child might cause parentLi ref to be lost if it was inside newList
+                                    } else {
+                                        newList.removeAttribute('type');
+                                    }
+                                } else {
+                                    // Ensure OL
+                                    let ol = newList;
+                                    if (newList.nodeName !== 'OL') {
+                                        ol = document.createElement('ol');
+                                        while (newList.firstChild) ol.appendChild(newList.firstChild);
+                                        newList.parentNode.replaceChild(ol, newList);
+                                    }
+
+                                    // Set type
+                                    if (alphaMatch) {
+                                        ol.setAttribute('type', 'a');
+                                    } else {
+                                        // Explicitly remove type for standard numbering to ensure default behavior
+                                        ol.removeAttribute('type');
+                                    }
+                                }
+                            } else if (newList && !previousList) {
+                                // Edge case usually not hit inside isInsideList
+                            }
+                        } else {
+                            // New list creation
+                            if (bulletMatch) {
+                                document.execCommand('insertUnorderedList');
+                            } else {
+                                document.execCommand('insertOrderedList');
+                                if (alphaMatch) {
+                                    // Fix for alpha
+                                    const selection = window.getSelection();
+                                    if (selection.rangeCount > 0) {
+                                        let current = selection.anchorNode;
+                                        while (current && current.nodeName !== 'OL') {
+                                            current = current.parentNode;
+                                            if (current === elementRef.current) break;
+                                        }
+                                        if (current && current.nodeName === 'OL') {
+                                            current.setAttribute('type', 'a');
+                                        }
+                                    }
                                 }
                             }
                         }
