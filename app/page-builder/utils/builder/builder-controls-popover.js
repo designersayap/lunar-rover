@@ -186,13 +186,13 @@ export default function BuilderControlsPopover({
                         {/* IMAGE SOURCE INPUT (Only if showImageSrc is true) */}
                         {showImageSrc && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
-                                <label className={`caption-bold ${styles.formInputTitle}`}>Image Source</label>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Media Source</label>
                                 <input
                                     type="text"
                                     className={`${styles.formInput}`}
                                     value={imageSrc || ''}
                                     onChange={(e) => onImageSrcChange && onImageSrcChange(e.target.value)}
-                                    placeholder="https://example.com/image.jpg"
+                                    placeholder="https://example.com/image.jpg OR video.mp4"
                                 />
                             </div>
                         )}
@@ -341,13 +341,13 @@ export default function BuilderControlsPopover({
 
                         {showMobileImageSrc && mobileRatio && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: '8px' }}>
-                                <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Image Source</label>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Media Source</label>
                                 <input
                                     type="text"
                                     className={`${styles.formInput}`}
                                     value={mobileImageSrc || ''}
                                     onChange={(e) => onMobileImageSrcChange && onMobileImageSrcChange(e.target.value)}
-                                    placeholder="Optional mobile image URL"
+                                    placeholder="Optional mobile image or video URL"
                                 />
                             </div>
                         )}

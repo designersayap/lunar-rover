@@ -199,8 +199,42 @@ export default function BuilderImage({
         );
     };
 
+    const isVideoFile = (url) => {
+        if (!url || typeof url !== 'string') return false;
+        return url.match(/\.(mp4|webm|ogg|mov)$/i);
+    };
+
+    const isYoutube = (url) => {
+        if (!url || typeof url !== 'string') return false;
+        return url.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/);
+    };
+
+    const isVimeo = (url) => {
+        if (!url || typeof url !== 'string') return false;
+        return url.match(/^(https?:\/\/)?(www\.)?(vimeo\.com)\/.+$/);
+    };
+
+    const getYoutubeEmbedUrl = (url) => {
+        if (!url) return '';
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url.match(regExp);
+        const id = (match && match[2].length === 11) ? match[2] : null;
+        return id ? `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0` : url;
+    };
+
+    const getVimeoEmbedUrl = (url) => {
+        if (!url) return '';
+        const regExp = /vimeo\.com\/(\d+)/;
+        const match = url.match(regExp);
+        const id = match ? match[1] : null;
+        return id ? `https://player.vimeo.com/video/${id}?autoplay=1&loop=1&muted=1&background=1` : url;
+    };
+
     const imageSrc = src || defaultPlaceholder;
+    // const isPlaceholder = !src || src === defaultPlaceholder || (typeof src === 'string' && src.includes('placeholder_falj5i'));
+    // Relaxed placeholder check slightly to allow initial strings, though logic stays mostly same.
     const isPlaceholder = !src || src === defaultPlaceholder || (typeof src === 'string' && src.includes('placeholder_falj5i'));
+
     const finalStyle = {
         width: "100%",
         height: "100%",
@@ -237,17 +271,58 @@ export default function BuilderImage({
         finalClassName += ` mobile-aspect-${mobileRatio}`;
     }
 
-    const imageContent = (
-        <>
-            {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
-            <img
+    let mediaContent;
+    if (isYoutube(src)) {
+        mediaContent = (
+            <iframe
                 id={elementId}
-                src={imageSrc}
-                alt={(!alt || alt === "#") && sectionId ? sectionId : alt}
-                style={finalStyle}
+                src={getYoutubeEmbedUrl(src)}
+                style={{ ...finalStyle, border: 'none' }}
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                title="YouTube video"
             />
-        </>
-    );
+        );
+    } else if (isVimeo(src)) {
+        mediaContent = (
+            <iframe
+                id={elementId}
+                src={getVimeoEmbedUrl(src)}
+                style={{ ...finalStyle, border: 'none' }}
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                title="Vimeo video"
+            />
+        );
+    } else if (isVideoFile(src)) {
+        mediaContent = (
+            <video
+                id={elementId}
+                style={finalStyle}
+                autoPlay
+                loop
+                muted
+                playsInline
+            >
+                {mobileSrc && <source src={mobileSrc} media="(max-width: 767px)" />}
+                <source src={src} />
+                Your browser does not support the video tag.
+            </video>
+        );
+    } else {
+        // Fallback to Image
+        mediaContent = (
+            <>
+                {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
+                <img
+                    id={elementId}
+                    src={imageSrc}
+                    alt={(!alt || alt === "#") && sectionId ? sectionId : alt}
+                    style={finalStyle}
+                />
+            </>
+        );
+    }
 
     return (
         <>
@@ -259,12 +334,12 @@ export default function BuilderImage({
                 onClick={handleClick}
             >
                 {isActive && <div className={styles.activeBorderOutline} />}
-                {mobileSrc ? (
+                {mobileSrc && !isVideoFile(src) && !isYoutube(src) && !isVimeo(src) ? (
                     <picture style={{ display: 'contents' }}>
-                        {imageContent}
+                        {mediaContent}
                     </picture>
                 ) : (
-                    imageContent
+                    mediaContent
                 )}
             </Wrapper>
 

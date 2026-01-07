@@ -268,30 +268,85 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
     display: "block",
   };
 
-  const imageContent = (
-    <>
-      {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
-      <img 
-        id={finalId}
-        src={src} 
-        alt={effectiveAlt} 
-        className={finalClassName} 
-        style={{ ...defaultStyle, ...style }} 
-      />
-    </>
-  );
+  const isVideoFile = (url) => url && typeof url === 'string' && url.match(/\\.(mp4|webm|ogg|mov)$/i);
+  const isYoutube = (url) => url && typeof url === 'string' && url.match(/^(https?:\\/\\/)?(www\\.)?(youtube\\.com|youtu\\.be)\\/.*$/);
+  const isVimeo = (url) => url && typeof url === 'string' && url.match(/^(https?:\\/\\/)?(www\\.)?(vimeo\\.com)\\/.*$/);
 
-  const imgElement = mobileSrc ? (
-     <picture style={{ display: 'contents' }}>{imageContent}</picture>
-  ) : (
-    <img 
-      id={finalId}
-      src={src} 
-      alt={effectiveAlt} 
-      className={finalClassName} 
-      style={{ ...defaultStyle, ...style }} 
-    />
-  );
+  const getYoutubeEmbedUrl = (url) => {
+      if (!url) return '';
+      const regExp = /^.*(youtu.be\\/|v\\/|u\\/\\w\\/|embed\\/|watch\\?v=|&v=)([^#&?]*).*/;
+      const match = url.match(regExp);
+      const id = (match && match[2].length === 11) ? match[2] : null;
+      return id ? \`https://www.youtube.com/embed/\${id}?autoplay=1&mute=1&loop=1&playlist=\${id}&controls=0\` : url;
+  };
+
+  const getVimeoEmbedUrl = (url) => {
+      if (!url) return '';
+      const regExp = /vimeo\\.com\\/(\\d+)/;
+      const match = url.match(regExp);
+      const id = match ? match[1] : null;
+      return id ? \`https://player.vimeo.com/video/\${id}?autoplay=1&loop=1&muted=1&background=1\` : url;
+  };
+
+  let mediaContent;
+  if (isYoutube(src)) {
+      mediaContent = (
+          <iframe
+              id={finalId}
+              src={getYoutubeEmbedUrl(src)}
+              className={finalClassName}
+              style={{ ...defaultStyle, ...style, height: '100%', border: 'none' }}
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              title="YouTube video"
+          />
+      );
+  } else if (isVimeo(src)) {
+      mediaContent = (
+          <iframe
+              id={finalId}
+              src={getVimeoEmbedUrl(src)}
+              className={finalClassName}
+              style={{ ...defaultStyle, ...style, height: '100%', border: 'none' }}
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              title="Vimeo video"
+          />
+      );
+  } else if (isVideoFile(src)) {
+      mediaContent = (
+          <video
+              id={finalId}
+              className={finalClassName}
+              style={{ ...defaultStyle, ...style, height: '100%' }}
+              autoPlay
+              loop
+              muted
+              playsInline
+          >
+              {mobileSrc && <source src={mobileSrc} media="(max-width: 767px)" />}
+              <source src={src} />
+              Your browser does not support the video tag.
+          </video>
+      );
+  } else {
+      mediaContent = (
+        <>
+          {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
+          <img 
+            id={finalId}
+            src={src} 
+            alt={effectiveAlt} 
+            className={finalClassName} 
+            style={{ ...defaultStyle, ...style }} 
+          />
+        </>
+      );
+  }
+
+  const content = (mobileSrc && !isVideoFile(src) && !isYoutube(src) && !isVimeo(src)) ? (
+     <picture style={{ display: 'contents' }}>{mediaContent}</picture>
+  ) : mediaContent;
 
   if (href || (linkType === 'dialog' && targetDialogId)) {
     const isNewTab = linkType === 'external' || openInNewTab;
@@ -307,13 +362,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
                      openDialog(targetDialogId);
                 }}
             >
-                {mobileSrc ? <picture style={{ display: 'contents' }}>{imageContent}</picture> : 
-                <img 
-                    id={finalId}
-                    src={src} 
-                    alt={effectiveAlt} 
-                    style={{ ...defaultStyle, ...style, width: '100%', height: '100%' }} 
-                />}
+                {content}
             </button>
         );
     }
@@ -325,18 +374,12 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
          className={finalClassName}
          style={{ display: 'block', width: '100%', height: '100%' }}
       >
-        {mobileSrc ? <picture style={{ display: 'contents' }}>{imageContent}</picture> :
-        <img 
-            id={finalId}
-            src={src} 
-            alt={effectiveAlt} 
-            style={{ ...defaultStyle, ...style }} 
-        />}
+        {content}
       </Link>
     );
   }
 
-  return imgElement;
+  return content;
 };`);
   }
 
