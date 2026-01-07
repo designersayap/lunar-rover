@@ -544,7 +544,6 @@ const arePropsEqual = (prevProps, nextProps) => {
     }
 
     // 3. Ignore onChange (handled by ref) and onIdChange (assuming stability or unimportant for render)
-    // We intentionally return TRUE here if all other visual props are equal.
     return true;
 };
 
