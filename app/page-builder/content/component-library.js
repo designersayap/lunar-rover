@@ -17,8 +17,34 @@ const NavigationCenter = dynamic(() => import("../../templates/navigation/naviga
 const BackgroundFullBody = dynamic(() => import("@/app/templates/background/full-body"));
 const FooterTerra = dynamic(() => import("@/app/templates/terra/terra-footer"));
 const ScrollGroup = dynamic(() => import("../utils/builder/scroll-group"));
+const SpacingSmall = dynamic(() => import("../../templates/spacing/spacing-small"));
+const SpacingMedium = dynamic(() => import("../../templates/spacing/spacing-medium"));
+const SpacingLarge = dynamic(() => import("../../templates/spacing/spacing-large"));
 
 export const componentLibrary = {
+    "Spacing": [
+        {
+            id: "spacing-small",
+            name: "Spacing - Small",
+            component: SpacingSmall,
+            thumbnail: "/images/thumbnails/feature-image-right.svg",
+            config: []
+        },
+        {
+            id: "spacing-medium",
+            name: "Spacing - Medium",
+            component: SpacingMedium,
+            thumbnail: "/images/thumbnails/feature-image-right.svg",
+            config: []
+        },
+        {
+            id: "spacing-large",
+            name: "Spacing - Large",
+            component: SpacingLarge,
+            thumbnail: "/images/thumbnails/feature-image-right.svg",
+            config: []
+        }
+    ],
     "Background": [
         {
             id: "background-full-body",

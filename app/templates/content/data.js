@@ -250,5 +250,8 @@ export const componentDefaults = {
         imageMobileRatio: "",
         scrollEffect: "parallax", // 'parallax' | 'sticky'
         components: [] // Nested components
-    }
+    },
+    "spacing-small": {},
+    "spacing-medium": {},
+    "spacing-large": {}
 };

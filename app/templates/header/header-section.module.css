@@ -1,6 +1,5 @@
 .section {
     padding-top: var(--padding-2xl);
-    padding-bottom: var(--padding-2xl);
     position: relative;
 }
 
