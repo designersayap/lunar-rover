@@ -10,7 +10,7 @@ export const COMPONENT_PATHS = {
     "feature-image-left": "app/templates/feature/feature-image-left.js",
     "feature-image-right": "app/templates/feature/feature-image-right.js",
 
-    "dialog-item-list": "app/templates/dialog/dialog-default.js",
+    "dialog-item-list": "app/templates/dialog/dialog-item-list.js",
     "dialog-accordion": "app/templates/dialog/dialog-accordion.js",
 
     "media-16-9": "app/templates/media/media-16-9.js",

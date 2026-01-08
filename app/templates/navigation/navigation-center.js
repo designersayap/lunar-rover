@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './navigation-center.module.css';
 import BuilderImage from '@/app/page-builder/utils/builder/builder-image';
+const DEFAULT_PLACEHOLDER_IMAGE = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
 import BuilderLink from '@/app/page-builder/utils/builder/builder-link';
 import { createUpdateHandler } from '../utils/component-helpers';
 import { componentDefaults } from '../content/data';
@@ -220,7 +221,7 @@ export default function NavigationCenter({
                     <div className={`col-desktop-2 col-tablet-2 ${styles.desktopNav} ${styles.logoWrapper}`}>
                         <div className={styles.logoContainer}>
                             <BuilderImage
-                                src={logo}
+                                src={logo || DEFAULT_PLACEHOLDER_IMAGE}
                                 onSrcChange={update('logo')}
                                 id={logoId}
                                 sectionId={sectionId}
@@ -267,7 +268,7 @@ export default function NavigationCenter({
                     <div className={`col-mobile-2 col-tablet-4 ${styles.mobileNav} ${styles.mobileLogoWrapper}`}>
                         <div className={styles.logoContainer}>
                             <BuilderImage
-                                src={logo}
+                                src={logo || DEFAULT_PLACEHOLDER_IMAGE}
                                 id={logoId}
                                 isVisible={logoVisible}
                                 readOnly={true}

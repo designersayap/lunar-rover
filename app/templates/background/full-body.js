@@ -1,5 +1,6 @@
 import { createUpdateHandler } from "../utils/component-helpers";
 import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
+const DEFAULT_PLACEHOLDER_IMAGE = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
 import styles from "./full-body.module.css";
 import { createPortal } from "react-dom";
 import { useEffect, useState, useContext } from "react"; // Added useContext
@@ -26,7 +27,7 @@ export default function BackgroundFullBody({ image, imageId, imageVisible, secti
         <div className={styles.container}>
             <div className={`container-grid container-full`} style={{ height: '100%' }}>
                 <BuilderImage
-                    src={image}
+                    src={image || DEFAULT_PLACEHOLDER_IMAGE}
                     isActive={isSectionActive} // Pass active state
                     onSrcChange={update('image')}
                     alt="Background Image"

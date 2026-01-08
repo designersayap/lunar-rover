@@ -326,6 +326,17 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         return 0;
     });
 
+
+    // Helper to extract component name from path
+    const getComponentName = (filePath) => {
+        if (!filePath) return null;
+        const filename = filePath.split('/').pop();
+        return filename.replace('.js', '')
+            .split('-')
+            .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+            .join('');
+    };
+
     for (const item of processedComponents) {
         const filePath = COMPONENT_PATHS[item.id];
         if (!filePath) {
@@ -339,11 +350,36 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
 
         // Track Import for page.js
         const filename = filePath.split('/').pop();
-        const componentName = filename.replace('.js', '')
-            .split('-')
-            .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-            .join('');
+        const componentName = getComponentName(filePath);
         imports.set(componentName, `./components/${filename}`);
+
+        // RECURSIVE: Check for nested components property (e.g. ScrollGroup)
+        // We need to bundle their dependencies (scripts/css) and track imports
+        if (item.components && Array.isArray(item.components)) {
+            for (const childComp of item.components) {
+                const childFilePath = COMPONENT_PATHS[childComp.id];
+                if (childFilePath) {
+                    await processComponent(childFilePath);
+                    const childFilename = childFilePath.split('/').pop();
+                    const childComponentName = getComponentName(childFilePath);
+                    imports.set(childComponentName, `./components/${childFilename}`);
+
+                    // TODO: If we support infinite nesting, we should make this function recursive.
+                    // For now, 1 level deep for ScrollGroup is sufficient.
+                }
+            }
+        }
+        if (item.props && item.props.components && Array.isArray(item.props.components)) {
+            for (const childComp of item.props.components) {
+                const childFilePath = COMPONENT_PATHS[childComp.id];
+                if (childFilePath) {
+                    await processComponent(childFilePath);
+                    const childFilename = childFilePath.split('/').pop();
+                    const childComponentName = getComponentName(childFilePath);
+                    imports.set(childComponentName, `./components/${childFilename}`);
+                }
+            }
+        }
 
         // --- Image Scanning & Bundling ---
         // Use the PRE-PROCESSED item which already has placeholders injected
@@ -702,10 +738,7 @@ export default function RootLayout({ children }) {
         if (!filePath) return;
 
         const filename = filePath.split('/').pop();
-        const componentName = filename.replace('.js', '')
-            .split('-')
-            .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-            .join('');
+        const componentName = getComponentName(filePath);
 
         // Merge props from root item and nested props to ensure robust data passing
         // Some implementations might store data at root, some in props. We capture both.
@@ -754,6 +787,37 @@ export default function RootLayout({ children }) {
 
         const propsString = Object.entries(props).map(([key, value]) => {
             if (value === undefined || value === null) return '';
+
+            // SPECIAL HANDLING: If the prop is 'components' (used by ScrollGroup), we must serialize it carefully
+            if (key === 'components' && Array.isArray(value)) {
+                // We need to transform the array of component objects into code that references the Component classes
+                const serializedComponents = value.map(childComp => {
+                    const childFilePath = COMPONENT_PATHS[childComp.id];
+                    const childComponentName = getComponentName(childFilePath);
+
+                    // Construct object string literal manually
+                    let childProps = { ...childComp, ...(childComp.props || {}) };
+                    // Clean up metadata
+                    delete childProps.id;
+                    delete childProps.name;
+                    delete childProps.component;
+                    delete childProps.props; // flattened
+
+                    // Re-attach uniqueId and sectionId as they are needed by ScrollGroup to render children
+                    childProps.uniqueId = childComp.uniqueId;
+                    childProps.sectionId = childComp.sectionId || childComp.uniqueId;
+
+                    // Serialize the props object
+                    const propsJson = JSON.stringify(childProps);
+
+                    // Inject the component reference
+                    // Remove the last brace '}' and add component reference
+                    return propsJson.slice(0, -1) + `, component: ${childComponentName || 'null'}}`;
+                }).join(', ');
+
+                return `components={[${serializedComponents}]}`;
+            }
+
             if (typeof value === 'string') {
                 return `${key}={${JSON.stringify(value)}}`;
             } else if (typeof value === 'boolean') {

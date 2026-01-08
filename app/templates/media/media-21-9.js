@@ -1,5 +1,6 @@
 import styles from "./media.module.css";
 import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
+const DEFAULT_PLACEHOLDER_IMAGE = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
 import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
@@ -37,7 +38,7 @@ export default function Media21x9({
                 <div className="col-mobile-4 col-tablet-8 col-desktop-12">
                     <div className="imageWrapper">
                         <BuilderImage
-                            src={image}
+                            src={image || DEFAULT_PLACEHOLDER_IMAGE}
                             onSrcChange={update('image')}
                             className={`${styles.image} imagePlaceholder-21-9 object-cover`}
                             id={imageId}
@@ -55,7 +56,7 @@ export default function Media21x9({
                             onIsPortraitChange={update('imageIsPortrait')}
                             mobileRatio={imageMobileRatio}
                             onMobileRatioChange={update('imageMobileRatio')}
-                            mobileSrc={imageMobileSrc}
+                            mobileSrc={imageMobileSrc || DEFAULT_PLACEHOLDER_IMAGE}
                             onMobileSrcChange={update('imageMobileSrc')}
                         />
                     </div>

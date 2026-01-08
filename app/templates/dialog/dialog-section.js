@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
+const DEFAULT_PLACEHOLDER_IMAGE = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
 import styles from "./dialog-section.module.css";
 import { createUpdateHandler } from "../utils/component-helpers";
 
@@ -103,7 +104,7 @@ export default function DialogSection({
 
                             <BuilderImage
                                 className={`${styles.imageContainer} imagePlaceholder-16-9`}
-                                src={image}
+                                src={image || DEFAULT_PLACEHOLDER_IMAGE}
                                 id={imageId}
                                 sectionId={sectionId}
                                 isVisible={imageVisible}

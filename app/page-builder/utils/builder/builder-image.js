@@ -128,7 +128,7 @@ export default function BuilderImage({
         }
 
         if (!dialogComponent) {
-            dialogComponent = selectedComponents?.find(c => c.id === 'dialog' || c.id === 'dialog-accordion');
+            dialogComponent = selectedComponents?.find(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion');
         }
 
         if (dialogComponent) {
@@ -248,7 +248,7 @@ export default function BuilderImage({
     let targetDialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
 
     if (!targetDialogComponent && linkType === 'dialog') {
-        targetDialogComponent = selectedComponents?.find(c => c.id === 'dialog' || c.id === 'dialog-accordion');
+        targetDialogComponent = selectedComponents?.find(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion');
     }
 
     const targetDialogSectionId = targetDialogComponent?.sectionId;
@@ -360,7 +360,7 @@ export default function BuilderImage({
                     showImageSrc={isStaging || alwaysShowSrc}
 
                     position={popoverPosition}
-                    dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
+                    dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
                     targetDialogId={targetDialogId}
                     onTargetDialogIdChange={onTargetDialogIdChange}
                     showDialogSelector={!isStaging}

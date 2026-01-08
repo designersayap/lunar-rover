@@ -3,6 +3,7 @@ import styles from "./feature-image-right.module.css";
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
 import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
+const DEFAULT_PLACEHOLDER_IMAGE = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
 import { getContainerClasses } from "@/app/page-builder/utils/section-utils";
@@ -128,7 +129,7 @@ export default function FeatureImageRight({
 
                     <div className={`imageWrapper ${styles.imageWrapper} col-mobile-4 col-tablet-8 col-desktop-6`}>
                         <BuilderImage
-                            src={image}
+                            src={image || DEFAULT_PLACEHOLDER_IMAGE}
                             onSrcChange={update('image')}
                             className={`imagePlaceholder-1-1`}
                             style={{ height: "auto" }}

@@ -2,29 +2,48 @@
 import { COMPONENT_PATHS } from './component-paths';
 import { componentDefaults } from '@/app/templates/content/data';
 
+// Helper to extract component name from path
+const getComponentName = (filePath) => {
+    if (!filePath) return null;
+    const filename = filePath.split('/').pop();
+    return filename.replace('.js', '')
+        .split('-')
+        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+        .join('');
+};
+
 export const generateStagingPageContent = (selectedComponents, folderName, activeThemePath) => {
     let pageContent = `"use client";\n\n`;
 
     // Import staging data overrides
     pageContent += `import { data as stagingData } from "./data";\n`;
 
-    // Collect Imports
+    // Collect Imports (Recursive)
     const imports = new Map();
 
-    selectedComponents.forEach(item => {
-        const filePath = COMPONENT_PATHS[item.id];
-        if (!filePath) return;
+    const collectImports = (components) => {
+        if (!components || !Array.isArray(components)) return;
 
-        const importPath = filePath.replace('.js', '').replace('app/', '@/app/');
+        components.forEach(item => {
+            const filePath = COMPONENT_PATHS[item.id];
+            if (filePath) {
+                const importPath = filePath.replace('.js', '').replace('app/', '@/app/');
+                const componentName = getComponentName(filePath);
+                imports.set(componentName, importPath);
+            }
 
-        const filename = filePath.split('/').pop();
-        const componentName = filename.replace('.js', '')
-            .split('-')
-            .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-            .join('');
+            // Check for nested components property (e.g. ScrollGroup)
+            // Note: We check 'components' prop specifically as that's what ScrollGroup uses
+            if (item.components && Array.isArray(item.components)) {
+                collectImports(item.components);
+            }
+            if (item.props && item.props.components && Array.isArray(item.props.components)) {
+                collectImports(item.props.components);
+            }
+        });
+    };
 
-        imports.set(componentName, importPath);
-    });
+    collectImports(selectedComponents);
 
     // Write Imports
     imports.forEach((path, name) => {
@@ -114,15 +133,19 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
         }
     });
 
-    pageContent += `
-    const stagingComponents = ${JSON.stringify(selectedComponents.map(c => ({
+    // Fix: We need to preserve 'componentName' in the serialised data so that if components uses it (rare), it's there.
+    // However, the builder mostly uses the component prop.
+    // For the context value, plain JSON is fine.
+    const stagingComponents = JSON.stringify(selectedComponents.map(c => ({
         ...c,
         id: c.id,
         uniqueId: c.uniqueId,
         sectionId: c.sectionId,
         componentName: c.componentName
-        // Minimal data needed for lookups
-    })))};
+    })));
+
+    pageContent += `
+    const stagingComponents = ${stagingComponents};
 
     const contextValue = {
         activeElementId,
@@ -148,11 +171,7 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
         const filePath = COMPONENT_PATHS[item.id];
         if (!filePath) return;
 
-        const filename = filePath.split('/').pop();
-        const componentName = filename.replace('.js', '')
-            .split('-')
-            .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-            .join('');
+        const componentName = getComponentName(filePath);
 
         // Prepare Props
         const props = { ...item, ...(item.props || {}) };
@@ -178,6 +197,41 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
 
         const propsString = Object.entries(props).map(([key, value]) => {
             if (value === undefined || value === null) return '';
+
+            // SPECIAL HANDLING: If the prop is 'components' (used by ScrollGroup), we must serialize it carefully
+            if (key === 'components' && Array.isArray(value)) {
+                // We need to transform the array of component objects into code that references the Component classes
+                const serializedComponents = value.map(childComp => {
+                    const childFilePath = COMPONENT_PATHS[childComp.id];
+                    const childComponentName = getComponentName(childFilePath);
+
+                    // We need to recursively handle props for children if necessary, but for now assumption is simple structure
+                    // We'll trust the serialized 'props' of the child mainly.
+                    // But strict JSON.stringify won't include 'component: ComponentName'
+
+                    // Construct object string literal manually
+                    let childProps = { ...childComp, ...(childComp.props || {}) };
+                    // Clean up metadata
+                    delete childProps.id;
+                    delete childProps.name;
+                    delete childProps.component;
+                    delete childProps.props; // flattened
+
+                    // Re-attach uniqueId and sectionId as they are needed by ScrollGroup to render children
+                    childProps.uniqueId = childComp.uniqueId;
+                    childProps.sectionId = childComp.sectionId || childComp.uniqueId;
+
+                    // Serialize the props object
+                    const propsJson = JSON.stringify(childProps);
+
+                    // Inject the component reference
+                    // Remove the last brace '}' and add component reference
+                    return propsJson.slice(0, -1) + `, component: ${childComponentName || 'null'}}`;
+                }).join(', ');
+
+                return `components={[${serializedComponents}]}`;
+            }
+
             if (typeof value === 'string') {
                 return `${key}={${JSON.stringify(value)}}`;
             } else if (typeof value === 'boolean') {
@@ -191,11 +245,7 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
         const overrideString = `{...stagingData['${finalSectionId}']}`;
         const onUpdateString = `onUpdate={(newData) => handleUpdate('${finalSectionId}', newData)}`;
 
-        let componentJSX = `<${componentName} ${propsString} ${overrideString} ${onUpdateString} />`;
-
-        if (item.isSticky) {
-            // REMOVED: Managed by StickyManager
-        }
+        const componentJSX = `<${componentName} ${propsString} ${overrideString} ${onUpdateString} />`;
 
         pageContent += `      ${componentJSX}\n`;
     });

@@ -3,6 +3,7 @@ import styles from "./terra-banner-hero.module.css";
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
 import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
+const DEFAULT_PLACEHOLDER_IMAGE = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
 import { getContainerClasses } from "@/app/page-builder/utils/section-utils";

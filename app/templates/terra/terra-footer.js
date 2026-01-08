@@ -1,6 +1,7 @@
 import styles from "./terra-footer.module.css";
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
+const DEFAULT_PLACEHOLDER_IMAGE = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
 import BuilderLink from "@/app/page-builder/utils/builder/builder-link";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
@@ -53,7 +54,7 @@ export default function FooterTerra({
                             {/* Logo */}
                             <div className={styles.logoWrapper}>
                                 <BuilderImage
-                                    src={image || defaults.image}
+                                    src={image || DEFAULT_PLACEHOLDER_IMAGE}
                                     onSrcChange={update('image')}
                                     className={`${styles.image} object-contain`}
                                     id={imageId}

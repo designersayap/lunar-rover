@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import styles from "./terra-testimony.module.css";
 import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
+const DEFAULT_PLACEHOLDER_IMAGE = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
 import BuilderElement from "@/app/page-builder/utils/builder/builder-element";
@@ -131,7 +132,7 @@ export default function TestimonialTerra({
                             >
                                 <div className={styles.card}>
                                     <BuilderImage
-                                        src={item.image}
+                                        src={item.image || DEFAULT_PLACEHOLDER_IMAGE}
                                         onSrcChange={(val) => updateTestimony(index, "image", val)}
                                         className={`${styles.terraTestimoniImage} imagePlaceholder-4-5 object-cover`}
                                         id={item.imageId}
@@ -151,7 +152,7 @@ export default function TestimonialTerra({
                                     <div className={styles.terraTestimoniDescriptionCard}>
                                         <div className={`imageWrapper ${styles.avatarImg}`}>
                                             <BuilderImage
-                                                src={item.avatar}
+                                                src={item.avatar || DEFAULT_PLACEHOLDER_IMAGE}
                                                 onSrcChange={(val) => updateTestimony(index, "avatar", val)}
                                                 className={'imagePlaceholder-1-1 object-cover'}
                                                 id={item.avatarId}
