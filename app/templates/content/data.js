@@ -223,6 +223,74 @@ export const componentDefaults = {
         menu4Id: "",
         isSticky: true
     },
+    "navigation-left": {
+        logo: "",
+        logoVisible: true,
+        logoId: "",
+
+        menu1Label: "Menu 1",
+        menu1Url: "",
+        menu1OpenInNewTab: false,
+        menu1LinkType: "url",
+        menu1TargetDialogId: "",
+        menu1Id: "",
+
+        menu2Label: "Menu 2",
+        menu2Url: "",
+        menu2OpenInNewTab: false,
+        menu2LinkType: "url",
+        menu2TargetDialogId: "",
+        menu2Id: "",
+
+        menu3Label: "Menu 3",
+        menu3Url: "",
+        menu3OpenInNewTab: false,
+        menu3LinkType: "url",
+        menu3TargetDialogId: "",
+        menu3Id: "",
+
+        menu4Label: "Menu 4",
+        menu4Url: "",
+        menu4OpenInNewTab: false,
+        menu4LinkType: "url",
+        menu4TargetDialogId: "",
+        menu4Id: "",
+        isSticky: true
+    },
+    "navigation-right": {
+        logo: "",
+        logoVisible: true,
+        logoId: "",
+
+        menu1Label: "Menu 1",
+        menu1Url: "",
+        menu1OpenInNewTab: false,
+        menu1LinkType: "url",
+        menu1TargetDialogId: "",
+        menu1Id: "",
+
+        menu2Label: "Menu 2",
+        menu2Url: "",
+        menu2OpenInNewTab: false,
+        menu2LinkType: "url",
+        menu2TargetDialogId: "",
+        menu2Id: "",
+
+        menu3Label: "Menu 3",
+        menu3Url: "",
+        menu3OpenInNewTab: false,
+        menu3LinkType: "url",
+        menu3TargetDialogId: "",
+        menu3Id: "",
+
+        menu4Label: "Menu 4",
+        menu4Url: "",
+        menu4OpenInNewTab: false,
+        menu4LinkType: "url",
+        menu4TargetDialogId: "",
+        menu4Id: "",
+        isSticky: true
+    },
     "testimonial-terra": {
         testimonies: Array(12).fill({
             name: "People Name",

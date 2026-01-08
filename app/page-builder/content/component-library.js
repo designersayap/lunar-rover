@@ -14,6 +14,8 @@ const Media5x4 = dynamic(() => import('@/app/templates/media/media-5-4'));
 const Media4x3 = dynamic(() => import('@/app/templates/media/media-4-3'));
 const Media21x9 = dynamic(() => import('@/app/templates/media/media-21-9'));
 const NavigationCenter = dynamic(() => import("@/app/templates/navigation/navigation-center"));
+const NavigationLeft = dynamic(() => import("@/app/templates/navigation/navigation-left"));
+const NavigationRight = dynamic(() => import("@/app/templates/navigation/navigation-right"));
 const BackgroundFullBody = dynamic(() => import("@/app/templates/background/full-body"));
 const FooterTerra = dynamic(() => import("@/app/templates/terra/terra-footer"));
 const ScrollGroup = dynamic(() => import("@/app/page-builder/utils/builder/scroll-group"));
@@ -61,6 +63,56 @@ export const componentLibrary = {
                 { name: "menu3Url", label: "Menu 3 URL", type: "text", default: componentDefaults["navigation-center"].menu3Url },
                 { name: "menu4Label", label: "Menu 4 Label", type: "text", default: componentDefaults["navigation-center"].menu4Label },
                 { name: "menu4Url", label: "Menu 4 URL", type: "text", default: componentDefaults["navigation-center"].menu4Url },
+            ],
+            images: [
+                { label: "Logo", propId: "logoId", suffix: "logo" }
+            ],
+            links: [
+                { label: "Menu 1", propId: "menu1Id", suffix: "menu-1", labelProp: "menu1Label", visibleProp: "menu1Visible", linkTypeProp: "menu1LinkType" },
+                { label: "Menu 2", propId: "menu2Id", suffix: "menu-2", labelProp: "menu2Label", visibleProp: "menu2Visible", linkTypeProp: "menu2LinkType" },
+                { label: "Menu 3", propId: "menu3Id", suffix: "menu-3", labelProp: "menu3Label", visibleProp: "menu3Visible", linkTypeProp: "menu3LinkType" },
+                { label: "Menu 4", propId: "menu4Id", suffix: "menu-4", labelProp: "menu4Label", visibleProp: "menu4Visible", linkTypeProp: "menu4LinkType" }
+            ]
+        },
+        {
+            id: "navigation-left",
+            name: "Navigation - Left",
+            component: NavigationLeft,
+            thumbnail: "/images/thumbnails/navigation-center.svg",
+            config: [
+                { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["navigation-left"]?.menu1Label },
+                { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["navigation-left"]?.menu1Url },
+                { name: "menu2Label", label: "Menu 2 Label", type: "text", default: componentDefaults["navigation-left"]?.menu2Label },
+                { name: "menu2Url", label: "Menu 2 URL", type: "text", default: componentDefaults["navigation-left"]?.menu2Url },
+                { name: "menu3Label", label: "Menu 3 Label", type: "text", default: componentDefaults["navigation-left"]?.menu3Label },
+                { name: "menu3Url", label: "Menu 3 URL", type: "text", default: componentDefaults["navigation-left"]?.menu3Url },
+                { name: "menu4Label", label: "Menu 4 Label", type: "text", default: componentDefaults["navigation-left"]?.menu4Label },
+                { name: "menu4Url", label: "Menu 4 URL", type: "text", default: componentDefaults["navigation-left"]?.menu4Url },
+            ],
+            images: [
+                { label: "Logo", propId: "logoId", suffix: "logo" }
+            ],
+            links: [
+                { label: "Menu 1", propId: "menu1Id", suffix: "menu-1", labelProp: "menu1Label", visibleProp: "menu1Visible", linkTypeProp: "menu1LinkType" },
+                { label: "Menu 2", propId: "menu2Id", suffix: "menu-2", labelProp: "menu2Label", visibleProp: "menu2Visible", linkTypeProp: "menu2LinkType" },
+                { label: "Menu 3", propId: "menu3Id", suffix: "menu-3", labelProp: "menu3Label", visibleProp: "menu3Visible", linkTypeProp: "menu3LinkType" },
+                { label: "Menu 4", propId: "menu4Id", suffix: "menu-4", labelProp: "menu4Label", visibleProp: "menu4Visible", linkTypeProp: "menu4LinkType" }
+            ]
+        },
+        {
+            id: "navigation-right",
+            name: "Navigation - Right",
+            component: NavigationRight,
+            thumbnail: "/images/thumbnails/navigation-center.svg",
+            config: [
+                { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["navigation-right"]?.menu1Label },
+                { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["navigation-right"]?.menu1Url },
+                { name: "menu2Label", label: "Menu 2 Label", type: "text", default: componentDefaults["navigation-right"]?.menu2Label },
+                { name: "menu2Url", label: "Menu 2 URL", type: "text", default: componentDefaults["navigation-right"]?.menu2Url },
+                { name: "menu3Label", label: "Menu 3 Label", type: "text", default: componentDefaults["navigation-right"]?.menu3Label },
+                { name: "menu3Url", label: "Menu 3 URL", type: "text", default: componentDefaults["navigation-right"]?.menu3Url },
+                { name: "menu4Label", label: "Menu 4 Label", type: "text", default: componentDefaults["navigation-right"]?.menu4Label },
+                { name: "menu4Url", label: "Menu 4 URL", type: "text", default: componentDefaults["navigation-right"]?.menu4Url },
             ],
             images: [
                 { label: "Logo", propId: "logoId", suffix: "logo" }
