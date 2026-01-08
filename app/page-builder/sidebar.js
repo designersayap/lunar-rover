@@ -1,19 +1,289 @@
-
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, memo } from "react";
 import {
     PlusIcon,
     CursorArrowRaysIcon,
     ChevronRightIcon,
     MagnifyingGlassIcon,
     TrashIcon,
-    ArrowUturnLeftIcon
+    ArrowUturnLeftIcon,
+    Square2StackIcon,
+    StopIcon,
+    FolderOpenIcon,
+    FolderIcon,
+    ArrowLeftStartOnRectangleIcon
 } from "@heroicons/react/24/outline";
-import { TrashIcon as TrashIconSolid } from "@heroicons/react/24/solid";
+import { TrashIcon as TrashIconSolid, FolderOpenIcon as FolderOpenIconSolid, FolderIcon as FolderIconSolid, ArrowLeftStartOnRectangleIcon as ArrowLeftStartOnRectangleIconSolid } from "@heroicons/react/24/solid";
 import styles from "../page.module.css";
 import { componentLibrary } from "./content/component-library";
 import { isComponentSticky, getValueAt } from "./utils/component-manager";
 import SidebarAnalyticsTab from "./sidebar-analytics-tab";
 
+// Helpers
+const sanitizeId = (value) => value.toLowerCase().trimStart().replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '');
+const sanitizeIdFinal = (value) => sanitizeId(value).replace(/-+$/, '');
+
+const getComponentDef = (id) => {
+    for (const category of Object.values(componentLibrary)) {
+        const found = category.find(c => c.id === id);
+        if (found) return found;
+    }
+    return null;
+};
+
+// Extracted ComponentTreeItem
+const ComponentTreeItem = memo(({
+    comp,
+    index,
+    depth = 0,
+    parentId = null,
+    // Context Props
+    activeElementId,
+    setActiveElementId,
+    selectedIds,
+    isMultiSelectMode,
+    handleSelectToggle,
+    expandedSections,
+    toggleSection,
+    updateSectionId,
+    updateComponent,
+    onUngroup,
+    removeComponent,
+    // DnD Props
+    handleDragStart,
+    handleDragEnd,
+    handleDragOver,
+    handleDrop,
+    draggedIndex,
+    dropTargetIndex
+}) => {
+    const def = getComponentDef(comp.id);
+    const allButtons = def?.buttons || [];
+    const allImages = (def?.images || []).map(img => ({ ...img, type: 'image' }));
+    const allLinks = (def?.links || []).map(link => ({ ...link, type: 'link' }));
+    const allTexts = (def?.texts || []).map(text => ({ ...text, type: 'text' }));
+    const allChildren = [...allTexts, ...allButtons, ...allImages, ...allLinks];
+
+    const isActive = activeElementId === comp.sectionId;
+    const isGroup = comp.id === 'scroll-group';
+    const groupChildren = isGroup ? (comp.props.components || []) : [];
+
+    const isSelected = selectedIds.includes(comp.uniqueId);
+
+    return (
+        <div
+            className={styles.treeGroup}
+            draggable
+            onDragStart={(e) => {
+                e.stopPropagation();
+                handleDragStart && handleDragStart(e, index, comp.name, null, { parentId, uniqueId: comp.uniqueId });
+            }}
+            onDragEnd={handleDragEnd}
+            onDragOver={(e) => {
+                e.stopPropagation();
+                handleDragOver && handleDragOver(e, index, { parentId });
+            }}
+            onDrop={(e) => {
+                e.stopPropagation();
+                handleDrop && handleDrop(e, index, { parentId });
+            }}
+            style={{
+                opacity: draggedIndex?.index === index && draggedIndex?.parentId === parentId ? 0.5 : 1,
+                borderTop: dropTargetIndex?.index === index && dropTargetIndex?.parentId === parentId ? '2px solid var(--brand-color-300)' : 'none',
+                paddingLeft: depth * 12
+            }}
+        >
+            <div
+                className={`${styles.treeRow} ${isActive ? styles.treeRowActive : ''}`}
+                onClick={(e) => {
+                    if (isMultiSelectMode) {
+                        e.stopPropagation();
+                        handleSelectToggle(comp.uniqueId);
+                    } else {
+                        setActiveElementId && setActiveElementId(comp.sectionId);
+                    }
+                }}
+            >
+                {/* Multi-select Checkbox */}
+                {isMultiSelectMode && (
+                    <div className={styles.checkboxWrapper} onClick={(e) => e.stopPropagation()}>
+                        <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() => handleSelectToggle(comp.uniqueId)}
+                            className={styles.treeCheckbox}
+                        />
+                    </div>
+                )}
+
+                {/* Expand/Collapse for Groups or Components with Children */}
+                <button
+                    className={styles.treeChevron}
+                    style={{ visibility: (allChildren.length > 0 || groupChildren.length > 0) ? 'visible' : 'hidden' }}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        toggleSection(comp.uniqueId);
+                    }}
+                >
+                    {isGroup ? (
+                        expandedSections[comp.uniqueId] ? (
+                            <FolderOpenIcon style={{ width: 14, height: 14, color: 'var(--grey-200)' }} />
+                        ) : (
+                            <FolderIcon style={{ width: 14, height: 14, color: 'var(--grey-200)' }} />
+                        )
+                    ) : (
+                        <ChevronRightIcon
+                            className={`${styles.treeChevronIcon} ${expandedSections[comp.uniqueId] ? styles.treeChevronExpanded : ''}`}
+                        />
+                    )}
+                </button>
+
+                {/* Component Icon / Name */}
+
+                <input
+                    type="text"
+                    value={comp.sectionId || ''}
+                    onChange={(e) => updateSectionId(comp.uniqueId, sanitizeId(e.target.value))}
+                    onBlur={(e) => {
+                        const finalValue = sanitizeIdFinal(e.target.value);
+                        updateSectionId(comp.uniqueId, finalValue || comp.sectionId || 'section');
+                    }}
+                    onFocus={() => setActiveElementId && setActiveElementId(comp.sectionId)}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onDragStart={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                    onClick={(e) => e.stopPropagation()}
+                    className={styles.treeInputInline}
+                    disabled={isMultiSelectMode}
+                />
+
+                {/* Actions */}
+                <div className={styles.treeActions}>
+                    {/* Ungroup Button */}
+                    {isGroup && (
+                        <button
+                            className={styles.sidebarDeleteButton}
+                            data-tooltip="Ungroup"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onUngroup && onUngroup(comp.uniqueId);
+                            }}
+                        >
+                            <ArrowLeftStartOnRectangleIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
+                            <ArrowLeftStartOnRectangleIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
+                        </button>
+                    )}
+
+                    <button
+                        className={styles.sidebarDeleteButton}
+                        data-tooltip="Delete Layer"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            removeComponent && removeComponent(comp.uniqueId);
+                        }}
+                    >
+                        <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
+                        <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
+                    </button>
+                </div>
+            </div>
+
+            {/* Render Children (Configurable Props or Nested Components) */}
+            {expandedSections[comp.uniqueId] && (
+                <div className={styles.treeChildren}>
+                    {/* Nested Components (Parallax Group) */}
+                    {groupChildren.map((child, i) => (
+                        <ComponentTreeItem
+                            key={child.uniqueId}
+                            comp={child}
+                            index={i}
+                            depth={depth + 1}
+                            parentId={comp.uniqueId}
+                            // Pass all context props down
+                            activeElementId={activeElementId}
+                            setActiveElementId={setActiveElementId}
+                            selectedIds={selectedIds}
+                            isMultiSelectMode={isMultiSelectMode}
+                            handleSelectToggle={handleSelectToggle}
+                            expandedSections={expandedSections}
+                            toggleSection={toggleSection}
+                            updateSectionId={updateSectionId}
+                            updateComponent={updateComponent}
+                            onUngroup={onUngroup}
+                            removeComponent={removeComponent}
+                            handleDragStart={handleDragStart}
+                            handleDragEnd={handleDragEnd}
+                            handleDragOver={handleDragOver}
+                            handleDrop={handleDrop}
+                            draggedIndex={draggedIndex}
+                            dropTargetIndex={dropTargetIndex}
+                        />
+                    ))}
+
+                    {/* Internal Configurable Elements (Buttons, Text, etc.) */}
+                    {allChildren.map((child, childIndex) => {
+                        const normalizedSectionId = comp.sectionId?.replace(/-+$/, '') || '';
+                        const currentId = getValueAt(comp.props, child.propId) || (normalizedSectionId ? `${normalizedSectionId}-${child.suffix}` : '');
+                        const isChildActive = activeElementId === currentId;
+                        const prefix = normalizedSectionId ? `${normalizedSectionId}-` : '';
+                        const rawSuffix = currentId.startsWith(prefix) ? currentId.slice(prefix.length) : currentId;
+                        const suffix = rawSuffix.replace(/^-+/, '');
+
+                        return (
+                            <div
+                                key={`prop-${childIndex}`}
+                                className={`${styles.treeRow} ${isChildActive ? styles.treeRowActive : ''} ${styles.treeRowNested}`}
+                                style={{ paddingLeft: (depth + 1) * 12 + 24 }}
+                                onClick={() => setActiveElementId && setActiveElementId(currentId)}
+                            >
+                                <div
+                                    className={styles.treeIconWrapper}
+                                    style={{ opacity: getValueAt(comp.props, child.visibleProp) === false ? 0.25 : 1 }}
+                                >
+                                    <CursorArrowRaysIcon className={styles.treeIcon} />
+                                </div>
+                                <input
+                                    type="text"
+                                    value={suffix}
+                                    onChange={(e) => {
+                                        const newFullId = prefix + sanitizeId(e.target.value);
+                                        updateComponent(comp.uniqueId, { [child.propId]: newFullId });
+                                    }}
+                                    onBlur={(e) => {
+                                        if (!e.target.value.trim()) {
+                                            updateComponent(comp.uniqueId, { [child.propId]: prefix + child.suffix });
+                                        }
+                                    }}
+                                    onFocus={() => setActiveElementId && setActiveElementId(currentId)}
+                                    onMouseDown={(e) => e.stopPropagation()}
+                                    onDragStart={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                                    onClick={(e) => e.stopPropagation()}
+                                    className={styles.treeInputInline}
+                                    style={{ opacity: getValueAt(comp.props, child.visibleProp) === false ? 0.25 : 1 }}
+                                />
+                                {/* Toggle Visibility Button */}
+                                {child.visibleProp && (
+                                    <button
+                                        className={styles.sidebarDeleteButton}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            const currentVal = getValueAt(comp.props, child.visibleProp);
+                                            updateComponent(comp.uniqueId, { [child.visibleProp]: !currentVal });
+                                        }}
+                                    >
+                                        {getValueAt(comp.props, child.visibleProp) === false ? (
+                                            <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
+                                        ) : (
+                                            <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
+                                        )}
+                                    </button>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
+        </div>
+    );
+});
 
 export default function Sidebar({
     activeTab,
@@ -33,10 +303,34 @@ export default function Sidebar({
     draggedIndex,
     dropTargetIndex,
     isAddPopoverOpen,
-    removeComponent
+    removeComponent,
+    onGroup,
+    onUngroup
 }) {
     const [layerSearch, setLayerSearch] = useState("");
     const [expandedSections, setExpandedSections] = useState({});
+
+    // Multi-select state
+    const [isMultiSelectMode, setIsMultiSelectMode] = useState(false);
+    const [selectedIds, setSelectedIds] = useState([]);
+
+    // Reset multi-select when mode is toggled off
+    useEffect(() => {
+        if (!isMultiSelectMode) {
+            setSelectedIds([]);
+        }
+    }, [isMultiSelectMode]);
+
+    // Handle multi-select toggle
+    const handleSelectToggle = (uniqueId) => {
+        setSelectedIds(prev => {
+            if (prev.includes(uniqueId)) {
+                return prev.filter(id => id !== uniqueId);
+            } else {
+                return [...prev, uniqueId];
+            }
+        });
+    };
 
     // Toggle section expand/collapse
     const toggleSection = (uniqueId) => {
@@ -46,48 +340,39 @@ export default function Sidebar({
         }));
     };
 
-    const sanitizeId = (value) => value.toLowerCase().trimStart().replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '');
-    const sanitizeIdFinal = (value) => sanitizeId(value).replace(/-+$/, '');
-
-    const getComponentDef = (id) => {
-        for (const category of Object.values(componentLibrary)) {
-            const found = category.find(c => c.id === id);
-            if (found) return found;
-        }
-        return null;
+    // Props Bundle to pass to TreeItem
+    const treeItemProps = {
+        activeElementId,
+        setActiveElementId,
+        selectedIds,
+        isMultiSelectMode,
+        handleSelectToggle,
+        expandedSections,
+        toggleSection,
+        updateSectionId,
+        updateComponent,
+        onUngroup,
+        removeComponent,
+        handleDragStart,
+        handleDragEnd,
+        handleDragOver,
+        handleDrop,
+        draggedIndex,
+        dropTargetIndex
     };
-
-    // Search Filtering Logic
-    const filteredComponents = useMemo(() => {
-        if (!layerSearch.trim()) return selectedComponents;
-        const searchLower = layerSearch.toLowerCase();
-        return selectedComponents.filter(comp => {
-            if (comp.name?.toLowerCase().includes(searchLower)) return true;
-            if (comp.sectionId?.toLowerCase().includes(searchLower)) return true;
-            const def = getComponentDef(comp.id);
-            const buttons = def?.buttons || [];
-            const images = def?.images || [];
-            const links = def?.links || [];
-            const allChildren = [...buttons, ...images, ...links];
-            return allChildren.some(child => {
-                const currentId = getValueAt(comp.props, child.propId) || (comp.sectionId ? `${comp.sectionId}-${child.suffix}` : '');
-                return child.label?.toLowerCase().includes(searchLower) || currentId.toLowerCase().includes(searchLower);
-            });
-        });
-    }, [selectedComponents, layerSearch]);
 
     return (
         <div className={styles.sidebar}>
             <div className={styles.sidebarSection}>
                 <div className={styles.tabs}>
                     <button
-                        className={`${styles.tab} ${activeTab === "elements" ? styles.tabActive : styles.tabInactive} `}
+                        className={`${styles.tab} ${activeTab === "elements" ? styles.tabActive : styles.tabInactive}`}
                         onClick={() => setActiveTab("elements")}
                     >
                         Layers
                     </button>
                     <button
-                        className={`${styles.tab} ${activeTab === "analytics" ? styles.tabActive : styles.tabInactive} `}
+                        className={`${styles.tab} ${activeTab === "analytics" ? styles.tabActive : styles.tabInactive}`}
                         onClick={() => setActiveTab("analytics")}
                     >
                         Settings
@@ -97,254 +382,122 @@ export default function Sidebar({
 
             {activeTab === "elements" ? (
                 <>
-                    {/* Search Bar + Add Button */}
+                    {/* Search Bar + Actions */}
                     <div className={styles.searchRow}>
-                        <div className={styles.searchInputWrapper}>
-                            <MagnifyingGlassIcon className={styles.searchIcon} />
-                            <input
-                                type="text"
-                                className={`${styles.formInput} ${styles.searchBar} `}
-                                placeholder="Search layers"
-                                value={layerSearch}
-                                onChange={(e) => setLayerSearch(e.target.value)}
-                            />
-                        </div>
-                        <button
-                            className={`${styles.generatorButton} ${styles.sidebarAddButton} ${isAddPopoverOpen ? styles.generatorButtonActive : ''} `}
-                            data-tooltip="Add Layer"
-                            onClick={(e) => onAddClick(e.currentTarget.getBoundingClientRect())}
-                        >
-                            <PlusIcon className={styles.sidebarAddIcon} />
-                        </button>
+                        {isMultiSelectMode ? (
+                            <div className={styles.multiSelectToolbar} style={{ display: 'flex', alignItems: 'center', flex: 1, gap: 8, padding: '0 8px' }}>
+                                <span className="caption-regular" style={{ flex: 1 }}>{selectedIds.length} selected</span>
+                                <div style={{ display: 'flex', gap: 4 }}>
+                                    {selectedIds.length > 1 && (
+                                        <button
+                                            className={styles.sidebarActionButton}
+                                            style={{
+                                                background: 'var(--brand-color-500)',
+                                                color: 'white',
+                                                border: 'none',
+                                                padding: '4px 8px',
+                                                borderRadius: 4,
+                                                cursor: 'pointer',
+                                                display: 'flex', alignItems: 'center'
+                                            }}
+                                            onClick={() => {
+                                                onGroup && onGroup(selectedIds);
+                                                setIsMultiSelectMode(false);
+                                            }}
+                                            data-tooltip="Group Selected"
+                                        >
+                                            <FolderOpenIconSolid style={{ width: 16, height: 16 }} />
+                                        </button>
+                                    )}
+                                    <button
+                                        className={styles.sidebarActionButton}
+                                        style={{
+                                            background: 'transparent',
+                                            border: '1px solid var(--grey-300)',
+                                            padding: '4px 8px',
+                                            borderRadius: 4,
+                                            cursor: 'pointer'
+                                        }}
+                                        onClick={() => setIsMultiSelectMode(false)}
+                                        data-tooltip="Cancel"
+                                    >
+                                        <StopIcon style={{ width: 16, height: 16 }} />
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <>
+                                <div className={styles.searchInputWrapper}>
+                                    <MagnifyingGlassIcon className={styles.searchIcon} />
+                                    <input
+                                        type="text"
+                                        className={`${styles.formInput} ${styles.searchBar}`}
+                                        placeholder="Search layers"
+                                        value={layerSearch}
+                                        onChange={(e) => setLayerSearch(e.target.value)}
+                                    />
+                                </div>
+                                <button
+                                    className={`${styles.generatorButton} ${styles.sidebarAddButton} ${isAddPopoverOpen ? styles.generatorButtonActive : ''}`}
+                                    data-tooltip="Add Layer"
+                                    onClick={(e) => onAddClick(e.currentTarget.getBoundingClientRect())}
+                                >
+                                    <PlusIcon className={styles.sidebarAddIcon} />
+                                </button>
+                                <button
+                                    className={`${styles.generatorButton} ${styles.sidebarAddButton}`}
+                                    data-tooltip="Select Multiple"
+                                    style={{ marginLeft: 4 }}
+                                    onClick={() => setIsMultiSelectMode(true)}
+                                >
+                                    <Square2StackIcon className={styles.sidebarAddIcon} />
+                                </button>
+                            </>
+                        )}
                     </div>
 
                     <div className={styles.treeContainer}>
-
+                        {/* Logic to split pinned vs other, but using new renderer */}
                         {(() => {
-                            const pinnedComps = filteredComponents.filter(isComponentSticky);
-                            const otherComps = filteredComponents.filter(c => !isComponentSticky(c));
+                            const pinnedComps = selectedComponents.filter(c => isComponentSticky(c));
+                            const otherComps = selectedComponents.filter(c => !isComponentSticky(c));
 
-                            if (filteredComponents.length === 0) {
-                                return (
-                                    <div className={styles.sidebarEmptyState}>
-                                        {selectedComponents.length === 0 ? "No layers added" : "No matching layers"}
-                                    </div>
-                                );
-                            }
-
-                            const renderLayerList = (list) => list.map((comp) => {
-                                const def = getComponentDef(comp.id);
-                                const allButtons = def?.buttons || [];
-                                const allImages = (def?.images || []).map(img => ({ ...img, type: 'image' }));
-                                const allLinks = (def?.links || []).map(link => ({ ...link, type: 'link' }));
-                                const allTexts = (def?.texts || []).map(text => ({ ...text, type: 'text' }));
-                                const allChildren = [...allTexts, ...allButtons, ...allImages, ...allLinks];
-                                const isActive = activeElementId === comp.sectionId;
-                                const originalIndex = selectedComponents.findIndex(c => c.uniqueId === comp.uniqueId);
-
-                                // Child Filtering:
-                                const searchLower = layerSearch.toLowerCase().trim();
-                                const filteredChildren = searchLower
-                                    ? allChildren.filter(child => {
-                                        const currentId = getValueAt(comp.props, child.propId) || (comp.sectionId ? `${comp.sectionId}-${child.suffix}` : '');
-                                        return child.label?.toLowerCase().includes(searchLower) || currentId.toLowerCase().includes(searchLower);
-                                    })
-                                    : allChildren;
-
-                                const parentMatches = !searchLower ||
-                                    comp.name?.toLowerCase().includes(searchLower) ||
-                                    comp.sectionId?.toLowerCase().includes(searchLower);
-
-                                const childrenToShow = parentMatches ? allChildren : filteredChildren;
-
-                                const isDragDown = draggedIndex !== null && draggedIndex < originalIndex;
-                                const isTarget = dropTargetIndex === originalIndex;
-
-                                return (
-                                    <div
-                                        key={comp.uniqueId}
-                                        className={styles.treeGroup}
-                                        draggable="true"
-                                        onDragStart={(e) => handleDragStart && handleDragStart(e, originalIndex, comp.name)}
-                                        onDragEnd={handleDragEnd}
-                                        onDragOver={(e) => handleDragOver && handleDragOver(e, originalIndex)}
-                                        onDrop={(e) => handleDrop && handleDrop(e, originalIndex)}
-                                        style={{
-                                            opacity: draggedIndex === originalIndex ? 0.5 : 1,
-                                            borderTop: isTarget && !isDragDown ? '2px solid var(--brand-color-300)' : 'none',
-                                            borderBottom: isTarget && isDragDown ? '2px solid var(--brand-color-300)' : 'none',
-                                            transition: 'all 0.2s ease',
-                                            cursor: 'grab'
-                                        }}
-                                    >  {/* Component Header - shows ID directly */}
-                                        <div
-                                            className={`${styles.treeRow} ${isActive ? styles.treeRowActive : ''} `}
-                                            onClick={() => setActiveElementId && setActiveElementId(comp.sectionId)}
-                                        >
-                                            <button
-                                                className={styles.treeChevron}
-                                                style={{ visibility: childrenToShow.length > 0 ? 'visible' : 'hidden' }}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    if (childrenToShow.length > 0) toggleSection(comp.uniqueId);
-                                                }}
-                                            >
-                                                <ChevronRightIcon
-                                                    className={`${styles.treeChevronIcon} ${expandedSections[comp.uniqueId] ? styles.treeChevronExpanded : ''} `}
-                                                />
-                                            </button>
-                                            <input
-                                                type="text"
-                                                value={comp.sectionId || ''}
-                                                onChange={(e) => updateSectionId(comp.uniqueId, sanitizeId(e.target.value))}
-                                                onBlur={(e) => {
-                                                    const finalValue = sanitizeIdFinal(e.target.value);
-                                                    if (!finalValue.trim()) {
-                                                        updateSectionId(comp.uniqueId, comp.sectionId || 'section');
-                                                    } else {
-                                                        updateSectionId(comp.uniqueId, finalValue);
-                                                    }
-                                                }}
-                                                onFocus={() => setActiveElementId && setActiveElementId(comp.sectionId)}
-                                                onClick={(e) => e.stopPropagation()}
-                                                className={styles.treeInputInline}
-                                            />
-                                            <button
-                                                className={styles.sidebarDeleteButton}
-                                                data-tooltip="Delete Layer"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    removeComponent && removeComponent(comp.uniqueId);
-                                                }}
-                                            >
-                                                <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
-                                                <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
-                                            </button>
-                                        </div>
-
-                                        {/* Nested Children - collapsible */}
-                                        {expandedSections[comp.uniqueId] && (
-                                            <div className={styles.treeChildren}>
-                                                {childrenToShow.map((child, childIndex) => {
-                                                    const normalizedSectionId = comp.sectionId?.replace(/-+$/, '') || '';
-                                                    const currentId = getValueAt(comp.props, child.propId) || (normalizedSectionId ? `${normalizedSectionId}-${child.suffix}` : '');
-                                                    const isChildActive = activeElementId === currentId;
-                                                    const prefix = normalizedSectionId ? `${normalizedSectionId}-` : '';
-                                                    const rawSuffix = currentId.startsWith(prefix) ? currentId.slice(prefix.length) : currentId;
-                                                    const suffix = rawSuffix.replace(/^-+/, '');
-
-                                                    return (
-                                                        <div
-                                                            key={childIndex}
-                                                            className={`${styles.treeRow} ${isChildActive ? styles.treeRowActive : ''} ${styles.treeRowNested} `}
-                                                            onClick={() => setActiveElementId && setActiveElementId(currentId)}
-                                                        >
-                                                            <div
-                                                                className={styles.treeIconWrapper}
-                                                                style={{ opacity: getValueAt(comp.props, child.visibleProp) === false ? 0.25 : 1 }}
-                                                            >
-                                                                <CursorArrowRaysIcon className={styles.treeIcon} />
-                                                            </div>
-                                                            <input
-                                                                type="text"
-                                                                value={suffix}
-                                                                onChange={(e) => {
-                                                                    const newFullId = prefix + sanitizeId(e.target.value);
-                                                                    updateComponent(comp.uniqueId, { [child.propId]: newFullId });
-                                                                }}
-                                                                onBlur={(e) => {
-                                                                    if (!e.target.value.trim()) {
-                                                                        updateComponent(comp.uniqueId, { [child.propId]: prefix + child.suffix });
-                                                                    }
-                                                                }}
-                                                                onFocus={() => setActiveElementId && setActiveElementId(currentId)}
-                                                                onClick={(e) => e.stopPropagation()}
-                                                                className={styles.treeInputInline}
-                                                                style={{ opacity: getValueAt(comp.props, child.visibleProp) === false ? 0.25 : 1 }}
-                                                            />
-                                                            {child.visibleProp && (
-                                                                getValueAt(comp.props, child.visibleProp) === false ? (
-                                                                    <button
-                                                                        className={styles.sidebarDeleteButton}
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            updateComponent(comp.uniqueId, { [child.visibleProp]: true });
-                                                                        }}
-                                                                    >
-                                                                        <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
-                                                                    </button>
-                                                                ) : (
-                                                                    <button
-                                                                        className={styles.sidebarDeleteButton}
-                                                                        data-tooltip="Delete Layer"
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            if (comp.id === 'dialog-accordion') {
-                                                                                const visibleCount = allChildren.filter(c => getValueAt(comp.props, c.visibleProp) !== false).length;
-                                                                                if (visibleCount <= 1) {
-                                                                                    alert("At least one accordion item must remain visible.");
-                                                                                    return;
-                                                                                }
-                                                                            }
-                                                                            if (comp.id === 'terra-testimony') {
-                                                                                const visibleCount = allChildren.filter(c => getValueAt(comp.props, c.visibleProp) !== false).length;
-                                                                                if (visibleCount <= 3) {
-                                                                                    alert("At least 3 testimony cards must remain visible.");
-                                                                                    return;
-                                                                                }
-                                                                            }
-                                                                            const isVisible = getValueAt(comp.props, child.visibleProp) !== false;
-                                                                            if (isVisible && activeElementId === currentId) {
-                                                                                setActiveElementId(null);
-                                                                            }
-                                                                            updateComponent(comp.uniqueId, { [child.visibleProp]: false });
-                                                                        }}
-                                                                        style={{
-                                                                            opacity: (
-                                                                                (comp.id === 'dialog-accordion' && allChildren.filter(c => getValueAt(comp.props, c.visibleProp) !== false).length <= 1) ||
-                                                                                (comp.id === 'terra-testimony' && allChildren.filter(c => getValueAt(comp.props, c.visibleProp) !== false).length <= 3)
-                                                                            ) ? 0.3 : 1,
-                                                                            cursor: (
-                                                                                (comp.id === 'dialog-accordion' && allChildren.filter(c => getValueAt(comp.props, c.visibleProp) !== false).length <= 1) ||
-                                                                                (comp.id === 'terra-testimony' && allChildren.filter(c => getValueAt(comp.props, c.visibleProp) !== false).length <= 3)
-                                                                            ) ? 'not-allowed' : 'pointer'
-                                                                        }}
-                                                                    >
-                                                                        <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
-                                                                        <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
-                                                                    </button>
-                                                                )
-                                                            )}
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                        )}
-                                    </div>
-                                );
-                            });
+                            if (selectedComponents.length === 0) return <div className={styles.sidebarEmptyState}>No layers added</div>;
 
                             return (
                                 <>
                                     {pinnedComps.length > 0 && (
                                         <div className={styles.categoryWrapper} style={{ marginBottom: 12 }}>
-                                            <div className={`caption-regular`} style={{ padding: '4px 0', color: 'var(--grey-300)' }}>
-                                                Pinned Layers
-                                            </div>
-                                            {renderLayerList(pinnedComps)}
+                                            <div className={`caption-regular`} style={{ padding: '4px 0', color: 'var(--grey-300)' }}>Pinned Layers</div>
+                                            {pinnedComps.map((comp, i) => (
+                                                <ComponentTreeItem
+                                                    key={comp.uniqueId}
+                                                    comp={comp}
+                                                    index={i}
+                                                    parentId="main"
+                                                    {...treeItemProps}
+                                                />
+                                            ))}
                                         </div>
                                     )}
 
                                     {otherComps.length > 0 && (
                                         <div className={styles.categoryWrapper}>
-                                            <div className={`caption-regular`} style={{ padding: '4px 0', color: 'var(--grey-300)' }}>
-                                                Page Layers
-                                            </div>
-                                            {renderLayerList(otherComps)}
+                                            <div className={`caption-regular`} style={{ padding: '4px 0', color: 'var(--grey-300)' }}>Page Layers</div>
+                                            {otherComps.map((comp, i) => (
+                                                // Adjusted index for global DnD if needed, but keeping local index for now
+                                                <ComponentTreeItem
+                                                    key={comp.uniqueId}
+                                                    comp={comp}
+                                                    index={pinnedComps.length + i}
+                                                    parentId="main"
+                                                    {...treeItemProps}
+                                                />
+                                            ))}
                                         </div>
                                     )}
                                 </>
-                            );
+                            )
                         })()}
                     </div>
                 </>
@@ -353,8 +506,7 @@ export default function Sidebar({
                     analyticsData={analyticsData}
                     setAnalyticsData={setAnalyticsData}
                 />
-            )
-            }
-        </div >
+            )}
+        </div>
     );
 }

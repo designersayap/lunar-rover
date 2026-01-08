@@ -10,8 +10,8 @@ export function useDragDrop({ onReorder }) {
     const dragThumbnailRef = useRef(null);
     const dragNameRef = useRef(null);
 
-    const handleDragStart = useCallback((e, index, name, thumbnail) => {
-        setDraggedIndex(index);
+    const handleDragStart = useCallback((e, index, name, thumbnail, data = {}) => {
+        setDraggedIndex({ index, ...data });
         e.dataTransfer.effectAllowed = "move";
 
         if (dragImageRef.current) {
@@ -21,11 +21,14 @@ export function useDragDrop({ onReorder }) {
         }
     }, []);
 
-    const handleDragOver = useCallback((e, index) => {
+    const handleDragOver = useCallback((e, index, data = {}) => {
         e.preventDefault();
         e.dataTransfer.dropEffect = "move";
-        if (draggedIndex !== index) {
-            setDropTargetIndex(index);
+        // Check if indices AND parentIds match (if present)
+        const isSameItem = draggedIndex?.index === index && draggedIndex?.parentId === data?.parentId;
+
+        if (!isSameItem) {
+            setDropTargetIndex({ index, ...data });
         }
     }, [draggedIndex]);
 
@@ -34,10 +37,14 @@ export function useDragDrop({ onReorder }) {
         setDropTargetIndex(null);
     }, []);
 
-    const handleDrop = useCallback((e, index) => {
+    const handleDrop = useCallback((e, index, data = {}) => {
         e.preventDefault();
-        if (draggedIndex !== null && draggedIndex !== index) {
-            onReorder?.(draggedIndex, index);
+        const from = draggedIndex;
+        const to = { index, ...data };
+
+        // Only allow reordering within same parent
+        if (from && from.parentId === to.parentId && from.index !== to.index) {
+            onReorder?.(from, to);
         }
         handleDragEnd();
     }, [draggedIndex, handleDragEnd, onReorder]);

@@ -395,6 +395,10 @@
     height: var(--h-input);
     position: relative;
     user-select: none;
+    display: flex;
+    align-items: center;
+    padding-right: 8px;
+    /* Safe area for right edge */
 }
 
 .treeRowActive .treeIcon,
@@ -472,6 +476,9 @@
     color: var(--grey-200);
     flex: 1;
     min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .treeInputInline:focus {
@@ -492,26 +499,29 @@
     height: 16px;
 }
 
+.treeActions {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.treeRow:hover .treeActions {
+    display: flex;
+}
+
 .sidebarDeleteButton {
-    position: absolute;
-    right: 4px;
-    top: 50%;
-    transform: translateY(-50%);
     background: transparent;
     border: none;
     cursor: pointer;
     color: var(--grey-200);
     padding: 4px;
     border-radius: 4px;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 24px;
     height: 24px;
-}
-
-.treeRow:hover .sidebarDeleteButton {
-    display: flex;
 }
 
 .sidebarDeleteButton:hover {
@@ -636,6 +646,7 @@
 .activeOverlay {
     position: absolute;
     top: -24px;
+    z-index: 20;
     left: 50%;
     transform: translateX(-50%);
     display: flex;

@@ -60,7 +60,9 @@ export default function TemplateGeneratorPage() {
     handleAddClick,
     closePopover,
     togglePopover,
-    setSelectedComponents
+    setSelectedComponents,
+    handleGroup,
+    handleUngroup
   } = actions;
 
   const {
@@ -139,6 +141,8 @@ export default function TemplateGeneratorPage() {
               handleDragEnd={handleDragEnd}
               draggedIndex={draggedIndex}
               dropTargetIndex={dropTargetIndex}
+              onGroup={handleGroup}
+              onUngroup={handleUngroup}
             />
           )}
         </div>

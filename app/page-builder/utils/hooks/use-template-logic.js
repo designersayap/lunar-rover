@@ -13,7 +13,9 @@ import {
     generateSectionId,
     updateComponentProps,
     updateComponentSectionId,
-    reorderComponents
+    reorderComponents,
+    groupComponents,
+    ungroupComponent
 } from "@/app/page-builder/utils/component-manager";
 import { handleExportNextjs } from "@/app/page-builder/utils/export-nextjs";
 import { calculatePopoverPosition } from "@/app/page-builder/utils/builder/builder-controls";
@@ -47,8 +49,8 @@ export function useTemplateLogic() {
 
     // Drag and Drop Logic
     const dragDrop = useDragDrop({
-        onReorder: (fromIndex, toIndex) => {
-            setSelectedComponents(prev => reorderComponents(prev, fromIndex, toIndex));
+        onReorder: (from, to) => {
+            setSelectedComponents(prev => reorderComponents(prev, from, to));
         }
     });
 
@@ -178,6 +180,16 @@ export function useTemplateLogic() {
         setSelectedComponents(prev => updateComponentSectionId(prev, uniqueId, newId));
     }, []);
 
+    const handleGroup = useCallback((idsToGroup) => {
+        setSelectedComponents(prev => groupComponents(prev, idsToGroup));
+        showToast("Layers grouped");
+    }, [showToast]);
+
+    const handleUngroup = useCallback((groupId) => {
+        setSelectedComponents(prev => ungroupComponent(prev, groupId));
+        showToast("Layers ungrouped");
+    }, [showToast]);
+
     // Popover / Export
     const handleExport = useCallback((position) => {
         togglePopover('export', position);
@@ -247,6 +259,8 @@ export function useTemplateLogic() {
             removeComponent,
             updateComponent,
             updateSectionId,
+            handleGroup,
+            handleUngroup,
             handleAddClick,
             closePopover,
             togglePopover,

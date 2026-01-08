@@ -243,4 +243,12 @@ export const componentDefaults = {
         }),
         fullWidth: false
     },
+    "scroll-group": {
+        image: "", // Desktop Background
+        mobileImage: "", // Mobile Background
+        imageIsPortrait: false,
+        imageMobileRatio: "",
+        scrollEffect: "parallax", // 'parallax' | 'sticky'
+        components: [] // Nested components
+    }
 };

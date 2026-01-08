@@ -27,14 +27,36 @@ export function loadTemplate(componentLibrary) {
         const { components = [], analytics } = JSON.parse(saved);
 
         // Rehydrate component references
-        const rehydrated = components.map(comp => {
-            let original = null;
-            Object.values(componentLibrary).forEach(category => {
-                const found = category.find(c => c.id === comp.id);
-                if (found) original = found;
-            });
-            return original ? { ...comp, component: original.component } : null;
-        }).filter(Boolean);
+        // Helper to find component definition
+        const findDef = (id) => {
+            for (const category of Object.values(componentLibrary)) {
+                const found = category.find(c => c.id === id);
+                if (found) return found;
+            }
+            return null;
+        };
+
+        // Recursive rehydration
+        const rehydrate = (list) => {
+            return list.map(comp => {
+                const original = findDef(comp.id);
+                if (!original) return null;
+
+                const rehydratedComp = { ...comp, component: original.component };
+
+                // Handle nested components (ParallaxGroup)
+                if (rehydratedComp.props?.components) {
+                    rehydratedComp.props = {
+                        ...rehydratedComp.props,
+                        components: rehydrate(rehydratedComp.props.components)
+                    };
+                }
+
+                return rehydratedComp;
+            }).filter(Boolean);
+        };
+
+        const rehydrated = rehydrate(components);
 
         return {
             components: rehydrated,

@@ -42,7 +42,10 @@ export default function BuilderControlsPopover({
     iconLeft,
     onIconLeftChange,
     iconRight,
-    onIconRightChange
+    onIconRightChange,
+    showScrollEffect,
+    scrollEffect,
+    onScrollEffectChange
 }) {
 
 
@@ -339,7 +342,24 @@ export default function BuilderControlsPopover({
                             </>
                         )}
 
-                        {showMobileImageSrc && mobileRatio && (
+                        {showScrollEffect && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Scroll Effect</label>
+                                <div className={styles.selectWrapper}>
+                                    <select
+                                        className={styles.selectInput}
+                                        value={scrollEffect || 'parallax'}
+                                        onChange={(e) => onScrollEffectChange && onScrollEffectChange(e.target.value)}
+                                    >
+                                        <option value="parallax">Parallax</option>
+                                        <option value="sticky">Sticky on Top</option>
+                                    </select>
+                                    <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
+                                </div>
+                            </div>
+                        )}
+
+                        {showMobileImageSrc && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: '8px' }}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Media Source</label>
                                 <input

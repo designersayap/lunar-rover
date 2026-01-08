@@ -16,6 +16,7 @@ const Media21x9 = dynamic(() => import('@/app/templates/media/media-21-9'));
 const NavigationCenter = dynamic(() => import("../../templates/navigation/navigation-center"));
 const BackgroundFullBody = dynamic(() => import("@/app/templates/background/full-body"));
 const FooterTerra = dynamic(() => import("@/app/templates/terra/terra-footer"));
+const ScrollGroup = dynamic(() => import("../utils/builder/scroll-group"));
 
 export const componentLibrary = {
     "Background": [
@@ -666,4 +667,26 @@ export const componentLibrary = {
             ]
         }
     ],
+    "Structure": [
+        {
+            id: 'scroll-group',
+            name: 'Scroll Group',
+            component: ScrollGroup,
+            thumbnail: "/images/thumbnails/feature-image-right.svg", // Placeholder
+            config: [
+                {
+                    name: "image",
+                    label: "Desktop Background",
+                    type: "image",
+                    default: componentDefaults["scroll-group"].image
+                },
+                {
+                    name: "mobileImage",
+                    label: "Mobile Background",
+                    type: "image",
+                    default: componentDefaults["scroll-group"].mobileImage
+                }
+            ]
+        }
+    ]
 };
