@@ -7,6 +7,7 @@ import BuilderControlsPopover from "./builder-controls-popover";
 import { Cog6ToothIcon, TrashIcon, ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
 import { getContainerClasses } from "../section-utils";
 import { createPortal } from "react-dom";
+import { componentLibrary } from "@/app/page-builder/content/component-library";
 
 export default function ScrollGroup({
     sectionId,
@@ -147,7 +148,11 @@ export default function ScrollGroup({
     const renderChildren = () => (
         <div className={styles.parallaxContent}>
             {components.map((item) => {
-                const Component = item.component;
+                // Prioritize the component instance if passed (Export/UAT), otherwise lookup (Builder)
+                const Component = item.component || Object.values(componentLibrary).flat().find(c => c.id === item.id)?.component;
+
+                if (!Component) return null;
+
                 return (
                     <div key={item.uniqueId} className={styles.componentWrapper}>
                         <Component

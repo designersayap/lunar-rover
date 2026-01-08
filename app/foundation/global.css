@@ -20,14 +20,32 @@ body {
 /* Builder Text Lists */
 .builder-text ul {
   padding-left: 1.5em;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
   list-style-type: disc;
 }
 
 .builder-text ol {
   padding-left: 1.5em;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
   list-style-type: decimal;
+}
+
+.builder-text li {
+  margin-bottom: 0.5em;
+}
+
+.builder-text li:last-child {
+  margin-bottom: 0;
+}
+
+/* Nested List Styles */
+.builder-text ul ul {
+  list-style-type: circle;
+  margin-bottom: 0;
+}
+
+.builder-text ul ul ul {
+  list-style-type: square;
 }
 
 .builder-text ol[type="a"] {

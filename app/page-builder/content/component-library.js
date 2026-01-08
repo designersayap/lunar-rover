@@ -5,21 +5,21 @@ const HeaderSection = dynamic(() => import("@/app/templates/header/header-sectio
 const HeroTerraBanner = dynamic(() => import("@/app/templates/terra/terra-banner-hero"));
 const FeatureImageLeft = dynamic(() => import("@/app/templates/feature/feature-image-left"));
 const FeatureImageRight = dynamic(() => import("@/app/templates/feature/feature-image-right"));
-const DialogItemList = dynamic(() => import("../../templates/dialog/dialog-item-list"));
-const DialogAccordion = dynamic(() => import("../../templates/dialog/dialog-accordion"));
-const OsmBanner = dynamic(() => import("../../templates/osm/osm-banner"));
-const TestimonialTerra = dynamic(() => import("../../templates/terra/terra-testimony"));
-const Media16x9 = dynamic(() => import("../../templates/media/media-16-9"));
+const DialogItemList = dynamic(() => import("@/app/templates/dialog/dialog-item-list"));
+const DialogAccordion = dynamic(() => import("@/app/templates/dialog/dialog-accordion"));
+const OsmBanner = dynamic(() => import("@/app/templates/osm/osm-banner"));
+const TestimonialTerra = dynamic(() => import("@/app/templates/terra/terra-testimony"));
+const Media16x9 = dynamic(() => import("@/app/templates/media/media-16-9"));
 const Media5x4 = dynamic(() => import('@/app/templates/media/media-5-4'));
 const Media4x3 = dynamic(() => import('@/app/templates/media/media-4-3'));
 const Media21x9 = dynamic(() => import('@/app/templates/media/media-21-9'));
-const NavigationCenter = dynamic(() => import("../../templates/navigation/navigation-center"));
+const NavigationCenter = dynamic(() => import("@/app/templates/navigation/navigation-center"));
 const BackgroundFullBody = dynamic(() => import("@/app/templates/background/full-body"));
 const FooterTerra = dynamic(() => import("@/app/templates/terra/terra-footer"));
-const ScrollGroup = dynamic(() => import("../utils/builder/scroll-group"));
-const SpacingSmall = dynamic(() => import("../../templates/spacing/spacing-small"));
-const SpacingMedium = dynamic(() => import("../../templates/spacing/spacing-medium"));
-const SpacingLarge = dynamic(() => import("../../templates/spacing/spacing-large"));
+const ScrollGroup = dynamic(() => import("@/app/page-builder/utils/builder/scroll-group"));
+const SpacingSmall = dynamic(() => import("@/app/templates/spacing/spacing-small"));
+const SpacingMedium = dynamic(() => import("@/app/templates/spacing/spacing-medium"));
+const SpacingLarge = dynamic(() => import("@/app/templates/spacing/spacing-large"));
 
 export const componentLibrary = {
     "Background": [

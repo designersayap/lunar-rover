@@ -109,10 +109,13 @@ const BuilderText = ({ tagName = 'p', content, className, style, children, id, s
   let finalId = id || (normalizedSectionId ? normalizedSectionId + '-' + effectiveSuffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
 
+  // Append builder-text class
+  const finalClassName = \`builder-text \${className || ''}\`.trim();
+
   if (content) {
-    return <Tag id={finalId} className={className} style={style} dangerouslySetInnerHTML={{ __html: content }} />;
+    return <Tag id={finalId} className={finalClassName} style={style} dangerouslySetInnerHTML={{ __html: content }} />;
   }
-  return <Tag id={finalId} className={className} style={style}>{children}</Tag>;
+  return <Tag id={finalId} className={finalClassName} style={style}>{children}</Tag>;
 };`);
   }
 

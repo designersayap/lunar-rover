@@ -192,7 +192,8 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
             // C. Find and Process Dependencies (Recursive) - Match standard imports
             // We need a loop because regex.exec is stateful
             // FIXED: capture generic path (matched group 1) to support aliases like matching "@/..."
-            const importRegex = /import\s+(?:[\w{},*\s]+)\s+from\s+['"]([^'"]+)['"]/g;
+            // Also supports dynamic imports: import("...")
+            const importRegex = /(?:import\s+(?:[\w{},*\s]+)\s+from\s+['"]([^'"]+)['"]|import\(['"]([^'"]+)['"]\))/g;
             let match;
 
             // We collect replacements to do them after the loop to avoid messing up regex indices if content changes length (though we replace text so we should be careful)
@@ -201,7 +202,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
 
             for (const match of matches) {
                 const fullImport = match[0];
-                const importPath = match[1];
+                const importPath = match[1] || match[2]; // Group 1 is static, Group 2 is dynamic
 
                 // Filter: Only process relative paths (.) and project aliases (@/)
                 // Ignore external packages (next, react, etc.)
@@ -250,6 +251,9 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
 
                 content = content.replace(`from "${importPath}"`, `from "${newImportPath}"`);
                 content = content.replace(`from '${importPath}'`, `from '${newImportPath}'`);
+                // Fix: Also rewrite dynamic imports
+                content = content.replace(`import("${importPath}")`, `import("${newImportPath}")`);
+                content = content.replace(`import('${importPath}')`, `import('${newImportPath}')`);
             }
 
             // Update file in zip with rewritten content
