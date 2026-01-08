@@ -311,15 +311,17 @@ export function generateSectionId(category) {
  * Filters the component library based on a search query.
  */
 export const searchComponents = (query, library) => {
-    if (!query) return library;
-
-    const queryTerms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    const queryTerms = query ? query.toLowerCase().split(/\s+/).filter(Boolean) : [];
     const filteredLibrary = {};
 
     Object.keys(library).forEach(category => {
         const lowerCategory = category.toLowerCase();
 
         const filteredComponents = library[category].filter(component => {
+            if (component.hidden) return false;
+
+            if (!query) return true;
+
             const lowerName = component.name.toLowerCase();
             const combinedSearchableText = `${lowerCategory} ${lowerName}`;
             return queryTerms.every(term => combinedSearchableText.includes(term));

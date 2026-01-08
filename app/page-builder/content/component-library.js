@@ -673,6 +673,7 @@ export const componentLibrary = {
             name: 'Scroll Group',
             component: ScrollGroup,
             thumbnail: "/images/thumbnails/feature-image-right.svg", // Placeholder
+            hidden: true,
             config: [
                 {
                     name: "image",
