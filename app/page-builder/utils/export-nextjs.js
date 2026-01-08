@@ -726,19 +726,27 @@ export default function RootLayout({ children }) {
     });
 
     // Pre-calculate Sticky Indices
+    // Pre-calculate Sticky Indices and Stacked Indices
     const stickyIndices = [];
+    const stackedIndices = [];
     processedComponents.forEach((item, index) => {
         const compDefaults = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
-        const isSticky = (item.props?.isSticky ?? compDefaults.isSticky ?? false) || (item.props?.scrollEffect === 'stacked');
+        const isStacked = item.props?.scrollEffect === 'stacked';
+        const isSticky = (item.props?.isSticky ?? compDefaults.isSticky ?? false) || isStacked;
+
         if (isSticky) {
             stickyIndices.push(index);
         }
+        if (isStacked) {
+            stackedIndices.push(index);
+        }
     });
 
-    pageContent += `      <StickyManager stickyIndices={[${stickyIndices.join(',')}]}>\n`;
+    pageContent += `      <StickyManager stickyIndices={[${stickyIndices.join(',')}]} stackedIndices={[${stackedIndices.join(',')}]}>\n`;
 
     // Render Instances
-    processedComponents.forEach((item) => {
+    let hasSeenStacked = false;
+    processedComponents.forEach((item, index) => {
         const filePath = COMPONENT_PATHS[item.id];
         if (!filePath) return;
 
@@ -834,6 +842,19 @@ export default function RootLayout({ children }) {
 
         // Render Component
         let componentJSX = `<${componentName} ${propsString} />`;
+
+        // Logic to force white background for content following 'stacked' sections
+        // This mirrors the Builder Canvas behavior
+        const isStacked = stackedIndices.includes(index);
+        const isStickyIndex = stickyIndices.includes(index);
+
+        if (isStacked) {
+            hasSeenStacked = true;
+        }
+
+        if (!isStickyIndex && hasSeenStacked) {
+            componentJSX = `<div style={{ backgroundColor: '#ffffff', position: 'relative', zIndex: 1, width: '100%' }}>${componentJSX}</div>`;
+        }
 
         pageContent += `      ${componentJSX}\n`;
     });

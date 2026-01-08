@@ -11,7 +11,7 @@ import React, { useRef, useState, useEffect, Children } from 'react';
  * @param {React.ReactNode} props.children
  * @param {number[]} props.stickyIndices - Array of child indices that should be sticky
  */
-export default function StickyManager({ children, stickyIndices = [] }) {
+export default function StickyManager({ children, stickyIndices = [], stackedIndices = [] }) {
     const [offsets, setOffsets] = useState({});
     const refs = useRef({});
 
@@ -30,8 +30,7 @@ export default function StickyManager({ children, stickyIndices = [] }) {
                     newOffsets[index] = currentOffset;
 
                     // access child props to check for stacked
-                    const child = Children.toArray(children)[index];
-                    const isStacked = child?.props?.scrollEffect === 'stacked';
+                    const isStacked = stackedIndices.includes(index);
 
                     if (!isStacked) {
                         currentOffset += el.offsetHeight;
@@ -63,56 +62,38 @@ export default function StickyManager({ children, stickyIndices = [] }) {
         return () => {
             resizeObserver.disconnect();
         };
-    }, [JSON.stringify(stickyIndices)]); // Use stringified to react to array value changes
+    }, [JSON.stringify(stickyIndices), JSON.stringify(stackedIndices)]); // Use stringified to react to array value changes
 
     return (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-            {(() => {
-                let hasSeenStacked = false;
+            {Children.map(children, (child, index) => {
+                if (!child) return null;
 
-                return Children.map(children, (child, index) => {
-                    if (!child) return null;
+                const isSticky = stickyIndices.includes(index);
 
-                    const isSticky = stickyIndices.includes(index);
-                    const isStacked = child.props?.scrollEffect === 'stacked';
+                if (!isSticky) {
+                    return child;
+                }
 
-                    if (isStacked) {
-                        hasSeenStacked = true;
-                    }
+                const topOffset = offsets[index] || 0;
 
-                    if (!isSticky) {
-                        // If following a stacked section and has no image, force white background
-                        const hasImage = !!child.props?.image;
-                        if (hasSeenStacked && !hasImage) {
-                            return (
-                                <div style={{ backgroundColor: '#ffffff', position: 'relative', zIndex: 1, width: '100%' }}>
-                                    {child}
-                                </div>
-                            );
-                        }
-                        return child;
-                    }
-
-                    const topOffset = offsets[index] || 0;
-
-                    return (
-                        <div
-                            ref={el => refs.current[index] = el}
-                            style={{
-                                position: 'sticky',
-                                top: topOffset,
-                                // Invert z-index: Earlier items (higher up) should be on top of later items
-                                // This prevents the Navbar from covering the Top Bar during initial load or overlap
-                                // If stacked, it goes behind everything (z-index 0).
-                                zIndex: child.props?.scrollEffect === 'stacked' ? 0 : 1100 - index,
-                                width: '100%'
-                            }}
-                        >
-                            {child}
-                        </div>
-                    );
-                });
-            })()}
+                return (
+                    <div
+                        ref={el => refs.current[index] = el}
+                        style={{
+                            position: 'sticky',
+                            top: topOffset,
+                            // Invert z-index: Earlier items (higher up) should be on top of later items
+                            // This prevents the Navbar from covering the Top Bar during initial load or overlap
+                            // If stacked, it goes behind everything (z-index 0).
+                            zIndex: stackedIndices.includes(index) ? 0 : 1100 - index,
+                            width: '100%'
+                        }}
+                    >
+                        {child}
+                    </div>
+                );
+            })}
         </div>
     );
 }

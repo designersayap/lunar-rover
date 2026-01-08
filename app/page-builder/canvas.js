@@ -59,10 +59,10 @@ export default function Canvas({
                                 // and has no background image, force white background.
                                 // This prevents the stacked item (which is stuck at top) from showing through transparent sections.
                                 let forcedBgStyle = {};
-                                const hasImage = !!item.props?.image;
 
-                                if (hasSeenStacked && !isStacked && !hasImage) {
-                                    forcedBgStyle = { backgroundColor: '#ffffff', position: 'relative', zIndex: 1 };
+
+                                if (hasSeenStacked && !isStacked) {
+                                    forcedBgStyle = { backgroundColor: 'var(--base-white)', position: 'relative', zIndex: 1 };
                                 }
 
                                 if (isStacked) {
