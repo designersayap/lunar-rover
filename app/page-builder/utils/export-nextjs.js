@@ -321,6 +321,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
     processedComponents.sort((a, b) => {
         const getSticky = (item) => {
             const defs = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
+            // We do NOT sort 'stacked' items to the top. They stay in flow.
             return item.props?.isSticky ?? defs.isSticky ?? false;
         };
         const aSticky = getSticky(a);
@@ -728,7 +729,7 @@ export default function RootLayout({ children }) {
     const stickyIndices = [];
     processedComponents.forEach((item, index) => {
         const compDefaults = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
-        const isSticky = item.props?.isSticky ?? compDefaults.isSticky ?? false;
+        const isSticky = (item.props?.isSticky ?? compDefaults.isSticky ?? false) || (item.props?.scrollEffect === 'stacked');
         if (isSticky) {
             stickyIndices.push(index);
         }

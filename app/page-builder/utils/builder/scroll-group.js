@@ -39,6 +39,7 @@ export default function ScrollGroup({
 
     const isParallax = scrollEffect === 'parallax' || !scrollEffect;
     const isSticky = scrollEffect === 'sticky';
+    const isStacked = scrollEffect === 'stacked';
 
     // Styles for Parallax (Fixed Background)
     const parallaxStyle = {
@@ -51,8 +52,6 @@ export default function ScrollGroup({
         position: "relative"
     };
 
-    // Styles for Sticky (Sticky Top Background)
-    // Structure: Container (relative) -> Background (sticky top, full height) -> Content (relative, z-1)
     // Styles for Sticky (Sticky Top Background)
     // Structure: Container (grid) -> Background (sticky top, z-1) + Content (relative, z1) in same cell
     const stickyContainerStyle = {
@@ -75,6 +74,19 @@ export default function ScrollGroup({
         backgroundSize: "cover",
         zIndex: -1, // Behind content
         alignSelf: 'start'
+    };
+
+    // Styles for Stacked (Sticky Component, Next Section Slides Over)
+    const stackedStyle = {
+        position: "sticky",
+        top: 0,
+        zIndex: 0, // Low z-index so next section covers it
+        width: "100%",
+        minHeight: "100vh", // Build height to ensure effect is visible
+        backgroundImage: `url(${image})`,
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover"
     };
 
     const contentStyle = {
@@ -166,6 +178,38 @@ export default function ScrollGroup({
         </div>
     );
 
+    const renderPopover = () => (
+        isActive && (
+            <BuilderControlsPopover
+                isOpen={showSettings}
+                onClose={() => setActivePopoverId(null)}
+                position={popoverPosition}
+
+                // Scroll Settings
+                showScrollEffect={true}
+                scrollEffect={scrollEffect}
+                onScrollEffectChange={(val) => onUpdate({ scrollEffect: val })}
+
+                // Image Settings
+                showImageSrc={true}
+                imageSrc={image}
+                onImageSrcChange={(val) => onUpdate({ image: val })}
+
+                showMobileRatio={false}
+                mobileRatio={imageMobileRatio}
+                onMobileRatioChange={(val) => onUpdate({ imageMobileRatio: val })}
+
+                showMobileImageSrc={true}
+                mobileImageSrc={mobileImage}
+                onMobileImageSrcChange={(val) => onUpdate({ mobileImage: val })}
+
+                showLinkType={false}
+                showVariant={false}
+                showUrl={false}
+            />
+        )
+    );
+
     if (isSticky) {
         return (
             <div
@@ -180,36 +224,23 @@ export default function ScrollGroup({
                     {renderChildren()}
                 </div>
                 {renderOverlay()}
+                {renderPopover()}
+            </div>
+        );
+    }
 
-                {isActive && (
-                    <BuilderControlsPopover
-                        isOpen={showSettings}
-                        onClose={() => setActivePopoverId(null)}
-                        position={popoverPosition}
-
-                        // Scroll Settings
-                        showScrollEffect={true}
-                        scrollEffect={scrollEffect}
-                        onScrollEffectChange={(val) => onUpdate({ scrollEffect: val })}
-
-                        // Image Settings
-                        showImageSrc={true}
-                        imageSrc={image}
-                        onImageSrcChange={(val) => onUpdate({ image: val })}
-
-                        showMobileRatio={false}
-                        mobileRatio={imageMobileRatio}
-                        onMobileRatioChange={(val) => onUpdate({ imageMobileRatio: val })}
-
-                        showMobileImageSrc={true}
-                        mobileImageSrc={mobileImage}
-                        onMobileImageSrcChange={(val) => onUpdate({ mobileImage: val })}
-
-                        showLinkType={false}
-                        showVariant={false}
-                        showUrl={false}
-                    />
-                )}
+    if (isStacked) {
+        return (
+            <div
+                ref={sectionRef}
+                id={elementId}
+                onClick={handleClick}
+                className={`${styles.parallaxGroup} ${isActive ? styles.activeWrapper : ''}`}
+                style={stackedStyle}
+            >
+                {renderOverlay()}
+                {renderChildren()}
+                {renderPopover()}
             </div>
         );
     }
@@ -224,39 +255,8 @@ export default function ScrollGroup({
             style={parallaxStyle}
         >
             {renderOverlay()}
-
-            {/* Render Children */}
             {renderChildren()}
-
-            {isActive && (
-                <BuilderControlsPopover
-                    isOpen={showSettings}
-                    onClose={() => setActivePopoverId(null)}
-                    position={popoverPosition}
-
-                    // Scroll Settings
-                    showScrollEffect={true}
-                    scrollEffect={scrollEffect}
-                    onScrollEffectChange={(val) => onUpdate({ scrollEffect: val })}
-
-                    // Image Settings
-                    showImageSrc={true}
-                    imageSrc={image}
-                    onImageSrcChange={(val) => onUpdate({ image: val })}
-
-                    showMobileRatio={false}
-                    mobileRatio={imageMobileRatio}
-                    onMobileRatioChange={(val) => onUpdate({ imageMobileRatio: val })}
-
-                    showMobileImageSrc={true}
-                    mobileImageSrc={mobileImage}
-                    onMobileImageSrcChange={(val) => onUpdate({ mobileImage: val })}
-
-                    showLinkType={false}
-                    showVariant={false}
-                    showUrl={false}
-                />
-            )}
+            {renderPopover()}
         </div>
     );
 }

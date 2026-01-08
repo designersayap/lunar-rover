@@ -9,8 +9,8 @@ export function useStickyStacking(components) {
     const lastStickyStylesRef = useRef("");
 
     useEffect(() => {
-        // Identify sticky components
-        const stickyComponents = components.filter(isComponentSticky);
+        // Identify sticky components (Pinned OR Stacked)
+        const stickyComponents = components.filter(c => isComponentSticky(c) || c.props?.scrollEffect === 'stacked');
 
         if (stickyComponents.length === 0) {
             // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -29,13 +29,22 @@ export function useStickyStacking(components) {
                 const el = elementRefs.current.get(comp.uniqueId);
                 const height = el ? el.offsetHeight : 0;
 
+                const isStacked = comp.props?.scrollEffect === 'stacked';
+
                 nextStyles[comp.uniqueId] = {
                     position: 'sticky',
                     top: offset,
-                    zIndex: 100 - index
+                    // If stacked, it goes behind everything (z-index 0). 
+                    // Normal sticky items (headers) stay on top.
+                    zIndex: isStacked ? 0 : 100 - index
                 };
 
-                offset += height;
+                // Specific behavior for Stacked items:
+                // They should stick at the current offset (under headers) but NOT push subsequent sticky items down.
+                // This allows them to be "covered" by the next sliding element.
+                if (!isStacked) {
+                    offset += height;
+                }
             });
 
             // Check if styles actually changed to prevent infinite loops

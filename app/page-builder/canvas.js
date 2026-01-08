@@ -45,38 +45,59 @@ export default function Canvas({
                     </div>
                 ) : (
                     <div data-canvas="true">
-                        {displayComponents.map((item, index) => {
-                            const Component = item.component;
-                            const stickyStyle = stickyStyles[item.uniqueId] || {};
-                            const isSelected = selectedElementIds.includes(item.uniqueId);
+                        {(() => {
+                            let hasSeenStacked = false;
 
-                            return (
-                                <div
-                                    key={item.uniqueId}
-                                    className={`${styles.componentWrapper} ${isSelected ? styles.activeWrapper : ''}`}
-                                    style={{
-                                        ...stickyStyle,
-                                        outline: isSelected ? "2px solid #0D99FF" : "none",
-                                        outlineOffset: "-2px",
-                                    }}
-                                    ref={(el) => setRef(item.uniqueId, el)}
-                                    onClickCapture={(e) => {
-                                        if (e.metaKey || e.ctrlKey) {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            toggleElementSelection(item.uniqueId, true);
-                                        }
-                                    }}
-                                >
-                                    <Component
-                                        {...item.props}
-                                        sectionId={item.sectionId}
-                                        onUpdate={(newProps) => updateComponent(item.uniqueId, newProps)}
-                                        updateComponent={updateComponent}
-                                    />
-                                </div>
-                            );
-                        })}
+                            return displayComponents.map((item, index) => {
+                                const Component = item.component;
+                                const stickyStyle = stickyStyles[item.uniqueId] || {};
+                                const isSelected = selectedElementIds.includes(item.uniqueId);
+
+                                const isStacked = item.props?.scrollEffect === 'stacked';
+
+                                // Logic: If we have passed a stacked group, and the current item is NOT stacked/sticky,
+                                // and has no background image, force white background.
+                                // This prevents the stacked item (which is stuck at top) from showing through transparent sections.
+                                let forcedBgStyle = {};
+                                const hasImage = !!item.props?.image;
+
+                                if (hasSeenStacked && !isStacked && !hasImage) {
+                                    forcedBgStyle = { backgroundColor: '#ffffff', position: 'relative', zIndex: 1 };
+                                }
+
+                                if (isStacked) {
+                                    hasSeenStacked = true;
+                                }
+
+                                return (
+                                    <div
+                                        key={item.uniqueId}
+                                        className={`${styles.componentWrapper} ${isSelected ? styles.activeWrapper : ''}`}
+                                        style={{
+                                            ...stickyStyle,
+                                            ...forcedBgStyle,
+                                            outline: isSelected ? "2px solid #0D99FF" : "none",
+                                            outlineOffset: "-2px",
+                                        }}
+                                        ref={(el) => setRef(item.uniqueId, el)}
+                                        onClickCapture={(e) => {
+                                            if (e.metaKey || e.ctrlKey) {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                toggleElementSelection(item.uniqueId, true);
+                                            }
+                                        }}
+                                    >
+                                        <Component
+                                            {...item.props}
+                                            sectionId={item.sectionId}
+                                            onUpdate={(newProps) => updateComponent(item.uniqueId, newProps)}
+                                            updateComponent={updateComponent}
+                                        />
+                                    </div>
+                                );
+                            });
+                        })()}
                     </div>
                 )}
             </div>

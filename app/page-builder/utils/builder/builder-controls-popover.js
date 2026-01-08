@@ -353,6 +353,7 @@ export default function BuilderControlsPopover({
                                     >
                                         <option value="parallax">Parallax</option>
                                         <option value="sticky">Sticky on Top</option>
+                                        <option value="stacked">Stacked</option>
                                     </select>
                                     <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
                                 </div>
