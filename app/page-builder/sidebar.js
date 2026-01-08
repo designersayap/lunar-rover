@@ -17,6 +17,7 @@ import styles from "../page.module.css";
 import { componentLibrary } from "./content/component-library";
 import { isComponentSticky, getValueAt } from "./utils/component-manager";
 import SidebarAnalyticsTab from "./sidebar-analytics-tab";
+import FloatingMergeButton from "./utils/builder/floating-merge-button";
 
 // Helpers
 const sanitizeId = (value) => value.toLowerCase().trimStart().replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '');
@@ -283,23 +284,29 @@ const ComponentTreeItem = memo(({
                                         pointerEvents: isChildActive ? 'auto' : 'none'
                                     }}
                                 />
-                                {/* Toggle Visibility Button */}
-                                {child.visibleProp && (
-                                    <button
-                                        className={styles.sidebarDeleteButton}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            const currentVal = getValueAt(comp.props, child.visibleProp);
-                                            updateComponent(comp.uniqueId, { [child.visibleProp]: !currentVal });
-                                        }}
-                                    >
-                                        {getValueAt(comp.props, child.visibleProp) === false ? (
-                                            <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
-                                        ) : (
-                                            <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
-                                        )}
-                                    </button>
-                                )}
+                                {/* Actions */}
+                                <div className={styles.treeActions}>
+                                    {child.visibleProp && (
+                                        <button
+                                            className={styles.sidebarDeleteButton}
+                                            data-tooltip={getValueAt(comp.props, child.visibleProp) === false ? "Show" : "Hide"}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                const currentVal = getValueAt(comp.props, child.visibleProp);
+                                                updateComponent(comp.uniqueId, { [child.visibleProp]: !currentVal });
+                                            }}
+                                        >
+                                            {getValueAt(comp.props, child.visibleProp) === false ? (
+                                                <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
+                                            ) : (
+                                                <>
+                                                    <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
+                                                    <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
+                                                </>
+                                            )}
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         );
                     })}
@@ -464,6 +471,11 @@ export default function Sidebar({
                     setAnalyticsData={setAnalyticsData}
                 />
             )}
+            {/* Merge Button (Floats at bottom of sidebar) */}
+            <FloatingMergeButton
+                selectedCount={selectedElementIds.length}
+                onMerge={() => handleSelectToggle && handleSelectToggle(null, false) || onGroup(selectedElementIds)} // Actually onGroup needs ids. onGroup is props.
+            />
         </div>
     );
 }
