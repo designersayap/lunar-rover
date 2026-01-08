@@ -31,12 +31,6 @@ export default function ScrollGroup({
     const [overlayRect, setOverlayRect] = useState(null);
 
     // Desktop/Mobile Image Source Logic
-    // We'll use a simple approach: if mobileImage exists and we are on mobile (via CSS media query or JS check), use it.
-    // For this inline style implementation, we'll just prioritize desktop image for the background style, 
-    // but in a real responsive implementation we might use a styled-component or class.
-    // However, since we are doing inline styles for background, we can't easily do media queries without a hook.
-    // For simplicity, we will stick to the 'image' prop for the main background.
-
     const isParallax = scrollEffect === 'parallax' || !scrollEffect;
     const isSticky = scrollEffect === 'sticky';
     const isStacked = scrollEffect === 'stacked';
@@ -78,9 +72,7 @@ export default function ScrollGroup({
 
     // Styles for Stacked (Sticky Component, Next Section Slides Over)
     const stackedStyle = {
-        position: "sticky",
-        top: 0,
-        zIndex: 0, // Low z-index so next section covers it
+        position: "relative", // Changed from sticky to relative since wrapper handles stickiness
         width: "100%",
         minHeight: "100vh", // Build height to ensure effect is visible
         backgroundImage: `url(${image})`,
@@ -135,12 +127,21 @@ export default function ScrollGroup({
         setActiveElementId(elementId);
     };
 
-    const renderOverlay = () => (
-        isActive && (
+    const renderOverlay = () => {
+        if (!isActive || !overlayRect || typeof document === 'undefined') return null;
+        const top = Math.max(66, overlayRect.top - 24);
+
+
+
+        return createPortal(
             <div
                 className={styles.activeOverlay}
                 style={{
-                    top: overlayRect ? Math.max(-24, 42 - overlayRect.top) : -24
+                    position: 'fixed',
+                    top: Math.max(42, overlayRect.top - 24),
+                    left: overlayRect.left + (overlayRect.width / 2),
+                    zIndex: 99999,
+                    // The CSS class .activeOverlay has transform: translateX(-50%), so we just set left to center.
                 }}
             >
                 <div className={styles.overlayLabel}>
@@ -153,9 +154,10 @@ export default function ScrollGroup({
                 >
                     <Cog6ToothIcon className={styles.overlayIcon} />
                 </button>
-            </div>
-        )
-    );
+            </div>,
+            document.body
+        );
+    };
 
     const renderChildren = () => (
         <div className={styles.parallaxContent}>

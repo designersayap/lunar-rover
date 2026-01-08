@@ -18,22 +18,25 @@ export function useStickyStacking(components) {
             return;
         }
 
-        const newStyles = {};
-        let currentTop = 0;
-
         const updateOffsets = () => {
             let offset = 0;
             const nextStyles = {};
+            const winH = typeof window !== 'undefined' ? window.innerHeight : 1000;
 
             stickyComponents.forEach((comp, index) => {
                 const el = elementRefs.current.get(comp.uniqueId);
                 const height = el ? el.offsetHeight : 0;
 
                 const isStacked = comp.props?.scrollEffect === 'stacked';
+                let top = offset;
+
+                if (isStacked) {
+                    top = Math.min(offset, winH - height);
+                }
 
                 nextStyles[comp.uniqueId] = {
                     position: 'sticky',
-                    top: offset,
+                    top: top,
                     // If stacked, it goes behind everything (z-index 0). 
                     // Normal sticky items (headers) stay on top.
                     zIndex: isStacked ? 0 : 100 - index
@@ -65,10 +68,15 @@ export function useStickyStacking(components) {
             if (el) ro.observe(el);
         });
 
+        window.addEventListener('resize', updateOffsets);
+
         // Initial calculation
         updateOffsets();
 
-        return () => ro.disconnect();
+        return () => {
+            ro.disconnect();
+            window.removeEventListener('resize', updateOffsets);
+        };
 
     }, [components]);
 

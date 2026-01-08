@@ -291,6 +291,10 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
       return id ? \`https://player.vimeo.com/video/\${id}?autoplay=1&loop=1&muted=1&background=1\` : url;
   };
 
+  // Safe Image handling
+  const placeholderSrc = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
+  const imageSrc = (src && src !== "") ? src : placeholderSrc;
+
   let mediaContent;
   if (isYoutube(src)) {
       mediaContent = (
@@ -338,7 +342,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
           {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
           <img 
             id={finalId}
-            src={src} 
+            src={imageSrc} 
             alt={effectiveAlt} 
             className={finalClassName} 
             style={{ ...defaultStyle, ...style }} 

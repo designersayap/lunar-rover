@@ -127,9 +127,18 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
 
     // Re-calculate indices after sort (since order changed)
     const sortedStickyIndices = [];
+    const stackedIndices = [];
+
     selectedComponents.forEach((item, index) => {
-        if (item._isSticky) {
+        const isStacked = item.props?.scrollEffect === 'stacked';
+        // Item is sticky if it was originally sticky (via prop) OR if it is stacked
+        const isEffectiveSticky = item._isSticky || isStacked;
+
+        if (isEffectiveSticky) {
             sortedStickyIndices.push(index);
+        }
+        if (isStacked) {
+            stackedIndices.push(index);
         }
     });
 
@@ -163,7 +172,7 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
     pageContent += `      <BuilderSelectionContext.Provider value={contextValue}>\n`;
     pageContent += `      <div id="canvas-background-root" style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'auto', overflow: 'hidden' }} />\n`;
     pageContent += `      <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>\n`;
-    pageContent += `      <StickyManager stickyIndices={[${sortedStickyIndices.join(',')}]}>\n`;
+    pageContent += `      <StickyManager stickyIndices={[${sortedStickyIndices.join(',')}]} stackedIndices={[${stackedIndices.join(',')}]}>\n`;
 
 
     // 2. Render Components
