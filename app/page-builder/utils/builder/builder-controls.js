@@ -3,6 +3,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
 export const BuilderSelectionContext = createContext({
+    selectedElementIds: [],
+    toggleElementSelection: () => { },
     activeElementId: null,
     setActiveElementId: () => { },
     activePopoverId: null,
@@ -30,7 +32,9 @@ export function BuilderSelectionProvider({ children }) {
             activeElementId,
             setActiveElementId,
             activePopoverId,
-            setActivePopoverId
+            setActivePopoverId,
+            selectedElementIds: children.props?.value?.selectedElementIds || [],
+            toggleElementSelection: children.props?.value?.toggleElementSelection || (() => { })
         }}>
             {children}
         </BuilderSelectionContext.Provider>

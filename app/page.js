@@ -15,6 +15,7 @@ import ComponentsPopover from "@/app/page-builder/components-popover";
 // Helper Utilities
 import { componentLibrary } from "@/app/page-builder/content/component-library";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
+import FloatingMergeButton from "@/app/page-builder/utils/builder/floating-merge-button";
 
 // Hook
 import { useTemplateLogic } from "@/app/page-builder/utils/hooks";
@@ -39,6 +40,7 @@ export default function TemplateGeneratorPage() {
     activePopoverId,
     popoverPositions,
     activeElementId,
+    selectedElementIds,
     toaster,
     dragDrop
   } = state;
@@ -48,6 +50,7 @@ export default function TemplateGeneratorPage() {
     setIsSidebarVisible,
     setActiveTab,
     setActiveElementId,
+    toggleElementSelection,
     setActivePopoverId,
     handleThemeSelect,
     handleExport,
@@ -82,6 +85,8 @@ export default function TemplateGeneratorPage() {
   const selectionContext = useMemo(() => ({
     activeElementId,
     setActiveElementId,
+    selectedElementIds,
+    toggleElementSelection,
     activePopoverId,
     setActivePopoverId,
     selectedComponents,
@@ -120,6 +125,10 @@ export default function TemplateGeneratorPage() {
             updateComponent={updateComponent}
 
           />
+          <FloatingMergeButton
+            selectedCount={selectedElementIds.length}
+            onMerge={() => handleGroup(selectedElementIds)}
+          />
 
           {isSidebarVisible && (
             <Sidebar
@@ -143,6 +152,8 @@ export default function TemplateGeneratorPage() {
               dropTargetIndex={dropTargetIndex}
               onGroup={handleGroup}
               onUngroup={handleUngroup}
+              selectedElementIds={selectedElementIds}
+              toggleElementSelection={toggleElementSelection}
             />
           )}
         </div>

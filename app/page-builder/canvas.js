@@ -8,7 +8,7 @@ export default function Canvas({
     selectedComponents,
     updateComponent
 }) {
-    const { setActiveElementId } = useBuilderSelection();
+    const { setActiveElementId, selectedElementIds = [], toggleElementSelection } = useBuilderSelection();
 
     // Sort components: Pinned items first
     const displayComponents = useMemo(() => [
@@ -48,13 +48,25 @@ export default function Canvas({
                         {displayComponents.map((item, index) => {
                             const Component = item.component;
                             const stickyStyle = stickyStyles[item.uniqueId] || {};
+                            const isSelected = selectedElementIds.includes(item.uniqueId);
 
                             return (
                                 <div
                                     key={item.uniqueId}
-                                    className={styles.componentWrapper}
-                                    style={stickyStyle}
+                                    className={`${styles.componentWrapper} ${isSelected ? styles.activeWrapper : ''}`}
+                                    style={{
+                                        ...stickyStyle,
+                                        outline: isSelected ? "2px solid #0D99FF" : "none",
+                                        outlineOffset: "-2px",
+                                    }}
                                     ref={(el) => setRef(item.uniqueId, el)}
+                                    onClickCapture={(e) => {
+                                        if (e.metaKey || e.ctrlKey) {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            toggleElementSelection(item.uniqueId, true);
+                                        }
+                                    }}
                                 >
                                     <Component
                                         {...item.props}

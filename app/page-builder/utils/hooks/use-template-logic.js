@@ -40,7 +40,39 @@ export function useTemplateLogic() {
     const [popoverPositions, setPopoverPositions] = useState({});
 
     // Selection State
-    const [activeElementId, setActiveElementId] = useState(null);
+    const [activeElementId, _setActiveElementId] = useState(null);
+    const [selectedElementIds, setSelectedElementIds] = useState([]);
+
+    const setActiveElementId = useCallback((id) => {
+        _setActiveElementId(id);
+        if (id) {
+            setSelectedElementIds([id]);
+        } else {
+            setSelectedElementIds([]);
+        }
+    }, []);
+
+    const toggleElementSelection = useCallback((id, multi) => {
+        if (multi) {
+            setSelectedElementIds(prev => {
+                const isSelected = prev.includes(id);
+                const newSelection = isSelected
+                    ? prev.filter(item => item !== id)
+                    : [...prev, id];
+
+                if (newSelection.length === 1) {
+                    _setActiveElementId(newSelection[0]);
+                } else {
+                    _setActiveElementId(null);
+                }
+
+                return newSelection;
+            });
+        } else {
+            setSelectedElementIds([id]);
+            _setActiveElementId(id);
+        }
+    }, []);
 
     // ==================== HOOKS ====================
 
@@ -241,6 +273,7 @@ export function useTemplateLogic() {
             activePopoverId,
             popoverPositions,
             activeElementId,
+            selectedElementIds,
             toaster,
             dragDrop
         },
@@ -249,6 +282,7 @@ export function useTemplateLogic() {
             setIsSidebarVisible,
             setActiveTab,
             setActiveElementId,
+            toggleElementSelection,
             setActivePopoverId,
             setPopoverPositions,
             handleThemeSelect,

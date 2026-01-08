@@ -40,7 +40,6 @@ const ComponentTreeItem = memo(({
     activeElementId,
     setActiveElementId,
     selectedIds,
-    isMultiSelectMode,
     handleSelectToggle,
     expandedSections,
     toggleSection,
@@ -63,7 +62,7 @@ const ComponentTreeItem = memo(({
     const allTexts = (def?.texts || []).map(text => ({ ...text, type: 'text' }));
     const allChildren = [...allTexts, ...allButtons, ...allImages, ...allLinks];
 
-    const isActive = activeElementId === comp.sectionId;
+    const isActive = activeElementId === comp.sectionId || activeElementId === comp.uniqueId;
     const isGroup = comp.id === 'scroll-group';
     const groupChildren = isGroup ? (comp.props.components || []) : [];
 
@@ -93,27 +92,18 @@ const ComponentTreeItem = memo(({
             }}
         >
             <div
-                className={`${styles.treeRow} ${isActive ? styles.treeRowActive : ''}`}
+                className={`${styles.treeRow} ${isActive || isSelected ? styles.treeRowActive : ''}`}
                 onClick={(e) => {
-                    if (isMultiSelectMode) {
+                    if (e.metaKey || e.ctrlKey) {
                         e.stopPropagation();
-                        handleSelectToggle(comp.uniqueId);
+                        // Handle toggle via props
+                        handleSelectToggle(comp.uniqueId, true);
                     } else {
-                        setActiveElementId && setActiveElementId(comp.sectionId);
+                        // Single select: Use uniqueId to ensure grouping works
+                        setActiveElementId && setActiveElementId(comp.uniqueId);
                     }
                 }}
             >
-                {/* Multi-select Checkbox */}
-                {isMultiSelectMode && (
-                    <div className={styles.checkboxWrapper} onClick={(e) => e.stopPropagation()}>
-                        <input
-                            type="checkbox"
-                            checked={isSelected}
-                            onChange={() => handleSelectToggle(comp.uniqueId)}
-                            className={styles.treeCheckbox}
-                        />
-                    </div>
-                )}
 
                 {/* Expand/Collapse for Groups or Components with Children */}
                 <button
@@ -148,11 +138,25 @@ const ComponentTreeItem = memo(({
                         updateSectionId(comp.uniqueId, finalValue || comp.sectionId || 'section');
                     }}
                     onFocus={() => setActiveElementId && setActiveElementId(comp.sectionId)}
-                    onMouseDown={(e) => e.stopPropagation()}
+                    onMouseDown={(e) => {
+                        if (e.metaKey || e.ctrlKey) {
+                            e.preventDefault(); // Prevent focus
+                            e.stopPropagation();
+                        } else {
+                            e.stopPropagation();
+                        }
+                    }}
                     onDragStart={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e) => {
+                        if (e.metaKey || e.ctrlKey) {
+                            e.stopPropagation();
+                            handleSelectToggle(comp.uniqueId, true);
+                        } else {
+                            e.stopPropagation();
+                        }
+                    }}
                     className={styles.treeInputInline}
-                    disabled={isMultiSelectMode}
+                    style={{ pointerEvents: isActive ? 'auto' : 'none' }}
                 />
 
                 {/* Actions */}
@@ -201,7 +205,6 @@ const ComponentTreeItem = memo(({
                             activeElementId={activeElementId}
                             setActiveElementId={setActiveElementId}
                             selectedIds={selectedIds}
-                            isMultiSelectMode={isMultiSelectMode}
                             handleSelectToggle={handleSelectToggle}
                             expandedSections={expandedSections}
                             toggleSection={toggleSection}
@@ -253,11 +256,32 @@ const ComponentTreeItem = memo(({
                                         }
                                     }}
                                     onFocus={() => setActiveElementId && setActiveElementId(currentId)}
-                                    onMouseDown={(e) => e.stopPropagation()}
+                                    onMouseDown={(e) => {
+                                        if (e.metaKey || e.ctrlKey) {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                        } else {
+                                            e.stopPropagation();
+                                        }
+                                    }}
                                     onDragStart={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                                    onClick={(e) => e.stopPropagation()}
+                                    onClick={(e) => {
+                                        if (e.metaKey || e.ctrlKey) {
+                                            e.stopPropagation();
+                                            // For nested items, we toggle the parent? Or the item itself?
+                                            // The item is part of the component props (text/button).
+                                            // Usually we select the Component.
+                                            // If we Cmd+Click a property row, we probably mean to select the Component.
+                                            handleSelectToggle(comp.uniqueId, true);
+                                        } else {
+                                            e.stopPropagation();
+                                        }
+                                    }}
                                     className={styles.treeInputInline}
-                                    style={{ opacity: getValueAt(comp.props, child.visibleProp) === false ? 0.25 : 1 }}
+                                    style={{
+                                        opacity: getValueAt(comp.props, child.visibleProp) === false ? 0.25 : 1,
+                                        pointerEvents: isChildActive ? 'auto' : 'none'
+                                    }}
                                 />
                                 {/* Toggle Visibility Button */}
                                 {child.visibleProp && (
@@ -305,31 +329,18 @@ export default function Sidebar({
     isAddPopoverOpen,
     removeComponent,
     onGroup,
-    onUngroup
+    onUngroup,
+    selectedElementIds = [],
+    toggleElementSelection
 }) {
     const [layerSearch, setLayerSearch] = useState("");
     const [expandedSections, setExpandedSections] = useState({});
 
-    // Multi-select state
-    const [isMultiSelectMode, setIsMultiSelectMode] = useState(false);
-    const [selectedIds, setSelectedIds] = useState([]);
-
-    // Reset multi-select when mode is toggled off
-    useEffect(() => {
-        if (!isMultiSelectMode) {
-            setSelectedIds([]);
-        }
-    }, [isMultiSelectMode]);
-
     // Handle multi-select toggle
-    const handleSelectToggle = (uniqueId) => {
-        setSelectedIds(prev => {
-            if (prev.includes(uniqueId)) {
-                return prev.filter(id => id !== uniqueId);
-            } else {
-                return [...prev, uniqueId];
-            }
-        });
+    const handleSelectToggle = (uniqueId, multi) => {
+        if (toggleElementSelection) {
+            toggleElementSelection(uniqueId, multi); // Always multi if handled here via cmd click
+        }
     };
 
     // Toggle section expand/collapse
@@ -344,8 +355,7 @@ export default function Sidebar({
     const treeItemProps = {
         activeElementId,
         setActiveElementId,
-        selectedIds,
-        isMultiSelectMode,
+        selectedIds: selectedElementIds, // Map global prop to local prop name expected by Item
         handleSelectToggle,
         expandedSections,
         toggleSection,
@@ -384,76 +394,23 @@ export default function Sidebar({
                 <>
                     {/* Search Bar + Actions */}
                     <div className={styles.searchRow}>
-                        {isMultiSelectMode ? (
-                            <div className={styles.multiSelectToolbar} style={{ display: 'flex', alignItems: 'center', flex: 1, gap: 8, padding: '0 8px' }}>
-                                <span className="caption-regular" style={{ flex: 1 }}>{selectedIds.length} selected</span>
-                                <div style={{ display: 'flex', gap: 4 }}>
-                                    {selectedIds.length > 1 && (
-                                        <button
-                                            className={styles.sidebarActionButton}
-                                            style={{
-                                                background: 'var(--brand-color-500)',
-                                                color: 'white',
-                                                border: 'none',
-                                                padding: '4px 8px',
-                                                borderRadius: 4,
-                                                cursor: 'pointer',
-                                                display: 'flex', alignItems: 'center'
-                                            }}
-                                            onClick={() => {
-                                                onGroup && onGroup(selectedIds);
-                                                setIsMultiSelectMode(false);
-                                            }}
-                                            data-tooltip="Group Selected"
-                                        >
-                                            <FolderOpenIconSolid style={{ width: 16, height: 16 }} />
-                                        </button>
-                                    )}
-                                    <button
-                                        className={styles.sidebarActionButton}
-                                        style={{
-                                            background: 'transparent',
-                                            border: '1px solid var(--grey-300)',
-                                            padding: '4px 8px',
-                                            borderRadius: 4,
-                                            cursor: 'pointer'
-                                        }}
-                                        onClick={() => setIsMultiSelectMode(false)}
-                                        data-tooltip="Cancel"
-                                    >
-                                        <StopIcon style={{ width: 16, height: 16 }} />
-                                    </button>
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={styles.searchInputWrapper}>
-                                    <MagnifyingGlassIcon className={styles.searchIcon} />
-                                    <input
-                                        type="text"
-                                        className={`${styles.formInput} ${styles.searchBar}`}
-                                        placeholder="Search layers"
-                                        value={layerSearch}
-                                        onChange={(e) => setLayerSearch(e.target.value)}
-                                    />
-                                </div>
-                                <button
-                                    className={`${styles.generatorButton} ${styles.sidebarAddButton} ${isAddPopoverOpen ? styles.generatorButtonActive : ''}`}
-                                    data-tooltip="Add Layer"
-                                    onClick={(e) => onAddClick(e.currentTarget.getBoundingClientRect())}
-                                >
-                                    <PlusIcon className={styles.sidebarAddIcon} />
-                                </button>
-                                <button
-                                    className={`${styles.generatorButton} ${styles.sidebarAddButton}`}
-                                    data-tooltip="Select Multiple"
-                                    style={{ marginLeft: 4 }}
-                                    onClick={() => setIsMultiSelectMode(true)}
-                                >
-                                    <Square2StackIcon className={styles.sidebarAddIcon} />
-                                </button>
-                            </>
-                        )}
+                        <div className={styles.searchInputWrapper}>
+                            <MagnifyingGlassIcon className={styles.searchIcon} />
+                            <input
+                                type="text"
+                                className={`${styles.formInput} ${styles.searchBar}`}
+                                placeholder="Search layers"
+                                value={layerSearch}
+                                onChange={(e) => setLayerSearch(e.target.value)}
+                            />
+                        </div>
+                        <button
+                            className={`${styles.generatorButton} ${styles.sidebarAddButton} ${isAddPopoverOpen ? styles.generatorButtonActive : ''}`}
+                            data-tooltip="Add Layer"
+                            onClick={(e) => onAddClick(e.currentTarget.getBoundingClientRect())}
+                        >
+                            <PlusIcon className={styles.sidebarAddIcon} />
+                        </button>
                     </div>
 
                     <div className={styles.treeContainer}>
