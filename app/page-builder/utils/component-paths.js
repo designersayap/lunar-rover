@@ -23,5 +23,11 @@ export const COMPONENT_PATHS = {
 
     "testimonial-terra": "app/templates/terra/terra-testimony.js",
 
-    "footer-terra": "app/templates/terra/terra-footer.js"
+    "footer-terra": "app/templates/terra/terra-footer.js",
+
+    "spacing-small": "app/templates/spacing/spacing-small.js",
+    "spacing-medium": "app/templates/spacing/spacing-medium.js",
+    "spacing-large": "app/templates/spacing/spacing-large.js",
+
+    "scroll-group": "app/page-builder/utils/builder/scroll-group.js"
 };

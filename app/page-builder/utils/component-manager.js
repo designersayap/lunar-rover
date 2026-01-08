@@ -406,3 +406,20 @@ export function ungroupComponent(components, groupUniqueId) {
 
     return newComponents;
 }
+
+/**
+ * Find a component by ID (recursive).
+ */
+export function findComponentById(components, uniqueId) {
+    for (const component of components) {
+        if (component.uniqueId === uniqueId) {
+            return component;
+        }
+
+        if (component.props?.components) {
+            const found = findComponentById(component.props.components, uniqueId);
+            if (found) return found;
+        }
+    }
+    return null;
+}

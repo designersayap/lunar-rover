@@ -15,7 +15,8 @@ import {
     updateComponentSectionId,
     reorderComponents,
     groupComponents,
-    ungroupComponent
+    ungroupComponent,
+    findComponentById
 } from "@/app/page-builder/utils/component-manager";
 import { handleExportNextjs } from "@/app/page-builder/utils/export-nextjs";
 import { calculatePopoverPosition } from "@/app/page-builder/utils/builder/builder-controls";
@@ -196,9 +197,12 @@ export function useTemplateLogic() {
     }, [showToast]);
 
     const removeComponent = useCallback((uniqueId) => {
-        const comp = selectedComponents.find(c => c.uniqueId === uniqueId);
+        const comp = findComponentById(selectedComponents, uniqueId);
         if (comp) {
             showToast(`${comp.name} deleted`, "delete");
+            setSelectedComponents(prev => removeComponentFromList(prev, uniqueId));
+        } else {
+            // Fallback if not found (unexpected, but handle gracefully)
             setSelectedComponents(prev => removeComponentFromList(prev, uniqueId));
         }
     }, [selectedComponents, showToast]);
