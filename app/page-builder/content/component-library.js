@@ -22,29 +22,6 @@ const SpacingMedium = dynamic(() => import("../../templates/spacing/spacing-medi
 const SpacingLarge = dynamic(() => import("../../templates/spacing/spacing-large"));
 
 export const componentLibrary = {
-    "Spacing": [
-        {
-            id: "spacing-small",
-            name: "Spacing - Small",
-            component: SpacingSmall,
-            thumbnail: "/images/thumbnails/feature-image-right.svg",
-            config: []
-        },
-        {
-            id: "spacing-medium",
-            name: "Spacing - Medium",
-            component: SpacingMedium,
-            thumbnail: "/images/thumbnails/feature-image-right.svg",
-            config: []
-        },
-        {
-            id: "spacing-large",
-            name: "Spacing - Large",
-            component: SpacingLarge,
-            thumbnail: "/images/thumbnails/feature-image-right.svg",
-            config: []
-        }
-    ],
     "Background": [
         {
             id: "background-full-body",
@@ -691,6 +668,29 @@ export const componentLibrary = {
                 { label: "Accordion 7", propId: "item6Id", suffix: "accordion-6", visibleProp: "item6Visible" },
                 { label: "Accordion 8", propId: "item7Id", suffix: "accordion-7", visibleProp: "item7Visible" }
             ]
+        }
+    ],
+    "Spacing": [
+        {
+            id: "spacing-small",
+            name: "Spacing - Small",
+            component: SpacingSmall,
+            thumbnail: "/images/thumbnails/feature-image-right.svg",
+            config: []
+        },
+        {
+            id: "spacing-medium",
+            name: "Spacing - Medium",
+            component: SpacingMedium,
+            thumbnail: "/images/thumbnails/feature-image-right.svg",
+            config: []
+        },
+        {
+            id: "spacing-large",
+            name: "Spacing - Large",
+            component: SpacingLarge,
+            thumbnail: "/images/thumbnails/feature-image-right.svg",
+            config: []
         }
     ],
     "Structure": [
