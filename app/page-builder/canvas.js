@@ -76,8 +76,8 @@ export default function Canvas({
                                         style={{
                                             ...stickyStyle,
                                             ...forcedBgStyle,
-                                            outline: isSelected ? "1px solid #1e88e5" : "none",
-                                            backgroundColor: isSelected ? "#e3f2fd" : "transparent",
+                                            outline: isSelected ? "1px solid var(--lunar-300)" : "none",
+                                            backgroundColor: isSelected ? "var(--lunar-50)" : "transparent",
                                             outlineOffset: "-1px",
                                         }}
                                         ref={(el) => setRef(item.uniqueId, el)}

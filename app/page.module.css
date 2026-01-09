@@ -7,6 +7,12 @@
    ========================================= */
 
 :root {
+    --lunar-500: #0d47a1;
+    --lunar-400: #1565c0;
+    --lunar-300: #1976d2;
+    --lunar-200: #64b5f6;
+    --lunar-100: #bbdefb;
+    --lunar-50: #e3f2fd;
     --bg1: #1f1f1f;
     --bg2: #1A1A1A;
     --bg3: #3a3a3a;
@@ -642,7 +648,7 @@
 .activeBorderOutline {
     position: absolute;
     inset: 0;
-    border: 2px solid #1e88e5;
+    border: 2px solid var(--lunar-300);
     border-radius: 1px;
     pointer-events: none;
 }
@@ -656,7 +662,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #1e88e5;
+    background: var(--lunar-300);
     color: white;
     border-radius: 4px;
     font-size: 12px;
@@ -704,7 +710,7 @@
     border: none;
     color: var(--base-white);
     padding: 0;
-    background: #1e88e5;
+    background: var(--lunar-300);
     box-shadow: var(--shd-btn);
     transition: background 0.2s;
     border-radius: 0 4px 4px 0;
@@ -716,12 +722,12 @@
 }
 
 .settingsButton:hover {
-    background: #1565c0;
+    background: var(--lunar-500);
 }
 
 .settingsButton:active,
 .settingsButtonActive {
-    background: #1565c0;
+    background: var(--lunar-500);
 }
 
 
