@@ -70,21 +70,43 @@ export default function BuilderControlsPopover({
 
     useLayoutEffect(() => {
         if (position && containerRef.current && typeof window !== 'undefined') {
-            const rect = containerRef.current.getBoundingClientRect();
+            const scrollHeight = containerRef.current.scrollHeight;
             const windowHeight = window.innerHeight;
-            const spaceBelow = windowHeight - position.top;
+            const startY = position.top;
+            const topBarHeight = 42;
+            const padding = 16;
 
-            // If popover height > space below, flip it
-            // Buffer of 20px
-            if (rect.height > spaceBelow - 20) {
-                // eslint-disable-next-line react-hooks/set-state-in-effect
-                setIsFlipped(true);
+            // Calculate exact available max heights (must match render logic)
+            // Down: Popover Top = startY. Space = Window - Top - Padding.
+            const maxH_Down = windowHeight - startY - padding;
+
+            // Up: MaxH = (startY - 24) - 4 - 42 - 16 = startY - 86.
+            const maxH_Up = startY - 86;
+
+            const fitsBelow = scrollHeight <= maxH_Down;
+            const fitsAbove = scrollHeight <= maxH_Up;
+
+            // Hysteresis logic to prevent flip loops (e.g. scrollbar toggling)
+            if (isFlipped) {
+                // Currently Up
+                // Flip down only if it fits comfortably (buffer for scrollbar diff)
+                // or if it doesn't fit Up either and Down has more space
+                if (fitsBelow && maxH_Down > scrollHeight + 30) {
+                    setIsFlipped(false);
+                } else if (!fitsAbove && maxH_Down > maxH_Up) {
+                    setIsFlipped(false);
+                }
             } else {
-                // eslint-disable-next-line react-hooks/set-state-in-effect
-                setIsFlipped(false);
+                // Currently Down
+                // Flip up if it strictly doesn't fit below
+                if (!fitsBelow) {
+                    if (fitsAbove || maxH_Up > maxH_Down) {
+                        setIsFlipped(true);
+                    }
+                }
             }
         }
-    }, [position, variants, linkType]);
+    }, [position, variants, linkType, isFlipped]);
 
     if (position && typeof window !== 'undefined') {
         const popoverWidth = 320;
