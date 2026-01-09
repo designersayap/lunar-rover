@@ -214,7 +214,7 @@ export default function BuilderControlsPopover({
                         )}
 
                         {/* URL INPUT (Hidden if showImageSrc is true) */}
-                        {((linkType === 'url' || !showLinkType) && showUrl && !showImageSrc) && (
+                        {((linkType === 'url' || (!linkType && !showLinkType)) && showUrl) && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>URL</label>
                                 <input

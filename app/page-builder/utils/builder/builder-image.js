@@ -360,14 +360,14 @@ export default function BuilderImage({
                     linkType={linkType}
                     onLinkTypeChange={onLinkTypeChange}
                     showLinkType={!isStaging && showLinkControls}
-                    showUrl={!isStaging && showLinkControls}
+                    showUrl={showLinkControls}
                     showImageSrc={isStaging || alwaysShowSrc}
 
                     position={popoverPosition}
                     dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
                     targetDialogId={targetDialogId}
                     onTargetDialogIdChange={onTargetDialogIdChange}
-                    showDialogSelector={!isStaging}
+                    showDialogSelector={!isStaging || showLinkControls}
                     showVariant={false}
                     showPortraitToggle={!isStaging && !!onIsPortraitChange}
                     isPortrait={isPortrait}
