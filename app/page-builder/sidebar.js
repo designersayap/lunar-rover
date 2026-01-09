@@ -379,7 +379,7 @@ export default function Sidebar({
     };
 
     return (
-        <div className={styles.sidebar}>
+        <div className={styles.sidebar} data-builder-ui="true">
             <div className={styles.sidebarSection}>
                 <div className={styles.tabs}>
                     <button
