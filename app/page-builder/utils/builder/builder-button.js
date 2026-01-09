@@ -49,7 +49,9 @@ export default function BuilderButton({
         isStaging,
         toggleElementSelection,
         activePopoverId,
-        setActivePopoverId
+        setActivePopoverId,
+        activeElementId,
+        selectedElementIds
     } = useContext(BuilderSelectionContext);
     const myPopoverId = `popover-${buttonId}`;
     const showSettings = activePopoverId === myPopoverId;
@@ -65,7 +67,7 @@ export default function BuilderButton({
         if (newTempId !== tempId) {
             setTempId(newTempId);
         }
-    }, [buttonId, prefix, tempId]);
+    }, [buttonId, tempId, prefix]);
 
     const prevSectionIdRef = useRef(sectionId);
     useEffect(() => {
@@ -87,7 +89,11 @@ export default function BuilderButton({
 
     // Context accessed at top of component
 
-    const isActive = selectedComponents?.some(c => c.uniqueId === buttonId) || false;
+    const isSelfActive = activeElementId === buttonId;
+    // Allow selectedElementIds fallback for multi-select visual indication if needed, 
+    // but for overlay, we usually want primary active. 
+    // Matching BuilderImage logic:
+    const isActive = isSelfActive || selectedElementIds?.includes(buttonId);
     const wrapperRef = useRef(null);
     const [overlayRect, setOverlayRect] = useState(null);
 
@@ -100,12 +106,14 @@ export default function BuilderButton({
             const updatePosition = () => {
                 if (wrapperRef.current) {
                     const rect = wrapperRef.current.getBoundingClientRect();
-                    setOverlayRect(rect);
-                    if (showSettings) {
-                        setPopoverPosition({
-                            top: rect.top,
-                            left: rect.left + rect.width / 2
-                        });
+                    if (rect.width > 0 && rect.height > 0) {
+                        setOverlayRect(rect);
+                        if (showSettings) {
+                            setPopoverPosition({
+                                top: rect.top,
+                                left: rect.left + rect.width / 2
+                            });
+                        }
                     }
                 }
             };
@@ -135,13 +143,9 @@ export default function BuilderButton({
         e.preventDefault();
         e.stopPropagation();
 
-        // Mock handleSelection logic since it's not exposed
+        // Use toggleElementSelection with ID string, matching useTemplateLogic expectations
         if (toggleElementSelection) {
-            toggleElementSelection({
-                uniqueId: buttonId,
-                type: 'button',
-                sectionId: sectionId
-            }, e.metaKey || e.ctrlKey);
+            toggleElementSelection(buttonId, e.metaKey || e.ctrlKey);
         } else {
             // Fallback or legacy behavior if toggleElementSelection is missing
             console.warn("toggleElementSelection not found in context");
@@ -251,31 +255,34 @@ export default function BuilderButton({
                 <div
                     className={styles.activeOverlay}
                     style={overlayStyle}
+                    data-builder-ui="true"
                 >
-                    <div className={styles.activeOverlayControls}>
-                        <span className={styles.activeOverlayLabel}>Button</span>
-                        <div className={styles.activeOverlayActions}>
-                            {linkType === 'dialog' && (
-                                <button
-                                    type="button"
-                                    className={styles.settingsButton}
-                                    onClick={handleOpenDialog}
-                                    data-tooltip="Open Dialog"
-                                >
-                                    <ChatBubbleLeftEllipsisIcon className={styles.overlayIcon} />
-                                </button>
-                            )}
+                    <div className={styles.overlayLabel}>
+                        Button
+                        {id && <span className={styles.overlayIdText} style={{ marginLeft: 4, opacity: 0.5 }}>#{id}</span>}
+                    </div>
 
-                            {(!isStaging || linkType !== 'dialog') && (
-                                <button
-                                    type="button"
-                                    className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                                    onClick={handleSettingsClick}
-                                >
-                                    <Cog6ToothIcon className={styles.overlayIcon} />
-                                </button>
-                            )}
-                        </div>
+                    <div style={{ display: 'flex' }}>
+                        {linkType === 'dialog' && (
+                            <button
+                                type="button"
+                                className={styles.settingsButton}
+                                onClick={handleOpenDialog}
+                                data-tooltip="Open Dialog"
+                            >
+                                <ChatBubbleLeftEllipsisIcon />
+                            </button>
+                        )}
+
+                        {(!isStaging || linkType !== 'dialog') && (
+                            <button
+                                type="button"
+                                className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
+                                onClick={handleSettingsClick}
+                            >
+                                <Cog6ToothIcon />
+                            </button>
+                        )}
                     </div>
                 </div>,
                 document.body

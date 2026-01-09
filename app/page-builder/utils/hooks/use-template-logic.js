@@ -87,8 +87,6 @@ export function useTemplateLogic() {
         }
     });
 
-
-
     // ==================== DOM REFERENCES ====================
 
     const togglePopover = useCallback((id, position) => {
@@ -140,13 +138,8 @@ export function useTemplateLogic() {
     const isInitialized = useRef(false);
 
     useEffect(() => {
-        // 1. Load preference from localStorage
-        const savedState = localStorage.getItem("lunar_sidebar_visible");
-
-        if (savedState !== null) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setIsSidebarVisible(savedState === "true");
-        } else {
+        // 1. Initial Check
+        if (typeof window !== 'undefined') {
             // Default behavior if no preference
             setIsSidebarVisible(window.innerWidth >= 1024);
         }
@@ -160,9 +153,26 @@ export function useTemplateLogic() {
             }
         };
 
+        // 3. Global Click Handler (Click Outside)
+        const handleWindowClick = (e) => {
+            // Ignore clicks on UI elements (popovers, overlays, sidebar) based on data attribute
+            if (e.target.closest('[data-builder-ui]')) return;
+
+            // Only deselect if we actually have a selection to avoid unnecessary renders
+            if (activeElementId || activePopoverId) {
+                setActiveElementId(null);
+                setActivePopoverId(null);
+            }
+        };
+
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+        window.addEventListener('click', handleWindowClick);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('click', handleWindowClick);
+        };
+    }, [activeElementId, activePopoverId]);
 
     // Save state to localStorage
     useEffect(() => {

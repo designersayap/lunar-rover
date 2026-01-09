@@ -98,23 +98,30 @@ export default function BuilderControlsPopover({
         let idealLeft = position.left - (popoverWidth / 2);
 
         // Clamp Left
-        // Use a safe margin of 20px from the edges
-        const safeMargin = 20;
+        // Use a safe margin of 8px from the edges
+        const safeMargin = 8;
         const maxLeft = windowWidth - popoverWidth - safeMargin;
         const minLeft = safeMargin;
         const finalLeft = Math.max(minLeft, Math.min(idealLeft, maxLeft));
 
+        // Calculate limits for gap logic
+        const overlayHeight = 20;
+        const gap = 4;
+        // The active overlay is positioned at Math.max(rect.top - 24, topBarHeight)
+        // We replicate that here to find its exact visual boundary
+        const overlayTop = Math.max(position.top - 24, topBarHeight);
+        const overlayBottom = overlayTop + overlayHeight;
+
         if (isFlipped) {
-
-            const bottomVal = (windowHeight - position.top) + 12;
-
-            const maxH = position.top - topBarHeight - 24;
+            // Place popover ABOVE the overlay with 4px gap
+            // CSS bottom = distance from viewport bottom to (overlayTop - gap)
+            const bottomVal = windowHeight - (overlayTop - gap);
+            const maxH = overlayTop - gap - topBarHeight - padding;
 
             popoverStyle = {
                 position: "fixed",
                 bottom: `${bottomVal}px`,
                 left: `${finalLeft}px`,
-                // transform: "translateX(0)", // Removed centering transform
                 width: `${popoverWidth}px`,
                 margin: 0,
                 pointerEvents: "auto",
@@ -122,29 +129,13 @@ export default function BuilderControlsPopover({
                 overflowY: "auto"
             };
         } else {
-            // Standard: Below the target
-            // Top of popover = target bottom + gap?
-            // Actually usually we position at target.top + target.height + gap.
-            // Or just position.top + gap if position.top is what we have.
-            // The position prop passed is usually rect.top.
-
-            // Standard behavior: Popover top = position.top + elementHeight?
-            // We don't have elementHeight in 'position' prop usually, just top/left.
-            // Wait, previous code used `constrainedTop = Math.max(minTop, position.top)`.
-            // If position.top is top of FAB, we want popover to be *below* it? 
-            // Or if it's a FAB (bottom right), usually menus open *above* (flipped).
-            // If it's not flipped, it renders at 'top'.
-            // If 'position' is center of element? No, usually bounding rect.
-            // Let's assume position.top is reliable.
-
-            const minTop = topBarHeight + padding;
-            const constrainedTop = Math.max(minTop, position.top);
-
-            const maxH = windowHeight - constrainedTop - padding;
+            // Place popover BELOW the overlay with 4px gap
+            const topVal = overlayBottom + gap;
+            const maxH = windowHeight - topVal - padding;
 
             popoverStyle = {
                 position: "fixed",
-                top: `${constrainedTop}px`,
+                top: `${topVal}px`,
                 left: `${finalLeft}px`,
                 width: `${popoverWidth}px`,
                 margin: 0,
