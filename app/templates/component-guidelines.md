@@ -41,6 +41,12 @@ import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
     targetDialogId={buttonTargetDialogId}
     onTargetDialogIdChange={(val) => onUpdate?.({ buttonTargetDialogId: val })}
     
+    // Icons
+    iconLeft={iconLeftName}
+    onIconLeftChange={(val) => onUpdate?.({ iconLeftName: val })}
+    iconRight={iconRightName}
+    onIconRightChange={(val) => onUpdate?.({ iconRightName: val })}
+    
     // Identity
     id={buttonId}
     onIdChange={(val) => onUpdate?.({ buttonId: val })}
@@ -114,7 +120,22 @@ import BuilderLink from "@/app/page-builder/utils/builder/builder-link";
 
 ---
 
-## 2. Component Helpers (`component-helpers.js`)
+## 2. Interaction & Custom UI
+
+### `data-builder-ui`
+If your component renders custom editor controls (e.g. a floating toolbar, a popup menu, or specific settings buttons) that are **NOT** part of the standard `BuilderControlsPopover`, you **must** add the `data-builder-ui` attribute to their wrapper.
+
+This attribute prevents the Global Click Listener from deselecting the component when these controls are clicked.
+
+```javascript
+<div className={styles.myCustomToolbar} data-builder-ui="true">
+    <button onClick={...}>Bold</button>
+</div>
+```
+
+---
+
+## 3. Component Helpers (`component-helpers.js`)
 
 Use helper utilities from `app/templates/utils/component-helpers.js` to reduce boilerplate code in your components.
 

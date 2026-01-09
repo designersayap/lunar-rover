@@ -10,6 +10,13 @@ A powerful **Visual Page Builder** built with **Next.js 15**, designed to create
 - **Staging Environment**: Generate live preview links (`/staging/[name]`) to share your work-in-progress.
 - **Production Export**: Export your page as a standalone Next.js project zip file, clean and ready to deploy.
 
+## ✨ Latest Updates (v1.1 - Interaction Polish)
+
+We've refined the builder experience to be smoother and more intuitive:
+- **Smart Selection**: Clicking the empty canvas now auto-deselects components, while protecting active overlays from accidental closure.
+- **Precision Positioning**: Builder controls now maintain a perfect `4px` gap from your component, adapting intelligently to screen edges (top/bottom flip).
+- **Unified Design**: The `BuilderButton` overlay has been rebuilt to match the standard design system, ensuring a consistent editing experience across all component types.
+
 ## 🛠️ Getting Started
 
 ### Installation
