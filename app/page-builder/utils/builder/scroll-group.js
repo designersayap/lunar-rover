@@ -212,6 +212,23 @@ export default function ScrollGroup({
         )
     );
 
+    // Mobile Image Logic
+    const mobileImageCss = mobileImage ? `
+        @media (max-width: 768px) {
+            #${elementId} {
+                background-image: url(${mobileImage}) !important;
+            }
+        }
+    ` : '';
+
+    const stickyMobileImageCss = mobileImage ? `
+        @media (max-width: 768px) {
+            #${elementId}-bg {
+                background-image: url(${mobileImage}) !important;
+            }
+        }
+    ` : '';
+
     if (isSticky) {
         return (
             <div
@@ -221,12 +238,13 @@ export default function ScrollGroup({
                 className={`${styles.parallaxGroup} ${isActive ? styles.activeWrapper : ''}`}
                 style={stickyContainerStyle}
             >
-                <div style={stickyBackgroundStyle} />
+                <div id={`${elementId}-bg`} style={stickyBackgroundStyle} />
                 <div style={contentStyle}>
                     {renderChildren()}
                 </div>
                 {renderOverlay()}
                 {renderPopover()}
+                <style jsx global>{stickyMobileImageCss}</style>
             </div>
         );
     }
@@ -243,6 +261,7 @@ export default function ScrollGroup({
                 {renderOverlay()}
                 {renderChildren()}
                 {renderPopover()}
+                <style jsx global>{mobileImageCss}</style>
             </div>
         );
     }
@@ -259,6 +278,7 @@ export default function ScrollGroup({
             {renderOverlay()}
             {renderChildren()}
             {renderPopover()}
+            <style jsx global>{mobileImageCss}</style>
         </div>
     );
 }
