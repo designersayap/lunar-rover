@@ -29,5 +29,5 @@ ts-debug.log*
 .vercel
 
 # user requests
-public/uat-files/daru-test
-app/staging/daru-test
+public/uat-files
+app/staging
