@@ -40,7 +40,9 @@ export default function BuilderImage({
     mobileSrc,
     onMobileSrcChange,
     isActive: isActiveProp,
-    alwaysShowSrc = false, }) {
+    alwaysShowSrc = false,
+    readOnly = false
+}) {
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
 
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
@@ -58,7 +60,7 @@ export default function BuilderImage({
     const safeUseLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
     safeUseLayoutEffect(() => {
-        if (isActive && wrapperRef.current) {
+        if (isActive && wrapperRef.current && !readOnly) {
             let rafId;
             const updatePosition = () => {
                 if (wrapperRef.current) {
@@ -88,7 +90,7 @@ export default function BuilderImage({
                 cancelAnimationFrame(rafId);
             };
         }
-    }, [isActive, showSettings]);
+    }, [isActive, showSettings, readOnly]);
 
     // Hook must be called unconditionally
     const overlayStyle = useActiveOverlayPosition(overlayRect);
@@ -151,7 +153,7 @@ export default function BuilderImage({
 
 
     const renderActiveOverlay = () => {
-        if (!isActive || !overlayRect) return null;
+        if (!isActive || !overlayRect || readOnly) return null;
 
         return createPortal(
             <div
@@ -333,7 +335,7 @@ export default function BuilderImage({
 
             {renderActiveOverlay()}
 
-            {isActive && (
+            {isActive && !readOnly && (
                 <BuilderControlsPopover
                     isOpen={showSettings}
                     onClose={() => setActivePopoverId(null)}

@@ -701,6 +701,11 @@
     text-overflow: ellipsis;
 }
 
+.overlayIcon {
+    width: 12px;
+    height: 12px;
+}
+
 .settingsButton {
     justify-content: center;
     width: 20px;

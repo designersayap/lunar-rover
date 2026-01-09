@@ -19,6 +19,9 @@ export const COMPONENT_PATHS = {
     "media-21-9": "app/templates/media/media-21-9.js",
 
     "navigation-center": "app/templates/navigation/navigation-center.js",
+    "navigation-left": "app/templates/navigation/navigation-left.js",
+    "navigation-right": "app/templates/navigation/navigation-right.js",
+
     "background-full-body": "app/templates/background/full-body.js",
 
     "testimonial-terra": "app/templates/terra/terra-testimony.js",

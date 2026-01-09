@@ -290,7 +290,8 @@ const ComponentTreeItem = memo(({
                                             data-tooltip={getValueAt(comp.props, child.visibleProp) === false ? "Show" : "Hide"}
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                const currentVal = getValueAt(comp.props, child.visibleProp);
+                                                // Default to true if undefined (visible by default) so first click toggles to false
+                                                const currentVal = getValueAt(comp.props, child.visibleProp) ?? true;
                                                 updateComponent(comp.uniqueId, { [child.visibleProp]: !currentVal });
                                             }}
                                         >

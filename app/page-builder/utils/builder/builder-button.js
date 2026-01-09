@@ -32,7 +32,8 @@ export default function BuilderButton({
     linkType = 'url',
     onLinkTypeChange,
     targetDialogId,
-    onTargetDialogIdChange
+    onTargetDialogIdChange,
+    disableSettings = false
 }) {
     const [popoverPosition, setPopoverPosition] = useState(null);
 
@@ -51,6 +52,7 @@ export default function BuilderButton({
         activePopoverId,
         setActivePopoverId,
         activeElementId,
+        setActiveElementId,
         selectedElementIds
     } = useContext(BuilderSelectionContext);
     const myPopoverId = `popover-${buttonId}`;
@@ -146,8 +148,10 @@ export default function BuilderButton({
         // Use toggleElementSelection with ID string, matching useTemplateLogic expectations
         if (toggleElementSelection) {
             toggleElementSelection(buttonId, e.metaKey || e.ctrlKey);
+        } else if (setActiveElementId) {
+            // Fallback or legacy behavior if toggleElementSelection is missing (e.g. Staging)
+            setActiveElementId(buttonId);
         } else {
-            // Fallback or legacy behavior if toggleElementSelection is missing
             console.warn("toggleElementSelection not found in context");
         }
     };
@@ -258,32 +262,29 @@ export default function BuilderButton({
                     data-builder-ui="true"
                 >
                     <div className={styles.overlayLabel}>
-                        Button
-                        {id && <span className={styles.overlayIdText} style={{ marginLeft: 4, opacity: 0.5 }}>#{id}</span>}
+                        <span className={styles.overlayIdText}>#{buttonId || 'button'}</span>
                     </div>
 
-                    <div style={{ display: 'flex' }}>
-                        {linkType === 'dialog' && (
-                            <button
-                                type="button"
-                                className={styles.settingsButton}
-                                onClick={handleOpenDialog}
-                                data-tooltip="Open Dialog"
-                            >
-                                <ChatBubbleLeftEllipsisIcon />
-                            </button>
-                        )}
+                    {linkType === 'dialog' && (
+                        <button
+                            type="button"
+                            className={styles.settingsButton}
+                            onClick={handleOpenDialog}
+                            data-tooltip="Open Dialog"
+                        >
+                            <ChatBubbleLeftEllipsisIcon className={styles.overlayIcon} />
+                        </button>
+                    )}
 
-                        {(!isStaging || linkType !== 'dialog') && (
-                            <button
-                                type="button"
-                                className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                                onClick={handleSettingsClick}
-                            >
-                                <Cog6ToothIcon />
-                            </button>
-                        )}
-                    </div>
+                    {(!disableSettings) && (
+                        <button
+                            type="button"
+                            className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
+                            onClick={handleSettingsClick}
+                        >
+                            <Cog6ToothIcon className={styles.overlayIcon} />
+                        </button>
+                    )}
                 </div>,
                 document.body
             )}

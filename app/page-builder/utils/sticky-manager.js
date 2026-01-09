@@ -97,7 +97,9 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                         forcedBgStyle = { backgroundColor: 'var(--base-white, #ffffff)', position: 'relative', zIndex: 1 };
                     }
 
-                    hasSeenStacked = true;
+                    if (isStacked) {
+                        hasSeenStacked = true;
+                    }
 
                     if (!isSticky) {
                         // If we need to force background, we must wrap the child
@@ -117,6 +119,7 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                         <div
                             ref={el => refs.current[index] = el}
                             style={{
+                                ...forcedBgStyle,
                                 position: 'sticky',
                                 top: topOffset,
                                 // Invert z-index: Earlier items (higher up) should be on top of later items
@@ -124,7 +127,6 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                                 zIndex: isStacked ? 0 : 100 - index,
                                 display: 'flex',
                                 flexDirection: 'column',
-                                ...forcedBgStyle
                             }}
                         >
                             {child}
