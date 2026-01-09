@@ -26,7 +26,7 @@ export default function TopBar({
     const selectedThemeName = selectedTheme ? selectedTheme.name : "Themes";
 
     return (
-        <div className={`${styles.topBar} z-layout-topbar`}>
+        <div className={`${styles.topBar} z-layout-topbar`} data-builder-ui="true">
             <div className={styles.topBarLeft}>
                 <Image
                     src="/logo.svg"

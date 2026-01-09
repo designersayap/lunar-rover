@@ -75,6 +75,7 @@ export default function BasePopover({
                 className={`${styles.popoverContainer} ${className}`}
                 style={popoverStyle}
                 onClick={(e) => e.stopPropagation()}
+                data-builder-ui="true"
             >
                 {children}
             </div>
