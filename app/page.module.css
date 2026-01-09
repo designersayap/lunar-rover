@@ -642,7 +642,7 @@
 .activeBorderOutline {
     position: absolute;
     inset: 0;
-    border: 1px solid #404040;
+    border: 2px solid #1e88e5;
     border-radius: 1px;
     pointer-events: none;
 }
@@ -656,7 +656,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #404040;
+    background: #1e88e5;
     color: white;
     border-radius: 4px;
     font-size: 12px;
@@ -704,7 +704,7 @@
     border: none;
     color: var(--base-white);
     padding: 0;
-    background: var(--bg3);
+    background: #1e88e5;
     box-shadow: var(--shd-btn);
     transition: background 0.2s;
     border-radius: 0 4px 4px 0;
@@ -716,12 +716,12 @@
 }
 
 .settingsButton:hover {
-    background: #4a4949;
+    background: #1565c0;
 }
 
 .settingsButton:active,
 .settingsButtonActive {
-    background: #3b3b3b;
+    background: #1565c0;
 }
 
 

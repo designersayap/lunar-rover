@@ -76,8 +76,9 @@ export default function Canvas({
                                         style={{
                                             ...stickyStyle,
                                             ...forcedBgStyle,
-                                            outline: isSelected ? "2px solid #0D99FF" : "none",
-                                            outlineOffset: "-2px",
+                                            outline: isSelected ? "1px solid #1e88e5" : "none",
+                                            backgroundColor: isSelected ? "#e3f2fd" : "transparent",
+                                            outlineOffset: "-1px",
                                         }}
                                         ref={(el) => setRef(item.uniqueId, el)}
                                         onClickCapture={(e) => {
