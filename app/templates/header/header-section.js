@@ -1,4 +1,4 @@
-import * as HeroIcons from "@heroicons/react/24/solid";
+
 import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
 import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";

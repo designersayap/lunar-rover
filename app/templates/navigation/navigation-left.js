@@ -17,7 +17,6 @@ export default function NavigationLeft({
 
     menu1Label = componentDefaults["navigation-left"].menu1Label,
     menu1Url = componentDefaults["navigation-left"].menu1Url,
-    menu1OpenInNewTab = componentDefaults["navigation-left"].menu1OpenInNewTab,
     menu1Visible = true,
     menu1LinkType = componentDefaults["navigation-left"].menu1LinkType,
     menu1TargetDialogId = componentDefaults["navigation-left"].menu1TargetDialogId,
@@ -25,7 +24,6 @@ export default function NavigationLeft({
 
     menu2Label = componentDefaults["navigation-left"].menu2Label,
     menu2Url = componentDefaults["navigation-left"].menu2Url,
-    menu2OpenInNewTab = componentDefaults["navigation-left"].menu2OpenInNewTab,
     menu2Visible = true,
     menu2LinkType = componentDefaults["navigation-left"].menu2LinkType,
     menu2TargetDialogId = componentDefaults["navigation-left"].menu2TargetDialogId,
@@ -33,7 +31,6 @@ export default function NavigationLeft({
 
     menu3Label = componentDefaults["navigation-left"].menu3Label,
     menu3Url = componentDefaults["navigation-left"].menu3Url,
-    menu3OpenInNewTab = componentDefaults["navigation-left"].menu3OpenInNewTab,
     menu3Visible = true,
     menu3LinkType = componentDefaults["navigation-left"].menu3LinkType,
     menu3TargetDialogId = componentDefaults["navigation-left"].menu3TargetDialogId,
@@ -41,7 +38,6 @@ export default function NavigationLeft({
 
     menu4Label = componentDefaults["navigation-left"].menu4Label,
     menu4Url = componentDefaults["navigation-left"].menu4Url,
-    menu4OpenInNewTab = componentDefaults["navigation-left"].menu4OpenInNewTab,
     menu4Visible = true,
     menu4LinkType = componentDefaults["navigation-left"].menu4LinkType,
     menu4TargetDialogId = componentDefaults["navigation-left"].menu4TargetDialogId,
@@ -62,6 +58,7 @@ export default function NavigationLeft({
     };
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setPortalContainer(document.body);
     }, []);
 
@@ -109,7 +106,6 @@ export default function NavigationLeft({
         {
             label: menu1Label,
             url: menu1Url,
-            openInNewTab: menu1OpenInNewTab,
             visible: menu1Visible,
             linkType: menu1LinkType,
             targetDialogId: menu1TargetDialogId,
@@ -117,7 +113,6 @@ export default function NavigationLeft({
             handlers: {
                 onLabelChange: update('menu1Label'),
                 onUrlChange: update('menu1Url'),
-                onOpenInNewTabChange: update('menu1OpenInNewTab'),
                 onLinkTypeChange: update('menu1LinkType'),
                 onTargetDialogIdChange: update('menu1TargetDialogId'),
                 onIdChange: update('menu1Id')
@@ -128,7 +123,6 @@ export default function NavigationLeft({
         {
             label: menu2Label,
             url: menu2Url,
-            openInNewTab: menu2OpenInNewTab,
             visible: menu2Visible,
             linkType: menu2LinkType,
             targetDialogId: menu2TargetDialogId,
@@ -136,7 +130,6 @@ export default function NavigationLeft({
             handlers: {
                 onLabelChange: update('menu2Label'),
                 onUrlChange: update('menu2Url'),
-                onOpenInNewTabChange: update('menu2OpenInNewTab'),
                 onLinkTypeChange: update('menu2LinkType'),
                 onTargetDialogIdChange: update('menu2TargetDialogId'),
                 onIdChange: update('menu2Id')
@@ -147,7 +140,6 @@ export default function NavigationLeft({
         {
             label: menu3Label,
             url: menu3Url,
-            openInNewTab: menu3OpenInNewTab,
             visible: menu3Visible,
             linkType: menu3LinkType,
             targetDialogId: menu3TargetDialogId,
@@ -155,7 +147,6 @@ export default function NavigationLeft({
             handlers: {
                 onLabelChange: update('menu3Label'),
                 onUrlChange: update('menu3Url'),
-                onOpenInNewTabChange: update('menu3OpenInNewTab'),
                 onLinkTypeChange: update('menu3LinkType'),
                 onTargetDialogIdChange: update('menu3TargetDialogId'),
                 onIdChange: update('menu3Id')
@@ -166,7 +157,6 @@ export default function NavigationLeft({
         {
             label: menu4Label,
             url: menu4Url,
-            openInNewTab: menu4OpenInNewTab,
             visible: menu4Visible,
             linkType: menu4LinkType,
             targetDialogId: menu4TargetDialogId,
@@ -174,7 +164,6 @@ export default function NavigationLeft({
             handlers: {
                 onLabelChange: update('menu4Label'),
                 onUrlChange: update('menu4Url'),
-                onOpenInNewTabChange: update('menu4OpenInNewTab'),
                 onLinkTypeChange: update('menu4LinkType'),
                 onTargetDialogIdChange: update('menu4TargetDialogId'),
                 onIdChange: update('menu4Id')
@@ -205,7 +194,7 @@ export default function NavigationLeft({
                         </div>
                     </div>
 
-                    {menuItems.map((item, index) => (
+                    {menuItems.map((item) => (
                         <div
                             key={`desktop-${item.suffix}`}
                             className={`col-desktop-2 ${styles.desktopNav} ${styles.menuItemWrapper}`}
@@ -214,10 +203,7 @@ export default function NavigationLeft({
                                 <BuilderLink
                                     label={item.label}
                                     href={item.url}
-                                    openInNewTab={item.openInNewTab}
-                                    onLabelChange={item.handlers.onLabelChange}
                                     onHrefChange={item.handlers.onUrlChange}
-                                    onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
                                     sectionId={sectionId}
                                     id={item.id}
                                     onIdChange={item.handlers.onIdChange}
@@ -275,10 +261,7 @@ export default function NavigationLeft({
                                                 <BuilderLink
                                                     label={item.label}
                                                     href={item.url}
-                                                    openInNewTab={item.openInNewTab}
-                                                    onLabelChange={item.handlers.onLabelChange}
                                                     onHrefChange={item.handlers.onUrlChange}
-                                                    onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
                                                     sectionId={sectionId}
                                                     id={undefined}
                                                     suffix={item.mobileSuffix}

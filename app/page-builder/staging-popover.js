@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { XMarkIcon, FolderIcon, DocumentPlusIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { FolderIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import styles from '../page.module.css';
 import { handleStagePreview } from './utils/stage-preview';
 import BasePopover from './base-popover';
@@ -18,7 +18,6 @@ export default function StagingPopover({
     const [existingFolders, setExistingFolders] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
-    const [isRestoring, setIsRestoring] = useState(false);
 
     useEffect(() => {
         const fetchFolders = async () => {
@@ -58,7 +57,7 @@ export default function StagingPopover({
         e.stopPropagation(); // Prevent clicking the folder item
         if (!confirm(`Replace current canvas with content from '${folder}'?`)) return;
 
-        setIsRestoring(true);
+
         try {
             const res = await fetch(`/api/load-staging-data?folder=${folder}`);
             if (res.ok) {
@@ -99,8 +98,6 @@ export default function StagingPopover({
         } catch (e) {
             console.error("Error restoring", e);
             alert("Error restoring staging data");
-        } finally {
-            setIsRestoring(false);
         }
     };
 

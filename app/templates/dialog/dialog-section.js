@@ -54,7 +54,6 @@ export default function DialogSection({
             if (canvas) {
                 // eslint-disable-next-line react-hooks/immutability
                 canvas.style.overflow = 'hidden';
-                // eslint-disable-next-line react-hooks/immutability
                 return () => { canvas.style.overflow = ''; };
             }
         } else {

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { cleanBuilderContent } from '../export-component/helpers';
+
 
 export async function GET() {
     try {

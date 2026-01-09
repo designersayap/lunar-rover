@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, memo } from "react";
+import { useState, memo } from "react";
 import {
     PlusIcon,
     CursorArrowRaysIcon,
@@ -6,13 +6,11 @@ import {
     MagnifyingGlassIcon,
     TrashIcon,
     ArrowUturnLeftIcon,
-    Square2StackIcon,
-    StopIcon,
     FolderOpenIcon,
     FolderIcon,
     ArrowLeftStartOnRectangleIcon
 } from "@heroicons/react/24/outline";
-import { TrashIcon as TrashIconSolid, FolderOpenIcon as FolderOpenIconSolid, FolderIcon as FolderIconSolid, ArrowLeftStartOnRectangleIcon as ArrowLeftStartOnRectangleIconSolid } from "@heroicons/react/24/solid";
+import { TrashIcon as TrashIconSolid, ArrowLeftStartOnRectangleIcon as ArrowLeftStartOnRectangleIconSolid } from "@heroicons/react/24/solid";
 import styles from "../page.module.css";
 import { componentLibrary } from "./content/component-library";
 import { isComponentSticky, getValueAt } from "./utils/component-manager";
@@ -316,6 +314,8 @@ const ComponentTreeItem = memo(({
     );
 });
 
+ComponentTreeItem.displayName = 'ComponentTreeItem';
+
 export default function Sidebar({
     activeTab,
     setActiveTab,
@@ -479,3 +479,5 @@ export default function Sidebar({
         </div>
     );
 }
+
+Sidebar.displayName = 'Sidebar';

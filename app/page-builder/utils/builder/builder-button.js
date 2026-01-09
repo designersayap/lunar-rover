@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef, useContext, useLayoutEffect } from "react";
+import { createPortal } from "react-dom";
 import BuilderText from "./builder-text";
-import { useBuilderSelection, BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
-import { useActiveOverlay, ActiveOverlayPortal } from "../hooks/use-active-overlay";
+import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
+import { useActiveOverlayPosition } from "../hooks/use-active-overlay";
 import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid";
 import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
@@ -42,8 +43,14 @@ export default function BuilderButton({
     const normalizedId = id?.replace(/-+/g, '-') || '';
     const buttonId = normalizedId || generatedId;
 
-    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
-
+    const {
+        selectedComponents,
+        updateComponent,
+        isStaging,
+        toggleElementSelection,
+        activePopoverId,
+        setActivePopoverId
+    } = useContext(BuilderSelectionContext);
     const myPopoverId = `popover-${buttonId}`;
     const showSettings = activePopoverId === myPopoverId;
 
@@ -56,7 +63,6 @@ export default function BuilderButton({
             : buttonId;
 
         if (newTempId !== tempId) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             setTempId(newTempId);
         }
     }, [buttonId, prefix, tempId]);
@@ -77,45 +83,70 @@ export default function BuilderButton({
         prevSectionIdRef.current = sectionId;
     }, [sectionId, buttonId, onIdChange]);
 
-    const handleIdChange = (e) => {
-        const newValue = e.target.value.replace(/\s/g, '-');
-        setTempId(newValue);
-    };
 
-    const handleIdBlur = () => {
-        if (!tempId || tempId.trim() === '') {
-            setTempId(buttonId.startsWith(prefix) ? buttonId.slice(prefix.length) : buttonId);
-            return;
-        }
 
-        const newFullId = prefix + tempId;
-        if (newFullId !== buttonId && onIdChange) {
-            onIdChange(newFullId);
-        }
-    };
+    // Context accessed at top of component
 
-    const handleIdKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            e.target.blur();
+    const isActive = selectedComponents?.some(c => c.uniqueId === buttonId) || false;
+    const wrapperRef = useRef(null);
+    const [overlayRect, setOverlayRect] = useState(null);
+
+    // Use layout effect to prevent visual jitter on selection
+    const safeUseLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
+    safeUseLayoutEffect(() => {
+        if (isActive && wrapperRef.current) {
+            let rafId;
+            const updatePosition = () => {
+                if (wrapperRef.current) {
+                    const rect = wrapperRef.current.getBoundingClientRect();
+                    setOverlayRect(rect);
+                    if (showSettings) {
+                        setPopoverPosition({
+                            top: rect.top,
+                            left: rect.left + rect.width / 2
+                        });
+                    }
+                }
+            };
+
+            const onScrollOrResize = () => {
+                cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(updatePosition);
+            };
+
+            updatePosition();
+            window.addEventListener('scroll', onScrollOrResize, true);
+            window.addEventListener('resize', onScrollOrResize);
+
+            return () => {
+                window.removeEventListener('scroll', onScrollOrResize, true);
+                window.removeEventListener('resize', onScrollOrResize);
+                cancelAnimationFrame(rafId);
+            };
+        } else {
+            setOverlayRect(null);
         }
+    }, [isActive, showSettings]);
+
+    const overlayStyle = useActiveOverlayPosition(overlayRect);
+
+    const handleActivate = (e) => {
+        e.preventDefault();
         e.stopPropagation();
-    };
 
-    const {
-        wrapperRef,
-        overlayRect,
-        isActive,
-        handleActivate
-    } = useActiveOverlay(buttonId);
-    useEffect(() => {
-        if (isActive && overlayRect && showSettings) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setPopoverPosition({
-                top: overlayRect.top,
-                left: overlayRect.left + overlayRect.width / 2
-            });
+        // Mock handleSelection logic since it's not exposed
+        if (toggleElementSelection) {
+            toggleElementSelection({
+                uniqueId: buttonId,
+                type: 'button',
+                sectionId: sectionId
+            }, e.metaKey || e.ctrlKey);
+        } else {
+            // Fallback or legacy behavior if toggleElementSelection is missing
+            console.warn("toggleElementSelection not found in context");
         }
-    }, [isActive, overlayRect, showSettings]);
+    };
 
     if (!isVisible && !isActive) return null;
     const handleSettingsClick = (e) => {
@@ -173,8 +204,7 @@ export default function BuilderButton({
         return icon;
     };
 
-    const leftIconDropdown = iconLeft; // The prop passed from parent (string or JSX)
-    const rightIconDropdown = iconRight;
+
 
     return (
         <>
@@ -217,35 +247,39 @@ export default function BuilderButton({
                 </div>
             </Link >
 
-            <ActiveOverlayPortal
-                isActive={isActive}
-                overlayRect={overlayRect}
-                elementId={buttonId}
-                actions={
-                    <>
-                        {linkType === 'dialog' && (
-                            <button
-                                type="button"
-                                className={styles.settingsButton}
-                                onClick={handleOpenDialog}
-                                data-tooltip="Open Dialog"
-                            >
-                                <ChatBubbleLeftEllipsisIcon className={styles.overlayIcon} />
-                            </button>
-                        )}
+            {isActive && overlayRect && createPortal(
+                <div
+                    className={styles.activeOverlay}
+                    style={overlayStyle}
+                >
+                    <div className={styles.activeOverlayControls}>
+                        <span className={styles.activeOverlayLabel}>Button</span>
+                        <div className={styles.activeOverlayActions}>
+                            {linkType === 'dialog' && (
+                                <button
+                                    type="button"
+                                    className={styles.settingsButton}
+                                    onClick={handleOpenDialog}
+                                    data-tooltip="Open Dialog"
+                                >
+                                    <ChatBubbleLeftEllipsisIcon className={styles.overlayIcon} />
+                                </button>
+                            )}
 
-                        {(!isStaging || linkType !== 'dialog') && (
-                            <button
-                                type="button"
-                                className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                                onClick={handleSettingsClick}
-                            >
-                                <Cog6ToothIcon className={styles.overlayIcon} />
-                            </button>
-                        )}
-                    </>
-                }
-            />
+                            {(!isStaging || linkType !== 'dialog') && (
+                                <button
+                                    type="button"
+                                    className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
+                                    onClick={handleSettingsClick}
+                                >
+                                    <Cog6ToothIcon className={styles.overlayIcon} />
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </div>,
+                document.body
+            )}
 
             {
                 isActive && (

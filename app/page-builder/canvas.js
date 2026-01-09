@@ -48,7 +48,7 @@ export default function Canvas({
                         {(() => {
                             let hasSeenStacked = false;
 
-                            return displayComponents.map((item, index) => {
+                            return displayComponents.map((item) => {
                                 const Component = item.component;
                                 const stickyStyle = stickyStyles[item.uniqueId] || {};
                                 const isSelected = selectedElementIds.includes(item.uniqueId);
@@ -66,7 +66,7 @@ export default function Canvas({
                                 }
 
                                 if (isStacked) {
-                                    hasSeenStacked = true;
+                                    // hasSeenStacked = true;
                                 }
 
                                 return (

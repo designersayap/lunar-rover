@@ -82,7 +82,6 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
 
             let uniqueName;
             let dataContent;
-            let isBase64 = false;
 
             if (imgPath.startsWith('blob:') || imgPath.startsWith('http')) {
                 // Handle Blob or External URL
@@ -187,21 +186,20 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                         previewMap.set(`components/${filename.replace('.js', '.module.css')}`, { path: `components/${filename.replace('.js', '.module.css')}`, content: cssContent });
                     }
                 }
-            } catch (ignore) { /* CSS is optional */ }
+            } catch { /* CSS is optional */ }
 
             // C. Find and Process Dependencies (Recursive) - Match standard imports
             // We need a loop because regex.exec is stateful
             // FIXED: capture generic path (matched group 1) to support aliases like matching "@/..."
             // Also supports dynamic imports: import("...")
             const importRegex = /(?:import\s+(?:[\w{},*\s]+)\s+from\s+['"]([^'"]+)['"]|import\(['"]([^'"]+)['"]\))/g;
-            let match;
+
 
             // We collect replacements to do them after the loop to avoid messing up regex indices if content changes length (though we replace text so we should be careful)
             // Actually, replace returns new string, so regex on OLD string is safer if we just iterate once or use matchAll.
             const matches = [...content.matchAll(importRegex)];
 
             for (const match of matches) {
-                const fullImport = match[0];
                 const importPath = match[1] || match[2]; // Group 1 is static, Group 2 is dynamic
 
                 // Filter: Only process relative paths (.) and project aliases (@/)
@@ -750,7 +748,7 @@ export default function RootLayout({ children }) {
         const filePath = COMPONENT_PATHS[item.id];
         if (!filePath) return;
 
-        const filename = filePath.split('/').pop();
+
         const componentName = getComponentName(filePath);
 
         // Merge props from root item and nested props to ensure robust data passing
@@ -759,7 +757,6 @@ export default function RootLayout({ children }) {
         const props = { ...item, ...(item.props || {}) };
 
         // Check for stickiness before deleting the prop
-        const isSticky = props.isSticky;
 
         // Cleanup metadata fields that should not be passed as props
         // Cleanup metadata fields that should not be passed as props

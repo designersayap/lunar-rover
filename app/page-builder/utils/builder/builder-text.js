@@ -183,7 +183,7 @@ function BuilderTextComponent({
                         const isInsideList = parentLi && parentLi.nodeName === 'LI';
 
                         if (isInsideList) {
-                            const currentList = parentLi.parentNode;
+
 
                             // Nesting logic using Manual DOM Manipulation
                             const previousLi = parentLi.previousElementSibling;
@@ -303,7 +303,7 @@ function BuilderTextComponent({
                         const isInsideList = parentLi && parentLi.nodeName === 'LI';
 
                         if (isInsideList) {
-                            const currentList = parentLi.parentNode;
+
 
                             // Nesting logic
 

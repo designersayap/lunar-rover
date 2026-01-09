@@ -1,12 +1,11 @@
 import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
 import styles from "../../../page.module.css";
 import { createPortal } from "react-dom";
-import { useEffect, useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import { IconNames } from "./builder-icons";
 
 export default function BuilderControlsPopover({
     isOpen,
-    onClose,
     url,
     onUrlChange,
     imageSrc,
@@ -18,17 +17,14 @@ export default function BuilderControlsPopover({
     onVariantChange,
     variants = ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
     showVariant = true,
-
-    showLinkType = true, // Set to false for BuilderLink
-    showUrl = true, // Set to false to hide URL input
+    showLinkType = true,
+    showUrl = true,
     position,
     dialogOptions = [],
     targetDialogId,
     onTargetDialogIdChange,
     showDialogSelector = true,
     fullWidth,
-    removePaddingLeft,
-    removePaddingRight,
     onLayoutChange,
     showPortraitToggle,
     isPortrait,
@@ -43,21 +39,13 @@ export default function BuilderControlsPopover({
     onIconLeftChange,
     iconRight,
     onIconRightChange,
-    openInNewTab,
-    onOpenInNewTabChange,
     showScrollEffect,
     scrollEffect,
     onScrollEffectChange
 }) {
 
 
-    const [portalContainer, setPortalContainer] = useState(null);
 
-    useEffect(() => {
-        if (typeof document !== 'undefined') {
-            setPortalContainer(document.body);
-        }
-    }, []);
 
     // Positioning Logic:
     const containerRef = useRef(null);
@@ -89,8 +77,10 @@ export default function BuilderControlsPopover({
             // If popover height > space below, flip it
             // Buffer of 20px
             if (rect.height > spaceBelow - 20) {
+                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setIsFlipped(true);
             } else {
+                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setIsFlipped(false);
             }
         }

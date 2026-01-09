@@ -1,6 +1,6 @@
 // Helper utilities for export-component route
 import path from 'path';
-import { promises as fs } from 'fs';
+
 
 
 export const ALLOWED_DIRS = [
@@ -51,8 +51,9 @@ export function cleanBuilderContent(src) {
   const hasBuilderButton = src.includes('BuilderButton') && !hasShim('BuilderButton');
   const hasBuilderElement = src.includes('BuilderElement') && !hasShim('BuilderElement');
 
-  // Remove Builder imports
-  src = src.replace(/import\s+.*?\s+from\s+['"]@\/app\/page-builder\/utils\/builder\/(?!builder-controls).*?['"];?\n?/g, '');
+  // Remove Builder imports (Absolute & Relative)
+  // Matches: import ... from "@/app/page-builder/..." OR ".../page-builder/..."
+  src = src.replace(/import\s+.*?\s+from\s+['"](?:@\/app\/|.*\/)page-builder\/utils\/builder\/(?!builder-controls).*?['"];?\n?/g, '');
 
   // Remove generic imports that are not needed (keep CSS imports)
   // src = src.replace(/import\s+{[^}]*}\s+from\s+['"][^'\"]+['"];?\n?/g, '');
@@ -138,7 +139,7 @@ const BuilderText = ({ tagName = 'p', content, className, style, children, id, s
 
     shims.push(`
 // Shim for BuilderButton
-const BuilderButton = ({ label, href, openInNewTab, className, style, children, linkType, targetDialogId, id, sectionId, suffix, iconLeft, iconRight }) => {
+const BuilderButton = ({ label, href, className, style, children, linkType, targetDialogId, id, sectionId, suffix, iconLeft, iconRight }) => {
   const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
@@ -184,7 +185,6 @@ const BuilderButton = ({ label, href, openInNewTab, className, style, children, 
       href={href || '#'} 
       className={className} 
       style={style}
-      target={openInNewTab ? '_blank' : undefined}
     >
         {content}
     </Link>
@@ -195,7 +195,7 @@ const BuilderButton = ({ label, href, openInNewTab, className, style, children, 
   if (hasBuilderLink) {
     shims.push(`
 // Shim for BuilderLink
-const BuilderLink = ({ label, href, openInNewTab, className, style, children, linkType, targetDialogId, id, sectionId, suffix, iconLeft, iconRight, justify }) => {
+const BuilderLink = ({ label, href, className, style, children, linkType, targetDialogId, id, sectionId, suffix, iconLeft, iconRight, justify }) => {
   const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
@@ -232,7 +232,6 @@ const BuilderLink = ({ label, href, openInNewTab, className, style, children, li
       href={href || '#'} 
       className={className} 
       style={style}
-      target={openInNewTab ? '_blank' : undefined}
     >
       {content}
     </Link>
@@ -242,7 +241,7 @@ const BuilderLink = ({ label, href, openInNewTab, className, style, children, li
 
   if (hasBuilderImage) {
     shims.push(`
-const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href, linkType, openInNewTab, targetDialogId, id, sectionId, suffix, isPortrait }) => {
+const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href, linkType, targetDialogId, id, sectionId, suffix, isPortrait }) => {
   const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
@@ -357,7 +356,6 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
   ) : mediaContent;
 
   if (href || (linkType === 'dialog' && targetDialogId)) {
-    const isNewTab = linkType === 'external' || openInNewTab;
     const isDialog = linkType === 'dialog' && targetDialogId;
     
     if (isDialog) {
@@ -378,7 +376,6 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
     return (
       <Link 
          href={href || '#'} 
-         target={isNewTab ? '_blank' : undefined}
          className={finalClassName}
          style={{ display: 'block', width: '100%', height: '100%' }}
       >

@@ -51,7 +51,7 @@ export default function WelcomePopover({ isOpen, onClose }) {
                         maxWidth: "300px",
                         margin: "0 auto"
                     }}>
-                        Designer Sayap's Web Builder
+                        Designer Sayap&apos;s Web Builder
                     </p>
                 </div>
 

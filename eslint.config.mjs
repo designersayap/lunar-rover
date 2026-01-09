@@ -10,7 +10,13 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "public/uat-files/**"
   ]),
+  {
+    rules: {
+      "no-unused-vars": "error",
+    }
+  }
 ]);
 
 export default eslintConfig;

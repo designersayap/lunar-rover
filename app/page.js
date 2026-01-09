@@ -91,7 +91,7 @@ export default function TemplateGeneratorPage() {
     setActivePopoverId,
     selectedComponents,
     updateComponent
-  }), [activeElementId, activePopoverId, selectedComponents, updateComponent, setActiveElementId, setActivePopoverId]);
+  }), [activeElementId, activePopoverId, selectedComponents, updateComponent, setActiveElementId, setActivePopoverId, selectedElementIds, toggleElementSelection]);
 
   return (
     <div className={styles.container} ref={containerRef}>

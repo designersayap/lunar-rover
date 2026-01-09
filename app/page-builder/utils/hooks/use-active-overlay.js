@@ -1,76 +1,45 @@
-"use client";
+import { useMemo } from 'react';
 
-import { useState, useEffect, useRef, useContext } from "react";
-import { createPortal } from "react-dom";
-import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
-import styles from "../../../page.module.css";
+export function useActiveOverlayPosition(overlayRect) {
+    return useMemo(() => {
+        if (!overlayRect) return {};
 
-export function useActiveOverlay(elementId) {
-    const wrapperRef = useRef(null);
-    const [overlayRect, setOverlayRect] = useState(null);
+        // Calculate centered position with edge clamping
+        const cx = overlayRect.left + (overlayRect.width / 2);
+        const halfWidthEstimate = 80; // Estimate for overlay half-width (text + buttons)
+        const windowWidth = typeof window !== 'undefined' ? window.innerWidth : 1000;
 
-    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId } = useContext(BuilderSelectionContext);
-    const isActive = activeElementId === elementId;
+        let leftPos, rightPos, transform;
 
-    useEffect(() => {
-        if (isActive && wrapperRef.current) {
-            const updatePosition = () => {
-                if (wrapperRef.current) {
-                    setOverlayRect(wrapperRef.current.getBoundingClientRect());
-                }
-            };
-
-            updatePosition();
-            window.addEventListener('scroll', updatePosition, true);
-            window.addEventListener('resize', updatePosition);
-
-            return () => {
-                window.removeEventListener('scroll', updatePosition, true);
-                window.removeEventListener('resize', updatePosition);
-            };
+        // Check if we are close to the edges
+        if (cx < halfWidthEstimate + 8) {
+            // Too close to left edge: Clamp to 8px
+            leftPos = 8;
+            rightPos = 'auto';
+            transform = 'none';
+        } else if (cx > windowWidth - (halfWidthEstimate + 8)) {
+            // Too close to right edge: Clamp to 8px from right
+            leftPos = 'auto';
+            rightPos = 8;
+            transform = 'none';
+        } else {
+            // Safe zone: Center align
+            leftPos = cx;
+            rightPos = 'auto';
+            transform = 'translateX(-50%)';
         }
-    }, [isActive]);
 
-    const handleActivate = (e) => {
-        e?.preventDefault();
-        e?.stopPropagation();
-        if (elementId) {
-            setActiveElementId(elementId);
-        }
-    };
+        // Y Position: Clamped to header (42px) or 24px above element
+        const topPos = Math.max(overlayRect.top - 24, 42);
 
-    return {
-        wrapperRef,
-        overlayRect,
-        isActive,
-        setActiveElementId,
-        activePopoverId,
-        setActivePopoverId,
-        handleActivate
-    };
-}
-
-export function ActiveOverlayPortal({ isActive, overlayRect, elementId, actions }) {
-    if (!isActive || !overlayRect) return null;
-
-    const anchorStyle = {
-        position: 'fixed',
-        top: overlayRect.top,
-        left: overlayRect.left,
-        width: overlayRect.width,
-        height: overlayRect.height,
-        pointerEvents: 'none'
-    };
-
-    return createPortal(
-        <div style={anchorStyle} className="z-system-builder-overlay" data-builder-ui>
-            <div className={styles.activeOverlay} style={{ pointerEvents: 'auto' }}>
-                <div className={styles.overlayLabel}>
-                    <span className={styles.overlayIdText}>#{elementId}</span>
-                </div>
-                {actions}
-            </div>
-        </div>,
-        document.body
-    );
+        return {
+            position: 'fixed',
+            top: topPos,
+            left: leftPos,
+            right: rightPos,
+            zIndex: 10002,
+            pointerEvents: 'auto',
+            transform: transform
+        };
+    }, [overlayRect]);
 }

@@ -9,6 +9,7 @@ import BuilderControlsPopover from "./builder-controls-popover";
 import styles from "../../../page.module.css";
 
 import { DEFAULT_PLACEHOLDER_IMAGE, IMAGE_PORTRAIT_RATIO_MAP } from "@/app/constants";
+import { useActiveOverlayPosition } from "../hooks/use-active-overlay";
 
 export const defaultPlaceholder = DEFAULT_PLACEHOLDER_IMAGE;
 
@@ -22,7 +23,6 @@ export default function BuilderImage({
     id,
     sectionId,
     isVisible = true,
-    onVisibilityChange,
     onIdChange,
     suffix,
     href,
@@ -40,10 +40,7 @@ export default function BuilderImage({
     mobileSrc,
     onMobileSrcChange,
     isActive: isActiveProp,
-    alwaysShowSrc = false,
-    openInNewTab,
-    onOpenInNewTabChange
-}) {
+    alwaysShowSrc = false, }) {
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
 
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
@@ -58,7 +55,6 @@ export default function BuilderImage({
     const [popoverPosition, setPopoverPosition] = useState(null);
 
     // Use layout effect to prevent visual jitter on selection
-    const { useLayoutEffect } = require('react'); // Ensure we have this (or import at top)
     const safeUseLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
     safeUseLayoutEffect(() => {
@@ -93,6 +89,9 @@ export default function BuilderImage({
             };
         }
     }, [isActive, showSettings]);
+
+    // Hook must be called unconditionally
+    const overlayStyle = useActiveOverlayPosition(overlayRect);
 
     if (!isVisible) return null;
 
@@ -149,53 +148,40 @@ export default function BuilderImage({
         }
     };
 
+
+
     const renderActiveOverlay = () => {
         if (!isActive || !overlayRect) return null;
 
-        const anchorStyle = {
-            position: 'fixed',
-            top: overlayRect.top,
-            left: overlayRect.left,
-            width: overlayRect.width,
-            height: overlayRect.height,
-            pointerEvents: 'none',
-            zIndex: 10002
-        };
-
         return createPortal(
-            <div style={anchorStyle}>
-                <div
-                    className={styles.activeOverlay}
-                    style={{
-                        pointerEvents: 'auto',
-                        top: overlayRect ? Math.max(-24, 42 - overlayRect.top) : -24
-                    }}
-                >
-                    <div className={styles.overlayLabel}>
-                        <span className={styles.overlayIdText}>#{elementId}</span>
-                    </div>
-
-                    {linkType === 'dialog' && (
-                        <button
-                            type="button"
-                            className={styles.settingsButton}
-                            onClick={handleOpenDialog}
-                            data-tooltip="Open Dialog"
-                        >
-                            <ChatBubbleLeftEllipsisIcon className={styles.overlayIcon} />
-                        </button>
-                    )}
-
-                    {(!disableSettings && (!isStaging || (linkType !== 'dialog' || true))) && (
-                        <button
-                            type="button"
-                            className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                            onClick={handleSettingsClick}
-                        >
-                            <Cog6ToothIcon className={styles.overlayIcon} />
-                        </button>
-                    )}
+            <div
+                className={styles.activeOverlay}
+                style={overlayStyle}
+            >
+                <div className={styles.overlayLabel}>
+                    <span className={styles.overlayIdText}>#{elementId}</span>
                 </div>
+
+                {linkType === 'dialog' && (
+                    <button
+                        type="button"
+                        className={styles.settingsButton}
+                        onClick={handleOpenDialog}
+                        data-tooltip="Open Dialog"
+                    >
+                        <ChatBubbleLeftEllipsisIcon className={styles.overlayIcon} />
+                    </button>
+                )}
+
+                {(!disableSettings && (!isStaging || (linkType !== 'dialog' || true))) && (
+                    <button
+                        type="button"
+                        className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
+                        onClick={handleSettingsClick}
+                    >
+                        <Cog6ToothIcon className={styles.overlayIcon} />
+                    </button>
+                )}
             </div>,
             document.body
         );
@@ -259,9 +245,7 @@ export default function BuilderImage({
     const wrapperProps = href || linkType === 'dialog' ? {
         href: href || "#",
         'data-dialog-trigger': linkType === 'dialog' ? "" : undefined,
-        'data-dialog-target': linkType === 'dialog' ? targetDialogSectionId : undefined,
-        target: openInNewTab ? "_blank" : undefined,
-        rel: openInNewTab ? "noopener noreferrer" : undefined
+        'data-dialog-target': linkType === 'dialog' ? targetDialogSectionId : undefined
     } : {};
 
     let finalClassName = `${isActive ? styles.activeWrapper : ''} ${className}`;
@@ -378,8 +362,7 @@ export default function BuilderImage({
                     showMobileImageSrc={isStaging && !!onMobileSrcChange && (!!mobileRatio || alwaysShowSrc)}
                     mobileImageSrc={mobileSrc}
                     onMobileImageSrcChange={onMobileSrcChange}
-                    openInNewTab={openInNewTab}
-                    onOpenInNewTabChange={onOpenInNewTabChange}
+
                 />
             )}
         </>

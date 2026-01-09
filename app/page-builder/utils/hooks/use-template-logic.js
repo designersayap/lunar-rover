@@ -87,18 +87,7 @@ export function useTemplateLogic() {
         }
     });
 
-    const {
-        draggedIndex,
-        dropTargetIndex,
-        setDraggedIndex,
-        dragImageRef,
-        dragThumbnailRef,
-        dragNameRef,
-        handleDragStart,
-        handleDragOver,
-        handleDragEnd,
-        handleDrop
-    } = dragDrop;
+
 
     // ==================== DOM REFERENCES ====================
 
@@ -133,6 +122,7 @@ export function useTemplateLogic() {
     useEffect(() => {
         const saved = loadTemplate(componentLibrary);
         if (saved) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setSelectedComponents(saved.components);
             setAnalyticsData(saved.analytics);
         }
@@ -154,6 +144,7 @@ export function useTemplateLogic() {
         const savedState = localStorage.getItem("lunar_sidebar_visible");
 
         if (savedState !== null) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setIsSidebarVisible(savedState === "true");
         } else {
             // Default behavior if no preference

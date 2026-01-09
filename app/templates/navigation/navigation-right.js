@@ -17,7 +17,6 @@ export default function NavigationRight({
 
     menu1Label = componentDefaults["navigation-right"].menu1Label,
     menu1Url = componentDefaults["navigation-right"].menu1Url,
-    menu1OpenInNewTab = componentDefaults["navigation-right"].menu1OpenInNewTab,
     menu1Visible = true,
     menu1LinkType = componentDefaults["navigation-right"].menu1LinkType,
     menu1TargetDialogId = componentDefaults["navigation-right"].menu1TargetDialogId,
@@ -25,7 +24,6 @@ export default function NavigationRight({
 
     menu2Label = componentDefaults["navigation-right"].menu2Label,
     menu2Url = componentDefaults["navigation-right"].menu2Url,
-    menu2OpenInNewTab = componentDefaults["navigation-right"].menu2OpenInNewTab,
     menu2Visible = true,
     menu2LinkType = componentDefaults["navigation-right"].menu2LinkType,
     menu2TargetDialogId = componentDefaults["navigation-right"].menu2TargetDialogId,
@@ -33,7 +31,6 @@ export default function NavigationRight({
 
     menu3Label = componentDefaults["navigation-right"].menu3Label,
     menu3Url = componentDefaults["navigation-right"].menu3Url,
-    menu3OpenInNewTab = componentDefaults["navigation-right"].menu3OpenInNewTab,
     menu3Visible = true,
     menu3LinkType = componentDefaults["navigation-right"].menu3LinkType,
     menu3TargetDialogId = componentDefaults["navigation-right"].menu3TargetDialogId,
@@ -41,7 +38,6 @@ export default function NavigationRight({
 
     menu4Label = componentDefaults["navigation-right"].menu4Label,
     menu4Url = componentDefaults["navigation-right"].menu4Url,
-    menu4OpenInNewTab = componentDefaults["navigation-right"].menu4OpenInNewTab,
     menu4Visible = true,
     menu4LinkType = componentDefaults["navigation-right"].menu4LinkType,
     menu4TargetDialogId = componentDefaults["navigation-right"].menu4TargetDialogId,
@@ -62,6 +58,7 @@ export default function NavigationRight({
     };
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setPortalContainer(document.body);
     }, []);
 
@@ -109,7 +106,6 @@ export default function NavigationRight({
         {
             label: menu1Label,
             url: menu1Url,
-            openInNewTab: menu1OpenInNewTab,
             visible: menu1Visible,
             linkType: menu1LinkType,
             targetDialogId: menu1TargetDialogId,
@@ -117,7 +113,6 @@ export default function NavigationRight({
             handlers: {
                 onLabelChange: update('menu1Label'),
                 onUrlChange: update('menu1Url'),
-                onOpenInNewTabChange: update('menu1OpenInNewTab'),
                 onLinkTypeChange: update('menu1LinkType'),
                 onTargetDialogIdChange: update('menu1TargetDialogId'),
                 onIdChange: update('menu1Id')
@@ -128,7 +123,6 @@ export default function NavigationRight({
         {
             label: menu2Label,
             url: menu2Url,
-            openInNewTab: menu2OpenInNewTab,
             visible: menu2Visible,
             linkType: menu2LinkType,
             targetDialogId: menu2TargetDialogId,
@@ -136,7 +130,6 @@ export default function NavigationRight({
             handlers: {
                 onLabelChange: update('menu2Label'),
                 onUrlChange: update('menu2Url'),
-                onOpenInNewTabChange: update('menu2OpenInNewTab'),
                 onLinkTypeChange: update('menu2LinkType'),
                 onTargetDialogIdChange: update('menu2TargetDialogId'),
                 onIdChange: update('menu2Id')
@@ -147,7 +140,6 @@ export default function NavigationRight({
         {
             label: menu3Label,
             url: menu3Url,
-            openInNewTab: menu3OpenInNewTab,
             visible: menu3Visible,
             linkType: menu3LinkType,
             targetDialogId: menu3TargetDialogId,
@@ -155,7 +147,6 @@ export default function NavigationRight({
             handlers: {
                 onLabelChange: update('menu3Label'),
                 onUrlChange: update('menu3Url'),
-                onOpenInNewTabChange: update('menu3OpenInNewTab'),
                 onLinkTypeChange: update('menu3LinkType'),
                 onTargetDialogIdChange: update('menu3TargetDialogId'),
                 onIdChange: update('menu3Id')
@@ -166,7 +157,6 @@ export default function NavigationRight({
         {
             label: menu4Label,
             url: menu4Url,
-            openInNewTab: menu4OpenInNewTab,
             visible: menu4Visible,
             linkType: menu4LinkType,
             targetDialogId: menu4TargetDialogId,
@@ -174,7 +164,6 @@ export default function NavigationRight({
             handlers: {
                 onLabelChange: update('menu4Label'),
                 onUrlChange: update('menu4Url'),
-                onOpenInNewTabChange: update('menu4OpenInNewTab'),
                 onLinkTypeChange: update('menu4LinkType'),
                 onTargetDialogIdChange: update('menu4TargetDialogId'),
                 onIdChange: update('menu4Id')
@@ -197,10 +186,7 @@ export default function NavigationRight({
                                 <BuilderLink
                                     label={item.label}
                                     href={item.url}
-                                    openInNewTab={item.openInNewTab}
-                                    onLabelChange={item.handlers.onLabelChange}
                                     onHrefChange={item.handlers.onUrlChange}
-                                    onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
                                     sectionId={sectionId}
                                     id={item.id}
                                     onIdChange={item.handlers.onIdChange}
@@ -274,10 +260,7 @@ export default function NavigationRight({
                                                 <BuilderLink
                                                     label={item.label}
                                                     href={item.url}
-                                                    openInNewTab={item.openInNewTab}
-                                                    onLabelChange={item.handlers.onLabelChange}
                                                     onHrefChange={item.handlers.onUrlChange}
-                                                    onOpenInNewTabChange={item.handlers.onOpenInNewTabChange}
                                                     sectionId={sectionId}
                                                     id={undefined}
                                                     suffix={item.mobileSuffix}

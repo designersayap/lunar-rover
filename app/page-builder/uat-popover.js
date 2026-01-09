@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FolderIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { FolderIcon } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
 import BasePopover from "./base-popover";
 import { handleExportNextjs } from "./utils/export-nextjs";
@@ -13,7 +13,7 @@ export default function UATPopover({
     activeThemePath,
     analyticsData
 }) {
-    const [isExporting, setIsExporting] = useState(false);
+
     const [isSaving, setIsSaving] = useState(false);
     const [folderName, setFolderName] = useState("");
     const [existingFolders, setExistingFolders] = useState([]);
@@ -129,7 +129,7 @@ export default function UATPopover({
                     className={styles.generatorButton}
                     style={{ width: '100%' }}
                     onClick={onSaveClick}
-                    disabled={isSaving || isExporting}
+                    disabled={isSaving}
                 >
                     {isSaving ? "Saving..." : "Create UAT Folder"}
                 </button>

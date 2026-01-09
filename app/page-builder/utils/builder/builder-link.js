@@ -9,6 +9,7 @@ import { useIdSync } from "../hooks/use-id-sync";
 import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid";
 import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
+import { useActiveOverlayPosition } from "../hooks/use-active-overlay";
 
 export default function BuilderLink({
     label = "Link",
@@ -33,9 +34,7 @@ export default function BuilderLink({
     onTargetDialogIdChange,
     tooltipIfTruncated,
     showLinkType = true,
-    hideLabel = false,
-    openInNewTab,
-    onOpenInNewTabChange
+    hideLabel = false
 }) {
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "link", onIdChange });
 
@@ -74,6 +73,9 @@ export default function BuilderLink({
             };
         }
     }, [isActive, showSettings]);
+
+    // Hook must be called unconditionally
+    const overlayStyle = useActiveOverlayPosition(overlayRect);
 
     if (!isVisible) return null;
 
@@ -130,26 +132,23 @@ export default function BuilderLink({
         }
     };
 
+
+
     const renderActiveOverlay = () => {
         if (!isActive || !overlayRect) return null;
 
-        const anchorStyle = {
-            position: 'fixed',
-            top: overlayRect.top,
-            left: overlayRect.left,
-            width: overlayRect.width,
-            height: overlayRect.height,
-            pointerEvents: 'none'
-        };
-
         return createPortal(
-            <div style={anchorStyle} className="z-system-builder-overlay">
+            <div style={{
+                position: 'fixed',
+                top: overlayRect.top,
+                left: overlayRect.left,
+                width: overlayRect.width,
+                height: overlayRect.height,
+                pointerEvents: 'none'
+            }} className="z-system-builder-overlay">
                 <div
                     className={styles.activeOverlay}
-                    style={{
-                        pointerEvents: 'auto',
-                        top: overlayRect ? Math.max(-24, 42 - overlayRect.top) : -24
-                    }}
+                    style={overlayStyle}
                 >
                     <div className={styles.overlayLabel}>
                         <span className={styles.overlayIdText}>#{elementId}</span>
@@ -195,7 +194,7 @@ export default function BuilderLink({
                         if (/^[a-z]+:/i.test(safeHref)) {
                             new URL(safeHref); // Will throw if invalid
                         }
-                    } catch (e) {
+                    } catch {
                         // Fallback to "#" to prevent crash
                         safeHref = "#";
                     }
@@ -206,8 +205,7 @@ export default function BuilderLink({
                             href={safeHref}
                             className={className}
                             style={{ opacity: isVisible ? 1 : 0.5, display: displayStyle, alignItems: 'center', justifyContent: justify, width: '100%', height: '100%' }}
-                            target={openInNewTab ? "_blank" : undefined}
-                            rel={openInNewTab ? "noopener noreferrer" : undefined}
+                            // Removed target and rel
                             data-tooltip={!tooltipIfTruncated ? label : undefined}
                             prefetch={false} // Disable prefetch to be extra safe during editing
                         >
@@ -250,11 +248,6 @@ export default function BuilderLink({
                     onLinkTypeChange={onLinkTypeChange}
                     targetDialogId={targetDialogId}
                     onTargetDialogIdChange={onTargetDialogIdChange}
-
-                    // New Tab Props
-                    openInNewTab={openInNewTab}
-                    onOpenInNewTabChange={onOpenInNewTabChange}
-
                     isVisible={isVisible}
                     onVisibilityChange={onVisibilityChange}
                     position={popoverPosition}

@@ -2,7 +2,9 @@
 "use client";
 
 import { useState, useRef, useContext, useEffect } from "react";
-import { useBuilderSelection, BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
+import { createPortal } from "react-dom"; // Added
+import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
+import { useActiveOverlayPosition } from "../hooks/use-active-overlay"; // Added
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
@@ -60,6 +62,9 @@ export default function BuilderSection({
         }
     }, [isActive, showSettings]);
 
+    // Hook must be called unconditionally
+    const overlayStyle = useActiveOverlayPosition(overlayRect);
+
     if (!isVisible && !isActive) return null;
 
     const handleClick = (e) => {
@@ -103,6 +108,8 @@ export default function BuilderSection({
 
     const Tag = tagName;
 
+
+
     return (
         <>
             <Tag
@@ -114,27 +121,6 @@ export default function BuilderSection({
             >
                 {isActive && <div className={styles.activeBorderOutline} />}
 
-                {isActive && (
-                    <div
-                        className={styles.activeOverlay}
-                        style={{
-                            top: overlayRect ? Math.max(-24, 42 - overlayRect.top) : -24
-                        }}
-                    >
-                        <div className={styles.overlayLabel}>
-                            <span className={styles.overlayIdText}>#{elementId}</span>
-                        </div>
-                        <button
-                            type="button"
-                            className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                            onClick={handleSettingsClick}
-                        >
-                            <Cog6ToothIcon className={styles.overlayIcon} />
-                        </button>
-                    </div>
-                )}
-
-
                 {
                     innerContainer ? (
                         <div className={innerContainerClasses} >
@@ -144,6 +130,25 @@ export default function BuilderSection({
                         children
                     )}
             </Tag >
+
+            {isActive && overlayRect && createPortal(
+                <div
+                    className={styles.activeOverlay}
+                    style={overlayStyle}
+                >
+                    <div className={styles.overlayLabel}>
+                        <span className={styles.overlayIdText}>#{elementId}</span>
+                    </div>
+                    <button
+                        type="button"
+                        className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
+                        onClick={handleSettingsClick}
+                    >
+                        <Cog6ToothIcon className={styles.overlayIcon} />
+                    </button>
+                </div>,
+                document.body
+            )}
 
             {isActive && (
                 <BuilderControlsPopover

@@ -10,10 +10,9 @@ export default function FloatingActionButton({
     linkType,
     url,
     targetDialogId,
-    openInNewTab,
     onUpdate,
     sectionId,
-    linkId
+
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -36,12 +35,10 @@ export default function FloatingActionButton({
                     linkType={linkType}
                     href={url}
                     targetDialogId={targetDialogId}
-                    openInNewTab={openInNewTab}
 
                     onLinkTypeChange={update('linkType')}
                     onHrefChange={update('url')}
                     onTargetDialogIdChange={update('targetDialogId')}
-                    onOpenInNewTabChange={update('openInNewTab')}
                 />
             </div>
         </div>

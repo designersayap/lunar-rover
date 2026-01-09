@@ -4,17 +4,17 @@ import { useRef, useContext, useState, useEffect } from "react";
 import styles from "../../../page.module.css";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import BuilderControlsPopover from "./builder-controls-popover";
-import { Cog6ToothIcon, TrashIcon, ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
-import { getContainerClasses } from "../section-utils";
+import { Cog6ToothIcon } from "@heroicons/react/24/solid";
+
 import { createPortal } from "react-dom";
 import { componentLibrary } from "@/app/page-builder/content/component-library";
+import { useActiveOverlayPosition } from "../hooks/use-active-overlay";
 
 export default function ScrollGroup({
     sectionId,
     components = [],
     image,
     mobileImage,
-    imageIsPortrait,
     imageMobileRatio,
     scrollEffect = "parallax", // 'parallax' | 'sticky'
     onUpdate,
@@ -31,7 +31,6 @@ export default function ScrollGroup({
     const [overlayRect, setOverlayRect] = useState(null);
 
     // Desktop/Mobile Image Source Logic
-    const isParallax = scrollEffect === 'parallax' || !scrollEffect;
     const isSticky = scrollEffect === 'sticky';
     const isStacked = scrollEffect === 'stacked';
 
@@ -127,22 +126,15 @@ export default function ScrollGroup({
         setActiveElementId(elementId);
     };
 
+    const overlayStyle = useActiveOverlayPosition(overlayRect);
+
     const renderOverlay = () => {
         if (!isActive || !overlayRect || typeof document === 'undefined') return null;
-        const top = Math.max(66, overlayRect.top - 24);
-
-
 
         return createPortal(
             <div
                 className={styles.activeOverlay}
-                style={{
-                    position: 'fixed',
-                    top: Math.max(42, overlayRect.top - 24),
-                    left: overlayRect.left + (overlayRect.width / 2),
-                    zIndex: 99999,
-                    // The CSS class .activeOverlay has transform: translateX(-50%), so we just set left to center.
-                }}
+                style={overlayStyle}
             >
                 <div className={styles.overlayLabel}>
                     <span className={styles.overlayIdText}>Group: #{elementId}</span>

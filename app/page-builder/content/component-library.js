@@ -750,12 +750,7 @@ export const componentLibrary = {
                     type: "text",
                     default: componentDefaults["floating-action-button"]?.url
                 },
-                {
-                    name: "openInNewTab",
-                    label: "Open in New Tab",
-                    type: "boolean",
-                    default: componentDefaults["floating-action-button"]?.openInNewTab
-                }
+
             ],
             images: [
                 {

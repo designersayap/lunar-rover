@@ -56,7 +56,7 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
         };
 
         // Create observer
-        const resizeObserver = new ResizeObserver(entries => {
+        const resizeObserver = new ResizeObserver(() => {
             updateOffsets();
         });
 
@@ -75,6 +75,7 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
             resizeObserver.disconnect();
             window.removeEventListener('resize', updateOffsets);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [JSON.stringify(stickyIndices), JSON.stringify(stackedIndices)]); // Use stringified to react to array value changes
 
     return (
@@ -96,9 +97,7 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                         forcedBgStyle = { backgroundColor: 'var(--base-white, #ffffff)', position: 'relative', zIndex: 1 };
                     }
 
-                    if (isStacked) {
-                        hasSeenStacked = true;
-                    }
+                    hasSeenStacked = true;
 
                     if (!isSticky) {
                         // If we need to force background, we must wrap the child

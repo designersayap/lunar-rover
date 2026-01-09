@@ -63,6 +63,8 @@ const AccordionItem = memo(({
     );
 });
 
+AccordionItem.displayName = 'AccordionItem';
+
 export default function DialogAccordion({
     title = "Title",
     description = "Description",
