@@ -22,6 +22,7 @@ const ScrollGroup = dynamic(() => import("@/app/page-builder/utils/builder/scrol
 const SpacingSmall = dynamic(() => import("@/app/templates/spacing/spacing-small"));
 const SpacingMedium = dynamic(() => import("@/app/templates/spacing/spacing-medium"));
 const SpacingLarge = dynamic(() => import("@/app/templates/spacing/spacing-large"));
+const FloatingActionButton = dynamic(() => import("@/app/templates/cta/floating-action-button"));
 
 export const componentLibrary = {
     "Background": [
@@ -78,7 +79,7 @@ export const componentLibrary = {
             id: "navigation-left",
             name: "Navigation - Left",
             component: NavigationLeft,
-            thumbnail: "/images/thumbnails/navigation-center.svg",
+            thumbnail: "/images/thumbnails/navigation-left.svg",
             config: [
                 { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["navigation-left"]?.menu1Label },
                 { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["navigation-left"]?.menu1Url },
@@ -103,7 +104,7 @@ export const componentLibrary = {
             id: "navigation-right",
             name: "Navigation - Right",
             component: NavigationRight,
-            thumbnail: "/images/thumbnails/navigation-center.svg",
+            thumbnail: "/images/thumbnails/navigation-right.svg",
             config: [
                 { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["navigation-right"]?.menu1Label },
                 { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["navigation-right"]?.menu1Url },
@@ -727,22 +728,73 @@ export const componentLibrary = {
             id: "spacing-small",
             name: "Spacing - Small",
             component: SpacingSmall,
-            thumbnail: "/images/thumbnails/feature-image-right.svg",
+            thumbnail: "/images/thumbnails/spacing-small.svg",
             config: []
         },
         {
             id: "spacing-medium",
             name: "Spacing - Medium",
             component: SpacingMedium,
-            thumbnail: "/images/thumbnails/feature-image-right.svg",
+            thumbnail: "/images/thumbnails/spacing-medium.svg",
             config: []
         },
         {
             id: "spacing-large",
             name: "Spacing - Large",
             component: SpacingLarge,
-            thumbnail: "/images/thumbnails/feature-image-right.svg",
+            thumbnail: "/images/thumbnails/spacing-large.svg",
             config: []
+        }
+    ],
+    "CTA": [
+        {
+            id: "floating-action-button",
+            name: "Floating Action Button",
+            component: FloatingActionButton,
+            thumbnail: "/images/thumbnails/fab-call-to-action.svg",
+            isSticky: true,
+            config: [
+                {
+                    name: "image",
+                    label: "Icon/Image",
+                    type: "image",
+                    default: componentDefaults["floating-action-button"]?.image
+                },
+                {
+                    name: "linkType",
+                    label: "Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: componentDefaults["floating-action-button"]?.linkType
+                },
+                {
+                    name: "url",
+                    label: "URL",
+                    type: "text",
+                    default: componentDefaults["floating-action-button"]?.url
+                },
+                {
+                    name: "openInNewTab",
+                    label: "Open in New Tab",
+                    type: "boolean",
+                    default: componentDefaults["floating-action-button"]?.openInNewTab
+                }
+            ],
+            images: [
+                {
+                    label: "Icon",
+                    propId: "imageId",
+                    suffix: "icon",
+                    visibleProp: "imageVisible"
+                }
+            ],
+            links: [
+                {
+                    label: "Button Link",
+                    propId: "linkId",
+                    suffix: "link"
+                }
+            ]
         }
     ],
     "Structure": [

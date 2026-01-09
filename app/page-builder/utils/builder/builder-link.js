@@ -33,7 +33,9 @@ export default function BuilderLink({
     onTargetDialogIdChange,
     tooltipIfTruncated,
     showLinkType = true,
-    hideLabel = false
+    hideLabel = false,
+    openInNewTab,
+    onOpenInNewTabChange
 }) {
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "link", onIdChange });
 
@@ -204,6 +206,8 @@ export default function BuilderLink({
                             href={safeHref}
                             className={className}
                             style={{ opacity: isVisible ? 1 : 0.5, display: displayStyle, alignItems: 'center', justifyContent: justify, width: '100%', height: '100%' }}
+                            target={openInNewTab ? "_blank" : undefined}
+                            rel={openInNewTab ? "noopener noreferrer" : undefined}
                             data-tooltip={!tooltipIfTruncated ? label : undefined}
                             prefetch={false} // Disable prefetch to be extra safe during editing
                         >
@@ -246,6 +250,11 @@ export default function BuilderLink({
                     onLinkTypeChange={onLinkTypeChange}
                     targetDialogId={targetDialogId}
                     onTargetDialogIdChange={onTargetDialogIdChange}
+
+                    // New Tab Props
+                    openInNewTab={openInNewTab}
+                    onOpenInNewTabChange={onOpenInNewTabChange}
+
                     isVisible={isVisible}
                     onVisibilityChange={onVisibilityChange}
                     position={popoverPosition}

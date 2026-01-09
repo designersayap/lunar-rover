@@ -43,11 +43,21 @@ export default function BuilderControlsPopover({
     onIconLeftChange,
     iconRight,
     onIconRightChange,
+    openInNewTab,
+    onOpenInNewTabChange,
     showScrollEffect,
     scrollEffect,
     onScrollEffectChange
 }) {
 
+
+    const [portalContainer, setPortalContainer] = useState(null);
+
+    useEffect(() => {
+        if (typeof document !== 'undefined') {
+            setPortalContainer(document.body);
+        }
+    }, []);
 
     // Positioning Logic:
     const containerRef = useRef(null);
@@ -64,9 +74,10 @@ export default function BuilderControlsPopover({
         transform: "translate(-50%, -50%)",
         width: "320px",
         height: "auto",
-        maxHeight: "none",
+        maxHeight: "90vh",
         margin: 0,
-        pointerEvents: "auto"
+        pointerEvents: "auto",
+        overflowY: "auto"
     } : {};
 
     useLayoutEffect(() => {
@@ -83,43 +94,73 @@ export default function BuilderControlsPopover({
                 setIsFlipped(false);
             }
         }
-    }, [position, variants, linkType]); // Re-run when content might change height
+    }, [position, variants, linkType]);
 
     if (position && typeof window !== 'undefined') {
         const popoverWidth = 320;
         const padding = 16;
         const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
         const topBarHeight = 42;
-        const minLeft = popoverWidth / 2 + padding;
-        const maxLeft = windowWidth - popoverWidth / 2 - padding;
-        const constrainedLeft = Math.max(minLeft, Math.min(position.left, maxLeft));
+
+        // Calculate Ideal Left (centered on target)
+        // targetCenter = position.left
+        let idealLeft = position.left - (popoverWidth / 2);
+
+        // Clamp Left
+        // Use a safe margin of 20px from the edges
+        const safeMargin = 20;
+        const maxLeft = windowWidth - popoverWidth - safeMargin;
+        const minLeft = safeMargin;
+        const finalLeft = Math.max(minLeft, Math.min(idealLeft, maxLeft));
 
         if (isFlipped) {
-            // Flip: Position bottom relative to window bottom (windowHeight - top + 32)
-            const bottomVal = (window.innerHeight - position.top) + 32;
+
+            const bottomVal = (windowHeight - position.top) + 12;
+
+            const maxH = position.top - topBarHeight - 24;
 
             popoverStyle = {
                 position: "fixed",
                 bottom: `${bottomVal}px`,
-                left: `${constrainedLeft}px`,
-                transform: "translateX(-50%)",
-                width: "320px",
+                left: `${finalLeft}px`,
+                // transform: "translateX(0)", // Removed centering transform
+                width: `${popoverWidth}px`,
                 margin: 0,
-                pointerEvents: "auto"
+                pointerEvents: "auto",
+                maxHeight: `${Math.max(100, maxH)}px`,
+                overflowY: "auto"
             };
         } else {
-            // Standard: Top Boundary Check
+            // Standard: Below the target
+            // Top of popover = target bottom + gap?
+            // Actually usually we position at target.top + target.height + gap.
+            // Or just position.top + gap if position.top is what we have.
+            // The position prop passed is usually rect.top.
+
+            // Standard behavior: Popover top = position.top + elementHeight?
+            // We don't have elementHeight in 'position' prop usually, just top/left.
+            // Wait, previous code used `constrainedTop = Math.max(minTop, position.top)`.
+            // If position.top is top of FAB, we want popover to be *below* it? 
+            // Or if it's a FAB (bottom right), usually menus open *above* (flipped).
+            // If it's not flipped, it renders at 'top'.
+            // If 'position' is center of element? No, usually bounding rect.
+            // Let's assume position.top is reliable.
+
             const minTop = topBarHeight + padding;
             const constrainedTop = Math.max(minTop, position.top);
+
+            const maxH = windowHeight - constrainedTop - padding;
 
             popoverStyle = {
                 position: "fixed",
                 top: `${constrainedTop}px`,
-                left: `${constrainedLeft}px`,
-                transform: "translateX(-50%)",
-                width: "320px",
+                left: `${finalLeft}px`,
+                width: `${popoverWidth}px`,
                 margin: 0,
-                pointerEvents: "auto"
+                pointerEvents: "auto",
+                maxHeight: `${Math.max(100, maxH)}px`,
+                overflowY: "auto"
             };
         }
     }

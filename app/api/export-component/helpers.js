@@ -7,7 +7,8 @@ export const ALLOWED_DIRS = [
   path.resolve(process.cwd(), 'app/templates'),
   path.resolve(process.cwd(), 'app/foundation'),
   path.resolve(process.cwd(), 'app/page-builder'),
-  path.resolve(process.cwd(), 'public')
+  path.resolve(process.cwd(), 'public'),
+  path.resolve(process.cwd(), 'app/constants.js')
 ];
 
 export const BINARY_SET = new Set([

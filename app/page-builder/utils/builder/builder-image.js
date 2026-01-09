@@ -40,7 +40,9 @@ export default function BuilderImage({
     mobileSrc,
     onMobileSrcChange,
     isActive: isActiveProp,
-    alwaysShowSrc = false
+    alwaysShowSrc = false,
+    openInNewTab,
+    onOpenInNewTabChange
 }) {
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
 
@@ -257,7 +259,9 @@ export default function BuilderImage({
     const wrapperProps = href || linkType === 'dialog' ? {
         href: href || "#",
         'data-dialog-trigger': linkType === 'dialog' ? "" : undefined,
-        'data-dialog-target': linkType === 'dialog' ? targetDialogSectionId : undefined
+        'data-dialog-target': linkType === 'dialog' ? targetDialogSectionId : undefined,
+        target: openInNewTab ? "_blank" : undefined,
+        rel: openInNewTab ? "noopener noreferrer" : undefined
     } : {};
 
     let finalClassName = `${isActive ? styles.activeWrapper : ''} ${className}`;
@@ -374,6 +378,8 @@ export default function BuilderImage({
                     showMobileImageSrc={isStaging && !!onMobileSrcChange}
                     mobileImageSrc={mobileSrc}
                     onMobileImageSrcChange={onMobileSrcChange}
+                    openInNewTab={openInNewTab}
+                    onOpenInNewTabChange={onOpenInNewTabChange}
                 />
             )}
         </>
