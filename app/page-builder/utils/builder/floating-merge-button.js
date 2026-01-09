@@ -50,7 +50,7 @@ export default function FloatingMergeButton({ selectedCount, onMerge }) {
                     }}
                 >
                     <SquaresPlusIcon style={{ width: 16, height: 16 }} />
-                    <span>Scroll Group</span>
+                    <span>Create Group</span>
                 </button>
                 <style jsx>{`
                 @keyframes slideUp {

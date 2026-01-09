@@ -186,6 +186,24 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
+                        {showScrollEffect && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Scroll Effect</label>
+                                <div className={styles.selectWrapper}>
+                                    <select
+                                        className={`${styles.formInput} ${styles.formSelect}`}
+                                        value={scrollEffect || 'parallax'}
+                                        onChange={(e) => onScrollEffectChange && onScrollEffectChange(e.target.value)}
+                                    >
+                                        <option value="parallax">Parallax</option>
+                                        <option value="sticky">Sticky on Top</option>
+                                        <option value="stacked">Stacked</option>
+                                    </select>
+                                    <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
+                                </div>
+                            </div>
+                        )}
+
                         {/* IMAGE SOURCE INPUT (Only if showImageSrc is true) */}
                         {showImageSrc && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
@@ -196,6 +214,46 @@ export default function BuilderControlsPopover({
                                     value={imageSrc || ''}
                                     onChange={(e) => onImageSrcChange && onImageSrcChange(e.target.value)}
                                     placeholder="https://example.com/image.jpg OR video.mp4"
+                                />
+                            </div>
+                        )}
+
+                        {showMobileRatio && (
+                            <>
+                                <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
+                                    <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Aspect Ratio</label>
+                                    <div className={styles.selectWrapper}>
+                                        <select
+                                            className={`${styles.formInput} ${styles.formSelect}`}
+                                            value={mobileRatio || ''}
+                                            onChange={(e) => onMobileRatioChange && onMobileRatioChange(e.target.value)}
+                                        >
+                                            <option value="">Default</option>
+                                            <option value="1-1">1:1 Square</option>
+                                            <option value="4-5">4:5 Vertical</option>
+                                            <option value="3-4">3:4 Vertical</option>
+                                            <option value="9-16">9:16 Vertical</option>
+                                            <option value="16-9">16:9 Landscape</option>
+                                            <option value="4-3">4:3 Landscape</option>
+                                            <option value="21-9">21:9 Ultrawide</option>
+                                            <option value="5-4">5:4 Landscape</option>
+                                        </select>
+                                        <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
+                                    </div>
+                                </div>
+
+                            </>
+                        )}
+
+                        {showMobileImageSrc && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: '8px' }}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Media Source</label>
+                                <input
+                                    type="text"
+                                    className={`${styles.formInput}`}
+                                    value={mobileImageSrc || ''}
+                                    onChange={(e) => onMobileImageSrcChange && onMobileImageSrcChange(e.target.value)}
+                                    placeholder="Optional mobile image or video URL"
                                 />
                             </div>
                         )}
@@ -313,64 +371,6 @@ export default function BuilderControlsPopover({
                                     </label>
                                 </div>
                             </>
-                        )}
-
-                        {showMobileRatio && (
-                            <>
-                                <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
-                                    <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Aspect Ratio</label>
-                                    <div className={styles.selectWrapper}>
-                                        <select
-                                            className={`${styles.formInput} ${styles.formSelect}`}
-                                            value={mobileRatio || ''}
-                                            onChange={(e) => onMobileRatioChange && onMobileRatioChange(e.target.value)}
-                                        >
-                                            <option value="">Default</option>
-                                            <option value="1-1">1:1 Square</option>
-                                            <option value="4-5">4:5 Vertical</option>
-                                            <option value="3-4">3:4 Vertical</option>
-                                            <option value="9-16">9:16 Vertical</option>
-                                            <option value="16-9">16:9 Landscape</option>
-                                            <option value="4-3">4:3 Landscape</option>
-                                            <option value="21-9">21:9 Ultrawide</option>
-                                            <option value="5-4">5:4 Landscape</option>
-                                        </select>
-                                        <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
-                                    </div>
-                                </div>
-
-                            </>
-                        )}
-
-                        {showScrollEffect && (
-                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
-                                <label className={`caption-bold ${styles.formInputTitle}`}>Scroll Effect</label>
-                                <div className={styles.selectWrapper}>
-                                    <select
-                                        className={styles.selectInput}
-                                        value={scrollEffect || 'parallax'}
-                                        onChange={(e) => onScrollEffectChange && onScrollEffectChange(e.target.value)}
-                                    >
-                                        <option value="parallax">Parallax</option>
-                                        <option value="sticky">Sticky on Top</option>
-                                        <option value="stacked">Stacked</option>
-                                    </select>
-                                    <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
-                                </div>
-                            </div>
-                        )}
-
-                        {showMobileImageSrc && (
-                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: '8px' }}>
-                                <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Media Source</label>
-                                <input
-                                    type="text"
-                                    className={`${styles.formInput}`}
-                                    value={mobileImageSrc || ''}
-                                    onChange={(e) => onMobileImageSrcChange && onMobileImageSrcChange(e.target.value)}
-                                    placeholder="Optional mobile image or video URL"
-                                />
-                            </div>
                         )}
 
                     </div>
