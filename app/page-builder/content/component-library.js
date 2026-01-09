@@ -723,29 +723,6 @@ export const componentLibrary = {
             ]
         }
     ],
-    "Spacing": [
-        {
-            id: "spacing-small",
-            name: "Spacing - Small",
-            component: SpacingSmall,
-            thumbnail: "/images/thumbnails/spacing-small.svg",
-            config: []
-        },
-        {
-            id: "spacing-medium",
-            name: "Spacing - Medium",
-            component: SpacingMedium,
-            thumbnail: "/images/thumbnails/spacing-medium.svg",
-            config: []
-        },
-        {
-            id: "spacing-large",
-            name: "Spacing - Large",
-            component: SpacingLarge,
-            thumbnail: "/images/thumbnails/spacing-large.svg",
-            config: []
-        }
-    ],
     "CTA": [
         {
             id: "floating-action-button",
@@ -795,6 +772,29 @@ export const componentLibrary = {
                     suffix: "link"
                 }
             ]
+        }
+    ],
+    "Spacing": [
+        {
+            id: "spacing-small",
+            name: "Spacing - Small",
+            component: SpacingSmall,
+            thumbnail: "/images/thumbnails/spacing-small.svg",
+            config: []
+        },
+        {
+            id: "spacing-medium",
+            name: "Spacing - Medium",
+            component: SpacingMedium,
+            thumbnail: "/images/thumbnails/spacing-medium.svg",
+            config: []
+        },
+        {
+            id: "spacing-large",
+            name: "Spacing - Large",
+            component: SpacingLarge,
+            thumbnail: "/images/thumbnails/spacing-large.svg",
+            config: []
         }
     ],
     "Structure": [

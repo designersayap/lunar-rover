@@ -23,7 +23,7 @@ export default function FloatingActionButton({
                 <BuilderImage
                     id={imageId}
                     src={typeof image === 'object' && image?.src ? image.src : image}
-                    visible={imageVisible}
+                    isVisible={imageVisible}
                     onSrcChange={update('image')}
                     onIdChange={update('imageId')}
                     onVisibilityChange={update('imageVisible')}
@@ -36,10 +36,12 @@ export default function FloatingActionButton({
                     linkType={linkType}
                     href={url}
                     targetDialogId={targetDialogId}
+                    openInNewTab={openInNewTab}
 
                     onLinkTypeChange={update('linkType')}
                     onHrefChange={update('url')}
                     onTargetDialogIdChange={update('targetDialogId')}
+                    onOpenInNewTabChange={update('openInNewTab')}
                 />
             </div>
         </div>
