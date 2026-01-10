@@ -227,6 +227,7 @@ export default function BuilderButton({
                 data-dialog-target={linkType === 'dialog' ? targetDialogSectionId : undefined}
                 prefetch={false}
             >
+                {isActive && <div className={styles.activeBorderOutline} />}
                 <div ref={wrapperRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
 
                     {renderIcon(iconLeft) && (
