@@ -28,6 +28,9 @@ export default function FeatureImageLeft({
     image = componentDefaults["feature-image-left"].image,
     imageId,
     imageVisible,
+    imageUrl,
+    imageLinkType,
+    imageTargetDialogId,
     buttonStyle = "primary",
     secondaryButtonStyle = "ghost",
     buttonId,
@@ -59,6 +62,12 @@ export default function FeatureImageLeft({
                             isVisible={imageVisible}
                             onIdChange={update('imageId')}
                             suffix="image"
+                            href={imageUrl}
+                            onHrefChange={update('imageUrl')}
+                            linkType={imageLinkType}
+                            onLinkTypeChange={update('imageLinkType')}
+                            targetDialogId={imageTargetDialogId}
+                            onTargetDialogIdChange={update('imageTargetDialogId')}
                         />
                     </div>
 

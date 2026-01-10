@@ -21,6 +21,9 @@ export default function DialogSection({
     image,
     imageId,
     imageVisible,
+    imageUrl,
+    imageLinkType,
+    imageTargetDialogId,
 }) {
     const update = createUpdateHandler(onUpdate);
     const [internalIsOpen, setInternalIsOpen] = useState(false);
@@ -109,6 +112,12 @@ export default function DialogSection({
                                 isVisible={imageVisible}
                                 onIdChange={update('imageId')}
                                 suffix="image"
+                                href={imageUrl}
+                                onHrefChange={update('imageUrl')}
+                                linkType={imageLinkType}
+                                onLinkTypeChange={update('imageLinkType')}
+                                targetDialogId={imageTargetDialogId}
+                                onTargetDialogIdChange={update('imageTargetDialogId')}
                             />
 
                             {(title || description) && (

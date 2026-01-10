@@ -16,6 +16,9 @@ export default function DialogItemList({
     image,
     imageId,
     imageVisible,
+    imageUrl,
+    imageLinkType,
+    imageTargetDialogId,
     items = componentDefaults["dialog-item-list"].items
 }) {
     const updateItem = (index, field, value) => {
@@ -40,6 +43,9 @@ export default function DialogItemList({
             image={image}
             imageId={imageId}
             imageVisible={imageVisible}
+            imageUrl={imageUrl}
+            imageLinkType={imageLinkType}
+            imageTargetDialogId={imageTargetDialogId}
         >
             <div className={styles.listContainer}>
                 {items.map((item, i) => (
@@ -62,7 +68,7 @@ export default function DialogItemList({
                         showLinkType={false}
                         iconLeft={
                             <div className={styles.itemIcon}>
-                                <BuilderImage className="imagePlaceholder-1-1" src={item.image} onSrcChange={(val) => updateItem(i, 'image', val)} />
+                                <BuilderImage className="imagePlaceholder-1-1" src={item.image} onSrcChange={(val) => updateItem(i, 'image', val)} showLinkControls={false} />
                             </div>
                         }
                         iconRight={<ArrowRightIcon className={styles.itemArrow} />}

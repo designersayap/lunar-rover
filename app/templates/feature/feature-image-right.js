@@ -28,6 +28,9 @@ export default function FeatureImageRight({
     image = componentDefaults["feature-image-right"].image,
     imageId,
     imageVisible,
+    imageUrl,
+    imageLinkType,
+    imageTargetDialogId,
     buttonStyle = "primary",
     secondaryButtonStyle = "ghost",
     buttonId,
@@ -138,6 +141,12 @@ export default function FeatureImageRight({
                             isVisible={imageVisible}
                             onIdChange={update('imageId')}
                             suffix="image"
+                            href={imageUrl}
+                            onHrefChange={update('imageUrl')}
+                            linkType={imageLinkType}
+                            onLinkTypeChange={update('imageLinkType')}
+                            targetDialogId={imageTargetDialogId}
+                            onTargetDialogIdChange={update('imageTargetDialogId')}
                         />
                     </div>
                 </div>

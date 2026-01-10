@@ -28,6 +28,9 @@ export default function HeroTerraBanner({
     image = componentDefaults["hero-terra-banner"].image,
     imageId,
     imageVisible,
+    imageUrl,
+    imageLinkType,
+    imageTargetDialogId,
     buttonStyle = "primary",
     secondaryButtonStyle = "ghost",
     buttonId,
@@ -82,6 +85,12 @@ export default function HeroTerraBanner({
                     isVisible={imageVisible}
                     onIdChange={update('imageId')}
                     suffix="image"
+                    href={imageUrl}
+                    onHrefChange={update('imageUrl')}
+                    linkType={imageLinkType}
+                    onLinkTypeChange={update('imageLinkType')}
+                    targetDialogId={imageTargetDialogId}
+                    onTargetDialogIdChange={update('imageTargetDialogId')}
                 />
             </div>
             <div className={styles.overlay}>

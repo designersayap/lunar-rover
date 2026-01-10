@@ -76,6 +76,9 @@ export default function DialogAccordion({
     image,
     imageId,
     imageVisible,
+    imageUrl,
+    imageLinkType,
+    imageTargetDialogId,
 
     items = componentDefaults["dialog-accordion"]?.items || [],
     item0Id, item1Id, item2Id, item3Id, item4Id, item5Id, item6Id, item7Id,
@@ -126,6 +129,9 @@ export default function DialogAccordion({
             image={image}
             imageId={imageId}
             imageVisible={imageVisible}
+            imageUrl={imageUrl}
+            imageLinkType={imageLinkType}
+            imageTargetDialogId={imageTargetDialogId}
         >
             <div className={styles.accordionContainer}>
                 {items.slice(0, 8).map((item, i) => (

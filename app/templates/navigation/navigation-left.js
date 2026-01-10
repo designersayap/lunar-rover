@@ -190,6 +190,8 @@ export default function NavigationLeft({
                                 suffix="logo"
                                 className={styles.logoImage}
                                 style={logoStyle}
+                                showLinkControls={false}
+                                alwaysShowSrc={true}
                             />
                         </div>
                     </div>

@@ -217,6 +217,8 @@ export default function NavigationCenter({
                                 suffix="logo"
                                 className={styles.logoImage}
                                 style={logoStyle}
+                                showLinkControls={false}
+                                alwaysShowSrc={true}
                             />
                         </div>
                     </div>

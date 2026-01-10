@@ -36,7 +36,10 @@ export const componentDefaults = {
         secondaryButtonVisible: true,
         secondaryButtonLinkType: "url",
         secondaryButtonId: "",
-        image: ""
+        image: "",
+        imageUrl: "",
+        imageLinkType: "url",
+        imageTargetDialogId: ""
     },
     "footer-terra": {
         image: "",
@@ -118,7 +121,10 @@ export const componentDefaults = {
         secondaryButtonVisible: true,
         secondaryButtonLinkType: "url",
         secondaryButtonId: "",
-        image: ""
+        image: "",
+        imageUrl: "",
+        imageLinkType: "url",
+        imageTargetDialogId: ""
     },
     "feature-image-right": {
         title: "Title",
@@ -136,7 +142,10 @@ export const componentDefaults = {
         secondaryButtonVisible: true,
         secondaryButtonLinkType: "url",
         secondaryButtonId: "",
-        image: ""
+        image: "",
+        imageUrl: "",
+        imageLinkType: "url",
+        imageTargetDialogId: ""
     },
     "dialog-item-list": {
         title: "Title",
@@ -145,6 +154,9 @@ export const componentDefaults = {
         image: "",
         imageId: "",
         imageVisible: true,
+        imageUrl: "",
+        imageLinkType: "url",
+        imageTargetDialogId: "",
         items: Array(8).fill({ label: "Label", image: "", url: "", itemId: "", visible: true })
     },
     "dialog-accordion": {
@@ -153,6 +165,9 @@ export const componentDefaults = {
         image: "",
         imageId: "",
         imageVisible: true,
+        imageUrl: "",
+        imageLinkType: "url",
+        imageTargetDialogId: "",
         items: Array(8).fill({ title: "Accordion Title", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." })
     },
     "osm-banner": {
@@ -167,24 +182,36 @@ export const componentDefaults = {
     },
     "media-16-9": {
         image: "",
+        imageUrl: "",
+        imageLinkType: "url",
+        imageTargetDialogId: "",
         fullWidth: false,
         imageIsPortrait: false,
         imageMobileRatio: ""
     },
     "media-5-4": {
         image: "",
+        imageUrl: "",
+        imageLinkType: "url",
+        imageTargetDialogId: "",
         fullWidth: false,
         imageIsPortrait: false,
         imageMobileRatio: ""
     },
     "media-4-3": {
         image: "",
+        imageUrl: "",
+        imageLinkType: "url",
+        imageTargetDialogId: "",
         fullWidth: false,
         imageIsPortrait: false,
         imageMobileRatio: ""
     },
     "media-21-9": {
         image: "",
+        imageUrl: "",
+        imageLinkType: "url",
+        imageTargetDialogId: "",
         fullWidth: false,
         imageIsPortrait: false,
         imageMobileRatio: ""

@@ -14,7 +14,7 @@ export default function Media21x9({
     fullWidth,
     removePaddingLeft,
     removePaddingRight,
-    imageHref,
+    imageUrl,
     imageLinkType,
     imageTargetDialogId,
     imageIsPortrait,
@@ -46,8 +46,8 @@ export default function Media21x9({
                             isVisible={imageVisible}
                             onIdChange={update('imageId')}
                             suffix="image"
-                            href={imageHref}
-                            onHrefChange={update('imageHref')}
+                            href={imageUrl}
+                            onHrefChange={update('imageUrl')}
                             linkType={imageLinkType}
                             onLinkTypeChange={update('imageLinkType')}
                             targetDialogId={imageTargetDialogId}
