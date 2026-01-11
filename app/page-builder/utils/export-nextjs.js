@@ -279,7 +279,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
 
         Object.keys(obj).forEach(key => {
             const val = obj[key];
-            const isImageKey = /image|logo|avatar|icon|background/i.test(key) && !/id$/i.test(key);
+            const isImageKey = /image|logo|avatar|icon|background/i.test(key) && !/id$/i.test(key) && !/url$/i.test(key) && !/link$/i.test(key);
 
             if (isImageKey && (!val || val === "")) {
                 obj[key] = defaultPlaceholder;
@@ -296,7 +296,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         const compDefaults = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
 
         Object.keys(compDefaults).forEach(key => {
-            const isImageKey = /image|logo|avatar|icon|background/i.test(key) && !/id$/i.test(key);
+            const isImageKey = /image|logo|avatar|icon|background/i.test(key) && !/id$/i.test(key) && !/url$/i.test(key) && !/link$/i.test(key);
             // If it's an image key AND it's missing from the item (undefined), copy it from defaults.
             // We check both root and props to be safe, but we inject into root for consistency with the loop below.
             const valInItem = item[key];

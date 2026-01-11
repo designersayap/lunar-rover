@@ -180,14 +180,14 @@ const BuilderButton = ({ label, href, className, style, children, linkType, targ
     );
   }
   return (
-    <Link 
+    <a
       id={finalId}
       href={href || '#'} 
       className={className} 
       style={style}
     >
         {content}
-    </Link>
+    </a>
   );
 };`);
   }
@@ -227,14 +227,14 @@ const BuilderLink = ({ label, href, className, style, children, linkType, target
     );
   }
   return (
-    <Link 
+    <a
       id={finalId}
       href={href || '#'} 
       className={className} 
       style={style}
     >
       {content}
-    </Link>
+    </a>
   );
 };`);
   }
@@ -374,13 +374,13 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
     }
 
     return (
-      <Link 
+      <a
          href={href || '#'} 
          className={finalClassName}
          style={{ display: 'block', width: '100%', height: '100%' }}
       >
         {content}
-      </Link>
+      </a>
     );
   }
 
