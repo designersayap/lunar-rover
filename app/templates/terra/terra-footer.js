@@ -104,6 +104,7 @@ export default function FooterTerra({
                                             iconLeft={SocialIcons[link.platform] || null}
                                             className={styles.socialLink}
                                             tooltipIfTruncated={true}
+                                            style={{ width: '16px', height: '16px' }}
                                             suffix={`social-${index + 1}`}
                                         />
                                     )

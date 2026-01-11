@@ -62,11 +62,11 @@ export default function Canvas({
 
 
                                 if (hasSeenStacked && !isStacked) {
-                                    forcedBgStyle = { backgroundColor: 'var(--base-white)', position: 'relative', zIndex: 1 };
+                                    forcedBgStyle = { backgroundColor: 'var(--base-white, #ffffff)', position: 'relative', zIndex: 1 };
                                 }
 
                                 if (isStacked) {
-                                    // hasSeenStacked = true;
+                                    hasSeenStacked = true;
                                 }
 
                                 return (
@@ -74,10 +74,10 @@ export default function Canvas({
                                         key={item.uniqueId}
                                         className={`${styles.componentWrapper} ${isSelected ? styles.activeWrapper : ''}`}
                                         style={{
-                                            ...stickyStyle,
                                             ...forcedBgStyle,
+                                            ...stickyStyle,
                                             outline: isSelected ? "1px solid var(--lunar-300)" : "none",
-                                            backgroundColor: isSelected ? "var(--lunar-50)" : "transparent",
+                                            backgroundColor: isSelected ? "var(--lunar-50)" : (forcedBgStyle.backgroundColor || "transparent"),
                                             outlineOffset: "-1px",
                                         }}
                                         ref={(el) => setRef(item.uniqueId, el)}

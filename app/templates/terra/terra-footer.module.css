@@ -30,7 +30,16 @@
 
 .socialWrapper {
     display: flex;
-    gap: var(--gap-md);
+    gap: var(--gap-lg);
+}
+
+.socialLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    width: 16px;
+    height: 16px;
 }
 
 .socialIcon {
