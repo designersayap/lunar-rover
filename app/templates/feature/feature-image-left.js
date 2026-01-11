@@ -87,7 +87,7 @@ export default function FeatureImageLeft({
                         )}
                         {subtitleVisible && (
                             <BuilderText
-                                tagName="p"
+                                tagName="div"
                                 className="subheader-h2"
                                 style={{ color: "var(--content-neutral--body)", marginBottom: "var(--gap-md)" }}
                                 content={subtitle}

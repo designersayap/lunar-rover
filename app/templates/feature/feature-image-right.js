@@ -67,7 +67,7 @@ export default function FeatureImageRight({
                         )}
                         {subtitleVisible && (
                             <BuilderText
-                                tagName="p"
+                                tagName="div"
                                 className={`subheader-h2 ${styles.description}`}
                                 style={{ color: "var(--content-neutral--body)", marginBottom: "var(--gap-md)" }}
                                 content={subtitle}

@@ -84,14 +84,15 @@ export default function BuilderLink({
     if (!isVisible) return null;
 
     const handleClick = (e) => {
-        // Only prevent default navigation if we are NOT in staging (i.e. in Builder mode)
-        if (!isStaging && e) {
+        // Prevent default navigation if we are NOT in live/staging (Builder mode)
+        // OR if we are in Staging but selection is enabled (Editable Staging)
+        if (e && (!isStaging || setActiveElementId)) {
             e.preventDefault();
         }
         if (e) {
             e.stopPropagation();
         }
-        if (elementId) {
+        if (elementId && setActiveElementId) {
             setActiveElementId(elementId);
         }
     };

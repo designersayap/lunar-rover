@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useEffect, useRef, useContext, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 import BuilderText from "./builder-text";
@@ -11,6 +10,7 @@ import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 import { Icons } from "./builder-icons";
 
+// Builder Button Component
 export default function BuilderButton({
     label = "Label",
     id,
@@ -25,8 +25,8 @@ export default function BuilderButton({
     onVisibilityChange,
     isVisible = true,
     style = {},
-    iconLeft, // Now expected to be a string name or null
-    iconRight, // Now expected to be a string name or null
+    iconLeft,
+    iconRight,
     onIconLeftChange,
     onIconRightChange,
     linkType = 'url',
@@ -87,19 +87,11 @@ export default function BuilderButton({
         prevSectionIdRef.current = sectionId;
     }, [sectionId, buttonId, onIdChange]);
 
-
-
-    // Context accessed at top of component
-
     const isSelfActive = activeElementId === buttonId;
-    // Allow selectedElementIds fallback for multi-select visual indication if needed, 
-    // but for overlay, we usually want primary active. 
-    // Matching BuilderImage logic:
     const isActive = isSelfActive || selectedElementIds?.includes(buttonId);
     const wrapperRef = useRef(null);
     const [overlayRect, setOverlayRect] = useState(null);
 
-    // Use layout effect to prevent visual jitter on selection
     const safeUseLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
     safeUseLayoutEffect(() => {
@@ -142,22 +134,19 @@ export default function BuilderButton({
     const overlayStyle = useActiveOverlayPosition(overlayRect);
 
     const handleActivate = (e) => {
-        // Only prevent default navigation if we are NOT in staging (i.e. in Builder mode)
-        if (!isStaging && e) {
+        // Prevent default navigation if we are NOT in live/staging (Builder mode)
+        // OR if we are in Staging but selection is enabled (Editable Staging)
+        if (e && (!isStaging || setActiveElementId || toggleElementSelection)) {
             e.preventDefault();
         }
         if (e) {
             e.stopPropagation();
         }
 
-        // Use toggleElementSelection with ID string, matching useTemplateLogic expectations
         if (toggleElementSelection) {
             toggleElementSelection(buttonId, e.metaKey || e.ctrlKey);
         } else if (setActiveElementId) {
-            // Fallback or legacy behavior if toggleElementSelection is missing (e.g. Staging)
             setActiveElementId(buttonId);
-        } else {
-            // In staging without selection logic, this might be just a view.
         }
     };
 
@@ -165,7 +154,6 @@ export default function BuilderButton({
     const handleSettingsClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-
         setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
     };
     const handleOpenDialog = (e) => {
@@ -174,7 +162,6 @@ export default function BuilderButton({
 
         let dialogComponent;
         if (targetDialogId) {
-            // Compare as strings to handle potential type mismatch (number vs string)
             dialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
         }
 
@@ -183,14 +170,11 @@ export default function BuilderButton({
         }
 
         if (dialogComponent) {
-            // Dispatch global event for immediate client-side handling (Staging/Live)
             if (dialogComponent.sectionId) {
                 window.dispatchEvent(new CustomEvent('lunar:open-dialog', {
                     detail: { id: dialogComponent.sectionId }
                 }));
             }
-
-            // Also persist state if in Builder (for saving/exporting state)
             if (updateComponent) {
                 updateComponent(dialogComponent.uniqueId, { isOpen: true });
             }
@@ -207,7 +191,6 @@ export default function BuilderButton({
 
     const targetDialogSectionId = targetDialogComponent?.sectionId;
 
-    // Resolve Icons
     const renderIcon = (icon) => {
         if (!icon) return null;
         if (typeof icon === 'string' && Icons[icon]) {
@@ -217,19 +200,18 @@ export default function BuilderButton({
         return icon;
     };
 
-
-
     const [hasMounted, setHasMounted] = useState(false);
     useEffect(() => {
         setHasMounted(true);
     }, []);
 
-    // Simplified rendering: just use <a> tag to avoid Next.js Link hydration issues in this complex context
-    // Navigation in builder is prevented anyway. In Staging/View, <a> provides standard navigation.
+    // Ensure href is safe string to avoid hydration mismatch
+    const safeHref = (href && typeof href === 'string') ? href : "#";
+
     return (
-        <>
+        <div style={{ display: 'contents' }} suppressHydrationWarning>
             <a
-                href={href}
+                href={safeHref}
                 id={hasMounted ? buttonId : undefined}
                 className={`btn ${className} ${(hasMounted && isActive) ? styles.activeWrapper : ''}`}
                 onClick={handleActivate}
@@ -248,7 +230,7 @@ export default function BuilderButton({
                     )}
                     <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
                         <BuilderText
-                            tagName="span"
+                            tagName="div"
                             content={label}
                             onChange={onLabelChange}
                             placeholder="Button Label"
@@ -306,7 +288,7 @@ export default function BuilderButton({
                     <BuilderControlsPopover
                         isOpen={showSettings}
                         onClose={() => setActivePopoverId(null)}
-                        url={href}
+                        url={safeHref}
                         onUrlChange={onHrefChange}
                         linkType={linkType}
                         onLinkTypeChange={onLinkTypeChange}
@@ -327,6 +309,6 @@ export default function BuilderButton({
                     />
                 )
             }
-        </>
+        </div>
     );
 }
