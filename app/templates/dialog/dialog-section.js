@@ -118,6 +118,8 @@ export default function DialogSection({
                                 onLinkTypeChange={update('imageLinkType')}
                                 targetDialogId={imageTargetDialogId}
                                 onTargetDialogIdChange={update('imageTargetDialogId')}
+                                showLinkControls={false}
+                                alwaysShowSrc={true}
                             />
 
                             {(title || description) && (

@@ -142,8 +142,13 @@ export default function BuilderButton({
     const overlayStyle = useActiveOverlayPosition(overlayRect);
 
     const handleActivate = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+        // Only prevent default navigation if we are NOT in staging (i.e. in Builder mode)
+        if (!isStaging && e) {
+            e.preventDefault();
+        }
+        if (e) {
+            e.stopPropagation();
+        }
 
         // Use toggleElementSelection with ID string, matching useTemplateLogic expectations
         if (toggleElementSelection) {
@@ -152,7 +157,7 @@ export default function BuilderButton({
             // Fallback or legacy behavior if toggleElementSelection is missing (e.g. Staging)
             setActiveElementId(buttonId);
         } else {
-            console.warn("toggleElementSelection not found in context");
+            // In staging without selection logic, this might be just a view.
         }
     };
 
@@ -214,22 +219,28 @@ export default function BuilderButton({
 
 
 
+    const [hasMounted, setHasMounted] = useState(false);
+    useEffect(() => {
+        setHasMounted(true);
+    }, []);
+
+    // Simplified rendering: just use <a> tag to avoid Next.js Link hydration issues in this complex context
+    // Navigation in builder is prevented anyway. In Staging/View, <a> provides standard navigation.
     return (
         <>
-            <Link
+            <a
                 href={href}
-                id={buttonId}
-                className={`btn ${className} ${isActive ? styles.activeWrapper : ''}`}
+                id={hasMounted ? buttonId : undefined}
+                className={`btn ${className} ${(hasMounted && isActive) ? styles.activeWrapper : ''}`}
                 onClick={handleActivate}
                 style={{ ...style, opacity: isVisible ? 1 : 0.5 }}
                 data-tooltip={label}
                 data-dialog-trigger={linkType === 'dialog' ? "" : undefined}
                 data-dialog-target={linkType === 'dialog' ? targetDialogSectionId : undefined}
-                prefetch={false}
+                suppressHydrationWarning
             >
-                {isActive && <div className={styles.activeBorderOutline} />}
+                {(hasMounted && isActive) && <div className={styles.activeBorderOutline} />}
                 <div ref={wrapperRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
-
                     {renderIcon(iconLeft) && (
                         <span style={{ display: 'flex', flexShrink: 0 }}>
                             {renderIcon(iconLeft)}
@@ -243,7 +254,7 @@ export default function BuilderButton({
                             placeholder="Button Label"
                             multiline={false}
                             noId={true}
-                            className={!isActive ? "truncate-1-line" : ""}
+                            className={!(hasMounted && isActive) ? "truncate-1-line" : ""}
                             style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap' }}
                             disableLinkPaste={true}
                         />
@@ -254,7 +265,7 @@ export default function BuilderButton({
                         </span>
                     )}
                 </div>
-            </Link >
+            </a>
 
             {isActive && overlayRect && createPortal(
                 <div

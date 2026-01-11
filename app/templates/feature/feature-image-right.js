@@ -78,7 +78,7 @@ export default function FeatureImageRight({
                                 onIdChange={update('subtitleId')}
                             />
                         )}
-                        <div className="buttonWrapperLeft">
+                        <div className="buttonWrapperLeft" suppressHydrationWarning>
                             {buttonVisible && (
                                 <BuilderButton
                                     label={buttonText}

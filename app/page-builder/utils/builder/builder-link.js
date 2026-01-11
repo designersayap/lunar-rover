@@ -37,6 +37,10 @@ export default function BuilderLink({
     hideLabel = false
 }) {
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "link", onIdChange });
+    const [hasMounted, setHasMounted] = useState(false);
+    useEffect(() => {
+        setHasMounted(true);
+    }, []);
 
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
     const isActive = activeElementId === elementId;
@@ -80,8 +84,13 @@ export default function BuilderLink({
     if (!isVisible) return null;
 
     const handleClick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+        // Only prevent default navigation if we are NOT in staging (i.e. in Builder mode)
+        if (!isStaging && e) {
+            e.preventDefault();
+        }
+        if (e) {
+            e.stopPropagation();
+        }
         if (elementId) {
             setActiveElementId(elementId);
         }
@@ -180,59 +189,49 @@ export default function BuilderLink({
 
     return (
         <>
-            <span
+            {/* Use hasMounted pattern to prevent hydration mismatch for ID and dynamic classes */}
+            <a
                 ref={wrapperRef}
-                className={`${isActive ? styles.activeWrapper : ''}`}
-                style={{ display: displayStyle, position: 'relative', height: '100%', width: widthStyle, ...style }}
+                id={hasMounted ? elementId : undefined}
+                href={href || "#"}
+                className={`${className} ${(hasMounted && isActive) ? styles.activeWrapper : ''}`}
+                style={{
+                    opacity: isVisible ? 1 : 0.5,
+                    display: displayStyle,
+                    alignItems: 'center',
+                    justifyContent: justify,
+                    width: widthStyle || '100%',
+                    height: '100%',
+                    position: 'relative',
+                    ...style
+                }}
                 onClick={handleClick}
+                data-tooltip={!tooltipIfTruncated ? label : undefined}
+                suppressHydrationWarning
             >
-                {isActive && <div className={styles.activeBorderOutline} />}
+                {(hasMounted && isActive) && <div className={styles.activeBorderOutline} />}
 
-                {(() => {
-                    let safeHref = href || "#";
-                    try {
-                        if (/^[a-z]+:/i.test(safeHref)) {
-                            new URL(safeHref); // Will throw if invalid
-                        }
-                    } catch {
-                        // Fallback to "#" to prevent crash
-                        safeHref = "#";
-                    }
-
-                    return (
-                        <Link
-                            id={elementId}
-                            href={safeHref}
-                            className={className}
-                            style={{ opacity: isVisible ? 1 : 0.5, display: displayStyle, alignItems: 'center', justifyContent: justify, width: '100%', height: '100%' }}
-                            // Removed target and rel
-                            data-tooltip={!tooltipIfTruncated ? label : undefined}
-                            prefetch={false} // Disable prefetch to be extra safe during editing
-                        >
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: justify, gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
-                                {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
-                                {!hideLabel && (
-                                    <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: justify }}>
-                                        <BuilderText
-                                            tagName="span"
-                                            content={label}
-                                            onChange={onLabelChange}
-                                            placeholder="Link Label"
-                                            multiline={false}
-                                            noId={true}
-                                            className={!isActive ? "truncate-1-line" : ""}
-                                            style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap', display: 'block' }}
-                                            tooltipIfTruncated={tooltipIfTruncated}
-                                            disableLinkPaste={true}
-                                        />
-                                    </div>
-                                )}
-                                {iconRight && <span style={{ display: 'flex', flexShrink: 0 }}>{iconRight}</span>}
-                            </div>
-                        </Link>
-                    );
-                })()}
-            </span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: justify, gap: 'inherit', width: '100%', height: '100%', position: 'relative' }}>
+                    {iconLeft && <span style={{ display: 'flex', flexShrink: 0 }}>{iconLeft}</span>}
+                    {!hideLabel && (
+                        <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', justifyContent: justify }}>
+                            <BuilderText
+                                tagName="span"
+                                content={label}
+                                onChange={onLabelChange}
+                                placeholder="Link Label"
+                                multiline={false}
+                                noId={true}
+                                className={!(hasMounted && isActive) ? "truncate-1-line" : ""}
+                                style={{ minWidth: 0, textAlign: 'left', whiteSpace: 'nowrap', display: 'block' }}
+                                tooltipIfTruncated={tooltipIfTruncated}
+                                disableLinkPaste={true}
+                            />
+                        </div>
+                    )}
+                    {iconRight && <span style={{ display: 'flex', flexShrink: 0 }}>{iconRight}</span>}
+                </div>
+            </a>
 
             {renderActiveOverlay()}
 

@@ -4,6 +4,40 @@ import { createPortal } from "react-dom";
 import { useState, useRef, useLayoutEffect } from "react";
 import { IconNames } from "./builder-icons";
 
+// Secure Input that stops propagation of key events at the DOM level
+const StopPropagationInput = (props) => {
+    const inputRef = useRef(null);
+
+    useLayoutEffect(() => {
+        const el = inputRef.current;
+        if (!el) return;
+
+        const stopPropagation = (e) => {
+            e.stopPropagation();
+            // We do NOT prevent default, so the input can perform the action (e.g. paste, select all)
+        };
+
+        // Attach native listeners to ensure we catch events before they bubble to global window/document listeners
+        el.addEventListener('keydown', stopPropagation);
+        el.addEventListener('keyup', stopPropagation);
+        el.addEventListener('keypress', stopPropagation);
+        el.addEventListener('paste', stopPropagation);
+        el.addEventListener('copy', stopPropagation);
+        el.addEventListener('cut', stopPropagation);
+
+        return () => {
+            el.removeEventListener('keydown', stopPropagation);
+            el.removeEventListener('keyup', stopPropagation);
+            el.removeEventListener('keypress', stopPropagation);
+            el.removeEventListener('paste', stopPropagation);
+            el.removeEventListener('copy', stopPropagation);
+            el.removeEventListener('cut', stopPropagation);
+        };
+    }, []);
+
+    return <input ref={inputRef} {...props} />;
+};
+
 export default function BuilderControlsPopover({
     isOpen,
     url,
@@ -168,6 +202,8 @@ export default function BuilderControlsPopover({
         }
     }
 
+
+
     const content = (
         <div className={`${styles.popoverOverlay} z-system-builder-overlay`} style={{ pointerEvents: "none" }} data-builder-ui>
             <div
@@ -175,6 +211,7 @@ export default function BuilderControlsPopover({
                 className={styles.popoverContainer}
                 style={popoverStyle}
                 onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => e.stopPropagation()} // Keep React stopPropagation as backup
             >
                 {/* Content */}
                 <div className={styles.popoverContent}>
@@ -220,12 +257,13 @@ export default function BuilderControlsPopover({
                         {((linkType === 'url' || (!linkType && !showLinkType)) && showUrl) && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>URL</label>
-                                <input
+                                <StopPropagationInput
                                     type="text"
                                     className={`${styles.formInput}`}
                                     value={url || ''}
                                     onChange={(e) => onUrlChange && onUrlChange(e.target.value)}
                                     placeholder="write you link or page here"
+                                    onFocus={(e) => e.target.select()}
                                 />
                             </div>
                         )}
@@ -248,16 +286,50 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
+                        {(linkType === 'dialog' && showDialogSelector) && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Dialog</label>
+                                <div className={styles.selectWrapper}>
+                                    <select
+                                        className={`${styles.formInput} ${styles.formSelect}`}
+                                        value={targetDialogId || ''}
+                                        onChange={(e) => onTargetDialogIdChange && onTargetDialogIdChange(e.target.value)}
+                                    >
+                                        <option value="">Select a Dialog</option>
+                                        {dialogOptions.map(opt => (
+                                            <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                        ))}
+                                    </select>
+                                    <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
+                                </div>
+                            </div>
+                        )}
+
                         {/* IMAGE SOURCE INPUT (Only if showImageSrc is true) */}
                         {showImageSrc && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Media Source</label>
-                                <input
+                                <StopPropagationInput
                                     type="text"
                                     className={`${styles.formInput}`}
                                     value={imageSrc || ''}
                                     onChange={(e) => onImageSrcChange && onImageSrcChange(e.target.value)}
                                     placeholder="https://example.com/image.jpg OR video.mp4"
+                                    onFocus={(e) => e.target.select()}
+                                />
+                            </div>
+                        )}
+
+                        {showMobileImageSrc && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: '8px' }}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Media Source</label>
+                                <StopPropagationInput
+                                    type="text"
+                                    className={`${styles.formInput}`}
+                                    value={mobileImageSrc || ''}
+                                    onChange={(e) => onMobileImageSrcChange && onMobileImageSrcChange(e.target.value)}
+                                    placeholder="Optional mobile image or video URL"
+                                    onFocus={(e) => e.target.select()}
                                 />
                             </div>
                         )}
@@ -287,38 +359,6 @@ export default function BuilderControlsPopover({
                                 </div>
 
                             </>
-                        )}
-
-                        {showMobileImageSrc && (
-                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: '8px' }}>
-                                <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Media Source</label>
-                                <input
-                                    type="text"
-                                    className={`${styles.formInput}`}
-                                    value={mobileImageSrc || ''}
-                                    onChange={(e) => onMobileImageSrcChange && onMobileImageSrcChange(e.target.value)}
-                                    placeholder="Optional mobile image or video URL"
-                                />
-                            </div>
-                        )}
-
-                        {(linkType === 'dialog' && showDialogSelector) && (
-                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
-                                <label className={`caption-bold ${styles.formInputTitle}`}>Dialog</label>
-                                <div className={styles.selectWrapper}>
-                                    <select
-                                        className={`${styles.formInput} ${styles.formSelect}`}
-                                        value={targetDialogId || ''}
-                                        onChange={(e) => onTargetDialogIdChange && onTargetDialogIdChange(e.target.value)}
-                                    >
-                                        <option value="">Select a Dialog</option>
-                                        {dialogOptions.map(opt => (
-                                            <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                        ))}
-                                    </select>
-                                    <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
-                                </div>
-                            </div>
                         )}
 
                         {showVariant && (
