@@ -232,6 +232,7 @@ export default function NavigationCenter({
                                 <BuilderLink
                                     label={item.label}
                                     href={item.url}
+                                    onLabelChange={item.handlers.onLabelChange}
                                     onHrefChange={item.handlers.onUrlChange}
                                     sectionId={sectionId}
                                     id={item.id}
