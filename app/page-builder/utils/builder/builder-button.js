@@ -270,12 +270,12 @@ export default function BuilderButton({
                     )}
 
                     {(() => {
-                        const hasControls = !isStaging && (
+                        const hasControls = (!isStaging && (
                             true // Link settings are standard
                             || !!onVariantChange
                             || !!onIconLeftChange
                             || !!onIconRightChange
-                        );
+                        )) || (isStaging && linkType === 'url');
 
                         const hasAvailableSettings = !disableSettings && hasControls;
 
@@ -318,6 +318,7 @@ export default function BuilderButton({
                         onIconLeftChange={!isStaging ? onIconLeftChange : undefined}
                         iconRight={iconRight}
                         onIconRightChange={!isStaging ? onIconRightChange : undefined}
+                        showUrl={true}
                     />
                 )
             }
