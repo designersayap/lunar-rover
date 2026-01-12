@@ -20,7 +20,7 @@ export default function ScrollGroup({
     onUpdate,
     updateComponent // passed from Canvas to render children
 }) {
-    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId } = useContext(BuilderSelectionContext);
+    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, localData } = useContext(BuilderSelectionContext);
     const elementId = sectionId;
     const isActive = activeElementId === elementId;
     const myPopoverId = `popover-${elementId}`;
@@ -159,12 +159,28 @@ export default function ScrollGroup({
 
                 if (!Component) return null;
 
+                // Staging Merge Logic:
+                const effectiveId = item.uniqueId || item.id; // Fallback to id if uniqueId missing
+                const stagingOverride = localData ? (localData[effectiveId] || localData[item.uniqueId]) : {};
+
+
+                // Robustly determine base props: handle both nested props (Builder default) and flat props (legacy/staging edge cases)
+                const baseProps = item.props ? item.props : item;
+
+                // Filter out metadata from baseProps if falling back to item (to avoid passing 'component', 'uniqueId' etc as props)
+                const cleanBaseProps = item.props ? baseProps : (() => {
+                    const { component, uniqueId, sectionId, id, ...rest } = baseProps;
+                    return rest;
+                })();
+
+                const mergedProps = { ...cleanBaseProps, ...stagingOverride };
+
                 return (
                     <div key={item.uniqueId} className={styles.componentWrapper}>
                         <Component
-                            {...item.props}
+                            {...mergedProps}
                             sectionId={item.sectionId}
-                            onUpdate={(newProps) => updateComponent(item.uniqueId, newProps)}
+                            onUpdate={(newProps) => updateComponent && updateComponent(item.uniqueId, newProps)}
                         />
                     </div>
                 )

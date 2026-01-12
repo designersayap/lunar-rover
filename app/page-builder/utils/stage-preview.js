@@ -169,7 +169,8 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
         setActivePopoverId,
         selectedComponents: stagingComponents,
         updateComponent: handleUpdate,
-        isStaging: true
+        isStaging: true,
+        localData
     };
     `;
 
@@ -220,17 +221,13 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
                     const childFilePath = COMPONENT_PATHS[childComp.id];
                     const childComponentName = getComponentName(childFilePath);
 
-                    // We need to recursively handle props for children if necessary, but for now assumption is simple structure
-                    // We'll trust the serialized 'props' of the child mainly.
-                    // But strict JSON.stringify won't include 'component: ComponentName'
+                    let childProps = { ...childComp };
 
-                    // Construct object string literal manually
-                    let childProps = { ...childComp, ...(childComp.props || {}) };
                     // Clean up metadata
                     delete childProps.id;
                     delete childProps.name;
                     delete childProps.component;
-                    delete childProps.props; // flattened
+                    // Do NOT delete childProps.props
 
                     // Re-attach uniqueId and sectionId as they are needed by ScrollGroup to render children
                     childProps.uniqueId = childComp.uniqueId;
@@ -260,7 +257,7 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
         const overrideString = `{...localData['${finalSectionId}']}`;
         const onUpdateString = `onUpdate={(newData) => handleUpdate('${finalSectionId}', newData)}`;
 
-        const componentJSX = `<${componentName} ${propsString} ${overrideString} ${onUpdateString} />`;
+        const componentJSX = `<${componentName} ${propsString} ${overrideString} ${onUpdateString} updateComponent={handleUpdate} />`;
 
         pageContent += `      ${componentJSX}\n`;
     });
