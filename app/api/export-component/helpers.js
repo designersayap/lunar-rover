@@ -1,8 +1,6 @@
 // Helper utilities for export-component route
 import path from 'path';
 
-
-
 export const ALLOWED_DIRS = [
   path.resolve(process.cwd(), 'app/templates'),
   path.resolve(process.cwd(), 'app/foundation'),
@@ -20,11 +18,6 @@ export function isBinary(ext) {
   return BINARY_SET.has(ext);
 }
 
-/**
- * Resolve a requested path safely.
- * Handles leading '/' (maps to public) and normalises to an absolute path.
- * Returns { absolutePath, finalPath, isExternal }.
- */
 export function resolvePath(requestedPath) {
   let finalPath = requestedPath;
   const isExternal = finalPath.startsWith('http://') || finalPath.startsWith('https://');

@@ -24,8 +24,6 @@ export async function GET(request) {
         const pageContent = fs.readFileSync(pageFilePath, 'utf-8');
 
         // Regex to find "const stagingComponents = [...]"
-        // We look for everything between "const stagingComponents =" and out matching semicolon or newline
-        // However, it's easier to assume it matches the JSON structure we generated.
         const structureMatch = pageContent.match(/const stagingComponents = (\[[\s\S]*?\]);/);
 
         if (!structureMatch || !structureMatch[1]) {
@@ -58,7 +56,6 @@ export async function GET(request) {
         }
 
         // 3. Merge
-        // 3. Merge
         const applyOverrides = (list) => {
             return list.map(comp => {
                 // Try uniqueId first (common for nested components), then sectionId
@@ -68,13 +65,6 @@ export async function GET(request) {
                 let newProps = { ...(comp.props || {}) };
 
                 if (override) {
-                    // We need to merge carefully. Staging data structure is flat props + special keys.
-                    // In builder, we have top-level keys + props object.
-                    // Our generateStagingPageContent flattens everything into props for the component.
-                    // But here we want to restore to BUILDER state (nested props).
-
-                    // The overriding data (from data.js) is flat key-values.
-                    // We need to check if these keys belong to 'props' or top-level in the builder schema.
 
                     Object.entries(override).forEach(([k, v]) => {
                         // Check if is known top-level key (this is a heuristic, ideally we know the schema)
@@ -91,7 +81,6 @@ export async function GET(request) {
                     newComp.props = newProps;
                 }
 
-                // Recursively check for nested components
                 // Case 1: props.components (Used by ScrollGroup)
                 if (newProps.components && Array.isArray(newProps.components)) {
                     newProps.components = applyOverrides(newProps.components);

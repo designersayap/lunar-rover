@@ -38,7 +38,6 @@ export function useStickyStacking(components) {
                     position: 'sticky',
                     top: top,
                     // If stacked, it goes behind everything (z-index 0). 
-                    // Normal sticky items (headers) stay on top.
                     zIndex: isStacked ? 0 : 100 - index
                 };
 

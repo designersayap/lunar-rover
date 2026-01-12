@@ -30,8 +30,6 @@ export default function Canvas({
         );
 
         if (topSelected) {
-            // Only scroll if the top-most selected item has changed.
-            // This satisfies:
             // 1. "anchoring (auto scroll) to the layer"
             // 2. "if it select multiple layer it stay on the top selected layer" 
             //    (because we pick the first one from display list, and if we add a lower selection, the top one doesn't change, so no scroll happen)
@@ -84,8 +82,6 @@ export default function Canvas({
 
                                 const isStacked = item.props?.scrollEffect === 'stacked';
 
-                                // Logic: If we have passed a stacked group, and the current item is NOT stacked/sticky,
-                                // and has no background image, force white background.
                                 // This prevents the stacked item (which is stuck at top) from showing through transparent sections.
                                 let forcedBgStyle = {};
 

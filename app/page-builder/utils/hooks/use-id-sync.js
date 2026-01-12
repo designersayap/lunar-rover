@@ -18,7 +18,7 @@ export function useIdSync({ id, sectionId, suffix, onIdChange }) {
             : (elementId || "");
 
         if (newTempId !== tempId) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
+            // disable-next-line react-hooks/set-state-in-effect
             setTempId(newTempId);
         }
     }, [elementId, prefix, tempId]);

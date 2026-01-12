@@ -189,14 +189,8 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
             } catch { /* CSS is optional */ }
 
             // C. Find and Process Dependencies (Recursive) - Match standard imports
-            // We need a loop because regex.exec is stateful
-            // FIXED: capture generic path (matched group 1) to support aliases like matching "@/..."
-            // Also supports dynamic imports: import("...")
             const importRegex = /(?:import\s+(?:[\w{},*\s]+)\s+from\s+['"]([^'"]+)['"]|import\(['"]([^'"]+)['"]\))/g;
 
-
-            // We collect replacements to do them after the loop to avoid messing up regex indices if content changes length (though we replace text so we should be careful)
-            // Actually, replace returns new string, so regex on OLD string is safer if we just iterate once or use matchAll.
             const matches = [...content.matchAll(importRegex)];
 
             for (const match of matches) {
@@ -264,7 +258,6 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         }
     };
 
-    // Deep clone components ONCE to ensure consistent modifications (placeholders, etc.)
     // This allows both the bundler loop and the page generator loop to see the updated props.
     const processedComponents = JSON.parse(JSON.stringify(selectedComponents));
 
@@ -291,14 +284,11 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
 
     processedComponents.forEach(item => {
         // 1. Merge missing image defaults
-        // Some components (like TerraFeatures) might not have the property saved if it relies on the default.
-        // We find the default config and ensure those keys exist on the item so the injector can find them.
         const compDefaults = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
 
         Object.keys(compDefaults).forEach(key => {
             const isImageKey = /image|logo|avatar|icon|background/i.test(key) && !/id$/i.test(key) && !/url$/i.test(key) && !/link$/i.test(key);
             // If it's an image key AND it's missing from the item (undefined), copy it from defaults.
-            // We check both root and props to be safe, but we inject into root for consistency with the loop below.
             const valInItem = item[key];
             const valInProps = item.props ? item.props[key] : undefined;
 
@@ -727,7 +717,6 @@ export default function RootLayout({ children }) {
         }
     });
 
-    // Pre-calculate Sticky Indices
     // Pre-calculate Sticky Indices and Stacked Indices
     const stickyIndices = [];
     const stackedIndices = [];
@@ -756,13 +745,10 @@ export default function RootLayout({ children }) {
         const componentName = getComponentName(filePath);
 
         // Merge props from root item and nested props to ensure robust data passing
-        // Some implementations might store data at root, some in props. We capture both.
         // USE CLONE (item itself is now the clone from processedComponents)
         const props = { ...item, ...(item.props || {}) };
 
         // Check for stickiness before deleting the prop
-
-        // Cleanup metadata fields that should not be passed as props
         // Cleanup metadata fields that should not be passed as props
         if (props.id === item.id && !item.props?.id) {
             delete props.id; // Internal ID (only remove if not manually set)

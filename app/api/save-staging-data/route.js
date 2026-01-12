@@ -27,7 +27,6 @@ export async function POST(request) {
         const fileContent = fs.readFileSync(dataFilePath, 'utf-8');
 
         // Extract JSON from "export const data = { ... };"
-        // We look for the first occurrence of '{' and the last '}'
         const start = fileContent.indexOf('{');
         const end = fileContent.lastIndexOf('}');
 

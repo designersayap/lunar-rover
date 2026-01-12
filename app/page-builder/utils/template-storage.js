@@ -26,7 +26,6 @@ export function loadTemplate(componentLibrary) {
     try {
         const { components = [], analytics } = JSON.parse(saved);
 
-        // Rehydrate component references
         // Helper to find component definition
         const findDef = (id) => {
             for (const category of Object.values(componentLibrary)) {

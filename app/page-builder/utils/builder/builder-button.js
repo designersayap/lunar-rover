@@ -135,7 +135,6 @@ export default function BuilderButton({
 
     const handleActivate = (e) => {
         // Prevent default navigation if we are NOT in live/staging (Builder mode)
-        // OR if we are in Staging but selection is enabled (Editable Staging)
         if (e && (!isStaging || setActiveElementId || toggleElementSelection)) {
             e.preventDefault();
         }

@@ -11,7 +11,7 @@ export default function StagingPopover({
     selectedComponents,
     analyticsData,
     className,
-    onRestore,  // Inject ability to restore
+    onRestore,
     activeThemePath
 }) {
     const [folderName, setFolderName] = useState("");
@@ -65,7 +65,6 @@ export default function StagingPopover({
                 if (data.components) {
                     if (onRestore) {
                         // Rehydrate components with their render functions/classes
-                        // Rehydrate components with their render functions/classes
                         const rehydrate = (list) => {
                             if (!Array.isArray(list)) return [];
                             return list.map(item => {
@@ -86,7 +85,6 @@ export default function StagingPopover({
                                     console.warn(`Component definition not found for id: ${item.id}`);
                                 }
 
-                                // Recursive rehydration
                                 // Case 1: props.components (ScrollGroup)
                                 if (newItem.props && newItem.props.components && Array.isArray(newItem.props.components)) {
                                     newItem.props = {

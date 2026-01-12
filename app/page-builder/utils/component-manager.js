@@ -248,9 +248,7 @@ export function reorderComponents(components, from, to) {
 
     // Top-level reorder (handles pinned vs page layers internally via sticky check)
     if (typeof from === 'object' && from.parentId && from.parentId !== 'main') {
-        // This case should not happen if logic is correct, but if we drop a child onto root, 
-        // we might need to handle moving component OUT of group.
-        // For now, let's strictly support reordering within same parent or root/root.
+
         return components;
     }
 
