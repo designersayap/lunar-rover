@@ -269,15 +269,28 @@ export default function BuilderButton({
                         </button>
                     )}
 
-                    {(!disableSettings) && (
-                        <button
-                            type="button"
-                            className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                            onClick={handleSettingsClick}
-                        >
-                            <Cog6ToothIcon className={styles.overlayIcon} />
-                        </button>
-                    )}
+                    {(() => {
+                        const hasControls = !isStaging && (
+                            true // Link settings are standard
+                            || !!onVariantChange
+                            || !!onIconLeftChange
+                            || !!onIconRightChange
+                        );
+
+                        const hasAvailableSettings = !disableSettings && hasControls;
+
+                        if (!hasAvailableSettings) return null;
+
+                        return (
+                            <button
+                                type="button"
+                                className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
+                                onClick={handleSettingsClick}
+                            >
+                                <Cog6ToothIcon className={styles.overlayIcon} />
+                            </button>
+                        );
+                    })()}
                 </div>,
                 document.body
             )}

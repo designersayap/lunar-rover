@@ -139,13 +139,15 @@ export default function BuilderSection({
                     <div className={styles.overlayLabel}>
                         <span className={styles.overlayIdText}>#{elementId}</span>
                     </div>
-                    <button
-                        type="button"
-                        className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                        onClick={handleSettingsClick}
-                    >
-                        <Cog6ToothIcon className={styles.overlayIcon} />
-                    </button>
+                    {!!onUpdate && (
+                        <button
+                            type="button"
+                            className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
+                            onClick={handleSettingsClick}
+                        >
+                            <Cog6ToothIcon className={styles.overlayIcon} />
+                        </button>
+                    )}
                 </div>,
                 document.body
             )}

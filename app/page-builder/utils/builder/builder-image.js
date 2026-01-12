@@ -175,15 +175,36 @@ export default function BuilderImage({
                     </button>
                 )}
 
-                {(!disableSettings && (!isStaging || (linkType !== 'dialog' || true))) && (
-                    <button
-                        type="button"
-                        className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                        onClick={handleSettingsClick}
-                    >
-                        <Cog6ToothIcon className={styles.overlayIcon} />
-                    </button>
-                )}
+                {(() => {
+                    // Logic to determine if settings button should be visible
+                    const hasControls = (!isStaging && showLinkControls) ||
+                        (isStaging || alwaysShowSrc) ||
+                        (!isStaging && (!!onIsPortraitChange || !!onMobileRatioChange));
+
+                    const hasAvailableSettings = !disableSettings && hasControls;
+
+                    // If dialog link type is active, we might want to hide the cog if there are no other settings,
+                    // BUT currently the code allowed both. The requested logic is specifically "if there is no setting available on builder control popover".
+                    // The settings popover shows Link/URL/ImageSrc/Variant/Portrait/MobileRatio.
+                    // If all of those are effectively disabled/hidden, we shouldn't show the button.
+
+                    if (!hasAvailableSettings && (!isStaging || (linkType !== 'dialog'))) return null;
+
+                    // Note: The original condition was `(!disableSettings && (!isStaging || (linkType !== 'dialog' || true)))`
+                    // converting to new logic:
+
+                    if (!hasAvailableSettings) return null;
+
+                    return (
+                        <button
+                            type="button"
+                            className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
+                            onClick={handleSettingsClick}
+                        >
+                            <Cog6ToothIcon className={styles.overlayIcon} />
+                        </button>
+                    );
+                })()}
             </div>,
             document.body
         );

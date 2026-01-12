@@ -218,7 +218,7 @@ export default function NavigationRight({
                                 className={styles.logoImage}
                                 style={logoStyle}
                                 showLinkControls={false}
-                                alwaysShowSrc={true}
+                                alwaysShowSrc={false}
                             />
                         </div>
                     </div>
