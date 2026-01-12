@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 import { useEffect, useState, useContext } from "react"; // Added useContext
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls"; // Added import
 
-export default function BackgroundFullBody({ image, imageId, imageVisible, sectionId, onUpdate }) {
+export default function BackgroundFullBody({ image, imageId, imageVisible, sectionId, uniqueId, onUpdate }) {
     const update = createUpdateHandler(onUpdate);
     const [mounted, setMounted] = useState(false);
     const { activeElementId } = useContext(BuilderSelectionContext); // Get context
@@ -19,8 +19,8 @@ export default function BackgroundFullBody({ image, imageId, imageVisible, secti
 
     if (!mounted) return null;
 
-    // Check if the overall section is selected
-    const isSectionActive = activeElementId === sectionId;
+    // Check if the overall section or component is selected
+    const isSectionActive = activeElementId === sectionId || activeElementId === uniqueId;
 
     const portalRoot = document.getElementById("canvas-background-root");
     if (!portalRoot) return null;
@@ -29,7 +29,7 @@ export default function BackgroundFullBody({ image, imageId, imageVisible, secti
             <div className={`container-grid container-full`} style={{ height: '100%' }}>
                 <BuilderImage
                     src={image || DEFAULT_PLACEHOLDER_IMAGE}
-                    isActive={isSectionActive} // Pass active state
+                    isActive={isSectionActive ? true : undefined} // Pass active state if section is active, otherwise let it handle itself
                     onSrcChange={update('image')}
                     alt="Background Image"
                     className={styles.image}

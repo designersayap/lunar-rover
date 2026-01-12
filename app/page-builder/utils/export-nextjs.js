@@ -206,6 +206,15 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                 // This is crucial for components that import another component's CSS module (e.g. media-21-9 imports media-16-9.module.css)
                 if (importPath.endsWith('.css') && !importPath.endsWith('.module.css')) continue;
 
+                // Explicitly exclude page.module.css (Builder specific styles)
+                if (importPath.includes('page.module.css')) {
+                    // Remove import but define styles object to prevent "styles is not defined" error
+                    // We assume the import was like: import styles from '...'
+                    // If it was a named import this might fail but for modules it's usually default
+                    content = content.replace(match[0], 'const styles = {};');
+                    continue;
+                }
+
                 // Resolve relative path
                 const currentDir = filePath.substring(0, filePath.lastIndexOf('/'));
 

@@ -121,6 +121,7 @@ export default function Canvas({
                                         <Component
                                             {...item.props}
                                             sectionId={item.sectionId}
+                                            uniqueId={item.uniqueId}
                                             onUpdate={(newProps) => updateComponent(item.uniqueId, newProps)}
                                             updateComponent={updateComponent}
                                         />
