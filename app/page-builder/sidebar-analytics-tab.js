@@ -1,6 +1,152 @@
-import { useState } from 'react';
-import { ChevronRightIcon } from "@heroicons/react/24/outline";
+import { useState, useEffect } from 'react';
+import { ChevronRightIcon, CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
+
+// Helper component for Image Inputs with Preview & Validation
+const ImagePreviewInput = ({ section, value, onChange }) => {
+    const [status, setStatus] = useState('idle'); // idle, valid, error
+
+    useEffect(() => {
+        if (!value) {
+            setStatus('idle');
+            return;
+        }
+        const img = new Image();
+        img.src = value;
+        img.onload = () => setStatus('valid');
+        img.onerror = () => setStatus('error');
+    }, [value]);
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ position: 'relative' }}>
+                <input
+                    type="text"
+                    className={styles.formInput}
+                    placeholder={section.placeholder}
+                    value={value}
+                    onChange={onChange}
+                    style={{ paddingRight: '32px' }} // Space for icon
+                />
+                {value && status === 'valid' && (
+                    <CheckCircleIcon
+                        style={{
+                            width: '18px',
+                            height: '18px',
+                            color: '#22c55e',
+                            position: 'absolute',
+                            right: '8px',
+                            top: '50%',
+                            transform: 'translateY(-50%)'
+                        }}
+                    />
+                )}
+                {value && status === 'error' && (
+                    <XCircleIcon
+                        style={{
+                            width: '18px',
+                            height: '18px',
+                            color: '#ef4444',
+                            position: 'absolute',
+                            right: '8px',
+                            top: '50%',
+                            transform: 'translateY(-50%)'
+                        }}
+                    />
+                )}
+            </div>
+
+            {value && status === 'valid' && (
+                <div style={{
+                    marginTop: '4px',
+                    padding: '8px',
+                    border: '1px solid var(--grey-200)',
+                    borderRadius: '8px',
+                    backgroundColor: 'var(--grey-50)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <img
+                        src={value}
+                        alt="Preview"
+                        style={{
+                            maxWidth: '100%',
+                            maxHeight: '100px',
+                            objectFit: 'contain',
+                            borderRadius: '4px'
+                        }}
+                    />
+                </div>
+            )}
+        </div>
+    );
+};
+
+// Helper component for Generic URL Inputs
+const UrlInput = ({ section, value, onChange }) => {
+    const [status, setStatus] = useState('idle'); // idle, valid, error
+
+    useEffect(() => {
+        if (!value) {
+            setStatus('idle');
+            return;
+        }
+        try {
+            new URL(value); // This throws if invalid
+            // check protocol
+            if (value.startsWith('http://') || value.startsWith('https://')) {
+                setStatus('valid');
+            } else {
+                setStatus('error');
+            }
+        } catch (_) {
+            setStatus('error');
+        }
+    }, [value]);
+
+    return (
+        <div style={{ position: 'relative' }}>
+            <input
+                type="text"
+                className={styles.formInput}
+                placeholder={section.placeholder}
+                value={value}
+                onChange={onChange}
+                style={{
+                    paddingRight: '32px',
+                    borderColor: status === 'error' ? '#ef4444' : undefined
+                }}
+            />
+            {value && status === 'valid' && (
+                <CheckCircleIcon
+                    style={{
+                        width: '18px',
+                        height: '18px',
+                        color: '#22c55e',
+                        position: 'absolute',
+                        right: '8px',
+                        top: '50%',
+                        transform: 'translateY(-50%)'
+                    }}
+                />
+            )}
+            {value && status === 'error' && (
+                <XCircleIcon
+                    style={{
+                        width: '18px',
+                        height: '18px',
+                        color: '#ef4444',
+                        position: 'absolute',
+                        right: '8px',
+                        top: '50%',
+                        transform: 'translateY(-50%)'
+                    }}
+                />
+            )}
+        </div>
+    );
+};
 
 const ANALYTICS_GROUPS = [
     {
@@ -17,6 +163,7 @@ const ANALYTICS_GROUPS = [
                 id: 'favicon',
                 title: 'Favicon',
                 type: 'input',
+                inputType: 'image', // Explicit type
                 key: 'favicon',
                 placeholder: 'Image URL',
                 tooltip: 'The icon that appears in the browser tab.'
@@ -31,6 +178,7 @@ const ANALYTICS_GROUPS = [
                 id: 'canonical-url',
                 title: 'Canonical URL',
                 type: 'input',
+                inputType: 'url', // Explicit type
                 key: 'canonicalUrl',
                 placeholder: 'https://example.com',
                 tooltip: 'The authoritative URL of the page (link rel="canonical").'
@@ -54,7 +202,8 @@ const ANALYTICS_GROUPS = [
                 title: 'Meta Tag',
                 type: 'textarea',
                 key: 'metaTag',
-                tooltip: 'Additional custom meta tags.'
+                placeholder: '<meta name="my-custom-tag" content="value" />',
+                tooltip: 'Additional custom meta tags. Must be valid HTML tags (e.g. <meta ... />).'
             }
         ]
     },
@@ -79,6 +228,7 @@ const ANALYTICS_GROUPS = [
                 id: 'og-image',
                 title: 'Open Graph Image',
                 type: 'input',
+                inputType: 'image', // Explicit type
                 key: 'ogImage',
                 placeholder: 'Image URL',
                 tooltip: 'An image URL which should represent your object within the graph.'
@@ -158,13 +308,27 @@ function AnalyticsAccordion({ group, analyticsData, setAnalyticsData }) {
                                     <label className={`caption-bold ${styles.formInputTitle}`}>{section.title}</label>
                                 </div>
                                 {section.type === 'input' ? (
-                                    <input
-                                        type="text"
-                                        className={styles.formInput}
-                                        placeholder={section.placeholder}
-                                        value={analyticsData[section.key] || ""}
-                                        onChange={(e) => setAnalyticsData({ ...analyticsData, [section.key]: e.target.value })}
-                                    />
+                                    section.inputType === 'image' ? (
+                                        <ImagePreviewInput
+                                            section={section}
+                                            value={analyticsData[section.key] || ""}
+                                            onChange={(e) => setAnalyticsData({ ...analyticsData, [section.key]: e.target.value })}
+                                        />
+                                    ) : section.inputType === 'url' ? (
+                                        <UrlInput
+                                            section={section}
+                                            value={analyticsData[section.key] || ""}
+                                            onChange={(e) => setAnalyticsData({ ...analyticsData, [section.key]: e.target.value })}
+                                        />
+                                    ) : (
+                                        <input
+                                            type="text"
+                                            className={styles.formInput}
+                                            placeholder={section.placeholder}
+                                            value={analyticsData[section.key] || ""}
+                                            onChange={(e) => setAnalyticsData({ ...analyticsData, [section.key]: e.target.value })}
+                                        />
+                                    )
                                 ) : (
                                     <textarea
                                         className={`${styles.formInput} ${styles.formTextarea} ${styles.analyticsTextarea}`}

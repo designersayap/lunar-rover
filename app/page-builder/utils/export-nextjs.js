@@ -581,7 +581,11 @@ ${foundationCSS}
     const ogTitle = analytics.ogTitle || "";
     const ogDescription = analytics.ogDescription || "";
     const ogImage = analytics.ogImage || "";
-    const customMetaTags = analytics.metaTag || "";
+    let customMetaTags = analytics.metaTag || "";
+    // Safety check: specific field must contain HTML tags. if user enters raw text, wrap in comment to prevent build error.
+    if (customMetaTags && !customMetaTags.trim().startsWith('<')) {
+        customMetaTags = `{/* Invalid Meta Tag (Must be valid HTML): ${customMetaTags.replace(/\*\//g, '* /')} */}`;
+    }
 
     // Scripts
     const gtmId = analytics.googleTagManagerId;
