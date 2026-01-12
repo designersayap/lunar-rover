@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect, useRef } from "react";
 import { isComponentSticky } from "./utils/component-manager";
 import { useBuilderSelection } from "@/app/page-builder/utils/builder/builder-controls";
 import styles from "../page.module.css";
@@ -9,7 +9,7 @@ export default function Canvas({
     selectedComponents,
     updateComponent
 }) {
-    const { setActiveElementId, selectedElementIds = [], toggleElementSelection } = useBuilderSelection();
+    const { setActiveElementId, activeElementId, selectedElementIds = [], toggleElementSelection } = useBuilderSelection();
 
     // Sort components: Pinned items first
     const displayComponents = useMemo(() => [
@@ -18,6 +18,34 @@ export default function Canvas({
     ], [selectedComponents]);
 
     const { stickyStyles, setRef } = useStickyStacking(displayComponents);
+
+    // Auto-scroll logic
+    const scrollRefs = useRef(new Map());
+    const lastScrollTarget = useRef(null);
+
+    useEffect(() => {
+        // Find the "first" selected item based on visual order (displayComponents order)
+        const topSelected = displayComponents.find(c =>
+            c.uniqueId === activeElementId || selectedElementIds.includes(c.uniqueId)
+        );
+
+        if (topSelected) {
+            // Only scroll if the top-most selected item has changed.
+            // This satisfies:
+            // 1. "anchoring (auto scroll) to the layer"
+            // 2. "if it select multiple layer it stay on the top selected layer" 
+            //    (because we pick the first one from display list, and if we add a lower selection, the top one doesn't change, so no scroll happen)
+            if (lastScrollTarget.current !== topSelected.uniqueId) {
+                const el = scrollRefs.current.get(topSelected.uniqueId);
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    lastScrollTarget.current = topSelected.uniqueId;
+                }
+            }
+        } else {
+            lastScrollTarget.current = null;
+        }
+    }, [activeElementId, selectedElementIds, displayComponents]);
 
     // Default to desktop style
     const canvasClassName = `${styles.canvas} ${styles.canvasDesktop}`;
@@ -81,7 +109,11 @@ export default function Canvas({
                                             backgroundColor: isSelected ? "var(--lunar-50)" : (forcedBgStyle.backgroundColor || "transparent"),
                                             outlineOffset: "-1px",
                                         }}
-                                        ref={(el) => setRef(item.uniqueId, el)}
+                                        ref={(el) => {
+                                            setRef(item.uniqueId, el);
+                                            if (el) scrollRefs.current.set(item.uniqueId, el);
+                                            else scrollRefs.current.delete(item.uniqueId);
+                                        }}
                                         onClickCapture={(e) => {
                                             if (e.metaKey || e.ctrlKey) {
                                                 e.preventDefault();
