@@ -100,6 +100,18 @@ export default function FooterTerra({
                                                 newLinks[index].visible = val;
                                                 update('socialLinks')(newLinks);
                                             }}
+                                            linkType={link.linkType}
+                                            targetDialogId={link.targetDialogId}
+                                            onLinkTypeChange={(val) => {
+                                                const newLinks = [...socialLinks];
+                                                newLinks[index].linkType = val;
+                                                update('socialLinks')(newLinks);
+                                            }}
+                                            onTargetDialogIdChange={(val) => {
+                                                const newLinks = [...socialLinks];
+                                                newLinks[index].targetDialogId = val;
+                                                update('socialLinks')(newLinks);
+                                            }}
                                             hideLabel={true}
                                             iconLeft={SocialIcons[link.platform] || null}
                                             className={styles.socialLink}
