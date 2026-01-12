@@ -377,18 +377,6 @@ export const extractBuilderData = (components) => {
                 // We start with item.props
                 const cleanItem = { ...(item.props || {}) };
 
-                // Merge top-level keys that are NOT metadata, BUT DO NOT OVERWRITE PROPS
-                // (Builder sometimes uses top-level keys for props, but active props should win)
-                Object.keys(item).forEach(key => {
-                    const metadataKeys = [
-                        'id', 'name', 'component', 'componentId', 'config', 'isOpen',
-                        'sectionId', 'uniqueId', 'props', 'components', '_isSticky' // exclude internal
-                    ];
-                    if (!metadataKeys.includes(key) && cleanItem[key] === undefined) {
-                        cleanItem[key] = item[key];
-                    }
-                });
-
                 // Do NOT include children arrays in the data object for this node
                 // (children will have their own entries in the flat data object)
                 delete cleanItem.components;
