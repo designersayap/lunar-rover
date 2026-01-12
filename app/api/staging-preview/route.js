@@ -32,6 +32,8 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Missing folderName or fileContent' }, { status: 400 });
         }
 
+
+
         const STAGING_DIR = path.join(process.cwd(), 'app', 'staging');
 
         // Security check for folder name
