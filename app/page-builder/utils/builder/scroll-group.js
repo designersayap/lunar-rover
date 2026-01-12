@@ -161,7 +161,8 @@ export default function ScrollGroup({
 
                 // Staging Merge Logic:
                 const effectiveId = item.uniqueId || item.id; // Fallback to id if uniqueId missing
-                const stagingOverride = localData ? (localData[effectiveId] || localData[item.uniqueId]) : {};
+                const lookupId = item.sectionId || item.uniqueId;
+                const stagingOverride = localData ? (localData[lookupId] || localData[effectiveId]) : {};
 
 
                 // Robustly determine base props: handle both nested props (Builder default) and flat props (legacy/staging edge cases)
@@ -180,7 +181,7 @@ export default function ScrollGroup({
                         <Component
                             {...mergedProps}
                             sectionId={item.sectionId}
-                            onUpdate={(newProps) => updateComponent && updateComponent(item.uniqueId, newProps)}
+                            onUpdate={(newProps) => updateComponent && updateComponent(item.sectionId || item.uniqueId, newProps)}
                         />
                     </div>
                 )
