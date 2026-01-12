@@ -58,39 +58,56 @@ export async function GET(request) {
         }
 
         // 3. Merge
-        const mergedComponents = components.map(comp => {
-            const key = comp.sectionId || comp.uniqueId;
-            const override = overrides[key];
+        // 3. Merge
+        const applyOverrides = (list) => {
+            return list.map(comp => {
+                // Try uniqueId first (common for nested components), then sectionId
+                const override = overrides[comp.uniqueId] || (comp.sectionId ? overrides[comp.sectionId] : null);
 
-            if (override) {
-                // We need to merge carefully. Staging data structure is flat props + special keys.
-                // In builder, we have top-level keys + props object.
-                // Our generateStagingPageContent flattens everything into props for the component.
-                // But here we want to restore to BUILDER state (nested props).
+                let newComp = { ...comp };
+                let newProps = { ...(comp.props || {}) };
 
-                // The overriding data (from data.js) is flat key-values.
-                // We need to check if these keys belong to 'props' or top-level in the builder schema.
+                if (override) {
+                    // We need to merge carefully. Staging data structure is flat props + special keys.
+                    // In builder, we have top-level keys + props object.
+                    // Our generateStagingPageContent flattens everything into props for the component.
+                    // But here we want to restore to BUILDER state (nested props).
 
-                const newProps = { ...(comp.props || {}) };
-                const newComp = { ...comp };
+                    // The overriding data (from data.js) is flat key-values.
+                    // We need to check if these keys belong to 'props' or top-level in the builder schema.
 
-                Object.entries(override).forEach(([k, v]) => {
-                    // Check if is known top-level key (this is a heuristic, ideally we know the schema)
-                    const topLevelKeys = ['id', 'uniqueId', 'sectionId', 'componentName', 'isSticky'];
+                    Object.entries(override).forEach(([k, v]) => {
+                        // Check if is known top-level key (this is a heuristic, ideally we know the schema)
+                        const topLevelKeys = ['id', 'uniqueId', 'sectionId', 'componentName', 'isSticky'];
 
-                    if (topLevelKeys.includes(k)) {
-                        newComp[k] = v;
-                    } else {
-                        // Assume it's a prop
-                        newProps[k] = v;
-                    }
-                });
+                        if (topLevelKeys.includes(k)) {
+                            newComp[k] = v;
+                        } else {
+                            // Assume it's a prop
+                            newProps[k] = v;
+                        }
+                    });
 
-                newComp.props = newProps;
+                    newComp.props = newProps;
+                }
+
+                // Recursively check for nested components
+                // Case 1: props.components (Used by ScrollGroup)
+                if (newProps.components && Array.isArray(newProps.components)) {
+                    newProps.components = applyOverrides(newProps.components);
+                    newComp.props = newProps;
+                }
+
+                // Case 2: components property (Potential direct nested structure)
+                if (newComp.components && Array.isArray(newComp.components)) {
+                    newComp.components = applyOverrides(newComp.components);
+                }
+
                 return newComp;
-            }
-            return comp;
-        });
+            });
+        };
+
+        const mergedComponents = applyOverrides(components);
 
         return NextResponse.json({ components: mergedComponents });
 

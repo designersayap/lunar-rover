@@ -65,27 +65,46 @@ export default function StagingPopover({
                 if (data.components) {
                     if (onRestore) {
                         // Rehydrate components with their render functions/classes
-                        const rehydrated = data.components.map(item => {
-                            // Find definition in library
-                            let definition = null;
-                            for (const category of Object.values(componentLibrary)) {
-                                const found = category.find(c => c.id === item.id);
-                                if (found) {
-                                    definition = found;
-                                    break;
+                        // Rehydrate components with their render functions/classes
+                        const rehydrate = (list) => {
+                            if (!Array.isArray(list)) return [];
+                            return list.map(item => {
+                                let definition = null;
+                                for (const category of Object.values(componentLibrary)) {
+                                    const found = category.find(c => c.id === item.id);
+                                    if (found) {
+                                        definition = found;
+                                        break;
+                                    }
                                 }
-                            }
 
-                            if (definition) {
-                                return {
-                                    ...item,
-                                    component: definition.component
-                                };
-                            } else {
-                                console.warn(`Component definition not found for id: ${item.id}`);
-                                return item;
-                            }
-                        });
+                                const newItem = { ...item };
+
+                                if (definition) {
+                                    newItem.component = definition.component;
+                                } else {
+                                    console.warn(`Component definition not found for id: ${item.id}`);
+                                }
+
+                                // Recursive rehydration
+                                // Case 1: props.components (ScrollGroup)
+                                if (newItem.props && newItem.props.components && Array.isArray(newItem.props.components)) {
+                                    newItem.props = {
+                                        ...newItem.props,
+                                        components: rehydrate(newItem.props.components)
+                                    };
+                                }
+
+                                // Case 2: components (Direct children)
+                                if (newItem.components && Array.isArray(newItem.components)) {
+                                    newItem.components = rehydrate(newItem.components);
+                                }
+
+                                return newItem;
+                            });
+                        };
+
+                        const rehydrated = rehydrate(data.components);
 
                         onRestore(rehydrated);
                         onClose();

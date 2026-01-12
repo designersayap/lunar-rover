@@ -20,7 +20,7 @@ export default function ScrollGroup({
     onUpdate,
     updateComponent // passed from Canvas to render children
 }) {
-    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, localData } = useContext(BuilderSelectionContext);
+    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, localData, isStaging } = useContext(BuilderSelectionContext);
     const elementId = sectionId;
     const isActive = activeElementId === elementId;
     const myPopoverId = `popover-${elementId}`;
@@ -196,12 +196,12 @@ export default function ScrollGroup({
                 position={popoverPosition}
 
                 // Scroll Settings
-                showScrollEffect={true}
+                showScrollEffect={!isStaging}
                 scrollEffect={scrollEffect}
                 onScrollEffectChange={(val) => onUpdate({ scrollEffect: val })}
 
-                // Image Settings
-                showImageSrc={true}
+                // Image Settings (Staging Only)
+                showImageSrc={isStaging}
                 imageSrc={image}
                 onImageSrcChange={(val) => onUpdate({ image: val })}
 
@@ -209,7 +209,7 @@ export default function ScrollGroup({
                 mobileRatio={imageMobileRatio}
                 onMobileRatioChange={(val) => onUpdate({ imageMobileRatio: val })}
 
-                showMobileImageSrc={true}
+                showMobileImageSrc={isStaging}
                 mobileImageSrc={mobileImage}
                 onMobileImageSrcChange={(val) => onUpdate({ mobileImage: val })}
 
