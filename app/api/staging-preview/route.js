@@ -26,7 +26,7 @@ export async function GET() {
 export async function POST(request) {
     try {
         const requestBody = await request.json();
-        let { folderName, fileContent, layoutContent } = requestBody;
+        let { folderName, fileContent, layoutContent, builderData } = requestBody;
 
         if (!folderName || !fileContent) {
             return NextResponse.json({ error: 'Missing folderName or fileContent' }, { status: 400 });
@@ -45,7 +45,6 @@ export async function POST(request) {
             fs.mkdirSync(targetDir, { recursive: true });
         }
 
-        // Handle data.js: Create only if it doesn't exist
         // Handle data.js: Create only if it doesn't exist, OR clean it up if it does
         const dataFilePath = path.join(targetDir, 'data.js');
         let existingData = {};
@@ -64,9 +63,15 @@ export async function POST(request) {
             }
         }
 
+        // MERGE: Overwrite existing data with Builder Data (Single Source of Truth)
+        if (builderData && typeof builderData === 'object') {
+            existingData = { ...existingData, ...builderData };
+        }
+
         // Cleanup: Remove keys that are not in the current active component list
-        // activeComponentIds is passed from client
-        const activeComponentIds = requestBody.componentIds;
+        // activeComponentIds is passed from client, OR derived from builderData keys
+        const activeComponentIds = requestBody.componentIds || (builderData ? Object.keys(builderData) : []);
+
         if (activeComponentIds && Array.isArray(activeComponentIds)) {
             const activeSet = new Set(activeComponentIds);
             Object.keys(existingData).forEach(key => {

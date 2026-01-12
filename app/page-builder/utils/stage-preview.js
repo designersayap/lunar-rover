@@ -364,10 +364,57 @@ export default function StagingLayout({ children }) {
 `;
 };
 
+export const extractBuilderData = (components) => {
+    const data = {};
+
+    const traverse = (list) => {
+        if (!list || !Array.isArray(list)) return;
+
+        list.forEach(item => {
+            const finalId = item.sectionId || item.uniqueId;
+            if (finalId) {
+                // Extract props: Use item props AND item top-level keys that act as props (legacy builder structure)
+                // We start with item.props
+                const cleanItem = { ...(item.props || {}) };
+
+                // Merge top-level keys that are NOT metadata, overwriting props if needed
+                // (Builder sometimes uses top-level keys for props)
+                Object.keys(item).forEach(key => {
+                    const metadataKeys = [
+                        'id', 'name', 'component', 'componentId', 'config', 'isOpen',
+                        'sectionId', 'uniqueId', 'props', 'components', '_isSticky' // exclude internal
+                    ];
+                    if (!metadataKeys.includes(key)) {
+                        cleanItem[key] = item[key];
+                    }
+                });
+
+                // Do NOT include children arrays in the data object for this node
+                // (children will have their own entries in the flat data object)
+                delete cleanItem.components;
+
+                data[finalId] = cleanItem;
+            }
+
+            // Recurse
+            if (item.components && Array.isArray(item.components)) {
+                traverse(item.components);
+            }
+            if (item.props && item.props.components && Array.isArray(item.props.components)) {
+                traverse(item.props.components);
+            }
+        });
+    };
+
+    traverse(components);
+    return data;
+};
+
 export const handleStagePreview = async (selectedComponents, folderName, analytics, activeThemePath) => {
     try {
         const fileContent = generateStagingPageContent(selectedComponents, folderName, activeThemePath);
         const layoutContent = generateStagingLayoutContent(analytics);
+        const builderData = extractBuilderData(selectedComponents);
 
         const res = await fetch('/api/staging-preview', {
             method: 'POST',
@@ -376,7 +423,8 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
                 folderName,
                 fileContent,
                 layoutContent,
-                componentIds: selectedComponents.map(c => c.sectionId || c.uniqueId)
+                componentIds: selectedComponents.map(c => c.sectionId || c.uniqueId), // Keep this for legacy/redundancy, or remove if builderData keys suffice
+                builderData // New payload
             })
         });
 
