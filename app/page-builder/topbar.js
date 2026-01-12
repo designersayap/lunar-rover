@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import {
     ChevronDoubleRightIcon,
@@ -25,8 +26,33 @@ export default function TopBar({
     const selectedTheme = themes.find(t => t.id === selectedThemeId);
     const selectedThemeName = selectedTheme ? selectedTheme.name : "Themes";
 
+    // Ref for the staging button to calculate popover position
+    const stagingButtonRef = useRef(null);
+
+    // Keyboard Shortcut for Staging (Cmd+S / Ctrl+S)
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+                e.preventDefault(); // Prevent browser save
+                e.stopPropagation();
+
+                if (stagingButtonRef.current) {
+                    const rect = stagingButtonRef.current.getBoundingClientRect();
+                    handleStaging({
+                        top: rect.bottom + 4,
+                        left: rect.right
+                    });
+                }
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [handleStaging]);
+
     return (
         <div className={`${styles.topBar} z-layout-topbar`} data-builder-ui="true">
+            {/* ... left part ... */}
             <div className={styles.topBarLeft}>
                 <Image
                     src="/logo.svg"
@@ -37,6 +63,7 @@ export default function TopBar({
                 <h1 className={`body-bold ${styles.logo}`}>Lunar</h1>
             </div>
             <div className={styles.topBarRight}>
+                {/* ... other buttons ... */}
                 <button
                     onClick={() => setIsSidebarVisible(!isSidebarVisible)}
                     className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}
@@ -86,6 +113,7 @@ export default function TopBar({
                         Export
                     </button>
                     <button
+                        ref={stagingButtonRef}
                         className={`${styles.generatorButton} ${styles.splitButtonDropdown} ${isStagingPopoverOpen ? styles.splitButtonActive : ''}`}
                         onClick={(e) => {
                             e.stopPropagation();
@@ -95,7 +123,7 @@ export default function TopBar({
                                 left: rect.right
                             });
                         }}
-                        data-tooltip="Stage Preview"
+                        data-tooltip="Stage Preview (Cmd+S)"
                     >
                         <ChevronDownIcon style={{ width: "12px", height: "12px", strokeWidth: 2 }} />
                     </button>
