@@ -71,11 +71,17 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
     pageContent += `
     const [activeElementId, setActiveElementId] = useState(null);
     const [activePopoverId, setActivePopoverId] = useState(null);
+    const [localData, setLocalData] = useState(stagingData);
     `;
 
     // Inject handleUpdate
     pageContent += `
     const handleUpdate = async (uniqueId, newData) => {
+        setLocalData(prev => ({
+            ...prev,
+            [uniqueId]: { ...(prev[uniqueId] || {}), ...newData }
+        }));
+        
         try {
             await fetch('/api/save-staging-data', {
                 method: 'POST',
@@ -251,7 +257,7 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
         }).filter(Boolean).join(' ');
 
         // Add override spread and handler
-        const overrideString = `{...stagingData['${finalSectionId}']}`;
+        const overrideString = `{...localData['${finalSectionId}']}`;
         const onUpdateString = `onUpdate={(newData) => handleUpdate('${finalSectionId}', newData)}`;
 
         const componentJSX = `<${componentName} ${propsString} ${overrideString} ${onUpdateString} />`;

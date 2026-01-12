@@ -3,6 +3,7 @@ import { isComponentSticky } from "./utils/component-manager";
 import { useBuilderSelection } from "@/app/page-builder/utils/builder/builder-controls";
 import styles from "../page.module.css";
 import { useStickyStacking } from "./utils/sticky-stacking";
+import { componentLibrary } from "@/app/page-builder/content/component-library";
 
 export default function Canvas({
     selectedComponents,
@@ -49,7 +50,7 @@ export default function Canvas({
                             let hasSeenStacked = false;
 
                             return displayComponents.map((item) => {
-                                const Component = item.component;
+                                const Component = item.component || Object.values(componentLibrary).flat().find(c => c.id === item.id)?.component;
                                 const stickyStyle = stickyStyles[item.uniqueId] || {};
                                 const isSelected = selectedElementIds.includes(item.uniqueId);
 
