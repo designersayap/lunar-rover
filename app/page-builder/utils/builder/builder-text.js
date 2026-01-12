@@ -23,6 +23,8 @@ function BuilderTextComponent({
     const [text, setText] = useState(content);
     const elementRef = useRef(null);
 
+
+
     // Use a ref for onChange to keep it stable
     const onChangeRef = useRef(onChange);
     useEffect(() => {

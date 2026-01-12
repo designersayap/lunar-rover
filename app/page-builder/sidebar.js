@@ -267,10 +267,6 @@ const ComponentTreeItem = memo(({
                                     onClick={(e) => {
                                         if (e.metaKey || e.ctrlKey) {
                                             e.stopPropagation();
-                                            // For nested items, we toggle the parent? Or the item itself?
-                                            // The item is part of the component props (text/button).
-                                            // Usually we select the Component.
-                                            // If we Cmd+Click a property row, we probably mean to select the Component.
                                             handleSelectToggle(comp.uniqueId, true);
                                         } else {
                                             e.stopPropagation();

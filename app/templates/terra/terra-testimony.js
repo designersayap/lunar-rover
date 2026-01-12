@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import styles from "./terra-testimony.module.css";
 import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
 const DEFAULT_PLACEHOLDER_IMAGE = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
@@ -21,12 +21,19 @@ export default function TestimonialTerra({
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
 
-    const updateTestimony = (index, key, value) => {
-        if (!onUpdate) return;
-        const newTestimonies = [...testimonies];
+    // Fix: Use a ref to hold the latest state so the callback can be stable
+    // (BuilderText ignores prop changes to onChange for performance, so we must provide a stable function)
+    const latestStateRef = useRef({ testimonies, onUpdate });
+    latestStateRef.current = { testimonies, onUpdate };
+
+    const updateTestimony = useCallback((index, key, value) => {
+        const { testimonies: currentTestimonies, onUpdate: currentOnUpdate } = latestStateRef.current;
+        if (!currentOnUpdate) return;
+
+        const newTestimonies = [...currentTestimonies];
         newTestimonies[index] = { ...newTestimonies[index], [key]: value };
-        onUpdate({ testimonies: newTestimonies });
-    };
+        currentOnUpdate({ testimonies: newTestimonies });
+    }, []);
 
     const updateCardId = (index, newId) => {
         updateTestimony(index, 'cardId', newId);
