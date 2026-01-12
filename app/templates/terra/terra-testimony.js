@@ -88,16 +88,18 @@ export default function TestimonialTerra({
         });
     };
 
+    const [isPaused, setIsPaused] = useState(false);
+
     useEffect(() => {
         const autoScrollInterval = setInterval(() => {
-            if (!scrollContainerRef.current) return;
+            if (!scrollContainerRef.current || isPaused) return;
 
             const nextPage = (currentPage + 1) % totalPages;
             scrollToPage(nextPage);
         }, 5000); // 5 seconds
 
         return () => clearInterval(autoScrollInterval);
-    }, [currentPage, totalPages]);
+    }, [currentPage, totalPages, isPaused]);
 
     const visibleCount = testimonies.filter(t => t.visible !== false).length;
 
@@ -118,6 +120,8 @@ export default function TestimonialTerra({
                         ref={scrollContainerRef}
                         className={styles.cardsWrapper}
                         style={{ justifyContent: visibleCount === 3 ? 'center' : 'initial' }}
+                        onMouseEnter={() => setIsPaused(true)}
+                        onMouseLeave={() => setIsPaused(false)}
                     >
                         {testimonies.map((item, index) => (
                             <BuilderElement
