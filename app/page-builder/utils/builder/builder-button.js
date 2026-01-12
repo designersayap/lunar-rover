@@ -302,9 +302,9 @@ export default function BuilderButton({
                         showLinkType={!isStaging}
                         showVariant={!isStaging}
                         iconLeft={iconLeft}
-                        onIconLeftChange={onIconLeftChange}
+                        onIconLeftChange={!isStaging ? onIconLeftChange : undefined}
                         iconRight={iconRight}
-                        onIconRightChange={onIconRightChange}
+                        onIconRightChange={!isStaging ? onIconRightChange : undefined}
                     />
                 )
             }
