@@ -31,3 +31,4 @@ ts-debug.log*
 # user requests
 public/uat-files
 app/staging
+debug_staging.log
