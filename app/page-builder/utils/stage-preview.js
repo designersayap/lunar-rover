@@ -372,7 +372,12 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
         const res = await fetch('/api/staging-preview', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ folderName, fileContent, layoutContent })
+            body: JSON.stringify({
+                folderName,
+                fileContent,
+                layoutContent,
+                componentIds: selectedComponents.map(c => c.sectionId || c.uniqueId)
+            })
         });
 
         if (res.ok) {

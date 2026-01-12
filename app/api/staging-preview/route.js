@@ -25,7 +25,8 @@ export async function GET() {
 
 export async function POST(request) {
     try {
-        let { folderName, fileContent, layoutContent } = await request.json();
+        const requestBody = await request.json();
+        let { folderName, fileContent, layoutContent } = requestBody;
 
         if (!folderName || !fileContent) {
             return NextResponse.json({ error: 'Missing folderName or fileContent' }, { status: 400 });
@@ -45,10 +46,38 @@ export async function POST(request) {
         }
 
         // Handle data.js: Create only if it doesn't exist
+        // Handle data.js: Create only if it doesn't exist, OR clean it up if it does
         const dataFilePath = path.join(targetDir, 'data.js');
-        if (!fs.existsSync(dataFilePath)) {
-            fs.writeFileSync(dataFilePath, 'export const data = {};');
+        let existingData = {};
+
+        if (fs.existsSync(dataFilePath)) {
+            try {
+                const dataContent = fs.readFileSync(dataFilePath, 'utf-8');
+                const start = dataContent.indexOf('{');
+                const end = dataContent.lastIndexOf('}');
+                if (start !== -1 && end !== -1) {
+                    const jsonString = dataContent.substring(start, end + 1);
+                    existingData = JSON.parse(jsonString);
+                }
+            } catch (e) {
+                console.warn("Failed to parse existing data.js for cleanup", e);
+            }
         }
+
+        // Cleanup: Remove keys that are not in the current active component list
+        // activeComponentIds is passed from client
+        const activeComponentIds = requestBody.componentIds;
+        if (activeComponentIds && Array.isArray(activeComponentIds)) {
+            const activeSet = new Set(activeComponentIds);
+            Object.keys(existingData).forEach(key => {
+                if (!activeSet.has(key)) {
+                    delete existingData[key];
+                }
+            });
+        }
+
+        // Always write the data file to ensure it's up to date with cleanup or creation
+        fs.writeFileSync(dataFilePath, `export const data = ${JSON.stringify(existingData, null, 4)};`);
 
         const filePath = path.join(targetDir, 'page.js');
         fs.writeFileSync(filePath, fileContent);
