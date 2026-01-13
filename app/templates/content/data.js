@@ -20,6 +20,23 @@ export const componentDefaults = {
         secondaryButtonLinkType: "url",
         secondaryButtonId: ""
     },
+    "header-group": {
+        title: "Title",
+        subtitle: "Category",
+        titleVisible: true,
+        subtitleVisible: true,
+        buttonStyle: "primary",
+        buttonText: "Label",
+        buttonUrl: "",
+        buttonVisible: true,
+        buttonLinkType: "url",
+        buttonId: "",
+        secondaryButtonText: "Label",
+        secondaryButtonUrl: "",
+        secondaryButtonVisible: true,
+        secondaryButtonLinkType: "url",
+        secondaryButtonId: ""
+    },
     "hero-terra-banner": {
         title: "Title",
         subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",

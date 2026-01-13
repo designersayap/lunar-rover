@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import { componentDefaults } from "../../templates/content/data";
 
 const HeaderSection = dynamic(() => import("@/app/templates/header/header-section"));
+const HeaderGroup = dynamic(() => import("@/app/templates/header/header-group"));
 const HeroTerraBanner = dynamic(() => import("@/app/templates/terra/terra-banner-hero"));
 const FeatureImageLeft = dynamic(() => import("@/app/templates/feature/feature-image-left"));
 const FeatureImageRight = dynamic(() => import("@/app/templates/feature/feature-image-right"));
@@ -289,6 +290,80 @@ export const componentLibrary = {
                     label: "Secondary Button Text",
                     type: "text",
                     default: componentDefaults["header-section"].secondaryButtonText
+                }
+            ],
+            texts: [
+                {
+                    label: "Title",
+                    propId: "titleId",
+                    suffix: "title",
+                    visibleProp: "titleVisible",
+                },
+                {
+                    label: "Description",
+                    propId: "subtitleId",
+                    suffix: "subtitle",
+                    visibleProp: "subtitleVisible",
+                }
+            ],
+
+            buttons: [
+                {
+                    label: "Button",
+                    propId: "buttonId",
+                    suffix: "button",
+                    labelProp: "buttonText",
+                    visibleProp: "buttonVisible",
+                    linkTypeProp: "buttonLinkType"
+                },
+                {
+                    label: "Secondary Button",
+                    propId: "secondaryButtonId",
+                    suffix: "secondary-button",
+                    labelProp: "secondaryButtonText",
+                    visibleProp: "secondaryButtonVisible",
+                    linkTypeProp: "secondaryButtonLinkType"
+                }
+            ]
+        },
+        {
+            id: "header-group",
+            name: "Header - Group",
+            component: HeaderGroup,
+            thumbnail: "/images/thumbnails/header-section.svg",
+            config: [
+                {
+                    name: "buttonStyle",
+                    label: "Button Style",
+                    type: "select",
+                    options: ["primary", "neutral", "outline", "ghost", "ghost-neutral"],
+                    default: componentDefaults["header-group"].buttonStyle
+                },
+                {
+                    name: "buttonLinkType",
+                    label: "Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: componentDefaults["header-group"].buttonLinkType
+                },
+                {
+                    name: "secondaryButtonLinkType",
+                    label: "Secondary Button Link Type",
+                    type: "select",
+                    options: ["url", "dialog"],
+                    default: componentDefaults["header-group"].secondaryButtonLinkType
+                },
+                {
+                    name: "buttonText",
+                    label: "Button Text",
+                    type: "text",
+                    default: componentDefaults["header-group"].buttonText
+                },
+                {
+                    name: "secondaryButtonText",
+                    label: "Secondary Button Text",
+                    type: "text",
+                    default: componentDefaults["header-group"].secondaryButtonText
                 }
             ],
             texts: [

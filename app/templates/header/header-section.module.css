@@ -21,3 +21,9 @@
     overflow-wrap: break-word;
     word-break: break-word;
 }
+
+.category {
+    color: var(--content-brand--brand);
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
