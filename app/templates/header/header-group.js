@@ -46,7 +46,7 @@ export default function HeaderGroup({
                             <BuilderText
                                 tagName="div"
                                 className={`subheader-h2 ${styles.category}`}
-                                style={{ marginBottom: "var(--gap-lg)" }}
+                                style={{ marginBottom: "var(--gap-md)" }}
                                 content={subtitle}
                                 onChange={update('subtitle')}
                                 sectionId={sectionId}
@@ -59,7 +59,7 @@ export default function HeaderGroup({
                             <BuilderText
                                 tagName="h2"
                                 className={`h3 ${styles.title}`}
-                                style={{ marginBottom: "var(--gap-md)" }}
+                                style={{ marginBottom: "var(--gap-lg)" }}
                                 content={title}
                                 onChange={update('title')}
                                 sectionId={sectionId}
