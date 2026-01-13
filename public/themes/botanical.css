@@ -14,13 +14,6 @@
     src: url('/fonts/Proza_Libre/ProzaLibre-Medium.ttf') format('truetype');
 }
 
-@font-face {
-    font-family: 'Proza Libre';
-    font-style: normal;
-    font-weight: 700;
-    src: url('/fonts/Proza_Libre/ProzaLibre-Bold.ttf') format('truetype');
-}
-
 :root {
 
     /* Font Variables */
@@ -126,9 +119,9 @@
     --font-family-action: var(--font-body), sans-serif;
 
     /* Typography - Font Weights */
-    --font-weight-bold: 700;
+    --font-weight-bold: 500;
     --font-weight-regular: 400;
-    --font-weight-action: 500;
+    --font-weight-action: 400;
 
     /* ============================================
        Custom Colors
