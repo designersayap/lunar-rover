@@ -135,7 +135,7 @@ export default function FeatureImageRight({
                             src={image || DEFAULT_PLACEHOLDER_IMAGE}
                             onSrcChange={update('image')}
                             className={`imagePlaceholder-1-1`}
-                            style={{ height: "auto" }}
+                            style={{ height: "auto", paddingRight: "var(--gap-md)", paddingLeft: "var(--gap-md)" }}
                             id={imageId}
                             sectionId={sectionId}
                             isVisible={imageVisible}

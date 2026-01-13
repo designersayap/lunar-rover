@@ -3,6 +3,7 @@ export const COMPONENT_PATHS = {
     "header-title-button": "app/templates/header/header-title-button.js",
     "header-title-description": "app/templates/header/header-title-description.js",
     "header-section": "app/templates/header/header-section.js",
+    "header-group": "app/templates/header/header-group.js",
 
     "hero-terra-banner": "app/templates/terra/terra-banner-hero.js",
     "osm-banner": "app/templates/osm/osm-banner.js",

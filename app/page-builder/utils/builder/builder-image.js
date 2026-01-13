@@ -251,7 +251,7 @@ export default function BuilderImage({
         height: "100%",
         objectFit: "cover",
         display: "block",
-        backgroundColor: isPlaceholder ? "#676767" : "transparent",
+        backgroundColor: "transparent",
         opacity: isVisible ? 1 : 0.5,
         ...style
     };
