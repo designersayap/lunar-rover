@@ -18,6 +18,7 @@ export default function ScrollGroup({
     imageMobileRatio,
     scrollEffect = "parallax", // 'parallax' | 'sticky'
     enableBlur = false, // Toggle for blur effect
+    disableEffects = false, // New prop to disable internal effects (for Staging/Export)
     onUpdate,
     updateComponent // passed from Canvas to render children
 }) {
@@ -117,6 +118,9 @@ export default function ScrollGroup({
     const whiteOverlayRef = useRef(null);
 
     useEffect(() => {
+        // If effects are disabled (Staging/Export), do nothing
+        if (disableEffects) return;
+
         if (!isStacked || !sectionRef.current || !enableBlur) {
             // Reset if disabled
             if (whiteOverlayRef.current) whiteOverlayRef.current.style.opacity = 0;
@@ -243,7 +247,7 @@ export default function ScrollGroup({
             }
         };
 
-    }, [isStacked, enableBlur]);
+    }, [isStacked, enableBlur, disableEffects]);
 
     const handleSettingsClick = (e) => {
         e.preventDefault();

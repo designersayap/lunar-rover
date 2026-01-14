@@ -153,6 +153,13 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                 while (sibling && count < 20) {
                     if (sibling.style) {
                         sibling.style.setProperty('background-color', targetBg, 'important');
+
+                        // Ensure the covering element is positioned and has higher z-index than the sticky element (zIndex: 0)
+                        const computed = getComputedStyle(sibling);
+                        if (computed.position === 'static') {
+                            sibling.style.setProperty('position', 'relative', 'important');
+                        }
+                        sibling.style.setProperty('z-index', '10', 'important');
                     }
                     sibling = sibling.nextElementSibling;
                     count++;

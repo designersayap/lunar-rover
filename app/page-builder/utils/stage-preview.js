@@ -262,7 +262,7 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
         const overrideString = `{...localData['${finalSectionId}']}`;
         const onUpdateString = `onUpdate={(newData) => handleUpdate('${finalSectionId}', newData)}`;
 
-        const componentJSX = `<${componentName} ${propsString} ${overrideString} ${onUpdateString} updateComponent={handleUpdate} />`;
+        const componentJSX = `<${componentName} ${propsString} ${overrideString} ${onUpdateString} updateComponent={handleUpdate} ${(item.id === 'scroll-group' || componentName === 'ScrollGroup') ? 'disableEffects={true}' : ''} />`;
 
         pageContent += `      ${componentJSX}\n`;
     });
