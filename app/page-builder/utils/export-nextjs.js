@@ -884,18 +884,19 @@ ${canonicalUrl ? `Sitemap: ${canonicalUrl}/sitemap.xml` : ''}`;
         previewMap.set("app/sitemap.xml", { path: "app/sitemap.xml", content: sitemapXml });
     }
 
+    // Generate safe title for naming (used for both ZIP and UAT folder)
+    const safeTitle = (analytics.websiteTitle || "lunar")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with hyphens
+        .replace(/-+/g, '-')         // Collapse multiple hyphens
+        .replace(/(^-|-$)/g, '');    // Trim leading/trailing hyphens
+
     // 5. Download ZIP (Conditional)
     if (download) {
         const blob = await zip.generateAsync({ type: "blob" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        // Generate dynamic filename
-        const safeTitle = (analytics.websiteTitle || "lunar")
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with hyphens
-            .replace(/-+/g, '-')         // Collapse multiple hyphens
-            .replace(/(^-|-$)/g, '');    // Trim leading/trailing hyphens
 
         a.download = `${safeTitle || 'lunar'}-export.zip`;
         document.body.appendChild(a);
@@ -1036,7 +1037,7 @@ export default function RootLayout({ children }) {
 
 
 
-            const folderName = previewFolder || `preview-${new Date().toISOString().replace(/[:.]/g, '-')}`;
+            const folderName = previewFolder || `${safeTitle || 'lunar'}-export`;
             const previewRes = await fetch('/api/uat-preview', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
