@@ -75,7 +75,10 @@ export default function BuilderControlsPopover({
     onIconRightChange,
     showScrollEffect,
     scrollEffect,
-    onScrollEffectChange
+    onScrollEffectChange,
+    showBlurToggle,
+    enableBlur,
+    onEnableBlurChange
 }) {
 
 
@@ -283,6 +286,21 @@ export default function BuilderControlsPopover({
                                     </select>
                                     <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
                                 </div>
+                            </div>
+                        )}
+
+                        {showBlurToggle && (
+                            <div className={styles.propertyRow} style={{ marginTop: '8px' }}>
+                                <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Enable Blur Effect</label>
+                                <label className={styles.toggleSwitch}>
+                                    <input
+                                        type="checkbox"
+                                        className={styles.toggleInput}
+                                        checked={enableBlur === true}
+                                        onChange={(e) => onEnableBlurChange && onEnableBlurChange(e.target.checked)}
+                                    />
+                                    <span className={styles.toggleSlider}></span>
+                                </label>
                             </div>
                         )}
 

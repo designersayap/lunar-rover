@@ -17,6 +17,7 @@ export default function ScrollGroup({
     mobileImage,
     imageMobileRatio,
     scrollEffect = "parallax", // 'parallax' | 'sticky'
+    enableBlur = false, // Toggle for blur effect
     onUpdate,
     updateComponent // passed from Canvas to render children
 }) {
@@ -110,6 +111,139 @@ export default function ScrollGroup({
             };
         }
     }, [isActive, showSettings]);
+
+    // Stacked Effect Logic (Blur + White Blend)
+    const blurContainerRef = useRef(null);
+    const whiteOverlayRef = useRef(null);
+
+    useEffect(() => {
+        if (!isStacked || !sectionRef.current || !enableBlur) {
+            // Reset if disabled
+            if (whiteOverlayRef.current) whiteOverlayRef.current.style.opacity = 0;
+            if (blurContainerRef.current) blurContainerRef.current.style.filter = 'none';
+
+            // Reset next elements (blur + background)
+            if (sectionRef.current) {
+                const wrapper = sectionRef.current.parentElement;
+                let sibling = wrapper ? wrapper.nextElementSibling : sectionRef.current.nextElementSibling;
+                let count = 0;
+
+                while (sibling && count < 20) {
+                    if (sibling.style) {
+                        sibling.style.filter = '';
+                        // Enforce White Background when blur is disabled
+                        sibling.style.setProperty('background-color', '#ffffff', 'important');
+                    }
+                    sibling = sibling.nextElementSibling;
+                    count++;
+                }
+            }
+            return;
+        }
+
+        const handleScroll = () => {
+            if (!sectionRef.current) return;
+
+            // In Builder/Export, the component is likely wrapped in a div (componentWrapper or sticky wrapper).
+            // So we need to check the parent's sibling to find the next section.
+            const wrapper = sectionRef.current.parentElement;
+            const nextElement = wrapper ? wrapper.nextElementSibling : sectionRef.current.nextElementSibling;
+
+            if (!nextElement) return;
+
+            const rect = nextElement.getBoundingClientRect();
+            const winH = window.innerHeight;
+
+            // Effect range:
+            // Start: Top of next element is at bottom of screen (winH)
+            // End: Top of next element is at 50% of screen (winH * 0.5)
+            const startPoint = winH;
+            const endPoint = winH * 0.5;
+            const current = rect.top;
+
+            let progress = 0;
+            if (current < startPoint) {
+                progress = (startPoint - current) / (startPoint - endPoint);
+            }
+            // Clamp 0 to 1
+            progress = Math.max(0, Math.min(1, progress));
+
+            // console.log('Scroll Group Debug:', { current, startPoint, endPoint, progress, nextElement });
+
+            // Apply styles directly for performance
+            if (whiteOverlayRef.current) {
+                whiteOverlayRef.current.style.opacity = progress;
+            }
+            if (blurContainerRef.current) {
+                // Blur from 0px to 10px
+                blurContainerRef.current.style.filter = `blur(${progress * 10}px)`;
+            }
+
+            // Apply Blur Reveal to Next Component (starts blurred 10px, becomes clear 0px)
+            if (nextElement && nextElement.style) {
+                // Inverse progress: 1 (start) -> 0 (end)
+                // Note: progress goes 0 (start/bottom) -> 1 (end/middle).
+                // So at bottom (start), (1-0)*10 = 10px blur. 
+                // At middle (end), (1-1)*10 = 0px blur.
+                const inverseBlur = (1 - progress) * 10;
+                nextElement.style.filter = `blur(${inverseBlur}px)`;
+            }
+
+            // 2. Background Transparency: For ALL subsequent siblings to ensure visual continuity
+            // They should be transparent while overlapping (progress < 1) and turn white when "locked" (progress >= 1)
+            let sibling = nextElement;
+            const targetBg = progress >= 1 ? 'var(--base-white, #ffffff)' : 'transparent';
+
+            // Safety counter to prevent infinite loops in weird DOMs
+            let count = 0;
+            const MAX_SIBLINGS = 20;
+
+            while (sibling && count < MAX_SIBLINGS) {
+                if (sibling.style) {
+                    // Use setProperty with 'important' to override inline styles set by React/StickyManager
+                    sibling.style.setProperty('background-color', targetBg, 'important');
+                    // Also ensure z-index allows seeing behind? StickyManager sets z-index: 1 for white bg.
+                    // If we make it transparent, we might need to adjust z-index if it's blocking?
+                    // But transparent bg should be enough.
+                }
+                sibling = sibling.nextElementSibling;
+                count++;
+            }
+        };
+
+        const scrollTarget = document.getElementById('canvas-scroll-container') || window;
+        scrollTarget.addEventListener('scroll', handleScroll, { passive: true });
+
+        // Also listen to window for resizing or if structure creates hybrid scrolling
+        if (scrollTarget !== window) {
+            window.addEventListener('scroll', handleScroll, { passive: true });
+        }
+
+        handleScroll(); // Initial check
+
+        return () => {
+            scrollTarget.removeEventListener('scroll', handleScroll);
+            if (scrollTarget !== window) {
+                window.removeEventListener('scroll', handleScroll);
+            }
+
+            // Cleanup next elements (blur + background)
+            if (sectionRef.current) {
+                const wrapper = sectionRef.current.parentElement;
+                let sibling = wrapper ? wrapper.nextElementSibling : sectionRef.current.nextElementSibling;
+                let count = 0;
+                while (sibling && count < 20) {
+                    if (sibling.style) {
+                        sibling.style.filter = '';
+                        sibling.style.backgroundColor = '';
+                    }
+                    sibling = sibling.nextElementSibling;
+                    count++;
+                }
+            }
+        };
+
+    }, [isStacked, enableBlur]);
 
     const handleSettingsClick = (e) => {
         e.preventDefault();
@@ -217,6 +351,11 @@ export default function ScrollGroup({
                 showLinkType={false}
                 showVariant={false}
                 showUrl={false}
+
+                // Blur Setting (Stacked Only)
+                showBlurToggle={scrollEffect === 'stacked'}
+                enableBlur={enableBlur}
+                onEnableBlurChange={(val) => onUpdate({ enableBlur: val })}
             />
         )
     );
@@ -258,6 +397,9 @@ export default function ScrollGroup({
         );
     }
 
+
+
+
     if (isStacked) {
         return (
             <div
@@ -267,8 +409,33 @@ export default function ScrollGroup({
                 className={`${styles.parallaxGroup} ${isActive ? styles.activeWrapper : ''}`}
                 style={stackedStyle}
             >
+                {/* White Overlay for blending */}
+                <div
+                    ref={whiteOverlayRef}
+                    style={{
+                        position: 'absolute',
+                        inset: 0,
+                        backgroundColor: 'var(--base-white, #fff)',
+                        zIndex: 2,
+                        pointerEvents: 'none',
+                        opacity: 0,
+                    }}
+                />
+
+                {/* Content Container to be Blurred */}
+                <div
+                    ref={blurContainerRef}
+                    style={{
+                        position: 'relative',
+                        zIndex: 1,
+                        width: '100%',
+                        height: '100%',
+                    }}
+                >
+                    {renderChildren()}
+                </div>
+
                 {renderOverlay()}
-                {renderChildren()}
                 {renderPopover()}
                 <style jsx global>{mobileImageCss}</style>
             </div>
