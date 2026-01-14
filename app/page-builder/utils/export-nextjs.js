@@ -863,13 +863,41 @@ export default function RootLayout({ children }) {
 
     appFolder.file("page.js", pageContent);
 
+    // Generate robots.txt
+    const robotsTxt = `User-agent: *
+Allow: /
+${canonicalUrl ? `Sitemap: ${canonicalUrl}/sitemap.xml` : ''}`;
+
+    appFolder.file("robots.txt", robotsTxt);
+    previewMap.set("app/robots.txt", { path: "app/robots.txt", content: robotsTxt });
+
+    // Generate sitemap.xml
+    if (canonicalUrl) {
+        const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${canonicalUrl}</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+  </url>
+</urlset>`;
+        appFolder.file("sitemap.xml", sitemapXml);
+        previewMap.set("app/sitemap.xml", { path: "app/sitemap.xml", content: sitemapXml });
+    }
+
     // 5. Download ZIP (Conditional)
     if (download) {
         const blob = await zip.generateAsync({ type: "blob" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "nextjs-export.zip";
+        // Generate dynamic filename
+        const safeTitle = (analytics.websiteTitle || "lunar")
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with hyphens
+            .replace(/-+/g, '-')         // Collapse multiple hyphens
+            .replace(/(^-|-$)/g, '');    // Trim leading/trailing hyphens
+
+        a.download = `${safeTitle || 'lunar'}-export.zip`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -1004,6 +1032,8 @@ export default function RootLayout({ children }) {
 }
 ` });
             fileList.push({ path: "app/page.js", content: pageContent });
+
+
 
 
             const folderName = previewFolder || `preview-${new Date().toISOString().replace(/[:.]/g, '-')}`;
