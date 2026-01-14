@@ -43,7 +43,8 @@ export default function FeatureImageRight({
     titleVisible = true,
     subtitleVisible = true,
     titleId,
-    subtitleId
+    subtitleId,
+    imageRatio
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -134,8 +135,8 @@ export default function FeatureImageRight({
                         <BuilderImage
                             src={image || DEFAULT_PLACEHOLDER_IMAGE}
                             onSrcChange={update('image')}
-                            className={`imagePlaceholder-1-1`}
-                            style={{ height: "auto", paddingRight: "var(--gap-md)", paddingLeft: "var(--gap-md)" }}
+                            className={`imagePlaceholder-${imageRatio || '1-1'}`}
+                            style={{ paddingRight: "var(--gap-md)", paddingLeft: "var(--gap-md)" }}
                             id={imageId}
                             sectionId={sectionId}
                             isVisible={imageVisible}
@@ -147,6 +148,8 @@ export default function FeatureImageRight({
                             onLinkTypeChange={update('imageLinkType')}
                             targetDialogId={imageTargetDialogId}
                             onTargetDialogIdChange={update('imageTargetDialogId')}
+                            aspectRatio={imageRatio}
+                            onAspectRatioChange={update('imageRatio')}
                         />
                     </div>
                 </div>

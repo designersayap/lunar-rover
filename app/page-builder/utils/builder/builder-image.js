@@ -41,7 +41,9 @@ export default function BuilderImage({
     onMobileSrcChange,
     isActive: isActiveProp,
     alwaysShowSrc = false,
-    readOnly = false
+    readOnly = false,
+    aspectRatio,
+    onAspectRatioChange
 }) {
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
 
@@ -179,7 +181,7 @@ export default function BuilderImage({
                     // Logic to determine if settings button should be visible
                     const hasControls = (!isStaging && showLinkControls) ||
                         (isStaging || alwaysShowSrc) ||
-                        (!isStaging && (!!onIsPortraitChange || !!onMobileRatioChange));
+                        (!isStaging && (!!onIsPortraitChange || !!onMobileRatioChange || !!onAspectRatioChange));
 
                     const hasAvailableSettings = !disableSettings && hasControls;
 
@@ -385,6 +387,9 @@ export default function BuilderImage({
                     showMobileImageSrc={isStaging && !!onMobileSrcChange && (!!mobileRatio || alwaysShowSrc)}
                     mobileImageSrc={mobileSrc}
                     onMobileImageSrcChange={onMobileSrcChange}
+                    showAspectRatio={!isStaging && !!onAspectRatioChange}
+                    aspectRatio={aspectRatio}
+                    onAspectRatioChange={onAspectRatioChange}
 
                 />
             )}

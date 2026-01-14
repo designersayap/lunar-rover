@@ -78,7 +78,10 @@ export default function BuilderControlsPopover({
     onScrollEffectChange,
     showBlurToggle,
     enableBlur,
-    onEnableBlurChange
+    onEnableBlurChange,
+    showAspectRatio,
+    aspectRatio,
+    onAspectRatioChange
 }) {
 
 
@@ -301,6 +304,30 @@ export default function BuilderControlsPopover({
                                     />
                                     <span className={styles.toggleSlider}></span>
                                 </label>
+                            </div>
+                        )}
+
+                        {showAspectRatio && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Aspect Ratio</label>
+                                <div className={styles.selectWrapper}>
+                                    <select
+                                        className={`${styles.formInput} ${styles.formSelect}`}
+                                        value={aspectRatio || ''}
+                                        onChange={(e) => onAspectRatioChange && onAspectRatioChange(e.target.value)}
+                                    >
+                                        <option value="">Default (1:1)</option>
+                                        <option value="1-1">1:1 Square</option>
+                                        <option value="4-5">4:5 Vertical</option>
+                                        <option value="3-4">3:4 Vertical</option>
+                                        <option value="9-16">9:16 Vertical</option>
+                                        <option value="16-9">16:9 Landscape</option>
+                                        <option value="4-3">4:3 Landscape</option>
+                                        <option value="21-9">21:9 Ultrawide</option>
+                                        <option value="5-4">5:4 Landscape</option>
+                                    </select>
+                                    <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
+                                </div>
                             </div>
                         )}
 
