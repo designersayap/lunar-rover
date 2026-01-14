@@ -134,6 +134,7 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
     // Re-calculate indices after sort (since order changed)
     const sortedStickyIndices = [];
     const stackedIndices = [];
+    const blurIndices = [];
 
     selectedComponents.forEach((item, index) => {
         const isStacked = item.props?.scrollEffect === 'stacked';
@@ -145,6 +146,10 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
         }
         if (isStacked) {
             stackedIndices.push(index);
+            // Check for blur toggle (Robust check for flat vs nested props)
+            if (item.enableBlur || item.props?.enableBlur) {
+                blurIndices.push(index);
+            }
         }
     });
 
@@ -179,7 +184,7 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
     pageContent += `      <BuilderSelectionContext.Provider value={contextValue}>\n`;
     pageContent += `      <div id="canvas-background-root" style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'auto', overflow: 'hidden' }} />\n`;
     pageContent += `      <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>\n`;
-    pageContent += `      <StickyManager stickyIndices={[${sortedStickyIndices.join(',')}]} stackedIndices={[${stackedIndices.join(',')}]}>\n`;
+    pageContent += `      <StickyManager stickyIndices={[${sortedStickyIndices.join(',')}]} stackedIndices={[${stackedIndices.join(',')}]} blurIndices={[${blurIndices.join(',')}]}>\n`;
 
 
     // 2. Render Components

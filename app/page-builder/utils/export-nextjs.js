@@ -729,6 +729,7 @@ export default function RootLayout({ children }) {
     // Pre-calculate Sticky Indices and Stacked Indices
     const stickyIndices = [];
     const stackedIndices = [];
+    const blurIndices = [];
     processedComponents.forEach((item, index) => {
         const compDefaults = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
         const isStacked = item.props?.scrollEffect === 'stacked';
@@ -739,13 +740,15 @@ export default function RootLayout({ children }) {
         }
         if (isStacked) {
             stackedIndices.push(index);
+            if (item.props?.enableBlur) {
+                blurIndices.push(index);
+            }
         }
     });
 
-    pageContent += `      <StickyManager stickyIndices={[${stickyIndices.join(',')}]} stackedIndices={[${stackedIndices.join(',')}]}>\n`;
+    pageContent += `      <StickyManager stickyIndices={[${stickyIndices.join(',')}]} stackedIndices={[${stackedIndices.join(',')}]} blurIndices={[${blurIndices.join(',')}]}>\n`;
 
     // Render Instances
-    let hasSeenStacked = false;
     processedComponents.forEach((item, index) => {
         const filePath = COMPONENT_PATHS[item.id];
         if (!filePath) return;
@@ -839,18 +842,7 @@ export default function RootLayout({ children }) {
         // Render Component
         let componentJSX = `<${componentName} ${propsString} />`;
 
-        // Logic to force white background for content following 'stacked' sections
-        // This mirrors the Builder Canvas behavior
-        const isStacked = stackedIndices.includes(index);
-        const isStickyIndex = stickyIndices.includes(index);
 
-        if (isStacked) {
-            hasSeenStacked = true;
-        }
-
-        if (!isStickyIndex && hasSeenStacked) {
-            componentJSX = `<div style={{ backgroundColor: '#ffffff', position: 'relative', zIndex: 1, width: '100%' }}>${componentJSX}</div>`;
-        }
 
         pageContent += `      ${componentJSX}\n`;
     });

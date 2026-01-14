@@ -192,7 +192,7 @@ export default function TestimonialTerra({
 
                                         <BuilderText
                                             tagName="div"
-                                            className={`body-regular truncate-2-lines ${styles.description}`}
+                                            className={`caption-regular truncate-2-lines ${styles.description}`}
                                             content={item.description}
                                             onChange={(val) => updateTestimony(index, "description", val)}
                                             sectionId={sectionId}
