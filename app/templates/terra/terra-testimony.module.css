@@ -127,6 +127,7 @@
 .name {
     max-width: 100%;
     text-align: left;
+    margin-bottom: var(--padding-sm);
 }
 
 .role {

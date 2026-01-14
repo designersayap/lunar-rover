@@ -189,14 +189,7 @@ export default function TestimonialTerra({
                                             sectionId={sectionId}
                                             tooltipIfTruncated={true}
                                         />
-                                        <BuilderText
-                                            tagName="div"
-                                            className={`caption-regular truncate-1-line ${styles.role}`}
-                                            content={item.role}
-                                            onChange={(val) => updateTestimony(index, "role", val)}
-                                            sectionId={sectionId}
-                                            tooltipIfTruncated={true}
-                                        />
+
                                         <BuilderText
                                             tagName="div"
                                             className={`body-regular truncate-2-lines ${styles.description}`}
