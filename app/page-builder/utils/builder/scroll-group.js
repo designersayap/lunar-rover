@@ -181,7 +181,7 @@ export default function ScrollGroup({
                         <Component
                             {...mergedProps}
                             sectionId={item.sectionId}
-                            onUpdate={(newProps) => updateComponent && updateComponent(item.sectionId || item.uniqueId, newProps)}
+                            onUpdate={(newProps) => updateComponent && updateComponent(item.uniqueId, newProps)}
                         />
                     </div>
                 )
