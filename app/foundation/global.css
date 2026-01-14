@@ -373,8 +373,8 @@ strong {
    ============================================ */
 
 .icon-social {
-  width: var(--size-icon-sm);
-  height: var(--size-icon-sm);
+  width: var(--size-icon-md);
+  height: var(--size-icon-md);
   fill: currentColor;
 }
 

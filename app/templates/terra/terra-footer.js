@@ -31,8 +31,8 @@ export default function FooterTerra({
     imageVisible,
     copyrightText = componentDefaults["footer-terra"].copyrightText,
     socialLinks = componentDefaults["footer-terra"].socialLinks,
-    findUsOnTitle = componentDefaults["footer-terra"].findUsOnTitle,
-    findUsOnLinks = componentDefaults["footer-terra"].findUsOnLinks,
+    availableAtTitle = componentDefaults["footer-terra"].availableAtTitle,
+    availableAtLinks = componentDefaults["footer-terra"].availableAtLinks,
     resourcesTitle = componentDefaults["footer-terra"].resourcesTitle,
     resourceLinks = componentDefaults["footer-terra"].resourceLinks,
     onUpdate,
@@ -125,19 +125,19 @@ export default function FooterTerra({
                         </div>
                     </div>
 
-                    {/* Find Us On */}
+                    {/* Available at */}
                     <div className={`col-mobile-4 col-tablet-8 col-desktop-2`}>
                         <div className={styles.column}>
                             <BuilderText
                                 tagName="p"
                                 className={"body-bold truncate-1-line"}
-                                content={findUsOnTitle || defaults.findUsOnTitle}
-                                onChange={update('findUsOnTitle')}
+                                content={availableAtTitle || defaults.availableAtTitle}
+                                onChange={update('availableAtTitle')}
                                 sectionId={sectionId}
-                                suffix="find-us-title"
+                                suffix="available-at-title"
                             />
                             <div className={styles.linkList}>
-                                {findUsOnLinks.map((link, index) => (
+                                {availableAtLinks.map((link, index) => (
                                     <div key={link.id || index} className={styles.linkWrapper}>
                                         <BuilderLink
                                             id={link.id}
@@ -147,26 +147,26 @@ export default function FooterTerra({
                                             showLinkType={false}
                                             sectionId={sectionId}
                                             onLabelChange={(val) => {
-                                                const newLinks = [...findUsOnLinks];
+                                                const newLinks = [...availableAtLinks];
                                                 newLinks[index].label = val;
-                                                update('findUsOnLinks')(newLinks);
+                                                update('availableAtLinks')(newLinks);
                                             }}
                                             onHrefChange={(val) => {
-                                                const newLinks = [...findUsOnLinks];
+                                                const newLinks = [...availableAtLinks];
                                                 newLinks[index].url = val;
-                                                update('findUsOnLinks')(newLinks);
+                                                update('availableAtLinks')(newLinks);
                                             }}
                                             onIdChange={(val) => {
-                                                const newLinks = [...findUsOnLinks];
+                                                const newLinks = [...availableAtLinks];
                                                 newLinks[index].id = val;
-                                                update('findUsOnLinks')(newLinks);
+                                                update('availableAtLinks')(newLinks);
                                             }}
 
 
                                             onVisibilityChange={(val) => {
-                                                const newLinks = [...findUsOnLinks];
+                                                const newLinks = [...availableAtLinks];
                                                 newLinks[index].visible = val;
-                                                update('findUsOnLinks')(newLinks);
+                                                update('availableAtLinks')(newLinks);
                                             }}
                                             justify="flex-start"
                                             iconLeft={
@@ -174,18 +174,18 @@ export default function FooterTerra({
                                                     <BuilderImage
                                                         src={link.image}
                                                         onSrcChange={(val) => {
-                                                            const newLinks = [...findUsOnLinks];
+                                                            const newLinks = [...availableAtLinks];
                                                             newLinks[index].image = val;
-                                                            update('findUsOnLinks')(newLinks);
+                                                            update('availableAtLinks')(newLinks);
                                                         }}
                                                         id={link.imageId}
                                                         onIdChange={(val) => {
-                                                            const newLinks = [...findUsOnLinks];
+                                                            const newLinks = [...availableAtLinks];
                                                             newLinks[index].imageId = val;
-                                                            update('findUsOnLinks')(newLinks);
+                                                            update('availableAtLinks')(newLinks);
                                                         }}
                                                         sectionId={sectionId}
-                                                        suffix={`find-us-icon-${index}`}
+                                                        suffix={`available-at-icon-${index}`}
                                                         className="object-cover"
                                                         style={{ width: '100%', height: '100%', borderRadius: 2 }}
                                                         showLinkControls={false}

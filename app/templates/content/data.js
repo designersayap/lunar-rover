@@ -61,7 +61,7 @@ export const componentDefaults = {
     "footer-terra": {
         image: "",
         copyrightText: "Copyright © 2025 all rights reserved",
-        findUsOnTitle: "Available at",
+        availableAtTitle: "Available at",
         resourcesTitle: "About Us",
         socialLinks: [
             { platform: 'facebook', url: '', visible: true, id: '' },
@@ -70,7 +70,7 @@ export const componentDefaults = {
             { platform: 'tiktok', url: '', visible: true, id: '' },
             { platform: 'youtube', url: '', visible: true, id: '' }
         ],
-        findUsOnLinks: [{
+        availableAtLinks: [{
             label: "marketplace 1",
             url: "",
             visible: true,
