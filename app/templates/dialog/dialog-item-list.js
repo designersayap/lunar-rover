@@ -68,7 +68,13 @@ export default function DialogItemList({
                         showLinkType={false}
                         iconLeft={
                             <div className={styles.itemIcon}>
-                                <BuilderImage className="imagePlaceholder-1-1" src={item.image} onSrcChange={(val) => updateItem(i, 'image', val)} showLinkControls={false} />
+                                <BuilderImage
+                                    className="imagePlaceholder-1-1"
+                                    src={item.image}
+                                    onSrcChange={(val) => updateItem(i, 'image', val)}
+                                    showLinkControls={false}
+                                    sectionId={sectionId}
+                                    suffix={`item-image-${i}`} />
                             </div>
                         }
                         iconRight={<ArrowRightIcon className={styles.itemArrow} />}
