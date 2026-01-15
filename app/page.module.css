@@ -629,11 +629,11 @@
     position: absolute;
     top: -1000px;
     left: -1000px;
-    background: var(--background-neutral--default);
+    background: var(--grey-500);
     padding: var(--space-60);
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
-    border: 1px solid var(--grey-200);
+    border: 1px solid var(--bdr);
     align-items: center;
     gap: var(--space-40);
     width: 100px;

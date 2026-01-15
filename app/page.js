@@ -75,6 +75,7 @@ export default function TemplateGeneratorPage() {
     dragImageRef,
     dragThumbnailRef,
     dragNameRef,
+    dragImageWrapperRef,
     handleDragStart,
     handleDragOver,
     handleDragEnd,
@@ -157,10 +158,10 @@ export default function TemplateGeneratorPage() {
 
         {/* Hidden Drag Image */}
         <div ref={dragImageRef} className={`${styles.customDragImage} z-hidden`}>
-          <div style={{ height: 60, width: "100%", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "var(--grey-50)", borderRadius: "var(--round-80)", border: "1px solid var(--grey-200)", overflow: "hidden" }}>
+          <div ref={dragImageWrapperRef} style={{ height: 60, width: "100%", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "var(--bg2)", borderRadius: "var(--round-80)", border: "1px solid var(--bdr)", overflow: "hidden" }}>
             <img ref={dragThumbnailRef} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
-          <span ref={dragNameRef} style={{ fontSize: "var(--typography-font-size-80)", fontWeight: "var(--font-weight-bold)", color: "var(--content-neutral--title)" }} />
+          <span ref={dragNameRef} style={{ fontSize: "var(--typography-font-size-80)", fontWeight: "var(--font-weight-bold)", color: "var(--base-white)" }} />
         </div>
 
         {/* Popovers */}

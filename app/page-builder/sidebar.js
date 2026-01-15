@@ -73,7 +73,7 @@ const ComponentTreeItem = memo(({
             draggable
             onDragStart={(e) => {
                 e.stopPropagation();
-                handleDragStart && handleDragStart(e, index, comp.name, null, { parentId, uniqueId: comp.uniqueId });
+                handleDragStart && handleDragStart(e, index, comp.name, isGroup ? null : def?.thumbnail, { parentId, uniqueId: comp.uniqueId });
             }}
             onDragEnd={handleDragEnd}
             onDragOver={(e) => {

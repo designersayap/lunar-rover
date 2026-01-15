@@ -31,7 +31,7 @@ export const componentLibrary = {
             id: "background-full-body",
             name: "Background - Full Body",
             component: BackgroundFullBody,
-            thumbnail: "/images/thumbnails/background-full-body.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447499/background-full-body_z2v33y.svg",
             config: [
                 {
                     name: "image",
@@ -55,7 +55,7 @@ export const componentLibrary = {
             id: "navigation-center",
             name: "Navigation - Center",
             component: NavigationCenter,
-            thumbnail: "/images/thumbnails/navigation-center.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447503/navigation-center_ijey57.svg",
             config: [
                 { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["navigation-center"].menu1Label },
                 { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["navigation-center"].menu1Url },
@@ -80,7 +80,7 @@ export const componentLibrary = {
             id: "navigation-left",
             name: "Navigation - Left",
             component: NavigationLeft,
-            thumbnail: "/images/thumbnails/navigation-left.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447504/navigation-left_cvbuwf.svg",
             config: [
                 { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["navigation-left"]?.menu1Label },
                 { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["navigation-left"]?.menu1Url },
@@ -105,7 +105,7 @@ export const componentLibrary = {
             id: "navigation-right",
             name: "Navigation - Right",
             component: NavigationRight,
-            thumbnail: "/images/thumbnails/navigation-right.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447505/navigation-right_ln0xeh.svg",
             config: [
                 { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["navigation-right"]?.menu1Label },
                 { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["navigation-right"]?.menu1Url },
@@ -132,7 +132,7 @@ export const componentLibrary = {
             id: "osm-banner",
             name: "OSM - Banner",
             component: OsmBanner,
-            thumbnail: "/images/thumbnails/osm-banner.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447505/osm-banner_nnu4cy.svg",
             config: [
                 {
                     name: "title",
@@ -178,7 +178,7 @@ export const componentLibrary = {
             id: "hero-terra-banner",
             name: "Hero - Terra Banner",
             component: HeroTerraBanner,
-            thumbnail: "/images/thumbnails/hero-terra-banner.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447501/hero-terra-banner_zemlon.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -256,7 +256,7 @@ export const componentLibrary = {
             id: "header-section",
             name: "Header - Section",
             component: HeaderSection,
-            thumbnail: "/images/thumbnails/header-section.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447501/header-section_yh8cau.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -330,7 +330,7 @@ export const componentLibrary = {
             id: "header-group",
             name: "Header - Group",
             component: HeaderGroup,
-            thumbnail: "/images/thumbnails/header-section.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447501/header-section_yh8cau.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -406,7 +406,7 @@ export const componentLibrary = {
             id: "media-21-9",
             name: "Media - 21:9",
             component: Media21x9,
-            thumbnail: "/images/thumbnails/media-219.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447502/media-219_ax7wfp.svg",
             config: [
                 {
                     name: "image",
@@ -428,7 +428,7 @@ export const componentLibrary = {
             id: "media-16-9",
             name: "Media - 16:9",
             component: Media16x9,
-            thumbnail: "/images/thumbnails/media-169.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447502/media-169_jjet2u.svg",
             config: [
                 {
                     name: "image",
@@ -450,7 +450,7 @@ export const componentLibrary = {
             id: "media-5-4",
             name: "Media - 5:4",
             component: Media5x4,
-            thumbnail: "/images/thumbnails/media-54.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447501/media-54_iykibf.svg",
             config: [
                 {
                     name: "image",
@@ -472,7 +472,7 @@ export const componentLibrary = {
             id: "media-4-3",
             name: "Media - 4:3",
             component: Media4x3,
-            thumbnail: "/images/thumbnails/media-43.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447501/media-43_irx61v.svg",
             config: [
                 {
                     name: "fullWidth",
@@ -502,7 +502,7 @@ export const componentLibrary = {
             id: "feature-image-left",
             name: "Feature - Image Left",
             component: FeatureImageLeft,
-            thumbnail: "/images/thumbnails/feature-image-left.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447500/feature-image-left_vt2qwq.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -577,7 +577,7 @@ export const componentLibrary = {
             id: "feature-image-right",
             name: "Feature - Image Right",
             component: FeatureImageRight,
-            thumbnail: "/images/thumbnails/feature-image-right.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447500/feature-image-right_boirz2.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -654,7 +654,7 @@ export const componentLibrary = {
             id: "testimonial-terra",
             name: "Testimonial - Terra",
             component: TestimonialTerra,
-            thumbnail: "/images/thumbnails/testimonial-terra.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447508/testimonial-terra_uleze6.svg",
             config: [
                 {
                     name: "testimonies",
@@ -684,7 +684,7 @@ export const componentLibrary = {
             id: "footer-terra",
             name: "Footer - Terra",
             component: FooterTerra,
-            thumbnail: "/images/thumbnails/footer-terra.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447500/footer-terra_xrnzvh.svg",
             config: [
                 {
                     name: "image",
@@ -739,7 +739,7 @@ export const componentLibrary = {
             id: "dialog-item-list",
             name: "Dialog - Item List",
             component: DialogItemList,
-            thumbnail: "/images/thumbnails/dialog-item-list.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447499/dialog-item-list_pbcacw.svg",
             config: [
                 {
                     name: "items",
@@ -771,7 +771,7 @@ export const componentLibrary = {
             id: "dialog-accordion",
             name: "Dialog - Accordion",
             component: DialogAccordion,
-            thumbnail: "/images/thumbnails/dialog-item-list.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447499/dialog-item-list_pbcacw.svg",
             config: [
                 {
                     name: "image",
@@ -803,7 +803,7 @@ export const componentLibrary = {
             id: "floating-action-button",
             name: "Floating Action Button",
             component: FloatingActionButton,
-            thumbnail: "/images/thumbnails/fab-call-to-action.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447499/fab-call-to-action_sr2qa8.svg",
             isSticky: true,
             config: [
                 {
@@ -849,21 +849,21 @@ export const componentLibrary = {
             id: "spacing-small",
             name: "Spacing - Small",
             component: SpacingSmall,
-            thumbnail: "/images/thumbnails/spacing-small.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447507/spacing-small_vkcjiq.svg",
             config: []
         },
         {
             id: "spacing-medium",
             name: "Spacing - Medium",
             component: SpacingMedium,
-            thumbnail: "/images/thumbnails/spacing-medium.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447507/spacing-medium_zyuq2t.svg",
             config: []
         },
         {
             id: "spacing-large",
             name: "Spacing - Large",
             component: SpacingLarge,
-            thumbnail: "/images/thumbnails/spacing-large.svg",
+            thumbnail: "https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768447506/spacing-large_nnxdel.svg",
             config: []
         }
     ],
@@ -872,7 +872,7 @@ export const componentLibrary = {
             id: 'scroll-group',
             name: 'Scroll Group',
             component: ScrollGroup,
-            thumbnail: "/images/thumbnails/feature-image-right.svg", // Placeholder
+            thumbnail: "/images/thumbnails/feature-image-right.svg",
             hidden: true,
             config: [
                 {

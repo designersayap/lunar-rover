@@ -50,6 +50,7 @@
     margin-top: calc(var(--space-240) * 2.5);
     overflow-wrap: break-word;
     word-break: break-word;
+    color: var(--content-neutral--title);
 }
 
 /* Mobile & Tablet */

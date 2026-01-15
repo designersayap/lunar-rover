@@ -9,6 +9,7 @@ export function useDragDrop({ onReorder }) {
     const dragImageRef = useRef(null);
     const dragThumbnailRef = useRef(null);
     const dragNameRef = useRef(null);
+    const dragImageWrapperRef = useRef(null);
 
     const handleDragStart = useCallback((e, index, name, thumbnail, data = {}) => {
         setDraggedIndex({ index, ...data });
@@ -17,6 +18,12 @@ export function useDragDrop({ onReorder }) {
         if (dragImageRef.current) {
             if (dragThumbnailRef.current) dragThumbnailRef.current.src = thumbnail || "";
             if (dragNameRef.current) dragNameRef.current.innerText = name || "Section";
+
+            // Toggle visibility of image wrapper based on thumbnail presence
+            if (dragImageWrapperRef.current) {
+                dragImageWrapperRef.current.style.display = thumbnail ? "flex" : "none";
+            }
+
             e.dataTransfer.setDragImage(dragImageRef.current, 0, 0);
         }
     }, []);
@@ -56,6 +63,7 @@ export function useDragDrop({ onReorder }) {
         dragImageRef,
         dragThumbnailRef,
         dragNameRef,
+        dragImageWrapperRef,
         handleDragStart,
         handleDragOver,
         handleDragEnd,
