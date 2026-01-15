@@ -97,7 +97,7 @@
     border-radius: var(--border-radius-md);
     backdrop-filter: blur(5.5px);
     -webkit-backdrop-filter: blur(5.5px);
-    padding: var(--padding-lg) var(--padding-sm) var(--padding-sm) var(--padding-sm);
+    padding: 32px var(--padding-sm) var(--padding-sm) var(--padding-sm);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -127,7 +127,7 @@
 .name {
     max-width: 100%;
     text-align: left;
-    margin-bottom: var(--padding-sm);
+    margin-bottom: var(--padding-xs);
 }
 
 .role {
