@@ -55,7 +55,7 @@ export default function TopBar({
             {/* ... left part ... */}
             <div className={styles.topBarLeft}>
                 <Image
-                    src="/logo.svg"
+                    src="https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768450282/logo_lunar_lunar_white_m0tyym.svg"
                     alt="Lunar Logo"
                     width={24}
                     height={24}

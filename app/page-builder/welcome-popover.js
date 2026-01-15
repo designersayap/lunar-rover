@@ -28,7 +28,7 @@ export default function WelcomePopover({ isOpen, onClose }) {
                     marginBottom: "8px"
                 }}>
                     <Image
-                        src="/logo.svg"
+                        src="https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768450282/logo_lunar_lunar_white_m0tyym.svg"
                         alt="Lunar Logo"
                         fill
                         style={{ objectFit: "contain" }}
