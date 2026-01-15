@@ -391,28 +391,28 @@ strong {
 }
 
 .icon-social-facebook {
-  mask-image: url('/images/social/facebook.svg');
-  -webkit-mask-image: url('/images/social/facebook.svg');
+  mask-image: url('https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767771060/social-facebook_e71ylr.svg');
+  -webkit-mask-image: url('https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767771060/social-facebook_e71ylr.svg');
 }
 
 .icon-social-x {
-  mask-image: url('/images/social/x.svg');
-  -webkit-mask-image: url('/images/social/x.svg');
+  mask-image: url('https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767771062/social-x_oferbf.svg');
+  -webkit-mask-image: url('https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767771062/social-x_oferbf.svg');
 }
 
 .icon-social-instagram {
-  mask-image: url('/images/social/instagram.svg');
-  -webkit-mask-image: url('/images/social/instagram.svg');
+  mask-image: url('https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767771061/social-instagram_uxmxvl.svg');
+  -webkit-mask-image: url('https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767771061/social-instagram_uxmxvl.svg');
 }
 
 .icon-social-tiktok {
-  mask-image: url('/images/social/tiktok.svg');
-  -webkit-mask-image: url('/images/social/tiktok.svg');
+  mask-image: url('https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767771061/social-tiktok_hzrybd.svg');
+  -webkit-mask-image: url('https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767771061/social-tiktok_hzrybd.svg');
 }
 
 .icon-social-youtube {
-  mask-image: url('/images/social/youtube.svg');
-  -webkit-mask-image: url('/images/social/youtube.svg');
+  mask-image: url('https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767771063/social-youtube_fttqez.svg');
+  -webkit-mask-image: url('https://res.cloudinary.com/dp3tcw3wj/image/upload/v1767771063/social-youtube_fttqez.svg');
 }
 
 /* ============================================
