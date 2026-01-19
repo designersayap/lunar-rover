@@ -126,14 +126,14 @@
 
 .name {
     max-width: 100%;
-    text-align: left;
+    text-align: center;
     margin-bottom: var(--padding-xs);
 }
 
 .role {
     max-width: 100%;
     opacity: 0.6;
-    text-align: left;
+    text-align: center;
     color: var(--content-neutral--caption);
     margin-bottom: var(--gap-xs);
 }
@@ -141,7 +141,7 @@
 .description {
     max-width: 100%;
     opacity: 0.8;
-    text-align: left;
+    text-align: center;
     color: var(--content-neutral--body);
     word-break: break-word;
 }
