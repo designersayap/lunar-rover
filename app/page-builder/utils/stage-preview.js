@@ -187,6 +187,67 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
     pageContent += `      <StickyManager stickyIndices={[${sortedStickyIndices.join(',')}]} stackedIndices={[${stackedIndices.join(',')}]} blurIndices={[${blurIndices.join(',')}]}>\n`;
 
 
+    // 0. Pre-process: Build Map of UniqueID -> SectionID
+    const sectionIdMap = new Map();
+    const mapIds = (list) => {
+        if (!list || !Array.isArray(list)) return;
+        list.forEach(item => {
+            if (item.uniqueId && item.sectionId) {
+                sectionIdMap.set(String(item.uniqueId), item.sectionId);
+            }
+            if (item.components) mapIds(item.components);
+            if (item.props?.components) mapIds(item.props.components);
+        });
+    };
+    mapIds(selectedComponents);
+
+    // Helper: Recursive Prop Resolver
+    const resolveProps = (props) => {
+        if (!props) return props;
+
+        // Deep clone to avoid mutating original objects if shared
+        const newProps = Array.isArray(props) ? [...props] : { ...props };
+
+        Object.keys(newProps).forEach(key => {
+            const val = newProps[key];
+
+            // 1. Strings: Check for ID match
+            if (typeof val === 'string') {
+                if (sectionIdMap.has(val)) {
+                    newProps[key] = sectionIdMap.get(val);
+                }
+                // Special: TargetDialogId Logic
+                if (key.includes('TargetDialogId')) {
+                    // Start by resolving the ID itself (already handled by block above if it matches hash)
+                    // If the val didn't match directly, check if it's a known uniqueID reference
+                    const resolvedId = sectionIdMap.get(val) || val;
+                    if (resolvedId !== val) {
+                        newProps[key] = resolvedId;
+                    }
+
+                    // Check if we need to force linkType to 'dialog'
+                    // This happens if we have a valid target dialog ID
+                    if (val) {
+                        const linkTypeKey = key.replace('TargetDialogId', 'LinkType');
+                        const urlKey = key.replace('TargetDialogId', 'Url');
+
+                        // If linkType is missing/url AND url is empty/#, switch to dialog
+                        if ((!newProps[linkTypeKey] || newProps[linkTypeKey] === 'url') &&
+                            (!newProps[urlKey] || newProps[urlKey] === '#' || newProps[urlKey] === '')) {
+                            newProps[linkTypeKey] = 'dialog';
+                        }
+                    }
+                }
+            }
+            // 2. Objects/Arrays: Recurse
+            else if (typeof val === 'object' && val !== null) {
+                newProps[key] = resolveProps(val);
+            }
+        });
+        return newProps;
+    };
+
+
     // 2. Render Components
     selectedComponents.forEach(item => {
         const filePath = COMPONENT_PATHS[item.id];
@@ -195,7 +256,11 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
         const componentName = getComponentName(filePath);
 
         // Prepare Props
-        const props = { ...item, ...(item.props || {}) };
+
+        // --- FIX: Apply recursive ID resolution ---
+        let props = { ...item, ...(item.props || {}) }; // Start with flat + props merge
+        props = resolveProps(props);
+        // ------------------------------------------
 
         delete props.id;
         delete props.name;
@@ -237,6 +302,10 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
                     // Re-attach uniqueId and sectionId as they are needed by ScrollGroup to render children
                     childProps.uniqueId = childComp.uniqueId;
                     childProps.sectionId = childComp.sectionId || childComp.uniqueId;
+
+                    // --- FIX: Resolve Child Props Recursively too ---
+                    childProps = resolveProps(childProps);
+                    // ---------------------------------------------
 
                     // Serialize the props object
                     const propsJson = JSON.stringify(childProps);

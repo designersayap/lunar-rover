@@ -758,7 +758,7 @@ export default function RootLayout({ children }) {
 
         // Merge props from root item and nested props to ensure robust data passing
         // USE CLONE (item itself is now the clone from processedComponents)
-        const props = { ...item, ...(item.props || {}) };
+        let props = { ...item, ...(item.props || {}) };
 
         // Check for stickiness before deleting the prop
         // Cleanup metadata fields that should not be passed as props
@@ -783,24 +783,52 @@ export default function RootLayout({ children }) {
             props.disableEffects = true;
         }
 
-        // Fix Target ID references
-        Object.keys(props).forEach(key => {
-            // Address ID mapping
-            if (key.includes('TargetDialogId') && props[key]) {
-                const targetUniqueId = String(props[key]); // Fix: Ensure String comparison
-                if (sectionIdMap.has(targetUniqueId)) {
-                    props[key] = sectionIdMap.get(targetUniqueId);
+        // Helper: Recursive Prop Resolver for Export
+        const resolveProps = (props) => {
+            if (!props) return props;
 
-                    // If linkType is missing or 'url', and URL is empty, switch to dialog
-                    const linkTypeKey = key.replace('TargetDialogId', 'LinkType');
-                    const urlKey = key.replace('TargetDialogId', 'Url');
+            // Deep clone
+            const newProps = Array.isArray(props) ? [...props] : { ...props };
 
-                    if ((!props[linkTypeKey] || props[linkTypeKey] === 'url') && (!props[urlKey] || props[urlKey] === '#')) {
-                        props[linkTypeKey] = 'dialog';
+            Object.keys(newProps).forEach(key => {
+                const val = newProps[key];
+
+                // 1. Strings: Check for Match
+                if (typeof val === 'string') {
+                    // Check if the value ITSELF is a key in the map (Direct ID match)
+                    if (sectionIdMap.has(val)) {
+                        newProps[key] = sectionIdMap.get(val);
+                    }
+
+                    // Special: TargetDialogId Logic
+                    if (key.includes('TargetDialogId')) {
+                        const resolvedId = sectionIdMap.get(val) || val;
+                        if (resolvedId !== val) {
+                            newProps[key] = resolvedId;
+                        }
+
+                        // Force Link Type
+                        if (val) {
+                            const linkTypeKey = key.replace('TargetDialogId', 'LinkType');
+                            const urlKey = key.replace('TargetDialogId', 'Url');
+
+                            if ((!newProps[linkTypeKey] || newProps[linkTypeKey] === 'url') &&
+                                (!newProps[urlKey] || newProps[urlKey] === '#' || newProps[urlKey] === '')) {
+                                newProps[linkTypeKey] = 'dialog';
+                            }
+                        }
                     }
                 }
-            }
-        });
+                // 2. Objects/Arrays: Recurse
+                else if (typeof val === 'object' && val !== null) {
+                    newProps[key] = resolveProps(val);
+                }
+            });
+            return newProps;
+        };
+
+        // Fix Target ID references (Recursive)
+        props = resolveProps(props);
 
         const propsString = Object.entries(props).map(([key, value]) => {
             if (value === undefined || value === null) return '';

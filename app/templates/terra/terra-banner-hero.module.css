@@ -56,7 +56,12 @@
 /* Mobile & Tablet */
 @media (max-width: 1023px) {
     .heroTitle {
-        margin-top: var(--gap-lg);
+        margin-top: 52px;
+    }
+
+    .hero {
+        height: 100svh;
+        aspect-ratio: auto !important;
     }
 }
 
