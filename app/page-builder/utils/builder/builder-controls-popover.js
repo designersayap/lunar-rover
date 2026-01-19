@@ -81,7 +81,8 @@ export default function BuilderControlsPopover({
     onEnableBlurChange,
     showAspectRatio,
     aspectRatio,
-    onAspectRatioChange
+    onAspectRatioChange,
+    mode = 'all' // 'all', 'style', 'link'
 }) {
 
 
@@ -223,7 +224,7 @@ export default function BuilderControlsPopover({
                 <div className={styles.popoverContent}>
                     <div className={styles.popoverProperties}>
 
-                        {showLinkType && (
+                        {(mode === 'all' || mode === 'link') && showLinkType && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Link Type</label>
                                 <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
@@ -260,7 +261,7 @@ export default function BuilderControlsPopover({
                         )}
 
                         {/* URL INPUT (Hidden if showImageSrc is true) */}
-                        {((linkType === 'url' || (!linkType && !showLinkType)) && showUrl) && (
+                        {((mode === 'all' || mode === 'link') && (linkType === 'url' || (!linkType && !showLinkType)) && showUrl) && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>URL</label>
                                 <StopPropagationInput
@@ -274,7 +275,7 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
-                        {showScrollEffect && (
+                        {(mode === 'all' || mode === 'style') && showScrollEffect && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Scroll Effect</label>
                                 <div className={styles.selectWrapper}>
@@ -292,7 +293,7 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
-                        {showBlurToggle && (
+                        {(mode === 'all' || mode === 'style') && showBlurToggle && (
                             <div className={styles.propertyRow} style={{ marginTop: '8px' }}>
                                 <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Enable Blur Effect</label>
                                 <label className={styles.toggleSwitch}>
@@ -307,7 +308,7 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
-                        {showAspectRatio && (
+                        {(mode === 'all' || mode === 'style') && showAspectRatio && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Aspect Ratio</label>
                                 <div className={styles.selectWrapper}>
@@ -331,7 +332,7 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
-                        {(linkType === 'dialog' && showDialogSelector) && (
+                        {(mode === 'all' || mode === 'link') && (linkType === 'dialog' && showDialogSelector) && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Dialog</label>
                                 <div className={styles.selectWrapper}>
@@ -351,7 +352,7 @@ export default function BuilderControlsPopover({
                         )}
 
                         {/* IMAGE SOURCE INPUT (Only if showImageSrc is true) */}
-                        {showImageSrc && (
+                        {(mode === 'all' || mode === 'style') && showImageSrc && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Media Source</label>
                                 <StopPropagationInput
@@ -365,7 +366,7 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
-                        {showMobileImageSrc && (
+                        {(mode === 'all' || mode === 'style') && showMobileImageSrc && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: '8px' }}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Media Source</label>
                                 <StopPropagationInput
@@ -379,7 +380,7 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
-                        {showMobileRatio && (
+                        {(mode === 'all' || mode === 'style') && showMobileRatio && (
                             <>
                                 <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                     <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Aspect Ratio</label>
@@ -402,11 +403,10 @@ export default function BuilderControlsPopover({
                                         <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
                                     </div>
                                 </div>
-
                             </>
                         )}
 
-                        {showVariant && (
+                        {(mode === 'all' || mode === 'style') && showVariant && (
                             <>
                                 <div style={{ borderTop: '1px solid var(--bdr)', margin: '8px 0', width: '100%' }} />
                                 <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
@@ -428,7 +428,7 @@ export default function BuilderControlsPopover({
                         )}
 
 
-                        {onIconLeftChange && (
+                        {(mode === 'all' || mode === 'style') && onIconLeftChange && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Icon Left</label>
                                 <div className={styles.selectWrapper}>
@@ -447,7 +447,7 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
-                        {onIconRightChange && (
+                        {(mode === 'all' || mode === 'style') && onIconRightChange && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Icon Right</label>
                                 <div className={styles.selectWrapper}>
@@ -467,7 +467,7 @@ export default function BuilderControlsPopover({
                         )}
 
 
-                        {onLayoutChange && (
+                        {(mode === 'all' || mode === 'style') && onLayoutChange && (
                             <>
                                 <div className={styles.propertyRow}>
                                     <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Full Width</label>
@@ -484,7 +484,7 @@ export default function BuilderControlsPopover({
                             </>
                         )}
 
-                        {showPortraitToggle && (
+                        {(mode === 'all' || mode === 'style') && showPortraitToggle && (
                             <>
                                 <div style={{ borderTop: '1px solid var(--bdr)', margin: '8px 0', width: '100%' }} />
                                 <div className={styles.propertyRow} style={{ marginTop: '0' }}>

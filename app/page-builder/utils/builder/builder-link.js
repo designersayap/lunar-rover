@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 import BuilderText from "./builder-text";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { useIdSync } from "../hooks/use-id-sync";
-import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid";
+import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 import { useActiveOverlayPosition } from "../hooks/use-active-overlay";
@@ -44,8 +44,11 @@ export default function BuilderLink({
 
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
     const isActive = activeElementId === elementId;
-    const myPopoverId = `popover-${elementId}`;
-    const showSettings = activePopoverId === myPopoverId;
+    const myPopoverBase = `popover-${elementId}`;
+    const showSettings = activePopoverId && activePopoverId.startsWith(myPopoverBase);
+    const isStyleOpen = activePopoverId === `${myPopoverBase}-style`;
+    const isLinkOpen = activePopoverId === `${myPopoverBase}-link`;
+
     const [popoverPosition, setPopoverPosition] = useState(null);
     const wrapperRef = useRef(null);
     const [overlayRect, setOverlayRect] = useState(null);
@@ -97,19 +100,30 @@ export default function BuilderLink({
         }
     };
 
-    const handleSettingsClick = (e) => {
+    const handleStyleSettingsClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-
-        if (!showSettings && wrapperRef.current) {
+        if (!isStyleOpen && wrapperRef.current) {
             const rect = wrapperRef.current.getBoundingClientRect();
             setPopoverPosition({
                 top: rect.top,
                 left: rect.left + rect.width / 2
             });
         }
+        setActivePopoverId(prev => prev === `${myPopoverBase}-style` ? null : `${myPopoverBase}-style`);
+    };
 
-        setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
+    const handleLinkSettingsClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!isLinkOpen && wrapperRef.current) {
+            const rect = wrapperRef.current.getBoundingClientRect();
+            setPopoverPosition({
+                top: rect.top,
+                left: rect.left + rect.width / 2
+            });
+        }
+        setActivePopoverId(prev => prev === `${myPopoverBase}-link` ? null : `${myPopoverBase}-link`);
     };
 
     const handleOpenDialog = (e) => {
@@ -173,14 +187,32 @@ export default function BuilderLink({
                             <ChatBubbleLeftEllipsisIcon className={styles.overlayIcon} />
                         </button>
                     )}
-                    {(!isStaging || linkType !== 'dialog') && (
-                        <button
-                            type="button"
-                            className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                            onClick={handleSettingsClick}
-                        >
-                            <Cog6ToothIcon className={styles.overlayIcon} />
-                        </button>
+
+                    {(!isStaging && (true /* Link settings always avail */ || !!onLinkTypeChange)) && (
+                        <>
+                            {/* Sparkle Button for Style Settings */}
+                            {/* Only show if there are style props to configure */}
+                            {(onLinkTypeChange /* Placeholder for potential style props check */ && false) && (
+                                <button
+                                    type="button"
+                                    className={`${styles.settingsButton} ${isStyleOpen ? styles.settingsButtonActive : ''}`}
+                                    onClick={handleStyleSettingsClick}
+                                    data-tooltip="Style Settings"
+                                >
+                                    <SparklesIcon className={styles.overlayIcon} />
+                                </button>
+                            )}
+
+                            {/* Cog Button for Link Settings */}
+                            <button
+                                type="button"
+                                className={`${styles.settingsButton} ${isLinkOpen ? styles.settingsButtonActive : ''}`}
+                                onClick={handleLinkSettingsClick}
+                                data-tooltip="Link Settings"
+                            >
+                                <Cog6ToothIcon className={styles.overlayIcon} />
+                            </button>
+                        </>
                     )}
                 </div>
             </div>,
@@ -240,6 +272,7 @@ export default function BuilderLink({
                 <BuilderControlsPopover
                     isOpen={showSettings}
                     onClose={() => setActivePopoverId(null)}
+                    mode={isStyleOpen ? 'style' : (isLinkOpen ? 'link' : 'all')}
                     url={href}
                     onUrlChange={onHrefChange}
                     showVariant={false}

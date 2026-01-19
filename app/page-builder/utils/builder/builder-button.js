@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import BuilderText from "./builder-text";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { useActiveOverlayPosition } from "../hooks/use-active-overlay";
-import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid";
+import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 import { Icons } from "./builder-icons";
@@ -55,8 +55,12 @@ export default function BuilderButton({
         setActiveElementId,
         selectedElementIds
     } = useContext(BuilderSelectionContext);
-    const myPopoverId = `popover-${buttonId}`;
-    const showSettings = activePopoverId === myPopoverId;
+    const myPopoverBase = `popover-${buttonId}`;
+    const showSettings = activePopoverId && activePopoverId.startsWith(myPopoverBase);
+
+    // Check SPECIFICALLY which mode is open
+    const isStyleOpen = activePopoverId === `${myPopoverBase}-style`;
+    const isLinkOpen = activePopoverId === `${myPopoverBase}-link`;
 
     const prefix = normalizedSectionId ? `${normalizedSectionId}-` : "";
     const [tempId, setTempId] = useState("");
@@ -150,10 +154,17 @@ export default function BuilderButton({
     };
 
     if (!isVisible && !isActive) return null;
-    const handleSettingsClick = (e) => {
+
+    const handleStyleSettingsClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
+        setActivePopoverId(prev => prev === `${myPopoverBase}-style` ? null : `${myPopoverBase}-style`);
+    };
+
+    const handleLinkSettingsClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setActivePopoverId(prev => prev === `${myPopoverBase}-link` ? null : `${myPopoverBase}-link`);
     };
     const handleOpenDialog = (e) => {
         e.preventDefault();
@@ -289,13 +300,29 @@ export default function BuilderButton({
                         if (!hasAvailableSettings) return null;
 
                         return (
-                            <button
-                                type="button"
-                                className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                                onClick={handleSettingsClick}
-                            >
-                                <Cog6ToothIcon className={styles.overlayIcon} />
-                            </button>
+                            <>
+                                {/* Sparkle Button for Style Settings */}
+                                {(!isStaging && (onVariantChange || onIconLeftChange || onIconRightChange)) && (
+                                    <button
+                                        type="button"
+                                        className={`${styles.settingsButton} ${isStyleOpen ? styles.settingsButtonActive : ''}`}
+                                        onClick={handleStyleSettingsClick}
+                                        data-tooltip="Style Settings"
+                                    >
+                                        <SparklesIcon className={styles.overlayIcon} />
+                                    </button>
+                                )}
+
+                                {/* Cog Button for Link/Other Settings */}
+                                <button
+                                    type="button"
+                                    className={`${styles.settingsButton} ${isLinkOpen ? styles.settingsButtonActive : ''}`}
+                                    onClick={handleLinkSettingsClick}
+                                    data-tooltip="Link Settings"
+                                >
+                                    <Cog6ToothIcon className={styles.overlayIcon} />
+                                </button>
+                            </>
                         );
                     })()}
                 </div>,
@@ -307,6 +334,8 @@ export default function BuilderButton({
                     <BuilderControlsPopover
                         isOpen={showSettings}
                         onClose={() => setActivePopoverId(null)}
+                        // Pass specific mode based on active ID
+                        mode={isStyleOpen ? 'style' : (isLinkOpen ? 'link' : 'all')}
                         url={safeHref}
                         onUrlChange={onHrefChange}
                         linkType={linkType}

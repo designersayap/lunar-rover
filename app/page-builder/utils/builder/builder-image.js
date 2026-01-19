@@ -4,7 +4,7 @@ import { useContext, useRef, useEffect, useState, useLayoutEffect } from "react"
 import { createPortal } from "react-dom";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { useIdSync } from "../hooks/use-id-sync";
-import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid";
+import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import BuilderControlsPopover from "./builder-controls-popover";
 import styles from "../../../page.module.css";
 
@@ -56,8 +56,10 @@ export default function BuilderImage({
 
     const isSelfActive = activeElementId === elementId;
     const isActive = typeof isActiveProp !== 'undefined' ? isActiveProp : isSelfActive;
-    const myPopoverId = `popover-${elementId}`;
-    const showSettings = activePopoverId === myPopoverId;
+    const myPopoverBase = `popover-${elementId}`;
+    const showSettings = activePopoverId && activePopoverId.startsWith(myPopoverBase);
+    const isStyleOpen = activePopoverId === `${myPopoverBase}-style`;
+    const isLinkOpen = activePopoverId === `${myPopoverBase}-link`;
 
     const wrapperRef = useRef(null);
     const [overlayRect, setOverlayRect] = useState(null);
@@ -112,19 +114,32 @@ export default function BuilderImage({
         }
     };
 
-    const handleSettingsClick = (e) => {
+    const handleStyleSettingsClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        if (!showSettings && wrapperRef.current) {
+        if (!isStyleOpen && wrapperRef.current) {
             const rect = wrapperRef.current.getBoundingClientRect();
             setPopoverPosition({
                 top: rect.top,
                 left: rect.left + rect.width / 2
             });
         }
+        setActivePopoverId(prev => prev === `${myPopoverBase}-style` ? null : `${myPopoverBase}-style`);
+    };
 
-        setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
+    const handleLinkSettingsClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!isLinkOpen && wrapperRef.current) {
+            const rect = wrapperRef.current.getBoundingClientRect();
+            setPopoverPosition({
+                top: rect.top,
+                left: rect.left + rect.width / 2
+            });
+        }
+        setActivePopoverId(prev => prev === `${myPopoverBase}-link` ? null : `${myPopoverBase}-link`);
     };
 
     const handleOpenDialog = (e) => {
@@ -183,33 +198,44 @@ export default function BuilderImage({
                 )}
 
                 {(() => {
-                    // Logic to determine if settings button should be visible
-                    const hasControls = (!isStaging && showLinkControls) ||
-                        (isStaging || alwaysShowSrc) ||
-                        (!isStaging && (!!onIsPortraitChange || !!onMobileRatioChange || !!onAspectRatioChange));
+                    // Logic to determine if settings buttons should be visible
+                    // Style Settings (Src, Mobile Src, Portrait, Ratio)
+                    const hasStyleControls = isStaging || alwaysShowSrc || (!isStaging && (!!onIsPortraitChange || !!onMobileRatioChange || !!onAspectRatioChange));
 
-                    const hasAvailableSettings = !disableSettings && hasControls;
+                    // Link Settings
+                    const hasLinkControls = !isStaging && showLinkControls; // Only show link settings if enabled
 
-                    // If dialog link type is active, we might want to hide the cog if there are no other settings,
-                    // BUT currently the code allowed both. The requested logic is specifically "if there is no setting available on builder control popover".
-                    // The settings popover shows Link/URL/ImageSrc/Variant/Portrait/MobileRatio.
-                    // If all of those are effectively disabled/hidden, we shouldn't show the button.
+                    const hasAnySettings = !disableSettings && (hasStyleControls || hasLinkControls);
 
-                    if (!hasAvailableSettings && (!isStaging || (linkType !== 'dialog'))) return null;
-
-                    // Note: The original condition was `(!disableSettings && (!isStaging || (linkType !== 'dialog' || true)))`
-                    // converting to new logic:
-
-                    if (!hasAvailableSettings) return null;
+                    if (!hasAnySettings && (!isStaging || (linkType !== 'dialog'))) return null;
+                    if (!hasAnySettings) return null;
 
                     return (
-                        <button
-                            type="button"
-                            className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                            onClick={handleSettingsClick}
-                        >
-                            <Cog6ToothIcon className={styles.overlayIcon} />
-                        </button>
+                        <>
+                            {/* Sparkle Button for Style Settings */}
+                            {(!disableSettings && hasStyleControls) && (
+                                <button
+                                    type="button"
+                                    className={`${styles.settingsButton} ${isStyleOpen ? styles.settingsButtonActive : ''}`}
+                                    onClick={handleStyleSettingsClick}
+                                    data-tooltip="Style Settings"
+                                >
+                                    <SparklesIcon className={styles.overlayIcon} />
+                                </button>
+                            )}
+
+                            {/* Cog Icon for Link Settings */}
+                            {(!disableSettings && hasLinkControls) && (
+                                <button
+                                    type="button"
+                                    className={`${styles.settingsButton} ${isLinkOpen ? styles.settingsButtonActive : ''}`}
+                                    onClick={handleLinkSettingsClick}
+                                    data-tooltip="Link Settings"
+                                >
+                                    <Cog6ToothIcon className={styles.overlayIcon} />
+                                </button>
+                            )}
+                        </>
                     );
                 })()}
             </div>,
@@ -244,7 +270,7 @@ export default function BuilderImage({
         if (!url) return '';
         const regExp = /vimeo\.com\/(\d+)/;
         const match = url.match(regExp);
-        const id = match ? match[1] : null;
+        const id = (match ? match[1] : null);
         return id ? `https://player.vimeo.com/video/${id}?autoplay=1&loop=1&muted=1&background=1` : url;
     };
 
@@ -367,6 +393,7 @@ export default function BuilderImage({
                 <BuilderControlsPopover
                     isOpen={showSettings}
                     onClose={() => setActivePopoverId(null)}
+                    mode={isStyleOpen ? 'style' : (isLinkOpen ? 'link' : 'all')}
                     url={href}
                     onUrlChange={onHrefChange}
                     imageSrc={src}

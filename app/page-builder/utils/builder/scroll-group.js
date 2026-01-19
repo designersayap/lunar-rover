@@ -4,7 +4,7 @@ import { useRef, useContext, useState, useEffect } from "react";
 import styles from "../../../page.module.css";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import BuilderControlsPopover from "./builder-controls-popover";
-import { Cog6ToothIcon } from "@heroicons/react/24/solid";
+import { Cog6ToothIcon, SparklesIcon } from "@heroicons/react/24/solid";
 
 import { createPortal } from "react-dom";
 import { componentLibrary } from "@/app/page-builder/content/component-library";
@@ -25,8 +25,9 @@ export default function ScrollGroup({
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, localData, isStaging } = useContext(BuilderSelectionContext);
     const elementId = sectionId;
     const isActive = activeElementId === elementId;
-    const myPopoverId = `popover-${elementId}`;
-    const showSettings = activePopoverId === myPopoverId;
+    const myPopoverBase = `popover-${elementId}`;
+    const showSettings = activePopoverId && activePopoverId.startsWith(myPopoverBase);
+    const isStyleOpen = activePopoverId === `${myPopoverBase}-style`;
 
     const sectionRef = useRef(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
@@ -249,14 +250,14 @@ export default function ScrollGroup({
 
     }, [isStacked, enableBlur, disableEffects]);
 
-    const handleSettingsClick = (e) => {
+    const handleStyleSettingsClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (!showSettings && sectionRef.current) {
+        if (!isStyleOpen && sectionRef.current) {
             const rect = sectionRef.current.getBoundingClientRect();
             setPopoverPosition({ top: rect.top, left: rect.left + rect.width / 2 });
         }
-        setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
+        setActivePopoverId(prev => prev === `${myPopoverBase}-style` ? null : `${myPopoverBase}-style`);
     };
 
     const handleClick = (e) => {
@@ -279,10 +280,10 @@ export default function ScrollGroup({
                 </div>
                 <button
                     type="button"
-                    className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                    onClick={handleSettingsClick}
+                    className={`${styles.settingsButton} ${isStyleOpen ? styles.settingsButtonActive : ''}`}
+                    onClick={handleStyleSettingsClick}
                 >
-                    <Cog6ToothIcon className={styles.overlayIcon} />
+                    <SparklesIcon className={styles.overlayIcon} />
                 </button>
             </div>,
             document.body
@@ -333,6 +334,7 @@ export default function ScrollGroup({
                 isOpen={showSettings}
                 onClose={() => setActivePopoverId(null)}
                 position={popoverPosition}
+                mode="style"
 
                 // Scroll Settings
                 showScrollEffect={!isStaging}

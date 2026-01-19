@@ -5,7 +5,7 @@ import { useState, useRef, useContext, useEffect } from "react";
 import { createPortal } from "react-dom"; // Added
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { useActiveOverlayPosition } from "../hooks/use-active-overlay"; // Added
-import { Cog6ToothIcon } from "@heroicons/react/24/solid";
+import { Cog6ToothIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 import { getContainerClasses } from "../section-utils";
@@ -31,8 +31,9 @@ export default function BuilderSection({
     // Use sectionId as identifier (must be unique)
     const elementId = sectionId;
     const isActive = activeElementId === elementId;
-    const myPopoverId = `popover-${elementId}`;
-    const showSettings = activePopoverId === myPopoverId;
+    const myPopoverBase = `popover-${elementId}`;
+    const showSettings = activePopoverId && activePopoverId.startsWith(myPopoverBase);
+    const isStyleOpen = activePopoverId === `${myPopoverBase}-style`;
 
     const [overlayRect, setOverlayRect] = useState(null);
 
@@ -75,11 +76,11 @@ export default function BuilderSection({
         }
     };
 
-    const handleSettingsClick = (e) => {
+    const handleStyleSettingsClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        if (!showSettings && sectionRef.current) {
+        if (!isStyleOpen && sectionRef.current) {
             const rect = sectionRef.current.getBoundingClientRect();
             setPopoverPosition({
                 top: rect.top,
@@ -87,7 +88,7 @@ export default function BuilderSection({
             });
         }
 
-        setActivePopoverId(prev => prev === myPopoverId ? null : myPopoverId);
+        setActivePopoverId(prev => prev === `${myPopoverBase}-style` ? null : `${myPopoverBase}-style`);
     };
     const handleLayoutChange = (changes) => {
         if (onUpdate) {
@@ -142,10 +143,10 @@ export default function BuilderSection({
                     {!!onUpdate && (
                         <button
                             type="button"
-                            className={`${styles.settingsButton} ${showSettings ? styles.settingsButtonActive : ''}`}
-                            onClick={handleSettingsClick}
+                            className={`${styles.settingsButton} ${isStyleOpen ? styles.settingsButtonActive : ''}`}
+                            onClick={handleStyleSettingsClick}
                         >
-                            <Cog6ToothIcon className={styles.overlayIcon} />
+                            <SparklesIcon className={styles.overlayIcon} />
                         </button>
                     )}
                 </div>,
@@ -157,6 +158,7 @@ export default function BuilderSection({
                     isOpen={showSettings}
                     onClose={() => setActivePopoverId(null)}
                     position={popoverPosition}
+                    mode="style"
                     fullWidth={fullWidth}
                     removePaddingLeft={removePaddingLeft}
                     removePaddingRight={removePaddingRight}
