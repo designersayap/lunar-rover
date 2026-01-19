@@ -38,7 +38,7 @@ export default function Media4x3({
                 <div className="col-mobile-4 col-tablet-8 col-desktop-12">
                     <div className="imageWrapper">
                         <BuilderImage
-                            src={image || DEFAULT_PLACEHOLDER_IMAGE}
+                            src={image}
                             onSrcChange={update('image')}
                             className={`${styles.image} imagePlaceholder-4-3 object-cover`}
                             id={imageId}
@@ -56,7 +56,7 @@ export default function Media4x3({
                             onIsPortraitChange={update('imageIsPortrait')}
                             mobileRatio={imageMobileRatio}
                             onMobileRatioChange={update('imageMobileRatio')}
-                            mobileSrc={imageMobileSrc || DEFAULT_PLACEHOLDER_IMAGE}
+                            mobileSrc={imageMobileSrc}
                             onMobileSrcChange={update('imageMobileSrc')}
                         />
                     </div>

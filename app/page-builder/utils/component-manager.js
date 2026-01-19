@@ -49,6 +49,13 @@ export function removeComponentFromList(components, uniqueId) {
             }];
         }
 
+        if (c.components) {
+            return [...acc, {
+                ...c,
+                components: removeComponentFromList(c.components, uniqueId)
+            }];
+        }
+
         return [...acc, c];
     }, []);
 }
@@ -138,6 +145,13 @@ export function updateComponentProps(components, uniqueId, newProps) {
             };
         }
 
+        if (c.components) {
+            return {
+                ...c,
+                components: updateComponentProps(c.components, uniqueId, newProps)
+            };
+        }
+
         return c;
     });
 }
@@ -198,6 +212,13 @@ export function updateComponentSectionId(components, uniqueId, newSectionId) {
                     ...c.props,
                     components: updateComponentSectionId(c.props.components, uniqueId, newSectionId)
                 }
+            };
+        }
+
+        if (c.components) {
+            return {
+                ...c,
+                components: updateComponentSectionId(c.components, uniqueId, newSectionId)
             };
         }
 
@@ -416,6 +437,11 @@ export function findComponentById(components, uniqueId) {
 
         if (component.props?.components) {
             const found = findComponentById(component.props.components, uniqueId);
+            if (found) return found;
+        }
+
+        if (component.components) {
+            const found = findComponentById(component.components, uniqueId);
             if (found) return found;
         }
     }

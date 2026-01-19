@@ -54,7 +54,7 @@ export default function FeatureImageLeft({
                 <div className="grid align-center">
                     <div className={`imageWrapper ${styles.imageWrapper} col-mobile-4 col-tablet-8 col-desktop-6`} style={{ paddingRight: "var(--gap-md)", paddingLeft: "var(--gap-md)" }}>
                         <BuilderImage
-                            src={image || DEFAULT_PLACEHOLDER_IMAGE}
+                            src={image}
                             onSrcChange={update('image')}
                             className=""
                             style={{ aspectRatio: (imageRatio || '1-1').replace('-', '/') }}

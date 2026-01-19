@@ -28,6 +28,15 @@ export async function POST(request) {
         const requestBody = await request.json();
         let { folderName, fileContent, layoutContent, builderData } = requestBody;
 
+        console.log("--- STAGING PREVIEW DEBUG ---");
+        console.log("Folder:", folderName);
+        if (builderData) {
+            const pk = Object.values(builderData).find(v => v.sectionId === 'product-knowledge'); // adjust 'product-knowledge' if needed based on previous file reads
+            console.log("Product Knowledge Data:", JSON.stringify(pk, null, 2));
+            console.log("Keys received:", Object.keys(builderData));
+        }
+        console.log("-----------------------------");
+
         if (!folderName || !fileContent) {
             return NextResponse.json({ error: 'Missing folderName or fileContent' }, { status: 400 });
         }

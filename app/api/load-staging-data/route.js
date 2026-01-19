@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET(request) {
     try {
         const { searchParams } = new URL(request.url);
@@ -58,22 +61,37 @@ export async function GET(request) {
         // 3. Merge
         const applyOverrides = (list) => {
             return list.map(comp => {
-                // Try uniqueId first (common for nested components), then sectionId
-                const override = overrides[comp.uniqueId] || (comp.sectionId ? overrides[comp.sectionId] : null);
+                // Determine the key used in data.js
+                // data.js typically uses sectionId as the key if available, otherwise it might use uniqueId (as string)
+
+                let override = null;
+
+                // Priority 1: Check by sectionId (most common for Staging)
+                if (comp.sectionId && overrides[comp.sectionId]) {
+                    override = overrides[comp.sectionId];
+                }
+                // Priority 2: Check by uniqueId (string or number)
+                else if (overrides[comp.uniqueId]) {
+                    override = overrides[comp.uniqueId];
+                }
+                else if (overrides[String(comp.uniqueId)]) {
+                    override = overrides[String(comp.uniqueId)];
+                }
 
                 let newComp = { ...comp };
                 let newProps = { ...(comp.props || {}) };
 
                 if (override) {
-
                     Object.entries(override).forEach(([k, v]) => {
-                        // Check if is known top-level key (this is a heuristic, ideally we know the schema)
+                        // Known structural keys that belong on the node
                         const topLevelKeys = ['id', 'uniqueId', 'sectionId', 'componentName', 'isSticky'];
 
                         if (topLevelKeys.includes(k)) {
                             newComp[k] = v;
                         } else {
-                            // Assume it's a prop
+                            // Everything else is a prop
+                            // Recursive merge or direct set? 
+                            // data.js usually contains the fully flattened "final" state of props, so direct set is usually correct/safer than deep merge which might retain stale list items.
                             newProps[k] = v;
                         }
                     });

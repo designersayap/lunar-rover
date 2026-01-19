@@ -54,7 +54,7 @@ export default function FooterTerra({
                             {/* Logo */}
                             <div className={styles.logoWrapper}>
                                 <BuilderImage
-                                    src={image || DEFAULT_PLACEHOLDER_IMAGE}
+                                    src={image}
                                     onSrcChange={update('image')}
                                     className={`${styles.image} object-contain`}
                                     id={imageId}

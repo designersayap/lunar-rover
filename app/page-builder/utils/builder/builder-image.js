@@ -45,7 +45,12 @@ export default function BuilderImage({
     aspectRatio,
     onAspectRatioChange
 }) {
-    const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "image", onIdChange });
+    const { elementId } = useIdSync({
+        id: id ? String(id) : undefined,
+        sectionId: sectionId ? String(sectionId) : undefined,
+        suffix: suffix || "image",
+        onIdChange
+    });
 
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
 

@@ -12,6 +12,71 @@ const getComponentName = (filePath) => {
         .join('');
 };
 
+// Helper: Create ID Resolver
+const getPropResolver = (components) => {
+    // 0. Pre-process: Build Map of UniqueID -> SectionID
+    const sectionIdMap = new Map();
+    const mapIds = (list) => {
+        if (!list || !Array.isArray(list)) return;
+        list.forEach(item => {
+            if (item.uniqueId && item.sectionId) {
+                sectionIdMap.set(String(item.uniqueId), item.sectionId);
+            }
+            if (item.components) mapIds(item.components);
+            if (item.props?.components) mapIds(item.props.components);
+        });
+    };
+    mapIds(components);
+
+    // Recursive Prop Resolver
+    const resolveProps = (props) => {
+        if (!props) return props;
+
+        // Deep clone to avoid mutating original objects if shared
+        const newProps = Array.isArray(props) ? [...props] : { ...props };
+
+        Object.keys(newProps).forEach(key => {
+            const val = newProps[key];
+
+            // 1. Strings: Check for ID match
+            if (typeof val === 'string') {
+                if (sectionIdMap.has(val)) {
+                    newProps[key] = sectionIdMap.get(val);
+                }
+                // Special: TargetDialogId Logic
+                if (key.includes('TargetDialogId')) {
+                    // Start by resolving the ID itself (already handled by block above if it matches hash)
+                    // If the val didn't match directly, check if it's a known uniqueID reference
+                    const resolvedId = sectionIdMap.get(val) || val;
+                    if (resolvedId !== val) {
+                        newProps[key] = resolvedId;
+                    }
+
+                    // Check if we need to force linkType to 'dialog'
+                    // This happens if we have a valid target dialog ID
+                    if (val) {
+                        const linkTypeKey = key.replace('TargetDialogId', 'LinkType');
+                        const urlKey = key.replace('TargetDialogId', 'Url');
+
+                        // If linkType is missing/url AND url is empty/#, switch to dialog
+                        if ((!newProps[linkTypeKey] || newProps[linkTypeKey] === 'url') &&
+                            (!newProps[urlKey] || newProps[urlKey] === '#' || newProps[urlKey] === '')) {
+                            newProps[linkTypeKey] = 'dialog';
+                        }
+                    }
+                }
+            }
+            // 2. Objects/Arrays: Recurse
+            else if (typeof val === 'object' && val !== null) {
+                newProps[key] = resolveProps(val);
+            }
+        });
+        return newProps;
+    };
+
+    return resolveProps;
+};
+
 export const generateStagingPageContent = (selectedComponents, folderName, activeThemePath) => {
     let pageContent = `"use client";\n\n`;
 
@@ -187,65 +252,8 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
     pageContent += `      <StickyManager stickyIndices={[${sortedStickyIndices.join(',')}]} stackedIndices={[${stackedIndices.join(',')}]} blurIndices={[${blurIndices.join(',')}]}>\n`;
 
 
-    // 0. Pre-process: Build Map of UniqueID -> SectionID
-    const sectionIdMap = new Map();
-    const mapIds = (list) => {
-        if (!list || !Array.isArray(list)) return;
-        list.forEach(item => {
-            if (item.uniqueId && item.sectionId) {
-                sectionIdMap.set(String(item.uniqueId), item.sectionId);
-            }
-            if (item.components) mapIds(item.components);
-            if (item.props?.components) mapIds(item.props.components);
-        });
-    };
-    mapIds(selectedComponents);
-
-    // Helper: Recursive Prop Resolver
-    const resolveProps = (props) => {
-        if (!props) return props;
-
-        // Deep clone to avoid mutating original objects if shared
-        const newProps = Array.isArray(props) ? [...props] : { ...props };
-
-        Object.keys(newProps).forEach(key => {
-            const val = newProps[key];
-
-            // 1. Strings: Check for ID match
-            if (typeof val === 'string') {
-                if (sectionIdMap.has(val)) {
-                    newProps[key] = sectionIdMap.get(val);
-                }
-                // Special: TargetDialogId Logic
-                if (key.includes('TargetDialogId')) {
-                    // Start by resolving the ID itself (already handled by block above if it matches hash)
-                    // If the val didn't match directly, check if it's a known uniqueID reference
-                    const resolvedId = sectionIdMap.get(val) || val;
-                    if (resolvedId !== val) {
-                        newProps[key] = resolvedId;
-                    }
-
-                    // Check if we need to force linkType to 'dialog'
-                    // This happens if we have a valid target dialog ID
-                    if (val) {
-                        const linkTypeKey = key.replace('TargetDialogId', 'LinkType');
-                        const urlKey = key.replace('TargetDialogId', 'Url');
-
-                        // If linkType is missing/url AND url is empty/#, switch to dialog
-                        if ((!newProps[linkTypeKey] || newProps[linkTypeKey] === 'url') &&
-                            (!newProps[urlKey] || newProps[urlKey] === '#' || newProps[urlKey] === '')) {
-                            newProps[linkTypeKey] = 'dialog';
-                        }
-                    }
-                }
-            }
-            // 2. Objects/Arrays: Recurse
-            else if (typeof val === 'object' && val !== null) {
-                newProps[key] = resolveProps(val);
-            }
-        });
-        return newProps;
-    };
+    // Get Resolver
+    const resolveProps = getPropResolver(selectedComponents);
 
 
     // 2. Render Components
@@ -440,35 +448,59 @@ export default function StagingLayout({ children }) {
 
 export const extractBuilderData = (components) => {
     const data = {};
+    const resolveProps = getPropResolver(components);
 
-    const traverse = (list) => {
+    // Flatten all components first to ensure we catch everything
+    const flatList = [];
+    const collect = (list) => {
         if (!list || !Array.isArray(list)) return;
-
         list.forEach(item => {
-            const finalId = item.sectionId || item.uniqueId;
-            if (finalId) {
-                // Extract props: Use item props AND item top-level keys that act as props (legacy builder structure)
-                // We start with item.props
-                const cleanItem = { ...(item.props || {}) };
-
-                // Do NOT include children arrays in the data object for this node
-                // (children will have their own entries in the flat data object)
-                delete cleanItem.components;
-
-                data[finalId] = cleanItem;
-            }
-
-            // Recurse
+            flatList.push(item);
             if (item.components && Array.isArray(item.components)) {
-                traverse(item.components);
+                collect(item.components);
             }
             if (item.props && item.props.components && Array.isArray(item.props.components)) {
-                traverse(item.props.components);
+                collect(item.props.components);
             }
         });
     };
+    collect(components);
 
-    traverse(components);
+    // Process the flat list
+    flatList.forEach(item => {
+        const finalId = item.sectionId || item.uniqueId;
+        if (finalId) {
+            // Extract props: Flatten item and props just like generateStagingPageContent
+            let cleanItem = { ...item, ...(item.props || {}) };
+
+            // FIX: Resolve IDs in data.js to match page.js
+            cleanItem = resolveProps(cleanItem);
+
+            // Cleanup metadata and internal keys
+            delete cleanItem.id;
+            delete cleanItem.name;
+            delete cleanItem.componentId;
+            delete cleanItem.category;
+            delete cleanItem.isSticky;
+            delete cleanItem.uniqueId;
+            delete cleanItem.config;
+            delete cleanItem.isOpen;
+            delete cleanItem.sectionId;
+            delete cleanItem.props;
+            delete cleanItem.component;
+
+            // Re-add sectionId if valuable
+            if (finalId) {
+                cleanItem.sectionId = finalId;
+            }
+
+            // Do NOT include children arrays in the data object for this node
+            delete cleanItem.components;
+
+            data[finalId] = cleanItem;
+        }
+    });
+
     return data;
 };
 
@@ -485,7 +517,7 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
                 folderName,
                 fileContent,
                 layoutContent,
-                componentIds: selectedComponents.map(c => c.sectionId || c.uniqueId), // Keep this for legacy/redundancy, or remove if builderData keys suffice
+                componentIds: Object.keys(builderData), // Use flattened keys as the source of truth for active components
                 builderData // New payload
             })
         });

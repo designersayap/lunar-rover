@@ -143,7 +143,7 @@ export default function TestimonialTerra({
                             >
                                 <div className={styles.card}>
                                     <BuilderImage
-                                        src={item.image || DEFAULT_PLACEHOLDER_IMAGE}
+                                        src={item.image}
                                         onSrcChange={(val) => updateTestimony(index, "image", val)}
                                         className={`${styles.terraTestimoniImage} imagePlaceholder-4-5 object-cover`}
                                         id={item.imageId}
@@ -163,7 +163,7 @@ export default function TestimonialTerra({
                                     <div className={styles.terraTestimoniDescriptionCard}>
                                         <div className={`imageWrapper ${styles.avatarImg}`}>
                                             <BuilderImage
-                                                src={item.avatar || DEFAULT_PLACEHOLDER_IMAGE}
+                                                src={item.avatar}
                                                 onSrcChange={(val) => updateTestimony(index, "avatar", val)}
                                                 className={'imagePlaceholder-1-1 object-cover'}
                                                 id={item.avatarId}

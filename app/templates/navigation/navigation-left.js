@@ -181,7 +181,7 @@ export default function NavigationLeft({
                     <div className={`col-desktop-2 offset-desktop-1 offset-tablet-1 ${styles.desktopNav} ${styles.logoWrapper}`}>
                         <div className={styles.logoContainer}>
                             <BuilderImage
-                                src={logo || DEFAULT_PLACEHOLDER_IMAGE}
+                                src={logo}
                                 onSrcChange={update('logo')}
                                 id={logoId}
                                 sectionId={sectionId}
@@ -228,7 +228,7 @@ export default function NavigationLeft({
                     <div className={`col-mobile-2 col-tablet-4 ${styles.mobileNav} ${styles.mobileLogoWrapper}`}>
                         <div className={styles.logoContainer}>
                             <BuilderImage
-                                src={logo || DEFAULT_PLACEHOLDER_IMAGE}
+                                src={logo}
                                 id={logoId}
                                 isVisible={logoVisible}
                                 readOnly={true}

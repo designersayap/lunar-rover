@@ -39,9 +39,9 @@ export default function BuilderButton({
 
     const variantClass = className.split(' ').find(c => c.startsWith('btn-') && !['btn-lg', 'btn-md', 'btn-sm', 'btn-icon'].includes(c)) || 'btn-default';
 
-    const normalizedSectionId = sectionId?.replace(/-+$/, '') || '';
+    const normalizedSectionId = sectionId ? String(sectionId).replace(/-+$/, '') : '';
     const generatedId = normalizedSectionId ? (suffix ? `${normalizedSectionId}-${suffix}` : `${normalizedSectionId}-${variantClass}`) : undefined;
-    const normalizedId = id?.replace(/-+/g, '-') || '';
+    const normalizedId = id ? String(id).replace(/-+/g, '-') : '';
     const buttonId = normalizedId || generatedId;
 
     const {
@@ -161,10 +161,14 @@ export default function BuilderButton({
 
         let dialogComponent;
         if (targetDialogId) {
-            dialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
+            dialogComponent = selectedComponents?.find(c =>
+                String(c.uniqueId) === String(targetDialogId) ||
+                c.sectionId === targetDialogId
+            );
         }
 
-        if (!dialogComponent) {
+        if (!dialogComponent && !targetDialogId) {
+            // Only fallback if no target was ever specified
             dialogComponent = selectedComponents?.find(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion');
         }
 
@@ -182,9 +186,12 @@ export default function BuilderButton({
         }
     };
 
-    let targetDialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
+    let targetDialogComponent = selectedComponents?.find(c =>
+        String(c.uniqueId) === String(targetDialogId) ||
+        c.sectionId === targetDialogId
+    );
 
-    if (!targetDialogComponent && linkType === 'dialog') {
+    if (!targetDialogComponent && linkType === 'dialog' && !targetDialogId) {
         targetDialogComponent = selectedComponents?.find(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion');
     }
 

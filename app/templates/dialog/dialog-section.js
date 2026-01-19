@@ -106,7 +106,8 @@ export default function DialogSection({
 
                             <BuilderImage
                                 className={`${styles.imageContainer} imagePlaceholder-16-9`}
-                                src={image || DEFAULT_PLACEHOLDER_IMAGE}
+                                src={image}
+                                onSrcChange={update('image')}
                                 id={imageId}
                                 sectionId={sectionId}
                                 isVisible={imageVisible}

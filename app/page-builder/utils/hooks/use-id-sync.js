@@ -3,10 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 
 export function useIdSync({ id, sectionId, suffix, onIdChange }) {
-    const normalizedSectionId = sectionId?.replace(/-+$/, '') || '';
+    const safeSectionId = sectionId ? String(sectionId) : '';
+    const safeId = id ? String(id) : '';
+
+    const normalizedSectionId = safeSectionId.replace(/-+$/, '') || '';
     const prefix = normalizedSectionId ? `${normalizedSectionId}-` : "";
     const generatedId = normalizedSectionId ? (suffix ? `${normalizedSectionId}-${suffix}` : `${normalizedSectionId}-element`) : undefined;
-    const normalizedId = id?.replace(/-+/g, '-') || '';
+    const normalizedId = safeId.replace(/-+/g, '-') || '';
     const elementId = normalizedId || generatedId;
 
     const [tempId, setTempId] = useState("");

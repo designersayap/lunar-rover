@@ -28,7 +28,7 @@ export default function BackgroundFullBody({ image, imageId, imageVisible, secti
         <div className={styles.container}>
             <div className={`container-grid container-full`} style={{ height: '100%' }}>
                 <BuilderImage
-                    src={image || DEFAULT_PLACEHOLDER_IMAGE}
+                    src={image}
                     isActive={isSectionActive ? true : undefined} // Pass active state if section is active, otherwise let it handle itself
                     onSrcChange={update('image')}
                     alt="Background Image"

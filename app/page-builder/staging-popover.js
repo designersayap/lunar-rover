@@ -59,11 +59,52 @@ export default function StagingPopover({
 
 
         try {
-            const res = await fetch(`/api/load-staging-data?folder=${folder}`);
+            const res = await fetch(`/api/load-staging-data?folder=${folder}&t=${Date.now()}`);
             if (res.ok) {
                 const data = await res.json();
                 if (data.components) {
                     if (onRestore) {
+                        // 1. Build Reverse Map (SectionID -> UniqueID)
+                        const sectionIdToUniqueId = new Map();
+                        const buildReverseMap = (list) => {
+                            if (!Array.isArray(list)) return;
+                            list.forEach(item => {
+                                // Prefer current uniqueId if available, but if coming from data.js,
+                                // the item.sectionId is the key. item.uniqueId might be stale or generated.
+                                // Actually, data.js stores sectionId as the key for props, but uniqueId is in the object too.
+                                if (item.sectionId && item.uniqueId) {
+                                    sectionIdToUniqueId.set(item.sectionId, item.uniqueId);
+                                }
+                                if (item.components) buildReverseMap(item.components);
+                                if (item.props?.components) buildReverseMap(item.props.components);
+                            });
+                        };
+                        buildReverseMap(data.components);
+
+                        // 2. Recursive Prop Resolver (Reverse)
+                        const resolveIdsBack = (props) => {
+                            if (!props || typeof props !== 'object') return props;
+
+                            if (Array.isArray(props)) {
+                                return props.map(item => resolveIdsBack(item));
+                            }
+
+                            const newProps = { ...props };
+                            Object.keys(newProps).forEach(key => {
+                                const val = newProps[key];
+
+                                // Check if value is a known SectionID
+                                if (typeof val === 'string' && sectionIdToUniqueId.has(val)) {
+                                    newProps[key] = sectionIdToUniqueId.get(val);
+                                }
+                                // Recurse
+                                else if (typeof val === 'object' && val !== null) {
+                                    newProps[key] = resolveIdsBack(val);
+                                }
+                            });
+                            return newProps;
+                        };
+
                         // Rehydrate components with their render functions/classes
                         const rehydrate = (list) => {
                             if (!Array.isArray(list)) return [];
@@ -83,6 +124,17 @@ export default function StagingPopover({
                                     newItem.component = definition.component;
                                 } else {
                                     console.warn(`Component definition not found for id: ${item.id}`);
+                                }
+
+                                // FIX: Ensure dialogs/popovers start closed on restore
+                                delete newItem.isOpen;
+                                if (newItem.props) {
+                                    delete newItem.props.isOpen;
+                                }
+
+                                // FIX: Reverse Resolve IDs in Props
+                                if (newItem.props) {
+                                    newItem.props = resolveIdsBack(newItem.props);
                                 }
 
                                 // Case 1: props.components (ScrollGroup)
