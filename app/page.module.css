@@ -619,7 +619,7 @@
 .componentWrapper {
     position: relative;
     background: transparent;
-    transition: border-color .2s, transform .2s;
+    transition: border-color .2s;
     z-index: 1;
 }
 

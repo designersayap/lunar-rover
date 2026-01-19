@@ -67,13 +67,9 @@ export default function NavigationLeft({
         const handleScroll = () => {
             // Check window scroll first (Staging/Export)
             let scrollTop = window.scrollY;
-
-            // If 0, check the builder canvas container
-            if (scrollTop === 0) {
-                const canvasContainer = document.getElementById('canvas-scroll-container');
-                if (canvasContainer) {
-                    scrollTop = canvasContainer.scrollTop;
-                }
+            const canvasContainer = document.getElementById('canvas-scroll-container');
+            if (canvasContainer) {
+                scrollTop = canvasContainer.scrollTop;
             }
 
             if (scrollTop > 10) {
@@ -87,15 +83,23 @@ export default function NavigationLeft({
         window.addEventListener('scroll', handleScroll);
 
         // Attach to builder canvas (for Page Builder)
-        const canvasContainer = document.getElementById('canvas-scroll-container');
-        if (canvasContainer) {
-            canvasContainer.addEventListener('scroll', handleScroll);
-        }
+        // Use a retry mechanism to ensure we find the container even if it mounts slightly later
+        const attachScrollListener = (retries = 0) => {
+            const canvasContainer = document.getElementById('canvas-scroll-container');
+            if (canvasContainer) {
+                canvasContainer.addEventListener('scroll', handleScroll);
+                // Trigger once to set initial state
+                handleScroll();
+            } else if (retries < 10) {
+                setTimeout(() => attachScrollListener(retries + 1), 200);
+            }
+        };
 
-        handleScroll();
+        attachScrollListener();
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
+            const canvasContainer = document.getElementById('canvas-scroll-container');
             if (canvasContainer) {
                 canvasContainer.removeEventListener('scroll', handleScroll);
             }
