@@ -83,7 +83,8 @@
 }
 
 /* Mobile (4 cols) - Default < 640px */
-:root {
+:root,
+#canvas-inner {
     --grid-columns: 4;
     --grid-margin: 16px;
     --grid-gutter: 0;
@@ -134,8 +135,11 @@
 }
 
 /* Tablet (8 cols) - 640px to 1023px */
-@media (min-width: 640px) and (max-width: 1023px) {
-    :root {
+@container (min-width: 640px) and (max-width: 1023px) {
+
+    body>*,
+    main>*,
+    #canvas-inner>* {
         --grid-columns: 8;
         --grid-margin: 32px;
         --grid-gutter: 0;
@@ -188,8 +192,11 @@
 }
 
 /* Desktop (12 cols) - 1024px+ */
-@media (min-width: 1024px) {
-    :root {
+@container (min-width: 1024px) {
+
+    body>*,
+    main>*,
+    #canvas-inner>* {
         --grid-columns: 12;
         --grid-margin: 120px;
         /* Kept 120px per user preference for desktop look, or should I reduce? Plan said "Auto / Max width". But variable dictates padding. I'll stick to 120px for "generous margins" mentioned in plan. */
@@ -220,7 +227,6 @@
         --typography-font-size-heading-md: var(--typography-font-size-200);
         --typography-font-size-heading-lg: var(--typography-font-size-260);
         --typography-font-size-heading-xl: var(--typography-font-size-380);
-
         --typography-font-size-paragraph-md: var(--typography-font-size-100);
         --typography-font-size-caption-md: var(--typography-font-size-90);
         --typography-line-height-heading-xs: var(--typography-line-height-120);
@@ -238,7 +244,7 @@
 }
 
 /* Tablet Columns */
-@media (min-width: 640px) and (max-width: 1023px) {
+@container (min-width: 640px) and (max-width: 1023px) {
     .col-tablet-1 {
         grid-column: auto / span 1;
     }
@@ -294,7 +300,7 @@
 }
 
 /* Desktop Columns */
-@media (min-width: 1024px) {
+@container (min-width: 1024px) {
     .col-desktop-1 {
         grid-column: auto / span 1;
     }
@@ -374,7 +380,7 @@
 }
 
 /* Mobile Columns */
-@media (max-width: 639px) {
+@container (max-width: 639px) {
     .col-mobile-1 {
         grid-column: auto / span 1;
     }

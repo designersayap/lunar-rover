@@ -25,7 +25,7 @@
     min-width: 0;
 }
 
-@media (min-width: 1280px) {
+@container (min-width: 1280px) {
     .cardsWrapper {
         grid-auto-columns: 25%;
     }
@@ -36,7 +36,7 @@
     }
 }
 
-@media (min-width: 1024px) and (max-width: 1280px) {
+@container (min-width: 1024px) and (max-width: 1280px) {
     .cardsWrapper {
         grid-auto-columns: 30%;
     }
@@ -47,7 +47,7 @@
     }
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
+@container (min-width: 768px) and (max-width: 1023px) {
     .cardsWrapper {
         grid-auto-columns: 320px;
     }
@@ -58,7 +58,7 @@
     }
 }
 
-@media (max-width: 767px) {
+@container (max-width: 767px) {
     .cardsWrapper {
         grid-auto-columns: 320px;
     }
@@ -104,7 +104,7 @@
     pointer-events: auto;
 }
 
-@media (max-width: 767px) {
+@container (max-width: 767px) {
     .terraTestimoniDescriptionCard {
         padding-top: 40px;
     }
@@ -153,7 +153,7 @@
     margin-top: var(--gap-sm);
 }
 
-@media (max-width: 1023px) {
+@container (max-width: 1023px) {
     .paginator {
         display: none;
     }

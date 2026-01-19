@@ -245,7 +245,7 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
     `;
 
     pageContent += `  return (\n`;
-    pageContent += `    <main style={{ position: 'relative', minHeight: '100vh', width: '100%', overflowX: 'clip' }}>\n`;
+    pageContent += `    <main style={{ position: 'relative', minHeight: '100vh', width: '100%', overflowX: 'clip', containerType: 'inline-size', containerName: 'root-container' }}>\n`;
     pageContent += `      <BuilderSelectionContext.Provider value={contextValue}>\n`;
     pageContent += `      <div id="canvas-background-root" style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'auto', overflow: 'hidden' }} />\n`;
     pageContent += `      <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>\n`;

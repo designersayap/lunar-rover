@@ -31,7 +31,8 @@
 
 
 /* Mobile & Tablet: Text above image */
-@media (max-width: 767px) {
+/* Mobile & Tablet: Text above image */
+@container (max-width: 767px) {
     .imageWrapper {
         order: 2;
     }

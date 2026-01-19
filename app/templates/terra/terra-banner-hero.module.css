@@ -54,7 +54,7 @@
 }
 
 /* Mobile & Tablet */
-@media (max-width: 1023px) {
+@container (max-width: 1023px) {
     .heroTitle {
         margin-top: 52px;
     }

@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useRef } from "react";
+import { useMemo, useEffect, useRef, useState } from "react";
 import { isComponentSticky } from "./utils/component-manager";
 import { useBuilderSelection } from "@/app/page-builder/utils/builder/builder-controls";
 import styles from "../page.module.css";
@@ -10,6 +10,74 @@ export default function Canvas({
     updateComponent
 }) {
     const { setActiveElementId, activeElementId, selectedElementIds = [], toggleElementSelection } = useBuilderSelection();
+
+    // Resize state
+    const [canvasWidth, setCanvasWidth] = useState('100%');
+    const [isResizing, setIsResizing] = useState(false);
+    const canvasInnerRef = useRef(null);
+    const resizeStartX = useRef(0);
+    const resizeStartWidth = useRef(0);
+
+    // Indicator visibility logic
+    const [showIndicator, setShowIndicator] = useState(false);
+
+    useEffect(() => {
+        let timeout;
+        if (isResizing || canvasWidth !== '100%') {
+            setShowIndicator(true);
+            timeout = setTimeout(() => {
+                setShowIndicator(false);
+            }, 5000); // Hide after 5 seconds of inactivity
+        } else {
+            setShowIndicator(false);
+        }
+        return () => clearTimeout(timeout);
+    }, [canvasWidth, isResizing]);
+
+    // Resize logic
+    useEffect(() => {
+        if (!isResizing) return;
+
+        const handleMouseMove = (e) => {
+            const delta = e.clientX - resizeStartX.current;
+            const parentWidth = canvasInnerRef.current?.parentElement?.clientWidth || window.innerWidth;
+            const maxAllowedWidth = parentWidth - 32; // 16px margin on each side
+            // Symmetric resize: multiply delta by 2 because centering absorbs half the width change on each side
+            const newWidth = Math.min(maxAllowedWidth, Math.max(320, resizeStartWidth.current + (delta * 2)));
+            setCanvasWidth(`${newWidth}px`);
+        };
+
+        const handleMouseUp = () => {
+            setIsResizing(false);
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
+
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [isResizing]);
+
+    const startResize = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsResizing(true);
+        resizeStartX.current = e.clientX;
+        if (canvasInnerRef.current) {
+            resizeStartWidth.current = canvasInnerRef.current.offsetWidth;
+        }
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+    };
+
+    const resetResize = (e) => {
+        e.stopPropagation();
+        setCanvasWidth('100%');
+    };
 
     // Sort components: Pinned items first
     const displayComponents = useMemo(() => [
@@ -50,8 +118,28 @@ export default function Canvas({
 
     return (
         <div id="canvas-scroll-container" className={canvasClassName} onClick={() => setActiveElementId(null)}>
+
             {/* Canvas Content */}
-            <div className={styles.canvasInner}>
+            <div
+                id="canvas-inner"
+                className={styles.canvasInner}
+                ref={canvasInnerRef}
+                style={{
+                    width: canvasWidth,
+                    transition: isResizing ? 'none' : 'width 0.3s ease, max-width 0.3s ease',
+                    flex: 'none'
+                }}
+            >
+                {/* Resize Handle */}
+                <div
+                    className={`${styles.resizeHandle} ${isResizing ? styles.resizeHandleActive : ''}`}
+                    onMouseDown={startResize}
+                    onDoubleClick={resetResize}
+                    title="Drag to resize, double-click to reset"
+                >
+                    <div className={styles.resizeHandleBar} />
+                </div>
+
                 <div id="canvas-background-root" className={styles.canvasBackgroundRoot} />
                 {displayComponents.length === 0 ? (
                     <div className={styles.emptyState}>
@@ -129,6 +217,14 @@ export default function Canvas({
                                 );
                             });
                         })()}
+                    </div>
+                )}
+                {/* Resolution Indicator */}
+                {showIndicator && (
+                    <div className={styles.resolutionIndicator}>
+                        <span style={{ opacity: 0.7 }}>Device Width:</span>
+                        <strong>{canvasWidth === '100%' ? 'Full' : canvasWidth}</strong>
+                        {isResizing && <span style={{ opacity: 0.5, marginLeft: 4 }}>(Resizing)</span>}
                     </div>
                 )}
             </div>

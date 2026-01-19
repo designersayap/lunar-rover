@@ -19,6 +19,8 @@ body {
   background-color: var(--background-neutral--default);
   color: var(--content-neutral--body);
   min-height: 100vh;
+  container-type: inline-size;
+  container-name: root-container;
 }
 
 /* Builder Text Lists */

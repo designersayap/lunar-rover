@@ -60,20 +60,27 @@
 
 .canvas {
     flex: 1;
+    min-width: 0;
     overflow-y: auto;
+    overflow-x: hidden;
     background: var(--bg2);
     position: relative;
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    padding: 0 16px 0 16px;
+
 }
 
 .canvasInner {
     width: 100%;
+    max-width: 100%;
     background: var(--base-white);
     transition: width 0.3s ease, max-width 0.3s ease;
     position: relative;
     min-height: 100%;
+    container-type: inline-size;
+    container-name: canvas;
 }
 
 .canvasDesktop .canvasInner {
@@ -1130,4 +1137,70 @@
     color: var(--grey-300);
     font-size: 13px;
     border-bottom: none;
+}
+
+/* =========================================
+   8. RESIZE HANDLE
+   ========================================= */
+
+.resizeHandle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 20px;
+    cursor: col-resize;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 50;
+    transition: background 0.2s;
+    user-select: none;
+}
+
+.resizeHandle:hover,
+.resizeHandleActive {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.resizeHandleBar {
+    width: 6px;
+    height: 48px;
+    background: var(--grey-400);
+    border-radius: 4px;
+    transition: all 0.2s;
+    opacity: 0.8;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.resizeHandle:hover .resizeHandleBar,
+.resizeHandleActive .resizeHandleBar {
+    background: var(--grey-500);
+    opacity: 1;
+    height: 64px;
+    border-color: transparent;
+}
+
+.resolutionIndicator {
+    font-size: 10px;
+    position: sticky;
+    bottom: 0px;
+    margin: 24px auto 0;
+    /* Add top margin if needed, but sticky bottom handles positioning */
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--grey-500);
+    /* Fallback to #000 if variable missing */
+    padding: 4px 8px;
+    border-radius: 4px 4px 0 0;
+    font-family: monospace;
+    pointer-events: none;
+    z-index: 100;
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    width: fit-content;
+
 }

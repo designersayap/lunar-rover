@@ -155,7 +155,8 @@
 
 
 /* Responsive Visibility */
-@media (max-width: 767px) {
+/* Responsive Visibility */
+@container (max-width: 767px) {
     .desktopNav {
         display: none !important;
     }
