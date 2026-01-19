@@ -408,7 +408,6 @@ export default function BuilderControlsPopover({
 
                         {(mode === 'all' || mode === 'style') && showVariant && (
                             <>
-                                <div style={{ borderTop: '1px solid var(--bdr)', margin: '8px 0', width: '100%' }} />
                                 <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                     <label className={`caption-bold ${styles.formInputTitle}`}>Variant</label>
                                     <div className={styles.selectWrapper}>

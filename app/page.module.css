@@ -1153,7 +1153,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    z-index: 50;
+    z-index: 9999;
     transition: background 0.2s;
     user-select: none;
 }
@@ -1166,11 +1166,10 @@
 .resizeHandleBar {
     width: 6px;
     height: 48px;
-    background: var(--grey-400);
+    background: var(--grey-200);
     border-radius: 4px;
     transition: all 0.2s;
     opacity: 0.8;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 50%;
     transform: translateY(-50%);
