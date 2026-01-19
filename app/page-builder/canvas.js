@@ -43,7 +43,7 @@ export default function Canvas({
             const parentWidth = canvasInnerRef.current?.parentElement?.clientWidth || window.innerWidth;
             const maxAllowedWidth = parentWidth - 32; // 16px margin on each side
             // Symmetric resize: multiply delta by 2 because centering absorbs half the width change on each side
-            const newWidth = Math.min(maxAllowedWidth, Math.max(320, resizeStartWidth.current + (delta * 2)));
+            const newWidth = Math.min(maxAllowedWidth, Math.max(360, resizeStartWidth.current + (delta * 2)));
             setCanvasWidth(`${newWidth}px`);
         };
 
