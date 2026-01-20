@@ -12,7 +12,7 @@ import styles from "../page.module.css";
 
 export default function TopBar({
     isSidebarVisible,
-    setIsSidebarVisible,
+    toggleSidebar,
     handleExport,
     handleDirectExport,
     onThemeClick,
@@ -65,9 +65,9 @@ export default function TopBar({
             <div className={styles.topBarRight}>
                 {/* ... other buttons ... */}
                 <button
-                    onClick={() => setIsSidebarVisible(!isSidebarVisible)}
+                    onClick={toggleSidebar}
                     className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}
-                    data-tooltip={isSidebarVisible ? "Collapse Sidebar" : "Expand Sidebar"}
+                    data-tooltip="Toggle Sidebar"
                 >
                     {isSidebarVisible ? (
                         <ChevronDoubleRightIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />

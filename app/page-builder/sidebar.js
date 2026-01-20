@@ -335,7 +335,8 @@ export default function Sidebar({
     onGroup,
     onUngroup,
     selectedElementIds = [],
-    toggleElementSelection
+    toggleElementSelection,
+    className = ""
 }) {
     const [layerSearch, setLayerSearch] = useState("");
     const [expandedSections, setExpandedSections] = useState({});
@@ -376,7 +377,7 @@ export default function Sidebar({
     };
 
     return (
-        <div className={styles.sidebar} data-builder-ui="true">
+        <div className={`${styles.sidebar} ${className}`} data-builder-ui="true">
             <div className={styles.sidebarSection}>
                 <div className={styles.tabs}>
                     <button

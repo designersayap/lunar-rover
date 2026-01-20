@@ -5,7 +5,9 @@ import styles from "./page.module.css";
 
 // Feature Components
 import Sidebar from "@/app/page-builder/sidebar";
+import SidebarMobile from "@/app/page-builder/sidebar-mobile";
 import TopBar from "@/app/page-builder/topbar";
+
 import Canvas from "@/app/page-builder/canvas";
 import ThemePickerPopover from "@/app/page-builder/theme-picker-popover";
 import UATPopover from "@/app/page-builder/uat-popover";
@@ -36,6 +38,7 @@ export default function TemplateGeneratorPage() {
     themes,
     selectedThemeId,
     isSidebarVisible,
+    isBottomSheetOpen,
     activeTab,
     activePopoverId,
     popoverPositions,
@@ -48,6 +51,8 @@ export default function TemplateGeneratorPage() {
   const {
     setAnalyticsData,
     setIsSidebarVisible,
+    setIsBottomSheetOpen,
+    toggleSidebar,
     setActiveTab,
     setActiveElementId,
     toggleElementSelection,
@@ -101,7 +106,7 @@ export default function TemplateGeneratorPage() {
         {/* Top Bar */}
         <TopBar
           isSidebarVisible={isSidebarVisible}
-          setIsSidebarVisible={setIsSidebarVisible}
+          toggleSidebar={toggleSidebar}
           handleExport={handleExport}
           handleDirectExport={handleDirectExport}
           onThemeClick={(pos) => togglePopover('theme', pos)}
@@ -151,10 +156,46 @@ export default function TemplateGeneratorPage() {
               onGroup={handleGroup}
               onUngroup={handleUngroup}
               selectedElementIds={selectedElementIds}
+
               toggleElementSelection={toggleElementSelection}
+              className={styles.desktopSidebar}
             />
+
           )}
         </div>
+
+        {/* Mobile/Tablet Bottom Sheet Sidebar */}
+        <SidebarMobile
+          isOpen={isBottomSheetOpen}
+          onClose={() => setIsBottomSheetOpen(false)}
+          title={activeTab === "elements" ? "Layers" : "Settings"}
+        >
+          <Sidebar
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            analyticsData={analyticsData}
+            setAnalyticsData={setAnalyticsData}
+            selectedComponents={selectedComponents}
+            updateSectionId={updateSectionId}
+            updateComponent={updateComponent}
+            removeComponent={removeComponent}
+            activeElementId={activeElementId}
+            setActiveElementId={setActiveElementId}
+            onAddClick={handleAddClick}
+            isAddPopoverOpen={activePopoverId === 'components'}
+            handleDragStart={handleDragStart}
+            handleDragOver={handleDragOver}
+            handleDrop={handleDrop}
+            handleDragEnd={handleDragEnd}
+            draggedIndex={draggedIndex}
+            dropTargetIndex={dropTargetIndex}
+            onGroup={handleGroup}
+            onUngroup={handleUngroup}
+            selectedElementIds={selectedElementIds}
+            toggleElementSelection={toggleElementSelection}
+            className={styles.mobileSidebar}
+          />
+        </SidebarMobile>
 
         {/* Hidden Drag Image */}
         <div ref={dragImageRef} className={`${styles.customDragImage} z-hidden`}>

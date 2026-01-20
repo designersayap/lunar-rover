@@ -34,6 +34,7 @@ export function useTemplateLogic() {
 
     // Interface Visibility State
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("elements");
 
     // Popover & Overlay State
@@ -147,9 +148,12 @@ export function useTemplateLogic() {
         isInitialized.current = true;
 
         // 2. Smarter Resize Handler
+        // Removed auto-hide for < 1024px as requested for tablet/mobile bottom sheet support
+        // Added auto-close for Bottom Sheet when resizing to desktop (> 1024px)
         const handleResize = () => {
-            if (window.innerWidth < 1024) {
-                setIsSidebarVisible(false);
+            // Logic removed to prevent auto-hiding sidebar on resize
+            if (window.innerWidth >= 1024) {
+                setIsBottomSheetOpen(false);
             }
         };
 
@@ -183,11 +187,19 @@ export function useTemplateLogic() {
 
     // ==================== ACTION HANDLERS ====================
 
-    // Theme
     const handleThemeSelect = useCallback((themeId) => {
         setSelectedThemeId(themeId);
         showToast(`Theme switched to ${themeId}`);
     }, [showToast]);
+
+    // Sidebar Toggle
+    const toggleSidebar = useCallback(() => {
+        if (window.innerWidth < 1024) {
+            setIsBottomSheetOpen(prev => !prev);
+        } else {
+            setIsSidebarVisible(prev => !prev);
+        }
+    }, []);
 
 
     // Components
@@ -274,6 +286,7 @@ export function useTemplateLogic() {
             themes,
             selectedThemeId,
             isSidebarVisible,
+            isBottomSheetOpen,
             activeTab,
             activePopoverId,
             popoverPositions,
@@ -284,7 +297,10 @@ export function useTemplateLogic() {
         },
         actions: {
             setAnalyticsData,
+            setAnalyticsData,
             setIsSidebarVisible,
+            setIsBottomSheetOpen,
+            toggleSidebar,
             setActiveTab,
             setActiveElementId,
             toggleElementSelection,
