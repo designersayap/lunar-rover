@@ -23,7 +23,9 @@ export default function BuilderSection({
     tagName = "div",
     innerContainer = false,
     isOverlay = false, // Added prop
-    showFullWidthControl = true // Added prop
+    showFullWidthControl = true, // Added prop
+    showMenuColorToggle = false, // Added prop
+    menuColor // Added prop
 }) {
     const sectionRef = useRef(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
@@ -175,6 +177,11 @@ export default function BuilderSection({
                     isOverlay={isOverlay}
                     onOverlayChange={(val) => onUpdate && onUpdate({ isOverlay: val })}
                     showFullWidthToggle={showFullWidthControl}
+
+                    // Menu Color Props
+                    showMenuColorToggle={showMenuColorToggle}
+                    menuColor={menuColor}
+                    onMenuColorChange={(val) => onUpdate && onUpdate({ menuColor: val })}
                 />
             )
             }

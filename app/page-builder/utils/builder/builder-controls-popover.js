@@ -82,6 +82,9 @@ export default function BuilderControlsPopover({
     showOverlayToggle,
     isOverlay,
     onOverlayChange,
+    showMenuColorToggle, // Added prop
+    menuColor, // Added prop
+    onMenuColorChange, // Added prop
     showFullWidthToggle = true, // Added prop with default true
     showAspectRatio,
     aspectRatio,
@@ -324,6 +327,23 @@ export default function BuilderControlsPopover({
                                     />
                                     <span className={styles.toggleSlider}></span>
                                 </label>
+                            </div>
+                        )}
+
+                        {(mode === 'all' || mode === 'style') && showMenuColorToggle && isOverlay && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: '8px' }}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>Menu Color</label>
+                                <div className={styles.selectWrapper}>
+                                    <select
+                                        className={`${styles.formInput} ${styles.formSelect}`}
+                                        value={menuColor || 'default'}
+                                        onChange={(e) => onMenuColorChange && onMenuColorChange(e.target.value)}
+                                    >
+                                        <option value="default">Default</option>
+                                        <option value="invert">Invert</option>
+                                    </select>
+                                    <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
+                                </div>
                             </div>
                         )}
 

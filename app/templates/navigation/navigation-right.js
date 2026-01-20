@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import styles from './navigation-center.module.css';
+import styles from './navigation.module.css';
 import BuilderImage from '@/app/page-builder/utils/builder/builder-image';
 const DEFAULT_PLACEHOLDER_IMAGE = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
 import BuilderLink from '@/app/page-builder/utils/builder/builder-link';
@@ -45,6 +45,7 @@ export default function NavigationRight({
     menu4Id,
 
     isOverlay,
+    menuColor, // Added prop
     onUpdate
 }) {
     const update = createUpdateHandler(onUpdate);
@@ -182,10 +183,12 @@ export default function NavigationRight({
     return (
         <BuilderSection
             tagName="nav"
-            className={`${styles.navigationWrapper} z-content-1 ${isScrolled ? styles.scrolled : ''}`}
+            className={`${styles.navigationWrapper} z-content-1 ${isScrolled ? styles.scrolled : ''} ${menuColor === 'invert' ? styles.invert : ''}`}
             sectionId={sectionId}
             onUpdate={onUpdate}
             isOverlay={isOverlay}
+            menuColor={menuColor}
+            showMenuColorToggle={true}
             fullWidth={true}
             showFullWidthControl={false}
         >

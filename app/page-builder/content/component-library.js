@@ -66,6 +66,7 @@ export const componentLibrary = {
                 { name: "menu4Label", label: "Menu 4 Label", type: "text", default: componentDefaults["navigation-center"].menu4Label },
                 { name: "menu4Url", label: "Menu 4 URL", type: "text", default: componentDefaults["navigation-center"].menu4Url },
                 { name: "isOverlay", label: "Overlay Content", type: "boolean", default: componentDefaults["navigation-center"].isOverlay },
+                { name: "menuColor", label: "Menu Color", type: "select", options: ["default", "invert"], default: componentDefaults["navigation-center"].menuColor },
             ],
             images: [
                 { label: "Logo", propId: "logoId", suffix: "logo" }
@@ -92,6 +93,7 @@ export const componentLibrary = {
                 { name: "menu4Label", label: "Menu 4 Label", type: "text", default: componentDefaults["navigation-left"]?.menu4Label },
                 { name: "menu4Url", label: "Menu 4 URL", type: "text", default: componentDefaults["navigation-left"]?.menu4Url },
                 { name: "isOverlay", label: "Overlay Content", type: "boolean", default: componentDefaults["navigation-left"]?.isOverlay },
+                { name: "menuColor", label: "Menu Color", type: "select", options: ["default", "invert"], default: componentDefaults["navigation-left"]?.menuColor },
             ],
             images: [
                 { label: "Logo", propId: "logoId", suffix: "logo" }
@@ -118,6 +120,7 @@ export const componentLibrary = {
                 { name: "menu4Label", label: "Menu 4 Label", type: "text", default: componentDefaults["navigation-right"]?.menu4Label },
                 { name: "menu4Url", label: "Menu 4 URL", type: "text", default: componentDefaults["navigation-right"]?.menu4Url },
                 { name: "isOverlay", label: "Overlay Content", type: "boolean", default: componentDefaults["navigation-right"]?.isOverlay },
+                { name: "menuColor", label: "Menu Color", type: "select", options: ["default", "invert"], default: componentDefaults["navigation-right"]?.menuColor },
             ],
             images: [
                 { label: "Logo", propId: "logoId", suffix: "logo" }

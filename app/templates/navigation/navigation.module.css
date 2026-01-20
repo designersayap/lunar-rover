@@ -64,6 +64,16 @@
     color: var(--content-neutral--body);
 }
 
+.invert .linkNav {
+    color: var(--content-neutral--body-invert);
+}
+
+.invert .linkNav:hover {
+    color: var(--content-neutral--body-invert);
+    /* Keep it white on hover too? or maybe slight opacity? */
+    opacity: 0.8;
+}
+
 
 .mobileHeader {
     display: flex;
@@ -81,6 +91,10 @@
     align-items: center;
     justify-content: flex-end;
     color: var(--content-neutral--button--outline);
+}
+
+.invert .burgerButton {
+    color: var(--content-neutral--body-invert);
 }
 
 .mobileLogoWrapper {
@@ -154,7 +168,6 @@
 
 
 
-/* Responsive Visibility */
 /* Responsive Visibility */
 @container (max-width: 767px) {
     .desktopNav {

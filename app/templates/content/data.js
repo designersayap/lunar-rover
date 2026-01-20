@@ -263,7 +263,8 @@ export const componentDefaults = {
         menu4TargetDialogId: "",
         menu4Id: "",
         isSticky: true,
-        isOverlay: true
+        isOverlay: true,
+        menuColor: "default"
     },
     "navigation-left": {
         logo: "",
@@ -294,7 +295,8 @@ export const componentDefaults = {
         menu4TargetDialogId: "",
         menu4Id: "",
         isSticky: true,
-        isOverlay: true
+        isOverlay: true,
+        menuColor: "default"
     },
     "navigation-right": {
         logo: "",
@@ -325,7 +327,8 @@ export const componentDefaults = {
         menu4TargetDialogId: "",
         menu4Id: "",
         isSticky: true,
-        isOverlay: true
+        isOverlay: true,
+        menuColor: "default"
     },
     "testimonial-terra": {
         testimonies: Array(12).fill({
