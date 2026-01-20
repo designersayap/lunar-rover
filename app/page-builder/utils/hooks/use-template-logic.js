@@ -255,7 +255,6 @@ export function useTemplateLogic() {
 
             await handleExportNextjs(selectedComponents, activeThemePath, {
                 download: true,
-                savePreview: true,
                 analytics: analyticsData
             });
             showToast("Export completed successfully");

@@ -8,7 +8,7 @@ import { defaultPlaceholder } from '@/app/page-builder/utils/builder/builder-ima
  * handleExportNextjs: Exports selected components as a clean Next.js project structure (Partial).
  */
 export const handleExportNextjs = async (selectedComponents, activeThemePath = '/themes/theme.css', options = {}) => {
-    const { download = true, savePreview = true, previewFolder } = options;
+    const { download = true, savePreview = false, previewFolder } = options;
     if (!selectedComponents || selectedComponents.length === 0) {
         alert("No components selected to export.");
         return;

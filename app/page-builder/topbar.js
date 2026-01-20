@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
     ChevronDoubleRightIcon,
@@ -28,6 +28,13 @@ export default function TopBar({
 
     // Ref for the staging button to calculate popover position
     const stagingButtonRef = useRef(null);
+    const [isLocalhost, setIsLocalhost] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setIsLocalhost(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+        }
+    }, []);
 
     // Keyboard Shortcut for Staging (Cmd+S / Ctrl+S)
     useEffect(() => {
@@ -76,19 +83,21 @@ export default function TopBar({
                     )}
                 </button>
 
-                <button
-                    className={`${styles.topBarButton} ${styles.topBarButtonBordered} ${isExportPopoverOpen ? styles.topBarButtonActive : ''}`}
-                    data-tooltip="UAT File"
-                    onClick={(e) => {
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        handleExport({
-                            top: rect.bottom + 4,
-                            left: rect.left + rect.width / 2
-                        });
-                    }}
-                >
-                    <DocumentPlusIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />
-                </button>
+                {isLocalhost && (
+                    <button
+                        className={`${styles.topBarButton} ${styles.topBarButtonBordered} ${isExportPopoverOpen ? styles.topBarButtonActive : ''}`}
+                        data-tooltip="UAT File"
+                        onClick={(e) => {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            handleExport({
+                                top: rect.bottom + 4,
+                                left: rect.left + rect.width / 2
+                            });
+                        }}
+                    >
+                        <DocumentPlusIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />
+                    </button>
+                )}
                 <button
                     className={`${styles.generatorButton} ${styles.topBarButtonWide} ${isThemePickerOpen ? styles.topBarButtonActive : ''}`}
                     data-tooltip={selectedThemeName}
