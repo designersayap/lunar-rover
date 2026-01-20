@@ -75,7 +75,7 @@ export function cleanBuilderContent(src) {
 // Shim for BuilderSection
 const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth, style, children, id, sectionId }) => {
   const Tag = tagName;
-  const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
+  const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || normalizedSectionId;
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
   const containerClass = \`container-grid \${fullWidth ? 'container-full' : ''}\`;
@@ -99,7 +99,7 @@ const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth,
 // Shim for BuilderText
 const BuilderText = ({ tagName = 'p', content, className, style, children, id, sectionId, suffix }) => {
   const Tag = tagName;
-  const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
+  const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   const effectiveSuffix = suffix || (className ? className.split(' ')[0] : tagName);
   let finalId = id || (normalizedSectionId ? normalizedSectionId + '-' + effectiveSuffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
@@ -133,7 +133,7 @@ const BuilderText = ({ tagName = 'p', content, className, style, children, id, s
     shims.push(`
 // Shim for BuilderButton
 const BuilderButton = ({ label, href, className, style, children, linkType, targetDialogId, id, sectionId, suffix, iconLeft, iconRight }) => {
-  const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
+  const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
 
@@ -159,17 +159,18 @@ const BuilderButton = ({ label, href, className, style, children, linkType, targ
 
   if (linkType === 'dialog' && targetDialogId) {
     return (
-      <button
+      <a
         id={finalId}
+        href="#"
         className={className}
-        style={style}
+        style={{ ...style, cursor: 'pointer', textDecoration: 'none' }}
         onClick={(e) => {
              e.preventDefault();
              openDialog(targetDialogId);
         }}
       >
         {content}
-      </button>
+      </a>
     );
   }
   return (
@@ -189,7 +190,7 @@ const BuilderButton = ({ label, href, className, style, children, linkType, targ
     shims.push(`
 // Shim for BuilderLink
 const BuilderLink = ({ label, href, className, style, children, linkType, targetDialogId, id, sectionId, suffix, iconLeft, iconRight, justify }) => {
-  const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
+  const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
   
@@ -235,7 +236,7 @@ const BuilderLink = ({ label, href, className, style, children, linkType, target
   if (hasBuilderImage) {
     shims.push(`
 const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href, linkType, targetDialogId, id, sectionId, suffix, isPortrait }) => {
-  const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
+  const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
   const effectiveAlt = (!alt || alt === '#') && normalizedSectionId ? normalizedSectionId : (alt || '');
@@ -386,7 +387,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
 // Shim for BuilderElement
 const BuilderElement = ({ tagName = 'div', className, style, children, id, sectionId, elementProps }) => {
   const Tag = tagName;
-  const normalizedSectionId = sectionId ? sectionId.replace(/-+$/, '') : '';
+  const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   const suffix = elementProps || 'element';
   let finalId = id || (normalizedSectionId ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
@@ -400,6 +401,11 @@ const BuilderElement = ({ tagName = 'div', className, style, children, id, secti
 const openDialog = (id) => {
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new CustomEvent('lunar:open-dialog', { detail: { id } }));
+    
+    // Runtime Fallback: If specific ID fails (e.g. timestamp from old data), try default dialogs
+    if (id && id !== 'dialog-item-list' && id !== 'dialog-accordion') {
+        window.dispatchEvent(new CustomEvent('lunar:open-dialog', { detail: { id: 'dialog-item-list' } }));
+    }
   }
 };`;
     shims.unshift(openDialogHelper);

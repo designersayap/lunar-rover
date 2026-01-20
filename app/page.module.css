@@ -1236,7 +1236,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    z-index: 9999;
+    z-index: 100;
     transition: background 0.2s;
     user-select: none;
 }

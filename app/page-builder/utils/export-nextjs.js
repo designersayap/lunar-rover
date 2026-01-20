@@ -802,19 +802,49 @@ export default function RootLayout({ children }) {
 
                     // Special: TargetDialogId Logic
                     if (key.includes('TargetDialogId')) {
-                        const resolvedId = sectionIdMap.get(val) || val;
-                        if (resolvedId !== val) {
+                        let resolvedId = sectionIdMap.get(val);
+
+                        // Generic Fallback Logic: If target dialog is not found, find a valid default
+                        if (!resolvedId && val) {
+                            // 1. Try to find 'dialog-item-list'
+                            if (sectionIdMap.has('dialog-item-list')) {
+                                resolvedId = 'dialog-item-list';
+                            } else {
+                                // 2. Find ANY dialog component
+                                const firstDialog = processedComponents.find(c =>
+                                    c.id && (c.id.includes('dialog') || c.id === 'dialog-item-list')
+                                );
+                                if (firstDialog) {
+                                    resolvedId = firstDialog.sectionId || firstDialog.uniqueId;
+                                }
+                            }
+
+                            // 3. Absolute Last Resort: Hardcode 'dialog-item-list' even if not found.
+                            if (!resolvedId) {
+                                resolvedId = 'dialog-item-list';
+                            }
+
+                            if (resolvedId) {
+                                console.warn(`[Export] Remapping missing dialog ID "${val}" to fallback "${resolvedId}"`);
+                            }
+                        }
+
+                        // Use the resolved ID (whether direct match or fallback)
+                        if (resolvedId) {
                             newProps[key] = resolvedId;
                         }
 
-                        // Force Link Type
-                        if (val) {
+                        // Force Link Type unconditionally if we have a target dialog ID
+                        if (newProps[key]) {
                             const linkTypeKey = key.replace('TargetDialogId', 'LinkType');
                             const urlKey = key.replace('TargetDialogId', 'Url');
 
-                            if ((!newProps[linkTypeKey] || newProps[linkTypeKey] === 'url') &&
-                                (!newProps[urlKey] || newProps[urlKey] === '#' || newProps[urlKey] === '')) {
-                                newProps[linkTypeKey] = 'dialog';
+                            // Always force dialog type if we have a target dialog ID
+                            newProps[linkTypeKey] = 'dialog';
+
+                            // Clear URL to prevent confusion
+                            if (newProps[urlKey] === '#' || !newProps[urlKey]) {
+                                newProps[urlKey] = '';
                             }
                         }
                     }
