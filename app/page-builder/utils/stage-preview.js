@@ -200,6 +200,7 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
     const sortedStickyIndices = [];
     const stackedIndices = [];
     const blurIndices = [];
+    const overlayIndices = [];
 
     selectedComponents.forEach((item, index) => {
         const isStacked = item.props?.scrollEffect === 'stacked';
@@ -209,6 +210,12 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
         if (isEffectiveSticky) {
             sortedStickyIndices.push(index);
         }
+
+        // Overlay check (Prop takes precedence, default from data.js as fallback if needed, but here props are merged)
+        if (item.props?.isOverlay || (item.isOverlay && item.props?.isOverlay !== false)) {
+            overlayIndices.push(index);
+        }
+
         if (isStacked) {
             stackedIndices.push(index);
             // Check for blur toggle (Robust check for flat vs nested props)
@@ -249,7 +256,7 @@ export const generateStagingPageContent = (selectedComponents, folderName, activ
     pageContent += `      <BuilderSelectionContext.Provider value={contextValue}>\n`;
     pageContent += `      <div id="canvas-background-root" style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'auto', overflow: 'hidden' }} />\n`;
     pageContent += `      <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>\n`;
-    pageContent += `      <StickyManager stickyIndices={[${sortedStickyIndices.join(',')}]} stackedIndices={[${stackedIndices.join(',')}]} blurIndices={[${blurIndices.join(',')}]}>\n`;
+    pageContent += `      <StickyManager stickyIndices={[${sortedStickyIndices.join(',')}]} stackedIndices={[${stackedIndices.join(',')}]} blurIndices={[${blurIndices.join(',')}]} overlayIndices={[${overlayIndices.join(',')}]}>\n`;
 
 
     // Get Resolver

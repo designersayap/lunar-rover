@@ -21,7 +21,9 @@ export default function BuilderSection({
     style = {},
     isVisible = true,
     tagName = "div",
-    innerContainer = false
+    innerContainer = false,
+    isOverlay = false, // Added prop
+    showFullWidthControl = true // Added prop
 }) {
     const sectionRef = useRef(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
@@ -163,10 +165,16 @@ export default function BuilderSection({
                     removePaddingLeft={removePaddingLeft}
                     removePaddingRight={removePaddingRight}
                     onLayoutChange={handleLayoutChange}
-                    showLinkType={false}
-                    showVariant={false}
-                    showUrl={false}
+                    showLinkType={false} // Section doesn't have link type
+                    showVariant={false} // Section doesn't have variant
+                    showUrl={false} // Section doesn't have URL
                     url={""}
+
+                    // Overlay Props
+                    showOverlayToggle={true}
+                    isOverlay={isOverlay}
+                    onOverlayChange={(val) => onUpdate && onUpdate({ isOverlay: val })}
+                    showFullWidthToggle={showFullWidthControl}
                 />
             )
             }

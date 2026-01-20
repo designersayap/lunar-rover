@@ -34,11 +34,14 @@ export function useStickyStacking(components) {
                     top = Math.min(offset, winH - height);
                 }
 
+                const isOverlay = comp.props?.isOverlay;
+
                 nextStyles[comp.uniqueId] = {
                     position: 'sticky',
                     top: top,
                     // If stacked, it goes behind everything (z-index 0). 
-                    zIndex: isStacked ? 0 : 100 - index
+                    zIndex: isStacked ? 0 : 100 - index,
+                    marginBottom: isOverlay ? `-${height}px` : undefined
                 };
 
                 // Specific behavior for Stacked items:

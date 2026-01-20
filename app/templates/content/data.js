@@ -195,7 +195,8 @@ export const componentDefaults = {
         buttonLinkType: "url",
         buttonTargetDialogId: "",
         buttonId: "",
-        isSticky: true
+        isSticky: true,
+        isOverlay: true
     },
     "media-16-9": {
         image: "",
@@ -261,7 +262,8 @@ export const componentDefaults = {
         menu4LinkType: "url",
         menu4TargetDialogId: "",
         menu4Id: "",
-        isSticky: true
+        isSticky: true,
+        isOverlay: true
     },
     "navigation-left": {
         logo: "",
@@ -291,7 +293,8 @@ export const componentDefaults = {
         menu4LinkType: "url",
         menu4TargetDialogId: "",
         menu4Id: "",
-        isSticky: true
+        isSticky: true,
+        isOverlay: true
     },
     "navigation-right": {
         logo: "",
@@ -321,7 +324,8 @@ export const componentDefaults = {
         menu4LinkType: "url",
         menu4TargetDialogId: "",
         menu4Id: "",
-        isSticky: true
+        isSticky: true,
+        isOverlay: true
     },
     "testimonial-terra": {
         testimonies: Array(12).fill({

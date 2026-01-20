@@ -4,6 +4,7 @@ import styles from './navigation-center.module.css';
 import BuilderImage from '@/app/page-builder/utils/builder/builder-image';
 const DEFAULT_PLACEHOLDER_IMAGE = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
 import BuilderLink from '@/app/page-builder/utils/builder/builder-link';
+import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
 import { createUpdateHandler } from '../utils/component-helpers';
 import { componentDefaults } from '../content/data';
 import { Bars3Icon } from '@heroicons/react/24/solid';
@@ -43,6 +44,7 @@ export default function NavigationLeft({
     menu4TargetDialogId = componentDefaults["navigation-left"].menu4TargetDialogId,
     menu4Id,
 
+    isOverlay,
     onUpdate
 }) {
     const update = createUpdateHandler(onUpdate);
@@ -178,7 +180,15 @@ export default function NavigationLeft({
     ];
 
     return (
-        <nav className={`${styles.navigationWrapper} z-content-1 ${isScrolled ? styles.scrolled : ''}`} id={sectionId}>
+        <BuilderSection
+            tagName="nav"
+            className={`${styles.navigationWrapper} z-content-1 ${isScrolled ? styles.scrolled : ''}`}
+            sectionId={sectionId}
+            onUpdate={onUpdate}
+            isOverlay={isOverlay}
+            fullWidth={true}
+            showFullWidthControl={false}
+        >
             <div className="container-grid">
                 <div className="grid align-center">
 
@@ -292,6 +302,6 @@ export default function NavigationLeft({
                     portalContainer
                 )
             }
-        </nav >
+        </BuilderSection>
     );
 }

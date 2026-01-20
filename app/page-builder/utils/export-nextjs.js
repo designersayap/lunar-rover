@@ -730,6 +730,7 @@ export default function RootLayout({ children }) {
     const stickyIndices = [];
     const stackedIndices = [];
     const blurIndices = [];
+    const overlayIndices = [];
     processedComponents.forEach((item, index) => {
         const compDefaults = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
         const isStacked = item.props?.scrollEffect === 'stacked';
@@ -738,6 +739,13 @@ export default function RootLayout({ children }) {
         if (isSticky) {
             stickyIndices.push(index);
         }
+
+        // Overlay Check
+        const isOverlay = item.props?.isOverlay ?? compDefaults.isOverlay ?? false;
+        if (isOverlay) {
+            overlayIndices.push(index);
+        }
+
         if (isStacked) {
             stackedIndices.push(index);
             if (item.props?.enableBlur) {
@@ -746,7 +754,7 @@ export default function RootLayout({ children }) {
         }
     });
 
-    pageContent += `      <StickyManager stickyIndices={[${stickyIndices.join(',')}]} stackedIndices={[${stackedIndices.join(',')}]} blurIndices={[${blurIndices.join(',')}]}>\n`;
+    pageContent += `      <StickyManager stickyIndices={[${stickyIndices.join(',')}]} stackedIndices={[${stackedIndices.join(',')}]} blurIndices={[${blurIndices.join(',')}]} overlayIndices={[${overlayIndices.join(',')}]}>\n`;
 
     // Render Instances
     processedComponents.forEach((item, index) => {
@@ -769,6 +777,7 @@ export default function RootLayout({ children }) {
         delete props.componentId; // Component Type ID
         delete props.category;
         delete props.isSticky;
+        delete props.isOverlay;
         delete props.uniqueId;
         delete props.config; // Configuration specs
         delete props.isOpen; // Fix: Remove uncontrolled state prop

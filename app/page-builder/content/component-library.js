@@ -65,6 +65,7 @@ export const componentLibrary = {
                 { name: "menu3Url", label: "Menu 3 URL", type: "text", default: componentDefaults["navigation-center"].menu3Url },
                 { name: "menu4Label", label: "Menu 4 Label", type: "text", default: componentDefaults["navigation-center"].menu4Label },
                 { name: "menu4Url", label: "Menu 4 URL", type: "text", default: componentDefaults["navigation-center"].menu4Url },
+                { name: "isOverlay", label: "Overlay Content", type: "boolean", default: componentDefaults["navigation-center"].isOverlay },
             ],
             images: [
                 { label: "Logo", propId: "logoId", suffix: "logo" }
@@ -90,6 +91,7 @@ export const componentLibrary = {
                 { name: "menu3Url", label: "Menu 3 URL", type: "text", default: componentDefaults["navigation-left"]?.menu3Url },
                 { name: "menu4Label", label: "Menu 4 Label", type: "text", default: componentDefaults["navigation-left"]?.menu4Label },
                 { name: "menu4Url", label: "Menu 4 URL", type: "text", default: componentDefaults["navigation-left"]?.menu4Url },
+                { name: "isOverlay", label: "Overlay Content", type: "boolean", default: componentDefaults["navigation-left"]?.isOverlay },
             ],
             images: [
                 { label: "Logo", propId: "logoId", suffix: "logo" }
@@ -115,6 +117,7 @@ export const componentLibrary = {
                 { name: "menu3Url", label: "Menu 3 URL", type: "text", default: componentDefaults["navigation-right"]?.menu3Url },
                 { name: "menu4Label", label: "Menu 4 Label", type: "text", default: componentDefaults["navigation-right"]?.menu4Label },
                 { name: "menu4Url", label: "Menu 4 URL", type: "text", default: componentDefaults["navigation-right"]?.menu4Url },
+                { name: "isOverlay", label: "Overlay Content", type: "boolean", default: componentDefaults["navigation-right"]?.isOverlay },
             ],
             images: [
                 { label: "Logo", propId: "logoId", suffix: "logo" }
@@ -158,6 +161,12 @@ export const componentLibrary = {
                     label: "Button URL",
                     type: "text",
                     default: componentDefaults["osm-banner"].buttonUrl
+                },
+                {
+                    name: "isOverlay",
+                    label: "Overlay Content",
+                    type: "boolean",
+                    default: componentDefaults["osm-banner"]?.isOverlay
                 }
             ],
 

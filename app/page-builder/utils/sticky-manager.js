@@ -11,7 +11,7 @@ import React, { useRef, useState, useEffect, Children } from 'react';
  * @param {React.ReactNode} props.children
  * @param {number[]} props.stickyIndices - Array of child indices that should be sticky
  */
-export default function StickyManager({ children, stickyIndices = [], stackedIndices = [], blurIndices = [] }) {
+export default function StickyManager({ children, stickyIndices = [], stackedIndices = [], blurIndices = [], overlayIndices = [] }) {
     const [offsets, setOffsets] = useState({});
     const refs = useRef({});
 
@@ -207,6 +207,7 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
 
                     const isSticky = stickyIndices.includes(index);
                     const isStacked = stackedIndices.includes(index);
+                    const isOverlay = overlayIndices.includes(index);
 
 
 
@@ -228,6 +229,7 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                                 zIndex: isStacked ? 0 : 100 - index,
                                 display: 'flex',
                                 flexDirection: 'column',
+                                marginBottom: isOverlay ? `-${refs.current[index]?.offsetHeight || 0}px` : undefined
                             }}
                         >
                             {isStacked ? (

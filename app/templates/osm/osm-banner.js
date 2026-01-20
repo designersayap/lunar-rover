@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
+import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
 import BuilderButton from "@/app/page-builder/utils/builder/builder-button";
 import { createUpdateHandler } from "../utils/component-helpers";
 import styles from "./osm-banner.module.css";
@@ -20,6 +21,7 @@ export default function OsmBanner({
     buttonId,
     buttonVisible = componentDefaults["osm-banner"].buttonVisible,
 
+    isOverlay, // Added
     onUpdate,
     sectionId,
     className = "",
@@ -62,9 +64,13 @@ export default function OsmBanner({
     if (isClosed || isVisible === false) return null;
 
     return (
-        <div
+        <BuilderSection
+            tagName="div"
             className={`${styles.banner} z-content-1 ${className}`}
-            id={sectionId}
+            sectionId={sectionId}
+            onUpdate={onUpdate}
+            isOverlay={isOverlay}
+            showFullWidthControl={false}
         >
             <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })} style={{ width: '100%' }}>
                 <div className="grid align-center">
@@ -128,6 +134,6 @@ export default function OsmBanner({
                     </div>
                 </div>
             </div>
-        </div>
+        </BuilderSection>
     );
 }

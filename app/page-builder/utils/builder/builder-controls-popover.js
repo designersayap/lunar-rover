@@ -79,6 +79,10 @@ export default function BuilderControlsPopover({
     showBlurToggle,
     enableBlur,
     onEnableBlurChange,
+    showOverlayToggle,
+    isOverlay,
+    onOverlayChange,
+    showFullWidthToggle = true, // Added prop with default true
     showAspectRatio,
     aspectRatio,
     onAspectRatioChange,
@@ -308,6 +312,21 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
+                        {(mode === 'all' || mode === 'style') && showOverlayToggle && (
+                            <div className={styles.propertyRow} style={{ marginTop: '8px' }}>
+                                <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Overlay Content</label>
+                                <label className={styles.toggleSwitch}>
+                                    <input
+                                        type="checkbox"
+                                        className={styles.toggleInput}
+                                        checked={isOverlay === true}
+                                        onChange={(e) => onOverlayChange && onOverlayChange(e.target.checked)}
+                                    />
+                                    <span className={styles.toggleSlider}></span>
+                                </label>
+                            </div>
+                        )}
+
                         {(mode === 'all' || mode === 'style') && showAspectRatio && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Aspect Ratio</label>
@@ -466,7 +485,7 @@ export default function BuilderControlsPopover({
                         )}
 
 
-                        {(mode === 'all' || mode === 'style') && onLayoutChange && (
+                        {(mode === 'all' || mode === 'style') && onLayoutChange && showFullWidthToggle && (
                             <>
                                 <div className={styles.propertyRow}>
                                     <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Full Width</label>
