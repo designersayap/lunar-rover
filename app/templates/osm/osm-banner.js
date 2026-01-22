@@ -71,8 +71,9 @@ export default function OsmBanner({
             onUpdate={onUpdate}
             isOverlay={isOverlay}
             showFullWidthControl={false}
+            fullWidth={true}
         >
-            <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })} style={{ width: '100%' }}>
+            <div className="container-grid">
                 <div className="grid align-center">
                     <div className={`col-mobile-4 col-tablet-8 col-desktop-12 ${styles.content}`}>
                         <div
