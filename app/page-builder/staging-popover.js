@@ -23,13 +23,20 @@ export default function StagingPopover({
         const fetchFolders = async () => {
             setIsLoading(true);
             try {
-                const res = await fetch('/api/staging-preview');
+                // Set a timeout for the fetch to avoid hanging indefinitely if the API is blocked
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+
+                const res = await fetch('/api/staging-preview', { signal: controller.signal });
+                clearTimeout(timeoutId);
+
                 if (res.ok) {
                     const data = await res.json();
                     setExistingFolders(data.folders || []);
                 }
             } catch (e) {
-                console.error("Failed to fetch folders", e);
+                console.warn("Failed to fetch folders (likely proxy issue), proceeding without list", e);
+                // We don't block the UI, just show no folders
             } finally {
                 setIsLoading(false);
             }

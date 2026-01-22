@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { put } from '@vercel/blob';
 
 export async function POST(request) {
     try {
@@ -10,38 +9,45 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
-        const STAGING_DIR = path.join(process.cwd(), 'app', 'staging');
+        const filename = `staging/${folderName}.json`;
+        const blobUrl = `${process.env.BLOB_URL_PREFIX || 'https://public.blob.vercel-storage.com'}/${filename}`; // Construct likely URL or use list() to find it if unsure, but standard format is simpler.
+        // Better: Fetch the JSON from the public URL directly since we made it public.
 
-        // Security check
-        if (!/^[a-zA-Z0-9-_]+$/.test(folderName)) {
-            return NextResponse.json({ error: 'Invalid folder name' }, { status: 400 });
-        }
-
-        const targetDir = path.join(STAGING_DIR, folderName);
-        const dataFilePath = path.join(targetDir, 'data.js');
-
-        if (!fs.existsSync(dataFilePath)) {
-            return NextResponse.json({ error: 'Data file not found' }, { status: 404 });
-        }
-
-        const fileContent = fs.readFileSync(dataFilePath, 'utf-8');
-
-        // Extract JSON from "export const data = { ... };"
-        const start = fileContent.indexOf('{');
-        const end = fileContent.lastIndexOf('}');
-
-        if (start === -1 || end === -1) {
-            return NextResponse.json({ error: 'Invalid data file format' }, { status: 500 });
-        }
-
-        const jsonString = fileContent.substring(start, end + 1);
         let currentData = {};
+        let stagingConfig = {};
 
         try {
-            currentData = JSON.parse(jsonString);
+            // Note: In a real production app, you might want to use head() or list() to get the real URL if it's not predictable,
+            // or if you want to verify existence. For checking existence and reading, fetching the public URL is efficient.
+            // CAUTION: We don't know the exact base URL without list().
+            // However, we can use the "copy-on-write" approach: just overwrite? No, we need to merge.
+
+            // Re-list to get the download URL is safer to ensure we have the right one.
+            // OR: Since we are in the API, we can just assume we need to read it.
+            // Let's rely on the client providing the "latest" state? No, that's risky.
+
+            // Let's use fetch on the expected URL if we can guess it, but Vercel Blob URLs have random suffixes if we let them.
+            // BUT: We used `addRandomSuffix: false` in staging-preview, so the URL should be predictable IF the store didn't add one anyway (it sometimes does for uniqueness if creating new).
+            // Actually, `addRandomSuffix: false` means it overwrites at the same path.
+
+            // Strategy: content is at `https://<store-id>.public.blob.vercel-storage.com/staging/<folderName>.json`
+            // But we don't know store-id easily here without env var or listing.
+            // Let's use `list()` to find the blob.
+
+            const { list } = require('@vercel/blob');
+            const { blobs } = await list({ prefix: filename, limit: 1 });
+
+            if (blobs.length > 0) {
+                const response = await fetch(blobs[0].url);
+                if (response.ok) {
+                    stagingConfig = await response.json();
+                    currentData = stagingConfig.builderData || {};
+                }
+            }
         } catch (e) {
-            console.error("Error parsing data.js JSON:", e);
-            return NextResponse.json({ error: 'Failed to parse existing data' }, { status: 500 });
+            console.warn("Could not fetch existing data to merge, starting fresh or erroring", e);
+            // If we can't find it, we probably can't save effectively.
+            return NextResponse.json({ error: 'Staging data not found' }, { status: 404 });
         }
 
         // Merge updates
@@ -49,9 +55,15 @@ export async function POST(request) {
         const newData = { ...componentData, ...updates };
         currentData[componentId] = newData;
 
+        // Update the full config object
+        stagingConfig.builderData = currentData;
+        stagingConfig.timestamp = new Date().toISOString();
+
         // Write back
-        const newFileContent = `export const data = ${JSON.stringify(currentData, null, 4)};`;
-        fs.writeFileSync(dataFilePath, newFileContent);
+        await put(filename, JSON.stringify(stagingConfig), {
+            access: 'public',
+            addRandomSuffix: false
+        });
 
         return NextResponse.json({ success: true });
     } catch (error) {
@@ -59,3 +71,4 @@ export async function POST(request) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
+

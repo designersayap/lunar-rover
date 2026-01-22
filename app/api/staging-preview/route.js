@@ -1,24 +1,25 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-
+import { list, put } from '@vercel/blob';
 
 export async function GET() {
     try {
-        const STAGING_DIR = path.join(process.cwd(), 'app', 'staging');
+        const { blobs } = await list({ prefix: 'staging/' });
 
-        if (!fs.existsSync(STAGING_DIR)) {
-            return NextResponse.json({ folders: [] });
-        }
-
-        const items = fs.readdirSync(STAGING_DIR, { withFileTypes: true });
-        const folders = items
-            .filter(item => item.isDirectory())
-            .map(item => item.name)
-            .sort((a, b) => b.localeCompare(a));
+        // Extract folder names from blob pathnames ("staging/folderName.json")
+        const folders = blobs
+            .map(blob => {
+                const parts = blob.pathname.split('/');
+                if (parts.length === 2 && parts[1].endsWith('.json')) {
+                    return parts[1].replace('.json', '');
+                }
+                return null;
+            })
+            .filter(Boolean)
+            .sort((a, b) => b.localeCompare(a)); // Sort desc (newest first usually)
 
         return NextResponse.json({ folders });
     } catch (error) {
+        console.error("Error listing staging blobs:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
@@ -26,83 +27,32 @@ export async function GET() {
 export async function POST(request) {
     try {
         const requestBody = await request.json();
-        let { folderName, fileContent, layoutContent, builderData } = requestBody;
+        const { folderName, fileContent, layoutContent, builderData } = requestBody;
 
-        console.log("--- STAGING PREVIEW DEBUG ---");
-        console.log("Folder:", folderName);
-        if (builderData) {
-            const pk = Object.values(builderData).find(v => v.sectionId === 'product-knowledge'); // adjust 'product-knowledge' if needed based on previous file reads
-            console.log("Product Knowledge Data:", JSON.stringify(pk, null, 2));
-            console.log("Keys received:", Object.keys(builderData));
+        if (!folderName) {
+            return NextResponse.json({ error: 'Missing folderName' }, { status: 400 });
         }
-        console.log("-----------------------------");
-
-        if (!folderName || !fileContent) {
-            return NextResponse.json({ error: 'Missing folderName or fileContent' }, { status: 400 });
-        }
-
-
-
-        const STAGING_DIR = path.join(process.cwd(), 'app', 'staging');
 
         // Security check for folder name
         if (!/^[a-zA-Z0-9-_]+$/.test(folderName)) {
             return NextResponse.json({ error: 'Invalid folder name' }, { status: 400 });
         }
 
-        const targetDir = path.join(STAGING_DIR, folderName);
+        // Prepare data object to save
+        const stagingData = {
+            folderName,
+            builderData: builderData || {},
+            timestamp: new Date().toISOString()
+        };
 
-        if (!fs.existsSync(targetDir)) {
-            fs.mkdirSync(targetDir, { recursive: true });
-        }
+        // Upload to Vercel Blob
+        // We save one JSON file per staging page: staging/{folderName}.json
+        const filename = `staging/${folderName}.json`;
 
-        // Handle data.js: Create only if it doesn't exist, OR clean it up if it does
-        const dataFilePath = path.join(targetDir, 'data.js');
-        let existingData = {};
-
-        if (fs.existsSync(dataFilePath)) {
-            try {
-                const dataContent = fs.readFileSync(dataFilePath, 'utf-8');
-                const start = dataContent.indexOf('{');
-                const end = dataContent.lastIndexOf('}');
-                if (start !== -1 && end !== -1) {
-                    const jsonString = dataContent.substring(start, end + 1);
-                    existingData = JSON.parse(jsonString);
-                }
-            } catch (e) {
-                console.warn("Failed to parse existing data.js for cleanup", e);
-            }
-        }
-
-        // MERGE: Overwrite existing data with Builder Data (Single Source of Truth)
-        if (builderData && typeof builderData === 'object') {
-            existingData = { ...existingData, ...builderData };
-        }
-
-        // Cleanup: Remove keys that are not in the current active component list
-        // activeComponentIds is passed from client, OR derived from builderData keys
-        const activeComponentIds = requestBody.componentIds || (builderData ? Object.keys(builderData) : []);
-
-        if (activeComponentIds && Array.isArray(activeComponentIds)) {
-            const activeSet = new Set(activeComponentIds);
-            Object.keys(existingData).forEach(key => {
-                if (!activeSet.has(key)) {
-                    delete existingData[key];
-                }
-            });
-        }
-
-        // Always write the data file to ensure it's up to date with cleanup or creation
-        fs.writeFileSync(dataFilePath, `export const data = ${JSON.stringify(existingData, null, 4)};`);
-
-        const filePath = path.join(targetDir, 'page.js');
-        fs.writeFileSync(filePath, fileContent);
-
-        // Handle layout.js
-        if (layoutContent) {
-            const layoutFilePath = path.join(targetDir, 'layout.js');
-            fs.writeFileSync(layoutFilePath, layoutContent);
-        }
+        await put(filename, JSON.stringify(stagingData), {
+            access: 'public',
+            addRandomSuffix: false // We deserve to overwrite for updates
+        });
 
         return NextResponse.json({ success: true, path: `/staging/${folderName}` });
     } catch (error) {
@@ -110,3 +60,4 @@ export async function POST(request) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
+
