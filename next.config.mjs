@@ -10,4 +10,6 @@ const nextConfig = {
   },
 };
 
+/* deploy */
+
 export default nextConfig;
