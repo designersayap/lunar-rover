@@ -3,7 +3,7 @@ import { list, put } from '@vercel/blob';
 
 export async function GET() {
     try {
-        const { blobs } = await list({ prefix: 'staging/' });
+        const { blobs } = await list({ prefix: 'staging-data/' });
 
         // Extract folder names from blob pathnames ("staging/folderName.json")
         const folders = blobs

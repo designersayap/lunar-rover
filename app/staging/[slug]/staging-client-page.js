@@ -68,7 +68,7 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
         if (!initialData && dataUrl) {
             console.log("Staging: Fetching data client-side from", dataUrl);
             setIsLoading(true);
-            fetch(dataUrl)
+            fetch(dataUrl, { cache: 'no-store' })
                 .then(res => {
                     if (!res.ok) throw new Error("Failed to load staging data");
                     return res.json();

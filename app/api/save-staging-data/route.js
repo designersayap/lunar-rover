@@ -9,7 +9,7 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
-        const filename = `staging/${folderName}.json`;
+        const filename = `staging-data/${folderName}.json`;
         const blobUrl = `${process.env.BLOB_URL_PREFIX || 'https://public.blob.vercel-storage.com'}/${filename}`; // Construct likely URL or use list() to find it if unsure, but standard format is simpler.
         // Better: Fetch the JSON from the public URL directly since we made it public.
 

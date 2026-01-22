@@ -179,7 +179,7 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
 
         const { upload } = await import('@vercel/blob/client');
 
-        const newBlob = await upload(`staging/${folderName}.json`, JSON.stringify(payload), {
+        const newBlob = await upload(`staging-data/${folderName}.json`, JSON.stringify(payload), {
             access: 'public',
             handleUploadUrl: '/api/blob/upload-final',
             contentType: 'application/json', // Explicit content type
@@ -205,7 +205,7 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
 
         if (!indexData.folders.includes(folderName)) {
             indexData.folders.push(folderName);
-            await upload(`staging/index.json`, JSON.stringify(indexData), {
+            await upload(`staging-data/index.json`, JSON.stringify(indexData), {
                 access: 'public',
                 handleUploadUrl: '/api/blob/upload-final',
                 contentType: 'application/json',
