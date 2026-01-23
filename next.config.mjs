@@ -9,7 +9,5 @@ const nextConfig = {
     ],
   },
 };
-
-/* deploy */
-
+/* daru janc000000k */
 export default nextConfig;
