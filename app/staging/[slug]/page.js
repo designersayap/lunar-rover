@@ -5,7 +5,7 @@ import StagingClientPage from "./staging-client-page";
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }) {
-    const { slug } = params;
+    const { slug } = await params;
 
     // Server-side fetching disabled due to proxy issues.
     // Metadata can be updated client-side if needed.
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-    const { slug } = params;
+    const { slug } = await params;
 
     // Server-side fetching disabled due to proxy issues.
     // Client-side component will handle data fetching via dataUrl.

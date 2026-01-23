@@ -183,7 +183,6 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
             access: 'public',
             handleUploadUrl: '/api/blob/upload-final',
             contentType: 'application/json', // Explicit content type
-            addRandomSuffix: false, // Ensure we overwrite existing files
         });
 
         // 5. Update Index (staging/index.json)

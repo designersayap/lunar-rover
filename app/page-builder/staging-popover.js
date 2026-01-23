@@ -18,6 +18,7 @@ export default function StagingPopover({
     const [existingFolders, setExistingFolders] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchFolders = async () => {
@@ -37,6 +38,7 @@ export default function StagingPopover({
             } catch (e) {
                 console.warn("Failed to fetch folders (likely proxy issue), proceeding without list", e);
                 // We don't block the UI, just show no folders
+                setError(e.message || "Failed to fetch staging folders");
             } finally {
                 setIsLoading(false);
             }
@@ -216,6 +218,10 @@ export default function StagingPopover({
                         {isLoading ? (
                             <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--grey-200)' }}>
                                 Loading...
+                            </div>
+                        ) : error ? (
+                            <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--red-400, #ff4444)' }}>
+                                {error}
                             </div>
                         ) : existingFolders.length === 0 ? (
                             <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--grey-200)' }}>

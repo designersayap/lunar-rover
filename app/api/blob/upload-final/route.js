@@ -23,6 +23,7 @@ export async function POST(request) {
                     // Allow overwriting for staging files to keep URLs predictable
                     addRandomSuffix: false,
                     allowOverwrite: true,
+                    cacheControlMaxAge: 0, // Disable caching to ensure updates are seen immediately
                     tokenPayload: JSON.stringify({
                         // optional payload to save metadata in database if needed
                     }),
