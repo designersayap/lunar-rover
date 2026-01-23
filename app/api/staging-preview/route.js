@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import { list, put } from '@vercel/blob';
 
+// WORKAROUND: Allow self-signed certs for corporate proxy (Vercel Blob SDK usage)
+if (process.env.NODE_ENV === 'development') {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
 export async function GET() {
     try {
         const { blobs } = await list({ prefix: 'staging-data/' });
@@ -47,7 +52,7 @@ export async function POST(request) {
 
         // Upload to Vercel Blob
         // We save one JSON file per staging page: staging/{folderName}.json
-        const filename = `staging/${folderName}.json`;
+        const filename = `staging-data/${folderName}.json`;
 
         await put(filename, JSON.stringify(stagingData), {
             access: 'public',
@@ -58,6 +63,39 @@ export async function POST(request) {
     } catch (error) {
         console.error('Error creating staging page:', error);
         return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+}
+
+export async function DELETE(request) {
+    try {
+        const { searchParams } = new URL(request.url);
+        const folderName = searchParams.get('folderName');
+
+        if (!folderName) {
+            return NextResponse.json({ error: 'Missing folderName' }, { status: 400 });
+        }
+
+        const filename = `staging-data/${folderName}.json`;
+        const { del } = require('@vercel/blob');
+
+        // We delete directly. If it doesn't exist, it doesn't throw usually, or we catch it.
+        // But del takes a URL. We need to List first to get the URL?
+        // Or can del take a pathname? No, del(url).
+        // So we MUST list first.
+
+        const { list } = require('@vercel/blob');
+        const { blobs } = await list({ prefix: filename, limit: 1 });
+
+        if (blobs.length > 0) {
+            await del(blobs[0].url);
+            console.log(`Deleted existing blob: ${blobs[0].url}`);
+        }
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.warn('Error deleting staging page:', error);
+        // We don't want to block the flow if delete fails, just warn
+        return NextResponse.json({ success: true, warning: error.message });
     }
 }
 

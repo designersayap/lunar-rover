@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FolderIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import styles from '../page.module.css';
 import { handleStagePreview } from './utils/stage-preview';
@@ -19,6 +19,12 @@ export default function StagingPopover({
     const [isLoading, setIsLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState(null);
+
+    // Use ref to access latest props in async handlers/closures
+    const selectedComponentsRef = useRef(selectedComponents);
+    useEffect(() => {
+        selectedComponentsRef.current = selectedComponents;
+    }, [selectedComponents]);
 
     useEffect(() => {
         const fetchFolders = async () => {
@@ -54,7 +60,15 @@ export default function StagingPopover({
         }
 
         setIsSaving(true);
-        const success = await handleStagePreview(selectedComponents, folderName.trim(), analyticsData, activeThemePath);
+        // FORCE BLUR to ensure any pending edits in contentEditable are committed
+        if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur();
+        }
+
+        // Small delay to allow blur events and React state updates to flush
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        const success = await handleStagePreview(selectedComponentsRef.current, folderName.trim(), analyticsData, activeThemePath);
         setIsSaving(false);
 
         if (success) {

@@ -69,22 +69,59 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
             console.log("Staging: Fetching data client-side from", dataUrl);
             setIsLoading(true);
             // Append timestamp to prevent aggressive caching
-            const bustUrl = dataUrl + (dataUrl.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
-            fetch(bustUrl, { cache: 'no-store' })
-                .then(res => {
-                    if (!res.ok) throw new Error("Failed to load staging data");
-                    return res.json();
-                })
-                .then(data => {
+            const fetchData = async (retries = 5, delay = 1000) => {
+                const bustUrl = dataUrl + (dataUrl.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
+                console.log(`[Staging] Fetching: ${bustUrl} (Retries left: ${retries})`);
+
+                try {
+                    const res = await fetch(bustUrl, { cache: 'no-store' });
+                    if (!res.ok) {
+                        if (res.status === 404 && retries > 0) {
+                            console.warn(`[Staging] 404 Not Found, retrying... (${retries} attempts left)`);
+                            // Do NOT throw error here if we have retries left
+                            // Just wait and retry
+                            setTimeout(() => fetchData(retries - 1, delay * 1.5), delay);
+                            return;
+                        }
+
+                        // If it's not 404 or no retries left, throw
+                        throw new Error(`Status ${res.status}: ${res.statusText}`);
+                    }
+                    const data = await res.json();
                     setLocalData(data.builderData || {});
                     setComponentsTree(data.components || []);
                     setIsLoading(false);
-                })
-                .catch(err => {
-                    console.error("Staging Load Error:", err);
-                    setError(err.message);
-                    setIsLoading(false);
-                });
+                    setError(null);
+                } catch (err) {
+                    console.error(`Staging Load Attempt Failed (${retries} retries left):`, err);
+
+                    // Only retry on network errors (fetch throws) if retries > 0
+                    // 404s are handled above
+                    if (retries > 0) {
+                        // Keep Loading state
+                        console.log(`Retrying due to network error...`);
+                        setTimeout(() => fetchData(retries - 1, delay * 1.5), delay);
+                    } else {
+                        // ... Final fallback logic ...
+                        try {
+                            console.log("Attempting fallback without cache busting...");
+                            const resFallback = await fetch(dataUrl);
+                            if (resFallback.ok) {
+                                const data = await resFallback.json();
+                                setLocalData(data.builderData || {});
+                                setComponentsTree(data.components || []);
+                                setIsLoading(false);
+                                setError(null);
+                                return;
+                            }
+                        } catch (e) { /* ignore */ }
+
+                        setError(`Failed to load staging data from ${dataUrl}. Error: ${err.message}`);
+                        setIsLoading(false);
+                    }
+                }
+            };
+            fetchData();
         } else if (!initialData && !dataUrl) {
             setError("No data source found");
             setIsLoading(false);

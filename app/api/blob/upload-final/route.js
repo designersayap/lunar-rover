@@ -16,14 +16,15 @@ export async function POST(request) {
             body,
             request,
             onBeforeGenerateToken: async (pathname) => {
-                console.error('Generating token Final with allowOverwrite: true');
+                console.error('Generating token Final with allowOverwrite: true (Force Overwrite)');
+                // const isIndex = pathname.endsWith('index.json');
 
                 return {
                     allowedContentTypes: ['application/json'],
-                    // Allow overwriting for staging files to keep URLs predictable
+                    // Force overwrite: Always use correct filename, no random suffix
                     addRandomSuffix: false,
                     allowOverwrite: true,
-                    cacheControlMaxAge: 0, // Disable caching to ensure updates are seen immediately
+                    // cacheControlMaxAge: 0, 
                     tokenPayload: JSON.stringify({
                         // optional payload to save metadata in database if needed
                     }),

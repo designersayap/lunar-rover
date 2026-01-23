@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import { put } from '@vercel/blob';
 
+// WORKAROUND: Allow self-signed certs for corporate proxy (Vercel Blob SDK usage)
+if (process.env.NODE_ENV === 'development') {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
 export async function POST(request) {
     try {
         const { folderName, componentId, updates } = await request.json();
@@ -17,28 +22,13 @@ export async function POST(request) {
         let stagingConfig = {};
 
         try {
-            // Note: In a real production app, you might want to use head() or list() to get the real URL if it's not predictable,
-            // or if you want to verify existence. For checking existence and reading, fetching the public URL is efficient.
-            // CAUTION: We don't know the exact base URL without list().
-            // However, we can use the "copy-on-write" approach: just overwrite? No, we need to merge.
-
-            // Re-list to get the download URL is safer to ensure we have the right one.
-            // OR: Since we are in the API, we can just assume we need to read it.
-            // Let's rely on the client providing the "latest" state? No, that's risky.
-
-            // Let's use fetch on the expected URL if we can guess it, but Vercel Blob URLs have random suffixes if we let them.
-            // BUT: We used `addRandomSuffix: false` in staging-preview, so the URL should be predictable IF the store didn't add one anyway (it sometimes does for uniqueness if creating new).
-            // Actually, `addRandomSuffix: false` means it overwrites at the same path.
-
-            // Strategy: content is at `https://<store-id>.public.blob.vercel-storage.com/staging/<folderName>.json`
-            // But we don't know store-id easily here without env var or listing.
-            // Let's use `list()` to find the blob.
-
             const { list } = require('@vercel/blob');
             const { blobs } = await list({ prefix: filename, limit: 1 });
 
             if (blobs.length > 0) {
-                const response = await fetch(blobs[0].url);
+                // Cache busting for the read
+                const bustUrl = blobs[0].url + (blobs[0].url.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
+                const response = await fetch(bustUrl, { cache: 'no-store' });
                 if (response.ok) {
                     stagingConfig = await response.json();
                     currentData = stagingConfig.builderData || {};
@@ -62,7 +52,8 @@ export async function POST(request) {
         // Write back
         await put(filename, JSON.stringify(stagingConfig), {
             access: 'public',
-            addRandomSuffix: false
+            addRandomSuffix: false,
+            cacheControlMaxAge: 0 // Ensure immediate updates
         });
 
         return NextResponse.json({ success: true });

@@ -175,15 +175,52 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
 
         // 4. Upload to Vercel Blob (Client Side)
 
-
+        // EXPLICIT DELETE: Remove existing file to ensure verification loop waits for the NEW one
+        // This solves the issue where overwrite happens instantly (or verification sees old file)
+        // leading to 404s if cache is stale or file is swapped.
+        try {
+            console.log("Cleaning up existing staging file...");
+            await fetch(`/api/staging-preview?folderName=${folderName}`, { method: 'DELETE' });
+        } catch (e) {
+            console.warn("Delete failed ignore", e);
+        }
 
         const { upload } = await import('@vercel/blob/client');
+
+        console.log(`[Stage Preview] Uploading payload: ${payload.components.length} components, Folder: ${folderName}`);
 
         const newBlob = await upload(`staging-data/${folderName}.json`, JSON.stringify(payload), {
             access: 'public',
             handleUploadUrl: '/api/blob/upload-final',
             contentType: 'application/json', // Explicit content type
         });
+
+        // VERIFICATION LOOP: Wait for the file to be accessible (propagation)
+        console.log("Verifying blob propagation...", newBlob.url);
+        let retries = 30; // 30 seconds max
+        let isReady = false;
+
+        while (retries > 0) {
+            try {
+                // Cache-bust the verification request
+                const checkUrl = newBlob.url + (newBlob.url.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
+                const res = await fetch(checkUrl, { method: 'HEAD', cache: 'no-store' });
+                if (res.ok) {
+                    isReady = true;
+                    console.log("Blob verified accessible!");
+                    break;
+                }
+            } catch (e) {
+                // ignore network errors during poll
+            }
+            // Wait 1 second
+            await new Promise(r => setTimeout(r, 1000));
+            retries--;
+        }
+
+        if (!isReady) {
+            console.warn("Blob propagation timed out, opening anyway and letting client retry...");
+        }
 
         // 5. Update Index (staging/index.json)
         // We calculate the index URL based on the uploaded file's URL
@@ -213,6 +250,7 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
         }
 
         // Open in new tab with explicit data URL to support client-side fetching (proxy bypass)
+        console.log(`[Stage Preview] Opening staging page with URL: ${newBlob.url}`);
         window.open(`/staging/${folderName}?dataUrl=${encodeURIComponent(newBlob.url)}`, '_blank');
     } catch (e) {
         console.error("Error staging preview", e);

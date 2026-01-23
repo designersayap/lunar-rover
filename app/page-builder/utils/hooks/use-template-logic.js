@@ -210,15 +210,14 @@ export function useTemplateLogic() {
     }, [showToast]);
 
     const removeComponent = useCallback((uniqueId) => {
-        const comp = findComponentById(selectedComponents, uniqueId);
-        if (comp) {
-            showToast(`${comp.name} deleted`, "delete");
-            setSelectedComponents(prev => removeComponentFromList(prev, uniqueId));
-        } else {
-            // Fallback if not found (unexpected, but handle gracefully)
-            setSelectedComponents(prev => removeComponentFromList(prev, uniqueId));
-        }
-    }, [selectedComponents, showToast]);
+        setSelectedComponents(prev => {
+            const comp = findComponentById(prev, uniqueId);
+            if (comp) {
+                showToast(`${comp.name} deleted`, "delete");
+            }
+            return removeComponentFromList(prev, uniqueId);
+        });
+    }, [showToast]);
 
 
     const updateComponent = useCallback((uniqueId, newProps) => {
