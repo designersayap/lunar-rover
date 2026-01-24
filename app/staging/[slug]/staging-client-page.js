@@ -1,8 +1,9 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 import StickyManager from "@/app/page-builder/utils/sticky-manager";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { COMPONENT_REGISTRY } from "@/app/page-builder/utils/component-registry";
@@ -62,6 +63,74 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
 
     const [activeElementId, setActiveElementId] = useState(null);
     const [activePopoverId, setActivePopoverId] = useState(null);
+
+    const handleUpdate = async (uniqueId, newData) => {
+        setLocalData(prev => ({
+            ...prev,
+            [uniqueId]: { ...(prev[uniqueId] || {}), ...newData }
+        }));
+
+        // Note: The previous "auto-save" for individual updates is disabled/less critical if we rely on manual save.
+        // But for user convenience we keep it for partial updates.
+        // Ideally, we might want to debounce this or just rely on manual save for "Publishing" to blob.
+        // For now, let's keep it but handleManualSave will be the "Big Save".
+        try {
+            await fetch('/api/save-staging-data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    folderName,
+                    componentId: uniqueId,
+                    updates: newData
+                })
+            });
+            console.log("Saved update for", uniqueId);
+        } catch (e) {
+            console.error("Failed to save update", e);
+        }
+    };
+
+    const handleManualSave = useCallback(async (e) => {
+        // Prevent default browser save
+        e.preventDefault();
+
+        const toastId = toast.loading('Saving changes...');
+
+        try {
+            console.log("Saving staging data...", { folderName, dataSize: JSON.stringify(localData).length });
+            const response = await fetch('/api/save-staging-data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    folderName,
+                    builderData: localData // Send the full current state
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ error: response.statusText }));
+                console.error("Save API Error:", errorData);
+                throw new Error(errorData.error || `Save failed: ${response.status}`);
+            }
+
+            toast.success('Changes saved successfully!', { id: toastId });
+        } catch (err) {
+            console.error("Manual Save Error:", err);
+            toast.error(`Failed to save: ${err.message}`, { id: toastId });
+        }
+    }, [folderName, localData]);
+
+    // Keyboard Shortcut Listener
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+                handleManualSave(e);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [handleManualSave]);
 
     // CSR Fallback: Fetch data if server-side failed
     useEffect(() => {
@@ -152,42 +221,6 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
             </div>
         );
     }
-
-    const handleUpdate = async (uniqueId, newData) => {
-        setLocalData(prev => ({
-            ...prev,
-            [uniqueId]: { ...(prev[uniqueId] || {}), ...newData }
-        }));
-
-        try {
-            await fetch('/api/save-staging-data', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    folderName,
-                    componentId: uniqueId,
-                    updates: newData
-                })
-            });
-            console.log("Saved update for", uniqueId);
-        } catch (e) {
-            console.error("Failed to save update", e);
-        }
-    };
-
-    // Reconstruct component tree from builderData or a separate schema? 
-    // CURRENT LIMITATION: The 'builderData' only contains the PROPS. It doesn't contain the TREE STRUCTURE (which component is where).
-    // The previous implementation wrote the component tree into `page.js` as hardcoded JSX.
-    // We need the TREE STRUCTURE to be saved in the JSON as well.
-    // Assuming `initialData.builderData` contains the PROPS, but where is the TREE?
-    // We need to modify `stage - preview.js` to save the component list (tree) into the JSON as well.
-    // Let's assume `initialData.components` will contain the tree.
-
-    // Components Tree is now managing by state (componentsTree) derived from initialData or fetch
-    // const componentsTree = initialData?.components || []; // REMOVED
-
-    // Sort components: Sticky items first
-    // Note: We need to process the tree similar to `stage - preview.js`
 
     // Flatten for stickiness check
     const processedComponents = componentsTree.map((item, index) => {

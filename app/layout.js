@@ -2,6 +2,7 @@ import "./foundation/tokens.css";
 import "./foundation/global.css";
 import "./foundation/grid.css";
 import "./foundation/accent-color.css";
+import { Toaster } from "sonner";
 
 export const metadata = {
   title: "Lunar: Template Generator",
@@ -15,7 +16,10 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link id="theme-stylesheet" rel="stylesheet" href="/themes/theme.css" />
       </head>
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        {children}
+        <Toaster richColors position="bottom-right" />
+      </body>
     </html>
   );
 }

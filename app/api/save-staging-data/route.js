@@ -8,16 +8,15 @@ if (process.env.NODE_ENV === 'development') {
 
 export async function POST(request) {
     try {
-        const { folderName, componentId, updates } = await request.json();
+        const { folderName, componentId, updates, builderData } = await request.json();
 
-        if (!folderName || !componentId || !updates) {
-            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+        if (!folderName) {
+            return NextResponse.json({ error: 'Missing folderName' }, { status: 400 });
         }
 
         const filename = `staging-data/${folderName}.json`;
-        const blobUrl = `${process.env.BLOB_URL_PREFIX || 'https://public.blob.vercel-storage.com'}/${filename}`; // Construct likely URL or use list() to find it if unsure, but standard format is simpler.
-        // Better: Fetch the JSON from the public URL directly since we made it public.
 
+        // Fetch existing data
         let currentData = {};
         let stagingConfig = {};
 
@@ -26,7 +25,6 @@ export async function POST(request) {
             const { blobs } = await list({ prefix: filename, limit: 1 });
 
             if (blobs.length > 0) {
-                // Cache busting for the read
                 const bustUrl = blobs[0].url + (blobs[0].url.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
                 const response = await fetch(bustUrl, { cache: 'no-store' });
                 if (response.ok) {
@@ -36,23 +34,31 @@ export async function POST(request) {
             }
         } catch (e) {
             console.warn("Could not fetch existing data to merge, starting fresh or erroring", e);
-            // If we can't find it, we probably can't save effectively.
-            return NextResponse.json({ error: 'Staging data not found' }, { status: 404 });
         }
 
-        // Merge updates
-        const componentData = currentData[componentId] || {};
-        const newData = { ...componentData, ...updates };
-        currentData[componentId] = newData;
+        // Mode 1: Full Overwrite (if builderData is provided)
+        if (builderData) {
+            stagingConfig.builderData = builderData;
+        }
+        // Mode 2: Partial Update (if componentId + updates provided)
+        else if (componentId && updates) {
+            const componentData = currentData[componentId] || {};
+            const newData = { ...componentData, ...updates };
+            currentData[componentId] = newData;
+            stagingConfig.builderData = currentData;
+        }
+        else {
+            return NextResponse.json({ error: 'Missing data to save (builderData or componentId+updates)' }, { status: 400 });
+        }
 
-        // Update the full config object
-        stagingConfig.builderData = currentData;
+        // Update timestamp
         stagingConfig.timestamp = new Date().toISOString();
 
         // Write back
         await put(filename, JSON.stringify(stagingConfig), {
             access: 'public',
-            addRandomSuffix: false,
+            addRandomSuffix: false, // We want to keep the same name
+            allowOverwrite: true,  // Explicitly allow overwriting
             cacheControlMaxAge: 0 // Ensure immediate updates
         });
 
