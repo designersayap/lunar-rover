@@ -27,14 +27,18 @@ export default function StagingPopover({
     }, [selectedComponents]);
 
     useEffect(() => {
+        let isFirstLoad = true;
+
         const fetchFolders = async () => {
-            setIsLoading(true);
+            if (isFirstLoad) setIsLoading(true);
+
             try {
                 // Set a timeout for the fetch to avoid hanging indefinitely if the API is blocked
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
 
-                const res = await fetch('/api/staging-preview', { signal: controller.signal });
+                // Append timestamp to prevent browser caching of the API request itself
+                const res = await fetch(`/api/staging-preview?t=${Date.now()}`, { signal: controller.signal });
                 clearTimeout(timeoutId);
 
                 if (res.ok) {
@@ -42,15 +46,27 @@ export default function StagingPopover({
                     setExistingFolders(data.folders || []);
                 }
             } catch (e) {
-                console.warn("Failed to fetch folders (likely proxy issue), proceeding without list", e);
-                // We don't block the UI, just show no folders
-                setError(e.message || "Failed to fetch staging folders");
+                if (e.name !== 'AbortError') {
+                    console.warn("Failed to fetch folders (likely proxy issue), proceeding without list", e);
+                    // Only show error on first load to avoid annoying UI flickering/toasts
+                    if (isFirstLoad) {
+                        setError(e.message || "Failed to fetch staging folders");
+                    }
+                }
             } finally {
-                setIsLoading(false);
+                if (isFirstLoad) {
+                    setIsLoading(false);
+                    isFirstLoad = false;
+                }
             }
         };
 
         fetchFolders();
+        const intervalId = setInterval(fetchFolders, 5000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
     }, []);
 
     const handleSave = async () => {

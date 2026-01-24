@@ -29,7 +29,13 @@ export async function GET() {
 
         const sortedFolders = Array.from(folders).sort((a, b) => a.localeCompare(b));
 
-        return NextResponse.json({ folders: sortedFolders });
+        return NextResponse.json({ folders: sortedFolders }, {
+            headers: {
+                'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0',
+            }
+        });
     } catch (error) {
         console.error("Error listing staging blobs:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
