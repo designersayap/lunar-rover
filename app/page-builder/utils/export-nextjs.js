@@ -476,7 +476,45 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
     }
     // --- End Image Scanning ---
 
-    // --- 3. Fetch Foundation Styles ---
+    // --- 3. Bundle Fonts (Fix for UAT/Export) ---
+    const fontFiles = [
+        // Lato
+        'Lato/Lato-Black.ttf', 'Lato/Lato-BlackItalic.ttf', 'Lato/Lato-Bold.ttf', 'Lato/Lato-BoldItalic.ttf',
+        'Lato/Lato-Italic.ttf', 'Lato/Lato-Light.ttf', 'Lato/Lato-LightItalic.ttf', 'Lato/Lato-Regular.ttf',
+        'Lato/Lato-Thin.ttf', 'Lato/Lato-ThinItalic.ttf',
+        // Poppins
+        'Poppins/Poppins-Black.ttf', 'Poppins/Poppins-BlackItalic.ttf', 'Poppins/Poppins-Bold.ttf', 'Poppins/Poppins-BoldItalic.ttf',
+        'Poppins/Poppins-ExtraBold.ttf', 'Poppins/Poppins-ExtraBoldItalic.ttf', 'Poppins/Poppins-ExtraLight.ttf', 'Poppins/Poppins-ExtraLightItalic.ttf',
+        'Poppins/Poppins-Italic.ttf', 'Poppins/Poppins-Light.ttf', 'Poppins/Poppins-LightItalic.ttf', 'Poppins/Poppins-Medium.ttf',
+        'Poppins/Poppins-MediumItalic.ttf', 'Poppins/Poppins-Regular.ttf', 'Poppins/Poppins-SemiBold.ttf', 'Poppins/Poppins-SemiBoldItalic.ttf',
+        'Poppins/Poppins-Thin.ttf', 'Poppins/Poppins-ThinItalic.ttf',
+        // Proza Libre
+        'Proza_Libre/ProzaLibre-Bold.ttf', 'Proza_Libre/ProzaLibre-BoldItalic.ttf', 'Proza_Libre/ProzaLibre-ExtraBold.ttf', 'Proza_Libre/ProzaLibre-ExtraBoldItalic.ttf',
+        'Proza_Libre/ProzaLibre-Italic.ttf', 'Proza_Libre/ProzaLibre-Medium.ttf', 'Proza_Libre/ProzaLibre-MediumItalic.ttf', 'Proza_Libre/ProzaLibre-Regular.ttf',
+        'Proza_Libre/ProzaLibre-SemiBold.ttf', 'Proza_Libre/ProzaLibre-SemiBoldItalic.ttf',
+        // Montserrat (Note: User has customized structure with static folder)
+        'Montserrat/static/Montserrat-Black.ttf', 'Montserrat/static/Montserrat-BlackItalic.ttf', 'Montserrat/static/Montserrat-Bold.ttf', 'Montserrat/static/Montserrat-BoldItalic.ttf',
+        'Montserrat/static/Montserrat-ExtraBold.ttf', 'Montserrat/static/Montserrat-ExtraBoldItalic.ttf', 'Montserrat/static/Montserrat-ExtraLight.ttf', 'Montserrat/static/Montserrat-ExtraLightItalic.ttf',
+        'Montserrat/static/Montserrat-Italic.ttf', 'Montserrat/static/Montserrat-Light.ttf', 'Montserrat/static/Montserrat-LightItalic.ttf', 'Montserrat/static/Montserrat-Medium.ttf',
+        'Montserrat/static/Montserrat-MediumItalic.ttf', 'Montserrat/static/Montserrat-Regular.ttf', 'Montserrat/static/Montserrat-SemiBold.ttf', 'Montserrat/static/Montserrat-SemiBoldItalic.ttf',
+        'Montserrat/static/Montserrat-Thin.ttf', 'Montserrat/static/Montserrat-ThinItalic.ttf'
+    ];
+
+    for (const fontPath of fontFiles) {
+        try {
+            const res = await fetch(`/fonts/${fontPath}`);
+            if (res.ok) {
+                const blob = await res.blob();
+
+                // Add to zip in public/fonts/...
+                zip.folder("public").folder("fonts").file(fontPath, blob);
+            }
+        } catch (e) {
+            console.warn("Failed to bundle font:", fontPath, e);
+        }
+    }
+
+    // --- 4. Fetch Foundation Styles ---
     // Note: The order matters for cascade.
     const foundationFiles = [
         `public${activeThemePath}`, // Theme (Primitives) must be loaded first
