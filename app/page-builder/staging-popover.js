@@ -272,7 +272,20 @@ export default function StagingPopover({
                     onClick={handleSave}
                     disabled={isSaving}
                 >
-                    {isSaving ? "Staging..." : "Create Staging"}
+                    {isSaving ? (
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                            <div style={{
+                                width: '12px',
+                                height: '12px',
+                                border: '2px solid currentColor',
+                                borderTopColor: 'transparent',
+                                borderRadius: '50%',
+                                animation: 'spin 1s linear infinite'
+                            }} />
+                            <span>Creating Staging</span>
+                            <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+                        </div>
+                    ) : "Create Staging"}
                 </button>
             </div>
         </BasePopover>

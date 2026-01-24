@@ -175,15 +175,8 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
 
         // 4. Upload to Vercel Blob (Client Side)
 
-        // EXPLICIT DELETE: Remove existing file to ensure verification loop waits for the NEW one
-        // This solves the issue where overwrite happens instantly (or verification sees old file)
-        // leading to 404s if cache is stale or file is swapped.
-        try {
-            console.log("Cleaning up existing staging file...");
-            await fetch(`/api/staging-preview?folderName=${folderName}`, { method: 'DELETE' });
-        } catch (e) {
-            console.warn("Delete failed ignore", e);
-        }
+        // EXPLICIT DELETE: Removed to speed up process. Overwrite is handled by blobs.
+
 
         const { upload } = await import('@vercel/blob/client');
 
@@ -195,9 +188,10 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
             contentType: 'application/json', // Explicit content type
         });
 
-        // VERIFICATION LOOP: Wait for the file to be accessible (propagation)
+        // VERIFICATION LOOP: Quick check to see if it's ready, but don't block too long.
+        // We allow the client Page to handle the "Loading..." spinner and retries if it takes longer.
         console.log("Verifying blob propagation...", newBlob.url);
-        let retries = 30; // 30 seconds max
+        let retries = 5; // Max 5 seconds server-side wait
         let isReady = false;
 
         while (retries > 0) {
@@ -219,7 +213,7 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
         }
 
         if (!isReady) {
-            console.warn("Blob propagation timed out, opening anyway and letting client retry...");
+            console.warn("Blob verification timed out (server-side), opening window anyway to let client retry...");
         }
 
         // 5. Update Index (staging/index.json)

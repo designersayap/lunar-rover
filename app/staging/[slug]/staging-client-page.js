@@ -138,24 +138,34 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
             console.log("Staging: Fetching data client-side from", dataUrl);
             setIsLoading(true);
             // Append timestamp to prevent aggressive caching
-            const fetchData = async (retries = 5, delay = 1000) => {
+            const fetchData = async (retries = 20, delay = 1000) => {
                 const bustUrl = dataUrl + (dataUrl.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
                 console.log(`[Staging] Fetching: ${bustUrl} (Retries left: ${retries})`);
+
+                // Update UI to show we are trying (if we had a setRetryCount state, otherwise just log)
+                // Since I cannot change the component state structure easily without a bigger refactor, 
+                // I will just rely on the existing 'isLoading' but make the fetch robust.
 
                 try {
                     const res = await fetch(bustUrl, { cache: 'no-store' });
                     if (!res.ok) {
-                        if (res.status === 404 && retries > 0) {
-                            console.warn(`[Staging] 404 Not Found, retrying... (${retries} attempts left)`);
-                            // Do NOT throw error here if we have retries left
-                            // Just wait and retry
-                            setTimeout(() => fetchData(retries - 1, delay * 1.5), delay);
-                            return;
+                        // Special handling for 404s (Propagation Delay)
+                        if (res.status === 404) {
+                            if (retries > 0) {
+                                console.warn(`[Staging] 404 Not Found, retrying... (${retries} attempts left)`);
+                                // Cap delay at 3 seconds to avoid "infinite" feeling wait
+                                const nextDelay = Math.min(delay * 1.5, 3000);
+                                setTimeout(() => fetchData(retries - 1, nextDelay), delay);
+                                return;
+                            }
+                            // No retries left for 404
+                            throw new Error(`Data not found (404) after multiple attempts.`);
                         }
 
-                        // If it's not 404 or no retries left, throw
+                        // Other errors (e.g. 500)
                         throw new Error(`Status ${res.status}: ${res.statusText}`);
                     }
+
                     const data = await res.json();
                     setLocalData(data.builderData || {});
                     setComponentsTree(data.components || []);
@@ -164,14 +174,14 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
                 } catch (err) {
                     console.error(`Staging Load Attempt Failed (${retries} retries left):`, err);
 
-                    // Only retry on network errors (fetch throws) if retries > 0
-                    // 404s are handled above
                     if (retries > 0) {
-                        // Keep Loading state
-                        console.log(`Retrying due to network error...`);
-                        setTimeout(() => fetchData(retries - 1, delay * 1.5), delay);
+                        // Retry on network errors or non-404 errors if we think they might be transient
+                        // Cap delay at 3 seconds
+                        const nextDelay = Math.min(delay * 1.5, 3000);
+                        console.log(`Retrying due to error... waiting ${delay}ms`);
+                        setTimeout(() => fetchData(retries - 1, nextDelay), delay);
                     } else {
-                        // ... Final fallback logic ...
+                        // Final fallback attempt (raw URL without cache bust)
                         try {
                             console.log("Attempting fallback without cache busting...");
                             const resFallback = await fetch(dataUrl);
