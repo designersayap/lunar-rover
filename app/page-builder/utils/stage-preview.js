@@ -182,7 +182,8 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
 
         console.log(`[Stage Preview] Uploading payload: ${payload.components.length} components, Folder: ${folderName}`);
 
-        const newBlob = await upload(`staging-data/${folderName}.json`, JSON.stringify(payload), {
+        const timestamp = Date.now();
+        const newBlob = await upload(`staging-data/${folderName}/${timestamp}.json`, JSON.stringify(payload), {
             access: 'public',
             handleUploadUrl: '/api/blob/upload-final',
             contentType: 'application/json', // Explicit content type

@@ -24,7 +24,7 @@ export async function POST(request) {
                     // Force overwrite: Always use correct filename, no random suffix
                     addRandomSuffix: false,
                     allowOverwrite: true,
-                    // cacheControlMaxAge: 0, 
+                    cacheControlMaxAge: 0, // Ensure no caching at the edge
                     tokenPayload: JSON.stringify({
                         // optional payload to save metadata in database if needed
                     }),

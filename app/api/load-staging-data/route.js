@@ -18,22 +18,48 @@ export async function GET(request) {
             return NextResponse.json({ error: 'Missing folder name' }, { status: 400 });
         }
 
-        const filename = `staging-data/${folderName}.json`;
+        const filename = `staging-data/${folderName}`;
 
-        // list blobs matching the filename
+        // List blobs to find the latest one (timestamped or legacy)
+        // We look for `staging-data/folderName/` (new) OR `staging-data/folderName.json` (legacy)
+
+        let targetBlobUrl = null;
+
+        // 1. Check for new timestamped folder structure
         const { blobs } = await list({
-            prefix: filename,
-            limit: 1
+            prefix: filename + '/', // staging-data/folderName/
+            // get more than 1 to sort, though usually list returns sorted? 
+            // verified: Vercel Blob list doesn't guarantee sort order by time in docs, so we sort manually.
+            limit: 1000
         });
 
-        if (blobs.length === 0) {
+        if (blobs.length > 0) {
+            // Sort by uploadedAt desc
+            blobs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+            targetBlobUrl = blobs[0].url;
+        } else {
+            // 2. Check for legacy single file
+            // Note: The prefix 'staging-data/folderName' might also match 'staging-data/folderName.json' if we are not careful with the slash.
+            // But Vercel Blob prefix matches string.
+            // If filename = 'staging-data/folder', it matches 'staging-data/folder.json' AND 'staging-data/folder/foo.json'.
+
+            // To be safe, explicit check for legacy file:
+            const legacyFilename = `staging-data/${folderName}.json`;
+            const { blobs: legacyBlobs } = await list({
+                prefix: legacyFilename,
+                limit: 1
+            });
+            if (legacyBlobs.length > 0) {
+                targetBlobUrl = legacyBlobs[0].url;
+            }
+        }
+
+        if (!targetBlobUrl) {
             return NextResponse.json({ error: 'Staging data not found' }, { status: 404 });
         }
 
         // Fetch the JSON content from the blob URL
-        const blobUrl = blobs[0].url;
-        // Cache bust to ensure we get latest
-        const bustUrl = blobUrl + (blobUrl.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
+        const bustUrl = targetBlobUrl + (targetBlobUrl.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
 
         const response = await fetch(bustUrl, {
             cache: 'no-store',
@@ -48,19 +74,60 @@ export async function GET(request) {
 
         const data = await response.json();
 
-        // The stored payload structure is:
-        // {
-        //   folderName,
-        //   components: [...], // The Tree
-        //   builderData: {...}, // The Props Map
-        //   analytics,
-        //   activeThemePath
-        // }
-        //
-        // The client (staging-popover.js) expects an object that has a 'components' property.
-        // So returning 'data' directly is correct.
+        // MERGE LOGIC: Apply builderData overrides to components
+        // The staging-client-page saves updates to 'builderData', but 'components' remains the original structure.
+        // We must merge them so the restore receives the latest props.
 
-        return NextResponse.json(data);
+        const builderData = data.builderData || {};
+        const components = data.components || [];
+
+        const applyOverrides = (list) => {
+            if (!Array.isArray(list)) return [];
+            return list.map(comp => {
+                let override = null;
+
+                // Match by sectionId (preferred) or uniqueId
+                if (comp.sectionId && builderData[comp.sectionId]) {
+                    override = builderData[comp.sectionId];
+                }
+                else if (comp.uniqueId && builderData[comp.uniqueId]) {
+                    override = builderData[comp.uniqueId];
+                }
+
+                let newComp = { ...comp };
+                let newProps = { ...(comp.props || {}) };
+
+                if (override) {
+                    Object.entries(override).forEach(([k, v]) => {
+                        // Structural keys (id, sectionId, etc) and Props are mixed in builderData flat map.
+                        // We apply them to the component or props appropriate.
+
+                        const topLevelKeys = ['id', 'uniqueId', 'sectionId', 'componentName', 'isSticky'];
+                        if (topLevelKeys.includes(k)) {
+                            newComp[k] = v;
+                        } else {
+                            newProps[k] = v;
+                        }
+                    });
+                    newComp.props = newProps;
+                }
+
+                // Recursion
+                if (newProps.components && Array.isArray(newProps.components)) {
+                    newProps.components = applyOverrides(newProps.components);
+                    newComp.props = newProps; // Ensure the prop is updated with the new list
+                }
+                if (newComp.components && Array.isArray(newComp.components)) {
+                    newComp.components = applyOverrides(newComp.components);
+                }
+
+                return newComp;
+            });
+        };
+
+        const mergedComponents = applyOverrides(components);
+
+        return NextResponse.json({ ...data, components: mergedComponents });
 
     } catch (error) {
         console.error('Error loading staging data:', error);

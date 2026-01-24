@@ -10,19 +10,26 @@ export async function GET() {
     try {
         const { blobs } = await list({ prefix: 'staging-data/' });
 
-        // Extract folder names from blob pathnames ("staging/folderName.json")
-        const folders = blobs
-            .map(blob => {
-                const parts = blob.pathname.split('/');
-                if (parts.length === 2 && parts[1].endsWith('.json')) {
-                    return parts[1].replace('.json', '');
-                }
-                return null;
-            })
-            .filter(Boolean)
-            .sort((a, b) => b.localeCompare(a)); // Sort desc (newest first usually)
+        // Extract folder names from blob pathnames ("staging-data/folderName/timestamp.json" or legacy "staging-data/folderName.json")
+        const folders = new Set();
 
-        return NextResponse.json({ folders });
+        blobs.forEach(blob => {
+            const parts = blob.pathname.split('/');
+            // Expected: staging-data / folderName / timestamp.json
+            if (parts.length === 3 && parts[2].endsWith('.json')) {
+                folders.add(parts[1]);
+            }
+            // Logic for legacy files separation if needed, but we essentially want to show the "Folder" concept.
+            // If we have legacy "staging-data/legacy.json", strictly speaking it is a folder named "legacy" in the UI concept?
+            // Let's support both for transition.
+            else if (parts.length === 2 && parts[1].endsWith('.json')) {
+                folders.add(parts[1].replace('.json', ''));
+            }
+        });
+
+        const sortedFolders = Array.from(folders).sort((a, b) => a.localeCompare(b));
+
+        return NextResponse.json({ folders: sortedFolders });
     } catch (error) {
         console.error("Error listing staging blobs:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });

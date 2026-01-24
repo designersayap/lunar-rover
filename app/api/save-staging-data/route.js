@@ -14,18 +14,29 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Missing folderName' }, { status: 400 });
         }
 
-        const filename = `staging-data/${folderName}.json`;
+        const prefix = `staging-data/${folderName}`;
 
-        // Fetch existing data
+        // Fetch existing data (Latest)
         let currentData = {};
         let stagingConfig = {};
 
         try {
             const { list } = require('@vercel/blob');
-            const { blobs } = await list({ prefix: filename, limit: 1 });
+            // Try new structure first
+            const { blobs } = await list({ prefix: prefix + '/', limit: 1000 });
+            let targetUrl = null;
 
             if (blobs.length > 0) {
-                const bustUrl = blobs[0].url + (blobs[0].url.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
+                blobs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+                targetUrl = blobs[0].url;
+            } else {
+                // Try legacy
+                const { blobs: legacyBlobs } = await list({ prefix: prefix + '.json', limit: 1 });
+                if (legacyBlobs.length > 0) targetUrl = legacyBlobs[0].url;
+            }
+
+            if (targetUrl) {
+                const bustUrl = targetUrl + (targetUrl.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
                 const response = await fetch(bustUrl, { cache: 'no-store' });
                 if (response.ok) {
                     stagingConfig = await response.json();
@@ -43,6 +54,8 @@ export async function POST(request) {
         // Mode 2: Partial Update (if componentId + updates provided)
         else if (componentId && updates) {
             const componentData = currentData[componentId] || {};
+            // Partial update needs to be careful about deeply nested props? 
+            // For now simple merge is what we had.
             const newData = { ...componentData, ...updates };
             currentData[componentId] = newData;
             stagingConfig.builderData = currentData;
@@ -54,11 +67,14 @@ export async function POST(request) {
         // Update timestamp
         stagingConfig.timestamp = new Date().toISOString();
 
-        // Write back
-        await put(filename, JSON.stringify(stagingConfig), {
+        // Write back to NEW timestamped file to avoid cache issues
+        // We use the same pattern as stage-preview.js: staging-data/folder/timestamp.json
+        const newFilename = `staging-data/${folderName}/${Date.now()}.json`;
+
+        await put(newFilename, JSON.stringify(stagingConfig), {
             access: 'public',
-            addRandomSuffix: false, // We want to keep the same name
-            allowOverwrite: true,  // Explicitly allow overwriting
+            addRandomSuffix: false,
+            allowOverwrite: true,
             cacheControlMaxAge: 0 // Ensure immediate updates
         });
 
