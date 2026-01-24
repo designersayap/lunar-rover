@@ -10,12 +10,13 @@ A powerful **Visual Page Builder** built with **Next.js 15**, designed to create
 - **Staging Environment**: Generate live preview links (`/staging/[name]`) to share your work-in-progress.
 - **Production Export**: Export your page as a standalone Next.js project zip file, clean and ready to deploy.
 
-## ✨ Latest Updates (v1.1 - Interaction Polish)
+## ✨ Latest Updates (v1.2 - Cloud & Performance)
 
-We've refined the builder experience to be smoother and more intuitive:
-- **Smart Selection**: Clicking the empty canvas now auto-deselects components, while protecting active overlays from accidental closure.
-- **Precision Positioning**: Builder controls now maintain a perfect `4px` gap from your component, adapting intelligently to screen edges (top/bottom flip).
-- **Unified Design**: The `BuilderButton` overlay has been rebuilt to match the standard design system, ensuring a consistent editing experience across all component types.
+We've modernized the architecture and refined the builder interaction:
+- **Cloud Staging**: Staging pages are now powered by **Vercel Blob**, ensuring seamless data persistence and eliminating local file generation issues.
+- **Dynamic Routing**: New `/staging/[slug]` architecture allows for instant preview generation and updates.
+- **Split Settings**: Component overlays now clearly separate **Properties** (Cog icon) and **Styles** (Sparkle icon) for a more organized editing experience.
+- **Smooth Scrolling**: Enabled global smooth scrolling for better navigation within pages.
 
 ## 🛠️ Getting Started
 
@@ -59,8 +60,12 @@ lunar/
 │   │   ├── content/data.js       # DEFAULT DATA (Single Source of Truth)
 │   │   └── ...
 │   │
-│   ├── staging/                  # 🎭 Generated Staging Pages
-│   └── api/                      # Backend routes for File I/O (Export/Staging)
+│   ├── staging/                  # 🎭 Staging Environment
+│   │   └── [slug]/               # Dynamic Route (Fetches Blob JSON)
+│   └── api/                      # Backend routes
+│       ├── staging-preview/      # POST: Save JSON to Vercel Blob
+│       ├── load-staging-data/    # GET: Retrieve JSON from Blob
+│       └── ...
 │
 ├── public/
 │   └── themes/                   # 🌗 CSS Theme Definitions
@@ -91,10 +96,10 @@ Themes are defined as simple CSS files in `public/themes/`.
 ## 🎭 Staging & Export
 
 ### Staging
-The staging feature (`/api/staging-preview`) creates a real Next.js route under `app/staging/[name]`.
-- Generates a physical `page.js` file implementing the selected components.
-- Injects a `useEffect` to apply the current theme.
-- Enables interactivity validation before export.
+The staging feature (`/api/staging-preview`) now uses **Vercel Blob** to store page data:
+- **Cloud Storage**: Page JSON is uploaded to Vercel Blob (`staging-data/`).
+- **Dynamic Rendering**: The route `app/staging/[slug]` fetches this JSON and dynamically renders the page.
+- **Persistence**: Data persists across deployments and environments.
 
 ### Export
 The export engine (`utils/export-nextjs.js`) bundles your page into a ZIP file.
@@ -106,6 +111,7 @@ The export engine (`utils/export-nextjs.js`) bundles your page into a ZIP file.
 
 -   **Next.js 15** (App Router)
 -   **React 19**
+-   **Vercel Blob** (Cloud Storage)
 -   **CSS Modules** (Scoped styling)
 -   **Heroicons** (Iconography)
 
