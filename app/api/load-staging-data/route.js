@@ -37,6 +37,7 @@ export async function GET(request) {
             // Sort by uploadedAt desc
             blobs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
             targetBlobUrl = blobs[0].url;
+            console.log(`[Load Staging] Found ${blobs.length} files. Latest: ${targetBlobUrl} (${blobs[0].uploadedAt})`);
         } else {
             // 2. Check for legacy single file
             // Note: The prefix 'staging-data/folderName' might also match 'staging-data/folderName.json' if we are not careful with the slash.
@@ -51,10 +52,12 @@ export async function GET(request) {
             });
             if (legacyBlobs.length > 0) {
                 targetBlobUrl = legacyBlobs[0].url;
+                console.log(`[Load Staging] Found legacy file: ${targetBlobUrl}`);
             }
         }
 
         if (!targetBlobUrl) {
+            console.log(`[Load Staging] No data found for folder: ${folderName}`);
             return NextResponse.json({ error: 'Staging data not found' }, { status: 404 });
         }
 
@@ -127,7 +130,13 @@ export async function GET(request) {
 
         const mergedComponents = applyOverrides(components);
 
-        return NextResponse.json({ ...data, components: mergedComponents });
+        return NextResponse.json({ ...data, components: mergedComponents }, {
+            headers: {
+                'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0',
+            }
+        });
 
     } catch (error) {
         console.error('Error loading staging data:', error);
