@@ -237,8 +237,17 @@ export default function TemplateGeneratorPage() {
             onClose={closePopover}
             position={popoverPositions.staging}
             className="z-system-modal-floating"
-            onRestore={(data) => {
+            onRestore={(data, themePath) => {
               setSelectedComponents(data);
+
+              if (themePath) {
+                // Find and select theme
+                const theme = themes.find(t => t.path === themePath);
+                if (theme) {
+                  handleThemeSelect(theme.id);
+                }
+              }
+
               setActiveElementId(null);
               setActivePopoverId(null);
             }}

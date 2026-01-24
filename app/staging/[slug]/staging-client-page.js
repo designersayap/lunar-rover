@@ -58,6 +58,7 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
 
     const [localData, setLocalData] = useState(initialData?.builderData || {});
     const [componentsTree, setComponentsTree] = useState(initialData?.components || []);
+    const [themePath, setThemePath] = useState(initialData?.activeThemePath || activeThemePath);
     const [isLoading, setIsLoading] = useState(!initialData);
     const [error, setError] = useState(null);
 
@@ -134,22 +135,22 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
 
     // CSR Fallback: Fetch data if server-side failed
     useEffect(() => {
-        if (!initialData && dataUrl) {
-            console.log("Staging: Fetching data client-side from", dataUrl);
+        if (!initialData) {
+            console.log("Staging: Fetching data client-side for folder:", folderName);
             setIsLoading(true);
-            // Append timestamp to prevent aggressive caching
-            const fetchData = async (retries = 20, delay = 1000) => {
-                const bustUrl = dataUrl + (dataUrl.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
-                console.log(`[Staging] Fetching: ${bustUrl} (Retries left: ${retries})`);
 
-                // Update UI to show we are trying (if we had a setRetryCount state, otherwise just log)
-                // Since I cannot change the component state structure easily without a bigger refactor, 
-                // I will just rely on the existing 'isLoading' but make the fetch robust.
+            // Construct API URL
+            const apiUrl = `/api/load-staging-data?folder=${folderName}`;
+
+            // Append timestamp to prevent browser/proxy caching of the API response
+            const fetchData = async (retries = 20, delay = 1000) => {
+                const bustUrl = apiUrl + '&t=' + new Date().getTime();
+                console.log(`[Staging] Fetching: ${bustUrl} (Retries left: ${retries})`);
 
                 try {
                     const res = await fetch(bustUrl, { cache: 'no-store' });
                     if (!res.ok) {
-                        // Special handling for 404s (Propagation Delay)
+                        // Special handling for 404s (Propagation Delay or Not Found)
                         if (res.status === 404) {
                             if (retries > 0) {
                                 console.warn(`[Staging] 404 Not Found, retrying... (${retries} attempts left)`);
@@ -169,6 +170,7 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
                     const data = await res.json();
                     setLocalData(data.builderData || {});
                     setComponentsTree(data.components || []);
+                    if (data.activeThemePath) setThemePath(data.activeThemePath);
                     setIsLoading(false);
                     setError(null);
                 } catch (err) {
@@ -181,38 +183,22 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
                         console.log(`Retrying due to error... waiting ${delay}ms`);
                         setTimeout(() => fetchData(retries - 1, nextDelay), delay);
                     } else {
-                        // Final fallback attempt (raw URL without cache bust)
-                        try {
-                            console.log("Attempting fallback without cache busting...");
-                            const resFallback = await fetch(dataUrl);
-                            if (resFallback.ok) {
-                                const data = await resFallback.json();
-                                setLocalData(data.builderData || {});
-                                setComponentsTree(data.components || []);
-                                setIsLoading(false);
-                                setError(null);
-                                return;
-                            }
-                        } catch (e) { /* ignore */ }
-
-                        setError(`Failed to load staging data from ${dataUrl}. Error: ${err.message}`);
+                        // API failure - no raw URL fallback possible anymore since we hid it.
+                        setError(`Failed to load staging data. Error: ${err.message}`);
                         setIsLoading(false);
                     }
                 }
             };
             fetchData();
-        } else if (!initialData && !dataUrl) {
-            setError("No data source found");
-            setIsLoading(false);
         }
-    }, [initialData, dataUrl]);
+    }, [initialData, folderName]);
 
     useEffect(() => {
-        if (activeThemePath) {
+        if (themePath) {
             const themeLink = document.getElementById("theme-stylesheet");
-            if (themeLink) themeLink.href = activeThemePath;
+            if (themeLink) themeLink.href = themePath;
         }
-    }, [activeThemePath]);
+    }, [themePath]);
 
     if (isLoading) {
         return (

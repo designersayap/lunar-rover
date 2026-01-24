@@ -217,36 +217,11 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
             console.warn("Blob verification timed out (server-side), opening window anyway to let client retry...");
         }
 
-        // 5. Update Index (staging/index.json)
-        // We calculate the index URL based on the uploaded file's URL
-        let indexData = { folders: [], mappings: {} };
 
-        // Updating Index for Listing purposes
-        // We try to fetch `index.json` from the standard location (assuming fixed name support).
 
-        const indexUrl = newBlob.url.split('/').slice(0, -1).join('/') + '/index.json';
-
-        try {
-            const idxRes = await fetch(indexUrl, { cache: 'no-store' });
-            if (idxRes.ok) {
-                indexData = await idxRes.json();
-            }
-        } catch (e) {
-            // ignore
-        }
-
-        if (!indexData.folders.includes(folderName)) {
-            indexData.folders.push(folderName);
-            await upload(`staging-data/index.json`, JSON.stringify(indexData), {
-                access: 'public',
-                handleUploadUrl: '/api/blob/upload-final',
-                contentType: 'application/json',
-            });
-        }
-
-        // Open in new tab with explicit data URL to support client-side fetching (proxy bypass)
-        console.log(`[Stage Preview] Opening staging page with URL: ${newBlob.url}`);
-        window.open(`/staging/${folderName}?dataUrl=${encodeURIComponent(newBlob.url)}`, '_blank');
+        // Open in new tab with clean URL (client will fetch via API)
+        console.log(`[Stage Preview] Opening staging page: /staging/${folderName}`);
+        window.open(`/staging/${folderName}`, '_blank');
     } catch (e) {
         console.error("Error staging preview", e);
         alert("Error staging preview");
