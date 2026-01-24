@@ -3,7 +3,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
-import { toast } from "sonner";
+import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/react/24/solid";
+import styles from "../../page.module.css";
 import StickyManager from "@/app/page-builder/utils/sticky-manager";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { COMPONENT_REGISTRY } from "@/app/page-builder/utils/component-registry";
@@ -65,6 +66,17 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
     const [activeElementId, setActiveElementId] = useState(null);
     const [activePopoverId, setActivePopoverId] = useState(null);
 
+    const [toaster, setToaster] = useState({ show: false, message: '', type: 'info' });
+
+    const showToast = (message, type = 'info') => {
+        setToaster({ show: true, message, type });
+        if (type !== 'loading') {
+            setTimeout(() => {
+                setToaster(prev => ({ ...prev, show: false }));
+            }, 3000);
+        }
+    };
+
     const handleUpdate = async (uniqueId, newData) => {
         setLocalData(prev => ({
             ...prev,
@@ -95,7 +107,7 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
         // Prevent default browser save
         e.preventDefault();
 
-        const toastId = toast.loading('Saving changes...');
+        showToast('Saving changes...', 'loading');
 
         try {
             console.log("Saving staging data...", { folderName, dataSize: JSON.stringify(localData).length });
@@ -114,10 +126,10 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
                 throw new Error(errorData.error || `Save failed: ${response.status}`);
             }
 
-            toast.success('Changes saved successfully!', { id: toastId });
+            showToast('Changes saved successfully!', 'success');
         } catch (err) {
             console.error("Manual Save Error:", err);
-            toast.error(`Failed to save: ${err.message}`, { id: toastId });
+            showToast(`Failed to save: ${err.message}`, 'error');
         }
     }, [folderName, localData]);
 
@@ -203,9 +215,8 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
     if (isLoading) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', gap: '1rem' }}>
-                <div style={{ width: '2rem', height: '2rem', border: '3px solid #ccc', borderTopColor: '#000', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-                <p>Loading Staging Preview...</p>
-                <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+                <div className={styles.spinner} />
+                <p style={{ fontFamily: 'var(--font-family-body)', fontSize: '14px', fontWeight: 500 }}>Loading Staging Preview...</p>
             </div>
         );
     }
@@ -308,7 +319,19 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
                         })}
                     </StickyManager>
                 </div>
+
+                {/* Toaster */}
+                {toaster.show && (
+                    <div className={`${styles.toaster} ${toaster.type === "error" ? styles.toasterDelete : ""} z-system-modal-floating`}>
+                        {toaster.type === "success" && <CheckCircleIcon className={styles.toasterIcon} style={{ color: 'var(--system-color-green-300)' }} />}
+                        {toaster.type === "error" && <ExclamationCircleIcon className={styles.toasterIcon} />}
+                        {toaster.type === "loading" && (
+                            <div className={styles.spinner} />
+                        )}
+                        {toaster.message}
+                    </div>
+                )}
             </BuilderSelectionContext.Provider>
-        </main>
+        </main >
     );
 }
