@@ -1,31 +1,43 @@
 import { NextResponse } from 'next/server';
-import { list, put } from '@vercel/blob';
+import { ListObjectsV2Command, PutObjectCommand } from '@aws-sdk/client-s3';
+import S3 from '@/app/lib/s3-client';
 
-// WORKAROUND: Allow self-signed certs for corporate proxy (Vercel Blob SDK usage)
-if (process.env.NODE_ENV === 'development') {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-}
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET() {
     try {
-        const { blobs } = await list({ prefix: 'staging-data/' });
+        const bucketName = process.env.B2_BUCKET_NAME;
+        const prefix = 'staging-data/';
 
-        // Extract folder names from blob pathnames ("staging-data/folderName/timestamp.json" or legacy "staging-data/folderName.json")
+        const command = new ListObjectsV2Command({
+            Bucket: bucketName,
+            Prefix: prefix,
+            MaxKeys: 1000
+        });
+
+        const { Contents } = await S3.send(command).catch(err => {
+            console.error("S3 List Error:", err);
+            return { Contents: [] };
+        });
+
+        // Extract folder names from paths
+        // "staging-data/folderName/timestamp.json" or "staging-data/folderName.json"
         const folders = new Set();
 
-        blobs.forEach(blob => {
-            const parts = blob.pathname.split('/');
-            // Expected: staging-data / folderName / timestamp.json
-            if (parts.length === 3 && parts[2].endsWith('.json')) {
-                folders.add(parts[1]);
-            }
-            // Logic for legacy files separation if needed, but we essentially want to show the "Folder" concept.
-            // If we have legacy "staging-data/legacy.json", strictly speaking it is a folder named "legacy" in the UI concept?
-            // Let's support both for transition.
-            else if (parts.length === 2 && parts[1].endsWith('.json')) {
-                folders.add(parts[1].replace('.json', ''));
-            }
-        });
+        if (Contents) {
+            Contents.forEach(item => {
+                const parts = item.Key.split('/');
+                // Expected: staging-data / folderName / timestamp.json
+                if (parts.length === 3 && parts[2].endsWith('.json')) {
+                    folders.add(parts[1]);
+                }
+                // Legacy: staging-data / folderName.json
+                else if (parts.length === 2 && parts[1].endsWith('.json')) {
+                    folders.add(parts[1].replace('.json', ''));
+                }
+            });
+        }
 
         const sortedFolders = Array.from(folders).sort((a, b) => a.localeCompare(b));
 
@@ -37,7 +49,7 @@ export async function GET() {
             }
         });
     } catch (error) {
-        console.error("Error listing staging blobs:", error);
+        console.error("Error listing staging folders:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
@@ -45,32 +57,40 @@ export async function GET() {
 export async function POST(request) {
     try {
         const requestBody = await request.json();
-        const { folderName, fileContent, layoutContent, builderData } = requestBody;
+        const { folderName, builderData } = requestBody;
 
         if (!folderName) {
             return NextResponse.json({ error: 'Missing folderName' }, { status: 400 });
         }
 
-        // Security check for folder name
         if (!/^[a-zA-Z0-9-_]+$/.test(folderName)) {
             return NextResponse.json({ error: 'Invalid folder name' }, { status: 400 });
         }
 
-        // Prepare data object to save
+        // Use timestamped structure to maintain history and consistency with load logic
+        const timestamp = new Date().toISOString();
+        const filename = `staging-data/${folderName}/${timestamp}.json`;
+
         const stagingData = {
             folderName,
             builderData: builderData || {},
-            timestamp: new Date().toISOString()
+            components: requestBody.components,
+            timestamp,
+            // Keep activeThemePath if passed, though not in destructuring above yet
+            activeThemePath: requestBody.activeThemePath
         };
 
-        // Upload to Vercel Blob
-        // We save one JSON file per staging page: staging/{folderName}.json
-        const filename = `staging-data/${folderName}.json`;
+        const bucketName = process.env.B2_BUCKET_NAME;
 
-        await put(filename, JSON.stringify(stagingData), {
-            access: 'public',
-            addRandomSuffix: false // We deserve to overwrite for updates
+        const command = new PutObjectCommand({
+            Bucket: bucketName,
+            Key: filename,
+            Body: JSON.stringify(stagingData),
+            ContentType: 'application/json',
+            // ACL: 'public-read' // Assumed bucket policy
         });
+
+        await S3.send(command);
 
         return NextResponse.json({ success: true, path: `/staging/${folderName}` });
     } catch (error) {
@@ -88,27 +108,33 @@ export async function DELETE(request) {
             return NextResponse.json({ error: 'Missing folderName' }, { status: 400 });
         }
 
-        const filename = `staging-data/${folderName}.json`;
-        const { del } = require('@vercel/blob');
+        const bucketName = process.env.B2_BUCKET_NAME;
+        const prefix = `staging-data/${folderName}`;
 
-        // We delete directly. If it doesn't exist, it doesn't throw usually, or we catch it.
-        // But del takes a URL. We need to List first to get the URL?
-        // Or can del take a pathname? No, del(url).
-        // So we MUST list first.
+        // Find all objects with this prefix (folder + legacy file) & Delete them
 
-        const { list } = require('@vercel/blob');
-        const { blobs } = await list({ prefix: filename, limit: 1 });
+        // 1. List
+        const listCmd = new ListObjectsV2Command({
+            Bucket: bucketName,
+            Prefix: prefix
+        });
+        const { Contents } = await S3.send(listCmd);
 
-        if (blobs.length > 0) {
-            await del(blobs[0].url);
-            console.log(`Deleted existing blob: ${blobs[0].url}`);
+        if (Contents && Contents.length > 0) {
+            const { DeleteObjectsCommand } = await import('@aws-sdk/client-s3');
+            const deleteCmd = new DeleteObjectsCommand({
+                Bucket: bucketName,
+                Delete: {
+                    Objects: Contents.map(c => ({ Key: c.Key }))
+                }
+            });
+            await S3.send(deleteCmd);
+            console.log(`Deleted ${Contents.length} objects for folder ${folderName}`);
         }
 
         return NextResponse.json({ success: true });
     } catch (error) {
         console.warn('Error deleting staging page:', error);
-        // We don't want to block the flow if delete fails, just warn
         return NextResponse.json({ success: true, warning: error.message });
     }
 }
-

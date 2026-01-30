@@ -140,91 +140,44 @@ export const extractBuilderData = (components) => {
 
 export const handleStagePreview = async (selectedComponents, folderName, analytics, activeThemePath) => {
     try {
-        // We no longer generate file content strings.
-        // We prepare a JSON payload describing the page.
-
-        // 1. Component Tree: The list of components as they appear on the canvas
-        // We need to clean this list to be JSON-serializable (remove functions, recursive refs if any)
-        // basic JSON.stringify does a good job, but we might want to be explicit.
-
-        // Use the same logic as `extractBuilderData` to get the PROPS map (by ID)
-        // effectively flattening the data for easy updates.
+        // 1. Prepare Payload
         const builderData = extractBuilderData(selectedComponents);
-
-        // 2. The Tree Structure
-        // We save `selectedComponents` directly as the tree source of truth.
-        // But we should probably clean it up a bit (remove large unused props if possible),
-        // but for now sending it as-is (serialized) is safest to preserve structure.
-
-        // 3. Analytics & Metadata
-        // We pass this to be saved in the JSON so the server page can read it.
 
         const payload = {
             folderName,
-            // fileContent: null, // No longer needed
-            // layoutContent: null, // No longer needed
-            components: selectedComponents, // The Tree
-            builderData, // The Props Map (for individual updates)
+            components: selectedComponents,
+            builderData,
             analytics,
             activeThemePath
         };
 
-        // Note: The API at `app/api/staging-preview` expects { folderName, builderData, ... }
-        // We need to update the API to accept and save `components` and `analytics` too.
-        // I will update the API to just save the whole body (minus explicit file contents) into the JSON.
+        console.log(`[Stage Preview] Uploading payload via Server Proxy: ${selectedComponents.length} components, Folder: ${folderName}`);
 
-        // 4. Upload to Vercel Blob (Client Side)
-
-        // EXPLICIT DELETE: Removed to speed up process. Overwrite is handled by blobs.
-
-
-        const { upload } = await import('@vercel/blob/client');
-
-        console.log(`[Stage Preview] Uploading payload: ${payload.components.length} components, Folder: ${folderName}`);
-
-        const timestamp = Date.now();
-        const newBlob = await upload(`staging-data/${folderName}/${timestamp}.json`, JSON.stringify(payload), {
-            access: 'public',
-            handleUploadUrl: '/api/blob/upload-final',
-            contentType: 'application/json', // Explicit content type
+        // 2. Server-Side Upload (Proxy)
+        // Bypasses CORS issues by letting the Next.js server talk to B2 directly
+        const res = await fetch('/api/staging-preview', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
         });
 
-        // VERIFICATION LOOP: Quick check to see if it's ready, but don't block too long.
-        // We allow the client Page to handle the "Loading..." spinner and retries if it takes longer.
-        console.log("Verifying blob propagation...", newBlob.url);
-        let retries = 5; // Max 5 seconds server-side wait
-        let isReady = false;
-
-        while (retries > 0) {
-            try {
-                // Cache-bust the verification request
-                const checkUrl = newBlob.url + (newBlob.url.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
-                const res = await fetch(checkUrl, { method: 'HEAD', cache: 'no-store' });
-                if (res.ok) {
-                    isReady = true;
-                    console.log("Blob verified accessible!");
-                    break;
-                }
-            } catch (e) {
-                // ignore network errors during poll
-            }
-            // Wait 1 second
-            await new Promise(r => setTimeout(r, 1000));
-            retries--;
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || `Upload failed: ${res.statusText}`);
         }
 
-        if (!isReady) {
-            console.warn("Blob verification timed out (server-side), opening window anyway to let client retry...");
-        }
+        console.log("Upload completed via server proxy.");
 
-
-
-        // Open in new tab with clean URL (client will fetch via API)
+        // 3. Open Stage Page
         console.log(`[Stage Preview] Opening staging page: /staging/${folderName}`);
         window.open(`/staging/${folderName}`, '_blank');
+        return true;
+
     } catch (e) {
         console.error("Error staging preview", e);
-        alert("Error staging preview");
+        alert("Error staging preview: " + e.message);
         return false;
     }
 };
+
+

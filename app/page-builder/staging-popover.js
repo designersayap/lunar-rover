@@ -62,11 +62,8 @@ export default function StagingPopover({
         };
 
         fetchFolders();
-        const intervalId = setInterval(fetchFolders, 5000);
-
-        return () => {
-            clearInterval(intervalId);
-        };
+        // Removed setInterval to reduce API calls as requested.
+        // Data is now fetched only on mount (page load/refresh) and updated locally on create.
     }, []);
 
     const handleSave = async () => {
@@ -84,10 +81,16 @@ export default function StagingPopover({
         // Small delay to allow blur events and React state updates to flush
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        const success = await handleStagePreview(selectedComponentsRef.current, folderName.trim(), analyticsData, activeThemePath);
+        const finalFolderName = folderName.trim();
+        const success = await handleStagePreview(selectedComponentsRef.current, finalFolderName, analyticsData, activeThemePath);
         setIsSaving(false);
 
         if (success) {
+            // Optimistically update the list so the user sees it next time without re-fetching
+            setExistingFolders(prev => {
+                if (prev.includes(finalFolderName)) return prev;
+                return [...prev, finalFolderName].sort((a, b) => a.localeCompare(b));
+            });
             onClose();
         }
     };

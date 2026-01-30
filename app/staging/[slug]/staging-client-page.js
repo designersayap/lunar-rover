@@ -82,25 +82,8 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
             ...prev,
             [uniqueId]: { ...(prev[uniqueId] || {}), ...newData }
         }));
-
-        // Note: The previous "auto-save" for individual updates is disabled/less critical if we rely on manual save.
-        // But for user convenience we keep it for partial updates.
-        // Ideally, we might want to debounce this or just rely on manual save for "Publishing" to blob.
-        // For now, let's keep it but handleManualSave will be the "Big Save".
-        try {
-            await fetch('/api/save-staging-data', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    folderName,
-                    componentId: uniqueId,
-                    updates: newData
-                })
-            });
-            console.log("Saved update for", uniqueId);
-        } catch (e) {
-            console.error("Failed to save update", e);
-        }
+        // Auto-save disabled to prevent creating new files on every keystroke.
+        // User must manually save (CMD+S).
     };
 
     const handleManualSave = useCallback(async (e) => {
