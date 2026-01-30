@@ -1,30 +1,15 @@
 .container {
-    /* Copy necessary variables from page.module.css */
-    --bg3: #3a3a3a;
-    --bg4: #3f3f3f;
-    --bdr: #3a3a3a;
-    --shd-btn: 0 2px 4px rgba(0, 0, 0, .1), inset 0 1px 0 rgba(255, 255, 255, .05);
-    --shd-active: 0 1px 2px rgba(0, 0, 0, .1), inset 0 1px 2px rgba(0, 0, 0, .1);
-    --shd-input: inset 0 2px 4px rgba(0, 0, 0, .1);
-    --h-btn: 28px;
-    /* Maybe increase for login button? user said "same... as generator" which is small. I'll use 40px for login but keep style */
-    --h-input: 32px;
-    --base-white: #ffffff;
-    /* Assuming global, but defining just in case */
-    --grey-200: #888;
-    --grey-400: #555;
-
-    /* Original container styles */
+    --h-input: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #000;
+    background-color: var(--base-black);
     background-image:
         radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.1) 0px, transparent 50%),
         radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.1) 0px, transparent 50%);
-    color: #fff;
-    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--base-white);
+    font-family: var(--font-family-body);
 }
 
 .card {
@@ -79,73 +64,18 @@
     width: 100%;
 }
 
-.input {
+.loginInput {
     width: 100%;
-    padding: 0.875rem 1rem;
-    border-radius: 8px;
-    /* Adjusted to match input style of Generator if possible, but keeping nice 8px */
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    outline: none;
-    box-shadow: var(--shd-input);
 }
 
-.input:focus {
-    border-color: rgba(255, 255, 255, 0.3);
-    background: rgba(0, 0, 0, 0.5);
-}
 
-.input::placeholder {
-    color: rgba(255, 255, 255, 0.4);
-}
 
-/* Matched to .generatorButton */
-.button {
+.loginButton {
     width: 100%;
-    height: 40px;
-    /* Generator uses --h-btn (28px) which is too small for main login. Using 40px but keeping style */
-
-    /* Generator Styles */
-    gap: 8px;
-    /* var(--space-60) approx */
-    font-size: 14px;
-    /* var(--typography-font-size-90) approx */
-    color: var(--base-white);
-    border: none;
-    border-radius: 6px;
-    margin: 0;
-    background: var(--bg3);
-    box-shadow: var(--shd-btn);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background 0.2s;
-    padding: 0 8px;
-    /* var(--space-60) */
-    font-weight: normal;
-    /* Generator is regular? */
+    height: 44px !important;
     margin-top: 0.5rem;
-}
-
-.button:hover {
-    background: var(--bg4);
-}
-
-.button:active,
-.button:active:not(:disabled) {
-    background: var(--bg4);
-    box-shadow: var(--shd-active);
-    transform: translateY(1px);
-}
-
-.button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
+    padding: 0 8px;
+    /* Ensure padding override if needed, though generator has it */
 }
 
 .error {

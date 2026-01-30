@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LockClosedIcon } from "@heroicons/react/24/solid";
 import styles from "./page.module.css";
+import globalStyles from "../page.module.css";
 
 export default function LoginPage() {
     const [password, setPassword] = useState("");
@@ -56,14 +57,14 @@ export default function LoginPage() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter Password"
-                            className={styles.input}
+                            className={`${globalStyles.formInput} ${styles.loginInput}`}
                             autoFocus
                         />
                     </div>
 
                     {error && <div className={styles.error}>{error}</div>}
 
-                    <button type="submit" className={styles.button} disabled={loading}>
+                    <button type="submit" className={`${globalStyles.generatorButton} ${styles.loginButton}`} disabled={loading}>
                         {loading ? "Verifying..." : "Access Builder"}
                     </button>
                 </form>
