@@ -9,5 +9,5 @@ const nextConfig = {
     ],
   },
 };
-/* daru janc000000k */
+/* commit comment */
 export default nextConfig;
