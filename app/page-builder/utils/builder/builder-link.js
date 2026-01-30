@@ -28,7 +28,7 @@ export default function BuilderLink({
     iconRight,
     justify = "center",
     fullWidth = false,
-    linkType,
+    linkType = 'url',
     onLinkTypeChange,
     targetDialogId,
     onTargetDialogIdChange,
@@ -36,6 +36,10 @@ export default function BuilderLink({
     showLinkType = true,
     hideLabel = false
 }) {
+    // Normalize linkType to 'url' if it is null or undefined or empty string
+    // This ensures legacy data or null props don't break the popover logic
+    const safeLinkType = linkType || 'url';
+
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "link", onIdChange });
     const [hasMounted, setHasMounted] = useState(false);
     useEffect(() => {
@@ -177,7 +181,7 @@ export default function BuilderLink({
                     <div className={styles.overlayLabel}>
                         <span className={styles.overlayIdText}>#{elementId}</span>
                     </div>
-                    {linkType === 'dialog' && (
+                    {safeLinkType === 'dialog' && (
                         <button
                             type="button"
                             className={styles.settingsButton}
@@ -188,11 +192,11 @@ export default function BuilderLink({
                         </button>
                     )}
 
-                    {(!isStaging && (true /* Link settings always avail */ || !!onLinkTypeChange)) && (
+                    {((!isStaging && (true /* Link settings always avail */ || !!onLinkTypeChange)) || (isStaging && safeLinkType === 'url')) && (
                         <>
                             {/* Sparkle Button for Style Settings */}
                             {/* Only show if there are style props to configure */}
-                            {(onLinkTypeChange /* Placeholder for potential style props check */ && false) && (
+                            {(!isStaging && onLinkTypeChange /* Placeholder for potential style props check */ && false) && (
                                 <button
                                     type="button"
                                     className={`${styles.settingsButton} ${isStyleOpen ? styles.settingsButtonActive : ''}`}
@@ -274,10 +278,11 @@ export default function BuilderLink({
                     onClose={() => setActivePopoverId(null)}
                     mode={isStyleOpen ? 'style' : (isLinkOpen ? 'link' : 'all')}
                     url={href}
+                    showUrl={true}
                     onUrlChange={onHrefChange}
                     showVariant={false}
                     showLinkType={showLinkType && !isStaging}
-                    linkType={linkType}
+                    linkType={safeLinkType}
                     onLinkTypeChange={onLinkTypeChange}
                     targetDialogId={targetDialogId}
                     onTargetDialogIdChange={onTargetDialogIdChange}

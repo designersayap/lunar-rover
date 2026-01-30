@@ -136,7 +136,7 @@
        ============================================ */
 
     /* Typography */
-    --typography-title: var(--grey-500);
+    --typography-title: var(--brand-color-300);
     --typography-body: var(--grey-400);
     --typography-caption: var(--grey-300);
 
