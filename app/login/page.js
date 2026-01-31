@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { LockClosedIcon } from "@heroicons/react/24/solid";
+import Image from "next/image";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import styles from "./page.module.css";
 import globalStyles from "../page.module.css";
 
 export default function LoginPage() {
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
@@ -43,7 +45,13 @@ export default function LoginPage() {
     return (
         <div className={styles.container}>
             <div className={styles.card}>
-                <LockClosedIcon className={styles.icon} />
+                <Image
+                    src="/logo.svg"
+                    alt="Lunar Logo"
+                    width={48}
+                    height={48}
+                    className={styles.icon}
+                />
 
                 <div>
                     <h1 className={styles.title}>Restricted Access</h1>
@@ -51,18 +59,34 @@ export default function LoginPage() {
                 </div>
 
                 <form onSubmit={handleSubmit} className={styles.form}>
+
                     <div className={styles.inputGroup}>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter Password"
-                            className={`${globalStyles.formInput} ${styles.loginInput}`}
-                            autoFocus
-                        />
+                        <div className={styles.inputWrapper}>
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter Password"
+                                className={`${globalStyles.formInput} ${styles.loginInput}`}
+                                autoFocus
+                            />
+                            <button
+                                type="button"
+                                className={styles.togglePassword}
+                                onClick={() => setShowPassword(!showPassword)}
+                                tabIndex={-1}
+                            >
+                                {showPassword ? (
+                                    <EyeSlashIcon className={styles.eyeIcon} />
+                                ) : (
+                                    <EyeIcon className={styles.eyeIcon} />
+                                )}
+                            </button>
+                        </div>
+                        {error && <div className={styles.errorMessage}>{error}</div>}
                     </div>
 
-                    {error && <div className={styles.error}>{error}</div>}
+
 
                     <button type="submit" className={`${globalStyles.generatorButton} ${styles.loginButton}`} disabled={loading}>
                         {loading ? "Verifying..." : "Access Builder"}
