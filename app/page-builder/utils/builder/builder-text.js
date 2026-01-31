@@ -76,13 +76,19 @@ function BuilderTextComponent({
         e.preventDefault();
         const plainText = e.clipboardData.getData("text/plain");
 
+        // Check for image URL
+        const imageExtensionRegex = /\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i;
+        const urlRegex = /^(http(s)?:\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/i;
+
+        if (urlRegex.test(plainText) && imageExtensionRegex.test(plainText)) {
+            document.execCommand("insertImage", false, plainText);
+            return;
+        }
+
         // Auto-link on paste
         if (!disableLinkPaste) {
             const selection = window.getSelection();
             if (selection.toString().length > 0) {
-                // Simple regex for URL validation (http/https required)
-                const urlRegex = /^(http(s)?:\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/i;
-
                 if (urlRegex.test(plainText)) {
                     document.execCommand("createLink", false, plainText);
                     return;
