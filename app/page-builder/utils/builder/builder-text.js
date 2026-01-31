@@ -144,14 +144,32 @@ function BuilderTextComponent({
     };
 
     const handleKeyDown = (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
-            e.preventDefault();
-            let targetClass = null;
-            if (className.includes('body-regular')) targetClass = 'body-bold';
-            else if (className.includes('caption-regular')) targetClass = 'caption-bold';
+        // Use Ctrl key (control on Mac, ctrl on Windows) for shortcuts
+        // We use e.ctrlKey explicitly and avoid e.metaKey (Command) to prevent Safari conflicts
+        if (e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey) {
+            const key = e.key.toLowerCase();
 
-            toggleBold(targetClass);
-            return;
+            if (key === 'b') {
+                e.preventDefault();
+                let targetClass = null;
+                if (className.includes('body-regular')) targetClass = 'body-bold';
+                else if (className.includes('caption-regular')) targetClass = 'caption-bold';
+
+                toggleBold(targetClass);
+                return;
+            }
+
+            if (key === 'i') {
+                e.preventDefault();
+                document.execCommand('italic');
+                return;
+            }
+
+            if (key === 'u') {
+                e.preventDefault();
+                document.execCommand('underline');
+                return;
+            }
         }
 
         if (multiline && e.key === " ") {
