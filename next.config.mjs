@@ -9,5 +9,5 @@ const nextConfig = {
     ],
   },
 };
-/* commit comment: 1 */
+/* commit comment: paste image on builder text */
 export default nextConfig;
