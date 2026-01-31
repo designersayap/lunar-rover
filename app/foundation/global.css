@@ -58,6 +58,13 @@ body {
   list-style-type: lower-alpha;
 }
 
+.builder-text img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0.5em 0;
+}
+
 .link,
 .builder-text a {
   color: inherit;
