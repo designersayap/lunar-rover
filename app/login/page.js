@@ -30,7 +30,7 @@ export default function LoginPage() {
 
             if (res.ok) {
                 // Redirect to home on success
-                router.refresh(); // Refresh to update middleware state
+                router.refresh(); // Refresh to update proxy state
                 router.push("/");
             } else {
                 setError("Incorrect password");
