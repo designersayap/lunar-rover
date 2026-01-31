@@ -9,5 +9,5 @@ const nextConfig = {
     ],
   },
 };
-/* commit comment */
+/* commit comment: 1 */
 export default nextConfig;
