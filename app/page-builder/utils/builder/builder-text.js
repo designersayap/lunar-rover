@@ -78,9 +78,17 @@ function BuilderTextComponent({
 
         // Check for image URL
         const imageExtensionRegex = /\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i;
-        const urlRegex = /^(http(s)?:\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/i;
 
-        if (urlRegex.test(plainText) && imageExtensionRegex.test(plainText)) {
+        let isValidUrl = false;
+        try {
+            const url = new URL(plainText);
+            // Only allow http/https protocols
+            isValidUrl = url.protocol === "http:" || url.protocol === "https:";
+        } catch (_) {
+            isValidUrl = false;
+        }
+
+        if (isValidUrl && imageExtensionRegex.test(plainText)) {
             document.execCommand("insertImage", false, plainText);
             return;
         }
@@ -89,7 +97,7 @@ function BuilderTextComponent({
         if (!disableLinkPaste) {
             const selection = window.getSelection();
             if (selection.toString().length > 0) {
-                if (urlRegex.test(plainText)) {
+                if (isValidUrl) {
                     document.execCommand("createLink", false, plainText);
                     return;
                 }
