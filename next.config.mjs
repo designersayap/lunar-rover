@@ -9,5 +9,5 @@ const nextConfig = {
     ],
   },
 };
-/* commit comment: paste image on builder text */
+/* commit comment: repair paste link type missing */
 export default nextConfig;
