@@ -49,7 +49,7 @@ export async function GET(request) {
 
         const { Contents } = await S3.send(command).catch(err => {
             console.error("S3 List Error:", err);
-            return { Contents: [] };
+            throw err; // Propagate error to main catch block
         });
 
         let targetKey = null;

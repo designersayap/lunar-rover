@@ -21,7 +21,7 @@ export async function GET() {
 
         const { Contents } = await S3.send(command).catch(err => {
             console.error("S3 List Error:", err);
-            return { Contents: [] };
+            throw err;
         });
 
         // Extract folder names from paths
