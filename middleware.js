@@ -1,6 +1,8 @@
+
+
 import { NextResponse } from 'next/server';
 
-export function proxy(req) {
+export function middleware(req) {
     const { pathname } = req.nextUrl;
 
     // 1. Allow public access to Staging routes and known public folders

@@ -1,7 +1,7 @@
 import { S3Client } from "@aws-sdk/client-s3";
 
-// WORKAROUND: Allow self-signed certs for corporate proxy (Dev only)
 if (process.env.NODE_ENV === 'development') {
+    console.log('S3 Client: Disabling TLS verification for Dev');
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
 

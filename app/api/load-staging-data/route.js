@@ -1,3 +1,6 @@
+export const runtime = 'edge';
+
+import '@/app/lib/edge-polyfill';
 import { NextResponse } from 'next/server';
 import { ListObjectsV2Command, GetObjectCommand } from '@aws-sdk/client-s3';
 import S3 from '@/app/lib/s3-client';
@@ -6,13 +9,24 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 // Helper to read S3 stream
-const streamToString = (stream) =>
-    new Promise((resolve, reject) => {
+// Helper to read S3 stream (Edge-compatible)
+const streamToString = async (stream) => {
+    // AWS SDK v3 often adds this mixin
+    if (typeof stream.transformToString === 'function') {
+        return await stream.transformToString();
+    }
+    // Web Streams (Edge Runtime)
+    if (stream instanceof ReadableStream) {
+        return await new Response(stream).text();
+    }
+    // Node.js Streams fallback
+    return new Promise((resolve, reject) => {
         const chunks = [];
         stream.on("data", (chunk) => chunks.push(chunk));
         stream.on("error", reject);
         stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
     });
+};
 
 export async function GET(request) {
     try {

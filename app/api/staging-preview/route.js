@@ -1,3 +1,6 @@
+export const runtime = 'edge';
+
+import '@/app/lib/edge-polyfill'; // Polyfill for DOMParser/XMLSerializer in Edge
 import { NextResponse } from 'next/server';
 import { ListObjectsV2Command, PutObjectCommand } from '@aws-sdk/client-s3';
 import S3 from '@/app/lib/s3-client';
