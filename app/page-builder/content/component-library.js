@@ -38,6 +38,12 @@ export const componentLibrary = {
                     label: "Background Image",
                     type: "image",
                     default: componentDefaults["background-full-body"]?.image
+                },
+                {
+                    name: "mobileImage",
+                    label: "Mobile Background Image",
+                    type: "image",
+                    default: componentDefaults["background-full-body"]?.mobileImage
                 }
             ],
             images: [

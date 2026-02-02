@@ -49,7 +49,7 @@ export default function FooterTerra({
             <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })}>
                 <div className={`grid`}>
                     {/* Left Column */}
-                    <div className={`col-mobile-4 col-tablet-8 col-desktop-8`}>
+                    <div className={`col-mobile-4 col-tablet-8 col-desktop-7`}>
                         <div className={styles.leftColumn}>
                             {/* Logo */}
                             <div className={styles.logoWrapper}>
@@ -126,7 +126,7 @@ export default function FooterTerra({
                     </div>
 
                     {/* Available at */}
-                    <div className={`col-mobile-4 col-tablet-8 col-desktop-2`}>
+                    <div className={`col-mobile-4 col-tablet-8 col-desktop-3`}>
                         <div className={styles.column}>
                             <BuilderText
                                 tagName="p"

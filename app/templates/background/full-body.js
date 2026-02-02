@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 import { useEffect, useState, useContext } from "react"; // Added useContext
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls"; // Added import
 
-export default function BackgroundFullBody({ image, imageId, imageVisible, sectionId, uniqueId, onUpdate }) {
+export default function BackgroundFullBody({ image, mobileImage, imageId, imageVisible, sectionId, uniqueId, onUpdate }) {
     const update = createUpdateHandler(onUpdate);
     const [mounted, setMounted] = useState(false);
     const { activeElementId } = useContext(BuilderSelectionContext); // Get context
@@ -29,8 +29,10 @@ export default function BackgroundFullBody({ image, imageId, imageVisible, secti
             <div className={`container-grid container-full`} style={{ height: '100%' }}>
                 <BuilderImage
                     src={image}
+                    mobileSrc={mobileImage}
                     isActive={isSectionActive ? true : undefined} // Pass active state if section is active, otherwise let it handle itself
                     onSrcChange={update('image')}
+                    onMobileSrcChange={update('mobileImage')}
                     alt="Background Image"
                     className={styles.image}
                     isVisible={imageVisible}

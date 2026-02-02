@@ -416,7 +416,7 @@ export default function BuilderImage({
                     showMobileRatio={!isStaging && !!onMobileRatioChange}
                     mobileRatio={mobileRatio}
                     onMobileRatioChange={onMobileRatioChange}
-                    showMobileImageSrc={isStaging && !!onMobileSrcChange && (!!mobileRatio || alwaysShowSrc)}
+                    showMobileImageSrc={!!onMobileSrcChange && ((isStaging && !!mobileRatio) || alwaysShowSrc)}
                     mobileImageSrc={mobileSrc}
                     onMobileImageSrcChange={onMobileSrcChange}
                     showAspectRatio={!isStaging && !!onAspectRatioChange}

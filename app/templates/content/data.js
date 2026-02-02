@@ -1,6 +1,7 @@
 export const componentDefaults = {
     "background-full-body": {
-        image: ""
+        image: "",
+        mobileImage: ""
     },
 
     "header-section": {
