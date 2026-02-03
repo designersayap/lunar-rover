@@ -1,3 +1,4 @@
+import "@/app/lib/edge-polyfill"; // Enforce Polyfills for Edge
 import { S3Client } from "@aws-sdk/client-s3";
 import { FetchHttpHandler } from "@aws-sdk/fetch-http-handler";
 

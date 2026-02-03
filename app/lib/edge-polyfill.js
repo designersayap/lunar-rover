@@ -1,12 +1,23 @@
 import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
 
-if (typeof globalThis.DOMParser === 'undefined') {
-    globalThis.DOMParser = DOMParser;
-}
+// Robust polyfill for Edge Runtime
+const polyfills = {
+    DOMParser,
+    XMLSerializer,
+};
 
-if (typeof globalThis.XMLSerializer === 'undefined') {
-    globalThis.XMLSerializer = XMLSerializer;
-}
+// Patch all potential global scopes
+[
+    typeof globalThis !== 'undefined' ? globalThis : null,
+    typeof window !== 'undefined' ? window : null,
+    typeof self !== 'undefined' ? self : null,
+    typeof global !== 'undefined' ? global : null,
+].forEach(scope => {
+    if (scope) {
+        if (!scope.DOMParser) scope.DOMParser = DOMParser;
+        if (!scope.XMLSerializer) scope.XMLSerializer = XMLSerializer;
+    }
+});
 
 // Extract Node, Element, and Document from a created instance since they aren't exported directly
 try {
