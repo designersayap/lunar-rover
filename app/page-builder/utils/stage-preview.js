@@ -155,7 +155,9 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
 
         // 2. Server-Side Upload (Proxy)
         // Bypasses CORS issues by letting the Next.js server talk to B2 directly
-        const res = await fetch('/api/staging-preview', {
+        const endpoint = '/api/staging-preview';
+        console.log(`[Stage Preview] Fetching endpoint: ${endpoint}`);
+        const res = await fetch(endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
