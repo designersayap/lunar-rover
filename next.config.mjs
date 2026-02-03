@@ -29,13 +29,7 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     // Only polyfill on server/edge builds
     if (isServer) {
-      // 1. Force 'xmldom' to be available
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        "xmldom": false, // prevent double bundling if referenced accidentally
-      };
-
-      // 2. Use ProvidePlugin to inject DOMParser/XMLSerializer into every module that needs it
+      // Use ProvidePlugin to inject DOMParser/XMLSerializer into every module that needs it
       const webpack = require('webpack');
       config.plugins.push(
         new webpack.ProvidePlugin({
