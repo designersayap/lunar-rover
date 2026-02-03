@@ -7,15 +7,40 @@ if (process.env.NODE_ENV === 'development') {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
 
-const S3 = new S3Client({
-    region: process.env.B2_REGION,
-    endpoint: process.env.B2_ENDPOINT,
-    credentials: {
-        accessKeyId: process.env.B2_KEY_ID,
-        secretAccessKey: process.env.B2_APP_KEY,
-    },
-    // Ensure compatibility with Edge Runtime (Cloudflare Workers / Vercel Edge)
-    requestHandler: new FetchHttpHandler(),
-});
+// Lazy Initialization Pattern to avoid Hoisting Race Conditions
+let s3ClientInstance = null;
 
-export default S3;
+export const getS3Client = () => {
+    if (s3ClientInstance) return s3ClientInstance;
+
+    // 1. Force Polyfills (Again, just to be sure)
+    const { DOMParser, XMLSerializer } = require('@xmldom/xmldom');
+
+    // Patch Global
+    if (typeof globalThis !== 'undefined') {
+        if (!globalThis.DOMParser) globalThis.DOMParser = DOMParser;
+        if (!globalThis.XMLSerializer) globalThis.XMLSerializer = XMLSerializer;
+    }
+
+    console.log("[S3 Client] Lazy Initializing S3 Client...");
+
+    const { S3Client } = require("@aws-sdk/client-s3");
+    const { FetchHttpHandler } = require("@aws-sdk/fetch-http-handler");
+
+    s3ClientInstance = new S3Client({
+        region: process.env.B2_REGION,
+        endpoint: process.env.B2_ENDPOINT,
+        credentials: {
+            accessKeyId: process.env.B2_KEY_ID,
+            secretAccessKey: process.env.B2_APP_KEY,
+        },
+        requestHandler: new FetchHttpHandler(),
+    });
+
+    return s3ClientInstance;
+};
+
+// Fallback for default import (legacy compatibility if needed, but discouraged)
+export default {
+    send: (cmd) => getS3Client().send(cmd)
+};
