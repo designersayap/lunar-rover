@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { NextResponse } from 'next/server';
 import { S3Manual } from '@/app/lib/s3-manual';
 
