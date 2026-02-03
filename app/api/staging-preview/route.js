@@ -51,9 +51,30 @@ export async function GET() {
                 'Expires': '0',
             }
         });
+        return NextResponse.json({ folders: sortedFolders }, {
+            headers: {
+                'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0',
+            }
+        });
     } catch (error) {
         console.error("Error listing staging folders:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+
+        // Debugging Runtime State
+        const debugInfo = {
+            message: error.message,
+            stack: error.stack,
+            env: {
+                hasDOMParser: typeof DOMParser !== 'undefined',
+                hasGlobalDOMParser: typeof globalThis.DOMParser !== 'undefined',
+                hasWindowDOMParser: typeof window !== 'undefined' && typeof window.DOMParser !== 'undefined',
+                runtime: process.env.NEXT_RUNTIME,
+                node_env: process.env.NODE_ENV
+            }
+        };
+
+        return NextResponse.json({ error: debugInfo }, { status: 500 });
     }
 }
 
