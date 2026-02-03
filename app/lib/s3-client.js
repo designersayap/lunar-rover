@@ -1,4 +1,17 @@
-import "@/app/lib/edge-polyfill"; // Enforce Polyfills for Edge
+// 1. Force Polyfill Execution BEFORE any other imports
+import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
+
+const polyfills = {
+    DOMParser,
+    XMLSerializer,
+};
+
+// Patch global scope immediately
+if (typeof globalThis !== 'undefined') {
+    if (!globalThis.DOMParser) globalThis.DOMParser = DOMParser;
+    if (!globalThis.XMLSerializer) globalThis.XMLSerializer = XMLSerializer;
+}
+
 import { S3Client } from "@aws-sdk/client-s3";
 import { FetchHttpHandler } from "@aws-sdk/fetch-http-handler";
 
