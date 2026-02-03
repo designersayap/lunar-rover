@@ -25,20 +25,6 @@ const nextConfig = {
         ]
       }
     ]
-  },
-  webpack: (config, { isServer }) => {
-    // Only polyfill on server/edge builds
-    if (isServer) {
-      // Use ProvidePlugin to inject DOMParser/XMLSerializer into every module that needs it
-      const webpack = require('webpack');
-      config.plugins.push(
-        new webpack.ProvidePlugin({
-          DOMParser: ['@xmldom/xmldom', 'DOMParser'],
-          XMLSerializer: ['@xmldom/xmldom', 'XMLSerializer'],
-        })
-      );
-    }
-    return config;
   }
 };
 /* commit comment: repair paste link type missing */
