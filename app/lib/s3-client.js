@@ -1,20 +1,17 @@
-import "@/app/lib/s3-fix"; // 1. Run Polyfills Module First
-import { S3Client } from "@aws-sdk/client-s3";
-import { FetchHttpHandler } from "@aws-sdk/fetch-http-handler";
 import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
 
-// Lazy Singleton to prevent hoisting issues
+// Lazy Singleton
 let s3ClientInstance = null;
 
-function getClient() {
+async function getClient() {
     if (s3ClientInstance) return s3ClientInstance;
 
-    console.log("[S3 Client] Initializing Lazy Client...");
+    console.log("[S3 Client] Initializing via Dynamic Import...");
 
-    // 2. Runtime Polyfill Check (Double Safety)
+    // 1. Force Polyfills (Guaranteed to run before SDK load)
     if (typeof globalThis !== 'undefined') {
         if (!globalThis.DOMParser) {
-            console.warn("[S3 Client] DOMParser missing in global scope. Patching now.");
+            console.log("[S3 Client] Patching global DOMParser...");
             globalThis.DOMParser = DOMParser;
         }
         if (!globalThis.XMLSerializer) {
@@ -22,7 +19,11 @@ function getClient() {
         }
     }
 
-    // 3. Instantiate Client
+    // 2. Dynamic Import (Barrier for Hoisting)
+    const { S3Client } = await import("@aws-sdk/client-s3");
+    const { FetchHttpHandler } = await import("@aws-sdk/fetch-http-handler");
+
+    // 3. Instantiate
     s3ClientInstance = new S3Client({
         region: process.env.B2_REGION,
         endpoint: process.env.B2_ENDPOINT,
@@ -30,17 +31,19 @@ function getClient() {
             accessKeyId: process.env.B2_KEY_ID,
             secretAccessKey: process.env.B2_APP_KEY,
         },
-        // Ensure compatibility with Edge Runtime
         requestHandler: new FetchHttpHandler(),
     });
 
     return s3ClientInstance;
 }
 
-// Proxy object to maintain API compatibility with "import S3 from ..."
+// Proxy object
 const S3 = {
-    send: (command) => getClient().send(command),
-    config: {}, // Mock config if needed
+    send: async (command) => {
+        const client = await getClient();
+        return client.send(command);
+    },
+    config: {},
 };
 
 export default S3;
