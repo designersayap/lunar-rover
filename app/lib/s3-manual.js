@@ -3,8 +3,8 @@ import { Sha256 } from "@aws-crypto/sha256-js";
 import { DOMParser } from "@xmldom/xmldom";
 
 // Configuration
-const REGION = process.env.B2_REGION; // e.g., us-west-004
-const ENDPOINT = process.env.B2_ENDPOINT; // e.g., https://s3.us-west-004.backblazeb2.com
+const REGION = process.env.B2_REGION;
+const ENDPOINT = process.env.B2_ENDPOINT;
 const BUCKET = process.env.B2_BUCKET_NAME;
 const ACCESS_KEY = process.env.B2_KEY_ID;
 const SECRET_KEY = process.env.B2_APP_KEY;
@@ -25,13 +25,15 @@ const signer = new SignatureV4({
  */
 async function sendS3Request(method, key, queryParams = {}, body = null) {
     // Construct URL
-    // Endpoint usually includes protocol. If not, add it.
     const endpointUrl = new URL(ENDPOINT.startsWith('http') ? ENDPOINT : `https://${ENDPOINT}`);
-    // Path: /<bucket>/<key>
     endpointUrl.pathname = `/${BUCKET}/${key}`;
 
-    // Add Query Params
-    Object.keys(queryParams).forEach(k => endpointUrl.searchParams.append(k, queryParams[k]));
+    // Construct Query Object for Signer
+    const query = {};
+    Object.keys(queryParams).forEach(k => {
+        endpointUrl.searchParams.append(k, queryParams[k]);
+        query[k] = queryParams[k];
+    });
 
     // Prepare Request Object for Signing
     // host header is required
@@ -47,7 +49,8 @@ async function sendS3Request(method, key, queryParams = {}, body = null) {
         method: method,
         protocol: endpointUrl.protocol,
         hostname: endpointUrl.hostname,
-        path: endpointUrl.pathname + endpointUrl.search,
+        path: endpointUrl.pathname, // Signer handles canonical query independently
+        query: query,
         headers: headers,
         body: body,
     };
@@ -72,12 +75,7 @@ async function sendS3Request(method, key, queryParams = {}, body = null) {
 }
 
 export const S3Manual = {
-    /**
-     * Lists objects in the bucket with a prefix
-     * Returns generic "Contents" array similar to SDK
-     */
     async listObjects(prefix) {
-        // GET /?list-type=2&prefix=...
         const response = await sendS3Request('GET', '', {
             'list-type': '2',
             'prefix': prefix,
@@ -109,20 +107,12 @@ export const S3Manual = {
         return { Contents: contents };
     },
 
-    /**
-     * Puts a JSON object
-     */
     async putJson(key, data) {
         const body = JSON.stringify(data);
         await sendS3Request('PUT', key, {}, body);
         return true;
     },
 
-    /**
-     * Deletes objects
-     * Note: S3 DeleteMultiple is weird (POST with XML). 
-     * We will use simple DeleteObject loop for now as it is safer to implement manually.
-     */
     async deleteObject(key) {
         await sendS3Request('DELETE', key);
         return true;
