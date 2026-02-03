@@ -1,32 +1,10 @@
 export const runtime = 'edge';
 
-import '@/app/lib/edge-polyfill';
 import { NextResponse } from 'next/server';
-import { ListObjectsV2Command, GetObjectCommand } from '@aws-sdk/client-s3';
-import S3 from '@/app/lib/s3-client';
+import { S3Manual } from '@/app/lib/s3-manual';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-
-// Helper to read S3 stream
-// Helper to read S3 stream (Edge-compatible)
-const streamToString = async (stream) => {
-    // AWS SDK v3 often adds this mixin
-    if (typeof stream.transformToString === 'function') {
-        return await stream.transformToString();
-    }
-    // Web Streams (Edge Runtime)
-    if (stream instanceof ReadableStream) {
-        return await new Response(stream).text();
-    }
-    // Node.js Streams fallback
-    return new Promise((resolve, reject) => {
-        const chunks = [];
-        stream.on("data", (chunk) => chunks.push(chunk));
-        stream.on("error", reject);
-        stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
-    });
-};
 
 export async function GET(request) {
     try {
@@ -37,19 +15,12 @@ export async function GET(request) {
             return NextResponse.json({ error: 'Missing folder name' }, { status: 400 });
         }
 
-        const bucketName = process.env.B2_BUCKET_NAME;
         const prefix = `staging-data/${folderName}/`;
 
         // 1. List objects to find latest in timestamped folder
-        const command = new ListObjectsV2Command({
-            Bucket: bucketName,
-            Prefix: prefix,
-            MaxKeys: 1000
-        });
-
-        const { Contents } = await S3.send(command).catch(err => {
+        const { Contents } = await S3Manual.listObjects(prefix).catch(err => {
             console.error("S3 List Error:", err);
-            throw err; // Propagate error to main catch block
+            throw err;
         });
 
         let targetKey = null;
@@ -62,12 +33,9 @@ export async function GET(request) {
         } else {
             // 2. Legacy check
             const legacyKey = `staging-data/${folderName}.json`;
-            const legacyCommand = new ListObjectsV2Command({
-                Bucket: bucketName,
-                Prefix: legacyKey,
-                MaxKeys: 1
-            });
-            const { Contents: LegacyContents } = await S3.send(legacyCommand).catch(() => ({ Contents: [] }));
+            // Try to fetch legacy file directly? Or list it. Listing is safer to check existence.
+            // S3Manual.listObjects handles prefixes, so we can check for the exact file too.
+            const { Contents: LegacyContents } = await S3Manual.listObjects(`staging-data/${folderName}.json`);
 
             if (LegacyContents && LegacyContents.length > 0) {
                 targetKey = LegacyContents[0].Key;
@@ -80,15 +48,9 @@ export async function GET(request) {
             return NextResponse.json({ error: 'Staging data not found' }, { status: 404 });
         }
 
-        // Fetch data SECURELY via GetObject (works for private buckets)
+        // Fetch data
         try {
-            const getCmd = new GetObjectCommand({
-                Bucket: bucketName,
-                Key: targetKey
-            });
-            const { Body } = await S3.send(getCmd);
-            const jsonString = await streamToString(Body);
-            const data = JSON.parse(jsonString);
+            const data = await S3Manual.getJson(targetKey);
 
             // MERGE LOGIC: Apply builderData overrides to components
             const builderData = data.builderData || {};
@@ -128,11 +90,6 @@ export async function GET(request) {
             const mergedComponents = applyOverrides(components);
 
             console.log(`[Load Staging] Returning data: ${mergedComponents.length} components, ${Object.keys(builderData).length} builderData keys.`);
-            if (mergedComponents.length > 0) {
-                console.log(`[Load Staging] First component: ${JSON.stringify(mergedComponents[0]).substring(0, 100)}...`);
-            } else {
-                console.warn("[Load Staging] WARNING: Components array is empty!");
-            }
 
             return NextResponse.json({ ...data, components: mergedComponents }, {
                 headers: {

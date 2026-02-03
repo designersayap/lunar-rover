@@ -107,6 +107,11 @@ export const S3Manual = {
         return { Contents: contents };
     },
 
+    async getJson(key) {
+        const response = await sendS3Request('GET', key);
+        return await response.json();
+    },
+
     async putJson(key, data) {
         const body = JSON.stringify(data);
         await sendS3Request('PUT', key, {}, body);
@@ -116,5 +121,34 @@ export const S3Manual = {
     async deleteObject(key) {
         await sendS3Request('DELETE', key);
         return true;
+    },
+
+    /**
+     * Generates a pre-signed URL for client-side uploads/downloads
+     */
+    async getPresignedUrl(method, key, expiresIn = 300, contentType = 'application/json') {
+        const endpointUrl = new URL(ENDPOINT.startsWith('http') ? ENDPOINT : `https://${ENDPOINT}`);
+        endpointUrl.pathname = `/${BUCKET}/${key}`;
+
+        const headers = {
+            host: endpointUrl.host,
+        };
+
+        // For PUT (uploads), we might need to sign the content-type if the client sends it
+        if (method === 'PUT' && contentType) {
+            headers['content-type'] = contentType;
+        }
+
+        const request = {
+            method: method,
+            protocol: endpointUrl.protocol,
+            hostname: endpointUrl.hostname,
+            path: endpointUrl.pathname,
+            query: {},
+            headers: headers,
+        };
+
+        const url = await signer.presign(request, { expiresIn });
+        return url;
     }
 };

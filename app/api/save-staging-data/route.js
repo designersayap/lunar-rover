@@ -1,29 +1,7 @@
 export const runtime = 'edge';
 
-import '@/app/lib/edge-polyfill';
 import { NextResponse } from 'next/server';
-import { ListObjectsV2Command, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
-import S3 from '@/app/lib/s3-client';
-
-// Helper to read S3 stream
-// Helper to read S3 stream (Edge-compatible)
-const streamToString = async (stream) => {
-    // AWS SDK v3 often adds this mixin
-    if (typeof stream.transformToString === 'function') {
-        return await stream.transformToString();
-    }
-    // Web Streams (Edge Runtime)
-    if (stream instanceof ReadableStream) {
-        return await new Response(stream).text();
-    }
-    // Node.js Streams fallback
-    return new Promise((resolve, reject) => {
-        const chunks = [];
-        stream.on("data", (chunk) => chunks.push(chunk));
-        stream.on("error", reject);
-        stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
-    });
-};
+import { S3Manual } from '@/app/lib/s3-manual';
 
 export async function POST(request) {
     try {
@@ -33,20 +11,16 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Missing folderName' }, { status: 400 });
         }
 
-        const bucketName = process.env.B2_BUCKET_NAME;
         const prefix = `staging-data/${folderName}`;
 
         let currentData = {};
         let stagingConfig = {};
 
         try {
-            // Find latest file
-            const command = new ListObjectsV2Command({
-                Bucket: bucketName,
-                Prefix: prefix + '/',
-                MaxKeys: 1000
-            });
-            let { Contents } = await S3.send(command).catch(() => ({ Contents: [] }));
+            // Find latest file using Manual Client
+            // listObjects already sorts or I might need to sort here? 
+            // S3Manual.listObjects returns { Contents: [] }
+            let { Contents } = await S3Manual.listObjects(prefix + '/').catch(() => ({ Contents: [] }));
 
             let targetKey = null;
 
@@ -55,25 +29,14 @@ export async function POST(request) {
                 targetKey = Contents[0].Key;
             } else {
                 // Try legacy
-                const legacyCmd = new ListObjectsV2Command({
-                    Bucket: bucketName,
-                    Prefix: prefix + '.json',
-                    MaxKeys: 1
-                });
-                const { Contents: LegacyContents } = await S3.send(legacyCmd).catch(() => ({ Contents: [] }));
+                const { Contents: LegacyContents } = await S3Manual.listObjects(prefix + '.json');
                 if (LegacyContents && LegacyContents.length > 0) {
                     targetKey = LegacyContents[0].Key;
                 }
             }
 
             if (targetKey) {
-                const getCmd = new GetObjectCommand({
-                    Bucket: bucketName,
-                    Key: targetKey
-                });
-                const { Body } = await S3.send(getCmd);
-                const jsonString = await streamToString(Body);
-                stagingConfig = JSON.parse(jsonString);
+                stagingConfig = await S3Manual.getJson(targetKey);
                 currentData = stagingConfig.builderData || {};
             }
         } catch (e) {
@@ -97,15 +60,7 @@ export async function POST(request) {
         // Save new version
         const newFilename = `staging-data/${folderName}/${Date.now()}.json`;
 
-        const putCmd = new PutObjectCommand({
-            Bucket: bucketName,
-            Key: newFilename,
-            Body: JSON.stringify(stagingConfig),
-            ContentType: 'application/json',
-            // No ACL needed for private buckets (default is private)
-        });
-
-        await S3.send(putCmd);
+        await S3Manual.putJson(newFilename, stagingConfig);
 
         return NextResponse.json({ success: true });
 
