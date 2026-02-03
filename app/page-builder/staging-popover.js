@@ -223,90 +223,96 @@ export default function StagingPopover({
             className={className}
         >
             <div className={styles.popoverContent}>
-                <div className={styles.exportInputWrapper} style={{ marginBottom: '16px' }}>
-                    <span className="caption-bold">New Staging Page</span>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                        <input
-                            type="text"
-                            className={styles.formInput}
-                            placeholder="folder-name"
-                            value={folderName}
-                            onChange={(e) => setFolderName(e.target.value.replace(/\s/g, '-'))}
-                            style={{ flex: 1 }}
-                        />
-                    </div>
-                    <code className={styles.exportHelperText} style={{ color: 'var(--content-neutral--caption)' }}>
-                        Creates <code>app/staging/{folderName || '...'}</code>
-                    </code>
-                </div>
-
-                <div className={styles.exportInputWrapper}>
-                    <span className="caption-bold">Or overwrite existing:</span>
-                    <div style={{
-                        maxHeight: '160px',
-                        overflowY: 'auto',
-                        border: '1px solid var(--bdr)',
-                        borderRadius: '6px',
-                        background: 'var(--bg2)'
-                    }}>
-                        {isLoading ? (
-                            <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--grey-200)' }}>
-                                Loading...
-                            </div>
-                        ) : error ? (
-                            <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--red-400, #ff4444)' }}>
-                                {error}
-                            </div>
-                        ) : existingFolders.length === 0 ? (
-                            <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--grey-200)' }}>
-                                No existing staging pages found.
-                            </div>
-                        ) : (
-                            existingFolders.map(folder => (
-                                <div
-                                    key={folder}
-                                    onClick={() => setFolderName(folder)}
-                                    className={`${styles.folderItem} ${folderName === folder ? styles.folderItemActive : ''}`}
-                                >
-                                    <FolderIcon className={styles.folderIcon} />
-                                    {folder}
-                                    <button
-                                        className={`${styles.generatorButton} ${styles.sidebarAddButton}`}
-                                        style={{ marginLeft: 'auto' }}
-                                        title="Restore to Builder"
-                                        onClick={(e) => handleRestore(e, folder)}
-                                    >
-                                        <ArrowPathIcon style={{ width: '16px', height: '16px' }} />
-                                    </button>
-                                </div>
-                            ))
-                        )}
-                    </div>
-                </div>
-            </div>
-
-            <div className={styles.popoverFooter}>
-                <button
-                    className={styles.generatorButton}
-                    style={{ width: '100%' }}
-                    onClick={handleSave}
-                    disabled={isSaving}
-                >
-                    {isSaving ? (
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                            <div style={{
-                                width: '12px',
-                                height: '12px',
-                                border: '2px solid currentColor',
-                                borderTopColor: 'transparent',
-                                borderRadius: '50%',
-                                animation: 'spin 1s linear infinite'
-                            }} />
-                            <span>Creating Staging</span>
-                            <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+                <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+                    <div className={styles.exportInputWrapper} style={{ marginBottom: '16px' }}>
+                        <span className="caption-bold">New Staging Page</span>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                            <input
+                                type="text"
+                                className={styles.formInput}
+                                placeholder="folder-name"
+                                value={folderName}
+                                onChange={(e) => setFolderName(e.target.value.replace(/\s/g, '-'))}
+                                style={{ flex: 1 }}
+                            />
                         </div>
-                    ) : "Create Staging"}
-                </button>
+                        <code className={styles.exportHelperText} style={{ color: 'var(--content-neutral--caption)' }}>
+                            Creates <code>app/staging/{folderName || '...'}</code>
+                        </code>
+                    </div>
+
+                    {/* Hidden submit button to allow Enter key to submit */}
+                    <button type="submit" style={{ display: 'none' }} />
+
+                    <div className={styles.exportInputWrapper}>
+                        <span className="caption-bold">Or overwrite existing:</span>
+                        <div style={{
+                            maxHeight: '160px',
+                            overflowY: 'auto',
+                            border: '1px solid var(--bdr)',
+                            borderRadius: '6px',
+                            background: 'var(--bg2)'
+                        }}>
+                            {isLoading ? (
+                                <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--grey-200)' }}>
+                                    Loading...
+                                </div>
+                            ) : error ? (
+                                <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--red-400, #ff4444)' }}>
+                                    {error}
+                                </div>
+                            ) : existingFolders.length === 0 ? (
+                                <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--grey-200)' }}>
+                                    No existing staging pages found.
+                                </div>
+                            ) : (
+                                existingFolders.map(folder => (
+                                    <div
+                                        key={folder}
+                                        onClick={() => setFolderName(folder)}
+                                        className={`${styles.folderItem} ${folderName === folder ? styles.folderItemActive : ''}`}
+                                    >
+                                        <FolderIcon className={styles.folderIcon} />
+                                        {folder}
+                                        <button
+                                            type="button"
+                                            className={`${styles.generatorButton} ${styles.sidebarAddButton}`}
+                                            style={{ marginLeft: 'auto' }}
+                                            title="Restore to Builder"
+                                            onClick={(e) => handleRestore(e, folder)}
+                                        >
+                                            <ArrowPathIcon style={{ width: '16px', height: '16px' }} />
+                                        </button>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+
+                    <div className={styles.popoverFooter} style={{ marginTop: '16px' }}>
+                        <button
+                            type="submit"
+                            className={styles.generatorButton}
+                            style={{ width: '100%' }}
+                            disabled={isSaving}
+                        >
+                            {isSaving ? (
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                                    <div style={{
+                                        width: '12px',
+                                        height: '12px',
+                                        border: '2px solid currentColor',
+                                        borderTopColor: 'transparent',
+                                        borderRadius: '50%',
+                                        animation: 'spin 1s linear infinite'
+                                    }} />
+                                    <span>Creating Staging</span>
+                                    <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+                                </div>
+                            ) : "Create Staging"}
+                        </button>
+                    </div>
+                </form>
             </div>
         </BasePopover>
     );
