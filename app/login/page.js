@@ -28,12 +28,14 @@ export default function LoginPage() {
                 body: JSON.stringify({ password }),
             });
 
-            if (res.ok) {
+            const data = await res.json();
+
+            if (res.ok && data.success) {
                 // Redirect to home on success
                 router.refresh(); // Refresh to update proxy state
                 router.push("/");
             } else {
-                setError("Incorrect password");
+                setError(data.error || "Incorrect password");
             }
         } catch (err) {
             setError("Something went wrong");
