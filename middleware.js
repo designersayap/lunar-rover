@@ -36,13 +36,17 @@ export function middleware(req) {
     const authToken = req.cookies.get('auth_token')?.value;
     const envPassword = process.env.AUTH_PASSWORD;
 
+    // Log for debugging (server-side logs)
+    // console.log(`Middleware: Path=${pathname}, AuthToken=${authToken ? 'Present' : 'Missing'}, PasswordSet=${!!envPassword}`);
+
     if (envPassword) {
         if (authToken === envPassword) {
             return NextResponse.next();
         }
 
         // Redirect to login if not authenticated
-        const loginUrl = new URL('/login', req.url);
+        const loginUrl = req.nextUrl.clone();
+        loginUrl.pathname = '/login';
         return NextResponse.redirect(loginUrl);
     }
 

@@ -197,7 +197,7 @@ export const componentDefaults = {
         buttonTargetDialogId: "",
         buttonId: "",
         isSticky: true,
-        isOverlay: true
+        isOverlay: false
     },
     "media-16-9": {
         image: "",
@@ -264,7 +264,7 @@ export const componentDefaults = {
         menu4TargetDialogId: "",
         menu4Id: "",
         isSticky: true,
-        isOverlay: true,
+        isOverlay: false,
         menuColor: "default"
     },
     "navigation-left": {
@@ -296,7 +296,7 @@ export const componentDefaults = {
         menu4TargetDialogId: "",
         menu4Id: "",
         isSticky: true,
-        isOverlay: true,
+        isOverlay: false,
         menuColor: "default"
     },
     "navigation-right": {
@@ -328,7 +328,7 @@ export const componentDefaults = {
         menu4TargetDialogId: "",
         menu4Id: "",
         isSticky: true,
-        isOverlay: true,
+        isOverlay: false,
         menuColor: "default"
     },
     "testimonial-terra": {
