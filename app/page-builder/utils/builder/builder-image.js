@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useRef, useEffect, useState, useLayoutEffect } from "react";
+import { useContext, useRef, useEffect, useState, useLayoutEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { useIdSync } from "../hooks/use-id-sync";
@@ -10,6 +10,7 @@ import styles from "../../../page.module.css";
 
 import { DEFAULT_PLACEHOLDER_IMAGE, IMAGE_PORTRAIT_RATIO_MAP } from "@/app/constants";
 import { useActiveOverlayPosition } from "../hooks/use-active-overlay";
+import { useCanvas } from "@/app/page-builder/utils/canvas-context";
 
 export const defaultPlaceholder = DEFAULT_PLACEHOLDER_IMAGE;
 
@@ -100,6 +101,15 @@ export default function BuilderImage({
             };
         }
     }, [isActive, showSettings, readOnly]);
+
+    // Context for canvas width simulation
+    const { canvasWidth } = useCanvas();
+
+    const isMobileSimulation = useMemo(() => {
+        if (!canvasWidth || canvasWidth === '100%') return false;
+        const width = parseInt(canvasWidth, 10);
+        return !isNaN(width) && width <= 767;
+    }, [canvasWidth]);
 
     // Hook must be called unconditionally
     const overlayStyle = useActiveOverlayPosition(overlayRect);
@@ -355,17 +365,30 @@ export default function BuilderImage({
         );
     } else {
         // Fallback to Image
-        mediaContent = (
-            <>
-                {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
+        if (isMobileSimulation && mobileSrc) {
+            // Force mobile source when simulating mobile in builder
+            mediaContent = (
                 <img
                     id={elementId}
-                    src={imageSrc}
+                    src={mobileSrc}
                     alt={(!alt || alt === "#") && sectionId ? sectionId : alt}
                     style={finalStyle}
                 />
-            </>
-        );
+            );
+        } else {
+            // Standard responsive behavior (Desktop / Staging / Export)
+            mediaContent = (
+                <>
+                    {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
+                    <img
+                        id={elementId}
+                        src={imageSrc}
+                        alt={(!alt || alt === "#") && sectionId ? sectionId : alt}
+                        style={finalStyle}
+                    />
+                </>
+            );
+        }
     }
 
     return (

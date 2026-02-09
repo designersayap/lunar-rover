@@ -4,6 +4,7 @@ import { useBuilderSelection } from "@/app/page-builder/utils/builder/builder-co
 import styles from "../page.module.css";
 import { useStickyStacking } from "./utils/sticky-stacking";
 import { componentLibrary } from "@/app/page-builder/content/component-library";
+import { CanvasContext } from "./utils/canvas-context";
 
 export default function Canvas({
     selectedComponents,
@@ -118,116 +119,117 @@ export default function Canvas({
 
     return (
         <div id="canvas-scroll-container" className={canvasClassName} onClick={() => setActiveElementId(null)}>
-
-            {/* Canvas Content */}
-            <div
-                id="canvas-inner"
-                className={styles.canvasInner}
-                ref={canvasInnerRef}
-                style={{
-                    width: canvasWidth,
-                    transition: isResizing ? 'none' : 'width 0.3s ease, max-width 0.3s ease',
-                    flex: 'none'
-                }}
-            >
-                {/* Resize Handle */}
+            <CanvasContext.Provider value={{ canvasWidth }}>
+                {/* Canvas Content */}
                 <div
-                    className={`${styles.resizeHandle} ${isResizing ? styles.resizeHandleActive : ''}`}
-                    onMouseDown={startResize}
-                    onDoubleClick={resetResize}
-                    title="Drag to resize, double-click to reset"
+                    id="canvas-inner"
+                    className={styles.canvasInner}
+                    ref={canvasInnerRef}
+                    style={{
+                        width: canvasWidth,
+                        transition: isResizing ? 'none' : 'width 0.3s ease, max-width 0.3s ease',
+                        flex: 'none'
+                    }}
                 >
-                    <div className={styles.resizeHandleBar} />
-                </div>
+                    {/* Resize Handle */}
+                    <div
+                        className={`${styles.resizeHandle} ${isResizing ? styles.resizeHandleActive : ''}`}
+                        onMouseDown={startResize}
+                        onDoubleClick={resetResize}
+                        title="Drag to resize, double-click to reset"
+                    >
+                        <div className={styles.resizeHandleBar} />
+                    </div>
 
-                <div id="canvas-background-root" className={styles.canvasBackgroundRoot} />
-                {displayComponents.length === 0 ? (
-                    <div className={styles.emptyState}>
-                        <div className={styles.emptyStateText}>
-                            <img
-                                src="/images/empty-state.svg"
-                                alt="Empty state illustration"
-                                style={{
-                                    width: "200px",
-                                    height: "auto",
-                                    marginBottom: "var(--space-100)"
-                                }}
-                            />
-                            <p className="body-regular" style={{ color: "var(--content-neutral--caption)" }}>
-                                Select components from the sidebar to build your template
-                            </p>
+                    <div id="canvas-background-root" className={styles.canvasBackgroundRoot} />
+                    {displayComponents.length === 0 ? (
+                        <div className={styles.emptyState}>
+                            <div className={styles.emptyStateText}>
+                                <img
+                                    src="/images/empty-state.svg"
+                                    alt="Empty state illustration"
+                                    style={{
+                                        width: "200px",
+                                        height: "auto",
+                                        marginBottom: "var(--space-100)"
+                                    }}
+                                />
+                                <p className="body-regular" style={{ color: "var(--content-neutral--caption)" }}>
+                                    Select components from the sidebar to build your template
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                ) : (
-                    <div data-canvas="true">
-                        {(() => {
-                            let hasSeenStacked = false;
+                    ) : (
+                        <div data-canvas="true">
+                            {(() => {
+                                let hasSeenStacked = false;
 
-                            return displayComponents.map((item) => {
-                                const Component = item.component || Object.values(componentLibrary).flat().find(c => c.id === item.id)?.component;
-                                const stickyStyle = stickyStyles[item.uniqueId] || {};
-                                const isSelected = selectedElementIds.includes(item.uniqueId);
+                                return displayComponents.map((item) => {
+                                    const Component = item.component || Object.values(componentLibrary).flat().find(c => c.id === item.id)?.component;
+                                    const stickyStyle = stickyStyles[item.uniqueId] || {};
+                                    const isSelected = selectedElementIds.includes(item.uniqueId);
 
-                                const isStacked = item.props?.scrollEffect === 'stacked';
+                                    const isStacked = item.props?.scrollEffect === 'stacked';
 
-                                // This prevents the stacked item (which is stuck at top) from showing through transparent sections.
-                                let forcedBgStyle = {};
+                                    // This prevents the stacked item (which is stuck at top) from showing through transparent sections.
+                                    let forcedBgStyle = {};
 
 
-                                if (hasSeenStacked && !isStacked) {
-                                    forcedBgStyle = { backgroundColor: 'var(--base-white, #ffffff)', position: 'relative', zIndex: 1 };
-                                }
+                                    if (hasSeenStacked && !isStacked) {
+                                        forcedBgStyle = { backgroundColor: 'var(--base-white, #ffffff)', position: 'relative', zIndex: 1 };
+                                    }
 
-                                if (isStacked) {
-                                    hasSeenStacked = true;
-                                }
+                                    if (isStacked) {
+                                        hasSeenStacked = true;
+                                    }
 
-                                return (
-                                    <div
-                                        key={item.uniqueId}
-                                        className={`${styles.componentWrapper} ${isSelected ? styles.activeWrapper : ''}`}
-                                        style={{
-                                            ...forcedBgStyle,
-                                            ...stickyStyle,
-                                            outline: isSelected ? "1px solid var(--lunar-300)" : "none",
-                                            backgroundColor: isSelected ? "var(--lunar-50)" : (forcedBgStyle.backgroundColor || "transparent"),
-                                            outlineOffset: "-1px",
-                                        }}
-                                        ref={(el) => {
-                                            setRef(item.uniqueId, el);
-                                            if (el) scrollRefs.current.set(item.uniqueId, el);
-                                            else scrollRefs.current.delete(item.uniqueId);
-                                        }}
-                                        onClickCapture={(e) => {
-                                            if (e.metaKey || e.ctrlKey) {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                toggleElementSelection(item.uniqueId, true);
-                                            }
-                                        }}
-                                    >
-                                        <Component
-                                            {...item.props}
-                                            sectionId={item.sectionId}
-                                            uniqueId={item.uniqueId}
-                                            onUpdate={(newProps) => updateComponent(item.uniqueId, newProps)}
-                                            updateComponent={updateComponent}
-                                        />
-                                    </div>
-                                );
-                            });
-                        })()}
-                    </div>
-                )}
-                {/* Resolution Indicator */}
-                {showIndicator && (
-                    <div className={styles.resolutionIndicator}>
-                        <span style={{ opacity: 0.7 }}>Device Width:</span>
-                        <strong>{canvasWidth === '100%' ? 'Full' : canvasWidth}</strong>
-                        {isResizing && <span style={{ opacity: 0.5, marginLeft: 4 }}>(Resizing)</span>}
-                    </div>
-                )}
-            </div>
+                                    return (
+                                        <div
+                                            key={item.uniqueId}
+                                            className={`${styles.componentWrapper} ${isSelected ? styles.activeWrapper : ''}`}
+                                            style={{
+                                                ...forcedBgStyle,
+                                                ...stickyStyle,
+                                                outline: isSelected ? "1px solid var(--lunar-300)" : "none",
+                                                backgroundColor: isSelected ? "var(--lunar-50)" : (forcedBgStyle.backgroundColor || "transparent"),
+                                                outlineOffset: "-1px",
+                                            }}
+                                            ref={(el) => {
+                                                setRef(item.uniqueId, el);
+                                                if (el) scrollRefs.current.set(item.uniqueId, el);
+                                                else scrollRefs.current.delete(item.uniqueId);
+                                            }}
+                                            onClickCapture={(e) => {
+                                                if (e.metaKey || e.ctrlKey) {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    toggleElementSelection(item.uniqueId, true);
+                                                }
+                                            }}
+                                        >
+                                            <Component
+                                                {...item.props}
+                                                sectionId={item.sectionId}
+                                                uniqueId={item.uniqueId}
+                                                onUpdate={(newProps) => updateComponent(item.uniqueId, newProps)}
+                                                updateComponent={updateComponent}
+                                            />
+                                        </div>
+                                    );
+                                });
+                            })()}
+                        </div>
+                    )}
+                    {/* Resolution Indicator */}
+                    {showIndicator && (
+                        <div className={styles.resolutionIndicator}>
+                            <span style={{ opacity: 0.7 }}>Device Width:</span>
+                            <strong>{canvasWidth === '100%' ? 'Full' : canvasWidth}</strong>
+                            {isResizing && <span style={{ opacity: 0.5, marginLeft: 4 }}>(Resizing)</span>}
+                        </div>
+                    )}
+                </div>
+            </CanvasContext.Provider>
             {/* Portal container for dialogs */}
             <div id="dialog-portal-root" className="z-system-modal-fullscreen" style={{ position: 'fixed', inset: 0, pointerEvents: 'none' }} />
         </div>
