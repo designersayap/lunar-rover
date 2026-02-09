@@ -1,5 +1,5 @@
 "use client";
-import "./foundation/global.css";
+
 
 export default function GlobalError({ error, reset }) {
     return (
