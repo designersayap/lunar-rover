@@ -1,18 +1,17 @@
 import { NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
+import componentMap from './component-map';
 import {
     ALLOWED_DIRS,
-    BINARY_SET,
-    isBinary,
-    resolvePath,
     cleanBuilderContent,
     getCacheHeaders,
     log
 } from './helpers';
 
-// Fix: Use Node.js Runtime for FS access
-export const runtime = 'nodejs';
+// Fix: Use Edge Runtime for Cloudflare compatibility
+export const runtime = 'edge';
+
+// Helper to normalize path for map lookup
+const normalizePath = (p) => p.replace(/\\/g, '/');
 
 export async function POST(req) {
     try {
@@ -22,65 +21,62 @@ export async function POST(req) {
             return NextResponse.json({ error: 'Missing filePath' }, { status: 400 });
         }
 
-        // 1. Resolve and Validate Path
-        const { absolutePath, finalPath, isExternal } = resolvePath(filePath);
+        // 1. Resolve Path (Simplified for Map Lookup)
+        // Ensure path starts with one of the allowed dirs to prevent arbitrary access
+        // The component map key is relative to project root, e.g. "app/templates/..."
+
+        let targetKey = normalizePath(filePath);
+
+        // Remove leading slash if present
+        if (targetKey.startsWith('/')) targetKey = targetKey.substring(1);
 
         // Security Check: Ensure path is within allowed directories
-        const isAllowed = ALLOWED_DIRS.some(dir => absolutePath.startsWith(dir));
+        const isAllowed = ALLOWED_DIRS.some(dir => targetKey.startsWith(dir) || targetKey.includes(dir));
         if (!isAllowed) {
-            log('Access Denied:', absolutePath);
+            log('Access Denied:', targetKey);
             return NextResponse.json({ error: 'Access Denied' }, { status: 403 });
         }
 
-        // 2. Check if file exists
-        try {
-            await fs.access(absolutePath);
-        } catch {
+        // 2. lookup in Map
+        const mapEntry = componentMap[targetKey];
+
+        if (!mapEntry) {
             // Soft fail for optional CSS modules to avoid browser console 404s
-            if (absolutePath.endsWith('.module.css')) {
+            if (targetKey.endsWith('.module.css')) {
                 return NextResponse.json({ content: null, isBinary: false }, { status: 200 });
             }
 
-            log('File Not Found:', absolutePath);
+            log('File Not Found in Map:', targetKey);
             return NextResponse.json({ error: 'File not found' }, { status: 404 });
         }
 
-        // 3. Read File
-        const ext = path.extname(absolutePath).toLowerCase();
-        const binary = isBinary(ext);
+        // 3. Process Content
+        const isJs = targetKey.endsWith('.js');
+        let { content, isBinary } = mapEntry;
 
-        if (binary) {
-            const fileBuffer = await fs.readFile(absolutePath);
-            const base64 = fileBuffer.toString('base64');
-            return NextResponse.json({
-                content: base64,
-                isBinary: true
-            }, {
-                headers: getCacheHeaders(true)
-            });
-        } else {
-            let content = await fs.readFile(absolutePath, 'utf8');
-
-            // 4. Process Content (If it's a Component)
-            // Only clean if it's a JS file in templates or page-builder
-            if (ext === '.js' && (finalPath.includes('app/templates') || finalPath.includes('app/page-builder'))) {
-                content = cleanBuilderContent(content);
-            }
-
-            return NextResponse.json({
-                content,
-                isBinary: false
-            }, {
-                headers: getCacheHeaders(false)
-            });
+        // Clean builder content if JS
+        if (!isBinary && isJs && (targetKey.includes('app/templates') || targetKey.includes('app/page-builder'))) {
+            content = cleanBuilderContent(content);
         }
+
+        return NextResponse.json({
+            content,
+            isBinary
+        }, {
+            headers: getCacheHeaders(isBinary)
+        });
 
     } catch (error) {
         console.error('[export-component] Error:', error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+        return NextResponse.json({
+            error: 'Internal Server Error',
+            message: error.message,
+            stack: error.stack,
+            type: error.constructor.name
+        }, { status: 500 });
     }
 }
 
 export async function GET() {
-    return NextResponse.json({ status: 'Export API Ready' });
+    return NextResponse.json({ status: 'Export API Ready (Edge Compatible)' });
 }

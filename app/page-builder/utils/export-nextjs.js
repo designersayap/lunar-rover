@@ -89,6 +89,8 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                 const blob = await res.blob();
                 const arrayBuffer = await blob.arrayBuffer();
 
+                // ... (handling logic setup same as below)
+
                 let ext = 'png';
                 if (blob.type === 'image/jpeg') ext = 'jpg';
                 else if (blob.type === 'image/svg+xml') ext = 'svg';
@@ -107,21 +109,59 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                 previewMap.set(`public/assets/${uniqueName}`, { path: `public/assets/${uniqueName}`, content: base64, base64: true });
 
             } else {
-                // Handle Server-Side Asset
-                const res = await fetch('/api/export-component', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ filePath: imgPath })
-                });
+                // Check if it's a source file (app/...) or public asset
+                const isSourceFile = imgPath.startsWith('app/') || (imgPath.startsWith('/') && imgPath.includes('/app/'));
 
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.isBinary && data.content) {
-                        const cleanName = imgPath.split('/').pop().split('?')[0];
-                        uniqueName = `asset-${Math.random().toString(36).substr(2, 5)}-${cleanName}`;
+                if (isSourceFile) {
+                    // Handle Server-Side Source File via API
+                    const res = await fetch('/api/export-component', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ filePath: imgPath })
+                    });
 
-                        zip.folder("public").folder("assets").file(uniqueName, data.content, { base64: true });
-                        previewMap.set(`public/assets/${uniqueName}`, { path: `public/assets/${uniqueName}`, content: data.content, base64: true });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.isBinary && data.content) {
+                            const cleanName = imgPath.split('/').pop().split('?')[0];
+                            uniqueName = `asset-${Math.random().toString(36).substr(2, 5)}-${cleanName}`;
+
+                            zip.folder("public").folder("assets").file(uniqueName, data.content, { base64: true });
+                            previewMap.set(`public/assets/${uniqueName}`, { path: `public/assets/${uniqueName}`, content: data.content, base64: true });
+                        }
+                    }
+                } else {
+                    // Handle Public Asset (Direct Fetch)
+                    // Ensure path starts with /
+                    let fetchPath = imgPath;
+                    if (fetchPath.startsWith('public/')) fetchPath = fetchPath.replace('public/', '/');
+                    if (!fetchPath.startsWith('/')) fetchPath = '/' + fetchPath;
+
+                    try {
+                        const res = await fetch(fetchPath);
+                        if (res.ok) {
+                            const blob = await res.blob();
+                            const arrayBuffer = await blob.arrayBuffer();
+
+                            let ext = 'png';
+                            // Simple ext detection from path if blob type generic
+                            if (fetchPath.endsWith('.svg')) ext = 'svg';
+                            else if (fetchPath.endsWith('.jpg') || fetchPath.endsWith('.jpeg')) ext = 'jpg';
+                            else if (blob.type === 'image/svg+xml') ext = 'svg';
+
+                            const cleanName = fetchPath.split('/').pop().split('?')[0];
+                            uniqueName = `asset-${Math.random().toString(36).substr(2, 5)}-${cleanName}`;
+
+                            zip.folder("public").folder("assets").file(uniqueName, arrayBuffer);
+
+                            const base64 = btoa(
+                                new Uint8Array(arrayBuffer)
+                                    .reduce((data, byte) => data + String.fromCharCode(byte), '')
+                            );
+                            previewMap.set(`public/assets/${uniqueName}`, { path: `public/assets/${uniqueName}`, content: base64, base64: true });
+                        }
+                    } catch (err) {
+                        console.warn('Failed to fetch public asset:', fetchPath, err);
                     }
                 }
             }
@@ -528,18 +568,36 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
 
     for (const path of foundationFiles) {
         try {
-            const res = await fetch('/api/export-component', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ filePath: path })
-            });
-            if (res.ok) {
-                const { content } = await res.json();
-                foundationCSS += `\n/* --- ${path.split('/').pop()} --- */\n${content}\n`;
+            // Check if it's an app file (needs API) or public file (needs fetch)
+            const isAppFile = path.startsWith('app/');
+
+            if (isAppFile) {
+                const res = await fetch('/api/export-component', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filePath: path })
+                });
+                if (res.ok) {
+                    const { content } = await res.json();
+                    foundationCSS += `\n/* --- ${path.split('/').pop()} --- */\n${content}\n`;
+                } else {
+                    console.warn(`Failed to fetch foundation file via API: ${path}`);
+                }
             } else {
-                console.warn(`Initial fetch failed for ${path}. Checking if it's a root path or requires adjustment.`);
-                // Fallback or detailed error logging could go here
+                // Public fetch
+                let fetchPath = path;
+                if (fetchPath.startsWith('public/')) fetchPath = fetchPath.replace('public/', '/');
+                if (!fetchPath.startsWith('/')) fetchPath = '/' + fetchPath;
+
+                const res = await fetch(fetchPath);
+                if (res.ok) {
+                    const content = await res.text();
+                    foundationCSS += `\n/* --- ${path.split('/').pop()} --- */\n${content}\n`;
+                } else {
+                    console.warn(`Failed to fetch foundation file: ${path}`);
+                }
             }
+
         } catch (e) {
             console.error(`Failed to fetch foundation: ${path}`, e);
         }

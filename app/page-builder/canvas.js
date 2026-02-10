@@ -151,6 +151,7 @@ export default function Canvas({
                                         src="/images/empty-state.svg"
                                         alt="Empty state illustration"
                                         fill
+                                        priority
                                         style={{ objectFit: 'contain' }}
                                     />
                                 </div>

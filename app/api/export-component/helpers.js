@@ -1,12 +1,12 @@
 // Helper utilities for export-component route
-import path from 'path';
+// Edge Runtime Compatible (No 'path' or 'fs' imports)
 
 export const ALLOWED_DIRS = [
-  path.resolve(process.cwd(), 'app/templates'),
-  path.resolve(process.cwd(), 'app/foundation'),
-  path.resolve(process.cwd(), 'app/page-builder'),
-  path.resolve(process.cwd(), 'public'),
-  path.resolve(process.cwd(), 'app/constants.js')
+  'app/templates',
+  'app/foundation',
+  'app/page-builder',
+  'public',
+  'app/constants.js'
 ];
 
 export const BINARY_SET = new Set([
@@ -18,15 +18,7 @@ export function isBinary(ext) {
   return BINARY_SET.has(ext);
 }
 
-export function resolvePath(requestedPath) {
-  let finalPath = requestedPath;
-  const isExternal = finalPath.startsWith('http://') || finalPath.startsWith('https://');
-  if (!isExternal && finalPath.startsWith('/') && !finalPath.startsWith('//')) {
-    finalPath = path.join('public', finalPath);
-  }
-  const absolutePath = path.resolve(process.cwd(), finalPath);
-  return { absolutePath, finalPath, isExternal };
-}
+// resolvePath removed as it relied on Node.js path module
 
 /** Simple logger – can be swapped for a proper logger later */
 export function log(...args) {
@@ -35,6 +27,11 @@ export function log(...args) {
 
 /** Clean Builder‑specific imports and props from component source */
 export function cleanBuilderContent(src) {
+  if (typeof src !== 'string') {
+    console.warn('[export-component] cleanBuilderContent received non-string:', typeof src);
+    return typeof src === 'undefined' ? '' : String(src);
+  }
+
   const hasShim = (name) => new RegExp(`const\\s+${name}\\s*=`).test(src);
 
   const hasBuilderLink = src.includes('BuilderLink') && !hasShim('BuilderLink');

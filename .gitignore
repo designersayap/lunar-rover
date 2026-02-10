@@ -30,3 +30,7 @@ ts-debug.log*
 
 # user requests
 public/uat-files
+
+# generated component map
+app/api/export-component/component-map.js
+app/api/export-component/component-map.json
