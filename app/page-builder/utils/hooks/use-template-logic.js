@@ -110,10 +110,26 @@ export function useTemplateLogic() {
 
     // Apply theme stylesheet
     useEffect(() => {
-        const themeLink = document.getElementById("theme-stylesheet");
-        if (themeLink && themes.length) {
+        let themeLink = document.getElementById("theme-stylesheet");
+
+        // Dynamic injection to avoid server-side preload warnings
+        if (!themeLink) {
+            themeLink = document.createElement("link");
+            themeLink.id = "theme-stylesheet";
+            themeLink.rel = "stylesheet";
+            document.head.appendChild(themeLink);
+        }
+
+        if (themes.length) {
             const theme = themes.find(t => t.id === selectedThemeId);
-            themeLink.href = theme?.path || "/themes/theme.css";
+            const newPath = theme?.path || "/themes/theme.css";
+
+            // Only update if different to prevent "resource preloaded but not used" warning
+            // accessing .getAttribute('href') gives the literal string, .href gives absolute URL
+            // We compare against the literal string we set.
+            if (themeLink.getAttribute('href') !== newPath) {
+                themeLink.href = newPath;
+            }
         }
     }, [selectedThemeId, themes]);
 

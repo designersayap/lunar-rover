@@ -1,4 +1,5 @@
 import { useMemo, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { isComponentSticky } from "./utils/component-manager";
 import { useBuilderSelection } from "@/app/page-builder/utils/builder/builder-controls";
 import styles from "../page.module.css";
@@ -145,15 +146,14 @@ export default function Canvas({
                     {displayComponents.length === 0 ? (
                         <div className={styles.emptyState}>
                             <div className={styles.emptyStateText}>
-                                <img
-                                    src="/images/empty-state.svg"
-                                    alt="Empty state illustration"
-                                    style={{
-                                        width: "200px",
-                                        height: "auto",
-                                        marginBottom: "var(--space-100)"
-                                    }}
-                                />
+                                <div style={{ position: 'relative', width: 200, height: 150, margin: '0 auto', marginBottom: 'var(--space-100)' }}>
+                                    <Image
+                                        src="/images/empty-state.svg"
+                                        alt="Empty state illustration"
+                                        fill
+                                        style={{ objectFit: 'contain' }}
+                                    />
+                                </div>
                                 <p className="body-regular" style={{ color: "var(--content-neutral--caption)" }}>
                                     Select components from the sidebar to build your template
                                 </p>

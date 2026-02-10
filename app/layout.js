@@ -14,7 +14,6 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link id="theme-stylesheet" rel="stylesheet" href="/themes/theme.css" />
       </head>
       <body suppressHydrationWarning>
         {children}

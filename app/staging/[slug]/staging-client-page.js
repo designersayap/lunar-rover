@@ -190,8 +190,19 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
 
     useEffect(() => {
         if (themePath) {
-            const themeLink = document.getElementById("theme-stylesheet");
-            if (themeLink) themeLink.href = themePath;
+            let themeLink = document.getElementById("theme-stylesheet");
+
+            // Dynamic injection to avoid server-side preload warnings
+            if (!themeLink) {
+                themeLink = document.createElement("link");
+                themeLink.id = "theme-stylesheet";
+                themeLink.rel = "stylesheet";
+                document.head.appendChild(themeLink);
+            }
+
+            if (themeLink.getAttribute('href') !== themePath) {
+                themeLink.href = themePath;
+            }
         }
     }, [themePath]);
 

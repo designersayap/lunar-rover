@@ -171,7 +171,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                 previewMap.set(`components/${filename}`, { path: `components/${filename}`, content });
             }
 
-            // B. Fetch CSS Module
+            // B. Fetch CSS Module (Optional)
             const cssPath = filePath.replace('.js', '.module.css');
             try {
                 const cssRes = await fetch('/api/export-component', {

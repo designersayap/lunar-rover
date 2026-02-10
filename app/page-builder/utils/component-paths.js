@@ -1,7 +1,4 @@
 export const COMPONENT_PATHS = {
-    "header-title": "app/templates/header/header-title.js",
-    "header-title-button": "app/templates/header/header-title-button.js",
-    "header-title-description": "app/templates/header/header-title-description.js",
     "header-section": "app/templates/header/header-section.js",
     "header-group": "app/templates/header/header-group.js",
 
