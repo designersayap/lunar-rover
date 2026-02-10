@@ -1,3 +1,5 @@
+import { generateUniqueId } from "./component-manager";
+
 const STORAGE_KEY = 'lunar-template-builder';
 
 export const DEFAULT_ANALYTICS = {
@@ -25,6 +27,7 @@ export function loadTemplate(componentLibrary) {
 
     try {
         const { components = [], analytics } = JSON.parse(saved);
+        const seenIds = new Set();
 
         // Helper to find component definition
         const findDef = (id) => {
@@ -41,7 +44,18 @@ export function loadTemplate(componentLibrary) {
                 const original = findDef(comp.id);
                 if (!original) return null;
 
-                const rehydratedComp = { ...comp, component: original.component };
+                // Sanitize Unique ID
+                let uniqueId = comp.uniqueId;
+                if (!uniqueId || seenIds.has(uniqueId)) {
+                    uniqueId = generateUniqueId();
+                }
+                seenIds.add(uniqueId);
+
+                const rehydratedComp = {
+                    ...comp,
+                    uniqueId, // Ensure unique ID is used
+                    component: original.component
+                };
 
                 // Handle nested components (ParallaxGroup)
                 if (rehydratedComp.props?.components) {

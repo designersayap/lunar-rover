@@ -13,7 +13,7 @@ export default function GlobalError({ error, reset }) {
                         {error.digest && <small style={{ display: "block", marginTop: "10px", color: "#888" }}>Digest: {error.digest}</small>}
                     </pre>
                     <button
-                        onClick={() => reset()}
+                        onClick={() => reset?.()}
                         style={{
                             padding: "10px 20px",
                             background: "#000",

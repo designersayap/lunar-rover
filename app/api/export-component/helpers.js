@@ -420,8 +420,9 @@ const openDialog = (id) => {
 
   // Safety Check: If export default was replaced by return (Cloudflare/Minification artifact), restore it
   // This fixes the "Return statement is not allowed here" error in exported files
-  if (!src.includes('export default function') && src.match(/^return\s+function/m)) {
-    src = src.replace(/^return\s+function/m, 'export default function');
+  // Note: We use \s* to handle potential indentation added by build tools
+  if (!src.includes('export default function') && src.match(/^\s*return\s+function/m)) {
+    src = src.replace(/^\s*return\s+function/m, 'export default function');
   }
 
   return src;

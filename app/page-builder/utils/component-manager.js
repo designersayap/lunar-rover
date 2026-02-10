@@ -3,6 +3,17 @@ import { componentDefaults } from "@/app/templates/content/data";
 import { componentLibrary } from "@/app/page-builder/content/component-library";
 
 /**
+ * Generate a unique ID.
+ * Uses crypto.randomUUID if available, otherwise falls back to a timestamp + random number.
+ */
+export function generateUniqueId() {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+        return crypto.randomUUID();
+    }
+    return `${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
+}
+
+/**
  * Add a new component to the list.
  */
 export function addComponentToList(components, componentData, sectionId) {
@@ -14,7 +25,7 @@ export function addComponentToList(components, componentData, sectionId) {
 
     const newItem = {
         ...componentData,
-        uniqueId: Date.now(),
+        uniqueId: generateUniqueId(),
         sectionId,
         props: { ...initialProps, ...(componentData.props || {}) }
     };
@@ -31,6 +42,10 @@ export function addComponentToList(components, componentData, sectionId) {
     // Normal components just go to the end
     return [...components, newItem];
 }
+
+// ... (other functions)
+
+
 
 /**
  * Remove a component from the list (recursive).
@@ -366,7 +381,7 @@ export function groupComponents(components, selectedUniqueIds) {
     if (itemsToGroup.length === 0) return components;
 
     // 3. Create new Parallax Group
-    const newGroupId = Date.now();
+    const newGroupId = generateUniqueId();
 
     // We need to resolve the component definition to assign the 'component' prop
     let scrollGroupDef = null;
