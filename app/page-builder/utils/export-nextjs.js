@@ -64,6 +64,41 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
     const processedFiles = new Set();
     const bundledImages = new Map(); // Track bundled image paths -> unique filenames
 
+    // --- FIX: Filter data.js to remove deleted/unused components ---
+    // Collect ALL used component IDs from the hierarchy
+    const usedComponentIds = new Set();
+    const verifyIds = (list) => {
+        if (!list || !Array.isArray(list)) return;
+        list.forEach(item => {
+            if (item.id) usedComponentIds.add(item.id);
+            if (item.componentName) usedComponentIds.add(item.componentName); // Fallback
+
+            if (item.components) verifyIds(item.components);
+            if (item.props?.components) verifyIds(item.props.components);
+        });
+    };
+    verifyIds(selectedComponents);
+
+    // Create filtered defaults object
+    const filteredDefaults = {};
+    Object.keys(componentDefaults).forEach(key => {
+        if (usedComponentIds.has(key)) {
+            filteredDefaults[key] = componentDefaults[key];
+        }
+    });
+
+    // Generate data.js content
+    const dataJsContent = `export const componentDefaults = ${JSON.stringify(filteredDefaults, null, 4)};`;
+
+    // Inject into Zip & Preview Map directly (Mocking the file)
+    // This prevents processComponent from fetching the original file from server
+    zip.folder("components").file("data.js", dataJsContent);
+    previewMap.set("components/data.js", { path: "components/data.js", content: dataJsContent });
+
+    // Mark as processed so it's skipped by fetch logic if referenced as dependency
+    processedFiles.add("data.js");
+    // ----------------------------------------------------------------
+
     const bundleAsset = async (imgPath) => {
         // Check if already bundled
         if (bundledImages.has(imgPath)) {
@@ -83,7 +118,12 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
             let uniqueName;
             let dataContent;
 
-            if (imgPath.startsWith('blob:') || imgPath.startsWith('http')) {
+            // Skip external URLs (user request: keep original link)
+            if (typeof imgPath === 'string' && imgPath.startsWith('http')) {
+                return null;
+            }
+
+            if (imgPath.startsWith('blob:')) {
                 // Handle Blob or External URL
                 const res = await fetch(imgPath);
                 const blob = await res.blob();
@@ -516,44 +556,8 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
     }
     // --- End Image Scanning ---
 
-    // --- 3. Bundle Fonts (Fix for UAT/Export) ---
-    const fontFiles = [
-        // Lato
-        'Lato/Lato-Black.ttf', 'Lato/Lato-BlackItalic.ttf', 'Lato/Lato-Bold.ttf', 'Lato/Lato-BoldItalic.ttf',
-        'Lato/Lato-Italic.ttf', 'Lato/Lato-Light.ttf', 'Lato/Lato-LightItalic.ttf', 'Lato/Lato-Regular.ttf',
-        'Lato/Lato-Thin.ttf', 'Lato/Lato-ThinItalic.ttf',
-        // Poppins
-        'Poppins/Poppins-Black.ttf', 'Poppins/Poppins-BlackItalic.ttf', 'Poppins/Poppins-Bold.ttf', 'Poppins/Poppins-BoldItalic.ttf',
-        'Poppins/Poppins-ExtraBold.ttf', 'Poppins/Poppins-ExtraBoldItalic.ttf', 'Poppins/Poppins-ExtraLight.ttf', 'Poppins/Poppins-ExtraLightItalic.ttf',
-        'Poppins/Poppins-Italic.ttf', 'Poppins/Poppins-Light.ttf', 'Poppins/Poppins-LightItalic.ttf', 'Poppins/Poppins-Medium.ttf',
-        'Poppins/Poppins-MediumItalic.ttf', 'Poppins/Poppins-Regular.ttf', 'Poppins/Poppins-SemiBold.ttf', 'Poppins/Poppins-SemiBoldItalic.ttf',
-        'Poppins/Poppins-Thin.ttf', 'Poppins/Poppins-ThinItalic.ttf',
-        // Proza Libre
-        'Proza_Libre/ProzaLibre-Bold.ttf', 'Proza_Libre/ProzaLibre-BoldItalic.ttf', 'Proza_Libre/ProzaLibre-ExtraBold.ttf', 'Proza_Libre/ProzaLibre-ExtraBoldItalic.ttf',
-        'Proza_Libre/ProzaLibre-Italic.ttf', 'Proza_Libre/ProzaLibre-Medium.ttf', 'Proza_Libre/ProzaLibre-MediumItalic.ttf', 'Proza_Libre/ProzaLibre-Regular.ttf',
-        'Proza_Libre/ProzaLibre-SemiBold.ttf', 'Proza_Libre/ProzaLibre-SemiBoldItalic.ttf',
-        // Montserrat (Note: User has customized structure with static folder)
-        'Montserrat/static/Montserrat-Black.ttf', 'Montserrat/static/Montserrat-BlackItalic.ttf', 'Montserrat/static/Montserrat-Bold.ttf', 'Montserrat/static/Montserrat-BoldItalic.ttf',
-        'Montserrat/static/Montserrat-ExtraBold.ttf', 'Montserrat/static/Montserrat-ExtraBoldItalic.ttf', 'Montserrat/static/Montserrat-ExtraLight.ttf', 'Montserrat/static/Montserrat-ExtraLightItalic.ttf',
-        'Montserrat/static/Montserrat-Italic.ttf', 'Montserrat/static/Montserrat-Light.ttf', 'Montserrat/static/Montserrat-LightItalic.ttf', 'Montserrat/static/Montserrat-Medium.ttf',
-        'Montserrat/static/Montserrat-MediumItalic.ttf', 'Montserrat/static/Montserrat-Regular.ttf', 'Montserrat/static/Montserrat-SemiBold.ttf', 'Montserrat/static/Montserrat-SemiBoldItalic.ttf',
-        'Montserrat/static/Montserrat-Thin.ttf', 'Montserrat/static/Montserrat-ThinItalic.ttf'
-    ];
-
-    for (const fontPath of fontFiles) {
-        try {
-            const res = await fetch(`/fonts/${fontPath}`);
-            if (res.ok) {
-                const blob = await res.blob();
-
-                // Add to zip in public/fonts/...
-                zip.folder("public").folder("fonts").file(fontPath, blob);
-            }
-        } catch (e) {
-            console.warn("Failed to bundle font:", fontPath, e);
-        }
-    }
-
+    // --- 3. Bundle Fonts (Removed: Fonts referenced in CSS are handled by asset bundler, or served via Google Fonts) ---
+    // (This block previously listed and fetched all fonts, which created duplicates in public/fonts when they were also bundled to public/assets)
     // --- 4. Fetch Foundation Styles ---
     // Note: The order matters for cascade.
     const foundationFiles = [
@@ -877,6 +881,7 @@ export default function RootLayout({ children }) {
         delete props.uniqueId;
         delete props.config; // Configuration specs
         delete props.isOpen; // Fix: Remove uncontrolled state prop
+        delete props.thumbnail;
 
         const finalSectionId = sectionIdMap.get(String(item.uniqueId));
         if (finalSectionId) {
@@ -982,6 +987,7 @@ export default function RootLayout({ children }) {
                     delete childProps.name;
                     delete childProps.component;
                     delete childProps.props; // flattened
+                    delete childProps.thumbnail;
 
                     // Re-attach uniqueId and sectionId as they are needed by ScrollGroup to render children
                     childProps.uniqueId = childComp.uniqueId;
@@ -1005,10 +1011,16 @@ export default function RootLayout({ children }) {
             } else {
                 return `${key}={${JSON.stringify(value)}}`;
             }
-        }).filter(Boolean).join(' ');
+        }).filter(Boolean);
 
         // Render Component
-        let componentJSX = `<${componentName} ${propsString} />`;
+        let componentJSX;
+        if (propsString.length > 0) {
+            const formattedProps = propsString.join('\n        ');
+            componentJSX = `<${componentName}\n        ${formattedProps}\n      />`;
+        } else {
+            componentJSX = `<${componentName} />`;
+        }
 
 
 
