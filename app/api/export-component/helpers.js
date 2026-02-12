@@ -419,9 +419,8 @@ const openDialog = (id) => {
   }
 
   // Safety Check: If export default was replaced by return, restoration
-  // We use a global Replace to catch any instance of "return function ComponentName"
-  // This ignores indentation and line start anchors to be more robust
-  src = src.replace(/return\s+function\s+([A-Z])/g, 'export default function $1');
+  // Broadened regex to catch async and any identifier name
+  src = src.replace(/return\s+(async\s+)?function\s+([\w\d_]+)/g, 'export default $1function $2');
 
   return src;
 }
