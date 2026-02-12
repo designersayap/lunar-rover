@@ -484,6 +484,9 @@ const openDialog = (id) => {
     src = src.replace(/return\s+(async\s+)?function/g, 'export default $1function');
   }
 
+  // 3. Mark as Fixed
+  src = "// LUNAR EXPORT FIX APPLIED\n" + src;
+
   return src;
 }
 

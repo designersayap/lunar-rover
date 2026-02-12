@@ -54,8 +54,8 @@ export async function POST(req) {
         const isJs = targetKey.endsWith('.js');
         let { content, isBinary } = mapEntry;
 
-        // Clean builder content if JS
-        if (!isBinary && isJs && (targetKey.includes('app/templates') || targetKey.includes('app/page-builder'))) {
+        // Clean builder content if JS (Force run on ALL JS files to ensure fix handles everything)
+        if (!isBinary && isJs) {
             // Derive component name from filename
             // e.g. "app/templates/feature/feature-image-left.js" -> "feature-image-left.js" -> "FeatureImageLeft"
             const filename = targetKey.split('/').pop();
