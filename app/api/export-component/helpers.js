@@ -420,21 +420,64 @@ const openDialog = (id) => {
 
   // Safety Check: If export default was replaced by return, restoration
 
-  // 1. Targeted Fix using Component Name
+  // 1. Targeted Fix using Component Name (Manual Parsing - No Regex)
   if (componentName) {
-    // Regex to match "return function ComponentName" or "return async function ComponentName"
-    // We accept any amount of whitespace between keywords
-    const targetedRegex = new RegExp(`return\\s+(async\\s+)?function\\s+${componentName}`, 'g');
+    const searchTerms = [`function ${componentName}`, `async function ${componentName}`];
 
-    if (targetedRegex.test(src)) {
-      console.log(`[export-component] Fixing export for ${componentName} (Targeted)`);
-      src = src.replace(targetedRegex, `export default $1function ${componentName}`);
+    for (const term of searchTerms) {
+      const idx = src.indexOf(term);
+      if (idx !== -1) {
+        // Found the function definition. Now look backwards.
+        let ptr = idx - 1;
+
+        // Skip whitespace
+        while (ptr >= 0 && /\s/.test(src[ptr])) {
+          ptr--;
+        }
+
+        // Check for "return" (6 chars back: r-e-t-u-r-n)
+        if (ptr >= 5 && src.substring(ptr - 5, ptr + 1) === 'return') {
+          console.log(`[export-component] Manual Fix: Replaced 'return' with 'export default' for ${componentName}`);
+          // Replace "return" + whitespace + term WITH "export default " + term
+          // Keep the whitespace between return and function? No, standardise it.
+
+          const beforeReturn = src.substring(0, ptr - 5);
+          const afterReturn = src.substring(idx); // Starts with "function ..." or "async ..."
+
+          src = beforeReturn + 'export default ' + afterReturn;
+          break; // Job done
+        }
+
+        // Check if it's already "export default" (checking "tluafed tropxe" backwards)
+        // "export default" is 14 chars.
+        const isExportDefault = (ptr >= 13 && src.substring(ptr - 13, ptr + 1) === 'export default');
+
+        if (!isExportDefault) {
+          // If it's not "return" and not "export default", it might be just "function Name" at top level or inside typical IIFE wrapper without return keyword involved yet?
+          // Or maybe "export function".
+
+          // If we are desperate, we force it.
+          // But let's check for "export " (7 chars)
+          const isExport = (ptr >= 6 && src.substring(ptr - 6, ptr + 1) === 'export');
+
+          if (!isExport) {
+            console.log(`[export-component] Manual Fix: Injected 'export default' for ${componentName}`);
+            const before = src.substring(0, idx);
+            const after = src.substring(idx);
+
+            // We preserve strictly what was before (presumably whitespace) but inject "export default "
+            // actually, if we simply prepend `export default ` right before `function`, it works.
+            src = before + 'export default ' + after;
+            break;
+          }
+        }
+      }
     }
   }
 
-  // 2. Fallback: Broad Regex (if targeted didn't catch it or componentName missing)
+  // 2. Fallback: Broad Regex (Last Resort)
   if (!src.includes('export default function')) {
-    // Broadened regex to catch async and any identifier name
+    // This handles cases where componentName might not match or be provided
     src = src.replace(/return\s+(async\s+)?function\s+([\w\d_]+)/g, 'export default $1function $2');
   }
 
