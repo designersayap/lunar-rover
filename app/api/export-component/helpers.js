@@ -26,7 +26,7 @@ export function log(...args) {
 }
 
 /** Clean Builder‑specific imports and props from component source */
-export function cleanBuilderContent(src) {
+export function cleanBuilderContent(src, componentName) {
   if (typeof src !== 'string') {
     console.warn('[export-component] cleanBuilderContent received non-string:', typeof src);
     return typeof src === 'undefined' ? '' : String(src);
@@ -419,8 +419,24 @@ const openDialog = (id) => {
   }
 
   // Safety Check: If export default was replaced by return, restoration
-  // Broadened regex to catch async and any identifier name
-  src = src.replace(/return\s+(async\s+)?function\s+([\w\d_]+)/g, 'export default $1function $2');
+
+  // 1. Targeted Fix using Component Name
+  if (componentName) {
+    // Regex to match "return function ComponentName" or "return async function ComponentName"
+    // We accept any amount of whitespace between keywords
+    const targetedRegex = new RegExp(`return\\s+(async\\s+)?function\\s+${componentName}`, 'g');
+
+    if (targetedRegex.test(src)) {
+      console.log(`[export-component] Fixing export for ${componentName} (Targeted)`);
+      src = src.replace(targetedRegex, `export default $1function ${componentName}`);
+    }
+  }
+
+  // 2. Fallback: Broad Regex (if targeted didn't catch it or componentName missing)
+  if (!src.includes('export default function')) {
+    // Broadened regex to catch async and any identifier name
+    src = src.replace(/return\s+(async\s+)?function\s+([\w\d_]+)/g, 'export default $1function $2');
+  }
 
   return src;
 }

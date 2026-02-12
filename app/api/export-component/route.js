@@ -56,7 +56,13 @@ export async function POST(req) {
 
         // Clean builder content if JS
         if (!isBinary && isJs && (targetKey.includes('app/templates') || targetKey.includes('app/page-builder'))) {
-            content = cleanBuilderContent(content);
+            // Derive component name from filename
+            // e.g. "app/templates/feature/feature-image-left.js" -> "feature-image-left.js" -> "FeatureImageLeft"
+            const filename = targetKey.split('/').pop();
+            const param = filename.replace('.js', '');
+            const componentName = param.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join('');
+
+            content = cleanBuilderContent(content, componentName);
         }
 
         return NextResponse.json({
