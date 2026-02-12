@@ -424,13 +424,20 @@ const openDialog = (id) => {
 
   // Safety Check: If export default was replaced by return, restoration
 
+  // OBFUSCATION: Avoid static analysis replacing "export default function" with "return function"
+  // The build tool seems to aggressively transform this pattern even in strings.
+  const KW_EXPORT = 'ex' + 'port';
+  const KW_DEFAULT = 'de' + 'fault';
+  const KW_FUNCTION = 'fun' + 'ction';
+  const TARGET_PHRASE = `${KW_EXPORT} ${KW_DEFAULT} ${KW_FUNCTION}`; // "export default function"
+
   let debugLog = [`// LUNAR EXPORT DEBUG LOG START`];
   debugLog.push(`// Component: ${componentName || 'Unknown'}`);
 
   // 1. Targeted Fix using Component Name (Hybrid Regex + Manual)
   if (componentName) {
     // Regex to find the function definition - handles "async", tabs, newlines, multiple spaces
-    const funcRegex = new RegExp(`(?:async\\s+)?function\\s+${componentName}`, 'g');
+    const funcRegex = new RegExp(`(?:async\\s+)?${KW_FUNCTION}\\s+${componentName}`, 'g');
     let match;
     let matches = [];
 
@@ -439,7 +446,7 @@ const openDialog = (id) => {
       matches.push({ index: match.index, length: match[0].length });
     }
 
-    // Process in reverse order to avoid index shifting invalidating earlier matches
+    // Process in reverse order
     for (let i = matches.length - 1; i >= 0; i--) {
       const { index: idx } = matches[i];
       debugLog.push(`// Processing match at index: ${idx}`);
@@ -463,46 +470,43 @@ const openDialog = (id) => {
         const beforeReturn = src.substring(0, ptr - 5);
         const afterReturn = src.substring(idx);
 
-        // Replacement
-        src = beforeReturn + 'export default ' + afterReturn;
+        // Replacement using constructed string
+        src = beforeReturn + `${KW_EXPORT} ${KW_DEFAULT} ` + afterReturn;
 
-        // Log the result context (start of the new line)
         const checkSnippet = src.substring(beforeReturn.length, beforeReturn.length + 50);
         debugLog.push(`// RESULT SNIPPET: "${checkSnippet}..."`);
         continue;
       }
 
-      // Check if already correct ("export default")
-      const isExportDefault = (ptr >= 13 && src.substring(ptr - 13, ptr + 1) === 'export default');
+      // Check if already correct
+      const isExportDefault = (ptr >= 13 && src.substring(ptr - 13, ptr + 1) === `${KW_EXPORT} ${KW_DEFAULT}`);
       if (isExportDefault) {
-        debugLog.push(`// STATUS: Already 'export default'.`);
+        debugLog.push(`// STATUS: Already export default.`);
       } else {
-        const isExport = (ptr >= 6 && src.substring(ptr - 6, ptr + 1) === 'export');
+        const isExport = (ptr >= 6 && src.substring(ptr - 6, ptr + 1) === KW_EXPORT);
 
         if (!isExport) {
-          debugLog.push(`// STATUS: Missing export. Injecting 'export default'.`);
-          console.log(`[export-component] Hybrid Fix: Injected 'export default' for ${componentName}`);
+          debugLog.push(`// STATUS: Missing export. Injecting.`);
           const before = src.substring(0, idx);
           const after = src.substring(idx);
-          src = before + 'export default ' + after;
+          src = before + `${KW_EXPORT} ${KW_DEFAULT} ` + after;
 
           const checkSnippet = src.substring(before.length, before.length + 50);
           debugLog.push(`// RESULT SNIPPET: "${checkSnippet}..."`);
         } else {
-          debugLog.push(`// STATUS: Has 'export' but not 'default'.`);
+          debugLog.push(`// STATUS: Has export but not default.`);
         }
       }
     }
   }
 
-  // 2. Fallback: Aggressive Global Replace (Last Resort)
-  if (!src.includes('export default function')) {
+  // 2. Fallback: Aggressive Global Replace
+  if (!src.includes(TARGET_PHRASE)) {
     debugLog.push(`// FALLBACK TRIGGERED: Global replace for return function`);
-    src = src.replace(/return\s+(async\s+)?function/g, 'export default $1function');
+    src = src.replace(new RegExp(`return\\s+(async\\s+)?${KW_FUNCTION}`, 'g'), `${KW_EXPORT} ${KW_DEFAULT} $1${KW_FUNCTION}`);
   } else {
-    debugLog.push(`// FALLBACK SKIPPED: 'export default function' present.`);
-    // Add a verification snippet from the final source to see what it looks like globally
-    const exportIdx = src.indexOf('export default function');
+    debugLog.push(`// FALLBACK SKIPPED: correct phrase present.`);
+    const exportIdx = src.indexOf(TARGET_PHRASE);
     if (exportIdx !== -1) {
       const snippet = src.substring(exportIdx, exportIdx + 50);
       debugLog.push(`// FINAL VERIFICATION: Found "${snippet}..." at index ${exportIdx}`);
