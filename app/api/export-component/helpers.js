@@ -422,6 +422,9 @@ const openDialog = (id) => {
 
   // Safety Check: If export default was replaced by return, restoration
 
+  let debugLog = [`// LUNAR EXPORT DEBUG LOG START`];
+  debugLog.push(`// Component: ${componentName || 'Unknown'}`);
+
   // 1. Targeted Fix using Component Name (Hybrid Regex + Manual)
   if (componentName) {
     // Regex to find the function definition - handles "async", tabs, newlines, multiple spaces
@@ -431,6 +434,7 @@ const openDialog = (id) => {
     // We loop in case there are multiple (unlikely for top level but possible)
     while ((match = funcRegex.exec(src)) !== null) {
       const idx = match.index;
+      debugLog.push(`// Found function at index: ${idx}`);
 
       // Found the feature! Now scan backwards from idx.
       let ptr = idx - 1;
@@ -440,38 +444,40 @@ const openDialog = (id) => {
         ptr--;
       }
 
+      const precedingChars = src.substring(Math.max(0, ptr - 10), ptr + 1);
+      debugLog.push(`// Preceding 10 non-whitespace chars (escaped): "${precedingChars.replace(/\n/g, '\\n').replace(/\r/g, '\\r')}"`);
+
       // Check for "return" (6 chars: r-e-t-u-r-n)
       if (ptr >= 5 && src.substring(ptr - 5, ptr + 1) === 'return') {
+        debugLog.push(`// MATCH: Found 'return'. Replacing...`);
         console.log(`[export-component] Hybrid Fix: Replaced 'return' for ${componentName}`);
-
-        // We want to replace everything from (ptr - 5) up to matches[0] (which is "function Name...")
-        // Actually, we just replace "return" with "export default" and keep the whitespace? 
-        // Or just reconstruct the whole prefix.
 
         const beforeReturn = src.substring(0, ptr - 5);
         const afterReturn = src.substring(idx); // "function Name..." or "async function Name..."
 
         // Construct new source
-        // We replaced "return" (and subsequent whitespace) with "export default "
         src = beforeReturn + 'export default ' + afterReturn;
-
-        // Since we modified src, regex indices are invalid. Break and restart or just assume one export per file.
         break;
       }
 
       // Check if already correct ("export default")
       const isExportDefault = (ptr >= 13 && src.substring(ptr - 13, ptr + 1) === 'export default');
-      if (!isExportDefault) {
+      if (isExportDefault) {
+        debugLog.push(`// STATUS: Already 'export default'.`);
+      } else {
         // Not return, not export default. Maybe just "function Name".
         // Check for just "export"
         const isExport = (ptr >= 6 && src.substring(ptr - 6, ptr + 1) === 'export');
 
         if (!isExport) {
+          debugLog.push(`// STATUS: Missing export. Injecting 'export default'.`);
           console.log(`[export-component] Hybrid Fix: Injected 'export default' for ${componentName}`);
           const before = src.substring(0, idx);
           const after = src.substring(idx);
           src = before + 'export default ' + after;
           break;
+        } else {
+          debugLog.push(`// STATUS: Has 'export' but not 'default'.`);
         }
       }
     }
@@ -479,13 +485,18 @@ const openDialog = (id) => {
 
   // 2. Fallback: Aggressive Global Replace (Last Resort)
   if (!src.includes('export default function')) {
+    debugLog.push(`// FALLBACK TRIGGERED: Global replace for return function`);
     // If the targeted fix failed or componentName wasn't provided
     // match "return" followed by "function" (with optional async) allowing for newlines
     src = src.replace(/return\s+(async\s+)?function/g, 'export default $1function');
+  } else {
+    debugLog.push(`// FALLBACK SKIPPED: 'export default function' present.`);
   }
 
-  // 3. Mark as Fixed
-  src = "// LUNAR EXPORT FIX APPLIED\n" + src;
+  debugLog.push(`// LUNAR EXPORT DEBUG LOG END`);
+
+  // Prepend debug log
+  src = debugLog.join('\n') + '\n\n' + src;
 
   return src;
 }
