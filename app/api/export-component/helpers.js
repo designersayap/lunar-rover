@@ -422,6 +422,8 @@ const openDialog = (id) => {
 
   // Safety Check: If export default was replaced by return, restoration
 
+  // Safety Check: If export default was replaced by return, restoration
+
   let debugLog = [`// LUNAR EXPORT DEBUG LOG START`];
   debugLog.push(`// Component: ${componentName || 'Unknown'}`);
 
@@ -430,13 +432,19 @@ const openDialog = (id) => {
     // Regex to find the function definition - handles "async", tabs, newlines, multiple spaces
     const funcRegex = new RegExp(`(?:async\\s+)?function\\s+${componentName}`, 'g');
     let match;
+    let matches = [];
 
-    // We loop in case there are multiple (unlikely for top level but possible)
+    // Collect all matches first
     while ((match = funcRegex.exec(src)) !== null) {
-      const idx = match.index;
-      debugLog.push(`// Found function at index: ${idx}`);
+      matches.push({ index: match.index, length: match[0].length });
+    }
 
-      // Found the feature! Now scan backwards from idx.
+    // Process in reverse order to avoid index shifting invalidating earlier matches
+    for (let i = matches.length - 1; i >= 0; i--) {
+      const { index: idx } = matches[i];
+      debugLog.push(`// Processing match at index: ${idx}`);
+
+      // Scan backwards from idx
       let ptr = idx - 1;
 
       // Skip whitespace/newlines
@@ -445,19 +453,23 @@ const openDialog = (id) => {
       }
 
       const precedingChars = src.substring(Math.max(0, ptr - 10), ptr + 1);
-      debugLog.push(`// Preceding 10 non-whitespace chars (escaped): "${precedingChars.replace(/\n/g, '\\n').replace(/\r/g, '\\r')}"`);
+      debugLog.push(`// Preceding chars (escaped): "${precedingChars.replace(/\n/g, '\\n').replace(/\r/g, '\\r')}"`);
 
       // Check for "return" (6 chars: r-e-t-u-r-n)
       if (ptr >= 5 && src.substring(ptr - 5, ptr + 1) === 'return') {
         debugLog.push(`// MATCH: Found 'return'. Replacing...`);
-        console.log(`[export-component] Hybrid Fix: Replaced 'return' for ${componentName}`);
+        console.log(`[export-component] Hybrid Fix: Replaced 'return' for ${componentName} at ${idx}`);
 
         const beforeReturn = src.substring(0, ptr - 5);
-        const afterReturn = src.substring(idx); // "function Name..." or "async function Name..."
+        const afterReturn = src.substring(idx);
 
-        // Construct new source
+        // Replacement
         src = beforeReturn + 'export default ' + afterReturn;
-        break;
+
+        // Log the result context (start of the new line)
+        const checkSnippet = src.substring(beforeReturn.length, beforeReturn.length + 50);
+        debugLog.push(`// RESULT SNIPPET: "${checkSnippet}..."`);
+        continue;
       }
 
       // Check if already correct ("export default")
@@ -465,8 +477,6 @@ const openDialog = (id) => {
       if (isExportDefault) {
         debugLog.push(`// STATUS: Already 'export default'.`);
       } else {
-        // Not return, not export default. Maybe just "function Name".
-        // Check for just "export"
         const isExport = (ptr >= 6 && src.substring(ptr - 6, ptr + 1) === 'export');
 
         if (!isExport) {
@@ -475,7 +485,9 @@ const openDialog = (id) => {
           const before = src.substring(0, idx);
           const after = src.substring(idx);
           src = before + 'export default ' + after;
-          break;
+
+          const checkSnippet = src.substring(before.length, before.length + 50);
+          debugLog.push(`// RESULT SNIPPET: "${checkSnippet}..."`);
         } else {
           debugLog.push(`// STATUS: Has 'export' but not 'default'.`);
         }
@@ -486,11 +498,15 @@ const openDialog = (id) => {
   // 2. Fallback: Aggressive Global Replace (Last Resort)
   if (!src.includes('export default function')) {
     debugLog.push(`// FALLBACK TRIGGERED: Global replace for return function`);
-    // If the targeted fix failed or componentName wasn't provided
-    // match "return" followed by "function" (with optional async) allowing for newlines
     src = src.replace(/return\s+(async\s+)?function/g, 'export default $1function');
   } else {
     debugLog.push(`// FALLBACK SKIPPED: 'export default function' present.`);
+    // Add a verification snippet from the final source to see what it looks like globally
+    const exportIdx = src.indexOf('export default function');
+    if (exportIdx !== -1) {
+      const snippet = src.substring(exportIdx, exportIdx + 50);
+      debugLog.push(`// FINAL VERIFICATION: Found "${snippet}..." at index ${exportIdx}`);
+    }
   }
 
   debugLog.push(`// LUNAR EXPORT DEBUG LOG END`);
