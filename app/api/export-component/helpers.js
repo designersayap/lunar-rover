@@ -431,9 +431,6 @@ const openDialog = (id) => {
   const KW_FUNCTION = 'fun' + 'ction';
   const TARGET_PHRASE = `${KW_EXPORT} ${KW_DEFAULT} ${KW_FUNCTION}`; // "export default function"
 
-  let debugLog = [`// LUNAR EXPORT DEBUG LOG START`];
-  debugLog.push(`// Component: ${componentName || 'Unknown'}`);
-
   // 1. Targeted Fix using Component Name (Hybrid Regex + Manual)
   if (componentName) {
     // Regex to find the function definition - handles "async", tabs, newlines, multiple spaces
@@ -449,7 +446,6 @@ const openDialog = (id) => {
     // Process in reverse order
     for (let i = matches.length - 1; i >= 0; i--) {
       const { index: idx } = matches[i];
-      debugLog.push(`// Processing match at index: ${idx}`);
 
       // Scan backwards from idx
       let ptr = idx - 1;
@@ -459,12 +455,8 @@ const openDialog = (id) => {
         ptr--;
       }
 
-      const precedingChars = src.substring(Math.max(0, ptr - 10), ptr + 1);
-      debugLog.push(`// Preceding chars (escaped): "${precedingChars.replace(/\n/g, '\\n').replace(/\r/g, '\\r')}"`);
-
       // Check for "return" (6 chars: r-e-t-u-r-n)
       if (ptr >= 5 && src.substring(ptr - 5, ptr + 1) === 'return') {
-        debugLog.push(`// MATCH: Found 'return'. Replacing...`);
         console.log(`[export-component] Hybrid Fix: Replaced 'return' for ${componentName} at ${idx}`);
 
         const beforeReturn = src.substring(0, ptr - 5);
@@ -472,29 +464,19 @@ const openDialog = (id) => {
 
         // Replacement using constructed string
         src = beforeReturn + `${KW_EXPORT} ${KW_DEFAULT} ` + afterReturn;
-
-        const checkSnippet = src.substring(beforeReturn.length, beforeReturn.length + 50);
-        debugLog.push(`// RESULT SNIPPET: "${checkSnippet}..."`);
         continue;
       }
 
       // Check if already correct
       const isExportDefault = (ptr >= 13 && src.substring(ptr - 13, ptr + 1) === `${KW_EXPORT} ${KW_DEFAULT}`);
-      if (isExportDefault) {
-        debugLog.push(`// STATUS: Already export default.`);
-      } else {
+      if (!isExportDefault) {
         const isExport = (ptr >= 6 && src.substring(ptr - 6, ptr + 1) === KW_EXPORT);
 
         if (!isExport) {
-          debugLog.push(`// STATUS: Missing export. Injecting.`);
+          console.log(`[export-component] Hybrid Fix: Injected 'export default' for ${componentName}`);
           const before = src.substring(0, idx);
           const after = src.substring(idx);
           src = before + `${KW_EXPORT} ${KW_DEFAULT} ` + after;
-
-          const checkSnippet = src.substring(before.length, before.length + 50);
-          debugLog.push(`// RESULT SNIPPET: "${checkSnippet}..."`);
-        } else {
-          debugLog.push(`// STATUS: Has export but not default.`);
         }
       }
     }
@@ -502,21 +484,8 @@ const openDialog = (id) => {
 
   // 2. Fallback: Aggressive Global Replace
   if (!src.includes(TARGET_PHRASE)) {
-    debugLog.push(`// FALLBACK TRIGGERED: Global replace for return function`);
     src = src.replace(new RegExp(`return\\s+(async\\s+)?${KW_FUNCTION}`, 'g'), `${KW_EXPORT} ${KW_DEFAULT} $1${KW_FUNCTION}`);
-  } else {
-    debugLog.push(`// FALLBACK SKIPPED: correct phrase present.`);
-    const exportIdx = src.indexOf(TARGET_PHRASE);
-    if (exportIdx !== -1) {
-      const snippet = src.substring(exportIdx, exportIdx + 50);
-      debugLog.push(`// FINAL VERIFICATION: Found "${snippet}..." at index ${exportIdx}`);
-    }
   }
-
-  debugLog.push(`// LUNAR EXPORT DEBUG LOG END`);
-
-  // Prepend debug log
-  src = debugLog.join('\n') + '\n\n' + src;
 
   return src;
 }
