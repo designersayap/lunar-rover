@@ -23,7 +23,7 @@ const signer = new SignatureV4({
 /**
  * Manually signs and fetches a request to S3
  */
-async function sendS3Request(method, key, queryParams = {}, body = null) {
+async function sendS3Request(method, key, queryParams = {}, body = null, extraHeaders = {}) {
     // Construct URL
     const endpointUrl = new URL(ENDPOINT.startsWith('http') ? ENDPOINT : `https://${ENDPOINT}`);
     endpointUrl.pathname = `/${BUCKET}/${key}`;
@@ -39,9 +39,10 @@ async function sendS3Request(method, key, queryParams = {}, body = null) {
     // host header is required
     const headers = {
         host: endpointUrl.host,
+        ...extraHeaders
     };
 
-    if (body) {
+    if (body && !headers['content-type']) {
         headers['content-type'] = 'application/json';
     }
 
@@ -75,12 +76,18 @@ async function sendS3Request(method, key, queryParams = {}, body = null) {
 }
 
 export const S3Manual = {
-    async listObjects(prefix) {
-        const response = await sendS3Request('GET', '', {
+    async listObjects(prefix, delimiter = null) {
+        const queryParams = {
             'list-type': '2',
             'prefix': prefix,
             'max-keys': '1000'
-        });
+        };
+
+        if (delimiter) {
+            queryParams.delimiter = delimiter;
+        }
+
+        const response = await sendS3Request('GET', '', queryParams);
 
         const xmlText = await response.text();
 
@@ -104,7 +111,19 @@ export const S3Manual = {
             }
         }
 
-        return { Contents: contents };
+        const commonPrefixes = [];
+        const prefixNodes = doc.getElementsByTagName('CommonPrefixes');
+        for (let i = 0; i < prefixNodes.length; i++) {
+            const node = prefixNodes[i];
+            const prefixNode = node.getElementsByTagName('Prefix')[0];
+            if (prefixNode) {
+                commonPrefixes.push({
+                    Prefix: prefixNode.textContent
+                });
+            }
+        }
+
+        return { Contents: contents, CommonPrefixes: commonPrefixes };
     },
 
     async getJson(key) {
@@ -115,6 +134,11 @@ export const S3Manual = {
     async putJson(key, data) {
         const body = JSON.stringify(data);
         await sendS3Request('PUT', key, {}, body);
+        return true;
+    },
+
+    async putObject(key, body, contentType) {
+        await sendS3Request('PUT', key, {}, body, { 'content-type': contentType });
         return true;
     },
 

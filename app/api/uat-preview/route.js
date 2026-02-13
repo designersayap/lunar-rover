@@ -1,34 +1,30 @@
 
 import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
+import { S3Manual } from '@/app/lib/s3-manual';
 import path from 'path';
 
-// FORCE NODEJS RUNTIME (Not Edge) - Because we need access to local filesystem
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic'; // Disable caching
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
 
-const UAT_BASE_DIR = path.join(process.cwd(), 'public', 'uat-files');
+const S3_UAT_PREFIX = 'uat-files/';
 
 export async function GET() {
-    // Ensure base directory exists (or just check)
     try {
-        await fs.access(UAT_BASE_DIR);
-    } catch {
-        return NextResponse.json({ folders: [] });
-    }
+        // List folders using S3 CommonPrefixes with delimiter
+        const result = await S3Manual.listObjects(S3_UAT_PREFIX, '/');
 
-    try {
-        const entries = await fs.readdir(UAT_BASE_DIR, { withFileTypes: true });
-        const folders = entries
-            .filter(dirent => dirent.isDirectory())
-            .map(dirent => dirent.name)
+        const folders = (result.CommonPrefixes || [])
+            .map(prefix => {
+                // Prefix is like "uat-files/folder-name/"
+                // We want just "folder-name"
+                const parts = prefix.Prefix.split('/');
+                return parts[parts.length - 2]; // Get the second to last part
+            })
+            .filter(Boolean)
             .sort();
 
         return NextResponse.json({ folders });
     } catch (error) {
-        if (error.code === 'ENOENT') {
-            return NextResponse.json({ folders: [] });
-        }
         console.error("Error listing UAT folders:", error);
         return NextResponse.json({ error: "Failed to list folders" }, { status: 500 });
     }
@@ -46,28 +42,55 @@ export async function POST(request) {
             return NextResponse.json({ error: "Invalid files array" }, { status: 400 });
         }
 
-        const targetDir = path.join(UAT_BASE_DIR, folderName);
-
-        // Clear existing or create new
-        // Ideally we might want to wipe it first to ensure clean state? 
-        // For now, let's just mkdir recursive.
-        await fs.mkdir(targetDir, { recursive: true });
+        const targetPrefix = `${S3_UAT_PREFIX}${folderName}/`;
 
         // Process files
-        for (const file of files) {
-            const filePath = path.join(targetDir, file.path);
-            const fileDir = path.dirname(filePath);
-
-            // Ensure directory exists
-            await fs.mkdir(fileDir, { recursive: true });
+        const uploadPromises = files.map(async (file) => {
+            // file.path is relative to the internal folder structure, e.g. "index.html" or "assets/style.css"
+            // We need to construct the full S3 key
+            // Start with targetPrefix
+            // Clean file.path to avoid leading slashes if present
+            const cleanPath = file.path.startsWith('/') ? file.path.slice(1) : file.path;
+            const s3Key = `${targetPrefix}${cleanPath}`;
 
             let content = file.content;
+            let contentType = 'application/octet-stream';
+
+            // Determine content type (basic)
+            if (s3Key.endsWith('.html')) contentType = 'text/html';
+            else if (s3Key.endsWith('.css')) contentType = 'text/css';
+            else if (s3Key.endsWith('.js')) contentType = 'application/javascript';
+            else if (s3Key.endsWith('.json')) contentType = 'application/json';
+            else if (s3Key.endsWith('.png')) contentType = 'image/png';
+            else if (s3Key.endsWith('.jpg') || s3Key.endsWith('.jpeg')) contentType = 'image/jpeg';
+            else if (s3Key.endsWith('.svg')) contentType = 'image/svg+xml';
+
             if (file.base64) {
-                content = Buffer.from(file.content, 'base64');
+                // Convert base64 to binary for S3
+                // In Edge Runtime, we can use Uint8Array
+                const binaryString = atob(file.content);
+                const bytes = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                content = bytes;
             }
 
-            await fs.writeFile(filePath, content);
-        }
+            await S3Manual.putObject(s3Key, content, contentType);
+        });
+
+        await Promise.all(uploadPromises);
+
+        // Return path relative to what? 
+        // Previously it returned `/uat-files/${folderName}` which implies serving from local public dir.
+        // Now it's on S3.
+        // If the frontend expects to iframe this, it needs the public URL of the bucket.
+        // or a proxy route.
+        // Assuming the bucket is public or behind Cloudflare:
+        const bucketUrl = process.env.B2_ENDPOINT + '/' + process.env.B2_BUCKET_NAME;
+        // Or if using a custom domain. For now let's return the relative path 
+        // and let the frontend decide how to serve it.
+        // OR better, return the full URL if we can construct it.
 
         return NextResponse.json({ success: true, path: `/uat-files/${folderName}` });
 
