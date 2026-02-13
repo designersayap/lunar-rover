@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react';
-import { ChevronRightIcon, CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import {
+    QuestionMarkCircleIcon,
+    ChevronDownIcon,
+    ChevronRightIcon,
+    CheckCircleIcon,
+    XCircleIcon
+} from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
+import Tooltip from "./tooltip";
 
 // Helper component for Image Inputs with Preview & Validation
 const ImagePreviewInput = ({ section, value, onChange }) => {
@@ -18,7 +25,7 @@ const ImagePreviewInput = ({ section, value, onChange }) => {
     }, [value]);
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--pb-space-sm)' }}>
             <div style={{ position: 'relative' }}>
                 <input
                     type="text"
@@ -33,9 +40,9 @@ const ImagePreviewInput = ({ section, value, onChange }) => {
                         style={{
                             width: '18px',
                             height: '18px',
-                            color: '#22c55e',
+                            color: 'var(--pb-success)',
                             position: 'absolute',
-                            right: '8px',
+                            right: 'var(--pb-space-sm)',
                             top: '50%',
                             transform: 'translateY(-50%)'
                         }}
@@ -46,9 +53,9 @@ const ImagePreviewInput = ({ section, value, onChange }) => {
                         style={{
                             width: '18px',
                             height: '18px',
-                            color: '#ef4444',
+                            color: 'var(--pb-danger)',
                             position: 'absolute',
-                            right: '8px',
+                            right: 'var(--pb-space-sm)',
                             top: '50%',
                             transform: 'translateY(-50%)'
                         }}
@@ -57,12 +64,10 @@ const ImagePreviewInput = ({ section, value, onChange }) => {
             </div>
 
             {value && status === 'valid' && (
-                <div style={{
-                    marginTop: '4px',
-                    padding: '8px',
-                    border: '1px solid var(--grey-200)',
-                    borderRadius: '8px',
-                    backgroundColor: 'var(--grey-50)',
+                <div className={`${styles.borderGrey200} ${styles.bgGrey50}`} style={{
+                    marginTop: 'var(--pb-space-xs)',
+                    padding: 'var(--pb-space-sm)',
+                    borderRadius: 'var(--pb-space-sm)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center'
@@ -74,7 +79,7 @@ const ImagePreviewInput = ({ section, value, onChange }) => {
                             maxWidth: '100%',
                             maxHeight: '100px',
                             objectFit: 'contain',
-                            borderRadius: '4px'
+                            borderRadius: 'var(--pb-radius)'
                         }}
                     />
                 </div>
@@ -115,7 +120,7 @@ const UrlInput = ({ section, value, onChange }) => {
                 onChange={onChange}
                 style={{
                     paddingRight: '32px',
-                    borderColor: status === 'error' ? '#ef4444' : undefined
+                    borderColor: status === 'error' ? 'var(--pb-danger)' : undefined
                 }}
             />
             {value && status === 'valid' && (
@@ -123,9 +128,9 @@ const UrlInput = ({ section, value, onChange }) => {
                     style={{
                         width: '18px',
                         height: '18px',
-                        color: '#22c55e',
+                        color: 'var(--pb-success)',
                         position: 'absolute',
-                        right: '8px',
+                        right: 'var(--pb-space-sm)',
                         top: '50%',
                         transform: 'translateY(-50%)'
                     }}
@@ -136,9 +141,9 @@ const UrlInput = ({ section, value, onChange }) => {
                     style={{
                         width: '18px',
                         height: '18px',
-                        color: '#ef4444',
+                        color: 'var(--pb-danger)',
                         position: 'absolute',
-                        right: '8px',
+                        right: 'var(--pb-space-sm)',
                         top: '50%',
                         transform: 'translateY(-50%)'
                     }}
@@ -276,17 +281,16 @@ function AnalyticsAccordion({ group, analyticsData, setAnalyticsData }) {
     return (
         <div className={styles.categoryWrapper}>
             <div
-                className={styles.categoryHeader}
                 onClick={() => setIsOpen(!isOpen)}
                 style={{
                     cursor: 'pointer',
                     userSelect: 'none',
-                    padding: '16px 0',
-                    color: 'var(--grey-200)',
+                    padding: 'var(--pb-space-lg) 0',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between'
                 }}
+                className={`${styles.categoryHeader} ${styles.textSubtle}`}
             >
                 <span className="caption-bold">{group.title}</span>
                 <ChevronRightIcon
@@ -301,11 +305,18 @@ function AnalyticsAccordion({ group, analyticsData, setAnalyticsData }) {
 
             <div className={`${styles.accordionContent} ${isOpen ? styles.accordionContentOpen : ''}`}>
                 <div className={styles.accordionInner}>
-                    <div style={{ paddingLeft: '8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div style={{ paddingLeft: 'var(--pb-space-sm)', display: 'flex', flexDirection: 'column', gap: 'var(--pb-space-sm)' }}>
                         {group.items.map((section) => (
                             <div key={section.id} className={styles.analyticsRow}>
-                                <div className={styles.analyticsHeader} data-tooltip={section.tooltip || undefined}>
-                                    <label className={`caption-bold ${styles.formInputTitle}`}>{section.title}</label>
+                                <div className={styles.analyticsHeader}>
+                                    <Tooltip content={section.tooltip} position="top">
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                            <label className={`caption-bold ${styles.formInputTitle}`}>{section.title}</label>
+                                            {section.tooltip && (
+                                                <QuestionMarkCircleIcon className={styles.iconXs} style={{ color: 'var(--pb-neutral-300)' }} />
+                                            )}
+                                        </div>
+                                    </Tooltip>
                                 </div>
                                 {section.type === 'input' ? (
                                     section.inputType === 'image' ? (

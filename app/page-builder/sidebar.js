@@ -16,6 +16,7 @@ import { componentLibrary } from "./content/component-library";
 import { isComponentSticky, getValueAt } from "./utils/component-manager";
 import SidebarAnalyticsTab from "./sidebar-analytics-tab";
 import FloatingMergeButton from "./utils/builder/floating-merge-button";
+import Tooltip from "./tooltip";
 
 // Helpers
 const sanitizeId = (value) => value.toLowerCase().trimStart().replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '');
@@ -69,7 +70,6 @@ const ComponentTreeItem = memo(({
 
     return (
         <div
-            className={styles.treeGroup}
             draggable
             onDragStart={(e) => {
                 e.stopPropagation();
@@ -86,9 +86,9 @@ const ComponentTreeItem = memo(({
             }}
             style={{
                 opacity: draggedIndex?.index === index && draggedIndex?.parentId === parentId ? 0.5 : 1,
-                borderTop: dropTargetIndex?.index === index && dropTargetIndex?.parentId === parentId ? '2px solid var(--brand-color-300)' : 'none',
                 paddingLeft: depth * 12
             }}
+            className={`${styles.treeGroup} ${dropTargetIndex?.index === index && dropTargetIndex?.parentId === parentId ? styles.borderTopBrand : ''}`}
         >
             <div
                 className={`${styles.treeRow} ${isActive || isSelected ? styles.treeRowActive : ''}`}
@@ -115,9 +115,9 @@ const ComponentTreeItem = memo(({
                 >
                     {isGroup ? (
                         expandedSections[comp.uniqueId] ? (
-                            <FolderOpenIcon style={{ width: 14, height: 14, color: 'var(--grey-200)' }} />
+                            <FolderOpenIcon className={styles.treeIcon} />
                         ) : (
-                            <FolderIcon style={{ width: 14, height: 14, color: 'var(--grey-200)' }} />
+                            <FolderIcon className={styles.treeIcon} />
                         )
                     ) : (
                         <ChevronRightIcon
@@ -162,30 +162,32 @@ const ComponentTreeItem = memo(({
                 <div className={styles.treeActions}>
                     {/* Ungroup Button */}
                     {isGroup && (
-                        <button
-                            className={styles.sidebarDeleteButton}
-                            data-tooltip="Ungroup"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onUngroup && onUngroup(comp.uniqueId);
-                            }}
-                        >
-                            <ArrowLeftStartOnRectangleIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
-                            <ArrowLeftStartOnRectangleIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
-                        </button>
+                        <Tooltip content="Ungroup" position="top">
+                            <button
+                                className={styles.sidebarDeleteButton}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onUngroup && onUngroup(comp.uniqueId);
+                                }}
+                            >
+                                <ArrowLeftStartOnRectangleIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
+                                <ArrowLeftStartOnRectangleIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
+                            </button>
+                        </Tooltip>
                     )}
 
-                    <button
-                        className={styles.sidebarDeleteButton}
-                        data-tooltip="Delete Layer"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            removeComponent && removeComponent(comp.uniqueId);
-                        }}
-                    >
-                        <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
-                        <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
-                    </button>
+                    <Tooltip content="Delete Layer" position="top">
+                        <button
+                            className={styles.sidebarDeleteButton}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                removeComponent && removeComponent(comp.uniqueId);
+                            }}
+                        >
+                            <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
+                            <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
+                        </button>
+                    </Tooltip>
                 </div>
             </div>
 
@@ -281,25 +283,26 @@ const ComponentTreeItem = memo(({
                                 {/* Actions */}
                                 <div className={styles.treeActions}>
                                     {child.visibleProp && (
-                                        <button
-                                            className={styles.sidebarDeleteButton}
-                                            data-tooltip={getValueAt(comp.props, child.visibleProp) === false ? "Show" : "Hide"}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                // Default to true if undefined (visible by default) so first click toggles to false
-                                                const currentVal = getValueAt(comp.props, child.visibleProp) ?? true;
-                                                updateComponent(comp.uniqueId, { [child.visibleProp]: !currentVal });
-                                            }}
-                                        >
-                                            {getValueAt(comp.props, child.visibleProp) === false ? (
-                                                <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
-                                            ) : (
-                                                <>
-                                                    <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
-                                                    <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
-                                                </>
-                                            )}
-                                        </button>
+                                        <Tooltip content={getValueAt(comp.props, child.visibleProp) === false ? "Show" : "Hide"} position="top">
+                                            <button
+                                                className={styles.sidebarDeleteButton}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    // Default to true if undefined (visible by default) so first click toggles to false
+                                                    const currentVal = getValueAt(comp.props, child.visibleProp) ?? true;
+                                                    updateComponent(comp.uniqueId, { [child.visibleProp]: !currentVal });
+                                                }}
+                                            >
+                                                {getValueAt(comp.props, child.visibleProp) === false ? (
+                                                    <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
+                                                ) : (
+                                                    <>
+                                                        <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
+                                                        <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
+                                                    </>
+                                                )}
+                                            </button>
+                                        </Tooltip>
                                     )}
                                 </div>
                             </div>
@@ -409,13 +412,14 @@ export default function Sidebar({
                                 onChange={(e) => setLayerSearch(e.target.value)}
                             />
                         </div>
-                        <button
-                            className={`${styles.generatorButton} ${styles.sidebarAddButton} ${isAddPopoverOpen ? styles.generatorButtonActive : ''}`}
-                            data-tooltip="Add Layer"
-                            onClick={(e) => onAddClick(e.currentTarget.getBoundingClientRect())}
-                        >
-                            <PlusIcon className={styles.sidebarAddIcon} />
-                        </button>
+                        <Tooltip content="Add Layer" position="bottom">
+                            <button
+                                className={`${styles.generatorButton} ${styles.sidebarAddButton} ${isAddPopoverOpen ? styles.generatorButtonActive : ''}`}
+                                onClick={(e) => onAddClick(e.currentTarget.getBoundingClientRect())}
+                            >
+                                <PlusIcon className={styles.sidebarAddIcon} />
+                            </button>
+                        </Tooltip>
                     </div>
 
                     <div className={styles.treeContainer}>
@@ -429,8 +433,8 @@ export default function Sidebar({
                             return (
                                 <>
                                     {pinnedComps.length > 0 && (
-                                        <div className={styles.categoryWrapper} style={{ marginBottom: 12 }}>
-                                            <div className={`caption-regular`} style={{ padding: '4px 0', color: 'var(--grey-300)' }}>Pinned Layers</div>
+                                        <div className={styles.categoryWrapper} style={{ marginBottom: 'var(--pb-space-md)' }}>
+                                            <div className={`${styles.captionRegular} ${styles.pinnedLayersHeader}`}>Pinned Layers</div>
                                             {pinnedComps.map((comp, i) => (
                                                 <ComponentTreeItem
                                                     key={comp.uniqueId}
@@ -445,7 +449,7 @@ export default function Sidebar({
 
                                     {otherComps.length > 0 && (
                                         <div className={styles.categoryWrapper}>
-                                            <div className={`caption-regular`} style={{ padding: '4px 0', color: 'var(--grey-300)' }}>Page Layers</div>
+                                            <div className={`${styles.captionRegular} ${styles.pageLayersHeader}`}>Page Layers</div>
                                             {otherComps.map((comp, i) => (
                                                 // Adjusted index for global DnD if needed, but keeping local index for now
                                                 <ComponentTreeItem

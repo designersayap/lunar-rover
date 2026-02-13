@@ -234,7 +234,7 @@ export default function BuilderControlsPopover({
                         {(mode === 'all' || mode === 'link') && showLinkType && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Link Type</label>
-                                <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                                <div style={{ display: 'flex', gap: 'var(--pb-space-sm)', width: '100%' }}>
                                     <label
                                         className={`${styles.themeOption} ${linkType === 'url' ? styles.themeOptionSelected : ''}`}
                                     >
@@ -245,7 +245,7 @@ export default function BuilderControlsPopover({
                                             checked={linkType === 'url'}
                                             onChange={() => onLinkTypeChange && onLinkTypeChange('url')}
                                             className={styles.themeOptionInput}
-                                            style={{ margin: 0, marginRight: '8px' }}
+                                            style={{ margin: 0, marginRight: 'var(--pb-space-sm)' }}
                                         />
                                         <span className="caption-regular">Custom URL</span>
                                     </label>
@@ -259,7 +259,7 @@ export default function BuilderControlsPopover({
                                             checked={linkType === 'dialog'}
                                             onChange={() => onLinkTypeChange && onLinkTypeChange('dialog')}
                                             className={styles.themeOptionInput}
-                                            style={{ margin: 0, marginRight: '8px' }}
+                                            style={{ margin: 0, marginRight: 'var(--pb-space-sm)' }}
                                         />
                                         <span className="caption-regular">Dialog</span>
                                     </label>
@@ -301,7 +301,7 @@ export default function BuilderControlsPopover({
                         )}
 
                         {(mode === 'all' || mode === 'style') && showBlurToggle && (
-                            <div className={styles.propertyRow} style={{ marginTop: '8px' }}>
+                            <div className={styles.propertyRow} style={{ marginTop: 'var(--pb-space-sm)' }}>
                                 <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Enable Blur Effect</label>
                                 <label className={styles.toggleSwitch}>
                                     <input
@@ -316,7 +316,7 @@ export default function BuilderControlsPopover({
                         )}
 
                         {(mode === 'all' || mode === 'style') && showOverlayToggle && (
-                            <div className={styles.propertyRow} style={{ marginTop: '8px' }}>
+                            <div className={styles.propertyRow} style={{ marginTop: 'var(--pb-space-sm)' }}>
                                 <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Overlay Content</label>
                                 <label className={styles.toggleSwitch}>
                                     <input
@@ -331,7 +331,7 @@ export default function BuilderControlsPopover({
                         )}
 
                         {(mode === 'all' || mode === 'style') && showMenuColorToggle && isOverlay && (
-                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: '8px' }}>
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: 'var(--pb-space-sm)' }}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Menu Color</label>
                                 <div className={styles.selectWrapper}>
                                     <select
@@ -406,7 +406,7 @@ export default function BuilderControlsPopover({
                         )}
 
                         {(mode === 'all' || mode === 'style') && showMobileImageSrc && (
-                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: '8px' }}>
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: 'var(--pb-space-sm)' }}>
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Media Source</label>
                                 <StopPropagationInput
                                     type="text"
@@ -524,7 +524,7 @@ export default function BuilderControlsPopover({
 
                         {(mode === 'all' || mode === 'style') && showPortraitToggle && (
                             <>
-                                <div style={{ borderTop: '1px solid var(--bdr)', margin: '8px 0', width: '100%' }} />
+                                <div className={styles.horizontalDivider} />
                                 <div className={styles.propertyRow} style={{ marginTop: '0' }}>
                                     <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Portrait</label>
                                     <label className={styles.toggleSwitch}>

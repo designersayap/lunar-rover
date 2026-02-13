@@ -224,9 +224,9 @@ export default function StagingPopover({
         >
             <div className={styles.popoverContent}>
                 <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
-                    <div className={styles.exportInputWrapper} style={{ marginBottom: '16px' }}>
+                    <div className={`${styles.exportInputWrapper}`}>
                         <span className="caption-bold">New Staging Page</span>
-                        <div style={{ display: 'flex', gap: '8px' }}>
+                        <div style={{ display: 'flex', gap: 'var(--pb-space-sm)' }}>
                             <input
                                 type="text"
                                 className={styles.formInput}
@@ -236,7 +236,7 @@ export default function StagingPopover({
                                 style={{ flex: 1 }}
                             />
                         </div>
-                        <code className={styles.exportHelperText} style={{ color: 'var(--content-neutral--caption)' }}>
+                        <code className={styles.exportHelperText}>
                             Creates <code>app/staging/{folderName || '...'}</code>
                         </code>
                     </div>
@@ -249,20 +249,20 @@ export default function StagingPopover({
                         <div style={{
                             maxHeight: '160px',
                             overflowY: 'auto',
-                            border: '1px solid var(--bdr)',
-                            borderRadius: '6px',
-                            background: 'var(--bg2)'
+                            border: '1px solid var(--pb-bdr)',
+                            borderRadius: 'var(--pb-radius)',
+                            background: 'var(--pb-neutral-500)'
                         }}>
                             {isLoading ? (
-                                <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--grey-200)' }}>
+                                <div className={styles.emptyStateMessage}>
                                     Loading...
                                 </div>
                             ) : error ? (
-                                <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--red-400, #ff4444)' }}>
+                                <div className={styles.errorMessage}>
                                     {error}
                                 </div>
                             ) : existingFolders.length === 0 ? (
-                                <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--grey-200)' }}>
+                                <div className={styles.emptyStateMessage}>
                                     No existing staging pages found.
                                 </div>
                             ) : (
@@ -281,7 +281,7 @@ export default function StagingPopover({
                                             title="Restore to Builder"
                                             onClick={(e) => handleRestore(e, folder)}
                                         >
-                                            <ArrowPathIcon style={{ width: '16px', height: '16px' }} />
+                                            <ArrowPathIcon style={{ width: 'var(--pb-space-lg)', height: 'var(--pb-space-lg)' }} />
                                         </button>
                                     </div>
                                 ))
@@ -289,7 +289,7 @@ export default function StagingPopover({
                         </div>
                     </div>
 
-                    <div className={styles.popoverFooter} style={{ marginTop: '16px' }}>
+                    <div>
                         <button
                             type="submit"
                             className={styles.generatorButton}
@@ -297,17 +297,10 @@ export default function StagingPopover({
                             disabled={isSaving}
                         >
                             {isSaving ? (
-                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                                    <div style={{
-                                        width: '12px',
-                                        height: '12px',
-                                        border: '2px solid currentColor',
-                                        borderTopColor: 'transparent',
-                                        borderRadius: '50%',
-                                        animation: 'spin 1s linear infinite'
-                                    }} />
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--pb-space-sm)' }}>
+                                    <div className={styles.spinner} />
                                     <span>Creating Staging</span>
-                                    <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+
                                 </div>
                             ) : "Create Staging"}
                         </button>

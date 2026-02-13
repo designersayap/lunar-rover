@@ -107,7 +107,7 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                     let count = 0;
                     while (sibling && count < 20) {
                         if (sibling.style) {
-                            sibling.style.setProperty('background-color', 'var(--base-white, #ffffff)', 'important');
+                            sibling.style.setProperty('background-color', 'var(--pb-white)', 'important');
 
                             // Ensure the covering element is positioned and has higher z-index than the sticky element (zIndex: 0)
                             // otherwise the sticky element might visually sit on top of the static sibling.
@@ -146,7 +146,7 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                 // Manage Next Element Background (Transparent -> White)
                 // When overlapping (progress < 1), it needs to be transparent to show the blur.
                 // When fully scrolled over (progress >= 1), it should be white (or opaque) to signify the end of the section.
-                const targetBg = progress >= 1 ? 'var(--base-white, #ffffff)' : 'transparent';
+                const targetBg = progress >= 1 ? 'var(--pb-white)' : 'transparent';
 
                 let sibling = nextElement;
                 let count = 0;
@@ -239,7 +239,7 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                                         style={{
                                             position: 'absolute',
                                             inset: 0,
-                                            backgroundColor: 'var(--base-white, #fff)',
+                                            backgroundColor: 'var(--pb-white)',
                                             zIndex: 2,
                                             pointerEvents: 'none',
                                             opacity: 0,

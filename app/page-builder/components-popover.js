@@ -39,7 +39,7 @@ export default function ComponentsPopover({
                     <XMarkIcon className={styles.closeIconCustom} />
                 </button>
             </div>
-            <div style={{ padding: '0 16px 16px' }}>
+            <div style={{ padding: 'var(--pb-space-sm) var(--pb-space-lg) 0' }}>
                 <div className={styles.searchInputWrapper}>
                     <MagnifyingGlassIcon className={styles.searchIcon} />
                     <input

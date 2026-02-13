@@ -69,9 +69,9 @@ export default function UATPopover({
         >
             {/* Content */}
             <div className={styles.popoverContent}>
-                <div className={styles.exportInputWrapper} style={{ marginBottom: '16px' }}>
+                <div className={`${styles.exportInputWrapper}`}>
                     <span className="caption-bold">New UAT Project</span>
-                    <div style={{ display: 'flex', gap: '8px' }}>
+                    <div style={{ display: 'flex', gap: 'var(--pb-space-sm)' }}>
                         <input
                             type="text"
                             value={folderName}
@@ -85,9 +85,9 @@ export default function UATPopover({
                             style={{ flex: 1 }}
                         />
                     </div>
-                    <p className={styles.exportHelperText} style={{ color: 'var(--content-neutral--caption)' }}>
+                    <code className={styles.exportHelperText}>
                         Saves to <code>/public/uat-files/{folderName || '...'}</code>
-                    </p>
+                    </code>
                 </div>
 
                 <div className={styles.exportInputWrapper}>
@@ -95,16 +95,16 @@ export default function UATPopover({
                     <div style={{
                         maxHeight: '160px',
                         overflowY: 'auto',
-                        border: '1px solid var(--bdr)',
-                        borderRadius: '6px',
-                        background: 'var(--bg2)'
+                        border: '1px solid var(--pb-bdr)',
+                        borderRadius: 'var(--pb-radius)',
+                        background: 'var(--pb-neutral-500)'
                     }}>
                         {isLoading ? (
-                            <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--grey-200)' }}>
+                            <div className={styles.emptyStateMessage}>
                                 Loading...
                             </div>
                         ) : existingFolders.length === 0 ? (
-                            <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--grey-200)' }}>
+                            <div className={styles.emptyStateMessage}>
                                 No existing folders found.
                             </div>
                         ) : (
@@ -121,18 +121,17 @@ export default function UATPopover({
                         )}
                     </div>
                 </div>
-            </div>
 
-            {/* Footer */}
-            <div className={styles.popoverFooter}>
-                <button
-                    className={styles.generatorButton}
-                    style={{ width: '100%' }}
-                    onClick={onSaveClick}
-                    disabled={isSaving}
-                >
-                    {isSaving ? "Saving..." : "Create UAT Folder"}
-                </button>
+                <div>
+                    <button
+                        className={styles.generatorButton}
+                        style={{ width: '100%' }}
+                        onClick={onSaveClick}
+                        disabled={isSaving}
+                    >
+                        {isSaving ? "Saving..." : "Create UAT Folder"}
+                    </button>
+                </div>
             </div>
         </BasePopover>
     );

@@ -9,6 +9,7 @@ import {
     DocumentPlusIcon,
 } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
+import Tooltip from "./tooltip";
 
 export default function TopBar({
     isSidebarVisible,
@@ -71,71 +72,76 @@ export default function TopBar({
             </div>
             <div className={styles.topBarRight}>
                 {/* ... other buttons ... */}
-                <button
-                    onClick={toggleSidebar}
-                    className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}
-                    data-tooltip="Toggle Sidebar"
-                >
-                    {isSidebarVisible ? (
-                        <ChevronDoubleRightIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />
-                    ) : (
-                        <ChevronDoubleLeftIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />
-                    )}
-                </button>
+                <Tooltip content="Toggle Sidebar" position="bottom">
+                    <button
+                        onClick={toggleSidebar}
+                        className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}
+                    >
+                        {isSidebarVisible ? (
+                            <ChevronDoubleRightIcon className={styles.iconWhite} />
+                        ) : (
+                            <ChevronDoubleLeftIcon className={styles.iconWhite} />
+                        )}
+                    </button>
+                </Tooltip>
 
                 {isLocalhost && (
+                    <Tooltip content="UAT File" position="bottom">
+                        <button
+                            className={`${styles.topBarButton} ${styles.topBarButtonBordered} ${isExportPopoverOpen ? styles.topBarButtonActive : ''}`}
+                            onClick={(e) => {
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                handleExport({
+                                    top: rect.bottom + 4,
+                                    left: rect.left + rect.width / 2
+                                });
+                            }}
+                        >
+                            <DocumentPlusIcon className={styles.iconWhite} />
+                        </button>
+                    </Tooltip>
+                )}
+                <Tooltip content={selectedThemeName} position="bottom">
                     <button
-                        className={`${styles.topBarButton} ${styles.topBarButtonBordered} ${isExportPopoverOpen ? styles.topBarButtonActive : ''}`}
-                        data-tooltip="UAT File"
+                        className={`${styles.generatorButton} ${styles.topBarButtonWide} ${isThemePickerOpen ? styles.topBarButtonActive : ''}`}
                         onClick={(e) => {
                             const rect = e.currentTarget.getBoundingClientRect();
-                            handleExport({
+                            onThemeClick({
                                 top: rect.bottom + 4,
                                 left: rect.left + rect.width / 2
                             });
                         }}
                     >
-                        <DocumentPlusIcon style={{ width: "16px", height: "16px", color: "var(--base-white)" }} />
+                        <SwatchIcon className={styles.iconSmall} />
+                        <span className={`${styles.topBarButtonText} truncate-1-line`}>{selectedThemeName}</span>
                     </button>
-                )}
-                <button
-                    className={`${styles.generatorButton} ${styles.topBarButtonWide} ${isThemePickerOpen ? styles.topBarButtonActive : ''}`}
-                    data-tooltip={selectedThemeName}
-                    onClick={(e) => {
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        onThemeClick({
-                            top: rect.bottom + 4,
-                            left: rect.left + rect.width / 2
-                        });
-                    }}
-                >
-                    <SwatchIcon style={{ width: "16px", height: "16px", flexShrink: 0 }} />
-                    <span className={`${styles.topBarButtonText} truncate-1-line`}>{selectedThemeName}</span>
-                </button>
+                </Tooltip>
                 <div className={styles.splitButtonContainer}>
-                    <button
-                        className={`${styles.generatorButton} ${styles.splitButtonMain}`}
-                        onClick={handleDirectExport}
-                        data-tooltip="Quick Export (ZIP)"
-                    >
-                        <RocketLaunchIcon style={{ width: "16px", height: "16px" }} />
-                        Export
-                    </button>
-                    <button
-                        ref={stagingButtonRef}
-                        className={`${styles.generatorButton} ${styles.splitButtonDropdown} ${isStagingPopoverOpen ? styles.splitButtonActive : ''}`}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            const rect = e.currentTarget.getBoundingClientRect();
-                            handleStaging({
-                                top: rect.bottom + 4,
-                                left: rect.right
-                            });
-                        }}
-                        data-tooltip="Stage Preview (Cmd+S)"
-                    >
-                        <ChevronDownIcon style={{ width: "12px", height: "12px", strokeWidth: 2 }} />
-                    </button>
+                    <Tooltip content="Quick Export (ZIP)" position="bottom">
+                        <button
+                            className={`${styles.generatorButton} ${styles.splitButtonMain}`}
+                            onClick={handleDirectExport}
+                        >
+                            <RocketLaunchIcon className={styles.iconSmall} />
+                            Export
+                        </button>
+                    </Tooltip>
+                    <Tooltip content="Stage Preview (Cmd+S)" position="bottom">
+                        <button
+                            ref={stagingButtonRef}
+                            className={`${styles.generatorButton} ${styles.splitButtonDropdown} ${isStagingPopoverOpen ? styles.splitButtonActive : ''}`}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                handleStaging({
+                                    top: rect.bottom + 4,
+                                    left: rect.right
+                                });
+                            }}
+                        >
+                            <ChevronDownIcon className={styles.iconXs} strokeWidth={2} />
+                        </button>
+                    </Tooltip>
                 </div>
             </div>
         </div>

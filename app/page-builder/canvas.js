@@ -146,7 +146,7 @@ export default function Canvas({
                     {displayComponents.length === 0 ? (
                         <div className={styles.emptyState}>
                             <div className={styles.emptyStateText}>
-                                <div style={{ position: 'relative', width: 200, height: 150, margin: '0 auto', marginBottom: 'var(--space-100)' }}>
+                                <div className={styles.canvasWrapper}>
                                     <Image
                                         src="/images/empty-state.svg"
                                         alt="Empty state illustration"
@@ -155,7 +155,7 @@ export default function Canvas({
                                         style={{ objectFit: 'contain' }}
                                     />
                                 </div>
-                                <p className="body-regular" style={{ color: "var(--content-neutral--caption)" }}>
+                                <p className={`body-regular ${styles.canvasText}`}>
                                     Select components from the sidebar to build your template
                                 </p>
                             </div>
@@ -177,7 +177,7 @@ export default function Canvas({
 
 
                                     if (hasSeenStacked && !isStacked) {
-                                        forcedBgStyle = { backgroundColor: 'var(--base-white, #ffffff)', position: 'relative', zIndex: 1 };
+                                        forcedBgStyle = { backgroundColor: 'var(--pb-white)', position: 'relative', zIndex: 1 };
                                     }
 
                                     if (isStacked) {
@@ -187,13 +187,11 @@ export default function Canvas({
                                     return (
                                         <div
                                             key={item.uniqueId}
-                                            className={`${styles.componentWrapper} ${isSelected ? styles.activeWrapper : ''}`}
+                                            className={`${styles.componentWrapper} ${isSelected ? styles.activeWrapper : ''} ${isSelected ? styles.componentSelected : ''}`}
                                             style={{
                                                 ...forcedBgStyle,
                                                 ...stickyStyle,
-                                                outline: isSelected ? "1px solid var(--lunar-300)" : "none",
-                                                backgroundColor: isSelected ? "var(--lunar-50)" : (forcedBgStyle.backgroundColor || "transparent"),
-                                                outlineOffset: "-1px",
+                                                backgroundColor: isSelected ? undefined : (forcedBgStyle.backgroundColor || "transparent"),
                                             }}
                                             ref={(el) => {
                                                 setRef(item.uniqueId, el);
@@ -226,13 +224,13 @@ export default function Canvas({
                         <div className={styles.resolutionIndicator}>
                             <span style={{ opacity: 0.7 }}>Device Width:</span>
                             <strong>{canvasWidth === '100%' ? 'Full' : canvasWidth}</strong>
-                            {isResizing && <span style={{ opacity: 0.5, marginLeft: 4 }}>(Resizing)</span>}
+                            {isResizing && <span style={{ opacity: 0.5, marginLeft: 'var(--pb-space-xs)' }}>(Resizing)</span>}
                         </div>
                     )}
                 </div>
             </CanvasContext.Provider>
             {/* Portal container for dialogs */}
-            <div id="dialog-portal-root" className="z-system-modal-fullscreen" style={{ position: 'fixed', inset: 0, pointerEvents: 'none' }} />
+            <div id="dialog-portal-root" className={`z-system-modal-fullscreen ${styles.overlayFixed}`} />
         </div>
     );
 }

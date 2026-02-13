@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
 import BasePopover from "./base-popover";
 
@@ -29,13 +30,16 @@ export default function ThemePickerPopover({
             {/* Content */}
             <div className={`${styles.popoverContent} ${styles.themePickerContent}`}>
                 <div className={styles.themePickerSearchContainer}>
-                    <input
-                        type="text"
-                        placeholder="Search brand"
-                        className={`${styles.formInput} ${styles.searchBar}`}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
+                    <div className={styles.searchInputWrapper}>
+                        <MagnifyingGlassIcon className={styles.searchIcon} />
+                        <input
+                            type="text"
+                            placeholder="Search brand"
+                            className={`${styles.formInput} ${styles.searchBar}`}
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
                 </div>
 
                 <div className={styles.themeList}>

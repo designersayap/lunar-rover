@@ -12,21 +12,9 @@ export default function WelcomePopover({ isOpen, onClose }) {
             className={styles.welcomePopover}
             overlayClassName={styles.modalOverlay}
         >
-            <div style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                padding: "40px",
-                textAlign: "center",
-                gap: "24px"
-            }}>
+            <div className={styles.welcomeContainer}>
                 {/* Big Logo 1:1 */}
-                <div style={{
-                    width: "240px",
-                    height: "240px",
-                    position: "relative",
-                    marginBottom: "8px"
-                }}>
+                <div className={styles.welcomeLogoWrapper}>
                     <Image
                         src="https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768450282/logo_lunar_lunar_white_m0tyym.svg"
                         alt="Lunar Logo"
@@ -36,21 +24,11 @@ export default function WelcomePopover({ isOpen, onClose }) {
                 </div>
 
                 {/* Title & Description */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                    <h2 className={styles.sectionTitle} style={{
-                        fontSize: "24px",
-                        fontWeight: "700",
-                        margin: 0,
-                        color: "var(--base-white)"
-                    }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "var(--pb-space-sm)" }}>
+                    <h2 className={`${styles.sectionTitle} ${styles.welcomeTitle}`}>
                         Welcome to Lunar
                     </h2>
-                    <p className="body-regular" style={{
-                        color: "var(--grey-300)",
-                        fontSize: "16px",
-                        maxWidth: "300px",
-                        margin: "0 auto"
-                    }}>
+                    <p className={`body-regular ${styles.welcomeDescription}`}>
                         Designer Sayap&apos;s Web Builder
                     </p>
                 </div>
@@ -58,14 +36,7 @@ export default function WelcomePopover({ isOpen, onClose }) {
                 {/* Primary CTA */}
                 <button
                     onClick={onClose}
-                    className={`${styles.primaryButton}`}
-                    style={{
-                        width: "100%",
-                        maxWidth: "240px",
-                        height: "48px",
-                        marginTop: "16px",
-                        borderRadius: "16px"
-                    }}
+                    className={`${styles.primaryButton} ${styles.welcomeButton}`}
                 >
                     Start Now
                 </button>

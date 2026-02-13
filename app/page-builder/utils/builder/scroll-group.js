@@ -137,7 +137,7 @@ export default function ScrollGroup({
                     if (sibling.style) {
                         sibling.style.filter = '';
                         // Enforce White Background when blur is disabled
-                        sibling.style.setProperty('background-color', '#ffffff', 'important');
+                        sibling.style.setProperty('background-color', 'var(--pb-white)', 'important');
                     }
                     sibling = sibling.nextElementSibling;
                     count++;
@@ -197,7 +197,7 @@ export default function ScrollGroup({
             // 2. Background Transparency: For ALL subsequent siblings to ensure visual continuity
             // They should be transparent while overlapping (progress < 1) and turn white when "locked" (progress >= 1)
             let sibling = nextElement;
-            const targetBg = progress >= 1 ? 'var(--base-white, #ffffff)' : 'transparent';
+            const targetBg = progress >= 1 ? 'var(--pb-white)' : 'transparent';
 
             // Safety counter to prevent infinite loops in weird DOMs
             let count = 0;
@@ -418,14 +418,8 @@ export default function ScrollGroup({
                 {/* White Overlay for blending */}
                 <div
                     ref={whiteOverlayRef}
-                    style={{
-                        position: 'absolute',
-                        inset: 0,
-                        backgroundColor: 'var(--base-white, #fff)',
-                        zIndex: 2,
-                        pointerEvents: 'none',
-                        opacity: 0,
-                    }}
+                    className={styles.scrollGroupOverlay}
+                    style={{ opacity: 0 }}
                 />
 
                 {/* Content Container to be Blurred */}

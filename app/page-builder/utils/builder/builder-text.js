@@ -495,27 +495,13 @@ function BuilderTextComponent({
 
     const tooltipContent = (isHovered && isTruncated && !isEditing) ? (
         <div className="z-system-modal-floating" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: 0, overflow: 'visible', pointerEvents: 'none' }}>
-            <div style={{
-                position: 'absolute',
-                top: tooltipPos.top,
-                left: tooltipPos.left,
-                transform: 'translateX(-50%)',
-                backgroundColor: 'var(--background-neutral--neutral-strong)',
-                color: 'var(--content-neutral--body-invert)',
-                padding: '4px 8px',
-                borderRadius: 'var(--border-radius-sm)',
-                fontSize: '12px',
-                lineHeight: '1.4',
-                fontFamily: 'var(--font-family-body)',
-                fontWeight: 500,
-                boxShadow: 'var(--shadow--md)',
-                pointerEvents: 'none',
-                maxWidth: '240px',
-                wordWrap: 'break-word',
-                textAlign: 'center',
-                whiteSpace: 'normal',
-                zIndex: 'inherit' // Inherits from z-system-modal-floating
-            }}>
+            <div
+                className={styles.tooltip}
+                style={{
+                    top: tooltipPos.top,
+                    left: tooltipPos.left,
+                }}
+            >
                 {text}
             </div>
         </div>
