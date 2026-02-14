@@ -1,7 +1,6 @@
 
 import { NextResponse } from 'next/server';
 import { S3Manual } from '@/app/lib/s3-manual';
-import path from 'path';
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
@@ -67,30 +66,20 @@ export async function POST(request) {
 
             if (file.base64) {
                 // Convert base64 to binary for S3
-                // In Edge Runtime, we can use Uint8Array
-                const binaryString = atob(file.content);
-                const bytes = new Uint8Array(binaryString.length);
-                for (let i = 0; i < binaryString.length; i++) {
-                    bytes[i] = binaryString.charCodeAt(i);
+                // In Edge Runtime, we can use Uint8Array.from directly
+                try {
+                    const binaryString = atob(file.content);
+                    content = Uint8Array.from(binaryString, c => c.charCodeAt(0));
+                } catch (e) {
+                    console.error(`Failed to decode base64 for file ${file.path}`, e);
+                    throw new Error(`Failed to decode base64 for file ${file.path}`);
                 }
-                content = bytes;
             }
 
             await S3Manual.putObject(s3Key, content, contentType);
         });
 
         await Promise.all(uploadPromises);
-
-        // Return path relative to what? 
-        // Previously it returned `/uat-files/${folderName}` which implies serving from local public dir.
-        // Now it's on S3.
-        // If the frontend expects to iframe this, it needs the public URL of the bucket.
-        // or a proxy route.
-        // Assuming the bucket is public or behind Cloudflare:
-        const bucketUrl = process.env.B2_ENDPOINT + '/' + process.env.B2_BUCKET_NAME;
-        // Or if using a custom domain. For now let's return the relative path 
-        // and let the frontend decide how to serve it.
-        // OR better, return the full URL if we can construct it.
 
         return NextResponse.json({ success: true, path: `/uat-files/${folderName}` });
 

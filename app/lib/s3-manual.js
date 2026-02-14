@@ -21,7 +21,10 @@ const signer = new SignatureV4({
 });
 
 /**
- * Manually signs and fetches a request to S3
+ * Lightweight S3 Client for Edge Runtime.
+ * Uses @aws-sdk/signature-v4 for signing but standard fetch for requests.
+ * This avoids the heavy @aws-sdk/client-s3 bundle size issues in Edge Middleware/Functions.
+ * Manually signs and fetches a request to S3.
  */
 async function sendS3Request(method, key, queryParams = {}, body = null, extraHeaders = {}) {
     // Construct URL

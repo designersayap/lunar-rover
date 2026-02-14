@@ -9,10 +9,10 @@ import SidebarMobile from "@/app/page-builder/sidebar-mobile";
 import TopBar from "@/app/page-builder/topbar";
 
 import Canvas from "@/app/page-builder/canvas";
-import ThemePickerPopover from "@/app/page-builder/theme-picker-popover";
-import UATPopover from "@/app/page-builder/uat-popover";
-import StagingPopover from "@/app/page-builder/staging-popover";
-import ComponentsPopover from "@/app/page-builder/components-popover";
+import ThemePickerPopover from "@/app/page-builder/popover-theme-picker";
+import UATPopover from "@/app/page-builder/popover-uat";
+import StagingPopover from "@/app/page-builder/popover-staging";
+import ComponentsPopover from "@/app/page-builder/popover-components";
 
 // Helper Utilities
 import { componentLibrary } from "@/app/page-builder/content/component-library";
