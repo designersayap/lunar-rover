@@ -1002,7 +1002,7 @@
 }
 
 .sidebarTitle {
-    color: var(--pb-neutral-75);
+    color: var(--pb-neutral-50);
     font-size: var(--pb-font-size-90);
     font-weight: var(--pb-font-weight-bold);
     margin-bottom: var(--pb-space-lg);
