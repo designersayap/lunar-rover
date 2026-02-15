@@ -69,7 +69,7 @@ export default function TopBar({
                     width={24}
                     height={24}
                 />
-                <h1 className={`body-bold ${styles.logo}`}>Lunar</h1>
+                <h1 className={`${styles.logo}`}>Lunar</h1>
             </div>
             <div className={styles.topBarRight}>
                 {/* ... other buttons ... */}
@@ -120,7 +120,7 @@ export default function TopBar({
                 <div className={styles.splitButtonContainer}>
                     <Tooltip content="Quick Export (ZIP)" position="bottom">
                         <button
-                            className={`${styles.btn} ${styles.btnSecondary} ${styles.splitButtonMain} ${isExportPopoverOpen ? styles.btnSecondaryActive : ''}`}
+                            className={`${styles.btn} ${styles.btnSecondary} ${styles.splitButtonMain} ${isExportPopoverOpen ? styles.splitButtonActive : ''}`}
                             onClick={(e) => {
                                 const rect = e.currentTarget.getBoundingClientRect();
                                 onExportClick({
@@ -136,7 +136,7 @@ export default function TopBar({
                     <Tooltip content="Stage Preview (Cmd+S)" position="bottom">
                         <button
                             ref={stagingButtonRef}
-                            className={`${styles.btn} ${styles.btnSecondary} ${styles.splitButtonDropdown} ${isStagingPopoverOpen ? styles.btnSecondaryActive : ''}`}
+                            className={`${styles.btn} ${styles.btnSecondary} ${styles.splitButtonDropdown} ${isStagingPopoverOpen ? styles.splitButtonActive : ''}`}
                             onClick={(e) => {
                                 e.stopPropagation();
                                 const rect = e.currentTarget.getBoundingClientRect();

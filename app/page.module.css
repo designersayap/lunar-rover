@@ -238,7 +238,7 @@
 .sectionTitle {
     font-size: 20px;
     font-weight: var(--pb-font-weight-bold);
-    color: var(--pb-white);
+    color: var(--pb-neutral-50);
 }
 
 .bodyRegular {
@@ -345,9 +345,9 @@
     align-items: center;
     width: 100%;
     cursor: pointer;
-    height: 36px;
+    height: 32px;
     padding: 0 var(--pb-space-sm);
-    margin-bottom: var(--pb-space-md);
+    margin-bottom: var(--pb-space-xs);
     border-radius: var(--pb-radius);
     transition: background 0.1s;
     color: var(--pb-neutral-75);
@@ -772,6 +772,8 @@
 .logo {
     padding: 0;
     color: var(--pb-white);
+    font-weight: var(--pb-font-weight-bold);
+    font-size: var(--pb-font-size-90);
 }
 
 /* .topBarButton and .folderItem styles removed as they are replaced by .btn and .listItem */
@@ -787,11 +789,6 @@
 
 /* --- Tabs (Segmented Control) --- */
 
-.sidebarSection {
-    padding-bottom: var(--pb-space-md);
-    border-bottom: 1px solid var(--pb-bdr);
-}
-
 .tabs {
     display: flex;
     background-color: var(--pb-neutral-400);
@@ -802,7 +799,7 @@
 
 .tab {
     flex: 1;
-    padding: 6px 8px;
+    padding: 8px 8px;
     border: none;
     background: transparent;
     font-weight: 500;
@@ -1002,6 +999,13 @@
     font-family: var(--pb-font-family-default);
     font-size: var(--typography-font-size-90);
     font-weight: var(--pb-font-weight-regular);
+}
+
+.sidebarTitle {
+    color: var(--pb-neutral-75);
+    font-size: var(--pb-font-size-90);
+    font-weight: var(--pb-font-weight-bold);
+    margin-bottom: var(--pb-space-lg);
 }
 
 .categoryWrapper,

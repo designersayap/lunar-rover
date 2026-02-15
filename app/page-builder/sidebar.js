@@ -381,7 +381,8 @@ export default function Sidebar({
 
     return (
         <div className={`${styles.sidebar} ${className}`} data-builder-ui="true">
-            <div className={styles.sidebarSection}>
+            <div>
+                <div className={styles.sidebarTitle}>Configuration</div>
                 <div className={styles.tabs}>
                     <Tooltip content="Layers" position="bottom">
                         <button
@@ -445,8 +446,23 @@ export default function Sidebar({
                     <div className={styles.treeContainer}>
                         {/* Logic to split pinned vs other, but using new renderer */}
                         {(() => {
-                            const pinnedComps = selectedComponents.filter(c => isComponentSticky(c));
-                            const otherComps = selectedComponents.filter(c => !isComponentSticky(c));
+                            const { pinnedComps, otherComps } = (() => {
+                                // Deduplicate components
+                                const uniqueComps = [];
+                                const seenIds = new Set();
+
+                                selectedComponents.forEach(comp => {
+                                    if (comp.uniqueId && !seenIds.has(comp.uniqueId)) {
+                                        seenIds.add(comp.uniqueId);
+                                        uniqueComps.push(comp);
+                                    }
+                                });
+
+                                const pinnedComps = uniqueComps.filter(c => isComponentSticky(c));
+                                const otherComps = uniqueComps.filter(c => !isComponentSticky(c));
+
+                                return { pinnedComps, otherComps };
+                            })();
 
                             if (selectedComponents.length === 0) return <div className={styles.sidebarEmptyState}>No layers added</div>;
 

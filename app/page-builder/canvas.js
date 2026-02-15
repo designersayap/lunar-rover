@@ -82,10 +82,23 @@ export default function Canvas({
     };
 
     // Sort components: Pinned items first
-    const displayComponents = useMemo(() => [
-        ...selectedComponents.filter(c => isComponentSticky(c)),
-        ...selectedComponents.filter(c => !isComponentSticky(c))
-    ], [selectedComponents]);
+    const displayComponents = useMemo(() => {
+        // Safe guard: Remove duplicates based on uniqueId
+        const uniqueComponents = [];
+        const seenIds = new Set();
+
+        selectedComponents.forEach(comp => {
+            if (comp.uniqueId && !seenIds.has(comp.uniqueId)) {
+                seenIds.add(comp.uniqueId);
+                uniqueComponents.push(comp);
+            }
+        });
+
+        return [
+            ...uniqueComponents.filter(c => isComponentSticky(c)),
+            ...uniqueComponents.filter(c => !isComponentSticky(c))
+        ];
+    }, [selectedComponents]);
 
     const { stickyStyles, setRef } = useStickyStacking(displayComponents);
 
