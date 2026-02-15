@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import styles from "./page.module.css";
-import globalStyles from "../page.module.css";
 
 export default function LoginPage() {
     const [password, setPassword] = useState("");
@@ -56,8 +55,8 @@ export default function LoginPage() {
                 />
 
                 <div>
-                    <h1 className={styles.title}>Restricted Access</h1>
-                    <p className={styles.description}>Please enter the password to continue</p>
+                    <h1 className={styles.title}>Private Workspace</h1>
+                    <p className={styles.description}>Please provide your password to continue</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className={styles.form}>
@@ -69,7 +68,7 @@ export default function LoginPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Enter Password"
-                                className={`${globalStyles.formInput} ${styles.loginInput}`}
+                                className={styles.loginInput}
                                 autoFocus
                             />
                             <button
@@ -90,8 +89,8 @@ export default function LoginPage() {
 
 
 
-                    <button type="submit" className={`${globalStyles.generatorButton} ${styles.loginButton}`} disabled={loading}>
-                        {loading ? "Verifying..." : "Access Builder"}
+                    <button type="submit" className={styles.loginButton} disabled={loading}>
+                        {loading ? "Verifying..." : "Open Builder"}
                     </button>
                 </form>
             </div>

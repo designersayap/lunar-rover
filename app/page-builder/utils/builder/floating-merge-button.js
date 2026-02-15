@@ -1,7 +1,7 @@
 "use client";
 
 import { SquaresPlusIcon } from "@heroicons/react/24/solid";
-import styles from "@/app/page.module.css";
+import styles from "../../../page.module.css";
 
 export default function FloatingMergeButton({ selectedCount, onMerge }) {
     if (selectedCount < 2) return null;
@@ -15,17 +15,10 @@ export default function FloatingMergeButton({ selectedCount, onMerge }) {
                 <div className={styles.verticalDivider} />
                 <button
                     onClick={onMerge}
-                    className={`${styles.generatorButton} ${styles.topBarButtonWide}`}
-                    style={{
-                        color: 'white', // Ensure text contrast on dark button
-                        border: 'none',
-                        height: '28px', // Match topbar height var
-                        width: 'auto', // Override max-width if needed to fit text, but user asked for "wide button" design. 
-                        maxWidth: 'none'
-                    }}
+                    className={`${styles.btn} ${styles.btnSecondary} ${styles.topBarButtonWide}`}
                 >
-                    <SquaresPlusIcon style={{ width: 16, height: 16 }} />
-                    <span>Create Group</span>
+                    <SquaresPlusIcon className={styles.iconSmall} />
+                    <span className={`${styles.topBarButtonText} truncate-1-line`}>Create Group</span>
                 </button>
                 <style jsx>{`
                 @keyframes slideUp {

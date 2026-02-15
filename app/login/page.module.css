@@ -1,22 +1,21 @@
 .container {
-    --h-input: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: var(--bg1);
+    background-color: #000000;
     background-image:
-        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.1) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.1) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.08) 0px, transparent 50%);
     color: #ffffff;
-    font-family: var(--font-family-body);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .card {
     width: 100%;
     max-width: 320px;
-    padding: var(--padding-md);
-    border-radius: var(--border-radius-lg);
+    padding: 48px 24px;
+    border-radius: 8px;
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -28,42 +27,62 @@
     gap: 1.5rem;
 }
 
+.icon {
+    margin-bottom: -4px;
+}
+
 .title {
     font-size: 1.5rem;
     font-weight: 600;
     margin: 0;
     text-align: center;
     color: #fff;
-    margin-bottom: 1.2rem;
+    margin-bottom: .5rem;
 }
 
 .description {
     font-size: 0.875rem;
     color: rgba(255, 255, 255, 0.6);
     text-align: center;
-    margin-top: -0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 .form {
     width: 100%;
+    max-width: 240px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
+    gap: 12px;
 }
 
 .inputGroup {
     position: relative;
     width: 100%;
-    margin-bottom: var(--gap-md);
 }
 
 .loginInput {
     width: 100%;
-    padding-right: 40px !important;
-    /* Make room for the eye icon */
-    background: var(--bg2);
+    height: 32px;
+    padding: 0 40px 0 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: all .2s;
+    background: #0a0a0a;
     color: #ffffff;
-    border-color: var(--bdr);
+    border: 1px solid #1e1e1e;
+    box-shadow: none;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.loginInput:focus {
+    border-color: #333333;
+}
+
+.loginInput::placeholder {
+    color: #333333;
 }
 
 .inputWrapper {
@@ -73,7 +92,7 @@
 
 .togglePassword {
     position: absolute;
-    right: 12px;
+    right: 8px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
@@ -94,20 +113,47 @@
 }
 
 .eyeIcon {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
 }
 
 .loginButton {
     width: 100%;
-    height: 44px !important;
-    margin-top: var(--gap-md);
-    padding: 0 8px;
-    /* Ensure padding override if needed, though generator has it */
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 300;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: #333333;
+    color: #ffffff;
+    transition: all 0.2s;
+    box-sizing: border-box;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginButton:hover:not(:disabled) {
+    background: #333333;
+}
+
+.loginButton:active:not(:disabled) {
+    background: #333333;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    transform: translateY(1px);
+}
+
+.loginButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .errorMessage {
     color: #ef4444;
     font-size: 0.875rem;
-    margin-top: var(--gap-xs);
+    margin-top: 4px;
 }
