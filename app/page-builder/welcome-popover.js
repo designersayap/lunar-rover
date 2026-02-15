@@ -28,7 +28,7 @@ export default function WelcomePopover({ isOpen, onClose }) {
                     <h2 className={`${styles.sectionTitle} ${styles.welcomeTitle}`}>
                         Welcome to Lunar
                     </h2>
-                    <p className={`body-regular ${styles.welcomeDescription}`}>
+                    <p className={`${styles.bodyRegular} ${styles.welcomeDescription}`}>
                         Designer Sayap&apos;s Web Builder
                     </p>
                 </div>

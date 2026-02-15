@@ -7,7 +7,8 @@ export default function Tooltip({
     children,
     position = 'top',
     delay = 200,
-    className = ''
+    className = '',
+    zIndex = 9999,
 }) {
     const [isVisible, setIsVisible] = useState(false);
     // Start off-screen/invisible to prevent flash
@@ -140,7 +141,7 @@ export default function Tooltip({
                         ...tooltipStyle,
                         position: 'fixed',
                         margin: 0,
-                        zIndex: 9999,
+                        zIndex: zIndex,
                         pointerEvents: 'none',
                         // Disable the CSS animation from the class that caused the glitch
                         animation: 'none',

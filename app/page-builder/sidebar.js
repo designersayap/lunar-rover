@@ -86,12 +86,12 @@ const ComponentTreeItem = memo(({
             }}
             style={{
                 opacity: draggedIndex?.index === index && draggedIndex?.parentId === parentId ? 0.5 : 1,
-                paddingLeft: depth * 12
+                paddingLeft: depth * 4
             }}
             className={`${styles.treeGroup} ${dropTargetIndex?.index === index && dropTargetIndex?.parentId === parentId ? styles.borderTopBrand : ''}`}
         >
             <div
-                className={`${styles.treeRow} ${isActive || isSelected ? styles.treeRowActive : ''}`}
+                className={`${styles.listItem} ${isActive || isSelected ? styles.listItemActive : ''}`}
                 onClick={(e) => {
                     if (e.metaKey || e.ctrlKey) {
                         e.stopPropagation();
@@ -234,8 +234,8 @@ const ComponentTreeItem = memo(({
                         return (
                             <div
                                 key={`prop-${childIndex}`}
-                                className={`${styles.treeRow} ${isChildActive ? styles.treeRowActive : ''} ${styles.treeRowNested}`}
-                                style={{ paddingLeft: (depth + 1) * 12 + 24 }}
+                                className={`${styles.listItem} ${isChildActive ? styles.listItemActive : ''} ${styles.treeRowNested}`}
+                                style={{ paddingLeft: (depth + 1) * 4 + 8 }}
                                 onClick={() => setActiveElementId && setActiveElementId(currentId)}
                             >
                                 <div
@@ -383,18 +383,38 @@ export default function Sidebar({
         <div className={`${styles.sidebar} ${className}`} data-builder-ui="true">
             <div className={styles.sidebarSection}>
                 <div className={styles.tabs}>
-                    <button
-                        className={`${styles.tab} ${activeTab === "elements" ? styles.tabActive : styles.tabInactive}`}
-                        onClick={() => setActiveTab("elements")}
-                    >
-                        Layers
-                    </button>
-                    <button
-                        className={`${styles.tab} ${activeTab === "analytics" ? styles.tabActive : styles.tabInactive}`}
-                        onClick={() => setActiveTab("analytics")}
-                    >
-                        Settings
-                    </button>
+                    <Tooltip content="Layers" position="bottom">
+                        <button
+                            className={`${styles.tab} ${activeTab === "elements" ? styles.tabActive : styles.tabInactive}`}
+                            onClick={() => setActiveTab("elements")}
+                        >
+                            Layers
+                        </button>
+                    </Tooltip>
+                    <Tooltip content="SEO Configuration" position="bottom">
+                        <button
+                            className={`${styles.tab} ${activeTab === "seo" ? styles.tabActive : styles.tabInactive}`}
+                            onClick={() => setActiveTab("seo")}
+                        >
+                            SEO
+                        </button>
+                    </Tooltip>
+                    <Tooltip content="Open Graph Settings" position="bottom">
+                        <button
+                            className={`${styles.tab} ${activeTab === "opengraph" ? styles.tabActive : styles.tabInactive}`}
+                            onClick={() => setActiveTab("opengraph")}
+                        >
+                            Open Graph
+                        </button>
+                    </Tooltip>
+                    <Tooltip content="Analytics" position="bottom">
+                        <button
+                            className={`${styles.tab} ${activeTab === "analytics" ? styles.tabActive : styles.tabInactive}`}
+                            onClick={() => setActiveTab("analytics")}
+                        >
+                            Analytics
+                        </button>
+                    </Tooltip>
                 </div>
             </div>
 
@@ -414,10 +434,10 @@ export default function Sidebar({
                         </div>
                         <Tooltip content="Add Layer" position="bottom">
                             <button
-                                className={`${styles.generatorButton} ${styles.sidebarAddButton} ${isAddPopoverOpen ? styles.generatorButtonActive : ''}`}
+                                className={`${styles.btn} ${styles.btnSecondary} ${styles.btnIcon} ${isAddPopoverOpen ? styles.btnSecondaryActive : ''}`}
                                 onClick={(e) => onAddClick(e.currentTarget.getBoundingClientRect())}
                             >
-                                <PlusIcon className={styles.sidebarAddIcon} />
+                                <PlusIcon className={styles.iconSmall} />
                             </button>
                         </Tooltip>
                     </div>
@@ -471,6 +491,7 @@ export default function Sidebar({
                 <SidebarAnalyticsTab
                     analyticsData={analyticsData}
                     setAnalyticsData={setAnalyticsData}
+                    tab={activeTab}
                 />
             )}
             {/* Merge Button (Floats at bottom of sidebar) */}

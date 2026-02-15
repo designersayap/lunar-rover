@@ -16,6 +16,7 @@ export default function TopBar({
     toggleSidebar,
     handleExport,
     handleDirectExport,
+    onExportClick,
     onThemeClick,
     isThemePickerOpen,
     isExportPopoverOpen,
@@ -75,7 +76,7 @@ export default function TopBar({
                 <Tooltip content="Toggle Sidebar" position="bottom">
                     <button
                         onClick={toggleSidebar}
-                        className={`${styles.topBarButton} ${styles.topBarButtonBordered}`}
+                        className={`${styles.btn} ${styles.btnGhost} ${styles.btnIcon}`}
                     >
                         {isSidebarVisible ? (
                             <ChevronDoubleRightIcon className={styles.iconWhite} />
@@ -88,7 +89,7 @@ export default function TopBar({
                 {isLocalhost && (
                     <Tooltip content="UAT File" position="bottom">
                         <button
-                            className={`${styles.topBarButton} ${styles.topBarButtonBordered} ${isExportPopoverOpen ? styles.topBarButtonActive : ''}`}
+                            className={`${styles.btn} ${styles.btnGhost} ${styles.btnIcon} ${isExportPopoverOpen ? styles.btnGhostActive : ''}`}
                             onClick={(e) => {
                                 const rect = e.currentTarget.getBoundingClientRect();
                                 handleExport({
@@ -103,7 +104,7 @@ export default function TopBar({
                 )}
                 <Tooltip content={selectedThemeName} position="bottom">
                     <button
-                        className={`${styles.generatorButton} ${styles.topBarButtonWide} ${isThemePickerOpen ? styles.topBarButtonActive : ''}`}
+                        className={`${styles.btn} ${styles.btnSecondary} ${styles.topBarButtonWide} ${isThemePickerOpen ? styles.btnSecondaryActive : ''}`}
                         onClick={(e) => {
                             const rect = e.currentTarget.getBoundingClientRect();
                             onThemeClick({
@@ -119,8 +120,14 @@ export default function TopBar({
                 <div className={styles.splitButtonContainer}>
                     <Tooltip content="Quick Export (ZIP)" position="bottom">
                         <button
-                            className={`${styles.generatorButton} ${styles.splitButtonMain}`}
-                            onClick={handleDirectExport}
+                            className={`${styles.btn} ${styles.btnSecondary} ${styles.splitButtonMain} ${isExportPopoverOpen ? styles.btnSecondaryActive : ''}`}
+                            onClick={(e) => {
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                onExportClick({
+                                    top: rect.bottom + 4,
+                                    left: rect.left + rect.width / 2
+                                });
+                            }}
                         >
                             <RocketLaunchIcon className={styles.iconSmall} />
                             Export
@@ -129,7 +136,7 @@ export default function TopBar({
                     <Tooltip content="Stage Preview (Cmd+S)" position="bottom">
                         <button
                             ref={stagingButtonRef}
-                            className={`${styles.generatorButton} ${styles.splitButtonDropdown} ${isStagingPopoverOpen ? styles.splitButtonActive : ''}`}
+                            className={`${styles.btn} ${styles.btnSecondary} ${styles.splitButtonDropdown} ${isStagingPopoverOpen ? styles.btnSecondaryActive : ''}`}
                             onClick={(e) => {
                                 e.stopPropagation();
                                 const rect = e.currentTarget.getBoundingClientRect();

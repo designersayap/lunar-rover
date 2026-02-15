@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { FolderIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon as ArrowPathIconSolid } from '@heroicons/react/24/solid';
 import styles from '../page.module.css';
 import { handleStagePreview } from './utils/stage-preview';
 import BasePopover from './base-popover';
@@ -225,7 +226,7 @@ export default function StagingPopover({
             <div className={styles.popoverContent}>
                 <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
                     <div className={`${styles.exportInputWrapper}`}>
-                        <span className="caption-bold">New Staging Page</span>
+                        <label className={styles.formInputTitle}>New Staging Page</label>
                         <div style={{ display: 'flex', gap: 'var(--pb-space-sm)' }}>
                             <input
                                 type="text"
@@ -245,7 +246,7 @@ export default function StagingPopover({
                     <button type="submit" style={{ display: 'none' }} />
 
                     <div className={styles.exportInputWrapper}>
-                        <span className="caption-bold">Or overwrite existing:</span>
+                        <label className={styles.formInputTitle}>Or overwrite existing:</label>
                         <div style={{
                             maxHeight: '160px',
                             overflowY: 'auto',
@@ -270,18 +271,18 @@ export default function StagingPopover({
                                     <div
                                         key={folder}
                                         onClick={() => setFolderName(folder)}
-                                        className={`${styles.folderItem} ${folderName === folder ? styles.folderItemActive : ''}`}
+                                        className={`${styles.listItem} ${folderName === folder ? styles.listItemActive : ''}`}
                                     >
-                                        <FolderIcon className={styles.folderIcon} />
+                                        <FolderIcon className={styles.iconSmall} />
                                         {folder}
                                         <button
                                             type="button"
-                                            className={`${styles.generatorButton} ${styles.sidebarAddButton}`}
-                                            style={{ marginLeft: 'auto' }}
+                                            className={`${styles.sidebarDeleteButton} ${styles.mlAuto}`}
                                             title="Restore to Builder"
                                             onClick={(e) => handleRestore(e, folder)}
                                         >
-                                            <ArrowPathIcon style={{ width: 'var(--pb-space-lg)', height: 'var(--pb-space-lg)' }} />
+                                            <ArrowPathIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
+                                            <ArrowPathIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
                                         </button>
                                     </div>
                                 ))
@@ -292,8 +293,7 @@ export default function StagingPopover({
                     <div>
                         <button
                             type="submit"
-                            className={styles.generatorButton}
-                            style={{ width: '100%' }}
+                            className={`${styles.btn} ${styles.btnSecondary} ${styles.wFull}`}
                             disabled={isSaving}
                         >
                             {isSaving ? (

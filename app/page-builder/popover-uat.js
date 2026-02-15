@@ -70,7 +70,7 @@ export default function UATPopover({
             {/* Content */}
             <div className={styles.popoverContent}>
                 <div className={`${styles.exportInputWrapper}`}>
-                    <span className="caption-bold">New UAT Project</span>
+                    <label className={styles.formInputTitle}>New UAT Project</label>
                     <div style={{ display: 'flex', gap: 'var(--pb-space-sm)' }}>
                         <input
                             type="text"
@@ -91,7 +91,7 @@ export default function UATPopover({
                 </div>
 
                 <div className={styles.exportInputWrapper}>
-                    <span className="caption-bold">Or overwrite existing:</span>
+                    <label className={styles.formInputTitle}>Or overwrite existing:</label>
                     <div style={{
                         maxHeight: '160px',
                         overflowY: 'auto',
@@ -112,9 +112,9 @@ export default function UATPopover({
                                 <div
                                     key={folder}
                                     onClick={() => setFolderName(folder)}
-                                    className={`${styles.folderItem} ${folderName === folder ? styles.folderItemActive : ''}`}
+                                    className={`${styles.listItem} ${folderName === folder ? styles.listItemActive : ''}`}
                                 >
-                                    <FolderIcon className={styles.folderIcon} />
+                                    <FolderIcon className={styles.iconSmall} />
                                     {folder}
                                 </div>
                             ))
@@ -124,8 +124,7 @@ export default function UATPopover({
 
                 <div>
                     <button
-                        className={styles.generatorButton}
-                        style={{ width: '100%' }}
+                        className={`${styles.btn} ${styles.btnSecondary} ${styles.wFull}`}
                         onClick={onSaveClick}
                         disabled={isSaving}
                     >

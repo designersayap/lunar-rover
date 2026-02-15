@@ -64,14 +64,7 @@ const ImagePreviewInput = ({ section, value, onChange }) => {
             </div>
 
             {value && status === 'valid' && (
-                <div className={`${styles.borderGrey200} ${styles.bgGrey50}`} style={{
-                    marginTop: 'var(--pb-space-xs)',
-                    padding: 'var(--pb-space-sm)',
-                    borderRadius: 'var(--pb-space-sm)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
+                <div className={styles.imagePreviewContainer}>
                     <img
                         src={value}
                         alt="Preview"
@@ -154,27 +147,7 @@ const UrlInput = ({ section, value, onChange }) => {
 };
 
 const ANALYTICS_GROUPS = [
-    {
-        title: "General",
-        items: [
-            {
-                id: 'website-title',
-                title: 'Page Title',
-                type: 'input',
-                key: 'websiteTitle',
-                tooltip: 'The main title of your website that appears in browser tabs and search results.'
-            },
-            {
-                id: 'favicon',
-                title: 'Favicon',
-                type: 'input',
-                inputType: 'image', // Explicit type
-                key: 'favicon',
-                placeholder: 'Image URL',
-                tooltip: 'The icon that appears in the browser tab.'
-            }
-        ]
-    },
+    /* General section removed */
     {
         title: "SEO Configuration",
         items: [
@@ -275,103 +248,82 @@ const ANALYTICS_GROUPS = [
     }
 ];
 
-function AnalyticsAccordion({ group, analyticsData, setAnalyticsData }) {
-    const [isOpen, setIsOpen] = useState(true);
-
-    return (
-        <div className={styles.categoryWrapper}>
-            <div
-                onClick={() => setIsOpen(!isOpen)}
-                style={{
-                    cursor: 'pointer',
-                    userSelect: 'none',
-                    padding: 'var(--pb-space-lg) 0',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                }}
-                className={`${styles.categoryHeader} ${styles.textSubtle}`}
-            >
-                <span className="caption-bold">{group.title}</span>
-                <ChevronRightIcon
-                    style={{
-                        width: '16px',
-                        height: '16px',
-                        transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
-                        transition: 'transform 0.2s'
-                    }}
-                />
-            </div>
-
-            <div className={`${styles.accordionContent} ${isOpen ? styles.accordionContentOpen : ''}`}>
-                <div className={styles.accordionInner}>
-                    <div style={{ paddingLeft: 'var(--pb-space-sm)', display: 'flex', flexDirection: 'column', gap: 'var(--pb-space-sm)' }}>
-                        {group.items.map((section) => (
-                            <div key={section.id} className={styles.analyticsRow}>
-                                <div className={styles.analyticsHeader}>
-                                    <Tooltip content={section.tooltip} position="top">
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                            <label className={`caption-bold ${styles.formInputTitle}`}>{section.title}</label>
-                                            {section.tooltip && (
-                                                <QuestionMarkCircleIcon className={styles.iconXs} style={{ color: 'var(--pb-neutral-300)' }} />
-                                            )}
-                                        </div>
-                                    </Tooltip>
-                                </div>
-                                {section.type === 'input' ? (
-                                    section.inputType === 'image' ? (
-                                        <ImagePreviewInput
-                                            section={section}
-                                            value={analyticsData[section.key] || ""}
-                                            onChange={(e) => setAnalyticsData({ ...analyticsData, [section.key]: e.target.value })}
-                                        />
-                                    ) : section.inputType === 'url' ? (
-                                        <UrlInput
-                                            section={section}
-                                            value={analyticsData[section.key] || ""}
-                                            onChange={(e) => setAnalyticsData({ ...analyticsData, [section.key]: e.target.value })}
-                                        />
-                                    ) : (
-                                        <input
-                                            type="text"
-                                            className={styles.formInput}
-                                            placeholder={section.placeholder}
-                                            value={analyticsData[section.key] || ""}
-                                            onChange={(e) => setAnalyticsData({ ...analyticsData, [section.key]: e.target.value })}
-                                        />
-                                    )
-                                ) : (
-                                    <textarea
-                                        className={`${styles.formInput} ${styles.formTextarea} ${styles.analyticsTextarea}`}
-                                        placeholder={section.placeholder}
-                                        value={analyticsData[section.key] || ""}
-                                        onChange={(e) => setAnalyticsData({ ...analyticsData, [section.key]: e.target.value })}
-                                    />
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
+/* AnalyticsAccordion removed as logic is now inline in SidebarAnalyticsTab */
 
 /**
  * SidebarAnalyticsTab: Analytics configuration form.
  */
-export default function SidebarAnalyticsTab({ analyticsData, setAnalyticsData }) {
+export default function SidebarAnalyticsTab({ analyticsData, setAnalyticsData, tab }) {
+    // Determine which group to show based on the active tab
+    const activeGroupTitle = {
+        'seo': "SEO Configuration",
+        'opengraph': "Open Graph Settings",
+        'analytics': "Analytics & Scripts"
+    }[tab];
+
+    const activeGroup = ANALYTICS_GROUPS.find(g => g.title === activeGroupTitle);
+
+    if (!activeGroup) return null;
+
     return (
         <div className={styles.analyticsContainer}>
             <div className={styles.analyticsSection}>
-                {ANALYTICS_GROUPS.map((group, index) => (
-                    <AnalyticsAccordion
-                        key={index}
-                        group={group}
-                        analyticsData={analyticsData}
-                        setAnalyticsData={setAnalyticsData}
-                    />
-                ))}
+                <div className={styles.categoryWrapper}>
+                    {/* Optional: Add a header or just show content? 
+                        Tabs usually don't repeat the header if the tab itself is the header. 
+                        But we might want some spacing. 
+                    */}
+                    <div className={styles.accordionContentOpen}>
+                        <div className={styles.accordionInner}>
+                            <div style={{ padding: 'var(--pb-space-lg) 0 0', display: 'flex', flexDirection: 'column', gap: 'var(--pb-space-sm)' }}>
+                                {activeGroup.items.map((section) => (
+                                    <div key={section.id} className={styles.analyticsRow}>
+                                        <div className={styles.analyticsHeader}>
+                                            <Tooltip content={section.tooltip} position="top">
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                                    <label className={styles.formInputTitle} style={{ marginBottom: 0 }}>{section.title}</label>
+                                                    {section.tooltip && (
+                                                        <QuestionMarkCircleIcon className={styles.iconXs} style={{ color: 'var(--pb-neutral-300)' }} />
+                                                    )}
+                                                </div>
+                                            </Tooltip>
+                                        </div>
+                                        {section.type === 'input' ? (
+                                            section.inputType === 'image' ? (
+                                                <ImagePreviewInput
+                                                    section={section}
+                                                    value={analyticsData[section.key] || ""}
+                                                    onChange={(e) => setAnalyticsData({ ...analyticsData, [section.key]: e.target.value })}
+                                                />
+                                            ) : section.inputType === 'url' ? (
+                                                <UrlInput
+                                                    section={section}
+                                                    value={analyticsData[section.key] || ""}
+                                                    onChange={(e) => setAnalyticsData({ ...analyticsData, [section.key]: e.target.value })}
+                                                />
+                                            ) : (
+                                                <input
+                                                    type="text"
+                                                    className={styles.formInput}
+                                                    placeholder={section.placeholder}
+                                                    value={analyticsData[section.key] || ""}
+                                                    onChange={(e) => setAnalyticsData({ ...analyticsData, [section.key]: e.target.value })}
+                                                />
+                                            )
+                                        ) : (
+                                            <textarea
+                                                className={`${styles.formInput} ${styles.formTextarea} ${styles.analyticsTextarea}`}
+                                                placeholder={section.placeholder}
+                                                value={analyticsData[section.key] || ""}
+                                                onChange={(e) => setAnalyticsData({ ...analyticsData, [section.key]: e.target.value })}
+                                            />
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

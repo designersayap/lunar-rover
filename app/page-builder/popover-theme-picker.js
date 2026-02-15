@@ -46,7 +46,7 @@ export default function ThemePickerPopover({
                     {filteredThemes.map(theme => (
                         <label
                             key={theme.id}
-                            className={`${styles.themeOption} ${selectedThemeId === theme.id ? styles.themeOptionSelected : ''}`}
+                            className={`${styles.listItem} ${selectedThemeId === theme.id ? styles.listItemActive : ''}`}
                         >
                             <input
                                 type="radio"
@@ -59,7 +59,7 @@ export default function ThemePickerPopover({
                                 }}
                                 className={styles.themeOptionInput}
                             />
-                            <span className="caption-regular">{theme.name}</span>
+                            <span className={styles.captionRegular}>{theme.name}</span>
                         </label>
                     ))}
                 </div>

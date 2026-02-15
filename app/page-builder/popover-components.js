@@ -43,7 +43,7 @@ export default function ComponentsPopover({
                 <div className={styles.searchInputWrapper}>
                     <MagnifyingGlassIcon className={styles.searchIcon} />
                     <input
-                        className={`${styles.formInput} ${styles.searchBar}`}
+                        className={styles.formInput}
                         type="text"
                         placeholder="Search Section"
                         value={elementSearch}
@@ -83,7 +83,7 @@ export default function ComponentsPopover({
                                     }}
                                 />
                                 <div className={styles.cardContent}>
-                                    <p className={`${styles.cardTitle} caption-regular`}>
+                                    <p className={`${styles.cardTitle} ${styles.captionRegular}`}>
                                         {comp.name}
                                     </p>
                                 </div>

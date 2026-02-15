@@ -13,6 +13,7 @@ import ThemePickerPopover from "@/app/page-builder/popover-theme-picker";
 import UATPopover from "@/app/page-builder/popover-uat";
 import StagingPopover from "@/app/page-builder/popover-staging";
 import ComponentsPopover from "@/app/page-builder/popover-components";
+import ExportPopover from "@/app/page-builder/popover-export";
 
 // Helper Utilities
 import { componentLibrary } from "@/app/page-builder/content/component-library";
@@ -109,9 +110,10 @@ export default function TemplateGeneratorPage() {
           toggleSidebar={toggleSidebar}
           handleExport={handleExport}
           handleDirectExport={handleDirectExport}
+          onExportClick={(pos) => togglePopover('export-flow', pos)}
           onThemeClick={(pos) => togglePopover('theme', pos)}
           isThemePickerOpen={activePopoverId === 'theme'}
-          isExportPopoverOpen={activePopoverId === 'export'}
+          isExportPopoverOpen={activePopoverId === 'export' || activePopoverId === 'export-flow'}
           selectedThemeId={selectedThemeId}
           themes={themes}
           handleStaging={handleStaging}
@@ -227,6 +229,18 @@ export default function TemplateGeneratorPage() {
             className="z-system-modal-floating"
             activeThemePath={themes.find(t => t.id === selectedThemeId)?.path || "/themes/theme.css"}
             analyticsData={analyticsData}
+          />
+        )}
+
+        {activePopoverId === 'export-flow' && (
+          <ExportPopover
+            isOpen
+            onClose={closePopover}
+            position={popoverPositions['export-flow']}
+            className="z-system-modal-floating"
+            analyticsData={analyticsData}
+            setAnalyticsData={setAnalyticsData}
+            handleDirectExport={handleDirectExport}
           />
         )}
 
