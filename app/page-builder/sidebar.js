@@ -382,7 +382,6 @@ export default function Sidebar({
     return (
         <div className={`${styles.sidebar} ${className}`} data-builder-ui="true">
             <div>
-                <div className={styles.sidebarTitle}>Configuration</div>
                 <div className={styles.tabs}>
                     <Tooltip content="Layers" position="bottom">
                         <button

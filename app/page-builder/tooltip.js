@@ -6,7 +6,7 @@ export default function Tooltip({
     content,
     children,
     position = 'top',
-    delay = 200,
+    delay = 1000,
     className = '',
     zIndex = 9999,
 }) {

@@ -275,7 +275,7 @@ export default function SidebarAnalyticsTab({ analyticsData, setAnalyticsData, t
                     */}
                     <div className={styles.accordionContentOpen}>
                         <div className={styles.accordionInner}>
-                            <div style={{ padding: 'var(--pb-space-lg) 0 0', display: 'flex', flexDirection: 'column', gap: 'var(--pb-space-sm)' }}>
+                            <div style={{ padding: 'var(--pb-space-lg) 0 0', display: 'flex', flexDirection: 'column', gap: 'var(--pb-space-lg)' }}>
                                 {activeGroup.items.map((section) => (
                                     <div key={section.id} className={styles.analyticsRow}>
                                         <div className={styles.analyticsHeader}>
@@ -283,7 +283,7 @@ export default function SidebarAnalyticsTab({ analyticsData, setAnalyticsData, t
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                                     <label className={styles.formInputTitle} style={{ marginBottom: 0 }}>{section.title}</label>
                                                     {section.tooltip && (
-                                                        <QuestionMarkCircleIcon className={styles.iconXs} style={{ color: 'var(--pb-neutral-300)' }} />
+                                                        <QuestionMarkCircleIcon className={styles.iconXs} style={{ color: 'var(--pb-neutral-100)' }} />
                                                     )}
                                                 </div>
                                             </Tooltip>

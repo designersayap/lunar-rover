@@ -86,7 +86,7 @@
     background: linear-gradient(to top, #111, var(--pb-neutral-500));
     border-left: 1px solid #2A2A2A;
     overflow-y: auto;
-    padding: var(--pb-space-lg) var(--pb-space-lg);
+    padding: 0 var(--pb-space-lg);
 }
 
 .canvas {
@@ -787,49 +787,62 @@
 
 /* --- Tabs --- */
 
-/* --- Tabs (Segmented Control) --- */
+/* --- Tabs (Underline) --- */
 
 .tabs {
     display: flex;
-    background-color: var(--pb-neutral-400);
-    padding: 4px;
-    border-radius: 8px;
-    gap: 4px;
+    gap: var(--pb-space-lg);
+    border-bottom: 1px solid var(--pb-bdr);
+    margin-left: calc(-1 * var(--pb-space-lg));
+    margin-right: calc(-1 * var(--pb-space-lg));
+    padding-left: var(--pb-space-lg);
 }
 
 .tab {
-    flex: 1;
-    padding: 8px 8px;
+    padding: 16px 0;
     border: none;
     background: transparent;
     font-weight: 500;
     font-size: 13px;
     cursor: pointer;
-    border-radius: 6px;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     min-width: 0;
-    transition: all 0.2s ease;
+    transition: color 0.2s ease;
+    position: relative;
+}
+
+.tab::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: transparent;
+    transition: background 0.2s ease;
 }
 
 .tab:hover {
-    color: var(--pb-white);
-}
-
-.tabActive {
-    background-color: var(--pb-neutral-300);
-    color: var(--pb-white);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-.tabInactive {
     color: var(--pb-neutral-75);
 }
 
+.tabActive {
+    color: var(--pb-neutral-75);
+}
+
+.tabActive::after {
+    background: var(--pb-neutral-75);
+}
+
+.tabInactive {
+    color: var(--pb-neutral-100);
+}
+
 .tabInactive:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--pb-neutral-75);
 }
 
 .sidebarEmptyState {
@@ -999,13 +1012,6 @@
     font-family: var(--pb-font-family-default);
     font-size: var(--typography-font-size-90);
     font-weight: var(--pb-font-weight-regular);
-}
-
-.sidebarTitle {
-    color: var(--pb-neutral-50);
-    font-size: var(--pb-font-size-90);
-    font-weight: var(--pb-font-weight-bold);
-    margin-bottom: var(--pb-space-lg);
 }
 
 .categoryWrapper,
@@ -1448,7 +1454,7 @@
 }
 
 .themeList {
-    gap: var(--pb-space-md);
+    gap: var(--pb-space-xs);
     overflow-y: auto;
     max-height: 240px;
     display: flex;
@@ -1843,6 +1849,7 @@
     gap: var(--pb-space-xs);
     display: flex;
     align-items: center;
+    margin-bottom: var(--pb-space-xs);
 }
 
 /* Accordion */
