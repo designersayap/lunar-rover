@@ -8,19 +8,19 @@
 
 :root {
     /* colors */
-    --pb-lunar-500: #0d47a1;
-    --pb-lunar-400: #1565c0;
-    --pb-lunar-300: #1976d2;
-    --pb-lunar-200: #64b5f6;
-    --pb-lunar-100: #bbdefb;
     --pb-lunar-50: #e3f2fd;
+    --pb-lunar-100: #bbdefb;
+    --pb-lunar-200: #64b5f6;
+    --pb-lunar-300: #1976d2;
+    --pb-lunar-400: #1565c0;
+    --pb-lunar-500: #0d47a1;
     --pb-neutral-50: #FFFFFF;
-    --pb-neutral-75: #B3B3B3;
-    --pb-neutral-100: #666666;
-    --pb-neutral-200: #4D4D4D;
-    --pb-neutral-300: #333333;
-    --pb-neutral-400: #1A1A1A;
-    --pb-neutral-500: #0a0a0a;
+    --pb-neutral-75: #D1D1D1;
+    --pb-neutral-100: #A0A0A0;
+    --pb-neutral-200: #404040;
+    --pb-neutral-300: #2B2B2B;
+    --pb-neutral-400: #1E1E1E;
+    --pb-neutral-500: #121212;
     --pb-bdr: #1e1e1e;
     --pb-white: #ffffff;
     --pb-black: #000000;
@@ -31,7 +31,7 @@
     --pb-shd-btn: 0 2px 4px rgba(0, 0, 0, .1), inset 0 1px 0 rgba(255, 255, 255, .05);
     --pb-shd-active: inset 0 2px 4px rgba(0, 0, 0, 0.4);
     --pb-shd-input: inset 0 2px 4px rgba(0, 0, 0, .1);
-    --pb-shd-pop: 0 8px 40px rgba(0, 0, 0, 0.8);
+    --pb-shd-pop: 0 12px 60px 8px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05);
     --pb-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
     /* component size */
@@ -1098,7 +1098,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--background-neutral--default);
+    background: var(--pb-white);
 }
 
 .emptyStateText {
@@ -1245,7 +1245,9 @@
 }
 
 .canvasText {
-    color: var(--content-neutral--caption);
+    color: var(--pb-neutral-100);
+    font-family: var(--pb-font-family-body);
+    font-size: var(--pb-font-md);
 }
 
 .resolutionIndicator {
@@ -1363,58 +1365,6 @@
     background: var(--pb-neutral-500);
 }
 
-/* Welcome Popover */
-.welcomePopover {
-    width: 480px;
-    background: var(--pb-neutral-500);
-    border: 1px solid var(--pb-bdr);
-    border-radius: var(--pb-space-md);
-}
-
-.modalOverlay {
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(var(--pb-space-xs));
-}
-
-.welcomeContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px;
-    text-align: center;
-    gap: var(--pb-space-xl);
-}
-
-.welcomeLogoWrapper {
-    width: 120px;
-    height: 120px;
-    position: relative;
-    margin-bottom: var(--pb-space-sm);
-}
-
-.welcomeTitle {
-    font-size: var(--pb-space-xl);
-    font-weight: 700;
-    margin: 0;
-    color: var(--pb-white);
-}
-
-.welcomeDescription {
-    color: var(--pb-neutral-200);
-    font-size: var(--pb-space-lg);
-    max-width: var(--pb-w-sidebar);
-    margin: 0 auto;
-}
-
-.welcomeButton {
-    width: 100%;
-    max-width: 240px;
-    height: 48px;
-    margin-top: var(--pb-space-lg);
-    border-radius: var(--pb-space-sm);
-    font-size: var(--pb-space-lg);
-}
-
 /* Export Popover */
 .exportPopover {
     position: absolute;
@@ -1493,7 +1443,7 @@
     margin-right: var(--pb-space-md);
     width: var(--pb-space-lg);
     height: var(--pb-space-lg);
-    accent-color: var(--pb-neutral-300);
+    accent-color: var(--pb-neutral-200);
     cursor: pointer;
 }
 
@@ -1501,7 +1451,6 @@
 .componentsPopover {
     position: fixed;
     background: var(--pb-neutral-500);
-    border: 1px solid var(--pb-bdr);
     box-shadow: var(--pb-shd-pop);
     z-index: 10001;
 }
