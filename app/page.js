@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { BellAlertIcon, TrashIcon } from "@heroicons/react/24/solid";
 import styles from "./page.module.css";
 
@@ -14,6 +14,7 @@ import UATPopover from "@/app/page-builder/popover-uat";
 import StagingPopover from "@/app/page-builder/popover-staging";
 import ComponentsPopover from "@/app/page-builder/popover-components";
 import ExportPopover from "@/app/page-builder/popover-export";
+import NotificationPopover from "@/app/page-builder/popover-notifications";
 
 // Helper Utilities
 import { componentLibrary } from "@/app/page-builder/content/component-library";
@@ -29,6 +30,18 @@ import { useTemplateLogic } from "@/app/page-builder/utils/hooks";
  */
 export default function TemplateGeneratorPage() {
   const containerRef = useRef(null);
+  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
+
+  // Fetch unread count on mount so badge shows without opening the popover
+  useEffect(() => {
+    fetch(`/api/notifications?t=${Date.now()}`)
+      .then(res => res.ok ? res.json() : { notifications: [] })
+      .then(data => {
+        const unread = (data.notifications || []).filter(n => !n.read).length;
+        setUnreadNotificationCount(unread);
+      })
+      .catch(() => { });
+  }, []);
 
   const { state, actions } = useTemplateLogic();
 
@@ -72,7 +85,8 @@ export default function TemplateGeneratorPage() {
     togglePopover,
     setSelectedComponents,
     handleGroup,
-    handleUngroup
+    handleUngroup,
+    handleNotificationClick
   } = actions;
 
   const {
@@ -120,6 +134,9 @@ export default function TemplateGeneratorPage() {
           handleStaging={handleStaging}
           handleReset={handleReset}
           isStagingPopoverOpen={activePopoverId === 'staging'}
+          onNotificationClick={handleNotificationClick}
+          isNotificationOpen={activePopoverId === 'notifications'}
+          unreadCount={unreadNotificationCount}
         />
 
         {/* Main Content */}
@@ -283,6 +300,15 @@ export default function TemplateGeneratorPage() {
             componentLibrary={componentLibrary}
             addComponent={addComponent}
             className="z-system-modal-floating"
+          />
+        )}
+
+        {activePopoverId === 'notifications' && (
+          <NotificationPopover
+            position={popoverPositions.notifications}
+            onClose={closePopover}
+            className="z-system-modal-floating"
+            onUnreadCountChange={setUnreadNotificationCount}
           />
         )}
 

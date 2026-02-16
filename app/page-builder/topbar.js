@@ -7,6 +7,7 @@ import {
     RocketLaunchIcon,
     ChevronDownIcon,
     DocumentPlusIcon,
+    BellIcon,
 } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
 import Tooltip from "./tooltip";
@@ -24,7 +25,10 @@ export default function TopBar({
     themes = [],
     handleStaging,
     handleReset,
-    isStagingPopoverOpen
+    isStagingPopoverOpen,
+    onNotificationClick,
+    isNotificationOpen,
+    unreadCount
 }) {
     const selectedTheme = themes.find(t => t.id === selectedThemeId);
     const selectedThemeName = selectedTheme ? selectedTheme.name : "Themes";
@@ -84,6 +88,23 @@ export default function TopBar({
                         ) : (
                             <ChevronDoubleLeftIcon className={styles.iconWhite} />
                         )}
+                    </button>
+                </Tooltip>
+
+                <Tooltip content="Notifications" position="bottom">
+                    <button
+                        className={`${styles.btn} ${styles.btnGhost} ${styles.btnIcon} ${isNotificationOpen ? styles.btnGhostActive : ''}`}
+                        onClick={(e) => {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            onNotificationClick({
+                                top: rect.bottom + 4,
+                                left: rect.left + rect.width / 2
+                            });
+                        }}
+                        style={{ position: 'relative' }}
+                    >
+                        <BellIcon className={styles.iconWhite} />
+                        {unreadCount > 0 && <span className={styles.notificationBadge} />}
                     </button>
                 </Tooltip>
 

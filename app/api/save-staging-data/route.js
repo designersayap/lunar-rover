@@ -62,6 +62,30 @@ export async function POST(request) {
 
         await S3Manual.putJson(newFilename, stagingConfig);
 
+        // Create notification (fire-and-forget)
+        try {
+            const notifKey = 'notifications/notifications.json';
+            let notifications = [];
+            try {
+                const existing = await S3Manual.getJson(notifKey);
+                notifications = existing.notifications || [];
+            } catch { /* file doesn't exist yet */ }
+
+            notifications.unshift({
+                id: String(Date.now()),
+                folderName,
+                message: `Changes saved on '${folderName}'`,
+                timestamp: new Date().toISOString(),
+                read: false
+            });
+
+            // Keep max 50 notifications
+            if (notifications.length > 50) notifications = notifications.slice(0, 50);
+            await S3Manual.putJson(notifKey, { notifications });
+        } catch (notifErr) {
+            console.warn('Notification creation failed:', notifErr);
+        }
+
         return NextResponse.json({ success: true });
 
     } catch (error) {

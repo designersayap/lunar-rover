@@ -488,7 +488,7 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    color: var(--pb-neutral-100);
+    color: var(--pb-neutral-200);
     padding: var(--pb-space-xs);
     border-radius: var(--pb-radius);
     display: flex;
@@ -499,7 +499,7 @@
 }
 
 .sidebarDeleteButton:hover {
-    color: var(--pb-neutral-200);
+    color: var(--pb-neutral-100);
 }
 
 .sidebarDeleteButton .iconSolid {
@@ -985,7 +985,8 @@
     flex-shrink: 0;
 }
 
-.listItem:hover .treeActions {
+.listItem:hover .treeActions,
+.notificationItem:hover .treeActions {
     display: flex;
 }
 
@@ -1487,7 +1488,6 @@
     border: none;
     border-bottom: 1px solid var(--pb-bdr);
     border-radius: 0;
-    overflow: hidden;
     text-align: left;
     padding: var(--pb-space-md) 0;
     transition: all .5s;
@@ -1828,4 +1828,98 @@
 .propertyRowStacked {
     flex-direction: column;
     align-items: flex-start;
+}
+
+/* =========================================
+   NOTIFICATION STYLES
+   ========================================= */
+
+/* Red dot badge on bell icon */
+.notificationBadge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--pb-danger);
+    pointer-events: none;
+}
+
+/* Notification list item */
+.notificationItem {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    padding: var(--pb-space-sm);
+    border-radius: var(--pb-radius);
+    transition: background 0.1s;
+    color: var(--pb-neutral-75);
+    cursor: default;
+    gap: var(--pb-space-sm);
+    font-size: var(--pb-font-size-90);
+}
+
+.notificationItem:hover {
+    background: var(--pb-neutral-400);
+}
+
+.notificationItemUnread {
+    color: var(--pb-neutral-50);
+}
+
+/* Unread dot indicator */
+.notificationDot {
+    width: var(--pb-space-lg);
+    height: var(--pb-space-lg);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+}
+
+.notificationDotInner {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--pb-lunar-200);
+}
+
+/* Notification body */
+.notificationBody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.notificationMessage {
+    font-size: var(--pb-font-size-90);
+    line-height: var(--pb-line-height-caption);
+}
+
+.notificationTime {
+    font-size: var(--pb-font-size-80);
+    color: var(--pb-neutral-100);
+    line-height: var(--pb-line-height-caption);
+}
+
+/* Mark all as read link */
+.notificationMarkAllBtn {
+    background: transparent;
+    border: none;
+    color: var(--pb-neutral-75);
+    font-size: var(--pb-font-size-90);
+    font-family: var(--pb-font-family-default);
+    cursor: pointer;
+    padding: var(--pb-space-sm) 0;
+    width: 100%;
+    text-align: center;
+    transition: color 0.15s;
+}
+
+.notificationMarkAllBtn:hover {
+    color: var(--pb-neutral-50);
 }

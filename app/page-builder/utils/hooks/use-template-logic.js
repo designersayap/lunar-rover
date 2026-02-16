@@ -264,6 +264,10 @@ export function useTemplateLogic() {
         togglePopover('staging', position);
     }, [togglePopover]);
 
+    const handleNotificationClick = useCallback((position) => {
+        togglePopover('notifications', position);
+    }, [togglePopover]);
+
     const handleReset = useCallback(() => {
         if (!confirm('Reset all data? This will clear all components and analytics.')) return;
         setSelectedComponents([]);
@@ -342,7 +346,8 @@ export function useTemplateLogic() {
             handleAddClick,
             closePopover,
             togglePopover,
-            setSelectedComponents
+            setSelectedComponents,
+            handleNotificationClick
         }
     };
 }

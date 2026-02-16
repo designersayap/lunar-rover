@@ -43,7 +43,7 @@ export default function ComponentsPopover({
                 <div className={styles.searchInputWrapper}>
                     <MagnifyingGlassIcon className={styles.searchIcon} />
                     <input
-                        className={styles.formInput}
+                        className={`${styles.formInput} ${styles.searchBar}`}
                         type="text"
                         placeholder="Search Section"
                         value={elementSearch}
@@ -53,7 +53,7 @@ export default function ComponentsPopover({
                 </div>
             </div>
 
-            <div className={styles.popoverContent} style={{ maxHeight: '400px', overflowY: 'auto', padding: 0 }}>
+            <div className={styles.popoverContent} style={{ maxHeight: '400px', overflowY: 'auto', padding: 'var(--pb-space-lg)' }}>
                 {Object.keys(filteredLibrary).length === 0 ? (
                     <div className={styles.sidebarEmptyState}>
                         No elements found
