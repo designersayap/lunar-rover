@@ -200,7 +200,7 @@ export default function StagingPopover({
                         const rehydrated = rehydrate(data.components);
 
                         // Pass activeThemePath to onRestore if available
-                        onRestore(rehydrated, data.activeThemePath);
+                        onRestore(rehydrated, data.activeThemePath, data.analytics);
                         onClose();
                         alert("Restored successfully!");
                     }

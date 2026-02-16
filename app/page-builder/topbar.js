@@ -23,6 +23,7 @@ export default function TopBar({
     selectedThemeId,
     themes = [],
     handleStaging,
+    handleReset,
     isStagingPopoverOpen
 }) {
     const selectedTheme = themes.find(t => t.id === selectedThemeId);
@@ -62,7 +63,7 @@ export default function TopBar({
     return (
         <div className={`${styles.topBar} z-layout-topbar`} data-builder-ui="true">
             {/* ... left part ... */}
-            <div className={styles.topBarLeft}>
+            <div className={styles.topBarLeft} onClick={handleReset} style={{ cursor: 'pointer' }}>
                 <Image
                     src="https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768450282/logo_lunar_lunar_white_m0tyym.svg"
                     alt="Lunar Logo"

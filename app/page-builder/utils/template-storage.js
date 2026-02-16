@@ -94,3 +94,10 @@ export function saveTemplate(components, analytics) {
         lastSaved: new Date().toISOString()
     }));
 }
+
+/**
+ * Clear saved template from localStorage.
+ */
+export function clearTemplate() {
+    localStorage.removeItem(STORAGE_KEY);
+}

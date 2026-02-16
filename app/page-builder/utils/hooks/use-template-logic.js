@@ -5,6 +5,7 @@ import { componentLibrary } from "@/app/page-builder/content/component-library";
 import {
     loadTemplate,
     saveTemplate,
+    clearTemplate,
     DEFAULT_ANALYTICS
 } from "@/app/page-builder/utils/template-storage";
 import {
@@ -263,6 +264,13 @@ export function useTemplateLogic() {
         togglePopover('staging', position);
     }, [togglePopover]);
 
+    const handleReset = useCallback(() => {
+        if (!confirm('Reset all data? This will clear all components and analytics.')) return;
+        setSelectedComponents([]);
+        setAnalyticsData(DEFAULT_ANALYTICS);
+        clearTemplate();
+    }, [showToast]);
+
     const handleDirectExport = useCallback(async () => {
         try {
             showToast("Preparing export...", "info");
@@ -324,6 +332,7 @@ export function useTemplateLogic() {
             handleExport,
             handleStaging,
             handleDirectExport,
+            handleReset,
             addComponent,
             removeComponent,
             updateComponent,

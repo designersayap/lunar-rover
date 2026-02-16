@@ -62,6 +62,7 @@ export async function POST(request) {
             folderName,
             builderData: builderData || {},
             components: requestBody.components,
+            analytics: requestBody.analytics || {},
             timestamp,
             activeThemePath: requestBody.activeThemePath
         };

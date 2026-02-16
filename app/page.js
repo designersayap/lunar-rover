@@ -62,6 +62,7 @@ export default function TemplateGeneratorPage() {
     handleExport,
     handleStaging,
     handleDirectExport,
+    handleReset,
     addComponent,
     removeComponent,
     updateComponent,
@@ -117,6 +118,7 @@ export default function TemplateGeneratorPage() {
           selectedThemeId={selectedThemeId}
           themes={themes}
           handleStaging={handleStaging}
+          handleReset={handleReset}
           isStagingPopoverOpen={activePopoverId === 'staging'}
         />
 
@@ -251,8 +253,12 @@ export default function TemplateGeneratorPage() {
             onClose={closePopover}
             position={popoverPositions.staging}
             className="z-system-modal-floating"
-            onRestore={(data, themePath) => {
+            onRestore={(data, themePath, analytics) => {
               setSelectedComponents(data);
+
+              if (analytics) {
+                setAnalyticsData(prev => ({ ...prev, ...analytics }));
+              }
 
               if (themePath) {
                 // Find and select theme
