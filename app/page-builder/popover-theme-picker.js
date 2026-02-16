@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon, SwatchIcon, CheckIcon } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
 import BasePopover from "./base-popover";
 
@@ -42,26 +42,24 @@ export default function ThemePickerPopover({
                     </div>
                 </div>
 
-                <div className={styles.themeList}>
-                    {filteredThemes.map(theme => (
-                        <label
-                            key={theme.id}
-                            className={`${styles.listItem} ${selectedThemeId === theme.id ? styles.listItemActive : ''}`}
-                        >
-                            <input
-                                type="radio"
-                                name="theme"
-                                value={theme.id}
-                                checked={selectedThemeId === theme.id}
-                                onChange={() => {
+                <div className={styles.popoverList}>
+                    {filteredThemes.map(theme => {
+                        const isSelected = selectedThemeId === theme.id;
+                        return (
+                            <button
+                                key={theme.id}
+                                className={`${styles.listItem} ${isSelected ? styles.listItemActive : ''}`}
+                                onClick={() => {
                                     setSelectedThemeId(theme.id);
                                     onSelectTheme(theme.id);
                                 }}
-                                className={styles.themeOptionInput}
-                            />
-                            <span className={styles.captionRegular}>{theme.name}</span>
-                        </label>
-                    ))}
+                            >
+                                <SwatchIcon className={styles.listItemIcon} />
+                                <span className={`${styles.captionRegular} ${styles.listItemLabel}`}>{theme.name}</span>
+                                {isSelected && <CheckIcon className={styles.listItemAction} />}
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
         </BasePopover>

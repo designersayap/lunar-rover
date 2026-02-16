@@ -247,13 +247,7 @@ export default function StagingPopover({
 
                     <div className={styles.exportInputWrapper}>
                         <label className={styles.formInputTitle}>Or overwrite existing:</label>
-                        <div style={{
-                            maxHeight: '160px',
-                            overflowY: 'auto',
-                            border: '1px solid var(--pb-bdr)',
-                            borderRadius: 'var(--pb-radius)',
-                            background: 'var(--pb-neutral-500)'
-                        }}>
+                        <div className={styles.popoverList}>
                             {isLoading ? (
                                 <div className={styles.emptyStateMessage}>
                                     Loading...
