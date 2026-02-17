@@ -105,12 +105,12 @@ export default function UATPopover({
                         />
                     </div>
                     <code className={styles.exportHelperText}>
-                        Saves to S3 Bucket (Private)
+                        Saves to <code>app/uat-files/{folderName || '...'}</code>
                     </code>
                 </div>
 
                 <div className={styles.exportInputWrapper}>
-                    <label className={styles.formInputTitle}>Existing Projects (Select to overwrite):</label>
+                    <label className={styles.formInputTitle}>Or overwrite existing:</label>
                     <div className={styles.popoverList}>
                         {isLoading ? (
                             <div className={styles.emptyStateMessage}>
