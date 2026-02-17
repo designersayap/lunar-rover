@@ -7,7 +7,7 @@
     "build": "node scripts/generate-component-map.js && next build",
     "start": "next start",
     "lint": "eslint",
-    "pages:build": "node scripts/generate-component-map.js && npx @cloudflare/next-on-pages"
+    "pages:build": "node scripts/prepare-cloudflare-build.js && node scripts/generate-component-map.js && npx @cloudflare/next-on-pages"
   },
   "dependencies": {
     "@aws-crypto/sha256-js": "^5.2.0",
