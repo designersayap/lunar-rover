@@ -9,6 +9,7 @@ import { Cog6ToothIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import { createPortal } from "react-dom";
 import { componentLibrary } from "@/app/page-builder/content/component-library";
 import { useActiveOverlayPosition } from "../hooks/use-active-overlay";
+import { useCanvas } from "@/app/page-builder/utils/canvas-context";
 
 export default function ScrollGroup({
     sectionId,
@@ -23,6 +24,14 @@ export default function ScrollGroup({
     updateComponent // passed from Canvas to render children
 }) {
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, localData, isStaging } = useContext(BuilderSelectionContext);
+    const { canvasWidth } = useCanvas();
+
+    // Detect mobile simulation (<= 768px matches the CSS media query)
+    const isMobileSimulation = (() => {
+        if (!canvasWidth || canvasWidth === '100%') return false;
+        const width = parseInt(canvasWidth, 10);
+        return !isNaN(width) && width <= 768;
+    })();
     const elementId = sectionId;
     const isActive = activeElementId === elementId;
     const myPopoverBase = `popover-${elementId}`;
@@ -37,9 +46,14 @@ export default function ScrollGroup({
     const isSticky = scrollEffect === 'sticky';
     const isStacked = scrollEffect === 'stacked';
 
+    // Determine which image to show inline (for Builder simulation primarily)
+    // If simulating mobile, show mobile image directly.
+    // Otherwise show desktop image (and let CSS media query handle mobile if on real device)
+    const currentImage = (isMobileSimulation && mobileImage) ? mobileImage : image;
+
     // Styles for Parallax (Fixed Background)
     const parallaxStyle = {
-        backgroundImage: `url(${image})`,
+        backgroundImage: `url(${currentImage})`,
         backgroundAttachment: "fixed",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -64,7 +78,7 @@ export default function ScrollGroup({
         top: 0,
         height: "100vh",
         width: "100%",
-        backgroundImage: `url(${image})`,
+        backgroundImage: `url(${currentImage})`,
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
@@ -77,7 +91,7 @@ export default function ScrollGroup({
         position: "relative", // Changed from sticky to relative since wrapper handles stickiness
         width: "100%",
         minHeight: "100vh", // Build height to ensure effect is visible
-        backgroundImage: `url(${image})`,
+        backgroundImage: `url(${currentImage})`,
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover"
@@ -367,20 +381,23 @@ export default function ScrollGroup({
     );
 
     // Mobile Image Logic
+    const wrapperStart = isMobileSimulation ? '' : '@media (max-width: 768px) {';
+    const wrapperEnd = isMobileSimulation ? '' : '}';
+
     const mobileImageCss = mobileImage ? `
-        @media (max-width: 768px) {
-            #${elementId} {
+        ${wrapperStart}
+            div[id="${elementId}"] {
                 background-image: url(${mobileImage}) !important;
             }
-        }
+        ${wrapperEnd}
     ` : '';
 
     const stickyMobileImageCss = mobileImage ? `
-        @media (max-width: 768px) {
-            #${elementId}-bg {
+        ${wrapperStart}
+            div[id="${elementId}-bg"] {
                 background-image: url(${mobileImage}) !important;
             }
-        }
+        ${wrapperEnd}
     ` : '';
 
     if (isSticky) {

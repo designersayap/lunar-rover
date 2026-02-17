@@ -37,19 +37,35 @@ export default function Canvas({
     }, [canvasWidth, isResizing]);
 
     // Resize logic
+    // Resize logic
     useEffect(() => {
         if (!isResizing) return;
 
+        let animationFrameId;
+
         const handleMouseMove = (e) => {
-            const delta = e.clientX - resizeStartX.current;
-            const parentWidth = canvasInnerRef.current?.parentElement?.clientWidth || window.innerWidth;
-            const maxAllowedWidth = parentWidth - 32; // 16px margin on each side
-            // Symmetric resize: multiply delta by 2 because centering absorbs half the width change on each side
-            const newWidth = Math.min(maxAllowedWidth, Math.max(360, resizeStartWidth.current + (delta * 2)));
-            setCanvasWidth(`${newWidth}px`);
+            if (animationFrameId) return; // Skip if already scheduled
+
+            animationFrameId = requestAnimationFrame(() => {
+                const delta = e.clientX - resizeStartX.current;
+                // Use offsetWidth to be more stable against scrollbar toggling, or just fallback to window
+                const parentEl = canvasInnerRef.current?.parentElement;
+                const parentWidth = parentEl ? parentEl.clientWidth : window.innerWidth;
+                const maxAllowedWidth = parentWidth - 32; // 16px margin on each side
+
+                // Symmetric resize: multiply delta by 2
+                let newWidth = resizeStartWidth.current + (delta * 2);
+
+                // Clamp
+                newWidth = Math.min(maxAllowedWidth, Math.max(360, newWidth));
+
+                setCanvasWidth(`${newWidth}px`);
+                animationFrameId = null;
+            });
         };
 
         const handleMouseUp = () => {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
             setIsResizing(false);
             document.body.style.cursor = '';
             document.body.style.userSelect = '';
@@ -61,6 +77,7 @@ export default function Canvas({
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
         };
     }, [isResizing]);
 
