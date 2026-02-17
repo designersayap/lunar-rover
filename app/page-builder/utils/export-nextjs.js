@@ -502,9 +502,9 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                         const val = obj[key];
                         if (typeof val === 'string') {
                             if (val === imgPath) {
-                                obj[key] = `/${targetPath}`;
+                                obj[key] = `${targetPath}`;
                             } else if (val.includes(imgPath)) {
-                                obj[key] = val.replace(imgPath, `/${targetPath}`);
+                                obj[key] = val.replace(imgPath, `${targetPath}`);
                             }
                         } else if (typeof val === 'object' && val !== null) {
                             updateProps(val);
@@ -520,8 +520,8 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                         if (typeof defVal === 'string' && (defVal === imgPath || defVal.includes(imgPath))) {
                             if (currentProps[key] === undefined || currentProps[key] === defVal) {
                                 let newVal = defVal;
-                                if (defVal === imgPath) newVal = `/${targetPath}`;
-                                else newVal = defVal.replace(imgPath, `/${targetPath}`);
+                                if (defVal === imgPath) newVal = `${targetPath}`;
+                                else newVal = defVal.replace(imgPath, `${targetPath}`);
 
                                 currentProps[key] = newVal;
                             }
@@ -537,7 +537,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                     let tempContent = await compFile.async("string");
                     const escapedPath = imgPath.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
                     const regex = new RegExp(`(["'])${escapedPath}(["'])`, 'g');
-                    tempContent = tempContent.replace(regex, `$1/${targetPath}$2`);
+                    tempContent = tempContent.replace(regex, `$1${targetPath}$2`);
                     componentsFolder.file(filename, tempContent);
                     previewMap.set(`components/${filename}`, { path: `components/${filename}`, content: tempContent });
                 }

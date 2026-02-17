@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useContext, useState, useEffect } from "react";
+import { useRef, useContext, useState, useEffect, useId } from "react";
 import styles from "../../../page.module.css";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import BuilderControlsPopover from "./builder-controls-popover";
@@ -25,6 +25,7 @@ export default function ScrollGroup({
 }) {
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, localData, isStaging } = useContext(BuilderSelectionContext);
     const { canvasWidth } = useCanvas();
+    const fallbackId = useId();
 
     // Detect mobile simulation (<= 768px matches the CSS media query)
     const isMobileSimulation = (() => {
@@ -32,7 +33,8 @@ export default function ScrollGroup({
         const width = parseInt(canvasWidth, 10);
         return !isNaN(width) && width <= 768;
     })();
-    const elementId = sectionId;
+    // Fallback ID to ensure CSS selectors work even if sectionId is missing (e.g. in Export)
+    const elementId = sectionId || `scroll-group-${fallbackId.replace(/:/g, '')}`;
     const isActive = activeElementId === elementId;
     const myPopoverBase = `popover-${elementId}`;
     const showSettings = activePopoverId && activePopoverId.startsWith(myPopoverBase);
@@ -384,10 +386,17 @@ export default function ScrollGroup({
     const wrapperStart = isMobileSimulation ? '' : '@media (max-width: 768px) {';
     const wrapperEnd = isMobileSimulation ? '' : '}';
 
+    // Debugging (Restored)
+    useEffect(() => {
+        if (mobileImage) {
+            console.log(`[ScrollGroup Debug] ID: ${elementId} | MobileImage: ${mobileImage} | isStaging: ${isStaging}`);
+        }
+    }, [isStaging, mobileImage, elementId]);
+
     const mobileImageCss = mobileImage ? `
         ${wrapperStart}
             div[id="${elementId}"] {
-                background-image: url(${mobileImage}) !important;
+                background-image: url("${mobileImage}") !important;
             }
         ${wrapperEnd}
     ` : '';
@@ -395,10 +404,16 @@ export default function ScrollGroup({
     const stickyMobileImageCss = mobileImage ? `
         ${wrapperStart}
             div[id="${elementId}-bg"] {
-                background-image: url(${mobileImage}) !important;
+                background-image: url("${mobileImage}") !important;
             }
         ${wrapperEnd}
     ` : '';
+
+    const MobileStyles = () => {
+        if (!mobileImage) return null;
+        const cssContent = isSticky ? stickyMobileImageCss : mobileImageCss;
+        return <style dangerouslySetInnerHTML={{ __html: cssContent }} />;
+    };
 
     if (isSticky) {
         return (
@@ -415,7 +430,7 @@ export default function ScrollGroup({
                 </div>
                 {renderOverlay()}
                 {renderPopover()}
-                <style jsx global>{stickyMobileImageCss}</style>
+                <MobileStyles />
             </div>
         );
     }
@@ -454,7 +469,7 @@ export default function ScrollGroup({
 
                 {renderOverlay()}
                 {renderPopover()}
-                <style jsx global>{mobileImageCss}</style>
+                <MobileStyles />
             </div>
         );
     }
@@ -471,7 +486,7 @@ export default function ScrollGroup({
             {renderOverlay()}
             {renderChildren()}
             {renderPopover()}
-            <style jsx global>{mobileImageCss}</style>
+            <MobileStyles />
         </div>
     );
 }
