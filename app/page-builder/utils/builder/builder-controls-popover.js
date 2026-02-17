@@ -236,7 +236,7 @@ export default function BuilderControlsPopover({
                                 <label className={`caption-bold ${styles.formInputTitle}`}>Link Type</label>
                                 <div style={{ display: 'flex', gap: 'var(--pb-space-sm)', width: '100%' }}>
                                     <label
-                                        className={`${styles.themeOption} ${linkType === 'url' ? styles.themeOptionSelected : ''}`}
+                                        className={`${styles.radioOption} ${linkType === 'url' ? styles.radioOptionSelected : ''}`}
                                     >
                                         <input
                                             type="radio"
@@ -244,13 +244,12 @@ export default function BuilderControlsPopover({
                                             value="url"
                                             checked={linkType === 'url'}
                                             onChange={() => onLinkTypeChange && onLinkTypeChange('url')}
-                                            className={styles.themeOptionInput}
-                                            style={{ margin: 0, marginRight: 'var(--pb-space-sm)' }}
+                                            className={styles.radioOptionInput}
                                         />
-                                        <span className="caption-regular">Custom URL</span>
+                                        <span>Custom URL</span>
                                     </label>
                                     <label
-                                        className={`${styles.themeOption} ${linkType === 'dialog' ? styles.themeOptionSelected : ''}`}
+                                        className={`${styles.radioOption} ${linkType === 'dialog' ? styles.radioOptionSelected : ''}`}
                                     >
                                         <input
                                             type="radio"
@@ -258,10 +257,9 @@ export default function BuilderControlsPopover({
                                             value="dialog"
                                             checked={linkType === 'dialog'}
                                             onChange={() => onLinkTypeChange && onLinkTypeChange('dialog')}
-                                            className={styles.themeOptionInput}
-                                            style={{ margin: 0, marginRight: 'var(--pb-space-sm)' }}
+                                            className={styles.radioOptionInput}
                                         />
-                                        <span className="caption-regular">Dialog</span>
+                                        <span>Dialog</span>
                                     </label>
                                 </div>
                             </div>

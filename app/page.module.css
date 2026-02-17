@@ -1377,7 +1377,7 @@
 }
 
 .popoverProperties {
-    gap: var(--pb-space-sm);
+    gap: var(--pb-space-lg);
     color: var(--content-neutral--title);
     position: relative;
     display: flex;
@@ -1408,6 +1408,42 @@
 .exportHelperText {
     color: var(--pb-neutral-75);
     font-size: var(--pb-font-size-80);
+}
+
+/* Radio Option */
+.radioOption {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    flex: 1;
+    border: 1px solid var(--pb-bdr);
+    border-radius: var(--pb-radius);
+    padding: var(--pb-space-md);
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.2s;
+    color: var(--pb-neutral-50);
+    font-family: var(--pb-font-family-default);
+    font-size: var(--pb-font-size-90);
+    font-weight: var(--pb-font-weight-regular);
+    user-select: none;
+}
+
+.radioOption:hover {
+    background: var(--pb-neutral-400);
+    border-color: var(--pb-neutral-300);
+}
+
+.radioOptionSelected {
+    background: var(--pb-neutral-400);
+    border-color: var(--pb-neutral-300);
+    color: var(--pb-white);
+}
+
+.radioOptionInput {
+    margin: 0;
+    margin-right: var(--pb-space-sm);
+    accent-color: var(--pb-lunar-300);
 }
 
 /* Theme Picker */
