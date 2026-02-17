@@ -107,7 +107,7 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                     let count = 0;
                     while (sibling && count < 20) {
                         if (sibling.style) {
-                            sibling.style.setProperty('background-color', 'var(--pb-white)', 'important');
+                            sibling.style.setProperty('background-color', 'var(--background-neutral--default, #ffffff)', 'important');
 
                             // Ensure the covering element is positioned and has higher z-index than the sticky element (zIndex: 0)
                             // otherwise the sticky element might visually sit on top of the static sibling.
@@ -143,10 +143,16 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                 if (overlay) overlay.style.opacity = progress;
                 if (content) content.style.filter = `blur(${progress * 10}px)`;
 
+                // Apply Blur Reveal to Next Component (starts blurred 10px, becomes clear 0px)
+                if (nextElement && nextElement.style) {
+                    const inverseBlur = (1 - progress) * 10;
+                    nextElement.style.filter = `blur(${inverseBlur}px)`;
+                }
+
                 // Manage Next Element Background (Transparent -> White)
                 // When overlapping (progress < 1), it needs to be transparent to show the blur.
                 // When fully scrolled over (progress >= 1), it should be white (or opaque) to signify the end of the section.
-                const targetBg = progress >= 1 ? 'var(--pb-white)' : 'transparent';
+                const targetBg = progress >= 1 ? 'var(--background-neutral--default, #ffffff)' : 'transparent';
 
                 let sibling = nextElement;
                 let count = 0;
@@ -239,7 +245,7 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                                         style={{
                                             position: 'absolute',
                                             inset: 0,
-                                            backgroundColor: 'var(--pb-white)',
+                                            backgroundColor: 'var(--background-neutral--default, #ffffff)',
                                             zIndex: 2,
                                             pointerEvents: 'none',
                                             opacity: 0,
