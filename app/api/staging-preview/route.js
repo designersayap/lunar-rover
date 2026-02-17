@@ -56,7 +56,7 @@ export async function POST(request) {
         }
 
         const timestamp = new Date().toISOString();
-        const filename = `staging-data/${folderName}/${timestamp}.json`;
+        const filename = `staging-data/${folderName}/${Date.now()}.json`;
 
         const stagingData = {
             folderName,

@@ -124,8 +124,8 @@ export const extractBuilderData = (components) => {
             delete cleanItem.component;
 
             // Re-add sectionId if valuable
-            if (finalId) {
-                cleanItem.sectionId = finalId;
+            if (item.sectionId) {
+                cleanItem.sectionId = item.sectionId;
             }
 
             // Do NOT include children arrays in the data object for this node

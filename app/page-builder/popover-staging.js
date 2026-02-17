@@ -134,6 +134,9 @@ export default function StagingPopover({
 
                             const newProps = { ...props };
                             Object.keys(newProps).forEach(key => {
+                                // SKIP COMPONENTS - they are handled by rehydrate separately
+                                if (key === 'components') return;
+
                                 const val = newProps[key];
 
                                 // Check if value is a known SectionID
