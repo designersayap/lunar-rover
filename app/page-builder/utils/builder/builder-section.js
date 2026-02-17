@@ -10,6 +10,9 @@ import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 import { getContainerClasses } from "../section-utils";
 
+// Helper to check if a component is pinned (sticky)
+import { isComponentSticky } from "../component-manager";
+
 export default function BuilderSection({
     sectionId,
     fullWidth = false,
@@ -30,7 +33,7 @@ export default function BuilderSection({
     const sectionRef = useRef(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
 
-    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId } = useContext(BuilderSelectionContext);
+    const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, isStaging } = useContext(BuilderSelectionContext);
 
     // Use sectionId as identifier (must be unique)
     const elementId = sectionId;
@@ -40,6 +43,15 @@ export default function BuilderSection({
     const isStyleOpen = activePopoverId === `${myPopoverBase}-style`;
 
     const [overlayRect, setOverlayRect] = useState(null);
+
+    // Overlay Constraint Logic:
+    // Only show "Overlay Content" setting if Component is Pinned (Sticky)
+    const currentComponent = selectedComponents?.find(c => c.sectionId === sectionId || c.uniqueId === sectionId);
+    // If not found, default to false (safe) or true? Default false matches "only pinned".
+    const isSticky = currentComponent ? (isComponentSticky(currentComponent) || currentComponent._isSticky) : false;
+
+    // Always show Overlay Toggle ONLY if sticky
+    const showOverlayToggle = isSticky;
 
     useEffect(() => {
         if (isActive && sectionRef.current) {
@@ -173,7 +185,7 @@ export default function BuilderSection({
                     url={""}
 
                     // Overlay Props
-                    showOverlayToggle={true}
+                    showOverlayToggle={showOverlayToggle}
                     isOverlay={isOverlay}
                     onOverlayChange={(val) => onUpdate && onUpdate({ isOverlay: val })}
                     showFullWidthToggle={showFullWidthControl}

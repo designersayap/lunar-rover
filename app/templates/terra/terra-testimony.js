@@ -114,7 +114,7 @@ export default function TestimonialTerra({
         <BuilderSection
             tagName="section"
             className={styles.container}
-            innerContainer={true}
+            innerContainer={!fullWidth}
             sectionId={sectionId}
             fullWidth={fullWidth}
             removePaddingLeft={removePaddingLeft}
