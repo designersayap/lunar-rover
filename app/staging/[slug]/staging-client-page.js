@@ -241,9 +241,11 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
 
     processedComponents.forEach((item, index) => {
         const isSticky = item._isSticky; // Already sorted
-        if (isSticky) stickyIndices.push(index);
-
         const isStacked = item.props?.scrollEffect === 'stacked';
+
+        // Fix: Stacked items must be tracked as sticky so StickyManager renders them with the wrapper
+        if (isSticky || isStacked) stickyIndices.push(index);
+
         if (isStacked) {
             stackedIndices.push(index);
             if (item.enableBlur || item.props?.enableBlur) blurIndices.push(index);

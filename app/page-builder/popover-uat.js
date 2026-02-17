@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FolderIcon } from "@heroicons/react/24/outline";
+import { FolderIcon, ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
 import BasePopover from "./base-popover";
 import { handleExportNextjs } from "./utils/export-nextjs";
@@ -21,19 +21,29 @@ export default function UATPopover({
 
     useEffect(() => {
         if (isOpen) {
-            setIsLoading(true);
-            // Fetch existing folders when popover opens
-            fetch('/api/uat-preview')
-                .then(res => res.json())
-                .then(data => {
-                    if (data.folders) {
-                        setExistingFolders(data.folders);
-                    }
-                })
-                .catch(err => console.error("Failed to fetch folders", err))
-                .finally(() => setIsLoading(false));
+            fetchFolders();
         }
     }, [isOpen]);
+
+    const fetchFolders = () => {
+        setIsLoading(true);
+        fetch('/api/uat-preview')
+            .then(res => res.json())
+            .then(data => {
+                if (data.folders) {
+                    setExistingFolders(data.folders);
+                }
+            })
+            .catch(err => console.error("Failed to fetch folders", err))
+            .finally(() => setIsLoading(false));
+    };
+
+    const handleOpenClick = (folder, e) => {
+        e.stopPropagation(); // Prevent selecting the folder
+        // Local UAT path
+        const url = `/uat-files/${folder}/index.html`;
+        window.open(url, '_blank');
+    };
 
     const onSaveClick = async () => {
         if (!folderName.trim()) {
@@ -43,14 +53,23 @@ export default function UATPopover({
 
         setIsSaving(true);
         try {
+            const finalName = folderName.trim();
             // Save: No Download + Save to specified folder
             await handleExportNextjs(selectedComponents, activeThemePath, {
                 download: false,
                 savePreview: true,
-                previewFolder: folderName.trim(),
+                previewFolder: finalName,
                 analytics: analyticsData
             });
+
+            // Ask to open
+            const openNow = confirm("Upload successful! Do you want to open the UAT site now?");
+            if (openNow) {
+                handleOpenClick(finalName, { stopPropagation: () => { } });
+            }
+
             // Update list and close
+            fetchFolders();
             onClose();
         } catch (error) {
             console.error("Save failed", error);
@@ -86,12 +105,12 @@ export default function UATPopover({
                         />
                     </div>
                     <code className={styles.exportHelperText}>
-                        Saves to <code>/public/uat-files/{folderName || '...'}</code>
+                        Saves to S3 Bucket (Private)
                     </code>
                 </div>
 
                 <div className={styles.exportInputWrapper}>
-                    <label className={styles.formInputTitle}>Or overwrite existing:</label>
+                    <label className={styles.formInputTitle}>Existing Projects (Select to overwrite):</label>
                     <div className={styles.popoverList}>
                         {isLoading ? (
                             <div className={styles.emptyStateMessage}>
@@ -107,9 +126,31 @@ export default function UATPopover({
                                     key={folder}
                                     onClick={() => setFolderName(folder)}
                                     className={`${styles.listItem} ${folderName === folder ? styles.listItemActive : ''}`}
+                                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingRight: '8px' }}
                                 >
-                                    <FolderIcon className={styles.iconSmall} />
-                                    {folder}
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                        <FolderIcon className={styles.iconSmall} />
+                                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{folder}</span>
+                                    </div>
+                                    <button
+                                        onClick={(e) => handleOpenClick(folder, e)}
+                                        className={styles.actionButton}
+                                        title={`Open ${folder}`}
+                                        style={{
+                                            background: 'none',
+                                            border: 'none',
+                                            padding: '4px',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            color: 'var(--pb-color-text-secondary)',
+                                            borderRadius: '4px'
+                                        }}
+                                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--pb-color-bg-hover)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                                    >
+                                        <ArrowTopRightOnSquareIcon className={styles.iconSmall} />
+                                    </button>
                                 </div>
                             ))
                         )}
@@ -122,7 +163,7 @@ export default function UATPopover({
                         onClick={onSaveClick}
                         disabled={isSaving}
                     >
-                        {isSaving ? "Saving..." : "Create UAT Folder"}
+                        {isSaving ? "Saving..." : "Create / Update UAT"}
                     </button>
                 </div>
             </div>

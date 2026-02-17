@@ -134,6 +134,10 @@ export const S3Manual = {
         return await response.json();
     },
 
+    async getObject(key) {
+        return await sendS3Request('GET', key);
+    },
+
     async putJson(key, data) {
         const body = JSON.stringify(data);
         await sendS3Request('PUT', key, {}, body);
@@ -172,10 +176,21 @@ export const S3Manual = {
             hostname: endpointUrl.hostname,
             path: endpointUrl.pathname,
             query: {},
+            // Do NOT pass headers to presign for browser-use URLs
+            // This prevents mismatch between signed Host header and actual browser Host header
             headers: headers,
         };
 
-        const url = await signer.presign(request, { expiresIn });
-        return url;
+        // Exclude 'host' from signature to avoid SignatureDoesNotMatch errors
+        // (Browser's Host header might slightly differ from what we sign)
+        const signed = await signer.presign(request, {
+            expiresIn,
+            unsignableHeaders: new Set(['host'])
+        });
+
+        // Convert signed request object into a string URL
+        // signed.query contains the signature and other params
+        const params = new URLSearchParams(signed.query).toString();
+        return `https://${signed.hostname}${signed.path}?${params}`;
     }
 };

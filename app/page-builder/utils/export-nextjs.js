@@ -64,31 +64,10 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
     const processedFiles = new Set();
     const bundledImages = new Map(); // Track bundled image paths -> unique filenames
 
-    // --- FIX: Filter data.js to remove deleted/unused components ---
-    // Collect ALL used component IDs from the hierarchy
-    const usedComponentIds = new Set();
-    const verifyIds = (list) => {
-        if (!list || !Array.isArray(list)) return;
-        list.forEach(item => {
-            if (item.id) usedComponentIds.add(item.id);
-            if (item.componentName) usedComponentIds.add(item.componentName); // Fallback
-
-            if (item.components) verifyIds(item.components);
-            if (item.props?.components) verifyIds(item.props.components);
-        });
-    };
-    verifyIds(selectedComponents);
-
-    // Create filtered defaults object
-    const filteredDefaults = {};
-    Object.keys(componentDefaults).forEach(key => {
-        if (usedComponentIds.has(key)) {
-            filteredDefaults[key] = componentDefaults[key];
-        }
-    });
-
-    // Generate data.js content
-    const dataJsContent = `export const componentDefaults = ${JSON.stringify(filteredDefaults, null, 4)};`;
+    // --- FIX: Export ALL defaults to prevent component-library.js crash ---
+    // component-library.js (which is bundled if ScrollGroup is used) accesses defaults for ALL components.
+    // Filtering causes "undefined is not an object" errors for unused components.
+    const dataJsContent = `export const componentDefaults = ${JSON.stringify(componentDefaults, null, 4)};`;
 
     // Inject into Zip & Preview Map directly (Mocking the file)
     // This prevents processComponent from fetching the original file from server
@@ -392,6 +371,17 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         injectPlaceholders(item);
         // Ensure props object exists
         if (!item.props) item.props = {};
+
+        // FIX: Revert placeholder for ScrollGroup/Stacked items if they are using the default
+        // We don't want a massive placeholder background if the user intended no image.
+        if (item.id === 'scroll-group' || item.componentName === 'ScrollGroup') {
+            if (item.props.image === defaultPlaceholder || (typeof item.props.image === 'string' && item.props.image.includes('placeholder_falj5i'))) {
+                item.props.image = "";
+            }
+            if (item.props.mobileImage === defaultPlaceholder || (typeof item.props.mobileImage === 'string' && item.props.mobileImage.includes('placeholder_falj5i'))) {
+                item.props.mobileImage = "";
+            }
+        }
     });
 
     // Sort components: Sticky items first
