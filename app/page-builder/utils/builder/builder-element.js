@@ -1,5 +1,6 @@
 // ... imports
 import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import styles from "../../../page.module.css";
 import { createPortal } from "react-dom";
 import { useBuilderSelection } from "@/app/page-builder/utils/builder/builder-controls";
 import { useActiveOverlayPosition } from "../hooks/use-active-overlay";

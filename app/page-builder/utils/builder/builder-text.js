@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, memo } from "react";
+import styles from "../../../page.module.css";
 import { createPortal } from "react-dom";
 import { useIdSync } from "../hooks/use-id-sync";
 
