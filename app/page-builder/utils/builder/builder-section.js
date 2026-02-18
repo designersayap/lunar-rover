@@ -5,7 +5,7 @@ import { useState, useRef, useContext, useEffect } from "react";
 import { createPortal } from "react-dom"; // Added
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { useActiveOverlayPosition } from "../hooks/use-active-overlay"; // Added
-import { Cog6ToothIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import { Cog6ToothIcon, PaintBrushIcon } from "@heroicons/react/24/solid";
 import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 import { getContainerClasses } from "../section-utils";
@@ -162,7 +162,7 @@ export default function BuilderSection({
                             className={`${styles.settingsButton} ${isStyleOpen ? styles.settingsButtonActive : ''}`}
                             onClick={handleStyleSettingsClick}
                         >
-                            <SparklesIcon className={styles.overlayIcon} />
+                            <PaintBrushIcon className={styles.overlayIcon} />
                         </button>
                     )}
                 </div>,

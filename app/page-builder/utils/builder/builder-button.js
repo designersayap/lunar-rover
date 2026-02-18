@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import BuilderText from "./builder-text";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { useActiveOverlayPosition } from "../hooks/use-active-overlay";
-import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon, PaintBrushIcon } from "@heroicons/react/24/solid";
 import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
 import { Icons } from "./builder-icons";
@@ -309,7 +309,7 @@ export default function BuilderButton({
                                         onClick={handleStyleSettingsClick}
                                         data-tooltip="Style Settings"
                                     >
-                                        <SparklesIcon className={styles.overlayIcon} />
+                                        <PaintBrushIcon className={styles.overlayIcon} />
                                     </button>
                                 )}
 

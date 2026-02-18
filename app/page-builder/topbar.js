@@ -8,7 +8,7 @@ import {
     ChevronDownIcon,
     DocumentPlusIcon,
     BellIcon,
-    LightBulbIcon,
+    SparklesIcon,
 } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
 import Tooltip from "./tooltip";
@@ -117,7 +117,7 @@ export default function TopBar({
                         className={`${styles.btn} ${styles.btnGhost} ${styles.btnIcon}`}
                         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        <LightBulbIcon className={styles.iconWhite} />
+                        <SparklesIcon className={styles.iconWhite} />
                     </a>
                 </Tooltip>
 

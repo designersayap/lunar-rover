@@ -4,7 +4,7 @@ import { useRef, useContext, useState, useEffect, useId } from "react";
 import styles from "../../../page.module.css";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import BuilderControlsPopover from "./builder-controls-popover";
-import { Cog6ToothIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import { Cog6ToothIcon, PaintBrushIcon } from "@heroicons/react/24/solid";
 
 import { createPortal } from "react-dom";
 import { componentLibrary } from "@/app/page-builder/content/component-library";
@@ -299,7 +299,7 @@ export default function ScrollGroup({
                     className={`${styles.settingsButton} ${isStyleOpen ? styles.settingsButtonActive : ''}`}
                     onClick={handleStyleSettingsClick}
                 >
-                    <SparklesIcon className={styles.overlayIcon} />
+                    <PaintBrushIcon className={styles.overlayIcon} />
                 </button>
             </div>,
             document.body

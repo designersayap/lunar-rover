@@ -4,7 +4,7 @@ import { useContext, useRef, useEffect, useState, useLayoutEffect, useMemo } fro
 import { createPortal } from "react-dom";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { useIdSync } from "../hooks/use-id-sync";
-import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon, PaintBrushIcon } from "@heroicons/react/24/solid";
 import BuilderControlsPopover from "./builder-controls-popover";
 import styles from "../../../page.module.css";
 
@@ -230,7 +230,7 @@ export default function BuilderImage({
                                     onClick={handleStyleSettingsClick}
                                     data-tooltip="Style Settings"
                                 >
-                                    <SparklesIcon className={styles.overlayIcon} />
+                                    <PaintBrushIcon className={styles.overlayIcon} />
                                 </button>
                             )}
 
