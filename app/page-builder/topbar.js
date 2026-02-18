@@ -8,6 +8,7 @@ import {
     ChevronDownIcon,
     DocumentPlusIcon,
     BellIcon,
+    LightBulbIcon,
 } from "@heroicons/react/24/outline";
 import styles from "../page.module.css";
 import Tooltip from "./tooltip";
@@ -106,6 +107,18 @@ export default function TopBar({
                         <BellIcon className={styles.iconWhite} />
                         {unreadCount > 0 && <span className={styles.notificationBadge} />}
                     </button>
+                </Tooltip>
+
+                <Tooltip content="NotebookLM" position="bottom">
+                    <a
+                        href="https://notebooklm.google.com/notebook/ffa41184-604c-4f2a-bd35-e7c54462a6d5"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`${styles.btn} ${styles.btnGhost} ${styles.btnIcon}`}
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    >
+                        <LightBulbIcon className={styles.iconWhite} />
+                    </a>
                 </Tooltip>
 
                 {isLocalhost && (
