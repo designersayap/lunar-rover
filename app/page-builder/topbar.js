@@ -109,7 +109,7 @@ export default function TopBar({
                     </button>
                 </Tooltip>
 
-                <Tooltip content="Apollo CEO Assistant" position="bottom">
+                <Tooltip content="Apollo SEO Assistant" position="bottom">
                     <a
                         href="https://notebooklm.google.com/notebook/ffa41184-604c-4f2a-bd35-e7c54462a6d5"
                         target="_blank"
