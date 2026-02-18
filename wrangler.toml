@@ -1,0 +1,19 @@
+name = "lunar-daily-summary"
+main = "worker/daily-summary.js"
+compatibility_date = "2024-02-17"
+
+# Schedule: Every day at 8:00 AM WIB (Indonesia, UTC+7) => 1:00 AM UTC
+[triggers]
+crons = ["0 1 * * *"]
+
+# Variables (Set these in Cloudflare Dashboard for production)
+# For local dev, create a .dev.vars file
+[vars]
+B2_ENDPOINT = "https://s3.us-east-005.backblazeb2.com/lunar-app"
+EMAIL_FROM = "onboarding@resend.dev"
+EMAIL_TO = "uiuxwings@gmail.com" # Add more separated by commas: "a@test.com, b@test.com"
+
+# Secrets (Do NOT commit these, set via `wrangler secret put`)
+# RESEND_API_KEY
+# B2_KEY_ID
+# B2_APP_KEY
