@@ -28,7 +28,7 @@ export function middleware(req) {
 
     // 3. Protect Root and everything else
     // Allow access to login page
-    if (pathname === '/login') {
+    if (pathname.startsWith('/login')) {
         return NextResponse.next();
     }
 
