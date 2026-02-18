@@ -64,12 +64,13 @@ export default function NotificationPopover({
         }
     };
 
-    const handleDelete = async (e, id) => {
+    const handleDelete = async (e, ids) => {
         e.stopPropagation();
-        setNotifications(prev => prev.filter(n => n.id !== id));
+        const idList = Array.isArray(ids) ? ids : [ids];
+        setNotifications(prev => prev.filter(n => !idList.includes(n.id)));
 
         try {
-            await fetch(`/api/notifications?id=${id}`, { method: 'DELETE' });
+            await fetch(`/api/notifications?id=${idList.join(',')}`, { method: 'DELETE' });
         } catch (e) {
             console.warn('Failed to delete notification:', e);
         }
@@ -120,31 +121,46 @@ export default function NotificationPopover({
                                 No notifications
                             </div>
                         ) : (
-                            notifications.map(notif => (
-                                <div
-                                    key={notif.id}
-                                    className={`${styles.notificationItem} ${!notif.read ? styles.notificationItemUnread : ''}`}
-                                >
-                                    <div className={styles.notificationDot}>
-                                        {!notif.read && <span className={styles.notificationDotInner} />}
+                            Object.entries(
+                                notifications.reduce((acc, notif) => {
+                                    const key = notif.folderName || 'System';
+                                    if (!acc[key]) acc[key] = [];
+                                    acc[key].push(notif);
+                                    return acc;
+                                }, {})
+                            ).map(([folderName, items]) => {
+                                const unreadCount = items.filter(n => !n.read).length;
+                                const latestTime = Math.max(...items.map(n => new Date(n.timestamp).getTime()));
+                                const isUnread = unreadCount > 0;
+
+                                return (
+                                    <div
+                                        key={folderName}
+                                        className={`${styles.notificationItem} ${isUnread ? styles.notificationItemUnread : ''}`}
+                                    >
+                                        <div className={styles.notificationDot}>
+                                            {isUnread && <span className={styles.notificationDotInner} />}
+                                        </div>
+                                        <div className={styles.notificationBody}>
+                                            <span className={styles.notificationMessage}>
+                                                {items.length} updates on <strong>{folderName}</strong>
+                                            </span>
+                                            <span className={styles.notificationTime}>{formatTime(latestTime)}</span>
+                                        </div>
+                                        <div className={styles.treeActions}>
+                                            <Tooltip content="Delete Group" position="top">
+                                                <button
+                                                    className={styles.sidebarDeleteButton}
+                                                    onClick={(e) => handleDelete(e, items.map(n => n.id))}
+                                                >
+                                                    <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
+                                                    <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
+                                                </button>
+                                            </Tooltip>
+                                        </div>
                                     </div>
-                                    <div className={styles.notificationBody}>
-                                        <span className={styles.notificationMessage}>{notif.message}</span>
-                                        <span className={styles.notificationTime}>{formatTime(notif.timestamp)}</span>
-                                    </div>
-                                    <div className={styles.treeActions}>
-                                        <Tooltip content="Delete" position="top">
-                                            <button
-                                                className={styles.sidebarDeleteButton}
-                                                onClick={(e) => handleDelete(e, notif.id)}
-                                            >
-                                                <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
-                                                <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
-                                            </button>
-                                        </Tooltip>
-                                    </div>
-                                </div>
-                            ))
+                                );
+                            })
                         )}
                     </div>
                     {!isLoading && notifications.some(n => !n.read) && (

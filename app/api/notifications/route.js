@@ -72,14 +72,16 @@ export async function PUT(request) {
 export async function DELETE(request) {
     try {
         const { searchParams } = new URL(request.url);
-        const id = searchParams.get('id');
+        const idParam = searchParams.get('id');
 
-        if (!id) {
+        if (!idParam) {
             return NextResponse.json({ error: 'Missing notification id' }, { status: 400 });
         }
 
+        const idsToDelete = idParam.split(',');
+
         const notifications = await getNotifications();
-        const filtered = notifications.filter(n => n.id !== id);
+        const filtered = notifications.filter(n => !idsToDelete.includes(n.id));
         await saveNotifications(filtered);
 
         return NextResponse.json({ success: true });

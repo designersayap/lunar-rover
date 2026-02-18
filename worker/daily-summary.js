@@ -66,11 +66,18 @@ async function checkAndSendSummary(env) {
             <p>You have <strong>${unread.length}</strong> unread notifications on Lunar.</p>
             <hr />
             <ul>
-                ${unread.map(n => `
+                ${Object.entries(
+            unread.reduce((acc, n) => {
+                const key = n.folderName || 'System';
+                if (!acc[key]) acc[key] = [];
+                acc[key].push(n);
+                return acc;
+            }, {})
+        ).map(([folderName, items]) => `
                     <li style="margin-bottom: 10px;">
-                        <strong>${n.folderName || 'System'}</strong>: ${n.message}
+                        <strong>${folderName}</strong>: ${items.length} new updates
                         <br/>
-                        <small style="color: #666;">${new Date(n.timestamp).toLocaleString()}</small>
+                        <small style="color: #666;">Latest: ${new Date(Math.max(...items.map(n => new Date(n.timestamp).getTime()))).toLocaleString()}</small>
                     </li>
                 `).join('')}
             </ul>
