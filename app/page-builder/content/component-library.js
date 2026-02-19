@@ -31,7 +31,7 @@ export const componentLibrary = {
             id: "background-full-body",
             name: "Background - Full Body",
             component: BackgroundFullBody,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-background-full-body.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-background-full-body.svg",
             config: [
                 {
                     name: "image",
@@ -61,7 +61,7 @@ export const componentLibrary = {
             id: "navigation-center",
             name: "Navigation - Center",
             component: NavigationCenter,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-navigation-center.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-navigation-center.svg",
             config: [
                 { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["navigation-center"].menu1Label },
                 { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["navigation-center"].menu1Url },
@@ -88,7 +88,7 @@ export const componentLibrary = {
             id: "navigation-left",
             name: "Navigation - Left",
             component: NavigationLeft,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-navigation-left.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-navigation-left.svg",
             config: [
                 { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["navigation-left"]?.menu1Label },
                 { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["navigation-left"]?.menu1Url },
@@ -115,7 +115,7 @@ export const componentLibrary = {
             id: "navigation-right",
             name: "Navigation - Right",
             component: NavigationRight,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-navigation-right.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-navigation-right.svg",
             config: [
                 { name: "menu1Label", label: "Menu 1 Label", type: "text", default: componentDefaults["navigation-right"]?.menu1Label },
                 { name: "menu1Url", label: "Menu 1 URL", type: "text", default: componentDefaults["navigation-right"]?.menu1Url },
@@ -144,7 +144,7 @@ export const componentLibrary = {
             id: "osm-banner",
             name: "OSM - Banner",
             component: OsmBanner,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-osm-banner.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-osm-banner.svg",
             config: [
                 {
                     name: "title",
@@ -196,7 +196,7 @@ export const componentLibrary = {
             id: "hero-terra-banner",
             name: "Hero - Terra Banner",
             component: HeroTerraBanner,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-hero-terra-banner.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-hero-terra-banner.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -274,7 +274,7 @@ export const componentLibrary = {
             id: "header-section",
             name: "Header - Section",
             component: HeaderSection,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-header-section.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-header-section.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -348,7 +348,7 @@ export const componentLibrary = {
             id: "header-group",
             name: "Header - Group",
             component: HeaderGroup,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-header-section.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-header-section.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -424,7 +424,7 @@ export const componentLibrary = {
             id: "media-21-9",
             name: "Media - 21:9",
             component: Media21x9,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-media-219.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-media-219.svg",
             config: [
                 {
                     name: "image",
@@ -446,7 +446,7 @@ export const componentLibrary = {
             id: "media-16-9",
             name: "Media - 16:9",
             component: Media16x9,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-media-169.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-media-169.svg",
             config: [
                 {
                     name: "image",
@@ -468,7 +468,7 @@ export const componentLibrary = {
             id: "media-5-4",
             name: "Media - 5:4",
             component: Media5x4,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-media-54.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-media-54.svg",
             config: [
                 {
                     name: "image",
@@ -490,7 +490,7 @@ export const componentLibrary = {
             id: "media-4-3",
             name: "Media - 4:3",
             component: Media4x3,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-media-43.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-media-43.svg",
             config: [
                 {
                     name: "fullWidth",
@@ -520,7 +520,7 @@ export const componentLibrary = {
             id: "feature-image-left",
             name: "Feature - Image Left",
             component: FeatureImageLeft,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-feature-image-left.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-feature-image-left.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -595,7 +595,7 @@ export const componentLibrary = {
             id: "feature-image-right",
             name: "Feature - Image Right",
             component: FeatureImageRight,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-feature-image-right.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-feature-image-right.svg",
             config: [
                 {
                     name: "buttonStyle",
@@ -672,7 +672,7 @@ export const componentLibrary = {
             id: "testimonial-terra",
             name: "Testimonial - Terra",
             component: TestimonialTerra,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-testimonial-terra.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-testimonial-terra.svg",
             config: [
                 {
                     name: "testimonies",
@@ -702,7 +702,7 @@ export const componentLibrary = {
             id: "footer-terra",
             name: "Footer - Terra",
             component: FooterTerra,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-footer-terra.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-footer-terra.svg",
             config: [
                 {
                     name: "image",
@@ -757,7 +757,7 @@ export const componentLibrary = {
             id: "dialog-item-list",
             name: "Dialog - Item List",
             component: DialogItemList,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-dialog-item-list.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-dialog-item-list.svg",
             config: [
                 {
                     name: "items",
@@ -789,7 +789,7 @@ export const componentLibrary = {
             id: "dialog-accordion",
             name: "Dialog - Accordion",
             component: DialogAccordion,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-dialog-item-list.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-dialog-item-list.svg",
             config: [
                 {
                     name: "image",
@@ -821,7 +821,7 @@ export const componentLibrary = {
             id: "floating-action-button",
             name: "Floating Action Button",
             component: FloatingActionButton,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-fab-call-to-action.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-fab-call-to-action.svg",
             isSticky: true,
             config: [
                 {
@@ -867,21 +867,21 @@ export const componentLibrary = {
             id: "spacing-small",
             name: "Spacing - Small",
             component: SpacingSmall,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-spacing-small.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-spacing-small.svg",
             config: []
         },
         {
             id: "spacing-medium",
             name: "Spacing - Medium",
             component: SpacingMedium,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-spacing-medium.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-spacing-medium.svg",
             config: []
         },
         {
             id: "spacing-large",
             name: "Spacing - Large",
             component: SpacingLarge,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-spacing-large.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-spacing-large.svg",
             config: []
         }
     ],
@@ -890,7 +890,7 @@ export const componentLibrary = {
             id: 'scroll-group',
             name: 'Scroll Group',
             component: ScrollGroup,
-            thumbnail: "https://cdn.lunaaar.site/assets-lunar/thumbnail-feature-image-right.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-feature-image-right.svg",
             hidden: true,
             config: [
                 {
