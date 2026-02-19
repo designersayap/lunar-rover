@@ -178,7 +178,7 @@ export default function Canvas({
                             <div className={styles.emptyStateText}>
                                 <div className={styles.canvasWrapper}>
                                     <Image
-                                        src="/images/empty-state.svg"
+                                        src="https://space.lunaaar.site/assets-lunar/empty-state.svg"
                                         alt="Empty state illustration"
                                         fill
                                         priority

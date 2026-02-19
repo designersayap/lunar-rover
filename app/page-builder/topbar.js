@@ -70,7 +70,7 @@ export default function TopBar({
             {/* ... left part ... */}
             <div className={styles.topBarLeft} onClick={handleReset} style={{ cursor: 'pointer' }}>
                 <Image
-                    src="https://res.cloudinary.com/dp3tcw3wj/image/upload/v1768450282/logo_lunar_lunar_white_m0tyym.svg"
+                    src="https://space.lunaaar.site/assets-lunar/logo-lunar-white.svg"
                     alt="Lunar Logo"
                     width={24}
                     height={24}

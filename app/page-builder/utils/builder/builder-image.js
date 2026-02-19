@@ -287,7 +287,7 @@ export default function BuilderImage({
     const imageSrc = (src && src !== "") ? src : defaultPlaceholder;
     // const isPlaceholder = !src || src === defaultPlaceholder || (typeof src === 'string' && src.includes('placeholder_falj5i'));
     // Relaxed placeholder check slightly to allow initial strings, though logic stays mostly same.
-    const isPlaceholder = !src || src === "" || src === defaultPlaceholder || (typeof src === 'string' && src.includes('placeholder_falj5i'));
+    const isPlaceholder = !src || src === "" || src === defaultPlaceholder || (typeof src === 'string' && src.includes('assets-lunar/placeholder.svg'));
 
     const finalStyle = {
         width: "100%",

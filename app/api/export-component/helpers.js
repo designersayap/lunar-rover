@@ -283,7 +283,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
   };
 
   // Safe Image handling
-  const placeholderSrc = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
+  const placeholderSrc = "https://space.lunaaar.site/assets-lunar/placeholder.svg";
   const imageSrc = (src && src !== "") ? src : placeholderSrc;
 
   let mediaContent;

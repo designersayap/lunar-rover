@@ -90,7 +90,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
 
         try {
             // Skip bundling for the system default placeholder
-            if (imgPath === defaultPlaceholder || (typeof imgPath === 'string' && imgPath.includes('placeholder_falj5i'))) {
+            if (imgPath === defaultPlaceholder || (typeof imgPath === 'string' && imgPath.includes('assets-lunar/placeholder.svg'))) {
                 return null;
             }
 
@@ -375,10 +375,10 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         // FIX: Revert placeholder for ScrollGroup/Stacked items if they are using the default
         // We don't want a massive placeholder background if the user intended no image.
         if (item.id === 'scroll-group' || item.componentName === 'ScrollGroup') {
-            if (item.props.image === defaultPlaceholder || (typeof item.props.image === 'string' && item.props.image.includes('placeholder_falj5i'))) {
+            if (item.props.image === defaultPlaceholder || (typeof item.props.image === 'string' && item.props.image.includes('assets-lunar/placeholder.svg'))) {
                 item.props.image = "";
             }
-            if (item.props.mobileImage === defaultPlaceholder || (typeof item.props.mobileImage === 'string' && item.props.mobileImage.includes('placeholder_falj5i'))) {
+            if (item.props.mobileImage === defaultPlaceholder || (typeof item.props.mobileImage === 'string' && item.props.mobileImage.includes('assets-lunar/placeholder.svg'))) {
                 item.props.mobileImage = "";
             }
         }

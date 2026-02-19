@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './navigation.module.css';
 import BuilderImage from '@/app/page-builder/utils/builder/builder-image';
-const DEFAULT_PLACEHOLDER_IMAGE = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
+const DEFAULT_PLACEHOLDER_IMAGE = "https://space.lunaaar.site/assets-lunar/placeholder.svg";
 import BuilderLink from '@/app/page-builder/utils/builder/builder-link';
 import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
 import { createUpdateHandler } from '../utils/component-helpers';
@@ -54,7 +54,7 @@ export default function NavigationRight({
     const [portalContainer, setPortalContainer] = useState(null);
 
     // Check for empty, null, or matching the specific placeholder ID structure
-    const isPlaceholder = !logo || (typeof logo === 'string' && logo.includes('placeholder_falj5i'));
+    const isPlaceholder = !logo || (typeof logo === 'string' && logo.includes('assets-lunar/placeholder.svg'));
     const logoStyle = {
         objectFit: isPlaceholder ? 'cover' : 'contain',
         borderRadius: isPlaceholder ? '0px' : undefined

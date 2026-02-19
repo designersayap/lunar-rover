@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import styles from "./terra-testimony.module.css";
 import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
-const DEFAULT_PLACEHOLDER_IMAGE = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
+const DEFAULT_PLACEHOLDER_IMAGE = "https://space.lunaaar.site/assets-lunar/placeholder.svg";
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
 import BuilderElement from "@/app/page-builder/utils/builder/builder-element";

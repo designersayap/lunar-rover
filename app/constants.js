@@ -1,4 +1,4 @@
-export const DEFAULT_PLACEHOLDER_IMAGE = "https://res.cloudinary.com/difjtkwvg/image/upload/v1765455555/placeholder_falj5i.svg";
+export const DEFAULT_PLACEHOLDER_IMAGE = "https://space.lunaaar.site/assets-lunar/placeholder.svg";
 
 export const IMAGE_PORTRAIT_RATIO_MAP = {
     'imagePlaceholder-4-3': 'imagePlaceholder-3-4',
