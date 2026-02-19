@@ -69,15 +69,24 @@ async function checkAndSendSummary(env) {
                 ${Object.entries(
             unread.reduce((acc, n) => {
                 const key = n.folderName || 'System';
-                if (!acc[key]) acc[key] = [];
-                acc[key].push(n);
+                if (!acc[key]) {
+                    acc[key] = { count: 0, latestTimestamp: n.timestamp };
+                }
+                acc[key].count += (n.count || 1);
+                if (new Date(n.timestamp) > new Date(acc[key].latestTimestamp)) {
+                    acc[key].latestTimestamp = n.timestamp;
+                }
                 return acc;
             }, {})
-        ).map(([folderName, items]) => `
-                    <li style="margin-bottom: 10px;">
-                        <strong>${folderName}</strong>: ${items.length} new updates
-                        <br/>
-                        <small style="color: #666;">Latest: ${new Date(Math.max(...items.map(n => new Date(n.timestamp).getTime()))).toLocaleString()}</small>
+        ).map(([folderName, data]) => `
+                    <li style="margin-bottom: 15px;">
+                        <strong>${folderName}</strong>: ${data.count} changes has been made
+                        <div style="color: #666; font-size: 12px; margin-top: 4px;">
+                            ${new Date(data.latestTimestamp).toLocaleString('en-US', {
+            month: 'numeric', day: 'numeric', year: 'numeric',
+            hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true
+        })}
+                        </div>
                     </li>
                 `).join('')}
             </ul>

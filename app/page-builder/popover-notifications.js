@@ -14,6 +14,14 @@ export default function NotificationPopover({
     const [notifications, setNotifications] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [expandedGroups, setExpandedGroups] = useState({});
+
+    const toggleGroup = (folderName) => {
+        setExpandedGroups(prev => ({
+            ...prev,
+            [folderName]: !prev[folderName]
+        }));
+    };
 
     // Sync unread count to parent via separate effect (avoids setState-during-render)
     useEffect(() => {
@@ -136,28 +144,47 @@ export default function NotificationPopover({
                                 return (
                                     <div
                                         key={folderName}
-                                        className={`${styles.notificationItem} ${isUnread ? styles.notificationItemUnread : ''}`}
+                                        className={`${styles.notificationItem} ${isUnread ? styles.notificationItemUnread : ''} ${styles.notificationItemExpandable}`}
+                                        onClick={() => toggleGroup(folderName)}
                                     >
-                                        <div className={styles.notificationDot}>
-                                            {isUnread && <span className={styles.notificationDotInner} />}
+                                        <div className={styles.notificationHeader}>
+                                            <div className={styles.notificationDot}>
+                                                {isUnread && <span className={styles.notificationDotInner} />}
+                                            </div>
+                                            <div className={styles.notificationBody}>
+                                                <span className={styles.notificationMessage}>
+                                                    {items.length} updates on <strong>{folderName}</strong>
+                                                </span>
+                                                <span className={styles.notificationTime}>{formatTime(latestTime)}</span>
+                                            </div>
+                                            <div className={styles.treeActions}>
+                                                <Tooltip content="Delete Group" position="top">
+                                                    <button
+                                                        className={styles.sidebarDeleteButton}
+                                                        onClick={(e) => handleDelete(e, items.map(n => n.id))}
+                                                    >
+                                                        <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
+                                                        <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
+                                                    </button>
+                                                </Tooltip>
+                                            </div>
                                         </div>
-                                        <div className={styles.notificationBody}>
-                                            <span className={styles.notificationMessage}>
-                                                {items.length} updates on <strong>{folderName}</strong>
-                                            </span>
-                                            <span className={styles.notificationTime}>{formatTime(latestTime)}</span>
-                                        </div>
-                                        <div className={styles.treeActions}>
-                                            <Tooltip content="Delete Group" position="top">
-                                                <button
-                                                    className={styles.sidebarDeleteButton}
-                                                    onClick={(e) => handleDelete(e, items.map(n => n.id))}
-                                                >
-                                                    <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
-                                                    <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
-                                                </button>
-                                            </Tooltip>
-                                        </div>
+
+                                        {expandedGroups[folderName] && (
+                                            <div className={styles.notificationSubList}>
+                                                {items.map((item, idx) => (
+                                                    <div key={idx} className={styles.notificationSubItem}>
+                                                        <span className={styles.subItemName}>
+                                                            {item.componentId || 'General Update'}
+                                                            {item.count > 1 && <span className={styles.countBadge}>x{item.count}</span>}
+                                                        </span>
+                                                        <span className={styles.subItemTime}>
+                                                            {formatTime(item.timestamp)}
+                                                        </span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })

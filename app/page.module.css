@@ -1959,3 +1959,92 @@
 .notificationMarkAllBtn:hover {
     color: var(--pb-neutral-50);
 }
+
+/* Notifications */
+.notificationItem {
+  display: flex;
+  flex-direction: column; /* Changed to column to support sub-list */
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.notificationHeader {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.notificationItem:hover {
+  background-color: var(--bg-hover);
+}
+
+.notificationItemUnread {
+  background-color: var(--bg-surface-secondary);
+}
+
+.notificationDot {
+  width: 16px;
+  display: flex;
+  justify-content: center;
+  margin-right: 8px;
+}
+
+.notificationDotInner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent-color);
+}
+
+.notificationBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.notificationMessage {
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.notificationTime {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.notificationSubList {
+  margin-top: 8px;
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.notificationSubItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+  padding: 4px 8px;
+  background-color: var(--bg-hover);
+  border-radius: 4px;
+}
+
+.countBadge {
+  background-color: var(--accent-color);
+  color: white;
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 10px;
+  margin-left: 6px;
+  font-weight: 600;
+}
+
+.subItemTime {
+  font-size: 10px;
+  opacity: 0.7;
+}

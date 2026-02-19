@@ -71,13 +71,32 @@ export async function POST(request) {
                 notifications = existing.notifications || [];
             } catch { /* file doesn't exist yet */ }
 
-            notifications.unshift({
-                id: String(Date.now()),
-                folderName,
-                message: `Changes saved on '${folderName}'`,
-                timestamp: new Date().toISOString(),
-                read: false
-            });
+            // Check for existing notification to merge
+            const latest = notifications[0];
+            const targetComponentId = componentId || 'Project Settings';
+            const isSameComponent = latest &&
+                latest.folderName === folderName &&
+                latest.componentId === targetComponentId;
+
+            if (isSameComponent) {
+                // Merge: Update timestamp and count
+                latest.timestamp = new Date().toISOString();
+                latest.count = (latest.count || 1) + 1;
+                latest.read = false; // Mark as unread again
+                // Update message to reflect count if > 1
+                latest.message = `Changes saved on '${folderName}'`;
+            } else {
+                // Create New
+                notifications.unshift({
+                    id: String(Date.now()),
+                    folderName,
+                    componentId: targetComponentId,
+                    count: 1,
+                    message: `Changes saved on '${folderName}'`,
+                    timestamp: new Date().toISOString(),
+                    read: false
+                });
+            }
 
             // Keep max 50 notifications
             if (notifications.length > 50) notifications = notifications.slice(0, 50);

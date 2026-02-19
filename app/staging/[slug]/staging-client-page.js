@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import styles from "../../page.module.css";
@@ -65,6 +65,7 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
 
     const [activeElementId, setActiveElementId] = useState(null);
     const [activePopoverId, setActivePopoverId] = useState(null);
+    const lastEditedComponentIdRef = useRef(null);
 
     const [toaster, setToaster] = useState({ show: false, message: '', type: 'info' });
 
@@ -78,6 +79,7 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
     };
 
     const handleUpdate = async (uniqueId, newData) => {
+        lastEditedComponentIdRef.current = uniqueId;
         setLocalData(prev => ({
             ...prev,
             [uniqueId]: { ...(prev[uniqueId] || {}), ...newData }
@@ -90,16 +92,30 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
         // Prevent default browser save
         e.preventDefault();
 
+        // FORCE BLUR to ensure any pending edits in contentEditable are committed
+        if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur();
+        }
+
+        // Small delay to allow blur events and React state updates to flush
+        await new Promise(resolve => setTimeout(resolve, 100));
+
         showToast('Saving changes...', 'loading');
 
         try {
-            console.log("Saving staging data...", { folderName, dataSize: JSON.stringify(localData).length });
+            console.log("Saving staging data...", {
+                folderName,
+                dataSize: JSON.stringify(localData).length,
+                componentId: lastEditedComponentIdRef.current
+            });
+
             const response = await fetch('/api/save-staging-data', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     folderName,
-                    builderData: localData // Send the full current state
+                    builderData: localData, // Send the full current state
+                    componentId: lastEditedComponentIdRef.current
                 })
             });
 
@@ -110,6 +126,7 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
             }
 
             showToast('Changes saved successfully!', 'success');
+            lastEditedComponentIdRef.current = null; // Clear after save
         } catch (err) {
             console.error("Manual Save Error:", err);
             showToast(`Failed to save: ${err.message}`, 'error');
