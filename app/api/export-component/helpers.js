@@ -49,8 +49,8 @@ export function cleanBuilderContent(src, componentName) {
   // src = src.replace(/import\s+{[^}]*}\s+from\s+['"][^'\"]+['"];?\n?/g, '');
 
   // Remove onUpdate props and update handler calls
-  src = src.replace(/onUpdate=\{[^}]+\}/g, '');
-  src = src.replace(/update\([^)]*\)/g, 'undefined');
+  src = src.replace(/onUpdate\s*=\s*\{[^}]+\}/g, '');
+  src = src.replace(/update[A-Za-z0-9_]*\([^)]*\)/g, 'undefined');
 
   // Remove empty import lines left behind
   src = src.replace(/^\s*\n/gm, '\n');
@@ -356,24 +356,27 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
     
     if (isDialog) {
         return (
-            <button
+            <a
+                id={finalId}
+                href="#"
                 className={finalClassName}
-                style={{ ...style, display: 'block', width: '100%', height: '100%', border: 'none', padding: 0, cursor: 'pointer', background: 'transparent' }}
+                style={{ ...style, display: 'block', width: '100%', height: '100%', cursor: 'pointer', textDecoration: 'none' }}
                 onClick={(e) => {
                      e.preventDefault();
                      openDialog(targetDialogId);
                 }}
             >
                 {content}
-            </button>
+            </a>
         );
     }
 
     return (
       <a
+         id={finalId}
          href={href || '#'} 
-         className={finalClassName}
-         style={{ display: 'block', width: '100%', height: '100%' }}
+         className={finalClassName} 
+         style={{ display: 'block', width: '100%', height: '100%', textDecoration: 'none' }}
       >
         {content}
       </a>

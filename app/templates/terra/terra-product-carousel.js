@@ -137,7 +137,7 @@ export default function TerraProductCarousel({
                                                     onIdChange={(val) => updateProduct(index, "imageId", val)}
                                                     onVisibilityChange={(val) => updateProduct(index, "imageVisible", val)}
                                                     suffix={`image-${index}`}
-                                                    href={item.imageUrl}
+                                                    href={item.imageUrl || item.buttonUrl}
                                                     onHrefChange={(val) => updateProduct(index, "imageUrl", val)}
                                                     linkType={item.imageLinkType}
                                                     onLinkTypeChange={(val) => updateProduct(index, "imageLinkType", val)}
