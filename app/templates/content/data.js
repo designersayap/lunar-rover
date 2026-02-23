@@ -361,5 +361,31 @@ export const componentDefaults = {
     },
     "spacing-small": {},
     "spacing-medium": {},
-    "spacing-large": {}
+    "spacing-large": {},
+    "terra-product-carousel": {
+        categories: [
+            { id: "cat-1", label: "Fabric Care", visible: true },
+            { id: "cat-2", label: "Food & Beverage", visible: true },
+            { id: "cat-3", label: "Home Care", visible: true },
+            { id: "cat-4", label: "Personal Care", visible: true }
+        ],
+        products: Array(12).fill({
+            name: "Product Name",
+            description: "Description",
+            image: "",
+            imageUrl: "",
+            imageLinkType: "url",
+            imageTargetDialogId: "",
+            imageVisible: true,
+
+            buttonUrl: "",
+            buttonLinkType: "url",
+            buttonTargetDialogId: "",
+            buttonVisible: true,
+
+            categoryId: "cat-1",
+            cardId: "",
+            visible: true
+        })
+    }
 };

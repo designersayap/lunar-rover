@@ -23,6 +23,7 @@ import NavigationRight from '@/app/templates/navigation/navigation-right';
 import BackgroundFullBody from '@/app/templates/background/full-body';
 
 import TerraTestimony from '@/app/templates/terra/terra-testimony';
+import TerraProductCarousel from '@/app/templates/terra/terra-product-carousel';
 
 import TerraFooter from '@/app/templates/terra/terra-footer';
 import SpacingSmall from '@/app/templates/spacing/spacing-small';
@@ -58,6 +59,7 @@ export const COMPONENT_REGISTRY = {
     "background-full-body": BackgroundFullBody,
 
     "testimonial-terra": TerraTestimony,
+    "terra-product-carousel": TerraProductCarousel,
 
     "footer-terra": TerraFooter,
     "spacing-small": SpacingSmall,

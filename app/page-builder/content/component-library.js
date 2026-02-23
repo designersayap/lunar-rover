@@ -24,6 +24,7 @@ const SpacingSmall = dynamic(() => import("@/app/templates/spacing/spacing-small
 const SpacingMedium = dynamic(() => import("@/app/templates/spacing/spacing-medium"));
 const SpacingLarge = dynamic(() => import("@/app/templates/spacing/spacing-large"));
 const FloatingActionButton = dynamic(() => import("@/app/templates/cta/floating-action-button"));
+const TerraProductCarousel = dynamic(() => import("@/app/templates/terra/terra-product-carousel"));
 
 export const componentLibrary = {
     "Background": [
@@ -692,8 +693,44 @@ export const componentLibrary = {
                 { label: "Testimony 8", propId: "testimonies.7.cardId", suffix: "testimony-7", visibleProp: "testimonies.7.visible" },
                 { label: "Testimony 9", propId: "testimonies.8.cardId", suffix: "testimony-8", visibleProp: "testimonies.8.visible" },
                 { label: "Testimony 10", propId: "testimonies.9.cardId", suffix: "testimony-9", visibleProp: "testimonies.9.visible" },
-                { label: "Testimony 11", propId: "testimonies.10.cardId", suffix: "testimony-10", visibleProp: "testimonies.10.visible" },
-                { label: "Testimony 12", propId: "testimonies.11.cardId", suffix: "testimony-11", visibleProp: "testimonies.11.visible" }
+            ]
+        },
+        {
+            id: "terra-product-carousel",
+            name: "Products - Terra Carousel",
+            component: TerraProductCarousel,
+            thumbnail: "https://space.lunaaar.site/assets-lunar/placeholder.svg", // Reusing placeholder for now
+            config: [
+                {
+                    name: "categories",
+                    label: "Categories",
+                    type: "list",
+                    default: componentDefaults["terra-product-carousel"].categories
+                },
+                {
+                    name: "products",
+                    label: "Products",
+                    type: "list",
+                    default: componentDefaults["terra-product-carousel"].products
+                }
+            ],
+            links: [
+                { label: "Category 1", propId: "categories.0.id", suffix: "category-0", visibleProp: "categories.0.visible" },
+                { label: "Category 2", propId: "categories.1.id", suffix: "category-1", visibleProp: "categories.1.visible" },
+                { label: "Category 3", propId: "categories.2.id", suffix: "category-2", visibleProp: "categories.2.visible" },
+                { label: "Category 4", propId: "categories.3.id", suffix: "category-3", visibleProp: "categories.3.visible" },
+                { label: "Product 1", propId: "products.0.cardId", suffix: "product-0", visibleProp: "products.0.visible" },
+                { label: "Product 2", propId: "products.1.cardId", suffix: "product-1", visibleProp: "products.1.visible" },
+                { label: "Product 3", propId: "products.2.cardId", suffix: "product-2", visibleProp: "products.2.visible" },
+                { label: "Product 4", propId: "products.3.cardId", suffix: "product-3", visibleProp: "products.3.visible" },
+                { label: "Product 5", propId: "products.4.cardId", suffix: "product-4", visibleProp: "products.4.visible" },
+                { label: "Product 6", propId: "products.5.cardId", suffix: "product-5", visibleProp: "products.5.visible" },
+                { label: "Product 7", propId: "products.6.cardId", suffix: "product-6", visibleProp: "products.6.visible" },
+                { label: "Product 8", propId: "products.7.cardId", suffix: "product-7", visibleProp: "products.7.visible" },
+                { label: "Product 9", propId: "products.8.cardId", suffix: "product-8", visibleProp: "products.8.visible" },
+                { label: "Product 10", propId: "products.9.cardId", suffix: "product-9", visibleProp: "products.9.visible" },
+                { label: "Product 11", propId: "products.10.cardId", suffix: "product-10", visibleProp: "products.10.visible" },
+                { label: "Product 12", propId: "products.11.cardId", suffix: "product-11", visibleProp: "products.11.visible" }
             ]
         }
     ],

@@ -23,6 +23,7 @@ export const COMPONENT_PATHS = {
     "background-full-body": "app/templates/background/full-body.js",
 
     "testimonial-terra": "app/templates/terra/terra-testimony.js",
+    "terra-product-carousel": "app/templates/terra/terra-product-carousel.js",
 
     "footer-terra": "app/templates/terra/terra-footer.js",
     "spacing-small": "app/templates/spacing/spacing-small.js",
