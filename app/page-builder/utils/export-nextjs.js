@@ -382,6 +382,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                 item.props.mobileImage = "";
             }
         }
+
     });
 
     // Sort components: Sticky items first
@@ -426,7 +427,6 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         imports.set(componentName, `./components/${filename}`);
 
         // RECURSIVE: Check for nested components property (e.g. ScrollGroup)
-        // We need to bundle their dependencies (scripts/css) and track imports
         if (item.components && Array.isArray(item.components)) {
             for (const childComp of item.components) {
                 const childFilePath = COMPONENT_PATHS[childComp.id];
@@ -435,9 +435,6 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                     const childFilename = childFilePath.split('/').pop();
                     const childComponentName = getComponentName(childFilePath);
                     imports.set(childComponentName, `./components/${childFilename}`);
-
-                    // TODO: If we support infinite nesting, we should make this function recursive.
-                    // For now, 1 level deep for ScrollGroup is sufficient.
                 }
             }
         }
@@ -453,7 +450,6 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
             }
         }
 
-        // --- Image Scanning & Bundling ---
         // Use the PRE-PROCESSED item which already has placeholders injected
         const findImagesToCheck = (obj) => {
             let found = [];
@@ -1208,10 +1204,12 @@ export default function RootLayout({ children }) {
 
             if (previewRes.ok) {
                 console.log(`Preview files saved to public/uat-files/${folderName}`);
-                if (download) {
-                    alert(`Export Successful!\n\nZIP Downloaded.\n\nFiles also saved to:\npublic/uat-files/${folderName}`);
-                } else {
-                    alert(`Project Saved!\n\nFiles saved to:\npublic/uat-files/${folderName}`);
+                if (!options.silent) {
+                    if (download) {
+                        alert(`Export Successful!\n\nZIP Downloaded.\n\nFiles also saved to:\npublic/uat-files/${folderName}`);
+                    } else {
+                        alert(`Project Saved!\n\nFiles saved to:\npublic/uat-files/${folderName}`);
+                    }
                 }
             } else {
                 console.warn("Failed to save preview files");

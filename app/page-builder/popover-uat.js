@@ -38,13 +38,6 @@ export default function UATPopover({
             .finally(() => setIsLoading(false));
     };
 
-    const handleOpenClick = (folder, e) => {
-        e.stopPropagation(); // Prevent selecting the folder
-        // Local UAT path
-        const url = `/uat-files/${folder}/index.html`;
-        window.open(url, '_blank');
-    };
-
     const onSaveClick = async () => {
         if (!folderName.trim()) {
             alert("Please enter a folder name.");
@@ -59,18 +52,15 @@ export default function UATPopover({
                 download: false,
                 savePreview: true,
                 previewFolder: finalName,
-                analytics: analyticsData
+                analytics: analyticsData,
+                silent: true
             });
 
-            // Ask to open
-            const openNow = confirm("Upload successful! Do you want to open the UAT site now?");
-            if (openNow) {
-                handleOpenClick(finalName, { stopPropagation: () => { } });
-            }
-
-            // Update list and close
+            alert("Upload successful!");
             fetchFolders();
-            onClose();
+            setTimeout(() => {
+                onClose();
+            }, 500);
         } catch (error) {
             console.error("Save failed", error);
             alert("Save failed. Check console for details.");
@@ -126,16 +116,17 @@ export default function UATPopover({
                                     key={folder}
                                     onClick={() => setFolderName(folder)}
                                     className={`${styles.listItem} ${folderName === folder ? styles.listItemActive : ''}`}
-                                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingRight: '8px' }}
+                                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingRight: '12px' }}
                                 >
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                         <FolderIcon className={styles.iconSmall} />
                                         <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{folder}</span>
                                     </div>
                                     <button
-                                        onClick={(e) => handleOpenClick(folder, e)}
-                                        className={styles.actionButton}
-                                        title={`Open ${folder}`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            window.open(`http://localhost:3001/uat-files/${folder}`, '_blank');
+                                        }}
                                         style={{
                                             background: 'none',
                                             border: 'none',

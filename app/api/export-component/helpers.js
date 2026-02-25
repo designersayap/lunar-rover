@@ -70,7 +70,8 @@ export function cleanBuilderContent(src, componentName) {
   if (hasBuilderSection) {
     shims.push(`
 // Shim for BuilderSection
-const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth, style, children, id, sectionId }) => {
+const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth, style, children, id, sectionId, isVisible = true }) => {
+  if (!isVisible) return null;
   const Tag = tagName;
   const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || normalizedSectionId;
@@ -94,7 +95,8 @@ const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth,
   if (hasBuilderText) {
     shims.push(`
 // Shim for BuilderText
-const BuilderText = ({ tagName = 'p', content, className, style, children, id, sectionId, suffix }) => {
+const BuilderText = ({ tagName = 'p', content, className, style, children, id, sectionId, suffix, isVisible = true }) => {
+  if (!isVisible) return null;
   const Tag = tagName;
   const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   const effectiveSuffix = suffix || (className ? className.split(' ')[0] : tagName);
@@ -129,8 +131,8 @@ const BuilderText = ({ tagName = 'p', content, className, style, children, id, s
 
     shims.push(`
 // Shim for BuilderButton
-// Shim for BuilderButton
-const BuilderButton = ({ label, href, className, style, children, linkType, targetDialogId, id, sectionId, suffix, iconLeft, iconRight, hideLabel }) => {
+const BuilderButton = ({ label, href, className, style, children, linkType, targetDialogId, id, sectionId, suffix, iconLeft, iconRight, hideLabel, isVisible = true }) => {
+  if (!isVisible) return null;
   const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
@@ -189,7 +191,8 @@ const BuilderButton = ({ label, href, className, style, children, linkType, targ
   if (hasBuilderLink) {
     shims.push(`
 // Shim for BuilderLink
-const BuilderLink = ({ label, href, className, style, children, linkType, targetDialogId, id, sectionId, suffix, iconLeft, iconRight, justify, hideLabel }) => {
+const BuilderLink = ({ label, href, className, style, children, linkType, targetDialogId, id, sectionId, suffix, iconLeft, iconRight, justify, hideLabel, isVisible = true }) => {
+  if (!isVisible) return null;
   const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
@@ -237,7 +240,8 @@ const BuilderLink = ({ label, href, className, style, children, linkType, target
 
   if (hasBuilderImage) {
     shims.push(`
-const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href, linkType, targetDialogId, id, sectionId, suffix, isPortrait }) => {
+const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href, linkType, targetDialogId, id, sectionId, suffix, isPortrait, isVisible = true }) => {
+  if (!isVisible) return null;
   const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
@@ -390,7 +394,8 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
   if (hasBuilderElement) {
     shims.push(`
 // Shim for BuilderElement
-const BuilderElement = ({ tagName = 'div', className, style, children, id, sectionId, elementProps }) => {
+const BuilderElement = ({ tagName = 'div', className, style, children, id, sectionId, elementProps, isVisible = true }) => {
+  if (!isVisible) return null;
   const Tag = tagName;
   const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   const suffix = elementProps || 'element';
@@ -425,10 +430,6 @@ const openDialog = (id) => {
       src = shims.join('\n') + '\n' + src;
     }
   }
-
-  // Safety Check: If export default was replaced by return, restoration
-
-  // Safety Check: If export default was replaced by return, restoration
 
   // Safety Check: If export default was replaced by return, restoration
 

@@ -20,6 +20,7 @@ export default function TestimonialTerra({
     const scrollContainerRef = useRef(null);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
+    const threshold = fullWidth ? 5 : 4;
 
     // Fix: Use a ref to hold the latest state so the callback can be stable
     // (BuilderText ignores prop changes to onChange for performance, so we must provide a stable function)
@@ -109,6 +110,11 @@ export default function TestimonialTerra({
     }, [currentPage, totalPages, isPaused]);
 
     const visibleCount = testimonies.filter(t => t.visible !== false).length;
+    let filteredTestimonies = testimonies;
+    if (visibleCount === 0 && testimonies.length > 0) {
+        // If no visible testimonies, show the first one as a fallback (minimum 1 card)
+        filteredTestimonies = [testimonies[0]];
+    }
 
     return (
         <BuilderSection
@@ -126,11 +132,11 @@ export default function TestimonialTerra({
                     <div
                         ref={scrollContainerRef}
                         className={styles.cardsWrapper}
-                        style={{ justifyContent: visibleCount === 3 ? 'center' : 'initial' }}
+                        style={{ justifyContent: filteredTestimonies.filter(t => t.visible !== false).length < threshold ? 'center' : 'start' }}
                         onMouseEnter={() => setIsPaused(true)}
                         onMouseLeave={() => setIsPaused(false)}
                     >
-                        {testimonies.map((item, index) => (
+                        {filteredTestimonies.map((item, index) => (
                             <BuilderElement
                                 key={index}
                                 tagName="div"
@@ -204,12 +210,12 @@ export default function TestimonialTerra({
                         ))}
                     </div>
 
-                    {totalPages > 1 && (
-                        <div className={styles.paginator}>
+                    {totalPages > 1 && filteredTestimonies.filter(t => t.visible !== false).length >= threshold && (
+                        <div className="scroll-indicator-pills">
                             {Array.from({ length: totalPages }).map((_, index) => (
                                 <div
                                     key={index}
-                                    className={`${styles.dot} ${currentPage === index ? styles.activeDot : ''}`}
+                                    className={currentPage === index ? "indicator-pill-active" : "indicator-pill"}
                                     onClick={() => scrollToPage(index)}
                                     role="button"
                                     tabIndex={0}

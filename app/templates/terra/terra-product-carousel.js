@@ -21,20 +21,96 @@ export default function TerraProductCarousel({
 }) {
     const scrollContainerRef = useRef(null);
     const [activeCategoryId, setActiveCategoryId] = useState(categories[0]?.id || null);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
+    const threshold = fullWidth ? 5 : 4;
 
     // Calculate which products to show based on active category
-    const filteredProducts = products.filter(p => p.categoryId === activeCategoryId || !activeCategoryId);
+    let filteredProducts = products.filter(p => (p.categoryId === activeCategoryId || !activeCategoryId));
+
+    if (!filteredProducts.some(p => p.visible !== false) && products.length > 0) {
+        // If no visible products in this category, show the first visible product from any category
+        const fallbackProduct = products.find(p => p.visible !== false) || products[0];
+        filteredProducts = [fallbackProduct];
+    }
 
     // Fix: Use a ref to hold the latest state so the callback can be stable
     const latestStateRef = useRef({ categories, products, onUpdate });
     latestStateRef.current = { categories, products, onUpdate };
+
+    const visibleCardsString = products.map(p => p.visible).join(',');
+    const visibleFilteredCardsString = filteredProducts.map(p => p.visible).join(',');
+
+    useEffect(() => {
+        const calculatePages = () => {
+            if (!scrollContainerRef.current) return;
+
+            const container = scrollContainerRef.current;
+            const containerWidth = container.scrollWidth;
+            const viewportWidth = container.clientWidth;
+
+            if (containerWidth && viewportWidth > 0) {
+                const pages = Math.ceil(containerWidth / viewportWidth);
+                setTotalPages(Number.isFinite(pages) ? Math.max(1, pages) : 1);
+            } else {
+                setTotalPages(1);
+            }
+        };
+
+        // Delay calculation slightly to ensure DOM has updated
+        const timer = setTimeout(calculatePages, 100);
+
+        window.addEventListener('resize', calculatePages);
+        return () => {
+            window.removeEventListener('resize', calculatePages);
+            clearTimeout(timer);
+        };
+    }, [products.length, visibleCardsString, activeCategoryId, visibleFilteredCardsString]);
+
+    useEffect(() => {
+        const container = scrollContainerRef.current;
+        if (!container) return;
+
+        const handleScroll = () => {
+            const scrollLeft = container.scrollLeft;
+            const viewportWidth = container.clientWidth;
+            const page = Math.round(scrollLeft / viewportWidth);
+            setCurrentPage(page);
+        };
+
+        container.addEventListener('scroll', handleScroll);
+        return () => container.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const scrollToPage = (pageIndex) => {
+        if (!scrollContainerRef.current) return;
+
+        const container = scrollContainerRef.current;
+        const viewportWidth = container.clientWidth;
+        const scrollPosition = pageIndex * viewportWidth;
+
+        container.scrollTo({
+            left: scrollPosition,
+            behavior: 'smooth'
+        });
+    };
 
     const updateProduct = useCallback((index, key, value) => {
         const { products: currentProducts, onUpdate: currentOnUpdate } = latestStateRef.current;
         if (!currentOnUpdate) return;
 
         const newProducts = [...currentProducts];
-        newProducts[index] = { ...newProducts[index], [key]: value };
+        let updatedProduct = { ...newProducts[index], [key]: value };
+
+        // Auto-sync image and button link properties
+        if (key === 'imageUrl') updatedProduct.buttonUrl = value;
+        if (key === 'buttonUrl') updatedProduct.imageUrl = value;
+        if (key === 'imageLinkType') updatedProduct.buttonLinkType = value;
+        if (key === 'buttonLinkType') updatedProduct.imageLinkType = value;
+        if (key === 'imageTargetDialogId') updatedProduct.buttonTargetDialogId = value;
+        if (key === 'buttonTargetDialogId') updatedProduct.imageTargetDialogId = value;
+
+        newProducts[index] = updatedProduct;
         currentOnUpdate({ products: newProducts });
     }, []);
 
@@ -77,129 +153,161 @@ export default function TerraProductCarousel({
 
                     {/* Category Tabs */}
                     <div className={styles.tabsContainer}>
-                        <div className={`tabs ${styles.scrollableTabs}`}>
-                            {categories.map((cat, index) => (
-                                <BuilderElement
-                                    key={index}
-                                    tagName="div"
-                                    className={`tabs-button ${activeCategoryId === cat.id ? 'tabs-button-active' : ''}`}
-                                    id={cat.id}
-                                    sectionId={sectionId}
-                                    onIdChange={(val) => updateCategory(index, 'id', val)}
-                                    elementProps={`category-${index}`}
-                                    isVisible={cat.visible !== false}
-                                >
-                                    <span onClick={() => setActiveCategoryId(cat.id)}>
-                                        <BuilderText
-                                            tagName="span"
-                                            content={cat.label}
-                                            onChange={(val) => updateCategory(index, "label", val)}
-                                            sectionId={sectionId}
-                                        />
-                                    </span>
-                                </BuilderElement>
-                            ))}
+                        <div className={styles.scrollableTabs}>
+                            <div className="tabs">
+                                {categories.map((cat, index) => (
+                                    <BuilderElement
+                                        key={index}
+                                        tagName="div"
+                                        className={`tabs-button ${activeCategoryId === cat.id ? 'tabs-button-active' : ''}`}
+                                        id={cat.id}
+                                        sectionId={sectionId}
+                                        onIdChange={(val) => updateCategory(index, 'id', val)}
+                                        elementProps={`category-${index}`}
+                                        isVisible={cat.visible !== false}
+                                    >
+                                        <span onClick={() => setActiveCategoryId(cat.id)}>
+                                            <BuilderText
+                                                tagName="span"
+                                                content={cat.label}
+                                                onChange={(val) => updateCategory(index, "label", val)}
+                                                sectionId={sectionId}
+                                            />
+                                        </span>
+                                    </BuilderElement>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
                     {/* Carousel */}
                     <div className={styles.carouselContainer}>
                         {/* Navigation Buttons (Desktop mostly) */}
-                        <button className={`btn btn-outline btn-icon btn-md ${styles.navButtonWrapper} ${styles.navLeft}`} onClick={scrollLeft}>
-                            <ArrowUpRightIcon className="icon" style={{ transform: 'rotate(-135deg)' }} />
-                        </button>
+                        {filteredProducts.filter(p => p.visible !== false).length >= threshold && (
+                            <button className={`btn btn-outline btn-icon btn-md ${styles.navButtonWrapper} ${styles.navLeft}`} onClick={scrollLeft}>
+                                <ArrowUpRightIcon className="icon" style={{ transform: 'rotate(-135deg)' }} />
+                            </button>
+                        )}
 
-                        <div ref={scrollContainerRef} className={styles.cardsWrapper}>
-                            {products.map((item, index) => {
-                                // Find if this item should be visible in current category
-                                const isVisibleInCategory = activeCategoryId ? item.categoryId === activeCategoryId : true;
-
+                        <div
+                            ref={scrollContainerRef}
+                            className={styles.cardsWrapper}
+                            style={{ justifyContent: filteredProducts.filter(p => p.visible !== false).length < threshold ? 'center' : 'start' }}
+                        >
+                            {categories.map((cat, catIndex) => {
+                                const productsInCategory = products.filter(p => p.categoryId === cat.id || (!cat.id && !p.categoryId));
                                 return (
                                     <BuilderElement
-                                        key={index}
+                                        key={catIndex}
                                         tagName="div"
-                                        className={styles.itemWrapper}
-                                        id={item.cardId}
+                                        className={styles.categoryGroup}
+                                        id={cat.id}
                                         sectionId={sectionId}
-                                        onIdChange={(val) => updateProduct(index, 'cardId', val)}
-                                        elementProps={`product-${index}`}
-                                        isVisible={item.visible !== false && isVisibleInCategory}
+                                        elementProps={`category-group-${catIndex}`}
+                                        isVisible={activeCategoryId === cat.id || !activeCategoryId}
                                     >
-                                        <div className={styles.card}>
-                                            <div className={styles.imageContainer}>
-                                                <BuilderImage
-                                                    src={item.image}
-                                                    onSrcChange={(val) => updateProduct(index, "image", val)}
-                                                    className={`${styles.productImage} imagePlaceholder-1-1 object-cover`}
-                                                    id={item.imageId}
+                                        {productsInCategory.map((item) => {
+                                            const originalIndex = products.findIndex(p => p === item);
+                                            return (
+                                                <BuilderElement
+                                                    key={originalIndex}
+                                                    tagName="div"
+                                                    className={styles.itemWrapper}
+                                                    id={item.cardId}
                                                     sectionId={sectionId}
-                                                    isVisible={item.imageVisible !== false}
-                                                    onIdChange={(val) => updateProduct(index, "imageId", val)}
-                                                    onVisibilityChange={(val) => updateProduct(index, "imageVisible", val)}
-                                                    suffix={`image-${index}`}
-                                                    href={item.imageUrl || item.buttonUrl}
-                                                    onHrefChange={(val) => updateProduct(index, "imageUrl", val)}
-                                                    linkType={item.imageLinkType}
-                                                    onLinkTypeChange={(val) => updateProduct(index, "imageLinkType", val)}
-                                                    targetDialogId={item.imageTargetDialogId}
-                                                    onTargetDialogIdChange={(val) => updateProduct(index, "imageTargetDialogId", val)}
-                                                />
+                                                    onIdChange={(val) => updateProduct(originalIndex, 'cardId', val)}
+                                                    elementProps={`product-${originalIndex}`}
+                                                    isVisible={item.visible !== false}
+                                                >
+                                                    <div className={styles.card}>
+                                                        <div className={styles.imageContainer}>
+                                                            <BuilderImage
+                                                                src={item.image}
+                                                                onSrcChange={(val) => updateProduct(originalIndex, "image", val)}
+                                                                className={`${styles.productImage} imagePlaceholder-1-1 object-cover`}
+                                                                id={item.imageId}
+                                                                sectionId={sectionId}
+                                                                isVisible={item.imageVisible !== false}
+                                                                onIdChange={(val) => updateProduct(originalIndex, "imageId", val)}
+                                                                onVisibilityChange={(val) => updateProduct(originalIndex, "imageVisible", val)}
+                                                                suffix={`image-${originalIndex}`}
+                                                                href={item.imageUrl || item.buttonUrl}
+                                                                onHrefChange={(val) => updateProduct(originalIndex, "imageUrl", val)}
+                                                                linkType={item.imageLinkType}
+                                                                onLinkTypeChange={(val) => updateProduct(originalIndex, "imageLinkType", val)}
+                                                                targetDialogId={item.imageTargetDialogId}
+                                                                onTargetDialogIdChange={(val) => updateProduct(originalIndex, "imageTargetDialogId", val)}
+                                                            />
 
-                                                {/* The Action Button (Arrow) */}
-                                                {item.buttonVisible !== false && (
-                                                    <div className={styles.actionButtonWrapper} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px' }}>
-                                                        <BuilderLink
-                                                            className={`btn btn-neutral btn-icon btn-sm ${styles.actionButton}`}
-                                                            href={item.buttonUrl}
-                                                            onHrefChange={(val) => updateProduct(index, "buttonUrl", val)}
-                                                            linkType={item.buttonLinkType}
-                                                            onLinkTypeChange={(val) => updateProduct(index, "buttonLinkType", val)}
-                                                            targetDialogId={item.buttonTargetDialogId}
-                                                            onTargetDialogIdChange={(val) => updateProduct(index, "buttonTargetDialogId", val)}
-                                                            hideLabel={true}
-                                                            iconLeft={<ArrowUpRightIcon className="icon" />}
-                                                            style={{ padding: 0, width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                                                        />
+                                                            {/* The Action Button (Arrow) */}
+                                                            {item.buttonVisible !== false && (
+                                                                <div className={styles.actionButtonWrapper} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px' }}>
+                                                                    <BuilderLink
+                                                                        className={`btn btn-neutral btn-icon btn-sm ${styles.actionButton}`}
+                                                                        href={item.buttonUrl}
+                                                                        onHrefChange={(val) => updateProduct(originalIndex, "buttonUrl", val)}
+                                                                        linkType={item.buttonLinkType}
+                                                                        onLinkTypeChange={(val) => updateProduct(originalIndex, "buttonLinkType", val)}
+                                                                        targetDialogId={item.buttonTargetDialogId}
+                                                                        onTargetDialogIdChange={(val) => updateProduct(originalIndex, "buttonTargetDialogId", val)}
+                                                                        hideLabel={true}
+                                                                        iconLeft={<ArrowUpRightIcon className="icon" />}
+                                                                        style={{ padding: 0, width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                                                    />
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        <div className={styles.textContent}>
+                                                            <BuilderText
+                                                                tagName="div"
+                                                                className={`body-bold truncate-1-line ${styles.productName}`}
+                                                                content={item.name}
+                                                                onChange={(val) => updateProduct(originalIndex, "name", val)}
+                                                                sectionId={sectionId}
+                                                                tooltipIfTruncated={true}
+                                                            />
+
+                                                            <BuilderText
+                                                                tagName="div"
+                                                                className={`caption-regular truncate-2-lines ${styles.productDescription}`}
+                                                                content={item.description}
+                                                                onChange={(val) => updateProduct(originalIndex, "description", val)}
+                                                                sectionId={sectionId}
+                                                                tooltipIfTruncated={true}
+                                                            />
+                                                        </div>
                                                     </div>
-                                                )}
-                                            </div>
-
-                                            <div className={styles.textContent}>
-                                                <BuilderText
-                                                    tagName="div"
-                                                    className={`subheader-h2 truncate-1-line ${styles.productName}`}
-                                                    content={item.name}
-                                                    onChange={(val) => updateProduct(index, "name", val)}
-                                                    sectionId={sectionId}
-                                                    tooltipIfTruncated={true}
-                                                />
-
-                                                <BuilderText
-                                                    tagName="div"
-                                                    className={`caption-regular truncate-2-lines ${styles.productDescription}`}
-                                                    content={item.description}
-                                                    onChange={(val) => updateProduct(index, "description", val)}
-                                                    sectionId={sectionId}
-                                                    tooltipIfTruncated={true}
-                                                />
-                                            </div>
-                                        </div>
+                                                </BuilderElement>
+                                            )
+                                        })}
                                     </BuilderElement>
                                 )
                             })}
                         </div>
 
-                        <button className={`btn btn-outline btn-icon btn-md ${styles.navButtonWrapper} ${styles.navRight}`} onClick={scrollRight}>
-                            <ArrowUpRightIcon className="icon" style={{ transform: 'rotate(45deg)' }} />
-                        </button>
+                        {filteredProducts.filter(p => p.visible !== false).length >= threshold && (
+                            <button className={`btn btn-outline btn-icon btn-md ${styles.navButtonWrapper} ${styles.navRight}`} onClick={scrollRight}>
+                                <ArrowUpRightIcon className="icon" style={{ transform: 'rotate(45deg)' }} />
+                            </button>
+                        )}
                     </div>
 
                     {/* Simple Scroll Indicator underneath */}
-                    <div className={styles.scrollIndicatorPills}>
-                        <div className={styles.indicatorPillActive} />
-                        <div className={styles.indicatorPill} />
-                        <div className={styles.indicatorPill} />
-                    </div>
+                    {totalPages > 1 && filteredProducts.filter(p => p.visible !== false).length >= threshold && (
+                        <div className="scroll-indicator-pills">
+                            {Array.from({ length: totalPages }).map((_, index) => (
+                                <div
+                                    key={index}
+                                    className={currentPage === index ? "indicator-pill-active" : "indicator-pill"}
+                                    onClick={() => scrollToPage(index)}
+                                    role="button"
+                                    tabIndex={0}
+                                    aria-label={`Go to page ${index + 1}`}
+                                />
+                            ))}
+                        </div>
+                    )}
 
                 </div>
             </div>

@@ -16,7 +16,8 @@
     overflow-x: auto;
     max-width: 100%;
     scrollbar-width: none;
-    /* Firefox */
+    display: flex;
+    justify-content: center;
 }
 
 .scrollableTabs::-webkit-scrollbar {
@@ -45,6 +46,14 @@
 
 .cardsWrapper::-webkit-scrollbar {
     display: none;
+}
+
+.categoryGroup {
+    display: contents;
+}
+
+.centered {
+    justify-content: center;
 }
 
 .itemWrapper {
@@ -97,8 +106,8 @@
 }
 
 .actionButton {
-    width: var(--size-button-sm) !important;
-    height: var(--size-button-sm) !important;
+    width: 32px !important;
+    height: 32px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -175,27 +184,6 @@
     right: -20px;
 }
 
-/* Indicators */
-.scrollIndicatorPills {
-    display: flex;
-    justify-content: center;
-    gap: var(--space-60);
-    margin-top: var(--space-120);
-}
-
-.indicatorPill {
-    height: 4px;
-    width: 24px;
-    background-color: var(--background-neutral--neutral-subtle);
-    border-radius: 2px;
-}
-
-.indicatorPillActive {
-    height: 4px;
-    width: 32px;
-    background-color: var(--background-neutral--neutral-strong);
-    border-radius: 2px;
-}
 
 /* Responsiveness */
 @media (min-width: 1024px) {

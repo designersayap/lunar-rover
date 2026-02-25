@@ -282,7 +282,8 @@ export function useTemplateLogic() {
 
             await handleExportNextjs(selectedComponents, activeThemePath, {
                 download: true,
-                analytics: analyticsData
+                analytics: analyticsData,
+                silent: true
             });
             showToast("Export completed successfully");
         } catch (error) {

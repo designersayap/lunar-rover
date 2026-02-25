@@ -682,19 +682,26 @@ export const componentLibrary = {
                     default: componentDefaults["testimonial-terra"].testimonies
                 }
             ],
-            links: [
-                { label: "Testimony 1", propId: "testimonies.0.cardId", suffix: "testimony-0", visibleProp: "testimonies.0.visible" },
-                { label: "Testimony 2", propId: "testimonies.1.cardId", suffix: "testimony-1", visibleProp: "testimonies.1.visible" },
-                { label: "Testimony 3", propId: "testimonies.2.cardId", suffix: "testimony-2", visibleProp: "testimonies.2.visible" },
-                { label: "Testimony 4", propId: "testimonies.3.cardId", suffix: "testimony-3", visibleProp: "testimonies.3.visible" },
-                { label: "Testimony 5", propId: "testimonies.4.cardId", suffix: "testimony-4", visibleProp: "testimonies.4.visible" },
-                { label: "Testimony 6", propId: "testimonies.5.cardId", suffix: "testimony-5", visibleProp: "testimonies.5.visible" },
-                { label: "Testimony 7", propId: "testimonies.6.cardId", suffix: "testimony-6", visibleProp: "testimonies.6.visible" },
-                { label: "Testimony 8", propId: "testimonies.7.cardId", suffix: "testimony-7", visibleProp: "testimonies.7.visible" },
-                { label: "Testimony 9", propId: "testimonies.8.cardId", suffix: "testimony-8", visibleProp: "testimonies.8.visible" },
-                { label: "Testimony 10", propId: "testimonies.9.cardId", suffix: "testimony-9", visibleProp: "testimonies.9.visible" },
-            ]
-        },
+            addAction: {
+                targetList: "testimonies",
+                label: "Add testimony",
+                idPattern: "testimony-{index}",
+                defaults: {
+                    name: "New Name",
+                    description: "Testimonial Description",
+                    avatar: "https://space.lunaaar.site/assets-lunar/placeholder.svg",
+                    avatarVisible: true,
+                    image: "https://space.lunaaar.site/assets-lunar/placeholder.svg",
+                    imageVisible: true,
+                    visible: true
+                }
+            },
+            links: Array.from({ length: 20 }, (_, i) => ({
+                label: `Testimony ${i + 1}`, propId: `testimonies.${i}.cardId`, suffix: `testimony-${i}`, visibleProp: `testimonies.${i}.visible`
+            }))
+        }
+    ],
+    "Products": [
         {
             id: "terra-product-carousel",
             name: "Products - Terra Carousel",
@@ -715,25 +722,82 @@ export const componentLibrary = {
                 }
             ],
             links: [
-                { label: "Category 1", propId: "categories.0.id", suffix: "category-0", visibleProp: "categories.0.visible" },
-                { label: "Category 2", propId: "categories.1.id", suffix: "category-1", visibleProp: "categories.1.visible" },
-                { label: "Category 3", propId: "categories.2.id", suffix: "category-2", visibleProp: "categories.2.visible" },
-                { label: "Category 4", propId: "categories.3.id", suffix: "category-3", visibleProp: "categories.3.visible" },
-                { label: "Product 1", propId: "products.0.cardId", suffix: "product-0", visibleProp: "products.0.visible" },
-                { label: "Product 2", propId: "products.1.cardId", suffix: "product-1", visibleProp: "products.1.visible" },
-                { label: "Product 3", propId: "products.2.cardId", suffix: "product-2", visibleProp: "products.2.visible" },
-                { label: "Product 4", propId: "products.3.cardId", suffix: "product-3", visibleProp: "products.3.visible" },
-                { label: "Product 5", propId: "products.4.cardId", suffix: "product-4", visibleProp: "products.4.visible" },
-                { label: "Product 6", propId: "products.5.cardId", suffix: "product-5", visibleProp: "products.5.visible" },
-                { label: "Product 7", propId: "products.6.cardId", suffix: "product-6", visibleProp: "products.6.visible" },
-                { label: "Product 8", propId: "products.7.cardId", suffix: "product-7", visibleProp: "products.7.visible" },
-                { label: "Product 9", propId: "products.8.cardId", suffix: "product-8", visibleProp: "products.8.visible" },
-                { label: "Product 10", propId: "products.9.cardId", suffix: "product-9", visibleProp: "products.9.visible" },
-                { label: "Product 11", propId: "products.10.cardId", suffix: "product-10", visibleProp: "products.10.visible" },
-                { label: "Product 12", propId: "products.11.cardId", suffix: "product-11", visibleProp: "products.11.visible" }
+                {
+                    label: "Category 1", propId: "categories.0.id", suffix: "category-0", visibleProp: "categories.0.visible",
+                    provideContext: { categoryId: "" },
+                    addAction: {
+                        targetList: "products",
+                        label: "Add card",
+                        idPattern: "{categoryId}-{index}",
+                        defaults: {
+                            name: "New Product", description: "Product Description",
+                            image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
+                            buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
+                            visible: true
+                        }
+                    },
+                    children: Array.from({ length: 40 }, (_, i) => ({
+                        label: `Product ${i + 1}`, propId: `products.${i}.cardId`, suffix: `product-${i}`, visibleProp: `products.${i}.visible`
+                    }))
+                },
+                {
+                    label: "Category 2", propId: "categories.1.id", suffix: "category-1", visibleProp: "categories.1.visible",
+                    provideContext: { categoryId: "" },
+                    addAction: {
+                        targetList: "products",
+                        label: "Add card",
+                        idPattern: "{categoryId}-{index}",
+                        defaults: {
+                            name: "New Product", description: "Product Description",
+                            image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
+                            buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
+                            visible: true
+                        }
+                    },
+                    children: Array.from({ length: 40 }, (_, i) => ({
+                        label: `Product ${i + 1}`, propId: `products.${i}.cardId`, suffix: `product-${i}`, visibleProp: `products.${i}.visible`
+                    }))
+                },
+                {
+                    label: "Category 3", propId: "categories.2.id", suffix: "category-2", visibleProp: "categories.2.visible",
+                    provideContext: { categoryId: "" },
+                    addAction: {
+                        targetList: "products",
+                        label: "Add card",
+                        idPattern: "{categoryId}-{index}",
+                        defaults: {
+                            name: "New Product", description: "Product Description",
+                            image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
+                            buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
+                            visible: true
+                        }
+                    },
+                    children: Array.from({ length: 40 }, (_, i) => ({
+                        label: `Product ${i + 1}`, propId: `products.${i}.cardId`, suffix: `product-${i}`, visibleProp: `products.${i}.visible`
+                    }))
+                },
+                {
+                    label: "Category 4", propId: "categories.3.id", suffix: "category-3", visibleProp: "categories.3.visible",
+                    provideContext: { categoryId: "" },
+                    addAction: {
+                        targetList: "products",
+                        label: "Add card",
+                        idPattern: "{categoryId}-{index}",
+                        defaults: {
+                            name: "New Product", description: "Product Description",
+                            image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
+                            buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
+                            visible: true
+                        }
+                    },
+                    children: Array.from({ length: 40 }, (_, i) => ({
+                        label: `Product ${i + 1}`, propId: `products.${i}.cardId`, suffix: `product-${i}`, visibleProp: `products.${i}.visible`
+                    }))
+                }
             ]
         }
     ],
+
     "Footer": [
         {
             id: "footer-terra",

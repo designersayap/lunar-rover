@@ -145,33 +145,3 @@
     color: var(--content-neutral--body);
     word-break: break-word;
 }
-
-.paginator {
-    display: flex;
-    justify-content: center;
-    gap: var(--gap-sm);
-    margin-top: var(--gap-sm);
-}
-
-@container (max-width: 1023px) {
-    .paginator {
-        display: none;
-    }
-}
-
-.dot {
-    width: 40px;
-    height: 4px;
-    border-radius: var(--border-radius-lg);
-    background: var(--background-neutral--neutral-subtle);
-    cursor: pointer;
-    transition: background 0.3s ease, opacity 0.3s ease;
-}
-
-.dot:hover {
-    opacity: 0.7;
-}
-
-.activeDot {
-    background: var(--background-brand--button--primary-default);
-}

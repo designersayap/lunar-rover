@@ -332,7 +332,7 @@ export const componentDefaults = {
         menuColor: "default"
     },
     "testimonial-terra": {
-        testimonies: Array(12).fill({
+        testimonies: Array(4).fill({
             name: "People Name",
             role: "Role",
             description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
@@ -364,28 +364,40 @@ export const componentDefaults = {
     "spacing-large": {},
     "terra-product-carousel": {
         categories: [
-            { id: "cat-1", label: "Fabric Care", visible: true },
-            { id: "cat-2", label: "Food & Beverage", visible: true },
-            { id: "cat-3", label: "Home Care", visible: true },
-            { id: "cat-4", label: "Personal Care", visible: true }
+            { id: "cat-1", label: "Category 1", visible: true },
+            { id: "cat-2", label: "Category 2", visible: true },
+            { id: "cat-3", label: "Category 3", visible: true },
+            { id: "cat-4", label: "Category 4", visible: true }
         ],
-        products: Array(12).fill({
-            name: "Product Name",
-            description: "Description",
-            image: "",
-            imageUrl: "",
-            imageLinkType: "url",
-            imageTargetDialogId: "",
-            imageVisible: true,
-
-            buttonUrl: "",
-            buttonLinkType: "url",
-            buttonTargetDialogId: "",
-            buttonVisible: true,
-
-            categoryId: "cat-1",
-            cardId: "",
-            visible: true
-        })
+        products: [
+            ...Array(4).fill().map((_, i) => ({
+                name: "Product name 1",
+                description: "Product description 1",
+                image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
+                buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
+                categoryId: "cat-1", cardId: `p1-${i}`, visible: true
+            })),
+            ...Array(4).fill().map((_, i) => ({
+                name: "Product name 2",
+                description: "Product description 2",
+                image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
+                buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
+                categoryId: "cat-2", cardId: `p2-${i}`, visible: true
+            })),
+            ...Array(4).fill().map((_, i) => ({
+                name: "Product name 3",
+                description: "Product description 3",
+                image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
+                buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
+                categoryId: "cat-3", cardId: `p3-${i}`, visible: true
+            })),
+            ...Array(4).fill().map((_, i) => ({
+                name: "Product name 4",
+                description: "Product description 4",
+                image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
+                buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
+                categoryId: "cat-4", cardId: `p4-${i}`, visible: true
+            }))
+        ]
     }
 };

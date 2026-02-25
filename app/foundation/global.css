@@ -468,8 +468,9 @@ strong {
   background-color: var(--background-neutral--default);
   color: var(--content-neutral--title);
   font-weight: var(--font-weight-bold);
-  box-shadow: var(--shadow--md);
+  box-shadow: var(--shadow--button);
   border-radius: var(--border-radius-round);
+  border: 1px solid var(--stroke--primary-button);
 }
 
 /* Tab Button Hover State (not active) */
@@ -489,6 +490,38 @@ strong {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+/* ============================================
+   SCROLL INDICATORS
+   ============================================ */
+
+.scroll-indicator-pills {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-60);
+  margin-top: var(--space-120);
+}
+
+.indicator-pill {
+  height: 4px;
+  width: 24px;
+  background-color: var(--background-neutral--neutral-subtle);
+  border-radius: var(--border-radius-lg);
+  cursor: pointer;
+  transition: background 0.3s ease, width 0.3s ease;
+}
+
+.indicator-pill:hover {
+  opacity: 0.7;
+}
+
+.indicator-pill-active {
+  height: 4px;
+  width: 32px;
+  background-color: var(--background-neutral--neutral-strong);
+  border-radius: var(--border-radius-lg);
+  cursor: pointer;
 }
 
 /* ============================================

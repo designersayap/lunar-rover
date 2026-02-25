@@ -223,91 +223,212 @@ const ComponentTreeItem = memo(({
                     ))}
 
                     {/* Internal Configurable Elements (Buttons, Text, etc.) */}
-                    {allChildren.map((child, childIndex) => {
-                        const normalizedSectionId = comp.sectionId?.replace(/-+$/, '') || '';
-                        const currentId = getValueAt(comp.props, child.propId) || (normalizedSectionId ? `${normalizedSectionId}-${child.suffix}` : '');
-                        const isChildActive = activeElementId === currentId;
-                        const prefix = normalizedSectionId ? `${normalizedSectionId}-` : '';
-                        const rawSuffix = currentId.startsWith(prefix) ? currentId.slice(prefix.length) : currentId;
-                        const suffix = rawSuffix.replace(/^-+/, '');
+                    {(() => {
+                        const renderInternalItem = (child, childIndex, currentDepth, parentContext = {}) => {
+                            const propParts = child.propId.split('.');
+                            const itemPath = propParts.slice(0, -1).join('.');
+                            const item = itemPath ? getValueAt(comp.props, itemPath) : null;
+                            const exists = propParts.length > 1 ? !!item : true;
 
-                        return (
-                            <div
-                                key={`prop-${childIndex}`}
-                                className={`${styles.listItem} ${isChildActive ? styles.listItemActive : ''} ${styles.treeRowNested}`}
-                                style={{ paddingLeft: (depth + 1) * 4 + 8 }}
-                                onClick={() => setActiveElementId && setActiveElementId(currentId)}
-                            >
-                                <div
-                                    className={styles.treeIconWrapper}
-                                    style={{ opacity: getValueAt(comp.props, child.visibleProp) === false ? 0.25 : 1 }}
-                                >
-                                    <CursorArrowRaysIcon className={styles.treeIcon} />
-                                </div>
-                                <input
-                                    type="text"
-                                    value={suffix}
-                                    onChange={(e) => {
-                                        const newFullId = prefix + sanitizeId(e.target.value);
-                                        updateComponent(comp.uniqueId, { [child.propId]: newFullId });
-                                    }}
-                                    onBlur={(e) => {
-                                        if (!e.target.value.trim()) {
-                                            updateComponent(comp.uniqueId, { [child.propId]: prefix + child.suffix });
-                                        }
-                                    }}
-                                    onFocus={() => setActiveElementId && setActiveElementId(currentId)}
-                                    onMouseDown={(e) => {
-                                        if (e.metaKey || e.ctrlKey) {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                        } else {
-                                            e.stopPropagation();
-                                        }
-                                    }}
-                                    onDragStart={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                                    onClick={(e) => {
-                                        if (e.metaKey || e.ctrlKey) {
-                                            e.stopPropagation();
-                                            handleSelectToggle(comp.uniqueId, true);
-                                        } else {
-                                            e.stopPropagation();
-                                        }
-                                    }}
-                                    className={styles.treeInputInline}
-                                    style={{
-                                        opacity: getValueAt(comp.props, child.visibleProp) === false ? 0.25 : 1,
-                                        pointerEvents: isChildActive ? 'auto' : 'none'
-                                    }}
-                                />
-                                {/* Actions */}
-                                <div className={styles.treeActions}>
-                                    {child.visibleProp && (
-                                        <Tooltip content={getValueAt(comp.props, child.visibleProp) === false ? "Show" : "Hide"} position="top">
-                                            <button
-                                                className={styles.sidebarDeleteButton}
-                                                onClick={(e) => {
+                            if (!exists) return null;
+
+                            // Filter logic: Check if this item matches all parent context requirements
+                            const contextEntries = Object.entries(parentContext);
+                            if (contextEntries.length > 0 && item) {
+                                const matchesContext = contextEntries.every(([key, value]) => item[key] === value);
+                                if (!matchesContext) return null;
+                            }
+
+                            const normalizedSectionId = comp.sectionId?.replace(/-+$/, '') || '';
+                            const currentId = getValueAt(comp.props, child.propId) || (normalizedSectionId ? `${normalizedSectionId}-${child.suffix}` : '');
+                            const isChildActive = activeElementId === currentId;
+                            const prefix = normalizedSectionId ? `${normalizedSectionId}-` : '';
+                            const rawSuffix = currentId.startsWith(prefix) ? currentId.slice(prefix.length) : currentId;
+                            const suffix = rawSuffix.replace(/^-+/, '');
+                            const hasChildren = child.children && child.children.length > 0;
+                            const isExpanded = expandedSections[`${comp.uniqueId}-${child.propId}`];
+
+                            // Prepare context for children based on provideContext metadata
+                            const nextContext = { ...parentContext };
+                            if (child.provideContext) {
+                                Object.entries(child.provideContext).forEach(([contextKey, propKey]) => {
+                                    // If propKey is provided, get value from props, else use child.propId if not specified
+                                    const value = getValueAt(comp.props, propKey || child.propId);
+                                    nextContext[contextKey] = value;
+                                });
+                            }
+
+                            return (
+                                <div key={`${child.propId}-${childIndex}`}>
+                                    <div
+                                        className={`${styles.listItem} ${isChildActive ? styles.listItemActive : ''} ${styles.treeRowNested}`}
+                                        style={{ paddingLeft: currentDepth * 4 + 8 }}
+                                        onClick={() => setActiveElementId && setActiveElementId(currentId)}
+                                    >
+                                        <div
+                                            className={styles.treeIconWrapper}
+                                            style={{
+                                                opacity: getValueAt(comp.props, child.visibleProp) === false ? 0.25 : 1,
+                                                cursor: hasChildren ? 'pointer' : 'default'
+                                            }}
+                                            onClick={(e) => {
+                                                if (hasChildren) {
                                                     e.stopPropagation();
-                                                    // Default to true if undefined (visible by default) so first click toggles to false
-                                                    const currentVal = getValueAt(comp.props, child.visibleProp) ?? true;
-                                                    updateComponent(comp.uniqueId, { [child.visibleProp]: !currentVal });
-                                                }}
-                                            >
-                                                {getValueAt(comp.props, child.visibleProp) === false ? (
-                                                    <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
-                                                ) : (
-                                                    <>
-                                                        <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
-                                                        <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
-                                                    </>
-                                                )}
-                                            </button>
-                                        </Tooltip>
+                                                    toggleSection(`${comp.uniqueId}-${child.propId}`);
+                                                }
+                                            }}
+                                        >
+                                            {hasChildren ? (
+                                                <FolderIcon className={styles.treeIcon} />
+                                            ) : (
+                                                <CursorArrowRaysIcon className={styles.treeIcon} />
+                                            )}
+                                        </div>
+                                        <input
+                                            type="text"
+                                            value={suffix}
+                                            onChange={(e) => {
+                                                const newFullId = prefix + sanitizeId(e.target.value);
+                                                updateComponent(comp.uniqueId, { [child.propId]: newFullId });
+                                            }}
+                                            onBlur={(e) => {
+                                                if (!e.target.value.trim()) {
+                                                    updateComponent(comp.uniqueId, { [child.propId]: prefix + child.suffix });
+                                                }
+                                            }}
+                                            onFocus={() => setActiveElementId && setActiveElementId(currentId)}
+                                            onMouseDown={(e) => {
+                                                if (e.metaKey || e.ctrlKey) {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                } else {
+                                                    e.stopPropagation();
+                                                }
+                                            }}
+                                            onDragStart={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                                            onClick={(e) => {
+                                                if (e.metaKey || e.ctrlKey) {
+                                                    e.stopPropagation();
+                                                    handleSelectToggle(comp.uniqueId, true);
+                                                } else {
+                                                    e.stopPropagation();
+                                                }
+                                            }}
+                                            className={styles.treeInputInline}
+                                            style={{
+                                                opacity: getValueAt(comp.props, child.visibleProp) === false ? 0.25 : 1,
+                                                pointerEvents: isChildActive ? 'auto' : 'none'
+                                            }}
+                                        />
+                                        {/* Actions */}
+                                        <div className={styles.treeActions}>
+                                            {child.visibleProp && (
+                                                <Tooltip content={getValueAt(comp.props, child.visibleProp) === false ? "Show" : "Hide"} position="top">
+                                                    <button
+                                                        className={styles.sidebarDeleteButton}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            const currentVal = getValueAt(comp.props, child.visibleProp) ?? true;
+                                                            updateComponent(comp.uniqueId, { [child.visibleProp]: !currentVal });
+                                                        }}
+                                                    >
+                                                        {getValueAt(comp.props, child.visibleProp) === false ? (
+                                                            <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
+                                                        ) : (
+                                                            <>
+                                                                <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
+                                                                <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
+                                                            </>
+                                                        )}
+                                                    </button>
+                                                </Tooltip>
+                                            )}
+                                        </div>
+                                    </div>
+                                    {hasChildren && isExpanded && (
+                                        <div className={styles.treeChildren}>
+                                            {child.children.map((subChild, subIndex) => renderInternalItem(subChild, subIndex, currentDepth + 1, nextContext))}
+
+                                            {/* Add Action Link */}
+                                            {child.addAction && (
+                                                <div
+                                                    className={styles.treeAddLink}
+                                                    style={{ paddingLeft: (currentDepth + 1) * 4 + 8 }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        const { targetList, defaults, idPattern, label } = child.addAction;
+                                                        const currentList = getValueAt(comp.props, targetList) || [];
+
+                                                        // Merge parent context and defaults
+                                                        const newDefaults = { ...defaults, ...nextContext };
+
+                                                        // Handle ID patterns if provided (e.g. {categoryId}-{index})
+                                                        if (idPattern) {
+                                                            let newId = idPattern;
+                                                            Object.entries(nextContext).forEach(([k, v]) => {
+                                                                newId = newId.replace(`{${k}}`, v);
+                                                            });
+                                                            newId = newId.replace('{index}', currentList.length);
+
+                                                            // Specific field to update (usually cardId or id)
+                                                            const idField = child.addAction.idField || 'cardId';
+                                                            newDefaults[idField] = newId;
+                                                        }
+
+                                                        updateComponent(comp.uniqueId, {
+                                                            [targetList]: [...currentList, newDefaults]
+                                                        });
+                                                    }}
+                                                >
+                                                    <span>{child.addAction.label || 'Add item'}</span>
+                                                    <PlusIcon className={styles.treeAddIcon} />
+                                                </div>
+                                            )}
+                                        </div>
                                     )}
                                 </div>
-                            </div>
+                            );
+                        };
+
+                        // Filter top-level items: only those that are NOT children of another item
+                        const topLevelInternalItems = allChildren.filter(item => {
+                            return !allChildren.some(parent => parent.children?.some(c => c.propId === item.propId));
+                        });
+
+                        const internalItems = topLevelInternalItems.map((child, index) => renderInternalItem(child, index, depth + 1));
+
+                        return (
+                            <>
+                                {internalItems}
+                                {def.addAction && (
+                                    <div
+                                        className={styles.treeAddLink}
+                                        style={{ paddingLeft: (depth + 1) * 4 + 8 }}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            const { targetList, defaults, idPattern, label } = def.addAction;
+                                            const currentList = getValueAt(comp.props, targetList) || [];
+
+                                            const newDefaults = { ...defaults };
+
+                                            if (idPattern) {
+                                                let newId = idPattern.replace('{index}', currentList.length);
+                                                const idField = def.addAction.idField || 'cardId';
+                                                newDefaults[idField] = newId;
+                                            }
+
+                                            updateComponent(comp.uniqueId, {
+                                                [targetList]: [...currentList, newDefaults]
+                                            });
+                                        }}
+                                    >
+                                        <span>{def.addAction.label || 'Add item'}</span>
+                                        <PlusIcon className={styles.treeAddIcon} />
+                                    </div>
+                                )}
+                            </>
                         );
-                    })}
+                    })()}
                 </div>
             )}
         </div>
