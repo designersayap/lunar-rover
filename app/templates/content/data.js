@@ -399,5 +399,5 @@ export const componentDefaults = {
                 categoryId: "cat-4", cardId: `p4-${i}`, visible: true
             }))
         ]
-    }
+    },
 };
