@@ -59,6 +59,7 @@ export const COMPONENT_REGISTRY = {
     "background-full-body": BackgroundFullBody,
 
     "testimonial-terra": TerraTestimony,
+    "product-carousel-terra": TerraProductCarousel,
     "terra-product-carousel": TerraProductCarousel,
 
     "footer-terra": TerraFooter,
