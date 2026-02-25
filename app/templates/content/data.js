@@ -371,29 +371,29 @@ export const componentDefaults = {
         ],
         products: [
             ...Array(4).fill().map((_, i) => ({
-                name: "Product name 1",
-                description: "Product description 1",
+                name: "Product 1",
+                description: "Description 1",
                 image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
                 buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
                 categoryId: "cat-1", cardId: `p1-${i}`, visible: true
             })),
             ...Array(4).fill().map((_, i) => ({
-                name: "Product name 2",
-                description: "Product description 2",
+                name: "Product 2",
+                description: "Description 2",
                 image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
                 buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
                 categoryId: "cat-2", cardId: `p2-${i}`, visible: true
             })),
             ...Array(4).fill().map((_, i) => ({
-                name: "Product name 3",
-                description: "Product description 3",
+                name: "Product 3",
+                description: "Description 3",
                 image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
                 buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
                 categoryId: "cat-3", cardId: `p3-${i}`, visible: true
             })),
             ...Array(4).fill().map((_, i) => ({
-                name: "Product name 4",
-                description: "Product description 4",
+                name: "Product 4",
+                description: "Description 4",
                 image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
                 buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
                 categoryId: "cat-4", cardId: `p4-${i}`, visible: true

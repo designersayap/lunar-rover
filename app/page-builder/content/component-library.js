@@ -704,9 +704,9 @@ export const componentLibrary = {
     "Products": [
         {
             id: "product-carousel-terra",
-            name: "Products Carousell - Terra",
+            name: "Product Carousel - Terra",
             component: TerraProductCarousel,
-            thumbnail: "https://space.lunaaar.site/assets-lunar/placeholder.svg", // Reusing placeholder for now
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-product-carousel-terra.svg",
             config: [
                 {
                     name: "categories",
