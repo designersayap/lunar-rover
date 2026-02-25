@@ -181,7 +181,7 @@ export default function TerraProductCarousel({
                     </div>
 
                     {/* Carousel */}
-                    <div className={styles.carouselContainer}>
+                    <div className={`${styles.carouselContainer} ${fullWidth ? styles.fullWidthContainer : ''}`}>
                         {/* Navigation Buttons (Desktop mostly) */}
                         {filteredProducts.filter(p => p.visible !== false).length >= threshold && (
                             <button className={`btn btn-outline btn-icon btn-md ${styles.navButtonWrapper} ${styles.navLeft}`} onClick={scrollLeft}>
