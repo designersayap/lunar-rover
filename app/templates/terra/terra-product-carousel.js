@@ -11,8 +11,8 @@ import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { componentDefaults } from "../content/data";
 
 export default function TerraProductCarousel({
-    categories = componentDefaults["terra-product-carousel"].categories,
-    products = componentDefaults["terra-product-carousel"].products,
+    categories = componentDefaults["product-carousel-terra"].categories,
+    products = componentDefaults["product-carousel-terra"].products,
     sectionId,
     onUpdate,
     fullWidth,

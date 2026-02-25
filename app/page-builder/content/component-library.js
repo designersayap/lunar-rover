@@ -703,8 +703,8 @@ export const componentLibrary = {
     ],
     "Products": [
         {
-            id: "terra-product-carousel",
-            name: "Products - Terra Carousel",
+            id: "product-carousel-terra",
+            name: "Products Carousell - Terra",
             component: TerraProductCarousel,
             thumbnail: "https://space.lunaaar.site/assets-lunar/placeholder.svg", // Reusing placeholder for now
             config: [
@@ -712,13 +712,13 @@ export const componentLibrary = {
                     name: "categories",
                     label: "Categories",
                     type: "list",
-                    default: componentDefaults["terra-product-carousel"].categories
+                    default: componentDefaults["product-carousel-terra"].categories
                 },
                 {
                     name: "products",
                     label: "Products",
                     type: "list",
-                    default: componentDefaults["terra-product-carousel"].products
+                    default: componentDefaults["product-carousel-terra"].products
                 }
             ],
             links: [
