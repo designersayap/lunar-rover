@@ -20,7 +20,6 @@ export default function TestimonialTerra({
     const scrollContainerRef = useRef(null);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
-    const threshold = fullWidth ? 5 : 4;
 
     // Fix: Use a ref to hold the latest state so the callback can be stable
     // (BuilderText ignores prop changes to onChange for performance, so we must provide a stable function)
@@ -100,7 +99,7 @@ export default function TestimonialTerra({
 
     useEffect(() => {
         const autoScrollInterval = setInterval(() => {
-            if (!scrollContainerRef.current || isPaused) return;
+            if (!scrollContainerRef.current || isPaused || totalPages <= 1) return;
 
             const nextPage = (currentPage + 1) % totalPages;
             scrollToPage(nextPage);
@@ -132,7 +131,7 @@ export default function TestimonialTerra({
                     <div
                         ref={scrollContainerRef}
                         className={styles.cardsWrapper}
-                        style={{ justifyContent: filteredTestimonies.filter(t => t.visible !== false).length < threshold ? 'center' : 'start' }}
+                        style={{ justifyContent: totalPages === 1 ? 'center' : 'start' }}
                         onMouseEnter={() => setIsPaused(true)}
                         onMouseLeave={() => setIsPaused(false)}
                     >
@@ -210,7 +209,7 @@ export default function TestimonialTerra({
                         ))}
                     </div>
 
-                    {totalPages > 1 && filteredTestimonies.filter(t => t.visible !== false).length >= threshold && (
+                    {totalPages > 1 && (
                         <div className="scroll-indicator-pills">
                             {Array.from({ length: totalPages }).map((_, index) => (
                                 <div

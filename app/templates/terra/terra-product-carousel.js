@@ -23,7 +23,6 @@ export default function TerraProductCarousel({
     const [activeCategoryId, setActiveCategoryId] = useState(categories[0]?.id || null);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
-    const threshold = fullWidth ? 5 : 4;
 
     // Calculate which products to show based on active category
     let filteredProducts = products.filter(p => (p.categoryId === activeCategoryId || !activeCategoryId));
@@ -183,7 +182,7 @@ export default function TerraProductCarousel({
                     {/* Carousel */}
                     <div className={`${styles.carouselContainer} ${fullWidth ? styles.fullWidthContainer : ''}`}>
                         {/* Navigation Buttons (Desktop mostly) */}
-                        {filteredProducts.filter(p => p.visible !== false).length >= threshold && (
+                        {totalPages > 1 && (
                             <button className={`btn btn-outline btn-icon btn-md ${styles.navButtonWrapper} ${styles.navLeft}`} onClick={scrollLeft}>
                                 <ArrowUpRightIcon className="icon" style={{ transform: 'rotate(-135deg)' }} />
                             </button>
@@ -192,7 +191,7 @@ export default function TerraProductCarousel({
                         <div
                             ref={scrollContainerRef}
                             className={styles.cardsWrapper}
-                            style={{ justifyContent: filteredProducts.filter(p => p.visible !== false).length < threshold ? 'center' : 'start' }}
+                            style={{ justifyContent: totalPages === 1 ? 'center' : 'start' }}
                         >
                             {categories.map((cat, catIndex) => {
                                 const productsInCategory = products.filter(p => p.categoryId === cat.id || (!cat.id && !p.categoryId));
@@ -286,7 +285,7 @@ export default function TerraProductCarousel({
                             })}
                         </div>
 
-                        {filteredProducts.filter(p => p.visible !== false).length >= threshold && (
+                        {totalPages > 1 && (
                             <button className={`btn btn-outline btn-icon btn-md ${styles.navButtonWrapper} ${styles.navRight}`} onClick={scrollRight}>
                                 <ArrowUpRightIcon className="icon" style={{ transform: 'rotate(45deg)' }} />
                             </button>
@@ -294,7 +293,7 @@ export default function TerraProductCarousel({
                     </div>
 
                     {/* Simple Scroll Indicator underneath */}
-                    {totalPages > 1 && filteredProducts.filter(p => p.visible !== false).length >= threshold && (
+                    {totalPages > 1 && (
                         <div className="scroll-indicator-pills">
                             {Array.from({ length: totalPages }).map((_, index) => (
                                 <div
