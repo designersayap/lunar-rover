@@ -89,6 +89,12 @@ export default function BuilderControlsPopover({
     showAspectRatio,
     aspectRatio,
     onAspectRatioChange,
+    title,
+    onTitleChange,
+    showTitle = false,
+    subtitle,
+    onSubtitleChange,
+    showSubtitle = false,
     mode = 'all' // 'all', 'style', 'link'
 }) {
 
@@ -398,6 +404,34 @@ export default function BuilderControlsPopover({
                                     value={imageSrc || ''}
                                     onChange={(e) => onImageSrcChange && onImageSrcChange(e.target.value)}
                                     placeholder="https://example.com/image.jpg OR video.mp4"
+                                    onFocus={(e) => e.target.select()}
+                                />
+                            </div>
+                        )}
+
+                        {(mode === 'all' || mode === 'style') && showTitle && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: 'var(--pb-space-sm)' }}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>TikTok Metadata</label>
+                                <StopPropagationInput
+                                    type="text"
+                                    className={`${styles.formInput}`}
+                                    value={title || ''}
+                                    onChange={(e) => onTitleChange && onTitleChange(e.target.value)}
+                                    placeholder="SEO Title / Video Name"
+                                    onFocus={(e) => e.target.select()}
+                                />
+                            </div>
+                        )}
+
+                        {(mode === 'all' || mode === 'style') && showSubtitle && (
+                            <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: 'var(--pb-space-sm)' }}>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>aria-label</label>
+                                <StopPropagationInput
+                                    type="text"
+                                    className={`${styles.formInput}`}
+                                    value={subtitle || ''}
+                                    onChange={(e) => onSubtitleChange && onSubtitleChange(e.target.value)}
+                                    placeholder="Accessibility Description"
                                     onFocus={(e) => e.target.select()}
                                 />
                             </div>

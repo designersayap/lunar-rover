@@ -57,12 +57,16 @@
 }
 
 .itemWrapper {
-    min-width: 320px;
-    /* Base width including shadow safe space */
-    max-width: 340px;
+    width: 340px;
     flex: 0 0 auto;
     scroll-snap-align: start;
-    padding: var(--space-120) var(--space-80);
+    padding: var(--padding-md);
+}
+
+@container (max-width: 1023px) {
+    .itemWrapper {
+        width: 300px;
+    }
 }
 
 /* Card Styling */

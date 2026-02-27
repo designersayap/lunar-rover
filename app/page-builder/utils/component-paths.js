@@ -16,6 +16,8 @@ export const COMPONENT_PATHS = {
     "media-4-3": "app/templates/media/media-4-3.js",
     "media-21-9": "app/templates/media/media-21-9.js",
 
+    "social-bridge-tiktok": "app/templates/social-bridge/tiktok-embed.js",
+
     "navigation-center": "app/templates/navigation/navigation-center.js",
     "navigation-left": "app/templates/navigation/navigation-left.js",
     "navigation-right": "app/templates/navigation/navigation-right.js",

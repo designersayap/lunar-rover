@@ -5,7 +5,7 @@
 .cardsWrapper {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: 25%;
+    grid-auto-columns: 340px;
     justify-content: flex-start;
     overflow-x: auto;
     overflow-y: hidden;
@@ -25,9 +25,9 @@
     min-width: 0;
 }
 
-@container (min-width: 1280px) {
+@container (min-width: 1024px) {
     .cardsWrapper {
-        grid-auto-columns: 25%;
+        grid-auto-columns: 340px;
     }
 
     .itemWrapper {
@@ -36,31 +36,9 @@
     }
 }
 
-@container (min-width: 1024px) and (max-width: 1280px) {
+@container (max-width: 1023px) {
     .cardsWrapper {
-        grid-auto-columns: 30%;
-    }
-
-    .itemWrapper {
-        width: 100%;
-        min-width: 0;
-    }
-}
-
-@container (min-width: 768px) and (max-width: 1023px) {
-    .cardsWrapper {
-        grid-auto-columns: 320px;
-    }
-
-    .itemWrapper {
-        width: 100%;
-        min-width: 0;
-    }
-}
-
-@container (max-width: 767px) {
-    .cardsWrapper {
-        grid-auto-columns: 320px;
+        grid-auto-columns: 300px;
     }
 
     .itemWrapper {
@@ -75,6 +53,7 @@
     aspect-ratio: 4/5;
     background: var(--background-neutral--default);
     border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow--md);
     overflow: hidden;
     transform: translateZ(0);
 }

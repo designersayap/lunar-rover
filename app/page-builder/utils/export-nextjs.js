@@ -248,12 +248,13 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
             } catch { /* CSS is optional */ }
 
             // C. Find and Process Dependencies (Recursive) - Match standard imports
-            const importRegex = /(?:import\s+(?:[\w{},*\s]+)\s+from\s+['"]([^'"]+)['"]|import\(['"]([^'"]+)['"]\))/g;
+            const importRegex = /(?:import\s+([\w{},*\s]+)\s+from\s+['"]([^'"]+)['"]|import\(['"]([^'"]+)['"]\))/g;
 
             const matches = [...content.matchAll(importRegex)];
 
             for (const match of matches) {
-                const importPath = match[1] || match[2]; // Group 1 is static, Group 2 is dynamic
+                const importSpecs = match[1];
+                const importPath = match[2] || match[3]; // Group 2 is static, Group 3 is dynamic
 
                 // Filter: Only process relative paths (.) and project aliases (@/)
                 // Ignore external packages (next, react, etc.)
@@ -268,9 +269,9 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                 // Explicitly exclude page.module.css (Builder specific styles)
                 if (importPath.includes('page.module.css')) {
                     // Remove import but define styles object to prevent "styles is not defined" error
-                    // We assume the import was like: import styles from '...'
-                    // If it was a named import this might fail but for modules it's usually default
-                    content = content.replace(match[0], 'const styles = {};');
+                    // We dynamically use the captured import name (e.g. 'builderStyles', 'styles', etc.)
+                    const importName = importSpecs?.trim() || 'styles';
+                    content = content.replace(match[0], `const ${importName} = {};`);
                     continue;
                 }
 

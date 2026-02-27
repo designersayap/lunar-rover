@@ -7,6 +7,12 @@ import { Toaster } from "sonner";
 export const metadata = {
   title: "Lunar: Template Generator",
   description: "Crafting perfection, ready to deploy",
+  icons: {
+    apple: [
+      { url: "/images/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/images/apple-touch-icon-precomposed.png", sizes: "180x180", type: "image/png", rel: "apple-touch-icon-precomposed" },
+    ],
+  },
 };
 
 export default function RootLayout({ children }) {

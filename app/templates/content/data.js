@@ -400,4 +400,17 @@ export const componentDefaults = {
             }))
         ]
     },
+    "social-bridge-tiktok": {
+        videos: Array(4).fill({
+            videoUrl: "",
+            name: "",
+            description: "",
+            thumbnailUrl: "",
+            fetchedUrl: "",
+            cardId: "",
+            visible: true
+        }),
+        fullWidth: false,
+        allowAutoplay: true,
+    },
 };

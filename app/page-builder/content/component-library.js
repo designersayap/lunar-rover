@@ -25,6 +25,7 @@ const SpacingMedium = dynamic(() => import("@/app/templates/spacing/spacing-medi
 const SpacingLarge = dynamic(() => import("@/app/templates/spacing/spacing-large"));
 const FloatingActionButton = dynamic(() => import("@/app/templates/cta/floating-action-button"));
 const TerraProductCarousel = dynamic(() => import("@/app/templates/terra/terra-product-carousel"));
+const TikTokEmbed = dynamic(() => import("@/app/templates/social-bridge/tiktok-embed"));
 
 export const componentLibrary = {
     "Background": [
@@ -514,6 +515,50 @@ export const componentLibrary = {
                     visibleProp: "imageVisible"
                 }
             ]
+        },
+    ],
+    "social-bridge": [
+        {
+            id: "social-bridge-tiktok",
+            name: "Social Bridge - TikTok",
+            component: TikTokEmbed,
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnailsocial-bridge-tiktok.svg",
+            config: [
+                {
+                    name: "fullWidth",
+                    label: "Full Width",
+                    type: "boolean",
+                    default: componentDefaults["social-bridge-tiktok"].fullWidth
+                },
+                {
+                    name: "allowAutoplay",
+                    label: "Allow Auto-play",
+                    type: "boolean",
+                    default: componentDefaults["social-bridge-tiktok"].allowAutoplay
+                },
+                {
+                    name: "videos",
+                    label: "Videos",
+                    type: "list",
+                    default: componentDefaults["social-bridge-tiktok"].videos
+                },
+            ],
+            addAction: {
+                targetList: "videos",
+                label: "TikTok Video",
+                idPattern: "video-{index}",
+                defaults: {
+                    videoUrl: "",
+                    name: "",
+                    description: "",
+                    thumbnailUrl: "",
+                    fetchedUrl: "",
+                    visible: true
+                }
+            },
+            links: Array.from({ length: 20 }, (_, i) => ({
+                label: `Video ${i + 1}`, propId: `videos.${i}.cardId`, suffix: `video-${i}`, visibleProp: `videos.${i}.visible`
+            }))
         }
     ],
     "Feature": [

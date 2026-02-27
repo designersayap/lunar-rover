@@ -41,6 +41,7 @@ export function useIdSync({ id, sectionId, suffix, onIdChange }) {
         prevSectionIdRef.current = sectionId;
     }, [sectionId, elementId, onIdChange]);
 
+
     return {
         elementId,
         prefix,
