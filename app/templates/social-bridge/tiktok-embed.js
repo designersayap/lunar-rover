@@ -31,7 +31,8 @@ const isShortUrl = (url) => url?.includes('tiktok.com/') && (url?.includes('vt.'
 // --- Sub-components ---
 const TikTokCard = memo(({
     item,
-    index,
+    index, // Original index in videos array
+    displayIndex, // Index in filtered display list
     sectionId,
     videos,
     onUpdate,
@@ -102,7 +103,7 @@ const TikTokCard = memo(({
     };
 
     const videoId = getTikTokVideoId(item.videoUrl);
-    const isPlayed = playingIndex === index;
+    const isPlayed = playingIndex === displayIndex;
     const [hasLoaded, setHasLoaded] = useState(false);
     const iframeRef = useRef(null);
 
@@ -136,45 +137,38 @@ const TikTokCard = memo(({
     useEffect(() => {
         if (!item.videoUrl || item.videoUrl === item.fetchedUrl) return;
 
-        const currentName = item.name || '';
-        const currentDesc = item.description || '';
-        const isDefaultName = !currentName || currentName === 'TikTok Video' || currentName === '';
-        const isDefaultDesc = !currentDesc || currentDesc === 'TikTok Video Description' || currentDesc === '';
         const needsThumbnail = !item.thumbnailUrl;
 
-        // Only fetch if defaults are present or thumbnail is missing
-        if (isDefaultName || isDefaultDesc || needsThumbnail) {
-            const vId = getTikTokVideoId(item.videoUrl);
-            if (vId) {
-                fetch(`/api/oembed?url=${encodeURIComponent(item.videoUrl)}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        // Update values and mark as fetched regardless of success
-                        // to prevent infinite loops if API returns empty data
-                        const updates = { fetchedUrl: item.videoUrl };
+        // Fetch whenever URL changes to ensure metadata (title/desc/aria-label) is in sync
+        const vId = getTikTokVideoId(item.videoUrl);
+        if (vId) {
+            fetch(`/api/oembed?url=${encodeURIComponent(item.videoUrl)}`)
+                .then(res => res.json())
+                .then(data => {
+                    // Update values and mark as fetched regardless of success
+                    const updates = { fetchedUrl: item.videoUrl };
 
-                        if (data) {
-                            if (isDefaultName && data.title) updates.name = data.title;
-                            if (isDefaultDesc) {
-                                const author = data.author_name || 'TikTok Creator';
-                                updates.description = data.description || `Video by ${author}`;
-                            }
-                            if (needsThumbnail && data.thumbnail_url) updates.thumbnailUrl = data.thumbnail_url;
-                        }
+                    if (data) {
+                        if (data.title) updates.name = data.title;
 
-                        // Batch update the video item
-                        const newVideos = [...videos];
-                        newVideos[index] = { ...newVideos[index], ...updates };
-                        onUpdate({ videos: newVideos });
-                    })
-                    .catch(err => {
-                        console.warn("TikTok metadata fetch failed.", err);
-                        // Still mark as attempted to prevent looping
-                        updateVideo(index, 'fetchedUrl', item.videoUrl);
-                    });
-            }
+                        const author = data.author_name || 'TikTok Creator';
+                        updates.description = data.description || `Video by ${author}`;
+
+                        if (data.thumbnail_url) updates.thumbnailUrl = data.thumbnail_url;
+                    }
+
+                    // Batch update the video item
+                    const newVideos = [...videos];
+                    newVideos[index] = { ...newVideos[index], ...updates };
+                    onUpdate({ videos: newVideos });
+                })
+                .catch(err => {
+                    console.warn("TikTok metadata fetch failed.", err);
+                    // Still mark as attempted to prevent looping
+                    updateVideo(index, 'fetchedUrl', item.videoUrl);
+                });
         }
-    }, [item.videoUrl, item.fetchedUrl, item.name, item.description, item.thumbnailUrl, index, videos, onUpdate, updateVideo]);
+    }, [item.videoUrl, item.fetchedUrl, index, videos, onUpdate, updateVideo]);
 
     return (
         <>
@@ -214,7 +208,7 @@ const TikTokCard = memo(({
                                 {!isPlayed && (
                                     <div
                                         className={styles.facade}
-                                        onClick={(e) => { e.stopPropagation(); handlePlay(index); }}
+                                        onClick={(e) => { e.stopPropagation(); handlePlay(displayIndex); }}
                                         style={item.thumbnailUrl ? {
                                             backgroundImage: `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url(${item.thumbnailUrl})`,
                                             backgroundSize: 'cover',
@@ -222,7 +216,7 @@ const TikTokCard = memo(({
                                         } : {}}
                                     >
                                         <div className={styles.overlay} />
-                                        <div className={styles.playButton} onClick={(e) => { e.stopPropagation(); handlePlay(index); }}>
+                                        <div className={styles.playButton} onClick={(e) => { e.stopPropagation(); handlePlay(displayIndex); }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={styles.playIcon}>
                                                 <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd" />
                                             </svg>
@@ -334,10 +328,21 @@ export default function TikTokEmbed({
     };
 
     const visibleCount = videos.filter(v => v.visible !== false).length;
-    let filteredVideos = videos;
-    if (visibleCount === 0 && videos.length > 0) {
-        filteredVideos = [videos[0]];
+    const filteredVideos = videos
+        .map((v, i) => ({ ...v, originalIndex: i }))
+        .filter(v => v.visible !== false);
+
+    let displayVideos = filteredVideos;
+    if (filteredVideos.length === 0 && videos.length > 0) {
+        displayVideos = [{ ...videos[0], originalIndex: 0 }];
     }
+
+    // Ensure playingIndex is valid for displayVideos
+    useEffect(() => {
+        if (playingIndex !== null && playingIndex >= displayVideos.length) {
+            setPlayingIndex(displayVideos.length > 0 ? 0 : null);
+        }
+    }, [displayVideos.length, playingIndex]);
 
     // Carousel Logic
     const visibleVideosString = filteredVideos.map(v => v.visible).join(',');
@@ -362,7 +367,7 @@ export default function TikTokEmbed({
             window.removeEventListener('resize', calculatePages);
             clearTimeout(timer);
         };
-    }, [filteredVideos.length, visibleVideosString]);
+    }, [displayVideos.length, visibleVideosString]);
 
     useEffect(() => {
         const container = scrollContainerRef.current;
@@ -407,10 +412,10 @@ export default function TikTokEmbed({
 
     // Sequential Auto-Play Timer
     useEffect(() => {
-        if (!allowAutoplay || !isInView || playingIndex === null || filteredVideos.length <= 1) return;
+        if (!allowAutoplay || !isInView || playingIndex === null || displayVideos.length <= 1) return;
 
         const interval = setInterval(() => {
-            const nextIndex = (playingIndex + 1) % filteredVideos.length;
+            const nextIndex = (playingIndex + 1) % displayVideos.length;
             setPlayingIndex(nextIndex);
             scrollToCard(nextIndex);
         }, PLAY_INTERVAL);
@@ -427,7 +432,7 @@ export default function TikTokEmbed({
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        "itemListElement": filteredVideos.map((video, idx) => {
+        "itemListElement": displayVideos.map((video, idx) => {
             const vId = getTikTokVideoId(video.videoUrl);
             return {
                 "@type": "ListItem",
@@ -468,11 +473,12 @@ export default function TikTokEmbed({
                             className={styles.cardsWrapper}
                             style={{ justifyContent: totalPages === 1 ? 'center' : 'start' }}
                         >
-                            {filteredVideos.map((item, index) => (
+                            {displayVideos.map((item, index) => (
                                 <TikTokCard
-                                    key={index}
+                                    key={item.originalIndex}
                                     item={item}
-                                    index={index}
+                                    index={item.originalIndex}
+                                    displayIndex={index}
                                     sectionId={sectionId}
                                     videos={videos}
                                     onUpdate={onUpdate}
