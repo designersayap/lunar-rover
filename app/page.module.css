@@ -1067,6 +1067,10 @@
     flex-direction: column;
 }
 
+.borderTopBrand {
+    border-top: 2px solid var(--pb-lunar-300);
+}
+
 .categoryHeader {
     padding: var(--pb-space-sm) var(--pb-space-lg) 0;
     cursor: default;
