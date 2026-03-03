@@ -8,6 +8,7 @@ const FeatureImageLeft = dynamic(() => import("@/app/templates/feature/feature-i
 const FeatureImageRight = dynamic(() => import("@/app/templates/feature/feature-image-right"));
 const DialogItemList = dynamic(() => import("@/app/templates/dialog/dialog-item-list"));
 const DialogAccordion = dynamic(() => import("@/app/templates/dialog/dialog-accordion"));
+const DialogForm = dynamic(() => import("@/app/templates/dialog/dialog-form"));
 const OsmBanner = dynamic(() => import("@/app/templates/osm/osm-banner"));
 const TestimonialTerra = dynamic(() => import("@/app/templates/terra/terra-testimony"));
 const Media16x9 = dynamic(() => import("@/app/templates/media/media-16-9"));
@@ -959,6 +960,95 @@ export const componentLibrary = {
                 { label: "Accordion 6", propId: "item5Id", suffix: "accordion-5", visibleProp: "item5Visible" },
                 { label: "Accordion 7", propId: "item6Id", suffix: "accordion-6", visibleProp: "item6Visible" },
                 { label: "Accordion 8", propId: "item7Id", suffix: "accordion-7", visibleProp: "item7Visible" }
+            ]
+        },
+        {
+            id: "dialog-form",
+            name: "Dialog - Form",
+            component: DialogForm,
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-dialog-item-list.svg",
+            config: [
+                {
+                    name: "title",
+                    label: "Title",
+                    type: "text",
+                    default: componentDefaults["dialog-form"].title
+                },
+                {
+                    name: "description",
+                    label: "Description",
+                    type: "text",
+                    default: componentDefaults["dialog-form"].description
+                },
+                {
+                    name: "image",
+                    label: "Image",
+                    type: "image"
+                },
+                {
+                    name: "marketingConsentLabel",
+                    label: "Marketing Consent Label",
+                    type: "text",
+                    default: componentDefaults["dialog-form"].marketingConsentLabel
+                },
+                {
+                    name: "collectionConsentLabel",
+                    label: "Collection Consent Label",
+                    type: "text",
+                    default: componentDefaults["dialog-form"].collectionConsentLabel
+                }
+            ],
+            texts: [
+                {
+                    label: "Full Name Field",
+                    propId: "nameFieldId",
+                    suffix: "name-field",
+                    visibleProp: "nameVisible",
+                },
+                {
+                    label: "Email Field",
+                    propId: "emailFieldId",
+                    suffix: "email-field",
+                    visibleProp: "emailVisible",
+                },
+                {
+                    label: "WhatsApp Number Field",
+                    propId: "whatsappFieldId",
+                    suffix: "whatsapp-field",
+                    visibleProp: "whatsappVisible",
+                },
+                {
+                    label: "Gender Field",
+                    propId: "genderFieldId",
+                    suffix: "gender-field",
+                    visibleProp: "genderVisible",
+                },
+                {
+                    label: "Date of Birth Field",
+                    propId: "dobFieldId",
+                    suffix: "dob-field",
+                    visibleProp: "dobVisible",
+                },
+                {
+                    label: "marketing-consent",
+                    propId: "marketingConsentId",
+                    suffix: "marketing-consent",
+                    visibleProp: "marketingConsentVisible",
+                },
+                {
+                    label: "collection-consent",
+                    propId: "collectionConsentId",
+                    suffix: "collection-consent",
+                    visibleProp: "collectionConsentVisible",
+                }
+            ],
+            images: [
+                {
+                    label: "Image",
+                    propId: "imageId",
+                    suffix: "image",
+                    visibleProp: "imageVisible"
+                }
             ]
         }
     ],

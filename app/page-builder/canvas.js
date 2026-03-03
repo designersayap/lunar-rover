@@ -9,7 +9,9 @@ import { CanvasContext } from "./utils/canvas-context";
 
 export default function Canvas({
     selectedComponents,
-    updateComponent
+    updateComponent,
+    brandName,
+    pageTitle
 }) {
     const { setActiveElementId, activeElementId, selectedElementIds = [], toggleElementSelection } = useBuilderSelection();
 
@@ -240,6 +242,8 @@ export default function Canvas({
                                                 {...item.props}
                                                 sectionId={item.sectionId}
                                                 uniqueId={item.uniqueId}
+                                                brandName={brandName}
+                                                pageTitle={pageTitle}
                                                 onUpdate={(newProps) => updateComponent(item.uniqueId, newProps)}
                                                 updateComponent={updateComponent}
                                             />

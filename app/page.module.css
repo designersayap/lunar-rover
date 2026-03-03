@@ -593,12 +593,14 @@
     /* Slightly taller for better touch targets */
 }
 
-.formInput:focus {
+.formInput:focus,
+.formInput:focus-within {
     border-color: var(--pb-neutral-300);
 }
 
 .formInput::placeholder {
-    color: var(--pb-neutral-300);
+    color: var(--pb-neutral-100);
+    opacity: 0.5;
 }
 
 .formTextarea {

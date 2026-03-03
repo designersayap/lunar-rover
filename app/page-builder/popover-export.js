@@ -11,8 +11,11 @@ export default function ExportPopover({
     className = "",
     analyticsData,
     setAnalyticsData,
-    handleDirectExport
+    handleDirectExport,
+    themes = [],
+    selectedThemeId = "theme"
 }) {
+    const selectedBrand = themes.find(t => t.id === selectedThemeId)?.name || "Lunar";
     const [pageTitle, setPageTitle] = useState(analyticsData.websiteTitle || "");
     const [favicon, setFavicon] = useState(analyticsData.favicon || "");
     const [faviconStatus, setFaviconStatus] = useState('idle'); // idle, valid, error
@@ -78,13 +81,45 @@ export default function ExportPopover({
                     {/* Page Title Input */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--pb-space-xs)', marginBottom: 'var(--pb-space-sm)' }}>
                         <label className={styles.formInputTitle}>Page Title</label>
-                        <input
-                            type="text"
-                            value={pageTitle}
-                            onChange={handlePageTitleChange}
+                        <div
                             className={styles.formInput}
-                            placeholder="My Awesome Page"
-                        />
+                            style={{
+                                display: 'flex',
+                                alignItems: 'stretch',
+                                padding: 0,
+                                overflow: 'hidden'
+                            }}
+                        >
+                            <div style={{
+                                padding: '0 var(--pb-space-md)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                                borderRight: '1px solid var(--pb-bdr)',
+                                color: 'var(--pb-neutral-100)',
+                                opacity: 0.5,
+                                fontSize: 'var(--pb-font-size-90)',
+                                whiteSpace: 'nowrap'
+                            }}>
+                                {selectedBrand}
+                            </div>
+                            <input
+                                type="text"
+                                className={styles.formInput}
+                                value={pageTitle}
+                                onChange={handlePageTitleChange}
+                                placeholder="Write you campaign name here"
+                                style={{
+                                    flex: 1,
+                                    border: 'none',
+                                    background: 'transparent',
+                                    color: 'var(--pb-white)',
+                                    paddingLeft: 'var(--pb-space-md)',
+                                    fontSize: 'var(--pb-font-size-90)',
+                                    outline: 'none'
+                                }}
+                            />
+                        </div>
                     </div>
 
                     {/* Favicon Input */}

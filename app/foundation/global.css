@@ -782,6 +782,193 @@ strong {
   }
 }
 
+/* ============================================
+   FORM COMPONENTS
+   ============================================ */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xs);
+}
+
+.form-label {
+  color: var(--content-neutral--body);
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: var(--padding-xs) var(--padding-md);
+  border: 1px solid var(--stroke-neutral--neutral);
+  border-radius: var(--border-radius-button);
+  background-color: var(--background-neutral--default);
+  color: var(--content-neutral--body);
+  font-family: var(--font-family-body);
+  font-size: var(--typography-font-size-paragraph-md);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  height: var(--size-button-md);
+}
+
+.form-input::placeholder {
+  color: var(--content-neutral--body-subtle);
+  opacity: 1;
+  /* Firefox */
+}
+
+/* Fix date input separator color to match placeholder text */
+.form-input[type="date"]::-webkit-datetime-edit-text {
+  color: var(--content-neutral--body-subtle);
+}
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M8 9l4-4 4 4m0 6l-4 4-4-4' /%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--padding-md) center;
+  background-size: var(--size-icon-sm);
+  padding-right: calc(var(--padding-md) + var(--size-icon-sm) + var(--padding-xs));
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-input-prefix-wrapper:focus-within {
+  outline: none;
+  border-color: var(--background-brand--button--primary-default);
+  box-shadow: 0 0 0 2px var(--background-brand--brand-mute);
+}
+
+/* Phone Number Prefix Styles */
+.form-input-prefix-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--stroke-neutral--neutral);
+  border-radius: var(--border-radius-lg);
+  background-color: var(--background-neutral--default);
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  height: var(--size-button-md);
+  width: 100%;
+}
+
+.form-prefix {
+  padding-left: var(--padding-md);
+  padding-right: var(--padding-sm);
+  color: var(--content-neutral--body-subtle);
+  background-color: var(--background-neutral--neutral-faint);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid var(--stroke-neutral--neutral);
+  font-family: var(--font-family-body);
+  font-size: var(--typography-font-size-paragraph-md);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.form-input-prefix-wrapper .form-input {
+  border: none !important;
+  border-radius: 0 !important;
+  height: 100% !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding-left: var(--padding-sm) !important;
+}
+
+/* Checkbox Styles */
+.form-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  cursor: pointer;
+  user-select: none;
+}
+
+.form-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: var(--size-icon-md);
+  height: var(--size-icon-md);
+  border: 2px solid var(--stroke-neutral--neutral);
+  border-radius: var(--border-radius-button);
+  background-color: var(--background-neutral--default);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.form-checkbox:checked {
+  background-color: var(--background-brand--button--primary-default);
+  border-color: var(--background-brand--button--primary-default);
+}
+
+.form-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 8px;
+  height: 4px;
+  border-left: 1.5px solid var(--content-neutral--button--primary);
+  border-bottom: 1.5px solid var(--content-neutral--button--primary);
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.form-checkbox:focus-visible {
+  outline: 2px solid var(--stroke-brand--brand);
+  outline-offset: 2px;
+}
+
+.form-checkbox-label {
+  color: var(--content-neutral--body);
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.form-checkbox-label a {
+  color: var(--background-brand--button--primary-default);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.form-checkbox-label a:hover {
+  text-decoration: underline;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.w-full {
+  width: 100%;
+}
+
+.px-md {
+  padding-left: var(--padding-md);
+  padding-right: var(--padding-md);
+}
+
+.pb-md {
+  padding-bottom: var(--padding-md);
+}
+
+.mt-xs {
+  margin-top: var(--gap-xs);
+}
+
+.mt-md {
+  margin-top: var(--gap-md);
+}
+
 /* Container Query Support for Page Builder */
 @container (max-width: 767px) {
   .mobile-aspect-1-1 {

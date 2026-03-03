@@ -278,11 +278,23 @@ export function useTemplateLogic() {
     const handleDirectExport = useCallback(async () => {
         try {
             showToast("Preparing export...", "info");
+
+            const selectedBrand = themes.find(t => t.id === selectedThemeId)?.name || "Lunar";
             const activeThemePath = themes.find(t => t.id === selectedThemeId)?.path || "/themes/theme.css";
+
+            // Prepare analytics with brand prefix for the exported site
+            const exportAnalytics = { ...analyticsData };
+            const currentTitle = exportAnalytics.websiteTitle || "";
+
+            if (!currentTitle.startsWith(`${selectedBrand} `)) {
+                exportAnalytics.websiteTitle = currentTitle
+                    ? `${selectedBrand} ${currentTitle}`
+                    : selectedBrand;
+            }
 
             await handleExportNextjs(selectedComponents, activeThemePath, {
                 download: true,
-                analytics: analyticsData,
+                analytics: exportAnalytics,
                 silent: true
             });
             showToast("Export completed successfully");

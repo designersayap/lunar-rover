@@ -10,6 +10,7 @@ import FeatureImageRight from '@/app/templates/feature/feature-image-right';
 
 import DialogItemList from '@/app/templates/dialog/dialog-item-list';
 import DialogAccordion from '@/app/templates/dialog/dialog-accordion';
+import DialogForm from '@/app/templates/dialog/dialog-form';
 
 import Media169 from '@/app/templates/media/media-16-9';
 import Media54 from '@/app/templates/media/media-5-4';
@@ -47,6 +48,7 @@ export const COMPONENT_REGISTRY = {
 
     "dialog-item-list": DialogItemList,
     "dialog-accordion": DialogAccordion,
+    "dialog-form": DialogForm,
 
     "media-16-9": Media169,
     "media-5-4": Media54,

@@ -115,6 +115,11 @@ export default function TemplateGeneratorPage() {
     updateComponent
   }), [activeElementId, activePopoverId, selectedComponents, updateComponent, setActiveElementId, setActivePopoverId, selectedElementIds, toggleElementSelection]);
 
+  // Environmental data for components
+  const activeTheme = themes.find(t => t.id === selectedThemeId);
+  const brandName = activeTheme?.brand || "Lunar";
+  const pageTitle = analyticsData?.websiteTitle || "";
+
   return (
     <div className={styles.container} ref={containerRef}>
       <BuilderSelectionContext.Provider value={selectionContext}>
@@ -150,7 +155,8 @@ export default function TemplateGeneratorPage() {
             dropTargetIndex={dropTargetIndex}
             setDraggedItemIndex={setDraggedIndex}
             updateComponent={updateComponent}
-
+            brandName={brandName}
+            pageTitle={pageTitle}
           />
 
 
@@ -260,6 +266,8 @@ export default function TemplateGeneratorPage() {
             analyticsData={analyticsData}
             setAnalyticsData={setAnalyticsData}
             handleDirectExport={handleDirectExport}
+            themes={themes}
+            selectedThemeId={selectedThemeId}
           />
         )}
 

@@ -60,7 +60,7 @@ const ComponentTreeItem = memo(({
     const allImages = (def?.images || []).map(img => ({ ...img, type: 'image' }));
     const allLinks = (def?.links || []).map(link => ({ ...link, type: 'link' }));
     const allTexts = (def?.texts || []).map(text => ({ ...text, type: 'text' }));
-    const allChildren = [...allTexts, ...allButtons, ...allImages, ...allLinks];
+    const allChildren = [...allImages, ...allTexts, ...allButtons, ...allLinks];
 
     const isActive = activeElementId === comp.sectionId || activeElementId === comp.uniqueId;
     const isGroup = comp.id === 'scroll-group';

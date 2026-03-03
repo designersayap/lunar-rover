@@ -180,7 +180,7 @@ export default function BuilderButton({
 
         if (!dialogComponent && !targetDialogId) {
             // Only fallback if no target was ever specified
-            dialogComponent = selectedComponents?.find(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion');
+            dialogComponent = selectedComponents?.find(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion' || c.id === 'dialog-form');
         }
 
         if (dialogComponent) {
@@ -203,7 +203,7 @@ export default function BuilderButton({
     );
 
     if (!targetDialogComponent && linkType === 'dialog' && !targetDialogId) {
-        targetDialogComponent = selectedComponents?.find(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion');
+        targetDialogComponent = selectedComponents?.find(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion' || c.id === 'dialog-form');
     }
 
     const targetDialogSectionId = targetDialogComponent?.sectionId;
@@ -345,7 +345,7 @@ export default function BuilderButton({
                         isVisible={isVisible}
                         onVisibilityChange={onVisibilityChange}
                         position={popoverPosition}
-                        dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
+                        dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion' || c.id === 'dialog-form').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
                         targetDialogId={targetDialogId}
                         onTargetDialogIdChange={onTargetDialogIdChange}
                         showLinkType={!isStaging}
