@@ -15,7 +15,7 @@ export default function DialogItemList({
     className = "",
     image,
     imageId,
-    imageVisible,
+    imageVisible = true,
     imageUrl,
     imageLinkType,
     imageTargetDialogId,
@@ -73,6 +73,7 @@ export default function DialogItemList({
                                     src={item.image}
                                     onSrcChange={(val) => updateItem(i, 'image', val)}
                                     showLinkControls={false}
+                                    isVisible={item.visible !== false}
                                     sectionId={sectionId}
                                     suffix={`item-image-${i}`} />
                             </div>

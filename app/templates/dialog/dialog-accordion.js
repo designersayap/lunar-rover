@@ -75,7 +75,7 @@ export default function DialogAccordion({
     className = "",
     image,
     imageId,
-    imageVisible,
+    imageVisible = true,
     imageUrl,
     imageLinkType,
     imageTargetDialogId,

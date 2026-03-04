@@ -20,7 +20,7 @@ export default function DialogSection({
     className = "",
     image,
     imageId,
-    imageVisible,
+    imageVisible = true,
     imageUrl,
     imageLinkType,
     imageTargetDialogId,

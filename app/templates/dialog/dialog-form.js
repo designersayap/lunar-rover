@@ -17,7 +17,7 @@ export default function DialogForm({
     className = "",
     image,
     imageId,
-    imageVisible,
+    imageVisible = true,
     imageUrl,
     imageLinkType,
     imageTargetDialogId,
