@@ -20,10 +20,15 @@ export default function DialogSection({
     className = "",
     image,
     imageId,
-    imageVisible = true,
+    imageVisible,
     imageUrl,
     imageLinkType,
     imageTargetDialogId,
+    titleVisible,
+    descriptionVisible,
+    onTitleVisibleChange,
+    onDescriptionVisibleChange,
+    onImageVisibleChange,
 }) {
     const update = createUpdateHandler(onUpdate);
     const [internalIsOpen, setInternalIsOpen] = useState(false);
@@ -110,7 +115,8 @@ export default function DialogSection({
                                 onSrcChange={update('image')}
                                 id={imageId}
                                 sectionId={sectionId}
-                                isVisible={imageVisible}
+                                isVisible={imageVisible !== false}
+                                onVisibilityChange={onImageVisibleChange}
                                 onIdChange={update('imageId')}
                                 suffix="image"
                                 href={imageUrl}
@@ -130,7 +136,10 @@ export default function DialogSection({
                                             tagName="div"
                                             className={`h4 ${styles.title}`}
                                             content={title}
+                                            isVisible={titleVisible !== false}
                                             onChange={update('title')}
+                                            onVisibilityChange={onTitleVisibleChange}
+                                            placeholder="Dialog Title"
                                             sectionId={sectionId}
                                             suffix="title"
                                         />
@@ -140,7 +149,10 @@ export default function DialogSection({
                                             tagName="div"
                                             className={`body-regular ${styles.description}`}
                                             content={description}
+                                            isVisible={descriptionVisible !== false}
                                             onChange={update('description')}
+                                            onVisibilityChange={onDescriptionVisibleChange}
+                                            placeholder="Enter dialog description here..."
                                             sectionId={sectionId}
                                             suffix="description"
                                         />

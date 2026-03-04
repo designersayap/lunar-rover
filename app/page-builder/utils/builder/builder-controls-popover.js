@@ -95,6 +95,8 @@ export default function BuilderControlsPopover({
     subtitle,
     onSubtitleChange,
     showSubtitle = false,
+    isVisible = true,
+    onVisibilityChange,
     mode = 'all' // 'all', 'style', 'link'
 }) {
 
@@ -565,6 +567,24 @@ export default function BuilderControlsPopover({
                                             className={styles.toggleInput}
                                             checked={isPortrait === true}
                                             onChange={(e) => onIsPortraitChange && onIsPortraitChange(e.target.checked)}
+                                        />
+                                        <span className={styles.toggleSlider}></span>
+                                    </label>
+                                </div>
+                            </>
+                        )}
+
+                        {(mode === 'all' || mode === 'style') && onVisibilityChange && (
+                            <>
+                                <div className={styles.horizontalDivider} />
+                                <div className={styles.propertyRow} style={{ marginTop: '0' }}>
+                                    <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Visibility</label>
+                                    <label className={styles.toggleSwitch}>
+                                        <input
+                                            type="checkbox"
+                                            className={styles.toggleInput}
+                                            checked={isVisible !== false}
+                                            onChange={(e) => onVisibilityChange && onVisibilityChange(e.target.checked)}
                                         />
                                         <span className={styles.toggleSlider}></span>
                                     </label>

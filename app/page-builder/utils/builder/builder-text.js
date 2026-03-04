@@ -19,6 +19,8 @@ function BuilderTextComponent({
     id,
     onIdChange,
     disableLinkPaste = false,
+    isVisible = true,
+    onVisibilityChange,
     ...props
 }) {
     const [text, setText] = useState(content);
@@ -507,6 +509,8 @@ function BuilderTextComponent({
             </div>
         </div>
     ) : null;
+
+    if (!isVisible && !isEditing) return null;
 
     return (
         <>

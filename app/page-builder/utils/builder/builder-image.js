@@ -43,6 +43,7 @@ export default function BuilderImage({
     isActive: isActiveProp,
     alwaysShowSrc = false,
     readOnly = false,
+    onVisibilityChange,
     aspectRatio,
     onAspectRatioChange
 }) {
@@ -114,7 +115,7 @@ export default function BuilderImage({
     // Hook must be called unconditionally
     const overlayStyle = useActiveOverlayPosition(overlayRect);
 
-    if (!isVisible) return null;
+    if (!isVisible && !isStaging) return null;
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -397,7 +398,13 @@ export default function BuilderImage({
                 {...wrapperProps}
                 ref={wrapperRef}
                 className={finalClassName}
-                style={{ position: 'relative', width: '100%', height: '100%', display: 'block' }}
+                style={{
+                    opacity: isVisible ? 1 : 0.5,
+                    position: 'relative',
+                    width: '100%',
+                    height: '100%',
+                    display: 'block'
+                }}
                 onClick={handleClick}
             >
                 {isActive && <div className={styles.activeBorderOutline} />}
@@ -436,6 +443,8 @@ export default function BuilderImage({
                     showPortraitToggle={!isStaging && !!onIsPortraitChange}
                     isPortrait={isPortrait}
                     onIsPortraitChange={onIsPortraitChange}
+                    isVisible={isVisible}
+                    onVisibilityChange={onVisibilityChange}
                     showMobileRatio={!isStaging && !!onMobileRatioChange}
                     mobileRatio={mobileRatio}
                     onMobileRatioChange={onMobileRatioChange}

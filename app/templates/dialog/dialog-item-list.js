@@ -15,7 +15,7 @@ export default function DialogItemList({
     className = "",
     image,
     imageId,
-    imageVisible = true,
+    imageVisible,
     imageUrl,
     imageLinkType,
     imageTargetDialogId,
@@ -42,7 +42,8 @@ export default function DialogItemList({
             className={className}
             image={image}
             imageId={imageId}
-            imageVisible={imageVisible}
+            imageVisible={imageVisible !== false}
+            onImageVisibleChange={update('imageVisible')}
             imageUrl={imageUrl}
             imageLinkType={imageLinkType}
             imageTargetDialogId={imageTargetDialogId}

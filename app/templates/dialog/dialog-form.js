@@ -17,28 +17,34 @@ export default function DialogForm({
     className = "",
     image,
     imageId,
-    imageVisible = true,
+    imageVisible,
     imageUrl,
     imageLinkType,
     imageTargetDialogId,
-    marketingConsentLabel = "I agree to receive information about exciting offers, product updates, and other information from [brand_name] and other Wings brands.",
-    collectionConsentLabel = "I agree to allow Wings to manage my personal data in accordance with the Wings Privacy Policy.",
-    brandName = "Lunar",
-    pageTitle = "",
-    nameVisible = true,
-    emailVisible = true,
-    whatsappVisible = true,
-    genderVisible = true,
-    dobVisible = true,
-    marketingConsentVisible = true,
-    collectionConsentVisible = true,
-    nameFieldId = "",
-    emailFieldId = "",
-    whatsappFieldId = "",
-    genderFieldId = "",
-    dobFieldId = "",
-    marketingConsentId = "",
-    collectionConsentId = ""
+    marketingConsentLabel,
+    collectionConsentLabel,
+    brandName,
+    pageTitle,
+    nameLabel,
+    nameRequired,
+    nameVisible,
+    emailLabel,
+    emailRequired,
+    emailVisible,
+    whatsappVisible,
+    genderVisible,
+    dobVisible,
+    marketingConsentVisible,
+    collectionConsentVisible,
+    titleVisible,
+    descriptionVisible,
+    nameFieldId,
+    emailFieldId,
+    whatsappFieldId,
+    genderFieldId,
+    dobFieldId,
+    marketingConsentId,
+    collectionConsentId
 }) {
     const update = createUpdateHandler(onUpdate);
     const [formData, setFormData] = useState({
@@ -145,44 +151,57 @@ export default function DialogForm({
     return (
         <DialogSection
             title={title}
+            titleVisible={titleVisible !== false}
+            onTitleVisibleChange={update('titleVisible')}
             description={description}
+            descriptionVisible={descriptionVisible !== false}
+            onDescriptionVisibleChange={update('descriptionVisible')}
             isOpen={isOpen}
             onUpdate={onUpdate}
             sectionId={sectionId}
             className={className}
             image={image}
             imageId={imageId}
-            imageVisible={imageVisible}
+            imageVisible={imageVisible !== false}
+            onImageVisibleChange={update('imageVisible')}
             imageUrl={imageUrl}
             imageLinkType={imageLinkType}
             imageTargetDialogId={imageTargetDialogId}
         >
             <form className="form-container px-md pb-md" onSubmit={handleSubmit}>
                 <BuilderInput
-                    label="Full Name"
+                    label={nameLabel || "Full Name"}
                     name="name"
                     placeholder="Enter your full name"
                     value={formData.name}
                     onChange={handleChange}
-                    isVisible={nameVisible}
+                    isVisible={nameVisible !== false}
+                    onVisibilityChange={update('nameVisible')}
                     sectionId={sectionId}
                     id={nameFieldId}
                     onIdChange={update('nameFieldId')}
                     suffix="name-field"
+                    required={nameRequired}
+                    onLabelChange={update('nameLabel')}
+                    onRequiredChange={update('nameRequired')}
                 />
 
                 <BuilderInput
-                    label="Email Address"
+                    label={emailLabel || "Email Address"}
                     type="email"
                     name="email"
                     placeholder="example@mail.com"
                     value={formData.email}
                     onChange={handleChange}
-                    isVisible={emailVisible}
+                    isVisible={emailVisible !== false}
+                    onVisibilityChange={update('emailVisible')}
                     sectionId={sectionId}
                     id={emailFieldId}
                     onIdChange={update('emailFieldId')}
                     suffix="email-field"
+                    required={emailRequired}
+                    onLabelChange={update('emailLabel')}
+                    onRequiredChange={update('emailRequired')}
                 />
 
                 <BuilderInput
@@ -192,7 +211,8 @@ export default function DialogForm({
                     placeholder="812 3456 7890"
                     value={formData.whatsappNumber}
                     onChange={handleChange}
-                    isVisible={whatsappVisible}
+                    isVisible={whatsappVisible !== false}
+                    onVisibilityChange={update('whatsappVisible')}
                     sectionId={sectionId}
                     id={whatsappFieldId}
                     onIdChange={update('whatsappFieldId')}
@@ -209,7 +229,8 @@ export default function DialogForm({
                     name="gender"
                     value={formData.gender}
                     onChange={handleChange}
-                    isVisible={genderVisible}
+                    isVisible={genderVisible !== false}
+                    onVisibilityChange={update('genderVisible')}
                     sectionId={sectionId}
                     id={genderFieldId}
                     onIdChange={update('genderFieldId')}
@@ -228,7 +249,8 @@ export default function DialogForm({
                     name="dob"
                     value={formData.dob}
                     onChange={handleChange}
-                    isVisible={dobVisible}
+                    isVisible={dobVisible !== false}
+                    onVisibilityChange={update('dobVisible')}
                     sectionId={sectionId}
                     id={dobFieldId}
                     onIdChange={update('dobFieldId')}
