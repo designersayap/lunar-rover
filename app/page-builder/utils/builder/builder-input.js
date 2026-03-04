@@ -18,6 +18,9 @@ export default function BuilderInput({
     onIdChange,
     suffix,
     required = false,
+    onVisibilityChange,
+    onLabelChange,
+    onRequiredChange,
     children, // For prefix/suffix wrappers
     ...props
 }) {

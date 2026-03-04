@@ -19,6 +19,8 @@ export default function BuilderSelect({
     onIdChange,
     suffix,
     required = false,
+    onVisibilityChange,
+    onRequiredChange,
     options = [], // For select type
     ...props
 }) {

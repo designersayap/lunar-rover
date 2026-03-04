@@ -410,7 +410,7 @@ const BuilderElement = ({ tagName = 'div', className, style, children, id, secti
   if (hasBuilderInput) {
     shims.push(`
 // Shim for BuilderInput
-const BuilderInput = ({ label, type = 'text', name, value, onChange, placeholder, className = 'form-input', labelClassName = 'form-label caption-regular', containerClassName = 'form-group', isVisible = true, sectionId, id, onIdChange, suffix, required = false, children, ...props }) => {
+const BuilderInput = ({ label, type = 'text', name, value, onChange, placeholder, className = 'form-input', labelClassName = 'form-label caption-regular', containerClassName = 'form-group', isVisible = true, sectionId, id, onIdChange, suffix, required = false, onVisibilityChange, onLabelChange, onRequiredChange, children, ...props }) => {
   if (!isVisible) return null;
   const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   const effectiveSuffix = suffix || name;
@@ -436,7 +436,7 @@ const BuilderInput = ({ label, type = 'text', name, value, onChange, placeholder
   if (hasBuilderSelect) {
     shims.push(`
 // Shim for BuilderSelect
-const BuilderSelect = ({ label, labelContent, onLabelChange, type = 'select', name, value, onChange, className, containerClassName = 'form-group', isVisible = true, sectionId, id, onIdChange, suffix, required = false, options = [], ...props }) => {
+const BuilderSelect = ({ label, labelContent, onLabelChange, type = 'select', name, value, onChange, className, containerClassName = 'form-group', isVisible = true, sectionId, id, onIdChange, suffix, required = false, onVisibilityChange, onRequiredChange, options = [], ...props }) => {
   if (!isVisible) return null;
   const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   const effectiveSuffix = suffix || name;
