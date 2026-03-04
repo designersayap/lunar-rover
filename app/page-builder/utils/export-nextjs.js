@@ -341,7 +341,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
 
         Object.keys(obj).forEach(key => {
             const val = obj[key];
-            const isImageKey = /image|logo|avatar|icon|background/i.test(key) && !/id$/i.test(key) && !/url$/i.test(key) && !/link$/i.test(key) && !/ratio$/i.test(key) && !/portrait/i.test(key);
+            const isImageKey = /image|logo|avatar|icon|background/i.test(key) && !/id$|url$|link$|ratio$|portrait$|visible$/i.test(key);
 
             if (isImageKey && (!val || val === "")) {
                 obj[key] = defaultPlaceholder;
@@ -356,7 +356,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         const compDefaults = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
 
         Object.keys(compDefaults).forEach(key => {
-            const isImageKey = /image|logo|avatar|icon|background/i.test(key) && !/id$/i.test(key) && !/url$/i.test(key) && !/link$/i.test(key) && !/ratio$/i.test(key) && !/portrait/i.test(key);
+            const isImageKey = /image|logo|avatar|icon|background/i.test(key) && !/id$|url$|link$|ratio$|portrait$|visible$/i.test(key);
             // If it's an image key AND it's missing from the item (undefined), copy it from defaults.
             const valInItem = item[key];
             const valInProps = item.props ? item.props[key] : undefined;
