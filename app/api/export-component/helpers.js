@@ -40,6 +40,8 @@ export function cleanBuilderContent(src, componentName) {
   const hasBuilderText = src.includes('BuilderText') && !hasShim('BuilderText');
   const hasBuilderButton = src.includes('BuilderButton') && !hasShim('BuilderButton');
   const hasBuilderElement = src.includes('BuilderElement') && !hasShim('BuilderElement');
+  const hasBuilderInput = src.includes('BuilderInput') && !hasShim('BuilderInput');
+  const hasBuilderSelect = src.includes('BuilderSelect') && !hasShim('BuilderSelect');
 
   // Remove Builder imports (Absolute & Relative)
   // Matches: import ... from "@/app/page-builder/..." OR ".../page-builder/..."
@@ -402,6 +404,64 @@ const BuilderElement = ({ tagName = 'div', className, style, children, id, secti
   let finalId = id || (normalizedSectionId ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
   return <Tag id={finalId} className={className} style={style}>{children}</Tag>;
+};`);
+  }
+
+  if (hasBuilderInput) {
+    shims.push(`
+// Shim for BuilderInput
+const BuilderInput = ({ label, type = 'text', name, value, onChange, placeholder, className = 'form-input', labelClassName = 'form-label caption-regular', containerClassName = 'form-group', isVisible = true, sectionId, id, onIdChange, suffix, required = false, children, ...props }) => {
+  if (!isVisible) return null;
+  const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
+  const effectiveSuffix = suffix || name;
+  let finalId = id || (normalizedSectionId ? normalizedSectionId + '-' + effectiveSuffix : undefined);
+  finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
+
+  return (
+    <div className={containerClassName}>
+      {label && <label className={labelClassName} htmlFor={finalId}>{label}</label>}
+      {children ? (
+        <div className="form-input-prefix-wrapper">
+          {children}
+          <input id={finalId} name={name} className={className} type={type} placeholder={placeholder} value={value} onChange={onChange} required={required} {...props} />
+        </div>
+      ) : (
+        <input id={finalId} name={name} className={className} type={type} placeholder={placeholder} value={value} onChange={onChange} required={required} {...props} />
+      )}
+    </div>
+  );
+};`);
+  }
+
+  if (hasBuilderSelect) {
+    shims.push(`
+// Shim for BuilderSelect
+const BuilderSelect = ({ label, labelContent, onLabelChange, type = 'select', name, value, onChange, className, containerClassName = 'form-group', isVisible = true, sectionId, id, onIdChange, suffix, required = false, options = [], ...props }) => {
+  if (!isVisible) return null;
+  const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
+  const effectiveSuffix = suffix || name;
+  let finalId = id || (normalizedSectionId ? normalizedSectionId + '-' + effectiveSuffix : undefined);
+  finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
+
+  if (type === 'select') {
+    return (
+      <div className={containerClassName}>
+        {label && <label className="form-label caption-regular" htmlFor={finalId}>{label}</label>}
+        <select id={finalId} name={name} className={className || 'form-select'} value={value} onChange={onChange} required={required} {...props}>
+          {options.map(opt => <option key={opt.value} value={opt.value} disabled={opt.disabled}>{opt.label}</option>)}
+        </select>
+      </div>
+    );
+  }
+
+  return (
+    <div className={containerClassName}>
+      <label className="form-checkbox-group" htmlFor={finalId}>
+        <input type={type} id={finalId} name={name} className={className || (type === 'checkbox' ? 'form-checkbox' : 'form-radio')} checked={type === 'checkbox' || type === 'radio' ? value : undefined} onChange={onChange} required={required} {...props} />
+        <span className="form-checkbox-label body-regular" dangerouslySetInnerHTML={{ __html: labelContent }} />
+      </label>
+    </div>
+  );
 };`);
   }
 

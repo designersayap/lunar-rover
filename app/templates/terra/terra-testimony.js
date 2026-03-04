@@ -150,7 +150,7 @@ export default function TestimonialTerra({
                                     <BuilderImage
                                         src={item.image}
                                         onSrcChange={(val) => updateTestimony(index, "image", val)}
-                                        className={`${styles.terraTestimoniImage} imagePlaceholder-4-5 object-cover`}
+                                        className={styles.terraTestimoniImage}
                                         id={item.imageId}
                                         sectionId={sectionId}
                                         isVisible={item.imageVisible}
@@ -166,7 +166,7 @@ export default function TestimonialTerra({
                                     />
 
                                     <div className={styles.terraTestimoniDescriptionCard}>
-                                        <div className={`imageWrapper ${styles.avatarImg}`}>
+                                        <div className={styles.avatarImg}>
                                             <BuilderImage
                                                 src={item.avatar}
                                                 onSrcChange={(val) => updateTestimony(index, "avatar", val)}
@@ -188,7 +188,7 @@ export default function TestimonialTerra({
                                         </div>
                                         <BuilderText
                                             tagName="div"
-                                            className={`body-bold truncate-1-line ${styles.name}`}
+                                            className={`h5 truncate-1-line ${styles.name}`}
                                             content={item.name}
                                             onChange={(val) => updateTestimony(index, "name", val)}
                                             sectionId={sectionId}
@@ -197,8 +197,16 @@ export default function TestimonialTerra({
 
                                         <BuilderText
                                             tagName="div"
-                                            className={`caption-regular truncate-2-lines ${styles.description}`}
-                                            content={item.description}
+                                            className={`caption-regular ${styles.role}`}
+                                            content={item.role}
+                                            onChange={(val) => updateTestimony(index, "role", val)}
+                                            sectionId={sectionId}
+                                        />
+
+                                        <BuilderText
+                                            tagName="div"
+                                            className={`caption-regular truncate-3-lines ${styles.description}`}
+                                            content={`“${item.description}”`}
                                             onChange={(val) => updateTestimony(index, "description", val)}
                                             sectionId={sectionId}
                                             tooltipIfTruncated={true}

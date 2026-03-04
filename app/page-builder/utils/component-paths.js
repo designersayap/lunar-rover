@@ -10,6 +10,7 @@ export const COMPONENT_PATHS = {
 
     "dialog-item-list": "app/templates/dialog/dialog-item-list.js",
     "dialog-accordion": "app/templates/dialog/dialog-accordion.js",
+    "dialog-form": "app/templates/dialog/dialog-form.js",
 
     "media-16-9": "app/templates/media/media-16-9.js",
     "media-5-4": "app/templates/media/media-5-4.js",

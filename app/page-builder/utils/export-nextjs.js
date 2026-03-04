@@ -634,7 +634,8 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
             "react": "^19.0.0",
             "react-dom": "^19.0.0",
             "next": "^15.0.0",
-            "@heroicons/react": "^2.1.3"
+            "@heroicons/react": "^2.1.3",
+            "sonner": "^2.0.1"
         },
         devDependencies: {
             "eslint": "^9",
