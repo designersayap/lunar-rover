@@ -5,6 +5,7 @@ import BuilderElement from "@/app/page-builder/utils/builder/builder-element";
 import { componentDefaults } from "../content/data";
 import styles from "./dialog-section.module.css";
 import DialogSection from "./dialog-section";
+import { createUpdateHandler } from "../utils/component-helpers";
 
 const AccordionItem = memo(({
     index,
@@ -85,6 +86,7 @@ export default function DialogAccordion({
     item0Visible = true, item1Visible = true, item2Visible = true, item3Visible = true,
     item4Visible = true, item5Visible = true, item6Visible = true, item7Visible = true,
 }) {
+    const update = createUpdateHandler(onUpdate);
     const [openIndex, setOpenIndex] = useState(null); // Only one open at a time
 
     const itemIds = [item0Id, item1Id, item2Id, item3Id, item4Id, item5Id, item6Id, item7Id];

@@ -212,6 +212,28 @@ export const componentDefaults = {
         marketingConsentId: "marketing-consent",
         collectionConsentId: "collection-consent"
     },
+    "form-personal-data-section": {
+        title: "Personal Data",
+        description: "Please fill in your details below",
+        titleVisible: true,
+        descriptionVisible: true,
+        marketingConsentLabel: "I agree to receive information about exciting offers, product updates, and other information from [brand_name] and other Wings brands.",
+        collectionConsentLabel: "I agree to allow Wings to manage my personal data in accordance with the Wings Privacy Policy.",
+        nameVisible: true,
+        emailVisible: true,
+        whatsappVisible: true,
+        genderVisible: true,
+        dobVisible: true,
+        marketingConsentVisible: true,
+        collectionConsentVisible: true,
+        nameFieldId: "name-field",
+        emailFieldId: "email-field",
+        whatsappFieldId: "whatsapp-field",
+        genderFieldId: "gender-field",
+        dobFieldId: "dob-field",
+        marketingConsentId: "marketing-consent",
+        collectionConsentId: "collection-consent"
+    },
     "osm-banner": {
         title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         buttonText: "Label",

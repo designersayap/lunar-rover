@@ -322,10 +322,10 @@ export default function TemplateGeneratorPage() {
 
         {/* Toaster */}
         {toaster.show && (
-          <div className={`${styles.toaster} ${toaster.type === "delete" ? styles.toasterDelete : ""} z-system-modal-floating`}>
+          <div className={`${styles.lunarToast} ${toaster.type === "delete" ? styles.lunarToastDelete : styles.lunarToastSuccess}`}>
             {toaster.type === "delete"
-              ? <TrashIcon className={styles.toasterIcon} />
-              : <BellAlertIcon className={styles.toasterIcon} />
+              ? <TrashIcon className={styles.lunarToastIcon} />
+              : <BellAlertIcon className={styles.lunarToastIcon} />
             }
             {toaster.message}
           </div>

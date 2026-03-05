@@ -9,6 +9,7 @@ const FeatureImageRight = dynamic(() => import("@/app/templates/feature/feature-
 const DialogItemList = dynamic(() => import("@/app/templates/dialog/dialog-item-list"));
 const DialogAccordion = dynamic(() => import("@/app/templates/dialog/dialog-accordion"));
 const DialogForm = dynamic(() => import("@/app/templates/dialog/dialog-form"));
+const FormPersonalDataSection = dynamic(() => import("@/app/templates/form/form-personal-data-section"));
 const OsmBanner = dynamic(() => import("@/app/templates/osm/osm-banner"));
 const TestimonialTerra = dynamic(() => import("@/app/templates/terra/terra-testimony"));
 const Media16x9 = dynamic(() => import("@/app/templates/media/media-16-9"));
@@ -713,6 +714,63 @@ export const componentLibrary = {
                 }
             ]
         },
+    ],
+    "Form": [
+        {
+            id: "form-personal-data-section",
+            name: "Form - Personal Data",
+            component: FormPersonalDataSection,
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-dialog-form.svg",
+            config: [
+                {
+                    name: "title",
+                    label: "Title",
+                    type: "text",
+                    default: componentDefaults["form-personal-data-section"].title
+                },
+                {
+                    name: "description",
+                    label: "Description",
+                    type: "text",
+                    default: componentDefaults["form-personal-data-section"].description
+                },
+                {
+                    name: "marketingConsentLabel",
+                    label: "Marketing Consent Label",
+                    type: "text",
+                    default: componentDefaults["form-personal-data-section"].marketingConsentLabel
+                },
+                {
+                    name: "collectionConsentLabel",
+                    label: "Collection Consent Label",
+                    type: "text",
+                    default: componentDefaults["form-personal-data-section"].collectionConsentLabel
+                }
+            ],
+            texts: [
+                {
+                    label: "Title",
+                    propId: "titleId",
+                    suffix: "title",
+                    visibleProp: "titleVisible",
+                },
+                {
+                    label: "Description",
+                    propId: "subtitleId",
+                    suffix: "subtitle",
+                    visibleProp: "descriptionVisible",
+                }
+            ],
+            links: [
+                { label: "Name Field", propId: "nameFieldId", suffix: "name-field", labelProp: "nameLabel", visibleProp: "nameVisible" },
+                { label: "Email Field", propId: "emailFieldId", suffix: "email-field", labelProp: "emailLabel", visibleProp: "emailVisible" },
+                { label: "WhatsApp Field", propId: "whatsappFieldId", suffix: "whatsapp-field" },
+                { label: "Gender Field", propId: "genderFieldId", suffix: "gender-field" },
+                { label: "DOB Field", propId: "dobFieldId", suffix: "dob-field" },
+                { label: "Marketing Consent", propId: "marketingConsentId", suffix: "marketing-consent", labelProp: "marketingConsentLabel", visibleProp: "marketingConsentVisible" },
+                { label: "Collection Consent", propId: "collectionConsentId", suffix: "collection-consent", labelProp: "collectionConsentLabel", visibleProp: "collectionConsentVisible" }
+            ]
+        }
     ],
     "Testimonial": [
         {

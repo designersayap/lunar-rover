@@ -1020,3 +1020,79 @@ strong {
     height: auto !important;
   }
 }
+
+/* ============================================
+   LUNAR TOASTER
+   ============================================ */
+
+.toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  background: rgba(18, 18, 18, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--base-white);
+  padding: 12px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: var(--font-family-body);
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10001;
+  /* Above almost everything */
+  animation: toastSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+}
+
+.toast-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Variants */
+.toast-success {
+  border-left: 3px solid var(--system-color-green-300);
+}
+
+.toast-error,
+.toast-delete {
+  border-left: 3px solid var(--system-color-red-300);
+}
+
+.toast-info {
+  border-left: 3px solid var(--system-color-blue-300);
+}
+
+.toast-warning {
+  border-left: 3px solid var(--system-color-yellow-300);
+}
+
+@keyframes toastSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 767px) {
+  .toast {
+    top: 24px;
+    right: 24px;
+    left: auto;
+    width: max-content;
+    max-width: calc(100vw - 48px);
+    padding: 12px 20px;
+  }
+}

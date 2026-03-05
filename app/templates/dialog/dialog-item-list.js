@@ -5,6 +5,7 @@ import BuilderLink from "@/app/page-builder/utils/builder/builder-link";
 import { componentDefaults } from "../content/data";
 import styles from "./dialog-section.module.css";
 import DialogSection from "./dialog-section";
+import { createUpdateHandler } from "../utils/component-helpers";
 
 export default function DialogItemList({
     title = "Title",
@@ -21,6 +22,7 @@ export default function DialogItemList({
     imageTargetDialogId,
     items = componentDefaults["dialog-item-list"].items
 }) {
+    const update = createUpdateHandler(onUpdate);
     const updateItem = (index, field, value) => {
         if (!onUpdate) return;
         const newItems = [...items];

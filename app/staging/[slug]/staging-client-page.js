@@ -78,6 +78,18 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
         }
     };
 
+    useEffect(() => {
+        const handleToastEvent = (e) => {
+            const { message, type } = e.detail || {};
+            if (message) {
+                showToast(message, type || 'info');
+            }
+        };
+
+        window.addEventListener('lunar:toast', handleToastEvent);
+        return () => window.removeEventListener('lunar:toast', handleToastEvent);
+    }, []);
+
     const handleUpdate = async (uniqueId, newData) => {
         lastEditedComponentIdRef.current = uniqueId;
         setLocalData(prev => ({
@@ -335,11 +347,11 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
 
                 {/* Toaster */}
                 {toaster.show && (
-                    <div className={`${styles.toaster} ${toaster.type === "error" ? styles.toasterDelete : ""} z-system-modal-floating`}>
-                        {toaster.type === "success" && <CheckCircleIcon className={styles.toasterIcon} style={{ color: 'var(--system-color-green-300)' }} />}
-                        {toaster.type === "error" && <ExclamationCircleIcon className={styles.toasterIcon} />}
+                    <div className={`toast toast-${toaster.type}`}>
+                        {toaster.type === "success" && <CheckCircleIcon className="toast-icon" style={{ color: 'var(--system-color-green-300)' }} />}
+                        {toaster.type === "error" && <ExclamationCircleIcon className="toast-icon" style={{ color: 'var(--system-color-red-300)' }} />}
                         {toaster.type === "loading" && (
-                            <div className={styles.spinner} />
+                            <div className="spinner" />
                         )}
                         {toaster.message}
                     </div>

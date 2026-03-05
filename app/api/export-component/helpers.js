@@ -45,7 +45,7 @@ export function cleanBuilderContent(src, componentName) {
 
   // Remove Builder imports (Absolute & Relative)
   // Matches: import ... from "@/app/page-builder/..." OR ".../page-builder/..."
-  src = src.replace(/import\s+.*?\s+from\s+['"](?:@\/app\/|.*\/)page-builder\/utils\/builder\/(?!builder-controls).*?['"];?\n?/g, '');
+  src = src.replace(/import\s+.*?\s+from\s+['"](?:@\/app\/|.*\/)page-builder\/utils\/(?:builder\/|toast).*?['"];?\n?/g, '');
 
   // Remove generic imports that are not needed (keep CSS imports)
   // src = src.replace(/import\s+{[^}]*}\s+from\s+['"][^'\"]+['"];?\n?/g, '');
@@ -476,6 +476,14 @@ const openDialog = (id) => {
     if (id && id !== 'dialog-item-list' && id !== 'dialog-accordion') {
         window.dispatchEvent(new CustomEvent('lunar:open-dialog', { detail: { id: 'dialog-item-list' } }));
     }
+  }
+};
+
+const showToast = (message, type = 'success') => {
+  if (typeof window !== 'undefined') {
+    // In exported files, we can use a simple alert as a fallback
+    // or the user can implement their own toast listener
+    alert(message);
   }
 };`;
     shims.unshift(openDialogHelper);
