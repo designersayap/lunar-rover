@@ -810,11 +810,11 @@ strong {
 .form-input,
 .form-select {
   width: 100%;
-  padding: var(--padding-xs) var(--padding-xs);
+  padding: var(--padding-xs) var(--padding-sm);
   border: 1px solid var(--stroke-neutral--neutral);
   border-radius: var(--border-radius-button);
   background-color: var(--background-neutral--default);
-  color: var(--content-neutral--body);
+  color: var(--content-neutral--body-default);
   font-family: var(--font-family-body);
   font-size: var(--typography-font-size-paragraph-md);
   transition: border-color 0.2s, box-shadow 0.2s;

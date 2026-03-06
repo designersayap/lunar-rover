@@ -1,31 +1,31 @@
 /* Fonts */
 
 @font-face {
-    font-family: 'Tofino';
+    font-family: 'Google-sans';
     font-style: normal;
     font-weight: 400;
-    src: url('/fonts/Tofino/Tofino-Regular.ttf') format('truetype');
+    src: url('/fonts/Google-Sans/GoogleSans_17pt-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Tofino';
+    font-family: 'Google-sans';
     font-style: normal;
     font-weight: 700;
-    src: url('/fonts/Tofino/Tofino-Bold.ttf') format('truetype');
+    src: url('/fonts/Google-Sans/GoogleSans_17pt-Bold.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Tofino';
+    font-family: 'Google-sans';
     font-style: normal;
     font-weight: 700;
-    src: url('/fonts/Tofino/Tofino-Regular.ttf') format('truetype');
+    src: url('/fonts/Google-Sans/GoogleSans_17pt-Regular.ttf') format('truetype');
 }
 
 :root {
 
     /* Font Variables */
-    --font-heading: 'Tofino', sans-serif;
-    --font-body: 'Tofino', sans-serif;
+    --font-heading: 'Google-sans', sans-serif;
+    --font-body: 'Google-sans', sans-serif;
 
     /* Brand Colors */
     --brand-color-500: #0e6a61;
