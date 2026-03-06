@@ -22,14 +22,10 @@ export default function FormPersonalDataSection(props) {
     return (
         <BuilderSection
             tagName="section"
-            className={`${styles.container} ${className}`}
-            id={sectionId}
+            className={styles.container}
             sectionId={sectionId}
             onUpdate={onUpdate}
-            fullWidth={fullWidth}
-            innerContainer={!fullWidth}
-            removePaddingLeft={removePaddingLeft}
-            removePaddingRight={removePaddingRight}
+            innerContainer={true}
         >
             <div className="grid">
                 <div className="col-mobile-4 col-tablet-6 offset-tablet-1 col-desktop-6 offset-desktop-3">

@@ -9,7 +9,6 @@
     border: 1px solid var(--stroke-neutral--neutral);
     box-shadow: var(--shadow--md);
     width: 100%;
-    max-width: 640px;
 }
 
 @container (min-width: 768px) {

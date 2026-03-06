@@ -143,7 +143,14 @@
         --grid-columns: 8;
         --grid-margin: 32px;
         --grid-gutter: 0;
+    }
 
+    .grid {
+        --grid-columns: 8;
+    }
+
+    :root,
+    #canvas-inner {
         /* Tokens from tokens.css */
         --padding-xs: var(--space-60);
         --padding-sm: var(--space-80);
@@ -201,7 +208,14 @@
         --grid-margin: 120px;
         /* Kept 120px per user preference for desktop look, or should I reduce? Plan said "Auto / Max width". But variable dictates padding. I'll stick to 120px for "generous margins" mentioned in plan. */
         --grid-gutter: 0;
+    }
 
+    .grid {
+        --grid-columns: 12;
+    }
+
+    :root,
+    #canvas-inner {
         /* Tokens from tokens.css */
         --padding-xs: var(--space-60);
         --padding-sm: var(--space-80);
