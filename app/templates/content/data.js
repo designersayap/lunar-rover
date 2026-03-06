@@ -213,10 +213,6 @@ export const componentDefaults = {
         collectionConsentId: "collection-consent"
     },
     "form-personal-data-section": {
-        title: "Personal Data",
-        description: "Please fill in your details below",
-        titleVisible: true,
-        descriptionVisible: true,
         marketingConsentLabel: "I agree to receive information about exciting offers, product updates, and other information from [brand_name] and other Wings brands.",
         collectionConsentLabel: "I agree to allow Wings to manage my personal data in accordance with the Wings Privacy Policy.",
         nameVisible: true,

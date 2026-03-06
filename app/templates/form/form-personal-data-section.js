@@ -9,13 +9,9 @@ import styles from "./form.module.css";
 
 export default function FormPersonalDataSection(props) {
     const {
-        title = "Title",
-        description = "Description",
         onUpdate,
         sectionId,
         className = "",
-        titleVisible,
-        descriptionVisible,
         fullWidth,
         removePaddingLeft,
         removePaddingRight
@@ -31,18 +27,19 @@ export default function FormPersonalDataSection(props) {
             sectionId={sectionId}
             onUpdate={onUpdate}
             fullWidth={fullWidth}
+            innerContainer={!fullWidth}
+            removePaddingLeft={removePaddingLeft}
+            removePaddingRight={removePaddingRight}
         >
-            <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })}>
-                <div className="grid">
-                    <div className="col-mobile-4 col-tablet-6 col-desktop-6 offset-desktop-3 offset-tablet-1">
-                        <div className={styles.formWrapper}>
-                            <FormPersonalData
-                                {...props}
-                                update={update}
-                                onUpdate={onUpdate}
-                                className=""
-                            />
-                        </div>
+            <div className="grid">
+                <div className="col-mobile-4 col-tablet-8 col-desktop-12">
+                    <div className={styles.formWrapper}>
+                        <FormPersonalData
+                            {...props}
+                            update={update}
+                            onUpdate={onUpdate}
+                            className=""
+                        />
                     </div>
                 </div>
             </div>

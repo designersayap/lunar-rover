@@ -723,18 +723,6 @@ export const componentLibrary = {
             thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-dialog-form.svg",
             config: [
                 {
-                    name: "title",
-                    label: "Title",
-                    type: "text",
-                    default: componentDefaults["form-personal-data-section"].title
-                },
-                {
-                    name: "description",
-                    label: "Description",
-                    type: "text",
-                    default: componentDefaults["form-personal-data-section"].description
-                },
-                {
                     name: "marketingConsentLabel",
                     label: "Marketing Consent Label",
                     type: "text",
@@ -745,20 +733,6 @@ export const componentLibrary = {
                     label: "Collection Consent Label",
                     type: "text",
                     default: componentDefaults["form-personal-data-section"].collectionConsentLabel
-                }
-            ],
-            texts: [
-                {
-                    label: "Title",
-                    propId: "titleId",
-                    suffix: "title",
-                    visibleProp: "titleVisible",
-                },
-                {
-                    label: "Description",
-                    propId: "subtitleId",
-                    suffix: "subtitle",
-                    visibleProp: "descriptionVisible",
                 }
             ],
             links: [

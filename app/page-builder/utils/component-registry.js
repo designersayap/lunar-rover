@@ -4,6 +4,7 @@ import HeaderGroup from '@/app/templates/header/header-group';
 
 import TerraBannerHero from '@/app/templates/terra/terra-banner-hero';
 import OsmBanner from '@/app/templates/osm/osm-banner';
+import FormPersonalDataSection from '@/app/templates/form/form-personal-data-section';
 
 import FeatureImageLeft from '@/app/templates/feature/feature-image-left';
 import FeatureImageRight from '@/app/templates/feature/feature-image-right';
@@ -49,6 +50,7 @@ export const COMPONENT_REGISTRY = {
     "dialog-item-list": DialogItemList,
     "dialog-accordion": DialogAccordion,
     "dialog-form": DialogForm,
+    "form-personal-data-section": FormPersonalDataSection,
 
     "media-16-9": Media169,
     "media-5-4": Media54,

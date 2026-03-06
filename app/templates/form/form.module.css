@@ -2,15 +2,6 @@
     padding: var(--padding-2xl) 0;
 }
 
-.content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    margin-bottom: var(--gap-md);
-}
-
 .formWrapper {
     background-color: var(--background-neutral--default);
     padding: var(--padding-lg);
