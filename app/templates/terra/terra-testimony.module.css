@@ -108,7 +108,7 @@
 .name {
     max-width: 100%;
     margin-bottom: var(--padding-xs);
-    color: var(--content-neutral--heading);
+    color: var(--default-typography-title);
 }
 
 .role {
@@ -120,7 +120,7 @@
 
 .description {
     max-width: 100%;
-    color: var(--content-neutral--caption);
+    color: var(--default-typography-caption);
     line-height: 1.5;
     height: 70px;
 }

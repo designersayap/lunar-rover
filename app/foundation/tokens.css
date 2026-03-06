@@ -44,9 +44,11 @@
     /* Content */
 
     /* Neutral Content */
-    --content-neutral--title: var(--typography-title);
-    --content-neutral--body: var(--typography-body);
-    --content-neutral--caption: var(--typography-caption);
+    --content-neutral--title: var(--brand-typography-title);
+    --content-neutral--title-default: var(--default-typography-title);
+    --content-neutral--body: var(--brand-typography-body);
+    --content-neutral--body-default: var(--default-typography-body);
+    --content-neutral--caption: var(--brand-typography-caption);
     --content-neutral--body-subtle: var(--grey-200);
     --content-neutral--body-invert: var(--base-white);
 
