@@ -807,7 +807,7 @@ strong {
 }
 
 .form-label {
-  color: var(--content-neutral--body);
+  color: var(--content-neutral--label);
 }
 
 .form-input,
@@ -939,7 +939,7 @@ strong {
 }
 
 .form-checkbox-label {
-  color: var(--content-neutral--body);
+  color: var(--content-neutral--label);
   line-height: 1.5;
   cursor: pointer;
 }
