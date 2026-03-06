@@ -1,7 +1,7 @@
 .footer {
     width: 100%;
     padding: var(--padding-2xl) 0;
-    color: var(--content-neutral--body);
+    color: var(--content-neutral--body-default);
 }
 
 .footerContent {
@@ -24,7 +24,7 @@
 }
 
 .copyright {
-    color: var(--content-neutral--body);
+    color: var(--content-neutral--body-default);
     margin-bottom: var(--gap-lg);
 }
 
@@ -43,12 +43,12 @@
 }
 
 .socialIcon {
-    color: var(--content-neutral--body);
+    color: var(--content-neutral--body-default);
     transition: color 0.2s ease;
 }
 
 .socialIcon:hover {
-    color: var(--content-neutral--title);
+    color: var(--content-neutral--title-default);
 }
 
 .column {
@@ -69,12 +69,12 @@
 }
 
 .linkFooter {
-    color: var(--content-neutral--body);
+    color: var(--content-neutral--body-default);
     text-decoration: none;
     transition: color 0.2s;
     gap: var(--gap-sm);
 }
 
 .linkFooter:hover {
-    color: var(--content-neutral--body);
+    color: var(--content-neutral--body-default);
 }

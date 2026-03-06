@@ -282,14 +282,22 @@ export default function NavigationCenter({
                         </div>
                     </div>
 
-                    <div className={`col-mobile-2 col-tablet-4 ${styles.mobileNav} ${styles.mobileBurgerWrapper}`}>
-                        <button
-                            className={styles.burgerButton}
-                            onClick={() => setIsMobileMenuOpen(true)}
-                        >
-                            <Bars3Icon style={{ width: 24, height: 24 }} />
-                        </button>
-                    </div>
+                    {(() => {
+                        const hasVisibleMenu = menuItems.some(item => item.visible);
+
+                        return (
+                            <div className={`col-mobile-2 col-tablet-4 ${styles.mobileNav} ${styles.mobileBurgerWrapper}`}>
+                                {hasVisibleMenu && (
+                                    <button
+                                        className={styles.burgerButton}
+                                        onClick={() => setIsMobileMenuOpen(true)}
+                                    >
+                                        <Bars3Icon style={{ width: 24, height: 24 }} />
+                                    </button>
+                                )}
+                            </div>
+                        );
+                    })()}
 
                 </div >
             </div>

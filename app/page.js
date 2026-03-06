@@ -1,6 +1,5 @@
 "use client";
 import { useRef, useMemo, useState, useEffect } from "react";
-import { BellAlertIcon, TrashIcon } from "@heroicons/react/24/solid";
 import styles from "./page.module.css";
 
 // Feature Components
@@ -15,6 +14,7 @@ import StagingPopover from "@/app/page-builder/popover-staging";
 import ComponentsPopover from "@/app/page-builder/popover-components";
 import ExportPopover from "@/app/page-builder/popover-export";
 import NotificationPopover from "@/app/page-builder/popover-notifications";
+import Notification from "@/app/templates/notification/notification";
 
 // Helper Utilities
 import { componentLibrary } from "@/app/page-builder/content/component-library";
@@ -321,15 +321,7 @@ export default function TemplateGeneratorPage() {
         )}
 
         {/* Toaster */}
-        {toaster.show && (
-          <div className={`${styles.lunarToast} ${toaster.type === "delete" ? styles.lunarToastDelete : styles.lunarToastSuccess}`}>
-            {toaster.type === "delete"
-              ? <TrashIcon className={styles.lunarToastIcon} />
-              : <BellAlertIcon className={styles.lunarToastIcon} />
-            }
-            {toaster.message}
-          </div>
-        )}
+        <Notification />
 
       </BuilderSelectionContext.Provider>
     </div>

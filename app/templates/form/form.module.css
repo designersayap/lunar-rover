@@ -13,6 +13,6 @@
 
 @container (min-width: 768px) {
     .formWrapper {
-        padding: var(--padding-xl);
+        padding: var(--padding-lg);
     }
 }

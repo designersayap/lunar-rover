@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useToast, useDragDrop } from "@/app/page-builder/utils/hooks";
+import { useDragDrop } from "@/app/page-builder/utils/hooks";
+import { showToast } from "@/app/page-builder/utils/toast";
 import { getThemes } from "@/app/page-builder/utils/get-themes";
 import { componentLibrary } from "@/app/page-builder/content/component-library";
 import {
@@ -79,8 +80,6 @@ export function useTemplateLogic() {
 
     // ==================== HOOKS ====================
 
-    // Toast Notifications
-    const { toast: toaster, showToast } = useToast();
 
     // Drag and Drop Logic
     const dragDrop = useDragDrop({
@@ -227,14 +226,12 @@ export function useTemplateLogic() {
     }, [showToast]);
 
     const removeComponent = useCallback((uniqueId) => {
-        setSelectedComponents(prev => {
-            const comp = findComponentById(prev, uniqueId);
-            if (comp) {
-                showToast(`${comp.name} deleted`, "delete");
-            }
-            return removeComponentFromList(prev, uniqueId);
-        });
-    }, [showToast]);
+        const comp = findComponentById(selectedComponents, uniqueId);
+        if (comp) {
+            showToast(`${comp.name} deleted`, "delete");
+        }
+        setSelectedComponents(prev => removeComponentFromList(prev, uniqueId));
+    }, [selectedComponents, showToast]);
 
 
     const updateComponent = useCallback((uniqueId, newProps) => {
@@ -331,7 +328,6 @@ export function useTemplateLogic() {
             popoverPositions,
             activeElementId,
             selectedElementIds,
-            toaster,
             dragDrop
         },
         actions: {

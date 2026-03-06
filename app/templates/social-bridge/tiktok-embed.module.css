@@ -11,7 +11,7 @@
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    padding: 40px 0;
+    padding: 0;
     /* Vertical space for active zoom and shadow */
 }
 

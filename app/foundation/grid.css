@@ -150,6 +150,7 @@
     }
 
     :root,
+    main,
     #canvas-inner {
         /* Tokens from tokens.css */
         --padding-xs: var(--space-60);
@@ -215,6 +216,7 @@
     }
 
     :root,
+    main,
     #canvas-inner {
         /* Tokens from tokens.css */
         --padding-xs: var(--space-60);

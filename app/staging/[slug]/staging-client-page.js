@@ -3,12 +3,13 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import styles from "../../page.module.css";
 import StickyManager from "@/app/page-builder/utils/sticky-manager";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { COMPONENT_REGISTRY } from "@/app/page-builder/utils/component-registry";
 import { componentDefaults } from "@/app/templates/content/data";
+import Notification from "@/app/templates/notification/notification";
+import { showToast } from "@/app/page-builder/utils/toast";
 
 // Helper: Create ID Resolver (replicated from stage-preview.js logic)
 const getPropResolver = (components) => {
@@ -67,28 +68,6 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
     const [activePopoverId, setActivePopoverId] = useState(null);
     const lastEditedComponentIdRef = useRef(null);
 
-    const [toaster, setToaster] = useState({ show: false, message: '', type: 'info' });
-
-    const showToast = (message, type = 'info') => {
-        setToaster({ show: true, message, type });
-        if (type !== 'loading') {
-            setTimeout(() => {
-                setToaster(prev => ({ ...prev, show: false }));
-            }, 3000);
-        }
-    };
-
-    useEffect(() => {
-        const handleToastEvent = (e) => {
-            const { message, type } = e.detail || {};
-            if (message) {
-                showToast(message, type || 'info');
-            }
-        };
-
-        window.addEventListener('lunar:toast', handleToastEvent);
-        return () => window.removeEventListener('lunar:toast', handleToastEvent);
-    }, []);
 
     const handleUpdate = async (uniqueId, newData) => {
         lastEditedComponentIdRef.current = uniqueId;
@@ -346,16 +325,7 @@ export default function StagingClientPage({ initialData, folderName, activeTheme
                 </div>
 
                 {/* Toaster */}
-                {toaster.show && (
-                    <div className={`toast toast-${toaster.type}`}>
-                        {toaster.type === "success" && <CheckCircleIcon className="toast-icon" style={{ color: 'var(--system-color-green-300)' }} />}
-                        {toaster.type === "error" && <ExclamationCircleIcon className="toast-icon" style={{ color: 'var(--system-color-red-300)' }} />}
-                        {toaster.type === "loading" && (
-                            <div className="spinner" />
-                        )}
-                        {toaster.message}
-                    </div>
-                )}
+                <Notification />
             </BuilderSelectionContext.Provider>
         </main >
     );
