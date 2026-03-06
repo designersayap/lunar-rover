@@ -32,7 +32,7 @@ export default function FormPersonalDataSection(props) {
             removePaddingRight={removePaddingRight}
         >
             <div className="grid">
-                <div className="col-mobile-4 col-tablet-8 col-desktop-12">
+                <div className="col-mobile-4 col-tablet-6 offset-tablet-1 col-desktop-6 offset-desktop-3">
                     <div className={styles.formWrapper}>
                         <FormPersonalData
                             {...props}

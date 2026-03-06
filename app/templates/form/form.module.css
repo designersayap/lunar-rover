@@ -10,7 +10,6 @@
     box-shadow: var(--shadow--md);
     width: 100%;
     max-width: 640px;
-    margin: 0 auto;
 }
 
 @container (min-width: 768px) {
