@@ -129,9 +129,12 @@
        ============================================ */
 
     /* Typography */
-    --typography-title: var(--grey-500);
-    --typography-body: var(--grey-400);
-    --typography-caption: var(--grey-300);
+    --brand-typography-title: var(--grey-500);
+    --default-typography-title: var(--grey-500);
+    --brand-typography-body: var(--grey-400);
+    --default-typography-body: var(--grey-400);
+    --brand-typography-caption: var(--grey-300);
+    --default-typography-caption: var(--grey-300);
 
     /* Button */
     --text--primary-button: var(--base-white);
