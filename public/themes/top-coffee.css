@@ -139,6 +139,7 @@
     --typography-title: var(--base-white);
     --typography-body: var(--base-white);
     --typography-caption: var(--base-white);
+    --typography-label: var(--grey-400);
 
     /* Button */
     --text--primary-button: var(--base-white);
