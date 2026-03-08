@@ -84,7 +84,10 @@
 
 /* Mobile (4 cols) - Default < 640px */
 :root,
-#canvas-inner {
+body>*,
+main,
+#canvas-inner,
+#canvas-inner>* {
     --grid-columns: 4;
     --grid-margin: 16px;
     --grid-gutter: 0;
@@ -138,7 +141,7 @@
 @container (min-width: 640px) and (max-width: 1023px) {
 
     body>*,
-    main>*,
+    main,
     #canvas-inner>* {
         --grid-columns: 8;
         --grid-margin: 32px;
@@ -149,9 +152,9 @@
         --grid-columns: 8;
     }
 
-    :root,
+    body>*,
     main,
-    #canvas-inner {
+    #canvas-inner>* {
         /* Tokens from tokens.css */
         --padding-xs: var(--space-60);
         --padding-sm: var(--space-80);
@@ -203,7 +206,7 @@
 @container (min-width: 1024px) {
 
     body>*,
-    main>*,
+    main,
     #canvas-inner>* {
         --grid-columns: 12;
         --grid-margin: 120px;
@@ -215,9 +218,9 @@
         --grid-columns: 12;
     }
 
-    :root,
+    body>*,
     main,
-    #canvas-inner {
+    #canvas-inner>* {
         /* Tokens from tokens.css */
         --padding-xs: var(--space-60);
         --padding-sm: var(--space-80);

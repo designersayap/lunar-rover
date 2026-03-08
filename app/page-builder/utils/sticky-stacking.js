@@ -47,7 +47,7 @@ export function useStickyStacking(components) {
                 // Specific behavior for Stacked items:
                 // They should stick at the current offset (under headers) but NOT push subsequent sticky items down.
                 // This allows them to be "covered" by the next sliding element.
-                if (!isStacked) {
+                if (!isStacked && !isOverlay) {
                     offset += height;
                 }
             });

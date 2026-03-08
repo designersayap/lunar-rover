@@ -1262,10 +1262,21 @@
 }
 
 .resolutionIndicator {
-    font-size: 10px;
+    font-size: 11px;
+    font-weight: 500;
     position: sticky;
-    bottom: 0px;
+    bottom: var(--pb-space-lg);
     margin: var(--pb-space-xl) auto 0;
+    background: var(--pb-neutral-400);
+    color: var(--pb-white);
+    padding: var(--pb-space-xs) var(--pb-space-md);
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: var(--pb-space-xs);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    width: fit-content;
+    z-index: 10;
 }
 
 .scrollGroupOverlay {

@@ -746,7 +746,7 @@ export default function RootLayout({ children }) {
         ${canonicalUrl ? `<link rel="canonical" href="${canonicalUrl}" />` : ''}
         ${customMetaTags}
       </head>
-      <body style={{ containerType: 'inline-size', containerName: 'root-container' }}>
+      <body>
         {children}
         
         {/* Analytics Scripts */}

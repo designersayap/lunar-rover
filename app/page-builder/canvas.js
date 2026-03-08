@@ -25,6 +25,14 @@ export default function Canvas({
     // Indicator visibility logic
     const [showIndicator, setShowIndicator] = useState(false);
 
+    const deviceName = useMemo(() => {
+        if (canvasWidth === '100%') return 'Desktop';
+        const width = parseInt(canvasWidth);
+        if (width < 640) return 'Mobile';
+        if (width < 1024) return 'Tablet';
+        return 'Desktop';
+    }, [canvasWidth]);
+
     useEffect(() => {
         let timeout;
         if (isResizing || canvasWidth !== '100%') {
@@ -256,7 +264,7 @@ export default function Canvas({
                     {/* Resolution Indicator */}
                     {showIndicator && (
                         <div className={styles.resolutionIndicator}>
-                            <span style={{ opacity: 0.7 }}>Device Width:</span>
+                            <span style={{ opacity: 0.7, marginRight: 'var(--pb-space-xs)' }}>{deviceName}</span>
                             <strong>{canvasWidth === '100%' ? 'Full' : canvasWidth}</strong>
                             {isResizing && <span style={{ opacity: 0.5, marginLeft: 'var(--pb-space-xs)' }}>(Resizing)</span>}
                         </div>

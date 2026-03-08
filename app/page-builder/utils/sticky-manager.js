@@ -42,7 +42,7 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                         newOffsets[index] = currentOffset;
                     }
 
-                    if (!isStacked) {
+                    if (!isStacked && !overlayIndices.includes(index)) {
                         currentOffset += el.offsetHeight;
                     }
                 }
@@ -235,7 +235,7 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                                 zIndex: isStacked ? 0 : 100 - index,
                                 display: 'flex',
                                 flexDirection: 'column',
-                                marginBottom: isOverlay ? `-${refs.current[index]?.offsetHeight || 0}px` : undefined
+                                marginBottom: isOverlay ? `-${refs.current[index]?.offsetHeight || 100}px` : undefined
                             }}
                         >
                             {isStacked ? (
