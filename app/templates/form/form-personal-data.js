@@ -26,6 +26,9 @@ export default function FormPersonalData({
     marketingConsentVisible,
     collectionConsentVisible,
 
+    whatsappLabel,
+    genderLabel,
+    dobLabel,
     marketingConsentLabel,
     collectionConsentLabel,
 
@@ -196,7 +199,6 @@ export default function FormPersonalData({
             <BuilderInput
                 label={nameLabel || "Full Name"}
                 name="name"
-                placeholder="Enter your full name"
                 value={formData.name}
                 onChange={handleChange}
                 isVisible={nameVisible !== false}
@@ -213,7 +215,6 @@ export default function FormPersonalData({
                 label={emailLabel || "Email Address"}
                 type="email"
                 name="email"
-                placeholder="example@mail.com"
                 value={formData.email}
                 onChange={handleChange}
                 isVisible={emailVisible !== false}
@@ -227,7 +228,7 @@ export default function FormPersonalData({
             />
 
             <BuilderInput
-                label="WhatsApp Number"
+                label={whatsappLabel || "WhatsApp Number"}
                 type="tel"
                 name="whatsappNumber"
                 placeholder="812 3456 7890"
@@ -242,12 +243,13 @@ export default function FormPersonalData({
                 inputMode="numeric"
                 pattern="[0-9]*"
                 required={true}
+                onLabelChange={update('whatsappLabel')}
             >
                 <span className="form-prefix">+62</span>
             </BuilderInput>
 
             <BuilderSelect
-                label="Gender"
+                label={genderLabel || "Gender"}
                 type="select"
                 name="gender"
                 value={formData.gender}
@@ -259,8 +261,9 @@ export default function FormPersonalData({
                 onIdChange={update('genderFieldId')}
                 suffix="gender-field"
                 required={true}
+                onLabelChange={update('genderLabel')}
                 options={[
-                    { value: "", label: "Select gender", disabled: true },
+                    { value: "", label: "-", disabled: true },
                     { value: "male", label: "Male" },
                     { value: "female", label: "Female" },
                     { value: "other", label: "Other" }
@@ -268,7 +271,7 @@ export default function FormPersonalData({
             />
 
             <BuilderInput
-                label="Date of Birth"
+                label={dobLabel || "Date of Birth"}
                 type="date"
                 name="dob"
                 value={formData.dob}
@@ -280,6 +283,7 @@ export default function FormPersonalData({
                 onIdChange={update('dobFieldId')}
                 suffix="dob-field"
                 required={true}
+                onLabelChange={update('dobLabel')}
             />
 
             <BuilderSelect

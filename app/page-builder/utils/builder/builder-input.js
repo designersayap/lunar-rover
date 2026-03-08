@@ -1,6 +1,7 @@
 "use client";
 
 import { useIdSync } from "../hooks/use-id-sync";
+import BuilderText from "./builder-text";
 
 export default function BuilderInput({
     label,
@@ -36,9 +37,15 @@ export default function BuilderInput({
     return (
         <div className={containerClassName}>
             {label && (
-                <label className={labelClassName} htmlFor={elementId}>
-                    {label}
-                </label>
+                <BuilderText
+                    tagName="label"
+                    className={labelClassName}
+                    htmlFor={elementId}
+                    content={label}
+                    onChange={onLabelChange}
+                    sectionId={sectionId}
+                    suffix={`${suffix || name}-label`}
+                />
             )}
 
             {children ? (

@@ -38,9 +38,15 @@ export default function BuilderSelect({
         return (
             <div className={containerClassName}>
                 {label && (
-                    <label className="form-label caption-regular" htmlFor={elementId}>
-                        {label}
-                    </label>
+                    <BuilderText
+                        tagName="label"
+                        className="form-label caption-regular"
+                        htmlFor={elementId}
+                        content={label}
+                        onChange={onLabelChange}
+                        sectionId={sectionId}
+                        suffix={`${suffix || name}-label`}
+                    />
                 )}
                 <select
                     id={elementId}

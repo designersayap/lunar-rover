@@ -827,9 +827,37 @@ strong {
   /* Firefox */
 }
 
-/* Fix date input separator color to match placeholder text */
-.form-input[type="date"]::-webkit-datetime-edit-text {
+/* Fix date input placeholder color to match other inputs */
+.form-input[type="date"] {
+  color: var(--content-neutral--body-default);
+}
+
+.form-input[type="date"]:invalid {
   color: var(--content-neutral--body-subtle);
+}
+
+/* Force WebKit inner date fields to EXACTLY match the subtle color when empty (invalid) */
+.form-input[type="date"]:invalid::-webkit-datetime-edit,
+.form-input[type="date"]:invalid::-webkit-datetime-edit-fields-wrapper,
+.form-input[type="date"]:invalid::-webkit-datetime-edit-text,
+.form-input[type="date"]:invalid::-webkit-datetime-edit-month-field,
+.form-input[type="date"]:invalid::-webkit-datetime-edit-day-field,
+.form-input[type="date"]:invalid::-webkit-datetime-edit-year-field {
+  color: var(--content-neutral--body-subtle) !important;
+  -webkit-text-fill-color: var(--content-neutral--body-subtle) !important;
+  opacity: 1 !important;
+}
+
+/* Force WebKit inner date fields to EXACTLY match standard text color when filled (valid) */
+.form-input[type="date"]:valid::-webkit-datetime-edit,
+.form-input[type="date"]:valid::-webkit-datetime-edit-fields-wrapper,
+.form-input[type="date"]:valid::-webkit-datetime-edit-text,
+.form-input[type="date"]:valid::-webkit-datetime-edit-month-field,
+.form-input[type="date"]:valid::-webkit-datetime-edit-day-field,
+.form-input[type="date"]:valid::-webkit-datetime-edit-year-field {
+  color: var(--content-neutral--body-default) !important;
+  -webkit-text-fill-color: var(--content-neutral--body-default) !important;
+  opacity: 1 !important;
 }
 
 .form-select {

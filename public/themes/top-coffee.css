@@ -4,22 +4,16 @@
     font-family: 'Google-sans';
     font-style: normal;
     font-weight: 400;
-    src: url('/fonts/Google-Sans/GoogleSans_17pt-Regular.ttf') format('truetype');
+    src: url('/fonts/Google_Sans/GoogleSans_17pt-Regular.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Google-sans';
     font-style: normal;
     font-weight: 700;
-    src: url('/fonts/Google-Sans/GoogleSans_17pt-Bold.ttf') format('truetype');
+    src: url('/fonts/Google_Sans/GoogleSans_17pt-Bold.ttf') format('truetype');
 }
 
-@font-face {
-    font-family: 'Google-sans';
-    font-style: normal;
-    font-weight: 700;
-    src: url('/fonts/Google-Sans/GoogleSans_17pt-Regular.ttf') format('truetype');
-}
 
 :root {
 
@@ -82,8 +76,8 @@
     --alpha-white-25: #FFFFFF40;
 
     /* Grey Scale */
-    --grey-500: #212121FF;
-    --grey-400: #424242FF;
+    --grey-500: #433016;
+    --grey-400: #604520;
     --grey-300: #8F8F8FFF;
     --grey-200: #BDBDBDFF;
     --grey-100: #EEEEEEFF;
@@ -124,24 +118,27 @@
     --font-family-body: var(--font-body), sans-serif;
     --font-family-caption: var(--font-body), sans-serif;
     --font-family-overline: var(--font-body), sans-serif;
-    --font-family-action: var(--font-body), sans-serif;
+    --font-family-action: var(--font-heading), sans-serif;
 
     /* Typography - Font Weights */
     --font-weight-bold: 700;
     --font-weight-regular: 400;
-    --font-weight-action: 400;
+    --font-weight-action: 700;
 
     /* ============================================
        Custom Colors
        ============================================ */
 
     /* Typography */
-    --brand-typography-title: var(--base-white);
+    --brand-typography-title: var(--grey-500);
     --default-typography-title: var(--grey-500);
-    --brand-typography-body: var(--base-white);
+    --brand-typography-body: var(--grey-400);
     --default-typography-body: var(--grey-400);
-    --brand-typography-caption: var(--base-white);
+    --brand-typography-caption: var(--grey-300);
     --default-typography-caption: var(--grey-300);
+
+    /* Stroke */
+    --stroke-default: var(--grey-100);
 
     /* Button */
     --text--primary-button: var(--base-white);

@@ -42,10 +42,14 @@ export function cleanBuilderContent(src, componentName) {
   const hasBuilderElement = src.includes('BuilderElement') && !hasShim('BuilderElement');
   const hasBuilderInput = src.includes('BuilderInput') && !hasShim('BuilderInput');
   const hasBuilderSelect = src.includes('BuilderSelect') && !hasShim('BuilderSelect');
+  const hasBuilderControlsPopover = src.includes('BuilderControlsPopover') && !hasShim('BuilderControlsPopover');
 
   // Remove Builder imports (Absolute & Relative)
   // Matches: import ... from "@/app/page-builder/..." OR ".../page-builder/..."
   src = src.replace(/import\s+.*?\s+from\s+['"](?:@\/app\/|.*\/)page-builder\/utils\/(?:builder\/|toast).*?['"];?\n?/g, '');
+
+  // Strip relative imports of shimmed components to avoid redeclaration errors
+  src = src.replace(/import\s+.*?BuilderControlsPopover.*?\s+from\s+['"][^'"]+['"];?\n?/g, '');
 
   // Remove generic imports that are not needed (keep CSS imports)
   // src = src.replace(/import\s+{[^}]*}\s+from\s+['"][^'\"]+['"];?\n?/g, '');
@@ -53,6 +57,10 @@ export function cleanBuilderContent(src, componentName) {
   // Remove onUpdate props and update handler calls
   src = src.replace(/onUpdate\s*=\s*\{[^}]+\}/g, '');
   src = src.replace(/update[A-Za-z0-9_]*\([^)]*\)/g, 'undefined');
+
+  // Replace BuilderSelectionContext usages to avoid ReferenceErrors since import is removed
+  src = src.replace(/useContext\s*\(\s*BuilderSelectionContext\s*\)/g, '{}');
+  src = src.replace(/useBuilderSelection\s*\(\s*\)/g, '{}');
 
   // Remove empty import lines left behind
   src = src.replace(/^\s*\n/gm, '\n');
@@ -463,6 +471,12 @@ const BuilderSelect = ({ label, labelContent, onLabelChange, type = 'select', na
     </div>
   );
 };`);
+  }
+
+  if (hasBuilderControlsPopover) {
+    shims.push(`
+// Shim for BuilderControlsPopover
+const BuilderControlsPopover = () => null;`);
   }
 
   if (shims.length > 0) {

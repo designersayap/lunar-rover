@@ -136,6 +136,9 @@
     --brand-typography-caption: var(--grey-300);
     --default-typography-caption: var(--grey-300);
 
+    /* Stroke */
+    --stroke-default: var(--grey-100);
+
     /* Button */
     --text--primary-button: var(--base-white);
     --stroke--primary-button: none;
