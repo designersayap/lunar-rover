@@ -617,6 +617,11 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         }
     }
 
+    // Safety fallback: Strip any remaining unbundled /fonts/ or /themes/ URLs from foundationCSS 
+    // to prevent 404 errors in the exported app console.
+    foundationCSS = foundationCSS.replace(/url\(['"]?\/fonts\/[^)]+\)/g, "url('')");
+    foundationCSS = foundationCSS.replace(/@import\s+url\(['"]?\/themes\/[^)]+\)[^;]*;/g, "");
+
     // --- 4. Generate Project Structure ---
 
     // Package.json
@@ -672,6 +677,11 @@ ${foundationCSS}
     // Safety check: specific field must contain HTML tags. if user enters raw text, wrap in comment to prevent build error.
     if (customMetaTags && !customMetaTags.trim().startsWith('<')) {
         customMetaTags = `{/* Invalid Meta Tag (Must be valid HTML): ${customMetaTags.replace(/\*\//g, '* /')} */}`;
+    }
+    // Clean up any stray theme.css links that might cause 404 in exported apps
+    if (typeof customMetaTags === 'string') {
+        customMetaTags = customMetaTags.replace(/<link[^>]*href=['"]\/themes\/[^>]*>([\s\n]*<\/link>)?/gi, '');
+        customMetaTags = customMetaTags.replace(/<link[^>]*href=['"]\/fonts\/[^>]*>([\s\n]*<\/link>)?/gi, '');
     }
 
     // Scripts
