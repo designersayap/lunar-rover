@@ -327,6 +327,10 @@ const ComponentTreeItem = memo(({
                                                     {(() => {
                                                         const isDeleteDisabled = (() => {
                                                             if (!child.visibleProp || child.allowHideIfMoreThan === undefined) return false;
+
+                                                            const isCurrentlyVisible = getValueAt(comp.props, child.visibleProp) !== false;
+                                                            if (!isCurrentlyVisible) return false; // Never disable "Show" action
+
                                                             const parts = child.visibleProp.split('.');
                                                             if (parts.length < 2) return false;
                                                             const list = comp.props[parts[0]];
