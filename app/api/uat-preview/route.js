@@ -38,11 +38,16 @@ export async function POST(request) {
         }
 
         const targetDir = path.join(UAT_DIR, folderName);
+        const appFolder = path.join(targetDir, 'app');
+
+        // Clean up existing directory if it exists to prevent duplicate route warnings
+        // (e.g. if we switched from robots.txt to robots.js)
+        if (fs.existsSync(targetDir)) {
+            fs.rmSync(targetDir, { recursive: true, force: true });
+        }
 
         // Ensure target directory exists
-        if (!fs.existsSync(targetDir)) {
-            fs.mkdirSync(targetDir, { recursive: true });
-        }
+        fs.mkdirSync(targetDir, { recursive: true });
 
         // Process files
         for (const file of files) {
