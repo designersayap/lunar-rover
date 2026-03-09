@@ -273,7 +273,6 @@ export default function BuilderButton({
                     data-builder-ui="true"
                 >
                     <div className={styles.overlayLabel}>
-                        <span className={styles.overlayIdText}>#{buttonId || 'button'}</span>
                     </div>
 
                     {linkType === 'dialog' && (

@@ -154,7 +154,6 @@ export default function BuilderSection({
                     style={overlayStyle}
                 >
                     <div className={styles.overlayLabel}>
-                        <span className={styles.overlayIdText}>#{elementId}</span>
                     </div>
                     {!!onUpdate && !isStaging && (
                         <button

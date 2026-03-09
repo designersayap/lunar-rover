@@ -194,7 +194,6 @@ export default function BuilderImage({
                 style={overlayStyle}
             >
                 <div className={styles.overlayLabel}>
-                    <span className={styles.overlayIdText}>#{elementId}</span>
                 </div>
 
                 {linkType === 'dialog' && (
