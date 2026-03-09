@@ -15,6 +15,7 @@ export default function TerraProductCarousel({
     products = componentDefaults["product-carousel-terra"].products,
     sectionId,
     onUpdate,
+    showTabs = true,
     fullWidth,
     removePaddingLeft,
     removePaddingRight
@@ -151,7 +152,14 @@ export default function TerraProductCarousel({
                 <div className="col-mobile-4 col-tablet-8 col-desktop-12">
 
                     {/* Category Tabs */}
-                    <div className={styles.tabsContainer}>
+                    <BuilderElement
+                        tagName="div"
+                        className={styles.tabsContainer}
+                        isVisible={showTabs}
+                        onVisibilityChange={(val) => onUpdate({ showTabs: val })}
+                        sectionId={sectionId}
+                        elementProps="tabs-container"
+                    >
                         <div className={styles.scrollableTabs}>
                             <div className="tabs">
                                 {categories.map((cat, index) => (
@@ -177,7 +185,7 @@ export default function TerraProductCarousel({
                                 ))}
                             </div>
                         </div>
-                    </div>
+                    </BuilderElement>
 
                     {/* Carousel */}
                     <div className={`${styles.carouselContainer} ${fullWidth ? styles.fullWidthContainer : ''}`}>
@@ -193,7 +201,8 @@ export default function TerraProductCarousel({
                             className={styles.cardsWrapper}
                             style={{ justifyContent: totalPages === 1 ? 'center' : 'start' }}
                         >
-                            {categories.map((cat, catIndex) => {
+                            {/* Filter categories to show only the first one in layer tree if tabs are hidden */}
+                            {(showTabs ? categories : categories.slice(0, 1)).map((cat, catIndex) => {
                                 const productsInCategory = products.filter(p => p.categoryId === cat.id || (!cat.id && !p.categoryId));
                                 return (
                                     <BuilderElement
@@ -203,7 +212,7 @@ export default function TerraProductCarousel({
                                         id={cat.id}
                                         sectionId={sectionId}
                                         elementProps={`category-group-${catIndex}`}
-                                        isVisible={activeCategoryId === cat.id || !activeCategoryId}
+                                        isVisible={!showTabs || activeCategoryId === cat.id || !activeCategoryId}
                                     >
                                         {productsInCategory.map((item) => {
                                             const originalIndex = products.findIndex(p => p === item);

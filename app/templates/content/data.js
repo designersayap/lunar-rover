@@ -405,6 +405,7 @@ export const componentDefaults = {
     "spacing-medium": {},
     "spacing-large": {},
     "product-carousel-terra": {
+        showTabs: true,
         categories: [
             { id: "cat-1", label: "Category 1", visible: true },
             { id: "cat-2", label: "Category 2", visible: true },
