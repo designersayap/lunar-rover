@@ -521,6 +521,11 @@
     height: var(--pb-space-xl);
 }
 
+.sidebarDeleteButton:disabled {
+    opacity: 0.25;
+    cursor: default;
+}
+
 .sidebarDeleteButton:hover {
     color: var(--pb-neutral-100);
 }

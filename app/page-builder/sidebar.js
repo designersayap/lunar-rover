@@ -324,23 +324,38 @@ const ComponentTreeItem = memo(({
                                         <div className={styles.treeActions}>
                                             {child.visibleProp && (
                                                 <Tooltip content={getValueAt(comp.props, child.visibleProp) === false ? "Show" : "Hide"} position="top">
-                                                    <button
-                                                        className={styles.sidebarDeleteButton}
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            const currentVal = getValueAt(comp.props, child.visibleProp) ?? true;
-                                                            updateComponent(comp.uniqueId, { [child.visibleProp]: !currentVal });
-                                                        }}
-                                                    >
-                                                        {getValueAt(comp.props, child.visibleProp) === false ? (
-                                                            <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
-                                                        ) : (
-                                                            <>
-                                                                <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
-                                                                <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
-                                                            </>
-                                                        )}
-                                                    </button>
+                                                    {(() => {
+                                                        const isDeleteDisabled = (() => {
+                                                            if (!child.visibleProp || child.allowHideIfMoreThan === undefined) return false;
+                                                            const parts = child.visibleProp.split('.');
+                                                            if (parts.length < 2) return false;
+                                                            const list = comp.props[parts[0]];
+                                                            if (!Array.isArray(list)) return false;
+                                                            const visibleItems = list.filter(item => item.visible !== false);
+                                                            return visibleItems.length <= child.allowHideIfMoreThan;
+                                                        })();
+
+                                                        return (
+                                                            <button
+                                                                className={styles.sidebarDeleteButton}
+                                                                disabled={isDeleteDisabled}
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    const currentVal = getValueAt(comp.props, child.visibleProp) ?? true;
+                                                                    updateComponent(comp.uniqueId, { [child.visibleProp]: !currentVal });
+                                                                }}
+                                                            >
+                                                                {getValueAt(comp.props, child.visibleProp) === false ? (
+                                                                    <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
+                                                                ) : (
+                                                                    <>
+                                                                        <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
+                                                                        <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
+                                                                    </>
+                                                                )}
+                                                            </button>
+                                                        );
+                                                    })()}
                                                 </Tooltip>
                                             )}
                                         </div>
