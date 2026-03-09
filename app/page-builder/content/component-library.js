@@ -840,6 +840,7 @@ export const componentLibrary = {
                 },
                 {
                     label: "Category 3", propId: "categories.2.id", suffix: "category-2", visibleProp: "categories.2.visible",
+                    allowHideIfMoreThan: 1,
                     provideContext: { categoryId: "" },
                     addAction: {
                         targetList: "products",
@@ -858,6 +859,7 @@ export const componentLibrary = {
                 },
                 {
                     label: "Category 4", propId: "categories.3.id", suffix: "category-3", visibleProp: "categories.3.visible",
+                    allowHideIfMoreThan: 1,
                     provideContext: { categoryId: "" },
                     addAction: {
                         targetList: "products",
