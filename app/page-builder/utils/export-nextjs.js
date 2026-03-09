@@ -246,9 +246,11 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
     };
 
     const processComponent = async (filePath, currentBytes = null) => {
+        if (processedFiles.has(filePath)) return;
+        processedFiles.add(filePath);
+
         const filename = filePath.split('/').pop();
-        if (processedFiles.has(filename)) return;
-        processedFiles.add(filename);
+
 
         try {
             // If content is provided, use it. otherwise fetch.
@@ -351,7 +353,12 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
                 if (!isCssModule && !depFilePath.endsWith('.js')) depFilePath += '.js';
 
                 // Process the dependency
-                await processComponent(depFilePath);
+                try {
+                    await processComponent(depFilePath);
+                } catch (depErr) {
+                    console.error(`[Export] Dependency fetch failed for ${depFilePath} (imported by ${filePath}):`, depErr);
+                    throw depErr; // Re-throw to be caught by the outer catch
+                }
 
                 // REWRITE IMPORT IN CONTENT
                 const depFilename = depFilePath.split('/').pop();
@@ -372,7 +379,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
             previewMap.set(`components/${filename}`, { path: `components/${filename}`, content });
 
         } catch (err) {
-            console.error(`Error processing ${filePath}`, err);
+            console.error(`[Export] Error processing ${filePath}:`, err);
             errors.push(`Failed to export dependency: ${filename}. Details: ${err.message}`);
         }
     };

@@ -43,7 +43,22 @@ export async function POST(request) {
         // Clean up existing directory if it exists to prevent duplicate route warnings
         // (e.g. if we switched from robots.txt to robots.js)
         if (fs.existsSync(targetDir)) {
-            fs.rmSync(targetDir, { recursive: true, force: true });
+            try {
+                fs.rmSync(targetDir, { recursive: true, force: true });
+            } catch (rmError) {
+                console.warn(`Initial rmSync failed for ${targetDir}: ${rmError.message}. Retrying with content cleanup.`);
+                // Fallback: Delete contents individually if rmSync fails with ENOTEMPTY or similar
+                try {
+                    const files = fs.readdirSync(targetDir);
+                    for (const file of files) {
+                        fs.rmSync(path.join(targetDir, file), { recursive: true, force: true });
+                    }
+                    fs.rmdirSync(targetDir);
+                } catch (fallbackError) {
+                    console.error(`Fallback cleanup failed for ${targetDir}:`, fallbackError);
+                    // If everything fails, we still try to proceed by overwriting files
+                }
+            }
         }
 
         // Ensure target directory exists
