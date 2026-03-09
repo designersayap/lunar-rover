@@ -79,6 +79,15 @@ export function cleanBuilderContent(src, componentName) {
     }
   }
 
+  if (hasBuilderText && !src.includes('useState')) {
+    const useClientRegex = /^(['"]use client['"];?)\s*/;
+    if (useClientRegex.test(src)) {
+      src = src.replace(useClientRegex, '$1\nimport { useState } from \'react\';\n');
+    } else {
+      src = "import { useState } from 'react';\n" + src;
+    }
+  }
+
   if (hasBuilderSection) {
     shims.push(`
 // Shim for BuilderSection
