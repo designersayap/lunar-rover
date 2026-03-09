@@ -373,7 +373,7 @@ export const componentDefaults = {
         isOverlay: false,
         menuColor: "default"
     },
-    "testimonial-terra": {
+    "testimony-landscape": {
         testimonies: Array(4).fill({
             name: "People Name",
             role: "Role",

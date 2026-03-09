@@ -11,7 +11,7 @@ const DialogAccordion = dynamic(() => import("@/app/templates/dialog/dialog-acco
 const DialogForm = dynamic(() => import("@/app/templates/dialog/dialog-form"));
 const FormPersonalDataSection = dynamic(() => import("@/app/templates/form/form-personal-data-section"));
 const OsmBanner = dynamic(() => import("@/app/templates/osm/osm-banner"));
-const TestimonialTerra = dynamic(() => import("@/app/templates/terra/terra-testimony"));
+const TestimonyLandscape = dynamic(() => import("@/app/templates/testimony/testimony-landscape"));
 const Media16x9 = dynamic(() => import("@/app/templates/media/media-16-9"));
 const Media5x4 = dynamic(() => import('@/app/templates/media/media-5-4'));
 const Media4x3 = dynamic(() => import('@/app/templates/media/media-4-3'));
@@ -748,16 +748,16 @@ export const componentLibrary = {
     ],
     "Testimonial": [
         {
-            id: "testimonial-terra",
-            name: "Testimonial - Terra",
-            component: TestimonialTerra,
+            id: "testimony-landscape",
+            name: "Testimony - Landscape",
+            component: TestimonyLandscape,
             thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-testimonial-terra.svg",
             config: [
                 {
                     name: "testimonies",
                     label: "Testimonies",
                     type: "list",
-                    default: componentDefaults["testimonial-terra"].testimonies
+                    default: componentDefaults["testimony-landscape"].testimonies
                 }
             ],
             addAction: {

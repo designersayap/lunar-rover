@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
-import styles from "./terra-testimony.module.css";
+import styles from "./testimony-landscape.module.css";
 import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
 const DEFAULT_PLACEHOLDER_IMAGE = "https://space.lunaaar.site/assets-lunar/placeholder.svg";
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
@@ -9,8 +9,8 @@ import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
 import BuilderElement from "@/app/page-builder/utils/builder/builder-element";
 import { componentDefaults } from "../content/data";
 
-export default function TestimonialTerra({
-    testimonies = componentDefaults["testimonial-terra"].testimonies,
+export default function TestimonyLandscape({
+    testimonies = componentDefaults["testimony-landscape"].testimonies,
     sectionId,
     onUpdate,
     fullWidth,
