@@ -155,7 +155,7 @@ export default function TerraProductCarousel({
                     <BuilderElement
                         tagName="div"
                         className={styles.tabsContainer}
-                        isVisible={showTabs}
+                        isVisible={showTabs && categories.length > 1}
                         onVisibilityChange={(val) => onUpdate({ showTabs: val })}
                         sectionId={sectionId}
                         elementProps="tabs-container"
@@ -171,7 +171,7 @@ export default function TerraProductCarousel({
                                         sectionId={sectionId}
                                         onIdChange={(val) => updateCategory(index, 'id', val)}
                                         elementProps={`category-${index}`}
-                                        isVisible={cat.visible !== false}
+                                        isVisible={categories.length > 1 ? cat.visible !== false : true}
                                     >
                                         <span onClick={() => setActiveCategoryId(cat.id)}>
                                             <BuilderText
