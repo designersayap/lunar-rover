@@ -25,6 +25,8 @@ export default function TerraProductCarousel({
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
 
+    const visibleCategories = categories.filter(cat => cat.visible !== false);
+
     // Calculate which products to show based on active category
     let filteredProducts = products.filter(p => (p.categoryId === activeCategoryId || !activeCategoryId));
 
@@ -155,10 +157,15 @@ export default function TerraProductCarousel({
                     <BuilderElement
                         tagName="div"
                         className={styles.tabsContainer}
-                        isVisible={showTabs && categories.length > 1}
-                        onVisibilityChange={(val) => onUpdate({ showTabs: val })}
+                        isVisible={showTabs && visibleCategories.length > 1}
+                        onVisibilityChange={(val) => {
+                            onUpdate({ showTabs: val });
+                            if (!val && categories.length > 0) {
+                                setActiveCategoryId(categories[0].id);
+                            }
+                        }}
                         sectionId={sectionId}
-                        elementProps="tabs-container"
+                        elementProps="Product Tabs"
                     >
                         <div className={styles.scrollableTabs}>
                             <div className="tabs">
@@ -171,7 +178,7 @@ export default function TerraProductCarousel({
                                         sectionId={sectionId}
                                         onIdChange={(val) => updateCategory(index, 'id', val)}
                                         elementProps={`category-${index}`}
-                                        isVisible={categories.length > 1 ? cat.visible !== false : true}
+                                        isVisible={visibleCategories.length > 1 ? cat.visible !== false : true}
                                     >
                                         <span onClick={() => setActiveCategoryId(cat.id)}>
                                             <BuilderText
