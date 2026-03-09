@@ -28,7 +28,6 @@ export const COMPONENT_PATHS = {
 
     "testimony-landscape": "app/templates/testimony/testimony-landscape.js",
     "testimony-portrait": "app/templates/testimony/testimony-portrait.js",
-    "terra-testimony": "app/templates/testimony/testimony-landscape.js", // Legacy Alias
     "product-carousel-terra": "app/templates/terra/terra-product-carousel.js",
 
     "footer-terra": "app/templates/terra/terra-footer.js",

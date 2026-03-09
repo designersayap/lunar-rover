@@ -23,14 +23,8 @@ const sanitizeId = (value) => value.toLowerCase().trimStart().replace(/\s+/g, '-
 const sanitizeIdFinal = (value) => sanitizeId(value).replace(/-+$/, '');
 
 const getComponentDef = (id) => {
-    // Legacy mapping
-    const legacyMap = {
-        'terra-testimony': 'testimony-landscape'
-    };
-    const effectiveId = legacyMap[id] || id;
-
     for (const category of Object.values(componentLibrary)) {
-        const found = category.find(c => c.id === effectiveId);
+        const found = category.find(c => c.id === id);
         if (found) return found;
     }
     return null;

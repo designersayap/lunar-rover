@@ -155,28 +155,21 @@ export default function StagingPopover({
                         const rehydrate = (list) => {
                             if (!Array.isArray(list)) return [];
                             return list.map(item => {
-                                // 0. Legacy ID Mapping
-                                const legacyMap = {
-                                    'terra-testimony': 'testimony-landscape'
-                                };
-                                const effectiveId = legacyMap[item.id] || item.id;
-
                                 let definition = null;
                                 for (const category of Object.values(componentLibrary)) {
-                                    const found = category.find(c => c.id === effectiveId);
+                                    const found = category.find(c => c.id === item.id);
                                     if (found) {
                                         definition = found;
                                         break;
                                     }
                                 }
 
-                                const newItem = { ...item, id: effectiveId }; // Migrate ID
+                                const newItem = { ...item };
 
                                 if (definition) {
                                     newItem.component = definition.component;
-                                    newItem.name = definition.name; // Update name too if changed
                                 } else {
-                                    console.warn(`Component definition not found for id: ${item.id} (Effective: ${effectiveId})`);
+                                    console.warn(`Component definition not found for id: ${item.id}`);
                                 }
 
                                 // FIX: Ensure dialogs/popovers start closed on restore

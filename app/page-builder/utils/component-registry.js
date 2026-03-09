@@ -67,7 +67,6 @@ export const COMPONENT_REGISTRY = {
 
     "testimony-landscape": TestimonyLandscape,
     "testimony-portrait": TestimonyPortrait,
-    "terra-testimony": TestimonyLandscape, // Legacy Alias
     "product-carousel-terra": TerraProductCarousel,
 
     "footer-terra": TerraFooter,
