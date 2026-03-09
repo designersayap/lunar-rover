@@ -179,7 +179,7 @@ export default function BuilderLink({
                     style={overlayStyle}
                 >
                     <div className={styles.overlayLabel}>
-                        {!isStaging && <span className={styles.overlayIdText}>#{elementId}</span>}
+                        <span className={styles.overlayIdText}>#{elementId}</span>
                     </div>
                     {safeLinkType === 'dialog' && (
                         <button

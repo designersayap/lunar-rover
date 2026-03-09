@@ -292,7 +292,7 @@ export default function ScrollGroup({
                 style={overlayStyle}
             >
                 <div className={styles.overlayLabel}>
-                    {!isStaging && <span className={styles.overlayIdText}>Group: #{elementId}</span>}
+                    <span className={styles.overlayIdText}>Group: #{elementId}</span>
                 </div>
                 <button
                     type="button"
