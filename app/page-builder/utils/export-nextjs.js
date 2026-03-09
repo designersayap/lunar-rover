@@ -81,6 +81,76 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         console.error("Error fetching builder controls", e);
     }
 
+    // 1d. Define API Routes (For Forms)
+    const confluentApiContent = `export const runtime = 'edge';
+
+import { NextResponse } from 'next/server';
+
+export async function POST(request) {
+    try {
+        const body = await request.json();
+
+        // Forwarding to the external Confluent API Gateway (Dev Endpoint)
+        const externalApiUrl = 'https://devapigwpubmarketingdata.wingscorp.com/post-data-confluent';
+        const apiKey = process.env.WINGSCORP_API_KEY;
+
+        console.log(\`[API Proxy] Sending data to: \${externalApiUrl}\`);
+
+        const response = await fetch(externalApiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'x-api-key': apiKey,
+                'User-Agent': 'Lunar-Page-Builder-Proxy',
+            },
+            body: JSON.stringify(body),
+        });
+
+        const status = response.status;
+        const contentType = response.headers.get('content-type') || '';
+        const responseText = await response.text();
+
+        console.log(\`[API Proxy] Upstream Response Status: \${status}\`);
+
+        let responseData = {};
+        try {
+            if (contentType.includes('application/json') || (responseText.trim().startsWith('{') || responseText.trim().startsWith('['))) {
+                responseData = JSON.parse(responseText);
+            } else {
+                responseData = { message: responseText };
+            }
+        } catch (e) {
+            responseData = { message: 'Could not parse response', raw: responseText };
+        }
+
+        if (!response.ok) {
+            console.error(\`[API Proxy] Upstream Error:\`, responseData);
+            return NextResponse.json(
+                {
+                    error: 'External API Error',
+                    status,
+                    data: responseData
+                },
+                { status: 500 }
+            );
+        }
+
+        console.log(\`[API Proxy] Successfully proxied data.\`);
+        return NextResponse.json({ success: true, data: responseData });
+
+    } catch (error) {
+        console.error('[API Proxy] Error:', error.message);
+        return NextResponse.json(
+            { error: 'Proxy Internal Error', message: error.message },
+            { status: 500 }
+        );
+    }
+}
+`;
+    zip.folder("app").folder("api").folder("post-data-confluent").file("route.js", confluentApiContent);
+    previewMap.set("app/api/post-data-confluent/route.js", { path: "app/api/post-data-confluent/route.js", content: confluentApiContent });
+
     // 2. Process Components (Fetch JS, CSS, and Dependencies)
     const processedFiles = new Set();
     const thumbnailToVideoMap = new Map(); // Track TikTok thumbnails -> original video URLs
@@ -1183,7 +1253,7 @@ export default function robots() {
                     }
                 }, null, 2)
             });
-            fileList.push({ path: "next.config.mjs", content: "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n  output: 'export',\n};\nexport default nextConfig;\n" });
+            fileList.push({ path: "next.config.mjs", content: "/** @type {import('next').NextConfig} */\nconst nextConfig = {};\nexport default nextConfig;\n" });
             fileList.push({ path: "jsconfig.json", content: JSON.stringify({ compilerOptions: { paths: { "@/*": ["./*"] } } }, null, 2) });
             fileList.push({
                 path: "app/globals.css", content: `/* Custom Foundation Styles */
