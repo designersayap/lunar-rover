@@ -40,24 +40,17 @@ export async function POST(request) {
         const targetDir = path.join(UAT_DIR, folderName);
         const appFolder = path.join(targetDir, 'app');
 
-        // Clean up existing directory if it exists to prevent duplicate route warnings
-        // (e.g. if we switched from robots.txt to robots.js)
+        // Clean up existing directory contents if it exists to prevent duplicate route warnings
+        // and avoid deleting the directory itself (which can cause ENOENT: uv_cwd issues)
         if (fs.existsSync(targetDir)) {
             try {
-                fs.rmSync(targetDir, { recursive: true, force: true });
-            } catch (rmError) {
-                console.warn(`Initial rmSync failed for ${targetDir}: ${rmError.message}. Retrying with content cleanup.`);
-                // Fallback: Delete contents individually if rmSync fails with ENOTEMPTY or similar
-                try {
-                    const files = fs.readdirSync(targetDir);
-                    for (const file of files) {
-                        fs.rmSync(path.join(targetDir, file), { recursive: true, force: true });
-                    }
-                    fs.rmdirSync(targetDir);
-                } catch (fallbackError) {
-                    console.error(`Fallback cleanup failed for ${targetDir}:`, fallbackError);
-                    // If everything fails, we still try to proceed by overwriting files
+                const items = fs.readdirSync(targetDir);
+                for (const item of items) {
+                    fs.rmSync(path.join(targetDir, item), { recursive: true, force: true });
                 }
+            } catch (cleanupError) {
+                console.error(`Cleanup failed for ${targetDir}:`, cleanupError);
+                // If it fails, we still try to proceed by overwriting files
             }
         }
 

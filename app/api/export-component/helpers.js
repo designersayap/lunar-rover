@@ -56,7 +56,8 @@ export function cleanBuilderContent(src, componentName) {
 
   // Remove onUpdate props and update handler calls
   src = src.replace(/onUpdate\s*=\s*\{[^}]+\}/g, '');
-  src = src.replace(/update[A-Za-z0-9_]*\([^)]*\)/g, 'undefined');
+  // Only replace actual calls, not definitions (const/let/var/function/async)
+  src = src.replace(/(?<!\b(?:const|let|var|function|async)\s+)\bupdate[A-Za-z0-9_]*\([^)]*\)/g, 'undefined');
 
   // Replace BuilderSelectionContext usages to avoid ReferenceErrors since import is removed
   src = src.replace(/useContext\s*\(\s*BuilderSelectionContext\s*\)/g, '{}');
@@ -81,13 +82,18 @@ export function cleanBuilderContent(src, componentName) {
   if (hasBuilderSection) {
     shims.push(`
 // Shim for BuilderSection
-const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth, style, children, id, sectionId, isVisible = true }) => {
+const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth, style, children, id, sectionId, isVisible = true, removePaddingLeft, removePaddingRight }) => {
   if (!isVisible) return null;
   const Tag = tagName;
   const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || normalizedSectionId;
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
-  const containerClass = \`container-grid \${fullWidth ? 'container-full' : ''}\`;
+  
+  const containerClasses = ["container-grid"];
+  if (removePaddingLeft === true || removePaddingLeft === "true") containerClasses.push("pl-0");
+  if (removePaddingRight === true || removePaddingRight === "true") containerClasses.push("pr-0");
+  if (fullWidth === true || fullWidth === "true") containerClasses.push("container-full");
+  const containerClass = containerClasses.join(" ");
   
   if (innerContainer) {
     return (
@@ -106,7 +112,7 @@ const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth,
   if (hasBuilderText) {
     shims.push(`
 // Shim for BuilderText
-const BuilderText = ({ tagName = 'p', content, className, style, children, id, sectionId, suffix, isVisible = true }) => {
+const BuilderText = ({ tagName = 'p', content, className, style, children, id, sectionId, suffix, isVisible = true, tooltipIfTruncated }) => {
   if (!isVisible) return null;
   const Tag = tagName;
   const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
@@ -114,13 +120,37 @@ const BuilderText = ({ tagName = 'p', content, className, style, children, id, s
   let finalId = id || (normalizedSectionId ? normalizedSectionId + '-' + effectiveSuffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
 
-  // Append builder-text class
-  const finalClassName = \`builder-text \${className || ''}\`.trim();
+  const finalClassName = \`builder-text \${className || ''} \${!content && !children ? 'empty-builder-text' : ''}\`.trim();
+
+  // Basic Truncation Tooltip Fallback
+  const [isHovered, setIsHovered] = useState(false);
+  const title = (tooltipIfTruncated && isHovered) ? content : undefined;
 
   if (content) {
-    return <Tag id={finalId} className={finalClassName} style={style} dangerouslySetInnerHTML={{ __html: content }} />;
+    return (
+      <Tag 
+        id={finalId} 
+        className={finalClassName} 
+        style={style} 
+        dangerouslySetInnerHTML={{ __html: content }} 
+        title={title}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      />
+    );
   }
-  return <Tag id={finalId} className={finalClassName} style={style}>{children}</Tag>;
+  return (
+    <Tag 
+      id={finalId} 
+      className={finalClassName} 
+      style={style}
+      title={title}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {children}
+    </Tag>
+  );
 };`);
   }
 
@@ -257,7 +287,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
   const effectiveAlt = (!alt || alt === '#') && normalizedSectionId ? normalizedSectionId : (alt || '');
-  let finalClassName = className || '';
+  let baseClassName = className || '';
   
   if (isPortrait === true || String(isPortrait) === 'true') {
     const portraitMap = {
@@ -267,12 +297,12 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
         'imagePlaceholder-5-4': 'imagePlaceholder-4-5'
     };
     Object.entries(portraitMap).forEach(([landscape, portrait]) => {
-        finalClassName = finalClassName.replace(landscape, portrait);
+        baseClassName = baseClassName.replace(landscape, portrait);
     });
   }
 
   if (mobileRatio) {
-     finalClassName += \` mobile-aspect-\${mobileRatio}\`;
+     baseClassName += \` mobile-aspect-\${mobileRatio}\`;
   }
   
   const defaultStyle = {
@@ -302,18 +332,24 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
       return id ? \`https://player.vimeo.com/video/\${id}?autoplay=1&loop=1&muted=1&background=1\` : url;
   };
 
-  // Safe Image handling
   const placeholderSrc = "https://space.lunaaar.site/assets-lunar/placeholder.svg";
   const imageSrc = (src && src !== "") ? src : placeholderSrc;
+
+  const isLink = href || (linkType === 'dialog' && targetDialogId);
+  
+  // If we have a link, we apply className and aspect-ratio to the <a> wrapper
+  // and keep internal media at 100%/100%
+  const mediaStyle = isLink ? { ...defaultStyle } : { ...defaultStyle, ...style };
+  const mediaClass = isLink ? '' : baseClassName;
 
   let mediaContent;
   if (isYoutube(src)) {
       mediaContent = (
           <iframe
-              id={finalId}
+              id={!isLink ? finalId : undefined}
               src={getYoutubeEmbedUrl(src)}
-              className={finalClassName}
-              style={{ ...defaultStyle, ...style, height: '100%', border: 'none' }}
+              className={mediaClass}
+              style={{ ...mediaStyle, border: 'none' }}
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
               title="YouTube video"
@@ -322,10 +358,10 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
   } else if (isVimeo(src)) {
       mediaContent = (
           <iframe
-              id={finalId}
+              id={!isLink ? finalId : undefined}
               src={getVimeoEmbedUrl(src)}
-              className={finalClassName}
-              style={{ ...defaultStyle, ...style, height: '100%', border: 'none' }}
+              className={mediaClass}
+              style={{ ...mediaStyle, border: 'none' }}
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
               title="Vimeo video"
@@ -334,9 +370,9 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
   } else if (isVideoFile(src)) {
       mediaContent = (
           <video
-              id={finalId}
-              className={finalClassName}
-              style={{ ...defaultStyle, ...style, height: '100%' }}
+              id={!isLink ? finalId : undefined}
+              className={mediaClass}
+              style={mediaStyle}
               autoPlay
               loop
               muted
@@ -352,11 +388,11 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
         <>
           {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
           <img 
-            id={finalId}
+            id={!isLink ? finalId : undefined}
             src={imageSrc} 
             alt={effectiveAlt} 
-            className={finalClassName} 
-            style={{ ...defaultStyle, ...style }} 
+            className={mediaClass} 
+            style={mediaStyle} 
           />
         </>
       );
@@ -366,16 +402,17 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
      <picture style={{ display: 'contents' }}>{mediaContent}</picture>
   ) : mediaContent;
 
-  if (href || (linkType === 'dialog' && targetDialogId)) {
+  if (isLink) {
     const isDialog = linkType === 'dialog' && targetDialogId;
+    const wrapperStyle = { ...style, display: 'block', width: '100%', textDecoration: 'none' };
     
     if (isDialog) {
         return (
             <a
                 id={finalId}
                 href="#"
-                className={finalClassName}
-                style={{ ...style, display: 'block', width: '100%', height: '100%', cursor: 'pointer', textDecoration: 'none' }}
+                className={baseClassName}
+                style={{ ...wrapperStyle, cursor: 'pointer' }}
                 onClick={(e) => {
                      e.preventDefault();
                      openDialog(targetDialogId);
@@ -390,8 +427,8 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
       <a
          id={finalId}
          href={href || '#'} 
-         className={finalClassName} 
-         style={{ display: 'block', width: '100%', height: '100%', textDecoration: 'none' }}
+         className={baseClassName} 
+         style={wrapperStyle}
       >
         {content}
       </a>

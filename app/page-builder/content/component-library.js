@@ -12,6 +12,7 @@ const DialogForm = dynamic(() => import("@/app/templates/dialog/dialog-form"));
 const FormPersonalDataSection = dynamic(() => import("@/app/templates/form/form-personal-data-section"));
 const OsmBanner = dynamic(() => import("@/app/templates/osm/osm-banner"));
 const TestimonyLandscape = dynamic(() => import("@/app/templates/testimony/testimony-landscape"));
+const TestimonyPortrait = dynamic(() => import("@/app/templates/testimony/testimony-portrait"));
 const Media16x9 = dynamic(() => import("@/app/templates/media/media-16-9"));
 const Media5x4 = dynamic(() => import('@/app/templates/media/media-5-4'));
 const Media4x3 = dynamic(() => import('@/app/templates/media/media-4-3'));
@@ -767,6 +768,38 @@ export const componentLibrary = {
                 defaults: {
                     name: "New Name",
                     description: "Testimonial Description",
+                    avatar: "https://space.lunaaar.site/assets-lunar/placeholder.svg",
+                    avatarVisible: true,
+                    image: "https://space.lunaaar.site/assets-lunar/placeholder.svg",
+                    imageVisible: true,
+                    visible: true
+                }
+            },
+            links: Array.from({ length: 20 }, (_, i) => ({
+                label: `Testimony ${i + 1}`, propId: `testimonies.${i}.cardId`, suffix: `testimony-${i}`, visibleProp: `testimonies.${i}.visible`
+            }))
+        },
+        {
+            id: "testimony-portrait",
+            name: "Testimony - Portrait",
+            component: TestimonyPortrait,
+            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-testimonial-terra.svg",
+            config: [
+                {
+                    name: "testimonies",
+                    label: "Testimonies",
+                    type: "list",
+                    default: componentDefaults["testimony-portrait"].testimonies
+                }
+            ],
+            addAction: {
+                targetList: "testimonies",
+                label: "Add testimony",
+                idPattern: "testimony-{index}",
+                defaults: {
+                    name: "Name",
+                    role: "Role",
+                    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
                     avatar: "https://space.lunaaar.site/assets-lunar/placeholder.svg",
                     avatarVisible: true,
                     image: "https://space.lunaaar.site/assets-lunar/placeholder.svg",

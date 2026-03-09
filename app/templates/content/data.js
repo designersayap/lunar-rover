@@ -393,6 +393,26 @@ export const componentDefaults = {
         }),
         fullWidth: false
     },
+    "testimony-portrait": {
+        testimonies: Array(4).fill({
+            name: "Name",
+            role: "Role",
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has been the industry's standard dummy text ever since the 1500s.",
+            image: "",
+            imageUrl: "",
+            imageLinkType: "url",
+            imageTargetDialogId: "",
+            avatar: "",
+            avatarUrl: "",
+            avatarLinkType: "url",
+            avatarTargetDialogId: "",
+            imageVisible: true,
+            avatarVisible: true,
+            cardId: "",
+            visible: true
+        }),
+        fullWidth: false
+    },
     "scroll-group": {
         image: "", // Desktop Background
         mobileImage: "", // Mobile Background
