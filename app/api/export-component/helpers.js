@@ -60,7 +60,8 @@ export function cleanBuilderContent(src, componentName) {
 
   // Replace BuilderSelectionContext usages to avoid ReferenceErrors since import is removed
   src = src.replace(/useContext\s*\(\s*BuilderSelectionContext\s*\)/g, '{}');
-  src = src.replace(/useBuilderSelection\s*\(\s*\)/g, '{}');
+  // Use a regex that ensures it's NOT a function declaration by checking the character before it
+  src = src.replace(/([^a-zA-Z0-9_])useBuilderSelection\s*\(\s*\)/g, '$1{}');
 
   // Remove empty import lines left behind
   src = src.replace(/^\s*\n/gm, '\n');

@@ -97,8 +97,10 @@ export default function BuilderControlsPopover({
     showSubtitle = false,
     isVisible = true,
     onVisibilityChange,
+    onRefreshMetadata, // Add this prop
     mode = 'all' // 'all', 'style', 'link'
 }) {
+
 
 
 
@@ -413,8 +415,33 @@ export default function BuilderControlsPopover({
 
                         {(mode === 'all' || mode === 'style') && showTitle && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: 'var(--pb-space-sm)' }}>
-                                <label className={`caption-bold ${styles.formInputTitle}`}>TikTok Metadata</label>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: 'var(--pb-space-xs)' }}>
+                                    <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>TikTok Metadata</label>
+                                    {onRefreshMetadata && (
+                                        <button
+                                            onClick={onRefreshMetadata}
+                                            className={styles.refreshButton}
+                                            style={{
+                                                fontSize: '10px',
+                                                padding: '2px 6px',
+                                                borderRadius: '4px',
+                                                background: 'var(--pb-button-bg-secondary)',
+                                                border: '1px solid var(--pb-border-color)',
+                                                cursor: 'pointer',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '4px'
+                                            }}
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: '12px', height: '12px' }}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                            </svg>
+                                            Refresh
+                                        </button>
+                                    )}
+                                </div>
                                 <StopPropagationInput
+
                                     type="text"
                                     className={`${styles.formInput}`}
                                     value={title || ''}

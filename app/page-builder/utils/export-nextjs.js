@@ -60,8 +60,31 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         console.error("Error fetching sticky manager", e);
     }
 
+    // 1c. Fetch Builder Controls (Context)
+    try {
+        const controlsRes = await fetch('/api/export-component', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ filePath: 'app/page-builder/utils/builder/builder-controls.js' })
+        });
+        if (controlsRes.ok) {
+            const { content } = await controlsRes.json();
+            // Store as a component or utility? tiktok-embed imports from @/app/page-builder/utils/builder/builder-controls
+            // but rewrite logic will point to ./builder-controls.js
+            zip.folder("components").file("builder-controls.js", content);
+            previewMap.set("components/builder-controls.js", { path: "components/builder-controls.js", content });
+        } else {
+            console.warn("Could not fetch builder-controls.js");
+            errors.push("Missing components/builder-controls.js");
+        }
+    } catch (e) {
+        console.error("Error fetching builder controls", e);
+    }
+
     // 2. Process Components (Fetch JS, CSS, and Dependencies)
     const processedFiles = new Set();
+    const thumbnailToVideoMap = new Map(); // Track TikTok thumbnails -> original video URLs
+
     const bundledImages = new Map(); // Track bundled image paths -> unique filenames
 
     // --- FIX: Export ALL defaults to prevent component-library.js crash ---
@@ -97,14 +120,41 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
             let uniqueName;
             let dataContent;
 
-            // Skip external URLs (user request: keep original link)
-            if (typeof imgPath === 'string' && imgPath.startsWith('http')) {
+            // Skip external URLs (EXCEPT TikTok CDN thumbnails which expire)
+            if (typeof imgPath === 'string' && imgPath.startsWith('http') && !imgPath.includes('tiktokcdn.com')) {
                 return null;
             }
 
-            if (imgPath.startsWith('blob:')) {
-                // Handle Blob or External URL
-                const res = await fetch(imgPath);
+            if (imgPath.startsWith('blob:') || (typeof imgPath === 'string' && imgPath.includes('tiktokcdn.com'))) {
+                // Handle Blob or External TikTok URL
+                let res = await fetch(imgPath);
+
+                // Auto-healing: If TikTok thumbnail is 403, try to fetch fresh one via oEmbed
+                if (res.status === 403 && imgPath.includes('tiktokcdn.com')) {
+                    const originalVideoUrl = thumbnailToVideoMap.get(imgPath);
+                    if (originalVideoUrl) {
+                        console.log(`[Export] TikTok thumbnail 403. Attempting refresh for: ${originalVideoUrl}`);
+                        try {
+                            const oembedRes = await fetch(`/api/oembed?url=${encodeURIComponent(originalVideoUrl)}`);
+                            if (oembedRes.ok) {
+                                const data = await oembedRes.json();
+                                if (data.thumbnail_url) {
+                                    console.log(`[Export] Successfully refreshed TikTok thumbnail.`);
+                                    // Try fetching the new URL
+                                    res = await fetch(data.thumbnail_url);
+                                }
+                            }
+                        } catch (refreshErr) {
+                            console.warn(`[Export] Failed to refresh TikTok thumbnail:`, refreshErr);
+                        }
+                    }
+                }
+
+                if (!res.ok) {
+                    console.warn(`Failed to fetch image: ${imgPath} (Status: ${res.status})`);
+                    return null;
+                }
+
                 const blob = await res.blob();
                 const arrayBuffer = await blob.arrayBuffer();
 
@@ -452,25 +502,35 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         }
 
         // Use the PRE-PROCESSED item which already has placeholders injected
-        const findImagesToCheck = (obj) => {
+        const findImagesToCheck = (obj, parentVideoUrl = null) => {
             let found = [];
             if (!obj) return found;
             if (typeof obj === 'string') {
-                // Check normal paths & blobs
-                if (obj.startsWith('blob:') || obj.match(/\.(png|jpg|jpeg|gif|svg|webp|ico|mp4|webm|ogv|mp3|wav)(\?.*)?$/i)) {
+                // Check normal paths & blobs (Include TikTok CDN as they expire)
+                if (obj.startsWith('blob:') || obj.match(/\.(png|jpg|jpeg|gif|svg|webp|ico|mp4|webm|ogv|mp3|wav|image)(\?.*)?$/i) || obj.includes('tiktokcdn.com')) {
                     found.push(obj);
+
+                    // Track parent video for TikTok thumbnails to enable auto-refresh on 403
+                    if (obj.includes('tiktokcdn.com') && parentVideoUrl) {
+                        thumbnailToVideoMap.set(obj, parentVideoUrl);
+                    }
                 }
                 // Check bg images: url("...")
                 const urlMatch = obj.match(/url\(['"]?([^'")]+)['"]?\)/);
                 if (urlMatch) {
                     const extracted = urlMatch[1];
-                    if (extracted.startsWith('blob:') || extracted.match(/\.(png|jpg|jpeg|gif|svg|webp|ico|mp4|webm|ogv|mp3|wav)(\?.*)?$/i)) {
+                    if (extracted.startsWith('blob:') || extracted.match(/\.(png|jpg|jpeg|gif|svg|webp|ico|mp4|webm|ogv|mp3|wav|image)(\?.*)?$/i) || extracted.includes('tiktokcdn.com')) {
                         found.push(extracted);
+
+                        if (extracted.includes('tiktokcdn.com') && parentVideoUrl) {
+                            thumbnailToVideoMap.set(extracted, parentVideoUrl);
+                        }
                     }
                 }
             } else if (typeof obj === 'object') {
+                const currentVideoUrl = obj.videoUrl || parentVideoUrl;
                 Object.values(obj).forEach(val => {
-                    found = found.concat(findImagesToCheck(val));
+                    found = found.concat(findImagesToCheck(val, currentVideoUrl));
                 });
             }
             return found;
@@ -649,7 +709,7 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
     }, null, 2));
 
     // Configs
-    zip.file("next.config.mjs", "/** @type {import('next').NextConfig} */\nconst nextConfig = {};\nexport default nextConfig;\n");
+    zip.file("next.config.mjs", "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n  output: 'export',\n};\nexport default nextConfig;\n");
     zip.file("jsconfig.json", JSON.stringify({ compilerOptions: { paths: { "@/*": ["./*"] } } }, null, 2));
 
     // App Directory
@@ -805,11 +865,13 @@ export default function RootLayout({ children }) {
         const importPath = path.replace('./components', '@/components');
         pageContent += `import ${name} from "${importPath}";\n`;
     });
-    // Import Sticky Manager
+    // Import Sticky Manager & Builder Context
     pageContent += `import StickyManager from "@/utils/sticky-manager";\n`;
+    pageContent += `import { BuilderSelectionProvider } from "@/components/builder-controls";\n`;
 
     pageContent += `\nexport default function ExportedPage() {\n`;
     pageContent += `  return (\n`;
+    pageContent += `    <BuilderSelectionProvider>\n`;
     pageContent += `    <main style={{ position: 'relative', minHeight: '100vh', width: '100%', overflowX: 'clip', containerType: 'inline-size', containerName: 'root-container' }}>\n`;
     pageContent += `      <div id="canvas-background-root" style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'auto', overflow: 'hidden' }} />\n`;
     pageContent += `      <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>\n`;
@@ -1028,18 +1090,29 @@ export default function RootLayout({ children }) {
     pageContent += `      </StickyManager>\n`;
     pageContent += `      </div>\n`;
     pageContent += `    </main>\n`;
+    pageContent += `    </BuilderSelectionProvider>\n`;
     pageContent += `  );\n`;
     pageContent += `}\n`;
 
     appFolder.file("page.js", pageContent);
 
-    // Generate robots.txt
-    const robotsTxt = `User-agent: *
-Allow: /
-${canonicalUrl ? `Sitemap: ${canonicalUrl}/sitemap.xml` : ''}`;
+    // Generate robots.js (Dynamic Metadata)
+    const robotsJs = `export const runtime = 'edge';
 
-    appFolder.file("robots.txt", robotsTxt);
-    previewMap.set("app/robots.txt", { path: "app/robots.txt", content: robotsTxt });
+export default function robots() {
+  return {
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+      },
+    ],
+    ${canonicalUrl ? `sitemap: '${canonicalUrl}/sitemap.xml',` : ''}
+  };
+}`;
+
+    appFolder.file("robots.js", robotsJs);
+    previewMap.set("app/robots.js", { path: "app/robots.js", content: robotsJs });
 
     // Generate sitemap.xml
     if (canonicalUrl) {
@@ -1103,7 +1176,7 @@ ${canonicalUrl ? `Sitemap: ${canonicalUrl}/sitemap.xml` : ''}`;
                     }
                 }, null, 2)
             });
-            fileList.push({ path: "next.config.mjs", content: "/** @type {import('next').NextConfig} */\nconst nextConfig = {};\nexport default nextConfig;\n" });
+            fileList.push({ path: "next.config.mjs", content: "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n  output: 'export',\n};\nexport default nextConfig;\n" });
             fileList.push({ path: "jsconfig.json", content: JSON.stringify({ compilerOptions: { paths: { "@/*": ["./*"] } } }, null, 2) });
             fileList.push({
                 path: "app/globals.css", content: `/* Custom Foundation Styles */

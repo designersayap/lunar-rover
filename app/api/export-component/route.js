@@ -54,15 +54,19 @@ export async function POST(req) {
         const isJs = targetKey.endsWith('.js');
         let { content, isBinary } = mapEntry;
 
-        // Clean builder content if JS (Force run on ALL JS files to ensure fix handles everything)
+        // Clean builder content if JS (Only for templates and foundations)
         if (!isBinary && isJs) {
-            // Derive component name from filename
-            // e.g. "app/templates/feature/feature-image-left.js" -> "feature-image-left.js" -> "FeatureImageLeft"
-            const filename = targetKey.split('/').pop();
-            const param = filename.replace('.js', '');
-            const componentName = param.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join('');
+            const isTemplate = targetKey.startsWith('app/templates') || targetKey.startsWith('app/foundation');
 
-            content = cleanBuilderContent(content, componentName);
+            if (isTemplate) {
+                // Derive component name from filename
+                // e.g. "app/templates/feature/feature-image-left.js" -> "feature-image-left.js" -> "FeatureImageLeft"
+                const filename = targetKey.split('/').pop();
+                const param = filename.replace('.js', '');
+                const componentName = param.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join('');
+
+                content = cleanBuilderContent(content, componentName);
+            }
         }
 
         return NextResponse.json({

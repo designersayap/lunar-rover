@@ -89,7 +89,19 @@ const TikTokCard = memo(({
 
     const overlayStyle = useActiveOverlayPosition(overlayRect);
 
+    const handleRefreshMetadata = () => {
+        // Clear fetchedUrl and thumbnailUrl to trigger useEffect re-fetch
+        const newVideos = [...videos];
+        newVideos[index] = {
+            ...newVideos[index],
+            fetchedUrl: null,
+            thumbnailUrl: null
+        };
+        onUpdate({ videos: newVideos });
+    };
+
     const handleLinkSettingsClick = (e) => {
+
         e.preventDefault();
         e.stopPropagation();
         if (!isLinkOpen && cardRef.current) {
@@ -215,7 +227,20 @@ const TikTokCard = memo(({
                                             backgroundPosition: 'center'
                                         } : {}}
                                     >
+                                        {/* Hidden tracker to detect expired TikTok thumbnails and auto-refresh them */}
+                                        {item.thumbnailUrl && item.thumbnailUrl.includes('tiktokcdn.com') && (
+                                            <img
+                                                src={item.thumbnailUrl}
+                                                style={{ display: 'none' }}
+                                                onError={(e) => {
+                                                    console.warn("[TikTokEmbed] Thumbnail expired, auto-refreshing...");
+                                                    handleRefreshMetadata();
+                                                }}
+                                                alt=""
+                                            />
+                                        )}
                                         <div className={styles.overlay} />
+
                                         <div className={styles.playButton} onClick={(e) => { e.stopPropagation(); handlePlay(displayIndex); }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={styles.playIcon}>
                                                 <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd" />
@@ -275,7 +300,9 @@ const TikTokCard = memo(({
                     showVariant={false}
                     showFullWidthToggle={false}
                     position={popoverPosition}
+                    onRefreshMetadata={handleRefreshMetadata}
                 />
+
             )}
         </>
     );
