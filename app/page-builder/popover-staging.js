@@ -155,9 +155,15 @@ export default function StagingPopover({
                         const rehydrate = (list) => {
                             if (!Array.isArray(list)) return [];
                             return list.map(item => {
+                                // 0. Legacy ID Mapping
+                                const legacyMap = {
+                                    'terra-testimony': 'testimony-landscape'
+                                };
+                                const effectiveId = legacyMap[item.id] || item.id;
+
                                 let definition = null;
                                 for (const category of Object.values(componentLibrary)) {
-                                    const found = category.find(c => c.id === item.id);
+                                    const found = category.find(c => c.id === effectiveId);
                                     if (found) {
                                         definition = found;
                                         break;
