@@ -28,8 +28,12 @@ const signer = new SignatureV4({
  */
 async function sendS3Request(method, key, queryParams = {}, body = null, extraHeaders = {}) {
     // Construct URL
-    const endpointUrl = new URL(ENDPOINT.startsWith('http') ? ENDPOINT : `https://${ENDPOINT}`);
-    endpointUrl.pathname = `/${BUCKET}/${key}`;
+    const baseUrl = new URL(ENDPOINT.startsWith('http') ? ENDPOINT : `https://${ENDPOINT}`);
+
+    // Virtual-host style: bucket.s3.region.backblazeb2.com
+    const hostname = `${BUCKET}.${baseUrl.hostname}`;
+    const endpointUrl = new URL(`${baseUrl.protocol}//${hostname}`);
+    endpointUrl.pathname = `/${key}`;
 
     // Construct Query Object for Signer
     const query = {};
@@ -39,9 +43,8 @@ async function sendS3Request(method, key, queryParams = {}, body = null, extraHe
     });
 
     // Prepare Request Object for Signing
-    // host header is required
     const headers = {
-        host: endpointUrl.host,
+        host: hostname,
         ...extraHeaders
     };
 
@@ -52,8 +55,8 @@ async function sendS3Request(method, key, queryParams = {}, body = null, extraHe
     const request = {
         method: method,
         protocol: endpointUrl.protocol,
-        hostname: endpointUrl.hostname,
-        path: endpointUrl.pathname, // Signer handles canonical query independently
+        hostname: hostname,
+        path: endpointUrl.pathname,
         query: query,
         headers: headers,
         body: body,
@@ -158,11 +161,13 @@ export const S3Manual = {
      * Generates a pre-signed URL for client-side uploads/downloads
      */
     async getPresignedUrl(method, key, expiresIn = 300, contentType = 'application/json') {
-        const endpointUrl = new URL(ENDPOINT.startsWith('http') ? ENDPOINT : `https://${ENDPOINT}`);
-        endpointUrl.pathname = `/${BUCKET}/${key}`;
+        const baseUrl = new URL(ENDPOINT.startsWith('http') ? ENDPOINT : `https://${ENDPOINT}`);
+        const hostname = `${BUCKET}.${baseUrl.hostname}`;
+        const endpointUrl = new URL(`${baseUrl.protocol}//${hostname}`);
+        endpointUrl.pathname = `/${key}`;
 
         const headers = {
-            host: endpointUrl.host,
+            host: hostname,
         };
 
         // For PUT (uploads), we might need to sign the content-type if the client sends it
@@ -173,7 +178,7 @@ export const S3Manual = {
         const request = {
             method: method,
             protocol: endpointUrl.protocol,
-            hostname: endpointUrl.hostname,
+            hostname: hostname,
             path: endpointUrl.pathname,
             query: {},
             // Do NOT pass headers to presign for browser-use URLs
@@ -191,6 +196,6 @@ export const S3Manual = {
         // Convert signed request object into a string URL
         // signed.query contains the signature and other params
         const params = new URLSearchParams(signed.query).toString();
-        return `https://${signed.hostname}${signed.path}?${params}`;
+        return `${baseUrl.protocol}//${signed.hostname}${signed.path}?${params}`;
     }
 };
