@@ -338,7 +338,7 @@ const ComponentTreeItem = memo(({
                                                 })();
 
                                                 const tooltipContent = isDeleteDisabled
-                                                    ? "Min 1 Category"
+                                                    ? "1 category required"
                                                     : (getValueAt(comp.props, child.visibleProp) === false ? "Show" : "Hide");
 
                                                 return (
