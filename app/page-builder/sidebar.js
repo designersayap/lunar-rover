@@ -322,46 +322,48 @@ const ComponentTreeItem = memo(({
                                         />
                                         {/* Actions */}
                                         <div className={styles.treeActions}>
-                                            {child.visibleProp && (
-                                                <Tooltip content={getValueAt(comp.props, child.visibleProp) === false ? "Show" : "Hide"} position="top">
-                                                    {(() => {
-                                                        const isDeleteDisabled = (() => {
-                                                            if (!child.visibleProp || child.allowHideIfMoreThan === undefined) return false;
+                                            {child.visibleProp && (() => {
+                                                const isDeleteDisabled = (() => {
+                                                    if (!child.visibleProp || child.allowHideIfMoreThan === undefined) return false;
 
-                                                            const isCurrentlyVisible = getValueAt(comp.props, child.visibleProp) !== false;
-                                                            if (!isCurrentlyVisible) return false; // Never disable "Show" action
+                                                    const isCurrentlyVisible = getValueAt(comp.props, child.visibleProp) !== false;
+                                                    if (!isCurrentlyVisible) return false; // Never disable "Show" action
 
-                                                            const parts = child.visibleProp.split('.');
-                                                            if (parts.length < 2) return false;
-                                                            const list = comp.props[parts[0]];
-                                                            if (!Array.isArray(list)) return false;
-                                                            const visibleItems = list.filter(item => item.visible !== false);
-                                                            return visibleItems.length <= child.allowHideIfMoreThan;
-                                                        })();
+                                                    const parts = child.visibleProp.split('.');
+                                                    if (parts.length < 2) return false;
+                                                    const list = comp.props[parts[0]];
+                                                    if (!Array.isArray(list)) return false;
+                                                    const visibleItems = list.filter(item => item.visible !== false);
+                                                    return visibleItems.length <= child.allowHideIfMoreThan;
+                                                })();
 
-                                                        return (
-                                                            <button
-                                                                className={styles.sidebarDeleteButton}
-                                                                disabled={isDeleteDisabled}
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    const currentVal = getValueAt(comp.props, child.visibleProp) ?? true;
-                                                                    updateComponent(comp.uniqueId, { [child.visibleProp]: !currentVal });
-                                                                }}
-                                                            >
-                                                                {getValueAt(comp.props, child.visibleProp) === false ? (
-                                                                    <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
-                                                                ) : (
-                                                                    <>
-                                                                        <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
-                                                                        <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
-                                                                    </>
-                                                                )}
-                                                            </button>
-                                                        );
-                                                    })()}
-                                                </Tooltip>
-                                            )}
+                                                const tooltipContent = isDeleteDisabled
+                                                    ? "Min 1 Category"
+                                                    : (getValueAt(comp.props, child.visibleProp) === false ? "Show" : "Hide");
+
+                                                return (
+                                                    <Tooltip content={tooltipContent} position="top">
+                                                        <button
+                                                            className={styles.sidebarDeleteButton}
+                                                            disabled={isDeleteDisabled}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                const currentVal = getValueAt(comp.props, child.visibleProp) ?? true;
+                                                                updateComponent(comp.uniqueId, { [child.visibleProp]: !currentVal });
+                                                            }}
+                                                        >
+                                                            {getValueAt(comp.props, child.visibleProp) === false ? (
+                                                                <ArrowUturnLeftIcon className={`${styles.treeDeleteIcon}`} />
+                                                            ) : (
+                                                                <>
+                                                                    <TrashIcon className={`${styles.treeDeleteIcon} ${styles.iconOutline}`} />
+                                                                    <TrashIconSolid className={`${styles.treeDeleteIcon} ${styles.iconSolid}`} />
+                                                                </>
+                                                            )}
+                                                        </button>
+                                                    </Tooltip>
+                                                );
+                                            })()}
                                         </div>
                                     </div>
                                     {hasChildren && isExpanded && (
