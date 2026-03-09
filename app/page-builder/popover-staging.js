@@ -170,12 +170,13 @@ export default function StagingPopover({
                                     }
                                 }
 
-                                const newItem = { ...item };
+                                const newItem = { ...item, id: effectiveId }; // Migrate ID
 
                                 if (definition) {
                                     newItem.component = definition.component;
+                                    newItem.name = definition.name; // Update name too if changed
                                 } else {
-                                    console.warn(`Component definition not found for id: ${item.id}`);
+                                    console.warn(`Component definition not found for id: ${item.id} (Effective: ${effectiveId})`);
                                 }
 
                                 // FIX: Ensure dialogs/popovers start closed on restore

@@ -206,7 +206,23 @@ export default function Canvas({
                                 let hasSeenStacked = false;
 
                                 return displayComponents.map((item) => {
-                                    const Component = item.component || Object.values(componentLibrary).flat().find(c => c.id === item.id)?.component;
+                                    // 0. Legacy ID Mapping (Backward Compatibility)
+                                    const legacyMap = {
+                                        'terra-testimony': 'testimony-landscape'
+                                    };
+                                    const effectiveId = legacyMap[item.id] || item.id;
+
+                                    const Component = item.component || Object.values(componentLibrary).flat().find(c => c.id === effectiveId)?.component;
+
+                                    // Safety fallback: If component is still missing, don't crash the entire builder
+                                    if (!Component) {
+                                        console.warn(`Component definition not found for id: ${item.id} (Effective: ${effectiveId})`);
+                                        return (
+                                            <div key={item.uniqueId} className={styles.componentWrapper} style={{ padding: 'var(--pb-space-md)', border: '1px dashed var(--pb-error)', color: 'var(--pb-error)' }}>
+                                                Error: Component "{item.id}" not found.
+                                            </div>
+                                        );
+                                    }
                                     const stickyStyle = stickyStyles[item.uniqueId] || {};
                                     const isSelected = selectedElementIds.includes(item.uniqueId);
 
