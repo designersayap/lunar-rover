@@ -15,8 +15,13 @@ export default function TestimonyPortrait({
     onUpdate,
     fullWidth,
     removePaddingLeft,
-    removePaddingRight
+    removePaddingRight,
+    autoScroll = componentDefaults["testimony-portrait"].autoScroll,
+    autoScrollEffect = componentDefaults["testimony-portrait"].autoScrollEffect
 }) {
+    const isAutoScroll = autoScroll === true || autoScroll === "true";
+    const isFullWidth = fullWidth === true || fullWidth === "true";
+
     const scrollContainerRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [totalItems, setTotalItems] = useState(testimonies.length);
@@ -81,6 +86,8 @@ export default function TestimonyPortrait({
         const handleScroll = () => {
             const scrollLeft = container.scrollLeft;
             const viewportWidth = container.clientWidth;
+            const scrollWidth = container.scrollWidth;
+            const maxScroll = scrollWidth - viewportWidth;
 
             // 1. Calculate Active Index (for 1-by-1 slide sequence)
             const items = Array.from(container.querySelectorAll(`.${styles.itemWrapper}`))
@@ -104,9 +111,15 @@ export default function TestimonyPortrait({
             }
 
             // 2. Calculate Current Page (for pagination indicators)
-            const page = Math.round(scrollLeft / viewportWidth);
-            if (page !== currentPage) {
-                setCurrentPage(page);
+            // Use ratio-based calculation to handle small overflows correctly
+            if (maxScroll > 0 && totalPages > 1) {
+                const ratio = scrollLeft / maxScroll;
+                const page = Math.round(ratio * (totalPages - 1));
+                if (page !== currentPage) {
+                    setCurrentPage(page);
+                }
+            } else if (currentPage !== 0) {
+                setCurrentPage(0);
             }
         };
 
@@ -148,17 +161,25 @@ export default function TestimonyPortrait({
     const [isPaused, setIsPaused] = useState(false);
 
     useEffect(() => {
-        if (isPaused || totalItems <= 1) return;
+        if (!autoScroll || isPaused || totalItems <= 1 || autoScrollEffect !== 'slide') return;
 
         const timer = setInterval(() => {
-            if (!scrollContainerRef.current) return;
+            const container = scrollContainerRef.current;
+            if (!container) return;
 
-            const nextIndex = (activeIndex + 1) % totalItems;
-            scrollToIndex(nextIndex);
-        }, 3000);
+            const { scrollLeft, scrollWidth, clientWidth } = container;
+            const maxScroll = scrollWidth - clientWidth;
+
+            // If we are at the end (or very close), reset to 0
+            if (scrollLeft >= maxScroll - 10) {
+                scrollToIndex(0);
+            } else {
+                scrollToIndex(activeIndex + 1);
+            }
+        }, 4000);
 
         return () => clearInterval(timer);
-    }, [activeIndex, totalItems, isPaused]);
+    }, [activeIndex, totalItems, isPaused, autoScroll, autoScrollEffect]);
 
     const visibleCount = testimonies.filter(t => t.visible !== false).length;
     let filteredTestimonies = testimonies;
@@ -167,109 +188,134 @@ export default function TestimonyPortrait({
         filteredTestimonies = [testimonies[0]];
     }
 
+    // For marquee, we need enough items to fill the screen for a seamless loop
+    const displayTestimonies = [];
+    let repeatCount = 1;
+
+    if (isAutoScroll && autoScrollEffect === 'marquee' && filteredTestimonies.length > 0) {
+        // Aim for at least 24 items total to ensure the screen is always filled (matching landscape's wide buffer)
+        repeatCount = Math.max(3, Math.ceil(24 / filteredTestimonies.length));
+        for (let i = 0; i < repeatCount; i++) {
+            displayTestimonies.push(...filteredTestimonies);
+        }
+    } else {
+        displayTestimonies.push(...filteredTestimonies);
+    }
+
+    const shouldCenter = !isAutoScroll || (totalPages <= 1 && autoScrollEffect !== 'marquee');
+
     return (
         <BuilderSection
             tagName="section"
             className={styles.container}
-            innerContainer={!fullWidth}
+            innerContainer={!isFullWidth}
             sectionId={sectionId}
-            fullWidth={fullWidth}
+            fullWidth={isFullWidth}
             removePaddingLeft={removePaddingLeft}
             removePaddingRight={removePaddingRight}
             onUpdate={onUpdate}
+            showAutoScrollToggle={true}
+            autoScroll={isAutoScroll}
+            autoScrollEffect={autoScrollEffect}
         >
             <div className="grid">
                 <div className="col-mobile-4 col-tablet-8 col-desktop-12">
-                    <div
-                        ref={scrollContainerRef}
-                        className={styles.cardsWrapper}
-                        style={{ justifyContent: totalItems <= 1 ? 'center' : 'start' }}
-                        onMouseEnter={() => setIsPaused(true)}
-                        onMouseLeave={() => setIsPaused(false)}
-                    >
-                        {filteredTestimonies.map((item, index) => (
-                            <BuilderElement
-                                key={index}
-                                tagName="div"
-                                className={styles.itemWrapper}
-                                id={item.cardId}
-                                sectionId={sectionId}
-                                onIdChange={(val) => updateCardId(index, val)}
-                                elementProps={`testimony-${index}`}
-                                isVisible={item.visible !== false}
-                            >
-                                <div className={styles.card}>
-                                    <BuilderImage
-                                        src={item.image}
-                                        onSrcChange={(val) => updateTestimony(index, "image", val)}
-                                        className={styles.backgroundImage}
-                                        id={item.imageId}
-                                        sectionId={sectionId}
-                                        isVisible={item.imageVisible}
-                                        onIdChange={(val) => updateTestimony(index, "imageId", val)}
-                                        onVisibilityChange={(val) => updateTestimony(index, "imageVisible", val)}
-                                        suffix={`background-${index}`}
-                                        href={item.imageUrl}
-                                        onHrefChange={(val) => updateTestimony(index, "imageUrl", val)}
-                                        linkType={item.imageLinkType}
-                                        onLinkTypeChange={(val) => updateTestimony(index, "imageLinkType", val)}
-                                        targetDialogId={item.imageTargetDialogId}
-                                        onTargetDialogIdChange={(val) => updateTestimony(index, "imageTargetDialogId", val)}
-                                    />
+                    <div className={styles.scrollWrapper}>
+                        <div
+                            ref={scrollContainerRef}
+                            className={`${styles.cardsWrapper} ${isAutoScroll && autoScrollEffect === 'marquee' ? styles.marquee : ''}`}
+                            style={{
+                                justifyContent: shouldCenter ? 'center' : 'start',
+                                '--marquee-repeat-count': repeatCount
+                            }}
+                            onMouseEnter={() => setIsPaused(true)}
+                            onMouseLeave={() => setIsPaused(false)}
+                            data-paused={isPaused}
+                        >
+                            {displayTestimonies.map((item, index) => (
+                                <BuilderElement
+                                    key={index}
+                                    tagName="div"
+                                    className={styles.itemWrapper}
+                                    id={item.cardId}
+                                    sectionId={sectionId}
+                                    onIdChange={(val) => updateCardId(index, val)}
+                                    elementProps={`testimony-${index}`}
+                                    isVisible={item.visible !== false}
+                                >
+                                    <div className={styles.card}>
+                                        <BuilderImage
+                                            src={item.image}
+                                            onSrcChange={(val) => updateTestimony(index, "image", val)}
+                                            className={styles.backgroundImage}
+                                            id={item.imageId}
+                                            sectionId={sectionId}
+                                            isVisible={item.imageVisible}
+                                            onIdChange={(val) => updateTestimony(index, "imageId", val)}
+                                            onVisibilityChange={(val) => updateTestimony(index, "imageVisible", val)}
+                                            suffix={`background-${index}`}
+                                            href={item.imageUrl}
+                                            onHrefChange={(val) => updateTestimony(index, "imageUrl", val)}
+                                            linkType={item.imageLinkType}
+                                            onLinkTypeChange={(val) => updateTestimony(index, "imageLinkType", val)}
+                                            targetDialogId={item.imageTargetDialogId}
+                                            onTargetDialogIdChange={(val) => updateTestimony(index, "imageTargetDialogId", val)}
+                                        />
 
-                                    <div className={styles.contentCard}>
-                                        <div className={styles.avatarWrapper}>
-                                            <BuilderImage
-                                                src={item.avatar}
-                                                onSrcChange={(val) => updateTestimony(index, "avatar", val)}
-                                                className={'imagePlaceholder-1-1 object-cover'}
-                                                id={item.avatarId}
-                                                style={{ borderRadius: "var(--border-radius-round)" }}
+                                        <div className={styles.contentCard}>
+                                            <div className={styles.avatarWrapper}>
+                                                <BuilderImage
+                                                    src={item.avatar}
+                                                    onSrcChange={(val) => updateTestimony(index, "avatar", val)}
+                                                    className={'imagePlaceholder-1-1 object-cover'}
+                                                    id={item.avatarId}
+                                                    style={{ borderRadius: "var(--border-radius-round)" }}
+                                                    sectionId={sectionId}
+                                                    isVisible={item.avatarVisible}
+                                                    onIdChange={(val) => updateTestimony(index, "avatarId", val)}
+                                                    onVisibilityChange={(val) => updateTestimony(index, "avatarVisible", val)}
+                                                    suffix={`avatar-${index}`}
+                                                    href={item.avatarUrl}
+                                                    onHrefChange={(val) => updateTestimony(index, "avatarUrl", val)}
+                                                    linkType={item.avatarLinkType}
+                                                    onLinkTypeChange={(val) => updateTestimony(index, "avatarLinkType", val)}
+                                                    targetDialogId={item.avatarTargetDialogId}
+                                                    onTargetDialogIdChange={(val) => updateTestimony(index, "avatarTargetDialogId", val)}
+                                                />
+                                            </div>
+                                            <BuilderText
+                                                tagName="div"
+                                                className={`h5 truncate-1-line ${styles.name}`}
+                                                content={item.name}
+                                                onChange={(val) => updateTestimony(index, "name", val)}
                                                 sectionId={sectionId}
-                                                isVisible={item.avatarVisible}
-                                                onIdChange={(val) => updateTestimony(index, "avatarId", val)}
-                                                onVisibilityChange={(val) => updateTestimony(index, "avatarVisible", val)}
-                                                suffix={`avatar-${index}`}
-                                                href={item.avatarUrl}
-                                                onHrefChange={(val) => updateTestimony(index, "avatarUrl", val)}
-                                                linkType={item.avatarLinkType}
-                                                onLinkTypeChange={(val) => updateTestimony(index, "avatarLinkType", val)}
-                                                targetDialogId={item.avatarTargetDialogId}
-                                                onTargetDialogIdChange={(val) => updateTestimony(index, "avatarTargetDialogId", val)}
+                                                tooltipIfTruncated={true}
+                                            />
+
+                                            <BuilderText
+                                                tagName="div"
+                                                className={`caption-regular ${styles.role}`}
+                                                content={item.role}
+                                                onChange={(val) => updateTestimony(index, "role", val)}
+                                                sectionId={sectionId}
+                                            />
+
+                                            <BuilderText
+                                                tagName="div"
+                                                className={`caption-regular truncate-2-lines ${styles.description}`}
+                                                content={`“${item.description}”`}
+                                                onChange={(val) => updateTestimony(index, "description", val)}
+                                                sectionId={sectionId}
+                                                tooltipIfTruncated={true}
                                             />
                                         </div>
-                                        <BuilderText
-                                            tagName="div"
-                                            className={`h5 truncate-1-line ${styles.name}`}
-                                            content={item.name}
-                                            onChange={(val) => updateTestimony(index, "name", val)}
-                                            sectionId={sectionId}
-                                            tooltipIfTruncated={true}
-                                        />
-
-                                        <BuilderText
-                                            tagName="div"
-                                            className={`caption-regular ${styles.role}`}
-                                            content={item.role}
-                                            onChange={(val) => updateTestimony(index, "role", val)}
-                                            sectionId={sectionId}
-                                        />
-
-                                        <BuilderText
-                                            tagName="div"
-                                            className={`caption-regular truncate-2-lines ${styles.description}`}
-                                            content={`“${item.description}”`}
-                                            onChange={(val) => updateTestimony(index, "description", val)}
-                                            sectionId={sectionId}
-                                            tooltipIfTruncated={true}
-                                        />
                                     </div>
-                                </div>
-                            </BuilderElement>
-                        ))}
+                                </BuilderElement>
+                            ))}
+                        </div>
                     </div>
 
-                    {totalPages > 1 && (
+                    {totalPages > 1 && !(isAutoScroll && autoScrollEffect === 'marquee') && (
                         <div className="scroll-indicator-pills">
                             {Array.from({ length: totalPages }).map((_, index) => (
                                 <div

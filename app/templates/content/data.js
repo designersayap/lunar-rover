@@ -419,7 +419,9 @@ export const componentDefaults = {
             cardId: "",
             visible: true
         }),
-        fullWidth: false
+        fullWidth: false,
+        autoScroll: true,
+        autoScrollEffect: 'slide'
     },
     "testimony-portrait": {
         testimonies: Array(4).fill({
@@ -439,7 +441,9 @@ export const componentDefaults = {
             cardId: "",
             visible: true
         }),
-        fullWidth: false
+        fullWidth: false,
+        autoScroll: true,
+        autoScrollEffect: 'slide'
     },
     "scroll-group": {
         image: "", // Desktop Background

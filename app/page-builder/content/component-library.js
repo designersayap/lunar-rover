@@ -841,6 +841,22 @@ export const componentLibrary = {
                     label: "Testimonies",
                     type: "list",
                     default: componentDefaults["testimony-landscape"].testimonies
+                },
+                {
+                    name: "autoScroll",
+                    label: "Auto Scroll",
+                    type: "boolean",
+                    default: componentDefaults["testimony-landscape"].autoScroll
+                },
+                {
+                    name: "autoScrollEffect",
+                    label: "Auto Scroll Effect",
+                    type: "select",
+                    options: [
+                        { label: "Sliding card by card", value: "slide" },
+                        { label: "Marquee the card", value: "marquee" }
+                    ],
+                    default: componentDefaults["testimony-landscape"].autoScrollEffect
                 }
             ],
             addAction: {
@@ -873,6 +889,22 @@ export const componentLibrary = {
                     label: "Testimonies",
                     type: "list",
                     default: componentDefaults["testimony-portrait"].testimonies
+                },
+                {
+                    name: "autoScroll",
+                    label: "Auto Scroll",
+                    type: "boolean",
+                    default: componentDefaults["testimony-portrait"].autoScroll
+                },
+                {
+                    name: "autoScrollEffect",
+                    label: "Auto Scroll Effect",
+                    type: "select",
+                    options: [
+                        { label: "Sliding card by card", value: "slide" },
+                        { label: "Marquee the card", value: "marquee" }
+                    ],
+                    default: componentDefaults["testimony-portrait"].autoScrollEffect
                 }
             ],
             addAction: {

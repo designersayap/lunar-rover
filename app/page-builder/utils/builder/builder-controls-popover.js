@@ -101,6 +101,11 @@ export default function BuilderControlsPopover({
     showFloatingToggle = false, // Added prop
     hasFloatingEffect = true, // Added prop
     onFloatingEffectChange, // Added prop
+    showAutoScrollToggle = false, // Added prop
+    autoScroll = true, // Added prop
+    onAutoScrollChange, // Added prop
+    autoScrollEffect = 'slide', // Added prop
+    onAutoScrollEffectChange, // Added prop
     mode = 'all' // 'all', 'style', 'link'
 }) {
 
@@ -598,6 +603,39 @@ export default function BuilderControlsPopover({
                                         <span className={styles.toggleSlider}></span>
                                     </label>
                                 </div>
+                            </>
+                        )}
+
+                        {(mode === 'all' || mode === 'style') && showAutoScrollToggle && (
+                            <>
+                                <div className={styles.propertyRow} style={{ marginTop: 'var(--pb-space-sm)' }}>
+                                    <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Auto Scroll</label>
+                                    <label className={styles.toggleSwitch}>
+                                        <input
+                                            type="checkbox"
+                                            className={styles.toggleInput}
+                                            checked={autoScroll === true}
+                                            onChange={(e) => onAutoScrollChange && onAutoScrollChange(e.target.checked)}
+                                        />
+                                        <span className={styles.toggleSlider}></span>
+                                    </label>
+                                </div>
+                                {autoScroll && (
+                                    <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: 'var(--pb-space-sm)' }}>
+                                        <label className={`caption-bold ${styles.formInputTitle}`}>Auto Scroll Effect</label>
+                                        <div className={styles.selectWrapper}>
+                                            <select
+                                                className={`${styles.formInput} ${styles.formSelect}`}
+                                                value={autoScrollEffect || 'slide'}
+                                                onChange={(e) => onAutoScrollEffectChange && onAutoScrollEffectChange(e.target.value)}
+                                            >
+                                                <option value="slide">Sliding card by card</option>
+                                                <option value="marquee">Marquee the card</option>
+                                            </select>
+                                            <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
+                                        </div>
+                                    </div>
+                                )}
                             </>
                         )}
 

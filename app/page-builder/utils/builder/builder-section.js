@@ -30,7 +30,10 @@ export default function BuilderSection({
     showMenuColorToggle = false, // Added prop
     menuColor, // Added prop
     showFloatingToggle = false, // Added prop
-    hasFloatingEffect = true // Added prop
+    hasFloatingEffect = true, // Added prop
+    showAutoScrollToggle = false, // Added prop
+    autoScroll = true, // Added prop
+    autoScrollEffect = 'slide' // Added prop
 }) {
     const sectionRef = useRef(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
@@ -201,6 +204,13 @@ export default function BuilderSection({
                     showFloatingToggle={showFloatingToggle}
                     hasFloatingEffect={hasFloatingEffect}
                     onFloatingEffectChange={(val) => onUpdate && onUpdate({ hasFloatingEffect: val })}
+
+                    // Auto Scroll Props
+                    showAutoScrollToggle={showAutoScrollToggle}
+                    autoScroll={autoScroll}
+                    onAutoScrollChange={(val) => onUpdate && onUpdate({ autoScroll: val })}
+                    autoScrollEffect={autoScrollEffect}
+                    onAutoScrollEffectChange={(val) => onUpdate && onUpdate({ autoScrollEffect: val })}
                 />
             )
             }
