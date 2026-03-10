@@ -403,8 +403,8 @@ export const componentDefaults = {
     },
     "testimony-landscape": {
         testimonies: Array(4).fill({
-            name: "People Name",
-            role: "Role",
+            name: "people name",
+            role: "role",
             description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
             image: "",
             imageUrl: "",
@@ -423,9 +423,9 @@ export const componentDefaults = {
     },
     "testimony-portrait": {
         testimonies: Array(4).fill({
-            name: "Name",
-            role: "Role",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has been the industry's standard dummy text ever since the 1500s.",
+            name: "people name",
+            role: "role",
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
             image: "",
             imageUrl: "",
             imageLinkType: "url",
