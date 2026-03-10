@@ -8,7 +8,7 @@
 :global(.container-grid) .mediaGrid {
     display: flex !important;
     flex-wrap: wrap !important;
-    justify-content: flex-start !important;
+    justify-content: center !important;
     /* Switch to flex-start for more stable grid behavior with margins */
     width: 100% !important;
     max-width: 1200px;

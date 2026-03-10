@@ -531,7 +531,7 @@ export const componentLibrary = {
                     name: "hasFloatingEffect",
                     label: "Floating Animation",
                     type: "boolean",
-                    default: true
+                    default: false
                 },
                 {
                     name: "images",
@@ -571,7 +571,7 @@ export const componentLibrary = {
                     name: "hasFloatingEffect",
                     label: "Floating Animation",
                     type: "boolean",
-                    default: true
+                    default: false
                 },
                 {
                     name: "images",
