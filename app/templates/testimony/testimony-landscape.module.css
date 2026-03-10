@@ -12,7 +12,6 @@
     overflow-y: visible;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    gap: var(--gap-md);
 }
 
 .cardsWrapper::-webkit-scrollbar {
@@ -22,7 +21,7 @@
 .itemWrapper {
     justify-content: center;
     scroll-snap-align: start;
-    padding: var(--padding-md);
+    padding: var(--padding-sm);
     min-width: 0;
 }
 
@@ -36,7 +35,6 @@
     .itemWrapper {
         flex: 0 0 100% !important;
         width: 100% !important;
-        padding: var(--padding-md);
     }
 }
 

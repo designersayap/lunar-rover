@@ -291,6 +291,20 @@ export const componentDefaults = {
         fullWidth: false,
         hasFloatingEffect: true
     },
+    "media-grid-col-2": {
+        images: Array.from({ length: 4 }, (_, i) => ({
+            image: "",
+            imageUrl: "",
+            imageLinkType: "url",
+            imageTargetDialogId: "",
+            imageIsPortrait: false,
+            imageMobileRatio: "",
+            visible: true,
+            cardId: `image-${i}`
+        })),
+        fullWidth: false,
+        hasFloatingEffect: true
+    },
     "navigation-center": {
         logo: "",
         logoVisible: true,

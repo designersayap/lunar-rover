@@ -21,6 +21,7 @@ const NavigationCenter = dynamic(() => import("@/app/templates/navigation/naviga
 const NavigationLeft = dynamic(() => import("@/app/templates/navigation/navigation-left"));
 const NavigationRight = dynamic(() => import("@/app/templates/navigation/navigation-right"));
 const MediaGridCol3 = dynamic(() => import("@/app/templates/media/media-grid-col-3"));
+const MediaGridCol2 = dynamic(() => import("@/app/templates/media/media-grid-col-2/media-grid-col-2"));
 const BackgroundFullBody = dynamic(() => import("@/app/templates/background/full-body"));
 const FooterTerra = dynamic(() => import("@/app/templates/terra/terra-footer"));
 const ScrollGroup = dynamic(() => import("@/app/page-builder/utils/builder/scroll-group"));
@@ -519,6 +520,46 @@ export const componentLibrary = {
                     visibleProp: "imageVisible"
                 }
             ]
+        },
+        {
+            id: "media-grid-col-2",
+            name: "Media - Grid Col 2",
+            component: MediaGridCol2,
+            thumbnail: "https://space.lunaaar.site/assets-lunar/placeholder.svg",
+            config: [
+                {
+                    name: "hasFloatingEffect",
+                    label: "Floating Animation",
+                    type: "boolean",
+                    default: true
+                },
+                {
+                    name: "images",
+                    label: "Images",
+                    type: "list",
+                    default: componentDefaults["media-grid-col-2"].images
+                }
+            ],
+            addAction: {
+                targetList: "images",
+                label: "Image Card",
+                idPattern: "image-{index}",
+                defaults: {
+                    image: "",
+                    imageUrl: "",
+                    imageLinkType: "url",
+                    imageTargetDialogId: "",
+                    imageIsPortrait: false,
+                    imageMobileRatio: "",
+                    visible: true
+                }
+            },
+            images: Array.from({ length: 24 }, (_, i) => ({
+                label: `Image ${i + 1}`,
+                propId: `images.${i}.cardId`,
+                suffix: `image-${i}`,
+                visibleProp: `images.${i}.visible`
+            }))
         },
         {
             id: "media-grid-col-3",

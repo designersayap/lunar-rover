@@ -22,7 +22,7 @@
 .itemWrapper {
     justify-content: center;
     scroll-snap-align: start;
-    padding: var(--padding-md);
+    padding: var(--padding-sm);
     min-width: 0;
 }
 

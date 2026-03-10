@@ -60,7 +60,7 @@
     width: 340px;
     flex: 0 0 auto;
     scroll-snap-align: start;
-    padding: var(--padding-md);
+    padding: var(--padding-sm);
 }
 
 @container (max-width: 1023px) {
