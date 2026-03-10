@@ -3,6 +3,7 @@ import componentMap from './component-map';
 import {
     ALLOWED_DIRS,
     cleanBuilderContent,
+    restoreExportPattern,
     getCacheHeaders,
     log
 } from './helpers';
@@ -56,16 +57,20 @@ export async function POST(req) {
 
         // Clean builder content if JS (Only for templates and foundations)
         if (!isBinary && isJs) {
+            // Derive component name from filename
+            // e.g. "app/templates/feature/feature-image-left.js" -> "feature-image-left.js" -> "FeatureImageLeft"
+            const filename = targetKey.split('/').pop();
+            const param = filename.replace('.js', '');
+            const componentName = param.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join('');
+
             const isTemplate = targetKey.startsWith('app/templates') || targetKey.startsWith('app/foundation');
 
             if (isTemplate) {
-                // Derive component name from filename
-                // e.g. "app/templates/feature/feature-image-left.js" -> "feature-image-left.js" -> "FeatureImageLeft"
-                const filename = targetKey.split('/').pop();
-                const param = filename.replace('.js', '');
-                const componentName = param.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join('');
-
                 content = cleanBuilderContent(content, componentName);
+            } else {
+                // For other JS files (utils, page-builder, etc.), still restore export patterns
+                // if they were mangled into 'return function' by the build tool
+                content = restoreExportPattern(content, componentName);
             }
         }
 

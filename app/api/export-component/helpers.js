@@ -561,6 +561,22 @@ const showToast = (message, type = 'success') => {
   }
 
   // Safety Check: If export default was replaced by return, restoration
+  src = restoreExportPattern(src, componentName);
+
+  return src;
+}
+
+/**
+ * restoreExportPattern
+ * 
+ * Safety check and restoration for mangled 'export default' patterns.
+ * Build tools in some environments (like Cloudflare Edge) aggressively transform
+ * 'export default function' into 'return function' during static analysis.
+ * 
+ * This function uses an obfuscated approach to identify and reverse this transformation.
+ */
+export function restoreExportPattern(src, componentName) {
+  if (typeof src !== 'string') return src;
 
   // OBFUSCATION: Avoid static analysis replacing "export default function" with "return function"
   // The build tool seems to aggressively transform this pattern even in strings.
@@ -581,7 +597,7 @@ const showToast = (message, type = 'success') => {
       matches.push({ index: match.index, length: match[0].length });
     }
 
-    // Process in reverse order
+    // Process in reverse order to avoid index shifts
     for (let i = matches.length - 1; i >= 0; i--) {
       const { index: idx } = matches[i];
 
