@@ -18,6 +18,8 @@ export default function TestimonyPortrait({
     removePaddingRight
 }) {
     const scrollContainerRef = useRef(null);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [totalItems, setTotalItems] = useState(testimonies.length);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
 
@@ -40,6 +42,11 @@ export default function TestimonyPortrait({
     };
 
     const visibleCardsString = testimonies.map(t => t.visible).join(',');
+
+    useEffect(() => {
+        const visibleTestimonies = testimonies.filter(t => t.visible !== false);
+        setTotalItems(visibleTestimonies.length > 0 ? visibleTestimonies.length : (testimonies.length > 0 ? 1 : 0));
+    }, [testimonies, visibleCardsString]);
 
     useEffect(() => {
         const calculatePages = () => {
@@ -74,13 +81,56 @@ export default function TestimonyPortrait({
         const handleScroll = () => {
             const scrollLeft = container.scrollLeft;
             const viewportWidth = container.clientWidth;
+
+            // 1. Calculate Active Index (for 1-by-1 slide sequence)
+            const items = Array.from(container.querySelectorAll(`.${styles.itemWrapper}`))
+                .filter(item => item.offsetParent !== null);
+
+            if (items.length > 0) {
+                let closestIndex = 0;
+                let minDistance = Infinity;
+
+                items.forEach((item, index) => {
+                    const distance = Math.abs(scrollLeft - item.offsetLeft);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestIndex = index;
+                    }
+                });
+
+                if (closestIndex !== activeIndex) {
+                    setActiveIndex(closestIndex);
+                }
+            }
+
+            // 2. Calculate Current Page (for pagination indicators)
             const page = Math.round(scrollLeft / viewportWidth);
-            setCurrentPage(page);
+            if (page !== currentPage) {
+                setCurrentPage(page);
+            }
         };
 
         container.addEventListener('scroll', handleScroll);
         return () => container.removeEventListener('scroll', handleScroll);
-    }, []);
+    }, [activeIndex, currentPage]);
+
+    const scrollToIndex = (index) => {
+        if (!scrollContainerRef.current) return;
+
+        const container = scrollContainerRef.current;
+        const items = Array.from(container.querySelectorAll(`.${styles.itemWrapper}`))
+            .filter(item => item.offsetParent !== null);
+
+        if (!items[index]) return;
+
+        const item = items[index];
+        const scrollPosition = item.offsetLeft;
+
+        container.scrollTo({
+            left: scrollPosition,
+            behavior: 'smooth'
+        });
+    };
 
     const scrollToPage = (pageIndex) => {
         if (!scrollContainerRef.current) return;
@@ -98,15 +148,17 @@ export default function TestimonyPortrait({
     const [isPaused, setIsPaused] = useState(false);
 
     useEffect(() => {
-        const autoScrollInterval = setInterval(() => {
-            if (!scrollContainerRef.current || isPaused || totalPages <= 1) return;
+        if (isPaused || totalItems <= 1) return;
 
-            const nextPage = (currentPage + 1) % totalPages;
-            scrollToPage(nextPage);
-        }, 5000); // 5 seconds
+        const timer = setInterval(() => {
+            if (!scrollContainerRef.current) return;
 
-        return () => clearInterval(autoScrollInterval);
-    }, [currentPage, totalPages, isPaused]);
+            const nextIndex = (activeIndex + 1) % totalItems;
+            scrollToIndex(nextIndex);
+        }, 3000);
+
+        return () => clearInterval(timer);
+    }, [activeIndex, totalItems, isPaused]);
 
     const visibleCount = testimonies.filter(t => t.visible !== false).length;
     let filteredTestimonies = testimonies;
@@ -131,7 +183,7 @@ export default function TestimonyPortrait({
                     <div
                         ref={scrollContainerRef}
                         className={styles.cardsWrapper}
-                        style={{ justifyContent: totalPages === 1 ? 'center' : 'start' }}
+                        style={{ justifyContent: totalItems <= 1 ? 'center' : 'start' }}
                         onMouseEnter={() => setIsPaused(true)}
                         onMouseLeave={() => setIsPaused(false)}
                     >
