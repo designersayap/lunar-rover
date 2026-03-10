@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import styles from "./media-grid-col-2.module.css";
 import BuilderImage from "@/app/page-builder/utils/builder/builder-image";
 import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
-import { componentDefaults } from "../../content/data";
-import { createUpdateHandler } from "../../utils/component-helpers";
+import { componentDefaults } from "../content/data";
+import { createUpdateHandler } from "../utils/component-helpers";
 
 export default function MediaGridCol2({
     images = componentDefaults["media-grid-col-2"].images,

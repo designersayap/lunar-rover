@@ -21,7 +21,7 @@ const NavigationCenter = dynamic(() => import("@/app/templates/navigation/naviga
 const NavigationLeft = dynamic(() => import("@/app/templates/navigation/navigation-left"));
 const NavigationRight = dynamic(() => import("@/app/templates/navigation/navigation-right"));
 const MediaGridCol3 = dynamic(() => import("@/app/templates/media/media-grid-col-3"));
-const MediaGridCol2 = dynamic(() => import("@/app/templates/media/media-grid-col-2/media-grid-col-2"));
+const MediaGridCol2 = dynamic(() => import("@/app/templates/media/media-grid-col-2"));
 const BackgroundFullBody = dynamic(() => import("@/app/templates/background/full-body"));
 const FooterTerra = dynamic(() => import("@/app/templates/terra/terra-footer"));
 const ScrollGroup = dynamic(() => import("@/app/page-builder/utils/builder/scroll-group"));
