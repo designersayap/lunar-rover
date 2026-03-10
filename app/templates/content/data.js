@@ -405,7 +405,7 @@ export const componentDefaults = {
         testimonies: Array(4).fill({
             name: "people name",
             role: "role",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             image: "",
             imageUrl: "",
             imageLinkType: "url",
@@ -425,7 +425,7 @@ export const componentDefaults = {
         testimonies: Array(4).fill({
             name: "people name",
             role: "role",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             image: "",
             imageUrl: "",
             imageLinkType: "url",
