@@ -277,6 +277,19 @@ export const componentDefaults = {
         imageIsPortrait: false,
         imageMobileRatio: ""
     },
+    "media-grid-col-3": {
+        images: Array(6).fill().map((_, i) => ({
+            image: "",
+            imageUrl: "",
+            imageLinkType: "url",
+            imageTargetDialogId: "",
+            imageIsPortrait: false,
+            imageMobileRatio: "",
+            visible: true,
+            cardId: `image-${i}`
+        })),
+        fullWidth: false
+    },
     "navigation-center": {
         logo: "",
         logoVisible: true,

@@ -20,6 +20,7 @@ const Media21x9 = dynamic(() => import('@/app/templates/media/media-21-9'));
 const NavigationCenter = dynamic(() => import("@/app/templates/navigation/navigation-center"));
 const NavigationLeft = dynamic(() => import("@/app/templates/navigation/navigation-left"));
 const NavigationRight = dynamic(() => import("@/app/templates/navigation/navigation-right"));
+const MediaGridCol3 = dynamic(() => import("@/app/templates/media/media-grid-col-3"));
 const BackgroundFullBody = dynamic(() => import("@/app/templates/background/full-body"));
 const FooterTerra = dynamic(() => import("@/app/templates/terra/terra-footer"));
 const ScrollGroup = dynamic(() => import("@/app/page-builder/utils/builder/scroll-group"));
@@ -519,13 +520,53 @@ export const componentLibrary = {
                 }
             ]
         },
+        {
+            id: "media-grid-col-3",
+            name: "Media - Grid Col 3",
+            component: MediaGridCol3,
+            thumbnail: "https://space.lunaaar.site/assets-lunar/placeholder.svg",
+            config: [
+                {
+                    name: "fullWidth",
+                    label: "Full Width",
+                    type: "boolean",
+                    default: false
+                },
+                {
+                    name: "images",
+                    label: "Images",
+                    type: "list",
+                    default: componentDefaults["media-grid-col-3"].images
+                }
+            ],
+            addAction: {
+                targetList: "images",
+                label: "Image Card",
+                idPattern: "image-{index}",
+                defaults: {
+                    image: "",
+                    imageUrl: "",
+                    imageLinkType: "url",
+                    imageTargetDialogId: "",
+                    imageIsPortrait: false,
+                    imageMobileRatio: "",
+                    visible: true
+                }
+            },
+            images: Array.from({ length: 24 }, (_, i) => ({
+                label: `Image ${i + 1}`,
+                propId: `images.${i}.cardId`,
+                suffix: `image-${i}`,
+                visibleProp: `images.${i}.visible`
+            }))
+        },
     ],
     "social-bridge": [
         {
             id: "social-bridge-tiktok",
             name: "Social Bridge - TikTok",
             component: TikTokEmbed,
-            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnailsocial-bridge-tiktok.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/placeholder.svg",
             config: [
                 {
                     name: "fullWidth",
@@ -721,7 +762,7 @@ export const componentLibrary = {
             id: "form-personal-data-section",
             name: "Form - Personal Data",
             component: FormPersonalDataSection,
-            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-dialog-form.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/placeholder.svg",
             config: [
                 {
                     name: "marketingConsentLabel",
@@ -1035,7 +1076,7 @@ export const componentLibrary = {
             id: "dialog-form",
             name: "Dialog - Form",
             component: DialogForm,
-            thumbnail: "https://space.lunaaar.site/assets-lunar/thumbnail-dialog-item-list.svg",
+            thumbnail: "https://space.lunaaar.site/assets-lunar/placeholder.svg",
             config: [
                 {
                     name: "title",

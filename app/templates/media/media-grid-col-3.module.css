@@ -1,0 +1,113 @@
+.container {
+    width: 100%;
+    position: relative;
+    padding: var(--padding-lg) 0;
+}
+
+/* mediaGrid is now inside .container-grid (via BuilderSection innerContainer) */
+:global(.container-grid) .mediaGrid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    /* Switch to flex-start for more stable grid behavior with margins */
+    width: 100% !important;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+:global(.container-grid) .mediaGrid .itemWrapper {
+    flex: 0 0 33.333% !important;
+    /* Pure 33.333% */
+    width: 33.333% !important;
+    max-width: 33.333% !important;
+    transition: opacity 0.3s ease;
+    padding: var(--padding-xs);
+    /* Tighter padding for premium fit */
+    box-sizing: border-box;
+}
+
+@media (max-width: 1023px) {
+    :global(.container-grid) .mediaGrid .itemWrapper {
+        flex: 0 0 50% !important;
+        /* 2 per row on tablet */
+        width: 50% !important;
+        max-width: 50% !important;
+    }
+}
+
+@media (max-width: 639px) {
+    :global(.container-grid) .mediaGrid .itemWrapper {
+        flex: 0 0 100% !important;
+        /* 1 per row on mobile */
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+
+.animated .itemWrapper {
+    opacity: 0;
+    transform: translateY(-50px);
+    animation:
+        bounceInDown 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
+        floating 6s ease-in-out 0.8s infinite;
+}
+
+@keyframes bounceInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(10px);
+    }
+
+    80% {
+        transform: translateY(-5px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes floating {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+    }
+
+    33% {
+        transform: translateY(-10px) translateX(5px) rotate(1deg);
+    }
+
+    66% {
+        transform: translateY(5px) translateX(-5px) rotate(-1deg);
+    }
+
+    100% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+    }
+}
+
+.image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--border-radius-md);
+    object-fit: cover;
+}
+
+.imageWrapper {
+    width: 100%;
+    min-width: 100px;
+    /* Prevent being a dot */
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--border-radius-md);
+    aspect-ratio: 1 / 1;
+    background-color: #f0f0f0;
+    /* See the box even if image is missing */
+}
