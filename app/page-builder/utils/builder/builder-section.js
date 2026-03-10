@@ -28,7 +28,9 @@ export default function BuilderSection({
     isOverlay = false, // Added prop
     showFullWidthControl = true, // Added prop
     showMenuColorToggle = false, // Added prop
-    menuColor // Added prop
+    menuColor, // Added prop
+    showFloatingToggle = false, // Added prop
+    hasFloatingEffect = true // Added prop
 }) {
     const sectionRef = useRef(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
@@ -194,6 +196,11 @@ export default function BuilderSection({
                     showMenuColorToggle={showMenuColorToggle}
                     menuColor={menuColor}
                     onMenuColorChange={(val) => onUpdate && onUpdate({ menuColor: val })}
+
+                    // Floating Effect Props
+                    showFloatingToggle={showFloatingToggle}
+                    hasFloatingEffect={hasFloatingEffect}
+                    onFloatingEffectChange={(val) => onUpdate && onUpdate({ hasFloatingEffect: val })}
                 />
             )
             }

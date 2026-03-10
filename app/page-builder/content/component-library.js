@@ -527,10 +527,10 @@ export const componentLibrary = {
             thumbnail: "https://space.lunaaar.site/assets-lunar/placeholder.svg",
             config: [
                 {
-                    name: "fullWidth",
-                    label: "Full Width",
+                    name: "hasFloatingEffect",
+                    label: "Floating Animation",
                     type: "boolean",
-                    default: false
+                    default: true
                 },
                 {
                     name: "images",

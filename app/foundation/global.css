@@ -1005,3 +1005,94 @@ strong {
     height: auto !important;
   }
 }
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+/* Entrance animation: Slides down with a bounce */
+@keyframes bounceInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(10px);
+  }
+
+  80% {
+    transform: translateY(-5px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Organic floating animation: Subtle up/down + side swaying + tilt */
+@keyframes floating {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+
+  33% {
+    transform: translateY(-10px) translateX(5px) rotate(1deg);
+  }
+
+  66% {
+    transform: translateY(5px) translateX(-5px) rotate(-1deg);
+  }
+
+  100% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+}
+
+/* Alternative floating animation: Mirrored swaying and different timing feeling */
+@keyframes floating-alt {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+
+  33% {
+    transform: translateY(-8px) translateX(-6px) rotate(-1.2deg);
+  }
+
+  66% {
+    transform: translateY(6px) translateX(4px) rotate(0.8deg);
+  }
+
+  100% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+}
+
+.animate-bounce-in-down {
+  opacity: 0;
+  transform: translateY(-50px);
+  animation: bounceInDown 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.animate-floating {
+  animation: floating 6s ease-in-out infinite !important;
+}
+
+.animate-floating-alt {
+  animation: floating-alt 7s ease-in-out infinite !important;
+}
+
+/* Combined class for sequential effect (bounce then start floating) */
+.animate-bounce-and-float {
+  animation:
+    bounceInDown 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
+    floating 6s ease-in-out 0.8s infinite !important;
+}
+
+.animate-bounce-and-float-alt {
+  animation:
+    bounceInDown 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
+    floating-alt 7s ease-in-out 0.8s infinite !important;
+}

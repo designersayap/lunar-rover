@@ -11,7 +11,8 @@ export default function MediaGridCol3({
     images = componentDefaults["media-grid-col-3"].images,
     onUpdate,
     sectionId,
-    fullWidth
+    fullWidth,
+    hasFloatingEffect = componentDefaults["media-grid-col-3"].hasFloatingEffect
 }) {
     const [isVisible, setIsVisible] = useState(false);
     const containerRef = useRef(null);
@@ -53,6 +54,9 @@ export default function MediaGridCol3({
             sectionId={sectionId}
             fullWidth={fullWidth}
             onUpdate={onUpdate}
+            showFullWidthControl={false}
+            showFloatingToggle={true}
+            hasFloatingEffect={hasFloatingEffect}
         >
             <div
                 ref={containerRef}
@@ -61,7 +65,7 @@ export default function MediaGridCol3({
                 {visibleImages.map((item, index) => (
                     <div
                         key={item.cardId || index}
-                        className={styles.itemWrapper}
+                        className={`${styles.itemWrapper} ${isVisible ? (hasFloatingEffect ? (index % 2 === 0 ? "animate-bounce-and-float" : "animate-bounce-and-float-alt") : "animate-bounce-in-down") : ""}`}
                         style={{ animationDelay: isVisible ? `${index * 0.15}s` : "0s" }}
                     >
                         <div className={styles.imageWrapper}>

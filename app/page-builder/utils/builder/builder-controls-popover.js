@@ -98,6 +98,9 @@ export default function BuilderControlsPopover({
     isVisible = true,
     onVisibilityChange,
     onRefreshMetadata, // Add this prop
+    showFloatingToggle = false, // Added prop
+    hasFloatingEffect = true, // Added prop
+    onFloatingEffectChange, // Added prop
     mode = 'all' // 'all', 'style', 'link'
 }) {
 
@@ -317,6 +320,21 @@ export default function BuilderControlsPopover({
                                         className={styles.toggleInput}
                                         checked={enableBlur === true}
                                         onChange={(e) => onEnableBlurChange && onEnableBlurChange(e.target.checked)}
+                                    />
+                                    <span className={styles.toggleSlider}></span>
+                                </label>
+                            </div>
+                        )}
+
+                        {(mode === 'all' || mode === 'style') && showFloatingToggle && (
+                            <div className={styles.propertyRow} style={{ marginTop: 'var(--pb-space-sm)' }}>
+                                <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Floating Animation</label>
+                                <label className={styles.toggleSwitch}>
+                                    <input
+                                        type="checkbox"
+                                        className={styles.toggleInput}
+                                        checked={hasFloatingEffect === true}
+                                        onChange={(e) => onFloatingEffectChange && onFloatingEffectChange(e.target.checked)}
                                     />
                                     <span className={styles.toggleSlider}></span>
                                 </label>

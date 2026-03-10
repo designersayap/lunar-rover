@@ -45,52 +45,6 @@
 }
 
 
-.animated .itemWrapper {
-    opacity: 0;
-    transform: translateY(-50px);
-    animation:
-        bounceInDown 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
-        floating 6s ease-in-out 0.8s infinite;
-}
-
-@keyframes bounceInDown {
-    0% {
-        opacity: 0;
-        transform: translateY(-100px);
-    }
-
-    60% {
-        opacity: 1;
-        transform: translateY(10px);
-    }
-
-    80% {
-        transform: translateY(-5px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes floating {
-    0% {
-        transform: translateY(0) translateX(0) rotate(0deg);
-    }
-
-    33% {
-        transform: translateY(-10px) translateX(5px) rotate(1deg);
-    }
-
-    66% {
-        transform: translateY(5px) translateX(-5px) rotate(-1deg);
-    }
-
-    100% {
-        transform: translateY(0) translateX(0) rotate(0deg);
-    }
-}
 
 .image {
     width: 100%;

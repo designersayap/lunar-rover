@@ -288,7 +288,8 @@ export const componentDefaults = {
             visible: true,
             cardId: `image-${i}`
         })),
-        fullWidth: false
+        fullWidth: false,
+        hasFloatingEffect: true
     },
     "navigation-center": {
         logo: "",
