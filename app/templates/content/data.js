@@ -282,226 +282,231 @@ export const componentDefaults = {
             image: "",
             imageUrl: "",
             imageLinkType: "url",
-            imageTargetDialogId: "",
-            imageIsPortrait: false,
-            imageMobileRatio: "",
-            visible: true,
-            cardId: `image-${i}`
-        })),
-        fullWidth: false,
-        hasFloatingEffect: true
-    },
-    "media-grid-col-2": {
-        images: Array.from({ length: 4 }, (_, i) => ({
-            image: "",
-            imageUrl: "",
-            imageLinkType: "url",
-            imageTargetDialogId: "",
-            imageIsPortrait: false,
-            imageMobileRatio: "",
-            visible: true,
-            cardId: `image-${i}`
-        })),
-        fullWidth: false,
-        hasFloatingEffect: true
-    },
-    "navigation-center": {
-        logo: "",
-        logoVisible: true,
-        logoId: "",
+            "media-grid-col-3": {
+                images: Array.from({ length: 6 }, (_, i) => ({
+                    image: "",
+                    imageUrl: "",
+                    imageLinkType: "url",
+                    imageTargetDialogId: "",
+                    imageIsPortrait: false,
+                    imageMobileRatio: "",
+                    visible: true,
+                    cardId: `image-${i}`
+                })),
+                fullWidth: false,
+                hasFloatingEffect: false
+            },
+            "media-grid-col-2": {
+                images: Array.from({ length: 4 }, (_, i) => ({
+                    image: "",
+                    imageUrl: "",
+                    imageLinkType: "url",
+                    imageTargetDialogId: "",
+                    imageIsPortrait: false,
+                    imageMobileRatio: "",
+                    visible: true,
+                    cardId: `image-${i}`
+                })),
+                fullWidth: false,
+                hasFloatingEffect: false
+            },
+            "navigation-center": {
+                logo: "",
+                logoVisible: true,
+                logoId: "",
 
-        menu1Label: "Menu 1",
-        menu1Url: "",
-        menu1LinkType: "url",
-        menu1TargetDialogId: "",
-        menu1Id: "",
+                menu1Label: "Menu 1",
+                menu1Url: "",
+                menu1LinkType: "url",
+                menu1TargetDialogId: "",
+                menu1Id: "",
 
-        menu2Label: "Menu 2",
-        menu2Url: "",
-        menu2LinkType: "url",
-        menu2TargetDialogId: "",
-        menu2Id: "",
+                menu2Label: "Menu 2",
+                menu2Url: "",
+                menu2LinkType: "url",
+                menu2TargetDialogId: "",
+                menu2Id: "",
 
-        menu3Label: "Menu 3",
-        menu3Url: "",
-        menu3LinkType: "url",
-        menu3TargetDialogId: "",
-        menu3Id: "",
+                menu3Label: "Menu 3",
+                menu3Url: "",
+                menu3LinkType: "url",
+                menu3TargetDialogId: "",
+                menu3Id: "",
 
-        menu4Label: "Menu 4",
-        menu4Url: "",
-        menu4LinkType: "url",
-        menu4TargetDialogId: "",
-        menu4Id: "",
-        isSticky: true,
-        isOverlay: false,
-        menuColor: "default"
-    },
-    "navigation-left": {
-        logo: "",
-        logoVisible: true,
-        logoId: "",
+                menu4Label: "Menu 4",
+                menu4Url: "",
+                menu4LinkType: "url",
+                menu4TargetDialogId: "",
+                menu4Id: "",
+                isSticky: true,
+                isOverlay: false,
+                menuColor: "default"
+            },
+            "navigation-left": {
+                logo: "",
+                logoVisible: true,
+                logoId: "",
 
-        menu1Label: "Menu 1",
-        menu1Url: "",
-        menu1LinkType: "url",
-        menu1TargetDialogId: "",
-        menu1Id: "",
+                menu1Label: "Menu 1",
+                menu1Url: "",
+                menu1LinkType: "url",
+                menu1TargetDialogId: "",
+                menu1Id: "",
 
-        menu2Label: "Menu 2",
-        menu2Url: "",
-        menu2LinkType: "url",
-        menu2TargetDialogId: "",
-        menu2Id: "",
+                menu2Label: "Menu 2",
+                menu2Url: "",
+                menu2LinkType: "url",
+                menu2TargetDialogId: "",
+                menu2Id: "",
 
-        menu3Label: "Menu 3",
-        menu3Url: "",
-        menu3LinkType: "url",
-        menu3TargetDialogId: "",
-        menu3Id: "",
+                menu3Label: "Menu 3",
+                menu3Url: "",
+                menu3LinkType: "url",
+                menu3TargetDialogId: "",
+                menu3Id: "",
 
-        menu4Label: "Menu 4",
-        menu4Url: "",
-        menu4LinkType: "url",
-        menu4TargetDialogId: "",
-        menu4Id: "",
-        isSticky: true,
-        isOverlay: false,
-        menuColor: "default"
-    },
-    "navigation-right": {
-        logo: "",
-        logoVisible: true,
-        logoId: "",
+                menu4Label: "Menu 4",
+                menu4Url: "",
+                menu4LinkType: "url",
+                menu4TargetDialogId: "",
+                menu4Id: "",
+                isSticky: true,
+                isOverlay: false,
+                menuColor: "default"
+            },
+            "navigation-right": {
+                logo: "",
+                logoVisible: true,
+                logoId: "",
 
-        menu1Label: "Menu 1",
-        menu1Url: "",
-        menu1LinkType: "url",
-        menu1TargetDialogId: "",
-        menu1Id: "",
+                menu1Label: "Menu 1",
+                menu1Url: "",
+                menu1LinkType: "url",
+                menu1TargetDialogId: "",
+                menu1Id: "",
 
-        menu2Label: "Menu 2",
-        menu2Url: "",
-        menu2LinkType: "url",
-        menu2TargetDialogId: "",
-        menu2Id: "",
+                menu2Label: "Menu 2",
+                menu2Url: "",
+                menu2LinkType: "url",
+                menu2TargetDialogId: "",
+                menu2Id: "",
 
-        menu3Label: "Menu 3",
-        menu3Url: "",
-        menu3LinkType: "url",
-        menu3TargetDialogId: "",
-        menu3Id: "",
+                menu3Label: "Menu 3",
+                menu3Url: "",
+                menu3LinkType: "url",
+                menu3TargetDialogId: "",
+                menu3Id: "",
 
-        menu4Label: "Menu 4",
-        menu4Url: "",
-        menu4LinkType: "url",
-        menu4TargetDialogId: "",
-        menu4Id: "",
-        isSticky: true,
-        isOverlay: false,
-        menuColor: "default"
-    },
-    "testimony-landscape": {
-        testimonies: Array(4).fill({
-            name: "People Name",
-            role: "Role",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
-            image: "",
-            imageUrl: "",
-            imageLinkType: "url",
-            imageTargetDialogId: "",
-            avatar: "",
-            avatarUrl: "",
-            avatarLinkType: "url",
-            avatarTargetDialogId: "",
-            imageVisible: true,
-            avatarVisible: true,
-            cardId: "",
-            visible: true
-        }),
-        fullWidth: false
-    },
-    "testimony-portrait": {
-        testimonies: Array(4).fill({
-            name: "Name",
-            role: "Role",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has been the industry's standard dummy text ever since the 1500s.",
-            image: "",
-            imageUrl: "",
-            imageLinkType: "url",
-            imageTargetDialogId: "",
-            avatar: "",
-            avatarUrl: "",
-            avatarLinkType: "url",
-            avatarTargetDialogId: "",
-            imageVisible: true,
-            avatarVisible: true,
-            cardId: "",
-            visible: true
-        }),
-        fullWidth: false
-    },
-    "scroll-group": {
-        image: "", // Desktop Background
-        mobileImage: "", // Mobile Background
-        imageIsPortrait: false,
-        imageMobileRatio: "",
-        scrollEffect: "parallax", // 'parallax' | 'sticky'
-        components: [] // Nested components
-    },
-    "spacing-small": {},
-    "spacing-medium": {},
-    "spacing-large": {},
-    "product-carousel-terra": {
-        showTabs: true,
-        categories: [
-            { id: "cat-1", label: "Category 1", visible: true },
-            { id: "cat-2", label: "Category 2", visible: true },
-            { id: "cat-3", label: "Category 3", visible: true },
-            { id: "cat-4", label: "Category 4", visible: true }
-        ],
-        products: [
-            ...Array(4).fill().map((_, i) => ({
-                name: "Product 1",
-                description: "Description 1",
-                image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
-                buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
-                categoryId: "cat-1", cardId: `p1-${i}`, visible: true
-            })),
-            ...Array(4).fill().map((_, i) => ({
-                name: "Product 2",
-                description: "Description 2",
-                image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
-                buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
-                categoryId: "cat-2", cardId: `p2-${i}`, visible: true
-            })),
-            ...Array(4).fill().map((_, i) => ({
-                name: "Product 3",
-                description: "Description 3",
-                image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
-                buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
-                categoryId: "cat-3", cardId: `p3-${i}`, visible: true
-            })),
-            ...Array(4).fill().map((_, i) => ({
-                name: "Product 4",
-                description: "Description 4",
-                image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
-                buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
-                categoryId: "cat-4", cardId: `p4-${i}`, visible: true
-            }))
-        ]
-    },
-    "social-bridge-tiktok": {
-        videos: Array(4).fill({
-            videoUrl: "",
-            name: "",
-            description: "",
-            thumbnailUrl: "",
-            fetchedUrl: "",
-            cardId: "",
-            visible: true
-        }),
-        fullWidth: false,
-        allowAutoplay: true,
-    },
-};
+                menu4Label: "Menu 4",
+                menu4Url: "",
+                menu4LinkType: "url",
+                menu4TargetDialogId: "",
+                menu4Id: "",
+                isSticky: true,
+                isOverlay: false,
+                menuColor: "default"
+            },
+            "testimony-landscape": {
+                testimonies: Array(4).fill({
+                    name: "People Name",
+                    role: "Role",
+                    description: "Lorem Ipsum is simply dummy text of the printing and typesetting.",
+                    image: "",
+                    imageUrl: "",
+                    imageLinkType: "url",
+                    imageTargetDialogId: "",
+                    avatar: "",
+                    avatarUrl: "",
+                    avatarLinkType: "url",
+                    avatarTargetDialogId: "",
+                    imageVisible: true,
+                    avatarVisible: true,
+                    cardId: "",
+                    visible: true
+                }),
+                fullWidth: false
+            },
+            "testimony-portrait": {
+                testimonies: Array(4).fill({
+                    name: "Name",
+                    role: "Role",
+                    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has been the industry's standard dummy text ever since the 1500s.",
+                    image: "",
+                    imageUrl: "",
+                    imageLinkType: "url",
+                    imageTargetDialogId: "",
+                    avatar: "",
+                    avatarUrl: "",
+                    avatarLinkType: "url",
+                    avatarTargetDialogId: "",
+                    imageVisible: true,
+                    avatarVisible: true,
+                    cardId: "",
+                    visible: true
+                }),
+                fullWidth: false
+            },
+            "scroll-group": {
+                image: "", // Desktop Background
+                mobileImage: "", // Mobile Background
+                imageIsPortrait: false,
+                imageMobileRatio: "",
+                scrollEffect: "parallax", // 'parallax' | 'sticky'
+                components: [] // Nested components
+            },
+            "spacing-small": {},
+            "spacing-medium": {},
+            "spacing-large": {},
+            "product-carousel-terra": {
+                showTabs: true,
+                categories: [
+                    { id: "cat-1", label: "Category 1", visible: true },
+                    { id: "cat-2", label: "Category 2", visible: true },
+                    { id: "cat-3", label: "Category 3", visible: true },
+                    { id: "cat-4", label: "Category 4", visible: true }
+                ],
+                products: [
+                    ...Array(4).fill().map((_, i) => ({
+                        name: "Product 1",
+                        description: "Description 1",
+                        image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
+                        buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
+                        categoryId: "cat-1", cardId: `p1-${i}`, visible: true
+                    })),
+                    ...Array(4).fill().map((_, i) => ({
+                        name: "Product 2",
+                        description: "Description 2",
+                        image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
+                        buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
+                        categoryId: "cat-2", cardId: `p2-${i}`, visible: true
+                    })),
+                    ...Array(4).fill().map((_, i) => ({
+                        name: "Product 3",
+                        description: "Description 3",
+                        image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
+                        buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
+                        categoryId: "cat-3", cardId: `p3-${i}`, visible: true
+                    })),
+                    ...Array(4).fill().map((_, i) => ({
+                        name: "Product 4",
+                        description: "Description 4",
+                        image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
+                        buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
+                        categoryId: "cat-4", cardId: `p4-${i}`, visible: true
+                    }))
+                ]
+            },
+            "social-bridge-tiktok": {
+                videos: Array(4).fill({
+                    videoUrl: "",
+                    name: "",
+                    description: "",
+                    thumbnailUrl: "",
+                    fetchedUrl: "",
+                    cardId: "",
+                    visible: true
+                }),
+                fullWidth: false,
+                allowAutoplay: true,
+            },
+        };
