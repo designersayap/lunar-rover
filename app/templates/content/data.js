@@ -421,7 +421,8 @@ export const componentDefaults = {
         }),
         fullWidth: false,
         autoScroll: true,
-        autoScrollEffect: 'slide'
+        autoScrollEffect: 'slide',
+        marqueeDuration: 120
     },
     "testimony-portrait": {
         testimonies: Array(4).fill({
@@ -443,7 +444,8 @@ export const componentDefaults = {
         }),
         fullWidth: false,
         autoScroll: true,
-        autoScrollEffect: 'slide'
+        autoScrollEffect: 'slide',
+        marqueeDuration: 120
     },
     "scroll-group": {
         image: "", // Desktop Background

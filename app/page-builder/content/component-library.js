@@ -857,6 +857,12 @@ export const componentLibrary = {
                         { label: "Marquee the card", value: "marquee" }
                     ],
                     default: componentDefaults["testimony-landscape"].autoScrollEffect
+                },
+                {
+                    name: "marqueeDuration",
+                    label: "Marquee Duration (seconds)",
+                    type: "number",
+                    default: componentDefaults["testimony-landscape"].marqueeDuration
                 }
             ],
             addAction: {
@@ -905,6 +911,12 @@ export const componentLibrary = {
                         { label: "Marquee the card", value: "marquee" }
                     ],
                     default: componentDefaults["testimony-portrait"].autoScrollEffect
+                },
+                {
+                    name: "marqueeDuration",
+                    label: "Marquee Duration (seconds)",
+                    type: "number",
+                    default: componentDefaults["testimony-portrait"].marqueeDuration
                 }
             ],
             addAction: {

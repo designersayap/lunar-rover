@@ -29,7 +29,7 @@
     overflow: visible;
     gap: 0;
     width: max-content;
-    animation: marquee 160s linear infinite;
+    animation: marquee var(--marquee-duration, 120s) linear infinite;
 }
 
 .cardsWrapper.marquee .itemWrapper {

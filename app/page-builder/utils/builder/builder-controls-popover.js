@@ -106,6 +106,8 @@ export default function BuilderControlsPopover({
     onAutoScrollChange, // Added prop
     autoScrollEffect = 'slide', // Added prop
     onAutoScrollEffectChange, // Added prop
+    marqueeDuration, // Added prop
+    onMarqueeDurationChange, // Added prop
     mode = 'all' // 'all', 'style', 'link'
 }) {
 
@@ -634,6 +636,19 @@ export default function BuilderControlsPopover({
                                             </select>
                                             <ChevronUpDownIcon width={16} height={16} className={styles.selectIcon} />
                                         </div>
+                                    </div>
+                                )}
+                                {autoScroll && autoScrollEffect === 'marquee' && (
+                                    <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: 'var(--pb-space-sm)' }}>
+                                        <label className={`caption-bold ${styles.formInputTitle}`}>Marquee Duration (seconds)</label>
+                                        <StopPropagationInput
+                                            type="number"
+                                            className={`${styles.formInput}`}
+                                            value={marqueeDuration || 120}
+                                            onChange={(e) => onMarqueeDurationChange && onMarqueeDurationChange(Number(e.target.value))}
+                                            placeholder="120"
+                                            onFocus={(e) => e.target.select()}
+                                        />
                                     </div>
                                 )}
                             </>

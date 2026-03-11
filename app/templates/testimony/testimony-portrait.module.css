@@ -31,7 +31,7 @@
     padding-bottom: 0;
     gap: 0;
     width: max-content;
-    animation: marquee 120s linear infinite;
+    animation: marquee var(--marquee-duration, 120s) linear infinite;
 }
 
 .cardsWrapper.marquee .itemWrapper {

@@ -33,7 +33,8 @@ export default function BuilderSection({
     hasFloatingEffect = true, // Added prop
     showAutoScrollToggle = false, // Added prop
     autoScroll = true, // Added prop
-    autoScrollEffect = 'slide' // Added prop
+    autoScrollEffect = 'slide', // Added prop
+    marqueeDuration = 120 // Added prop
 }) {
     const sectionRef = useRef(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
@@ -211,6 +212,8 @@ export default function BuilderSection({
                     onAutoScrollChange={(val) => onUpdate && onUpdate({ autoScroll: val })}
                     autoScrollEffect={autoScrollEffect}
                     onAutoScrollEffectChange={(val) => onUpdate && onUpdate({ autoScrollEffect: val })}
+                    marqueeDuration={marqueeDuration}
+                    onMarqueeDurationChange={(val) => onUpdate && onUpdate({ marqueeDuration: val })}
                 />
             )
             }

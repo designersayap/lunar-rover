@@ -17,7 +17,8 @@ export default function TestimonyLandscape({
     removePaddingLeft,
     removePaddingRight,
     autoScroll = componentDefaults["testimony-landscape"].autoScroll,
-    autoScrollEffect = componentDefaults["testimony-landscape"].autoScrollEffect
+    autoScrollEffect = componentDefaults["testimony-landscape"].autoScrollEffect,
+    marqueeDuration = componentDefaults["testimony-landscape"].marqueeDuration
 }) {
     const isAutoScroll = autoScroll === true || autoScroll === "true";
     const isFullWidth = fullWidth === true || fullWidth === "true";
@@ -217,6 +218,7 @@ export default function TestimonyLandscape({
             showAutoScrollToggle={true}
             autoScroll={isAutoScroll}
             autoScrollEffect={autoScrollEffect}
+            marqueeDuration={marqueeDuration}
         >
             <div className="grid">
                 <div className="col-mobile-4 col-tablet-8 col-desktop-12">
@@ -226,7 +228,8 @@ export default function TestimonyLandscape({
                             className={`${styles.cardsWrapper} ${isAutoScroll && autoScrollEffect === 'marquee' ? styles.marquee : ''}`}
                             style={{
                                 justifyContent: shouldCenter ? 'center' : 'start',
-                                '--marquee-repeat-count': repeatCount
+                                '--marquee-repeat-count': repeatCount,
+                                '--marquee-duration': `${marqueeDuration || 120}s`
                             }}
                             onMouseEnter={() => setIsPaused(true)}
                             onMouseLeave={() => setIsPaused(false)}

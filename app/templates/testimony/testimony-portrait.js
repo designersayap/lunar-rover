@@ -17,7 +17,8 @@ export default function TestimonyPortrait({
     removePaddingLeft,
     removePaddingRight,
     autoScroll = componentDefaults["testimony-portrait"].autoScroll,
-    autoScrollEffect = componentDefaults["testimony-portrait"].autoScrollEffect
+    autoScrollEffect = componentDefaults["testimony-portrait"].autoScrollEffect,
+    marqueeDuration = componentDefaults["testimony-portrait"].marqueeDuration
 }) {
     const isAutoScroll = autoScroll === true || autoScroll === "true";
     const isFullWidth = fullWidth === true || fullWidth === "true";
@@ -217,6 +218,7 @@ export default function TestimonyPortrait({
             showAutoScrollToggle={true}
             autoScroll={isAutoScroll}
             autoScrollEffect={autoScrollEffect}
+            marqueeDuration={marqueeDuration}
         >
             <div className="grid">
                 <div className="col-mobile-4 col-tablet-8 col-desktop-12">
@@ -226,7 +228,8 @@ export default function TestimonyPortrait({
                             className={`${styles.cardsWrapper} ${isAutoScroll && autoScrollEffect === 'marquee' ? styles.marquee : ''}`}
                             style={{
                                 justifyContent: shouldCenter ? 'center' : 'start',
-                                '--marquee-repeat-count': repeatCount
+                                '--marquee-repeat-count': repeatCount,
+                                '--marquee-duration': `${marqueeDuration || 120}s`
                             }}
                             onMouseEnter={() => setIsPaused(true)}
                             onMouseLeave={() => setIsPaused(false)}
