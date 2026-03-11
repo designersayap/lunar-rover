@@ -44,6 +44,7 @@ export async function GET(request) {
             console.warn(`Attempting fallback scrape for: ${targetUrl}`);
             const pageRes = await fetch(targetUrl, fetchOptions);
             if (pageRes.ok) {
+                const html = await pageRes.text();
                 // Regex for common title/desc/image sources
                 const ogTitle = html.match(/<meta property="og:title" content="(.*?)"/i);
                 const ogDesc = html.match(/<meta property="og:description" content="(.*?)"/i);
