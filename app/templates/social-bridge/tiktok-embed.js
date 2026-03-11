@@ -89,15 +89,26 @@ const TikTokCard = memo(({
 
     const overlayStyle = useActiveOverlayPosition(overlayRect);
 
+    const [localMetadata, setLocalMetadata] = useState({
+        thumbnailUrl: item.thumbnailUrl,
+        name: item.name,
+        description: item.description
+    });
+
     const handleRefreshMetadata = () => {
         // Clear fetchedUrl and thumbnailUrl to trigger useEffect re-fetch
-        const newVideos = [...videos];
-        newVideos[index] = {
-            ...newVideos[index],
-            fetchedUrl: null,
-            thumbnailUrl: null
-        };
-        onUpdate({ videos: newVideos });
+        if (onUpdate) {
+            const newVideos = [...videos];
+            newVideos[index] = {
+                ...newVideos[index],
+                fetchedUrl: null,
+                thumbnailUrl: null
+            };
+            onUpdate({ videos: newVideos });
+        } else {
+            // Local fallback for production
+            setLocalMetadata(prev => ({ ...prev, thumbnailUrl: null }));
+        }
     };
 
     const handleLinkSettingsClick = (e) => {
@@ -149,38 +160,44 @@ const TikTokCard = memo(({
     useEffect(() => {
         if (!item.videoUrl || item.videoUrl === item.fetchedUrl) return;
 
-        const needsThumbnail = !item.thumbnailUrl;
+        // If we already have metadata and it's not expired (for local fallback check)
+        if (!onUpdate && localMetadata.thumbnailUrl) return;
 
-        // Fetch whenever URL changes to ensure metadata (title/desc/aria-label) is in sync
         const vId = getTikTokVideoId(item.videoUrl);
         if (vId) {
             fetch(`/api/oembed?url=${encodeURIComponent(item.videoUrl)}`)
                 .then(res => res.json())
                 .then(data => {
-                    // Update values and mark as fetched regardless of success
                     const updates = { fetchedUrl: item.videoUrl };
 
                     if (data) {
                         if (data.title) updates.name = data.title;
-
                         const author = data.author_name || 'TikTok Creator';
                         updates.description = data.description || `Video by ${author}`;
-
                         if (data.thumbnail_url) updates.thumbnailUrl = data.thumbnail_url;
                     }
 
-                    // Batch update the video item
-                    const newVideos = [...videos];
-                    newVideos[index] = { ...newVideos[index], ...updates };
-                    onUpdate({ videos: newVideos });
+                    if (onUpdate) {
+                        const newVideos = [...videos];
+                        newVideos[index] = { ...newVideos[index], ...updates };
+                        onUpdate({ videos: newVideos });
+                    } else {
+                        // Production fallback: set local state
+                        setLocalMetadata({
+                            thumbnailUrl: updates.thumbnailUrl,
+                            name: updates.name,
+                            description: updates.description
+                        });
+                    }
                 })
                 .catch(err => {
                     console.warn("TikTok metadata fetch failed.", err);
-                    // Still mark as attempted to prevent looping
-                    updateVideo(index, 'fetchedUrl', item.videoUrl);
+                    if (onUpdate) {
+                        updateVideo(index, 'fetchedUrl', item.videoUrl);
+                    }
                 });
         }
-    }, [item.videoUrl, item.fetchedUrl, index, videos, onUpdate, updateVideo]);
+    }, [item.videoUrl, item.fetchedUrl, index, videos, onUpdate, updateVideo, localMetadata.thumbnailUrl]);
 
     return (
         <>
@@ -211,8 +228,8 @@ const TikTokCard = memo(({
                                         style={{ display: isPlayed ? 'block' : 'none' }}
                                         allow="autoplay; encrypted-media; picture-in-picture"
                                         allowFullScreen
-                                        title={item.name || "TikTok Video"}
-                                        aria-label={item.description || item.name || "TikTok Video"}
+                                        title={localMetadata.name || item.name || "TikTok Video"}
+                                        aria-label={localMetadata.description || item.description || localMetadata.name || item.name || "TikTok Video"}
                                     />
                                 )}
 
@@ -221,16 +238,16 @@ const TikTokCard = memo(({
                                     <div
                                         className={styles.facade}
                                         onClick={(e) => { e.stopPropagation(); handlePlay(displayIndex); }}
-                                        style={item.thumbnailUrl ? {
-                                            backgroundImage: `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url(${item.thumbnailUrl})`,
+                                        style={(localMetadata.thumbnailUrl || item.thumbnailUrl) ? {
+                                            backgroundImage: `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url(${localMetadata.thumbnailUrl || item.thumbnailUrl})`,
                                             backgroundSize: 'cover',
                                             backgroundPosition: 'center'
                                         } : {}}
                                     >
                                         {/* Hidden tracker to detect expired TikTok thumbnails and auto-refresh them */}
-                                        {item.thumbnailUrl && item.thumbnailUrl.includes('tiktokcdn.com') && (
+                                        {(localMetadata.thumbnailUrl || item.thumbnailUrl) && (localMetadata.thumbnailUrl || item.thumbnailUrl).includes('tiktokcdn.com') && (
                                             <img
-                                                src={item.thumbnailUrl}
+                                                src={localMetadata.thumbnailUrl || item.thumbnailUrl}
                                                 style={{ display: 'none' }}
                                                 onError={(e) => {
                                                     console.warn("[TikTokEmbed] Thumbnail expired, auto-refreshing...");
