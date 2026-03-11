@@ -32,7 +32,7 @@ export default function FooterTerra({
     copyrightText = componentDefaults["footer-terra"].copyrightText,
     socialLinks = componentDefaults["footer-terra"].socialLinks,
     availableAtTitle = componentDefaults["footer-terra"].availableAtTitle,
-    availableAtLinks = componentDefaults["footer-terra"].availableAtLinks,
+    findUsOnLinks = componentDefaults["footer-terra"].findUsOnLinks,
     resourcesTitle = componentDefaults["footer-terra"].resourcesTitle,
     resourceLinks = componentDefaults["footer-terra"].resourceLinks,
     onUpdate,
@@ -137,7 +137,7 @@ export default function FooterTerra({
                                 suffix="available-at-title"
                             />
                             <div className={styles.linkList}>
-                                {availableAtLinks.map((link, index) => (
+                                {findUsOnLinks.map((link, index) => (
                                     <div key={link.id || index} className={styles.linkWrapper}>
                                         <BuilderLink
                                             id={link.id}
@@ -147,26 +147,24 @@ export default function FooterTerra({
                                             showLinkType={false}
                                             sectionId={sectionId}
                                             onLabelChange={(val) => {
-                                                const newLinks = [...availableAtLinks];
+                                                const newLinks = [...findUsOnLinks];
                                                 newLinks[index].label = val;
-                                                update('availableAtLinks')(newLinks);
+                                                update('findUsOnLinks')(newLinks);
                                             }}
                                             onHrefChange={(val) => {
-                                                const newLinks = [...availableAtLinks];
+                                                const newLinks = [...findUsOnLinks];
                                                 newLinks[index].url = val;
-                                                update('availableAtLinks')(newLinks);
+                                                update('findUsOnLinks')(newLinks);
                                             }}
                                             onIdChange={(val) => {
-                                                const newLinks = [...availableAtLinks];
+                                                const newLinks = [...findUsOnLinks];
                                                 newLinks[index].id = val;
-                                                update('availableAtLinks')(newLinks);
+                                                update('findUsOnLinks')(newLinks);
                                             }}
-
-
                                             onVisibilityChange={(val) => {
-                                                const newLinks = [...availableAtLinks];
+                                                const newLinks = [...findUsOnLinks];
                                                 newLinks[index].visible = val;
-                                                update('availableAtLinks')(newLinks);
+                                                update('findUsOnLinks')(newLinks);
                                             }}
                                             justify="flex-start"
                                             iconLeft={
@@ -174,15 +172,15 @@ export default function FooterTerra({
                                                     <BuilderImage
                                                         src={link.image}
                                                         onSrcChange={(val) => {
-                                                            const newLinks = [...availableAtLinks];
+                                                            const newLinks = [...findUsOnLinks];
                                                             newLinks[index].image = val;
-                                                            update('availableAtLinks')(newLinks);
+                                                            update('findUsOnLinks')(newLinks);
                                                         }}
                                                         id={link.imageId}
                                                         onIdChange={(val) => {
-                                                            const newLinks = [...availableAtLinks];
+                                                            const newLinks = [...findUsOnLinks];
                                                             newLinks[index].imageId = val;
-                                                            update('availableAtLinks')(newLinks);
+                                                            update('findUsOnLinks')(newLinks);
                                                         }}
                                                         sectionId={sectionId}
                                                         suffix={`available-at-icon-${index}`}

@@ -21,6 +21,7 @@ export const COMPONENT_PATHS = {
     "media-grid-col-3": "app/templates/media/media-grid-col-3.js",
 
     "social-bridge-tiktok": "app/templates/social-bridge/tiktok-embed.js",
+    "social-bridge-instagram-feed": "app/templates/social-bridge/instagram-feed.js",
 
     "navigation-center": "app/templates/navigation/navigation-center.js",
     "navigation-left": "app/templates/navigation/navigation-left.js",

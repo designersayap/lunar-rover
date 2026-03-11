@@ -71,7 +71,7 @@ export const componentDefaults = {
             { platform: 'tiktok', url: '', visible: true, id: '' },
             { platform: 'youtube', url: '', visible: true, id: '' }
         ],
-        availableAtLinks: [{
+        findUsOnLinks: [{
             label: "marketplace 1",
             url: "",
             visible: true,
@@ -509,5 +509,21 @@ export const componentDefaults = {
         }),
         fullWidth: false,
         allowAutoplay: true,
+    },
+    "social-bridge-instagram-feed": {
+        items: Array(6).fill({
+            title: "Instagram Post Title",
+            hashtag: "#hashtag",
+            image: "",
+            imageId: "",
+            cardId: "",
+            visible: true,
+            url: "",
+            linkType: "url",
+            targetDialogId: ""
+        }),
+        autoScroll: true,
+        autoScrollEffect: 'slide',
+        marqueeDuration: 120
     },
 };

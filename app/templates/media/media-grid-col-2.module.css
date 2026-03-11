@@ -48,6 +48,4 @@
     overflow: hidden;
     border-radius: var(--border-radius-md);
     aspect-ratio: 21 / 9;
-    /* 21:9 aspect ratio */
-    background-color: #f0f0f0;
 }

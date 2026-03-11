@@ -192,21 +192,8 @@ export default function BuilderLink({
                         </button>
                     )}
 
-                    {((!isStaging && (true /* Link settings always avail */ || !!onLinkTypeChange)) || (isStaging && safeLinkType === 'url')) && (
+                    {(true /* Always allow link settings */) && (
                         <>
-                            {/* Sparkle Button for Style Settings */}
-                            {/* Only show if there are style props to configure */}
-                            {(!isStaging && onLinkTypeChange /* Placeholder for potential style props check */ && false) && (
-                                <button
-                                    type="button"
-                                    className={`${styles.settingsButton} ${isStyleOpen ? styles.settingsButtonActive : ''}`}
-                                    onClick={handleStyleSettingsClick}
-                                    data-tooltip="Style Settings"
-                                >
-                                    <PaintBrushIcon className={styles.overlayIcon} />
-                                </button>
-                            )}
-
                             {/* Cog Button for Link Settings */}
                             <button
                                 type="button"

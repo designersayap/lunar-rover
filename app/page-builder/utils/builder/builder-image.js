@@ -210,15 +210,14 @@ export default function BuilderImage({
 
                 {(() => {
                     // Logic to determine if settings buttons should be visible
-                    // Style Settings (Src, Mobile Src, Portrait, Ratio)
-                    const hasStyleControls = isStaging || alwaysShowSrc || (!isStaging && (!!onIsPortraitChange || !!onMobileRatioChange || !!onAspectRatioChange));
+                    // Style Settings (Src, Mobile Src, Portrait, Ratio, Visibility)
+                    const hasStyleControls = (isStaging || alwaysShowSrc) || (!isStaging && (!!onIsPortraitChange || !!onMobileRatioChange || !!onAspectRatioChange)) || (!!onVisibilityChange);
 
                     // Link Settings
-                    const hasLinkControls = !isStaging && showLinkControls; // Only show link settings if enabled
+                    const hasLinkControls = showLinkControls; // Always show link settings if enabled (includes URL input)
 
                     const hasAnySettings = !disableSettings && (hasStyleControls || hasLinkControls);
 
-                    if (!hasAnySettings && (!isStaging || (linkType !== 'dialog'))) return null;
                     if (!hasAnySettings) return null;
 
                     return (
@@ -438,7 +437,7 @@ export default function BuilderImage({
                     dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion' || c.id === 'dialog-form').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
                     targetDialogId={targetDialogId}
                     onTargetDialogIdChange={onTargetDialogIdChange}
-                    showDialogSelector={!isStaging || showLinkControls}
+                    showDialogSelector={showLinkControls}
                     showVariant={false}
                     showPortraitToggle={!isStaging && !!onIsPortraitChange}
                     isPortrait={isPortrait}

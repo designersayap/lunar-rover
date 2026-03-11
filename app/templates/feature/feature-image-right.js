@@ -52,7 +52,7 @@ export default function FeatureImageRight({
         <section className={styles.container} id={sectionId}>
             <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })}>
                 <div className="grid align-center">
-                    <div className={`${styles.content} col-mobile-4 col-tablet-8 col-desktop-6`}>
+                    <div className={`${styles.content} col-mobile-4 col-tablet-4 col-desktop-6`}>
                         {titleVisible && (
                             <BuilderText
                                 tagName="h2"
@@ -131,7 +131,7 @@ export default function FeatureImageRight({
                         </div>
                     </div>
 
-                    <div className={`imageWrapper ${styles.imageWrapper} col-mobile-4 col-tablet-8 col-desktop-6`} style={{ paddingRight: "var(--gap-md)", paddingLeft: "var(--gap-md)" }}>
+                    <div className={`imageWrapper ${styles.imageWrapper} col-mobile-4 col-tablet-4 col-desktop-6`} style={{ paddingRight: "var(--gap-md)", paddingLeft: "var(--gap-md)" }}>
                         <BuilderImage
                             src={image}
                             onSrcChange={update('image')}

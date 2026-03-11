@@ -31,6 +31,7 @@ const SpacingLarge = dynamic(() => import("@/app/templates/spacing/spacing-large
 const FloatingActionButton = dynamic(() => import("@/app/templates/cta/floating-action-button"));
 const TerraProductCarousel = dynamic(() => import("@/app/templates/terra/terra-product-carousel"));
 const TikTokEmbed = dynamic(() => import("@/app/templates/social-bridge/tiktok-embed"));
+const InstagramFeed = dynamic(() => import("@/app/templates/social-bridge/instagram-feed"));
 
 export const componentLibrary = {
     "Background": [
@@ -644,6 +645,63 @@ export const componentLibrary = {
             links: Array.from({ length: 20 }, (_, i) => ({
                 label: `Video ${i + 1}`, propId: `videos.${i}.cardId`, suffix: `video-${i}`, visibleProp: `videos.${i}.visible`
             }))
+        },
+        {
+            id: "social-bridge-instagram-feed",
+            name: "Social Bridge - Instagram Feed",
+            component: InstagramFeed,
+            thumbnail: "https://space.lunaaar.site/assets-lunar/placeholder.svg",
+            config: [
+                {
+                    name: "items",
+                    label: "Posts",
+                    type: "list",
+                    default: componentDefaults["social-bridge-instagram-feed"].items
+                },
+                {
+                    name: "autoScroll",
+                    label: "Auto Scroll",
+                    type: "boolean",
+                    default: componentDefaults["social-bridge-instagram-feed"].autoScroll
+                },
+                {
+                    name: "autoScrollEffect",
+                    label: "Scroll Effect",
+                    type: "select",
+                    options: ["slide", "marquee"],
+                    default: componentDefaults["social-bridge-instagram-feed"].autoScrollEffect
+                },
+                {
+                    name: "marqueeDuration",
+                    label: "Marquee Duration (s)",
+                    type: "number",
+                    default: componentDefaults["social-bridge-instagram-feed"].marqueeDuration
+                }
+            ],
+            addAction: {
+                targetList: "items",
+                label: "Instagram Post",
+                idPattern: "insta-{index}",
+                defaults: {
+                    title: "Instagram Post Title",
+                    hashtag: "#LUNAR",
+                    image: "",
+                    imageId: "",
+                    visible: true,
+                    url: "",
+                    linkType: "url",
+                    targetDialogId: ""
+                }
+            },
+            links: Array.from({ length: 24 }, (_, i) => ({
+                label: `Post ${i + 1}`,
+                propId: `items.${i}.cardId`,
+                suffix: `insta-${i}`,
+                urlProp: `items.${i}.url`,
+                typeProp: `items.${i}.linkType`,
+                targetDialogProp: `items.${i}.targetDialogId`,
+                visibleProp: `items.${i}.visible`
+            })),
         }
     ],
     "Feature": [
@@ -1061,7 +1119,7 @@ export const componentLibrary = {
                 },
                 {
                     name: "findUsOnLinks",
-                    label: "Find Us On Links",
+                    label: "Available At Links",
                     type: "list",
                     default: componentDefaults["footer-terra"]?.findUsOnLinks
                 },
@@ -1081,17 +1139,25 @@ export const componentLibrary = {
                 }
             ],
             links: [
-                { label: "Facebook", propId: "socialLinks.0.id", suffix: "social-fb", visibleProp: "socialLinks.0.visible" },
-                { label: "Twitter", propId: "socialLinks.1.id", suffix: "social-x", visibleProp: "socialLinks.1.visible" },
-                { label: "Instagram", propId: "socialLinks.2.id", suffix: "social-ig", visibleProp: "socialLinks.2.visible" },
-                { label: "TikTok", propId: "socialLinks.3.id", suffix: "social-tiktok", visibleProp: "socialLinks.3.visible" },
-                { label: "YouTube", propId: "socialLinks.4.id", suffix: "social-yt", visibleProp: "socialLinks.4.visible" },
-                { label: "Find Us 1", propId: "findUsOnLinks.0.id", suffix: "link-1", visibleProp: "findUsOnLinks.0.visible" },
-                { label: "Find Us 2", propId: "findUsOnLinks.1.id", suffix: "link-2", visibleProp: "findUsOnLinks.1.visible" },
-                { label: "Find Us 3", propId: "findUsOnLinks.2.id", suffix: "link-3", visibleProp: "findUsOnLinks.2.visible" },
-                { label: "Resource 1", propId: "resourceLinks.0.id", suffix: "link-4", visibleProp: "resourceLinks.0.visible" },
-                { label: "Resource 2", propId: "resourceLinks.1.id", suffix: "link-5", visibleProp: "resourceLinks.1.visible" },
-                { label: "Resource 3", propId: "resourceLinks.2.id", suffix: "link-6", visibleProp: "resourceLinks.2.visible" }
+                { label: "Facebook", propId: "socialLinks.0.id", suffix: "social-1", labelProp: "socialLinks.0.platform", visibleProp: "socialLinks.0.visible" },
+                { label: "Twitter", propId: "socialLinks.1.id", suffix: "social-2", labelProp: "socialLinks.1.platform", visibleProp: "socialLinks.1.visible" },
+                { label: "Instagram", propId: "socialLinks.2.id", suffix: "social-3", labelProp: "socialLinks.2.platform", visibleProp: "socialLinks.2.visible" },
+                { label: "TikTok", propId: "socialLinks.3.id", suffix: "social-4", labelProp: "socialLinks.3.platform", visibleProp: "socialLinks.4.visible" },
+                { label: "YouTube", propId: "socialLinks.4.id", suffix: "social-5", labelProp: "socialLinks.4.platform", visibleProp: "socialLinks.4.visible" },
+                ...Array.from({ length: 10 }, (_, i) => ({
+                    label: `Available At ${i + 1}`,
+                    propId: `findUsOnLinks.${i}.id`,
+                    suffix: `link-${i + 1}`,
+                    labelProp: `findUsOnLinks.${i}.label`,
+                    visibleProp: `findUsOnLinks.${i}.visible`
+                })),
+                ...Array.from({ length: 10 }, (_, i) => ({
+                    label: `Resource ${i + 1}`,
+                    propId: `resourceLinks.${i}.id`,
+                    suffix: `res-${i + 1}`,
+                    labelProp: `resourceLinks.${i}.label`,
+                    visibleProp: `resourceLinks.${i}.visible`
+                }))
             ]
         }
     ],

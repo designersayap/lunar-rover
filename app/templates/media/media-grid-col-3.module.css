@@ -62,6 +62,4 @@
     overflow: hidden;
     border-radius: var(--border-radius-md);
     aspect-ratio: 1 / 1;
-    background-color: #f0f0f0;
-    /* See the box even if image is missing */
 }

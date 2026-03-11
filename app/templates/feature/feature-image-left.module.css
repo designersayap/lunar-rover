@@ -29,10 +29,8 @@
     word-break: break-word;
 }
 
-
 /* Mobile & Tablet: Text above image */
-/* Mobile & Tablet: Text above image */
-@container (max-width: 767px) {
+@container (max-width: 640px) {
     .imageWrapper {
         order: 2;
     }

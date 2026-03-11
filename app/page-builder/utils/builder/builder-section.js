@@ -162,15 +162,24 @@ export default function BuilderSection({
                     <div className={styles.overlayLabel}>
                         <span className={styles.overlayIdText}>#{elementId}</span>
                     </div>
-                    {!!onUpdate && (
-                        <button
-                            type="button"
-                            className={`${styles.settingsButton} ${isStyleOpen ? styles.settingsButtonActive : ''}`}
-                            onClick={handleStyleSettingsClick}
-                        >
-                            <PaintBrushIcon className={styles.overlayIcon} />
-                        </button>
-                    )}
+                    {!!onUpdate && (() => {
+                        const hasFullWidth = isStaging ? false : showFullWidthControl;
+                        const hasAutoScroll = isStaging ? false : showAutoScrollToggle;
+                        const hasAnyStyleSetting = hasFullWidth || hasAutoScroll || showOverlayToggle || showMenuColorToggle || showFloatingToggle;
+
+                        if (!hasAnyStyleSetting) return null;
+
+                        return (
+                            <button
+                                type="button"
+                                className={`${styles.settingsButton} ${isStyleOpen ? styles.settingsButtonActive : ''}`}
+                                onClick={handleStyleSettingsClick}
+                                data-tooltip="Style Settings"
+                            >
+                                <PaintBrushIcon className={styles.overlayIcon} />
+                            </button>
+                        );
+                    })()}
                 </div>,
                 document.body
             )}
@@ -194,7 +203,7 @@ export default function BuilderSection({
                     showOverlayToggle={showOverlayToggle}
                     isOverlay={isOverlay}
                     onOverlayChange={(val) => onUpdate && onUpdate({ isOverlay: val })}
-                    showFullWidthToggle={showFullWidthControl}
+                    showFullWidthToggle={isStaging ? false : showFullWidthControl}
 
                     // Menu Color Props
                     showMenuColorToggle={showMenuColorToggle}
@@ -207,7 +216,7 @@ export default function BuilderSection({
                     onFloatingEffectChange={(val) => onUpdate && onUpdate({ hasFloatingEffect: val })}
 
                     // Auto Scroll Props
-                    showAutoScrollToggle={showAutoScrollToggle}
+                    showAutoScrollToggle={isStaging ? false : showAutoScrollToggle}
                     autoScroll={autoScroll}
                     onAutoScrollChange={(val) => onUpdate && onUpdate({ autoScroll: val })}
                     autoScrollEffect={autoScrollEffect}

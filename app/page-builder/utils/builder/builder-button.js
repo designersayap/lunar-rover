@@ -293,10 +293,9 @@ export default function BuilderButton({
                             || !!onVariantChange
                             || !!onIconLeftChange
                             || !!onIconRightChange
-                        )) || (isStaging && linkType === 'url');
+                        )) || isStaging;
 
                         const hasAvailableSettings = !disableSettings && hasControls;
-
                         if (!hasAvailableSettings) return null;
 
                         return (
