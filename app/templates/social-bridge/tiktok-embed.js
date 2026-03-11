@@ -158,9 +158,11 @@ const TikTokCard = memo(({
 
     // Auto-fetch metadata
     useEffect(() => {
-        if (!item.videoUrl || item.videoUrl === item.fetchedUrl) return;
+        if (!item.videoUrl) return;
 
-        // If we already have metadata and it's not expired (for local fallback check)
+        // In builder: skip if already fetched
+        // In production: skip only if we have a valid thumbnail (not null)
+        if (onUpdate && item.videoUrl === item.fetchedUrl) return;
         if (!onUpdate && localMetadata.thumbnailUrl) return;
 
         const vId = getTikTokVideoId(item.videoUrl);
@@ -170,7 +172,7 @@ const TikTokCard = memo(({
                 .then(data => {
                     const updates = { fetchedUrl: item.videoUrl };
 
-                    if (data) {
+                    if (data && !data.error) {
                         if (data.title) updates.name = data.title;
                         const author = data.author_name || 'TikTok Creator';
                         updates.description = data.description || `Video by ${author}`;
@@ -181,8 +183,8 @@ const TikTokCard = memo(({
                         const newVideos = [...videos];
                         newVideos[index] = { ...newVideos[index], ...updates };
                         onUpdate({ videos: newVideos });
-                    } else {
-                        // Production fallback: set local state
+                    } else if (updates.thumbnailUrl) {
+                        // Production fallback: set local state only if we got a thumbnail
                         setLocalMetadata({
                             thumbnailUrl: updates.thumbnailUrl,
                             name: updates.name,

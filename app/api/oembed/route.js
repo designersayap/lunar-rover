@@ -26,8 +26,21 @@ export async function GET(request) {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
                 'Accept': 'application/json, text/html',
                 'Referer': 'https://www.tiktok.com/'
-            }
+            },
+            redirect: 'follow'
         };
+
+        // Handle short URLs by expanding them first
+        if (tiktokUrl.includes('vt.tiktok.com/') || tiktokUrl.includes('vm.tiktok.com/') || tiktokUrl.includes('/t/')) {
+            try {
+                const headRes = await fetch(tiktokUrl, { ...fetchOptions, method: 'HEAD' });
+                if (headRes.url && headRes.url !== tiktokUrl) {
+                    targetUrl = headRes.url;
+                }
+            } catch (e) {
+                console.error("Short URL expansion failed:", e);
+            }
+        }
 
         try {
             const response = await fetch(oembedUrl, fetchOptions);
