@@ -103,7 +103,6 @@
     width: 100%;
     height: 100%;
     z-index: 1;
-    text-decoration: none;
 }
 
 .backgroundImage img {
@@ -152,4 +151,8 @@
         flex: 0 0 300px;
         width: 300px;
     }
+}
+.container a,
+.container :global(.builder-text) a {
+    text-decoration: none !important;
 }
