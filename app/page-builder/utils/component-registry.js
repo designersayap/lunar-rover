@@ -17,6 +17,8 @@ import Media169 from '@/app/templates/media/media-16-9';
 import Media54 from '@/app/templates/media/media-5-4';
 import Media43 from '@/app/templates/media/media-4-3';
 import Media219 from '@/app/templates/media/media-21-9';
+import MediaGridCol2 from '@/app/templates/media/media-grid-col-2';
+import MediaGridCol3 from '@/app/templates/media/media-grid-col-3';
 import TikTokEmbed from '@/app/templates/social-bridge/tiktok-embed';
 
 import NavigationCenter from '@/app/templates/navigation/navigation-center';
@@ -57,6 +59,8 @@ export const COMPONENT_REGISTRY = {
     "media-5-4": Media54,
     "media-4-3": Media43,
     "media-21-9": Media219,
+    "media-grid-col-2": MediaGridCol2,
+    "media-grid-col-3": MediaGridCol3,
     "social-bridge-tiktok": TikTokEmbed,
 
     "navigation-center": NavigationCenter,
