@@ -40,7 +40,7 @@
 }
 
 .columnTitle {
-    color: #008444 !important;
+    color: var(--content-brand--brand);
     font-weight: 700;
 }
 
