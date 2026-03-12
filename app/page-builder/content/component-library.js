@@ -1140,24 +1140,13 @@ export const componentLibrary = {
             ],
             links: [
                 { label: "Facebook", propId: "socialLinks.0.id", suffix: "social-1", labelProp: "socialLinks.0.platform", visibleProp: "socialLinks.0.visible" },
-                { label: "Twitter", propId: "socialLinks.1.id", suffix: "social-2", labelProp: "socialLinks.1.platform", visibleProp: "socialLinks.1.visible" },
-                { label: "Instagram", propId: "socialLinks.2.id", suffix: "social-3", labelProp: "socialLinks.2.platform", visibleProp: "socialLinks.2.visible" },
-                { label: "TikTok", propId: "socialLinks.3.id", suffix: "social-4", labelProp: "socialLinks.3.platform", visibleProp: "socialLinks.4.visible" },
-                { label: "YouTube", propId: "socialLinks.4.id", suffix: "social-5", labelProp: "socialLinks.4.platform", visibleProp: "socialLinks.4.visible" },
-                ...Array.from({ length: 10 }, (_, i) => ({
-                    label: `Available At ${i + 1}`,
-                    propId: `findUsOnLinks.${i}.id`,
-                    suffix: `link-${i + 1}`,
-                    labelProp: `findUsOnLinks.${i}.label`,
-                    visibleProp: `findUsOnLinks.${i}.visible`
-                })),
-                ...Array.from({ length: 10 }, (_, i) => ({
-                    label: `Resource ${i + 1}`,
-                    propId: `resourceLinks.${i}.id`,
-                    suffix: `res-${i + 1}`,
-                    labelProp: `resourceLinks.${i}.label`,
-                    visibleProp: `resourceLinks.${i}.visible`
-                }))
+                { label: "Instagram", propId: "socialLinks.1.id", suffix: "social-2", labelProp: "socialLinks.1.platform", visibleProp: "socialLinks.1.visible" },
+                { label: "TikTok", propId: "socialLinks.2.id", suffix: "social-3", labelProp: "socialLinks.2.platform", visibleProp: "socialLinks.2.visible" },
+                { label: "Available At 1", propId: "findUsOnLinks.0.id", suffix: "link-1", labelProp: "findUsOnLinks.0.label", visibleProp: "findUsOnLinks.0.visible" },
+                { label: "Available At 2", propId: "findUsOnLinks.1.id", suffix: "link-2", labelProp: "findUsOnLinks.1.label", visibleProp: "findUsOnLinks.1.visible" },
+                { label: "Available At 3", propId: "findUsOnLinks.2.id", suffix: "link-3", labelProp: "findUsOnLinks.2.label", visibleProp: "findUsOnLinks.2.visible" },
+                { label: "Privacy Policy", propId: "resourceLinks.0.id", suffix: "res-1", labelProp: "resourceLinks.0.label", visibleProp: "resourceLinks.0.visible" },
+                { label: "Terms & Conditions", propId: "resourceLinks.1.id", suffix: "res-2", labelProp: "resourceLinks.1.label", visibleProp: "resourceLinks.1.visible" }
             ]
         }
     ],
