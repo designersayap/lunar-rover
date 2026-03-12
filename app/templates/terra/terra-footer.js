@@ -223,44 +223,53 @@ export default function FooterTerra({
                 <div className={styles.divider} />
 
                 {/* Bottom Bar: Copyright & Legal Links */}
-                <div className={styles.bottomBar}>
-                    <BuilderText
-                        tagName="p"
-                        className={`caption-regular ${styles.copyright}`}
-                        content={copyrightText || defaults.copyrightText}
-                        onChange={update('copyrightText')}
-                        sectionId={sectionId}
-                        suffix="copyright"
-                    />
-                    <div className={styles.legalLinks}>
-                        {resourceLinks.map((link, index) => (
-                            <BuilderLink
-                                key={link.id || index}
-                                id={link.id}
-                                label={link.label}
-                                href={link.url}
-                                isVisible={link.visible}
-                                showLinkType={false}
+                <div className={`${styles.bottomBar} grid items-center`}>
+                    <div className="col-mobile-4 col-tablet-4 col-desktop-9">
+                        <div className={styles.column}>
+                            <BuilderText
+                                tagName="p"
+                                className={`caption-regular ${styles.copyright}`}
+                                content={copyrightText || defaults.copyrightText}
+                                onChange={update('copyrightText')}
                                 sectionId={sectionId}
-                                onLabelChange={(val) => {
-                                    const newLinks = [...resourceLinks];
-                                    newLinks[index].label = val;
-                                    update('resourceLinks')(newLinks);
-                                }}
-                                onHrefChange={(val) => {
-                                    const newLinks = [...resourceLinks];
-                                    newLinks[index].url = val;
-                                    update('resourceLinks')(newLinks);
-                                }}
-                                onVisibilityChange={(val) => {
-                                    const newLinks = [...resourceLinks];
-                                    newLinks[index].visible = val;
-                                    update('resourceLinks')(newLinks);
-                                }}
-                                className={`${styles.legalLink} caption-regular`}
-                                suffix={`legal-${index + 1}`}
+                                suffix="copyright"
                             />
-                        ))}
+                        </div>
+                    </div>
+                    <div className="col-mobile-4 col-tablet-4 col-desktop-3">
+                        <div className={styles.column}>
+                            <div className={styles.legalLinks}>
+                                {resourceLinks.map((link, index) => (
+                                    <BuilderLink
+                                        key={link.id || index}
+                                        id={link.id}
+                                        label={link.label}
+                                        href={link.url}
+                                        isVisible={link.visible}
+                                        showLinkType={false}
+                                        sectionId={sectionId}
+                                        onLabelChange={(val) => {
+                                            const newLinks = [...resourceLinks];
+                                            newLinks[index].label = val;
+                                            update('resourceLinks')(newLinks);
+                                        }}
+                                        onHrefChange={(val) => {
+                                            const newLinks = [...resourceLinks];
+                                            newLinks[index].url = val;
+                                            update('resourceLinks')(newLinks);
+                                        }}
+                                        onVisibilityChange={(val) => {
+                                            const newLinks = [...resourceLinks];
+                                            newLinks[index].visible = val;
+                                            update('resourceLinks')(newLinks);
+                                        }}
+                                        className={`${styles.legalLink} caption-regular`}
+                                        suffix={`legal-${index + 1}`}
+                                        justify="flex-start"
+                                    />
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
