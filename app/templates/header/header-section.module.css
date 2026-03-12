@@ -11,9 +11,16 @@
 }
 
 .title {
-    color: var(--content-neutral--title);
+    /* Gradient Typography Support */
+    background: var(--content-neutral--title);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
     overflow-wrap: break-word;
     word-break: break-word;
+    filter:
+        drop-shadow(1px 1px 0 var(--stroke-content--title)) drop-shadow(1px -1px 0 var(--stroke-content--title)) drop-shadow(-1px 1px 0 var(--stroke-content--title)) drop-shadow(-1px -1px 0 var(--stroke-content--title)) drop-shadow(1px 0 0 var(--stroke-content--title)) drop-shadow(-1px 0 0 var(--stroke-content--title)) drop-shadow(0 1px 0 var(--stroke-content--title)) drop-shadow(0 -1px 0 var(--stroke-content--title));
 }
 
 .subtitle {

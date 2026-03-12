@@ -144,7 +144,7 @@
     flex: 1;
     font-family: var(--font-family-body);
     font-size: var(--typography-font-size-paragraph-md);
-    color: var(--content-neutral--title);
+    color: var(--content-neutral--title-default);
 }
 
 .itemArrow {

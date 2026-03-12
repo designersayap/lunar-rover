@@ -49,7 +49,7 @@ export default function FooterTerra({
             <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })}>
                 <div className={`grid items-center-desktop`}>
                     {/* Left Column: Logo */}
-                    <div className={`col-mobile-4 col-tablet-8 col-desktop-7`}>
+                    <div className={`col-mobile-4 col-tablet-8 col-desktop-6`}>
                         <div className={styles.leftColumn}>
                             <div className={styles.logoWrapper}>
                                 <BuilderImage
@@ -143,7 +143,7 @@ export default function FooterTerra({
                     </div>
 
                     {/* Right Column: Follow Us (Ikuti Kami) */}
-                    <div className={`col-mobile-4 col-tablet-4 col-desktop-2`}>
+                    <div className={`col-mobile-4 col-tablet-4 col-desktop-3`}>
                         <div className={styles.column}>
                             <BuilderText
                                 tagName="p"

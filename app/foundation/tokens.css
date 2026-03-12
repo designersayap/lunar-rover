@@ -88,6 +88,10 @@
     --stroke-neutral--neutral: var(--stroke-default);
     --stroke-neutral--invert: var(--base-white);
 
+    /* Typography Strokes */
+    --stroke-content--title: var(--stroke-typography-title);
+    --stroke-content--body: var(--stroke-typography-body);
+
 
     /* Shadows */
     --shadow--button: var(--shadow-x-button) var(--shadow-y-button) var(--shadow-blur-button) var(--shadow-spread-button) var(--shadow-color-button);

@@ -163,7 +163,12 @@
 }
 
 .productName {
-    color: var(--content-neutral--title);
+    /* Gradient Typography Support */
+    background: var(--content-neutral--title-default);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
 }
 
 .productDescription {
