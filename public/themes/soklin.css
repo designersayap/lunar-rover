@@ -131,7 +131,7 @@
     /* Typography */
     --brand-typography-title: var(--brand-color-300);
     --default-typography-title: var(--grey-500);
-    --brand-typography-body: var(--brand-color-300);
+    --brand-typography-body: var(--brand-color-500);
     --default-typography-body: var(--grey-400);
     --brand-typography-caption: var(--grey-300);
     --default-typography-caption: var(--grey-300);
