@@ -194,17 +194,23 @@ export default function TestimonyPortrait({
     }
 
     // For marquee, we need enough items to fill the screen for a seamless loop
-    const displayTestimonies = [];
+    const displayItems = [];
     let repeatCount = 1;
 
-    if (isAutoScroll && autoScrollEffect === 'marquee' && filteredTestimonies.length > 0) {
+    // Filtered testimonies with their original indices
+    const mappedTestimonies = filteredTestimonies.map((item, originalIndex) => ({
+        data: item,
+        originalIndex: testimonies.indexOf(item) // Get index from base testimonies array
+    }));
+
+    if (isAutoScroll && autoScrollEffect === 'marquee' && mappedTestimonies.length > 0) {
         // Aim for at least 24 items total to ensure the screen is always filled (matching landscape's wide buffer)
-        repeatCount = Math.max(3, Math.ceil(24 / filteredTestimonies.length));
+        repeatCount = Math.max(3, Math.ceil(24 / mappedTestimonies.length));
         for (let i = 0; i < repeatCount; i++) {
-            displayTestimonies.push(...filteredTestimonies);
+            displayItems.push(...mappedTestimonies);
         }
     } else {
-        displayTestimonies.push(...filteredTestimonies);
+        displayItems.push(...mappedTestimonies);
     }
 
     const shouldCenter = !isAutoScroll || (totalPages <= 1 && autoScrollEffect !== 'marquee');
@@ -239,62 +245,62 @@ export default function TestimonyPortrait({
                             onMouseLeave={() => setIsPaused(false)}
                             data-paused={isPaused}
                         >
-                            {displayTestimonies.map((item, index) => item && (
+                            {displayItems.map(({ data: item, originalIndex }, index) => item && (
                                 <BuilderElement
                                     key={index}
                                     tagName="div"
                                     className={styles.itemWrapper}
                                     id={item.cardId}
                                     sectionId={sectionId}
-                                    onIdChange={(val) => updateCardId(index, val)}
+                                    onIdChange={(val) => updateCardId(originalIndex, val)}
                                     elementProps={`testimony-${index}`}
                                     isVisible={item.visible !== false}
                                 >
                                     <div className={styles.card}>
                                         <BuilderImage
                                             src={item.image}
-                                            onSrcChange={(val) => updateTestimony(index, "image", val)}
+                                            onSrcChange={(val) => updateTestimony(originalIndex, "image", val)}
                                             className={styles.backgroundImage}
                                             id={item.imageId}
                                             sectionId={sectionId}
                                             isVisible={item.imageVisible}
-                                            onIdChange={(val) => updateTestimony(index, "imageId", val)}
-                                            onVisibilityChange={(val) => updateTestimony(index, "imageVisible", val)}
+                                            onIdChange={(val) => updateTestimony(originalIndex, "imageId", val)}
+                                            onVisibilityChange={(val) => updateTestimony(originalIndex, "imageVisible", val)}
                                             suffix={`background-${index}`}
                                             href={item.imageUrl}
-                                            onHrefChange={(val) => updateTestimony(index, "imageUrl", val)}
+                                            onHrefChange={(val) => updateTestimony(originalIndex, "imageUrl", val)}
                                             linkType={item.imageLinkType}
-                                            onLinkTypeChange={(val) => updateTestimony(index, "imageLinkType", val)}
+                                            onLinkTypeChange={(val) => updateTestimony(originalIndex, "imageLinkType", val)}
                                             targetDialogId={item.imageTargetDialogId}
-                                            onTargetDialogIdChange={(val) => updateTestimony(index, "imageTargetDialogId", val)}
+                                            onTargetDialogIdChange={(val) => updateTestimony(originalIndex, "imageTargetDialogId", val)}
                                         />
 
                                         <div className={styles.contentCard}>
                                             <div className={styles.avatarWrapper}>
                                                 <BuilderImage
                                                     src={item.avatar}
-                                                    onSrcChange={(val) => updateTestimony(index, "avatar", val)}
+                                                    onSrcChange={(val) => updateTestimony(originalIndex, "avatar", val)}
                                                     className={'imagePlaceholder-1-1 object-cover'}
                                                     id={item.avatarId}
                                                     style={{ borderRadius: "var(--border-radius-round)" }}
                                                     sectionId={sectionId}
                                                     isVisible={item.avatarVisible}
-                                                    onIdChange={(val) => updateTestimony(index, "avatarId", val)}
-                                                    onVisibilityChange={(val) => updateTestimony(index, "avatarVisible", val)}
+                                                    onIdChange={(val) => updateTestimony(originalIndex, "avatarId", val)}
+                                                    onVisibilityChange={(val) => updateTestimony(originalIndex, "avatarVisible", val)}
                                                     suffix={`avatar-${index}`}
                                                     href={item.avatarUrl}
-                                                    onHrefChange={(val) => updateTestimony(index, "avatarUrl", val)}
+                                                    onHrefChange={(val) => updateTestimony(originalIndex, "avatarUrl", val)}
                                                     linkType={item.avatarLinkType}
-                                                    onLinkTypeChange={(val) => updateTestimony(index, "avatarLinkType", val)}
+                                                    onLinkTypeChange={(val) => updateTestimony(originalIndex, "avatarLinkType", val)}
                                                     targetDialogId={item.avatarTargetDialogId}
-                                                    onTargetDialogIdChange={(val) => updateTestimony(index, "avatarTargetDialogId", val)}
+                                                    onTargetDialogIdChange={(val) => updateTestimony(originalIndex, "avatarTargetDialogId", val)}
                                                 />
                                             </div>
                                             <BuilderText
                                                 tagName="div"
                                                 className={`h5 truncate-1-line ${styles.name}`}
                                                 content={item.name || ""}
-                                                onChange={(val) => updateTestimony(index, "name", val)}
+                                                onChange={(val) => updateTestimony(originalIndex, "name", val)}
                                                 sectionId={sectionId}
                                                 tooltipIfTruncated={true}
                                                 suffix="name"
@@ -304,7 +310,7 @@ export default function TestimonyPortrait({
                                                 tagName="div"
                                                 className={`caption-regular ${styles.role}`}
                                                 content={item.role || ""}
-                                                onChange={(val) => updateTestimony(index, "role", val)}
+                                                onChange={(val) => updateTestimony(originalIndex, "role", val)}
                                                 sectionId={sectionId}
                                                 suffix="role"
                                             />
@@ -312,11 +318,8 @@ export default function TestimonyPortrait({
                                             <BuilderText
                                                 tagName="div"
                                                 className={`caption-regular truncate-2-lines ${styles.description}`}
-                                                content={item.description ? `“${item.description}”` : ""}
-                                                onChange={(val) => {
-                                                    const cleanVal = val.replace(/^“|”$/g, '');
-                                                    updateTestimony(index, "description", cleanVal);
-                                                }}
+                                                content={item.description || ""}
+                                                onChange={(val) => updateTestimony(originalIndex, "description", val)}
                                                 sectionId={sectionId}
                                                 tooltipIfTruncated={true}
                                                 suffix="description"
