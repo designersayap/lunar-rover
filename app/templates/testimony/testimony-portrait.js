@@ -293,27 +293,33 @@ export default function TestimonyPortrait({
                                             <BuilderText
                                                 tagName="div"
                                                 className={`h5 truncate-1-line ${styles.name}`}
-                                                content={item.name}
+                                                content={item.name || ""}
                                                 onChange={(val) => updateTestimony(index, "name", val)}
                                                 sectionId={sectionId}
                                                 tooltipIfTruncated={true}
+                                                suffix="name"
                                             />
 
                                             <BuilderText
                                                 tagName="div"
                                                 className={`caption-regular ${styles.role}`}
-                                                content={item.role}
+                                                content={item.role || ""}
                                                 onChange={(val) => updateTestimony(index, "role", val)}
                                                 sectionId={sectionId}
+                                                suffix="role"
                                             />
 
                                             <BuilderText
                                                 tagName="div"
                                                 className={`caption-regular truncate-2-lines ${styles.description}`}
-                                                content={`“${item.description}”`}
-                                                onChange={(val) => updateTestimony(index, "description", val)}
+                                                content={item.description ? `“${item.description}”` : ""}
+                                                onChange={(val) => {
+                                                    const cleanVal = val.replace(/^“|”$/g, '');
+                                                    updateTestimony(index, "description", cleanVal);
+                                                }}
                                                 sectionId={sectionId}
                                                 tooltipIfTruncated={true}
+                                                suffix="description"
                                             />
                                         </div>
                                     </div>
