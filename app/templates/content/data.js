@@ -61,18 +61,16 @@ export const componentDefaults = {
     },
     "footer-terra": {
         image: "",
-        copyrightText: "Copyright © 2025 all rights reserved",
-        availableAtTitle: "Available at",
-        resourcesTitle: "About Us",
+        copyrightText: "Copyright © [brand_name] 2026",
+        availableAtTitle: "Available At",
+        resourcesTitle: "Follow Us",
         socialLinks: [
-            { platform: 'facebook', url: '', visible: true, id: '' },
-            { platform: 'twitter', url: '', visible: true, id: '' },
-            { platform: 'instagram', url: '', visible: true, id: '' },
-            { platform: 'tiktok', url: '', visible: true, id: '' },
-            { platform: 'youtube', url: '', visible: true, id: '' }
+            { label: '[social-link]', url: '', visible: true, id: '', image: '', imageId: '' },
+            { label: '[social-link]', url: '', visible: true, id: '', image: '', imageId: '' },
+            { label: '[social-link]', url: '', visible: true, id: '', image: '', imageId: '' }
         ],
         findUsOnLinks: [{
-            label: "marketplace 1",
+            label: "[marketplace_name]",
             url: "",
             visible: true,
             id: "",
@@ -82,7 +80,7 @@ export const componentDefaults = {
             targetDialogId: ""
         },
         {
-            label: "marketplace 2",
+            label: "[marketplace_name]",
             url: "",
             visible: true,
             id: "",
@@ -92,30 +90,25 @@ export const componentDefaults = {
             targetDialogId: ""
         },
         {
-            label: "marketplace 3",
-            url: "", visible: true,
-            id: "", image: "",
+            label: "[marketplace_name]",
+            url: "",
+            visible: true,
+            id: "",
+            image: "",
             imageId: "",
             linkType: "url",
             targetDialogId: ""
         }
         ],
         resourceLinks: [{
+            label: "Terms & Conditions",
+            url: "", visible: true,
+            id: "",
+            linkType: "url",
+            targetDialogId: ""
+        },
+        {
             label: "Privacy Policy",
-            url: "", visible: true,
-            id: "",
-            linkType: "url",
-            targetDialogId: ""
-        },
-        {
-            label: "Terms & Condition",
-            url: "", visible: true,
-            id: "",
-            linkType: "url",
-            targetDialogId: ""
-        },
-        {
-            label: "Contact Us",
             url: "", visible: true,
             id: "",
             linkType: "url",

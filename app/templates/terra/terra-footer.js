@@ -47,11 +47,10 @@ export default function FooterTerra({
     return (
         <footer className={styles.footer} id={sectionId}>
             <div className={getContainerClasses({ fullWidth, removePaddingLeft, removePaddingRight })}>
-                <div className={`grid`}>
-                    {/* Left Column */}
+                <div className={`grid items-center-desktop`}>
+                    {/* Left Column: Logo */}
                     <div className={`col-mobile-4 col-tablet-8 col-desktop-7`}>
                         <div className={styles.leftColumn}>
-                            {/* Logo */}
                             <div className={styles.logoWrapper}>
                                 <BuilderImage
                                     src={image}
@@ -64,80 +63,22 @@ export default function FooterTerra({
                                     suffix="logo"
                                 />
                             </div>
-
-                            {/* Copyright */}
-                            <BuilderText
-                                tagName="p"
-                                className={`caption-regular ${styles.copyright}`}
-                                content={copyrightText || defaults.copyrightText}
-                                onChange={update('copyrightText')}
-                                sectionId={sectionId}
-                                suffix="copyright"
-                            />
-
-                            {/* Social Icons */}
-                            <div className={styles.socialWrapper}>
-                                {socialLinks.map((link, index) => (
-                                    link.visible && (
-                                        <BuilderLink
-                                            key={link.id || index}
-                                            id={link.id}
-                                            href={link.url}
-                                            isVisible={link.visible}
-                                            sectionId={sectionId}
-                                            onHrefChange={(val) => {
-                                                const newLinks = [...socialLinks];
-                                                newLinks[index].url = val;
-                                                update('socialLinks')(newLinks);
-                                            }}
-                                            onIdChange={(val) => {
-                                                const newLinks = [...socialLinks];
-                                                newLinks[index].id = val;
-                                                update('socialLinks')(newLinks);
-                                            }}
-                                            onVisibilityChange={(val) => {
-                                                const newLinks = [...socialLinks];
-                                                newLinks[index].visible = val;
-                                                update('socialLinks')(newLinks);
-                                            }}
-                                            linkType={link.linkType}
-                                            targetDialogId={link.targetDialogId}
-                                            onLinkTypeChange={(val) => {
-                                                const newLinks = [...socialLinks];
-                                                newLinks[index].linkType = val;
-                                                update('socialLinks')(newLinks);
-                                            }}
-                                            onTargetDialogIdChange={(val) => {
-                                                const newLinks = [...socialLinks];
-                                                newLinks[index].targetDialogId = val;
-                                                update('socialLinks')(newLinks);
-                                            }}
-                                            hideLabel={true}
-                                            iconLeft={SocialIcons[link.platform] || null}
-                                            className={styles.socialLink}
-                                            tooltipIfTruncated={true}
-                                            style={{ width: '16px', height: '16px' }}
-                                            suffix={`social-${index + 1}`}
-                                        />
-                                    )
-                                ))}
-                            </div>
                         </div>
                     </div>
 
-                    {/* Available at */}
-                    <div className={`col-mobile-4 col-tablet-8 col-desktop-3`}>
+                    {/* Middle Column: Available at (Tersedia Di) */}
+                    <div className={`col-mobile-4 col-tablet-4 col-desktop-3`}>
                         <div className={styles.column}>
                             <BuilderText
                                 tagName="p"
-                                className={"body-bold truncate-1-line"}
+                                className={`body-bold ${styles.columnTitle} truncate-1-line`}
                                 content={availableAtTitle || defaults.availableAtTitle}
                                 onChange={update('availableAtTitle')}
                                 sectionId={sectionId}
                                 suffix="available-at-title"
                             />
                             <div className={styles.linkList}>
-                                {findUsOnLinks.map((link, index) => (
+                                {findUsOnLinks.slice(0, 3).map((link, index) => (
                                     <div key={link.id || index} className={styles.linkWrapper}>
                                         <BuilderLink
                                             id={link.id}
@@ -168,7 +109,7 @@ export default function FooterTerra({
                                             }}
                                             justify="flex-start"
                                             iconLeft={
-                                                <div className="icon-social" style={{ position: 'relative' }}>
+                                                <div style={{ width: 16, height: 16, position: 'relative', overflow: 'hidden' }}>
                                                     <BuilderImage
                                                         src={link.image}
                                                         onSrcChange={(val) => {
@@ -184,8 +125,8 @@ export default function FooterTerra({
                                                         }}
                                                         sectionId={sectionId}
                                                         suffix={`available-at-icon-${index}`}
-                                                        className="object-cover"
-                                                        style={{ width: '100%', height: '100%', borderRadius: 2 }}
+                                                        className="object-contain"
+                                                        style={{ width: '100%', height: '100%' }}
                                                         showLinkControls={false}
                                                     />
                                                 </div>
@@ -201,19 +142,19 @@ export default function FooterTerra({
                         </div>
                     </div>
 
-                    {/* Resources */}
-                    <div className={`col-mobile-4 col-tablet-8 col-desktop-2`}>
+                    {/* Right Column: Follow Us (Ikuti Kami) */}
+                    <div className={`col-mobile-4 col-tablet-4 col-desktop-2`}>
                         <div className={styles.column}>
                             <BuilderText
                                 tagName="p"
-                                className={"body-bold truncate-1-line"}
+                                className={`body-bold ${styles.columnTitle} truncate-1-line`}
                                 content={resourcesTitle || defaults.resourcesTitle}
                                 onChange={update('resourcesTitle')}
                                 sectionId={sectionId}
                                 suffix="resources-title"
                             />
                             <div className={styles.linkList}>
-                                {resourceLinks.map((link, index) => (
+                                {socialLinks.slice(0, 3).map((link, index) => (
                                     <div key={link.id || index} className={styles.linkWrapper}>
                                         <BuilderLink
                                             id={link.id}
@@ -223,29 +164,51 @@ export default function FooterTerra({
                                             showLinkType={false}
                                             sectionId={sectionId}
                                             onLabelChange={(val) => {
-                                                const newLinks = [...resourceLinks];
+                                                const newLinks = [...socialLinks];
                                                 newLinks[index].label = val;
-                                                update('resourceLinks')(newLinks);
+                                                update('socialLinks')(newLinks);
                                             }}
                                             onHrefChange={(val) => {
-                                                const newLinks = [...resourceLinks];
+                                                const newLinks = [...socialLinks];
                                                 newLinks[index].url = val;
-                                                update('resourceLinks')(newLinks);
+                                                update('socialLinks')(newLinks);
                                             }}
                                             onIdChange={(val) => {
-                                                const newLinks = [...resourceLinks];
+                                                const newLinks = [...socialLinks];
                                                 newLinks[index].id = val;
-                                                update('resourceLinks')(newLinks);
+                                                update('socialLinks')(newLinks);
                                             }}
-
                                             onVisibilityChange={(val) => {
-                                                const newLinks = [...resourceLinks];
+                                                const newLinks = [...socialLinks];
                                                 newLinks[index].visible = val;
-                                                update('resourceLinks')(newLinks);
+                                                update('socialLinks')(newLinks);
                                             }}
                                             justify="flex-start"
+                                            iconLeft={
+                                                <div style={{ width: 16, height: 16, position: 'relative', overflow: 'hidden' }}>
+                                                    <BuilderImage
+                                                        src={link.image}
+                                                        onSrcChange={(val) => {
+                                                            const newLinks = [...socialLinks];
+                                                            newLinks[index].image = val;
+                                                            update('socialLinks')(newLinks);
+                                                        }}
+                                                        id={link.imageId}
+                                                        onIdChange={(val) => {
+                                                            const newLinks = [...socialLinks];
+                                                            newLinks[index].imageId = val;
+                                                            update('socialLinks')(newLinks);
+                                                        }}
+                                                        sectionId={sectionId}
+                                                        suffix={`social-icon-${index}`}
+                                                        className="object-contain"
+                                                        style={{ width: '100%', height: '100%' }}
+                                                        showLinkControls={false}
+                                                    />
+                                                </div>
+                                            }
                                             className={`${styles.linkFooter} body-regular`}
-                                            suffix={`res-${index + 1}`}
+                                            suffix={`social-${index + 1}`}
                                             fullWidth={true}
                                             tooltipIfTruncated={true}
                                         />
@@ -255,7 +218,53 @@ export default function FooterTerra({
                         </div>
                     </div>
                 </div>
+
+                {/* Divider Line */}
+                <div className={styles.divider} />
+
+                {/* Bottom Bar: Copyright & Legal Links */}
+                <div className={styles.bottomBar}>
+                    <BuilderText
+                        tagName="p"
+                        className={`caption-regular ${styles.copyright}`}
+                        content={copyrightText || defaults.copyrightText}
+                        onChange={update('copyrightText')}
+                        sectionId={sectionId}
+                        suffix="copyright"
+                    />
+                    <div className={styles.legalLinks}>
+                        {resourceLinks.map((link, index) => (
+                            <BuilderLink
+                                key={link.id || index}
+                                id={link.id}
+                                label={link.label}
+                                href={link.url}
+                                isVisible={link.visible}
+                                showLinkType={false}
+                                sectionId={sectionId}
+                                onLabelChange={(val) => {
+                                    const newLinks = [...resourceLinks];
+                                    newLinks[index].label = val;
+                                    update('resourceLinks')(newLinks);
+                                }}
+                                onHrefChange={(val) => {
+                                    const newLinks = [...resourceLinks];
+                                    newLinks[index].url = val;
+                                    update('resourceLinks')(newLinks);
+                                }}
+                                onVisibilityChange={(val) => {
+                                    const newLinks = [...resourceLinks];
+                                    newLinks[index].visible = val;
+                                    update('resourceLinks')(newLinks);
+                                }}
+                                className={`${styles.legalLink} caption-regular`}
+                                suffix={`legal-${index + 1}`}
+                            />
+                        ))}
+                    </div>
+                </div>
             </div>
         </footer>
     );
 }
+
