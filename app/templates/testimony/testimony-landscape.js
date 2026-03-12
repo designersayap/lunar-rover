@@ -10,7 +10,7 @@ import BuilderElement from "@/app/page-builder/utils/builder/builder-element";
 import { componentDefaults } from "../content/data";
 
 export default function TestimonyLandscape({
-    testimonies = componentDefaults["testimony-landscape"].testimonies,
+    testimonies: rawTestimonies = componentDefaults["testimony-landscape"].testimonies,
     sectionId,
     onUpdate,
     fullWidth,
@@ -20,6 +20,9 @@ export default function TestimonyLandscape({
     autoScrollEffect = componentDefaults["testimony-landscape"].autoScrollEffect,
     marqueeDuration = componentDefaults["testimony-landscape"].marqueeDuration
 }) {
+    // Sanitize data: remove null/undefined entries
+    const testimonies = (rawTestimonies || []).filter(item => item !== null && typeof item === 'object');
+
     const isAutoScroll = autoScroll === true || autoScroll === "true";
     const isFullWidth = fullWidth === true || fullWidth === "true";
 
@@ -47,7 +50,7 @@ export default function TestimonyLandscape({
         updateTestimony(index, 'cardId', newId);
     };
 
-    const visibleCardsString = testimonies.map(t => t.visible).join(',');
+    const visibleCardsString = testimonies.map(t => t?.visible).join(',');
 
     useEffect(() => {
         const visibleTestimonies = testimonies.filter(t => t.visible !== false);
@@ -186,7 +189,8 @@ export default function TestimonyLandscape({
     let filteredTestimonies = testimonies;
     if (visibleCount === 0 && testimonies.length > 0) {
         // If no visible testimonies, show the first one as a fallback (minimum 1 card)
-        filteredTestimonies = [testimonies[0]];
+        const validFallback = testimonies.find(t => t !== null && typeof t === 'object');
+        filteredTestimonies = validFallback ? [validFallback] : [];
     }
 
     // For marquee, we need enough items to fill the screen for a seamless loop
@@ -235,7 +239,7 @@ export default function TestimonyLandscape({
                             onMouseLeave={() => setIsPaused(false)}
                             data-paused={isPaused}
                         >
-                            {displayTestimonies.map((item, index) => (
+                            {displayTestimonies.map((item, index) => item && (
                                 <BuilderElement
                                     key={index}
                                     tagName="div"

@@ -11,8 +11,8 @@ import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { componentDefaults } from "../content/data";
 
 export default function TerraProductCarousel({
-    categories = componentDefaults["product-carousel-terra"].categories,
-    products = componentDefaults["product-carousel-terra"].products,
+    categories: rawCategories = componentDefaults["product-carousel-terra"].categories,
+    products: rawProducts = componentDefaults["product-carousel-terra"].products,
     sectionId,
     onUpdate,
     showTabs = true,
@@ -20,6 +20,10 @@ export default function TerraProductCarousel({
     removePaddingLeft,
     removePaddingRight
 }) {
+    // Sanitize data
+    const categories = (rawCategories || []).filter(item => item !== null && typeof item === 'object');
+    const products = (rawProducts || []).filter(item => item !== null && typeof item === 'object');
+
     const scrollContainerRef = useRef(null);
     const [activeCategoryId, setActiveCategoryId] = useState(categories[0]?.id || null);
     const [currentPage, setCurrentPage] = useState(0);
@@ -40,8 +44,8 @@ export default function TerraProductCarousel({
     const latestStateRef = useRef({ categories, products, onUpdate });
     latestStateRef.current = { categories, products, onUpdate };
 
-    const visibleCardsString = products.map(p => p.visible).join(',');
-    const visibleFilteredCardsString = filteredProducts.map(p => p.visible).join(',');
+    const visibleCardsString = products.map(p => p?.visible).join(',');
+    const visibleFilteredCardsString = filteredProducts.map(p => p?.visible).join(',');
 
     useEffect(() => {
         const calculatePages = () => {
@@ -169,7 +173,7 @@ export default function TerraProductCarousel({
                     >
                         <div className={styles.scrollableTabs}>
                             <div className="tabs">
-                                {categories.map((cat, index) => (
+                                {categories.map((cat, index) => cat && (
                                     <BuilderElement
                                         key={index}
                                         tagName="div"
@@ -221,7 +225,8 @@ export default function TerraProductCarousel({
                                         elementProps={`category-group-${catIndex}`}
                                         isVisible={!showTabs || activeCategoryId === cat.id || !activeCategoryId}
                                     >
-                                        {productsInCategory.map((item) => {
+                                {productsInCategory.map((item) => {
+                                            if (!item) return null;
                                             const originalIndex = products.findIndex(p => p === item);
                                             return (
                                                 <BuilderElement

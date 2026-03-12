@@ -11,7 +11,7 @@ import BuilderLink from "@/app/page-builder/utils/builder/builder-link";
 import { componentDefaults } from "../content/data";
 
 export default function InstagramFeed({
-    items = componentDefaults["social-bridge-instagram-feed"].items,
+    items: rawItems = componentDefaults["social-bridge-instagram-feed"].items,
     sectionId,
     onUpdate,
     fullWidth,
@@ -21,6 +21,9 @@ export default function InstagramFeed({
     autoScrollEffect = componentDefaults["social-bridge-instagram-feed"].autoScrollEffect,
     marqueeDuration = componentDefaults["social-bridge-instagram-feed"].marqueeDuration
 }) {
+    // Sanitize data
+    const items = (rawItems || []).filter(item => item !== null && typeof item === 'object');
+
     const isAutoScroll = autoScroll === true || autoScroll === "true";
     const isFullWidth = fullWidth === true || fullWidth === "true";
 
@@ -46,7 +49,7 @@ export default function InstagramFeed({
         updateItem(index, 'cardId', newId);
     };
 
-    const visibleItemsString = items.map(t => t.visible).join(',');
+    const visibleItemsString = items.map(t => t?.visible).join(',');
 
     useEffect(() => {
         const visibleItems = items.filter(t => t.visible !== false);
@@ -179,7 +182,8 @@ export default function InstagramFeed({
     const visibleCount = items.filter(t => t.visible !== false).length;
     let filteredItems = items;
     if (visibleCount === 0 && items.length > 0) {
-        filteredItems = [items[0]];
+        const validFallback = items.find(t => t !== null && typeof t === 'object');
+        filteredItems = validFallback ? [validFallback] : [];
     }
 
     const displayItems = [];
@@ -226,7 +230,7 @@ export default function InstagramFeed({
                             onMouseLeave={() => setIsPaused(false)}
                             data-paused={isPaused}
                         >
-                            {displayItems.map((item, index) => (
+                            {displayItems.map((item, index) => item && (
                                 <BuilderElement
                                     key={index}
                                     tagName="div"

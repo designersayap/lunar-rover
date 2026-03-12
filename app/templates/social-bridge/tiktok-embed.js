@@ -329,14 +329,16 @@ const TikTokCard = memo(({
 
 // --- Main Component ---
 export default function TikTokEmbed({
-    videos = componentDefaults["social-bridge-tiktok"].videos,
+    videos: rawVideos = componentDefaults["social-bridge-tiktok"].videos,
     onUpdate,
     sectionId,
     fullWidth,
     allowAutoplay = true,
-    removePaddingLeft,
     removePaddingRight,
 }) {
+    // Sanitize data
+    const videos = (rawVideos || []).filter(item => item !== null && typeof item === 'object');
+
     const scrollContainerRef = useRef(null);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
@@ -373,14 +375,15 @@ export default function TikTokEmbed({
         updateVideo(index, 'cardId', newId);
     };
 
-    const visibleCount = videos.filter(v => v.visible !== false).length;
+    const visibleCount = videos.filter(v => v && v.visible !== false).length;
     const filteredVideos = videos
         .map((v, i) => ({ ...v, originalIndex: i }))
-        .filter(v => v.visible !== false);
+        .filter(v => v && v.visible !== false);
 
     let displayVideos = filteredVideos;
     if (filteredVideos.length === 0 && videos.length > 0) {
-        displayVideos = [{ ...videos[0], originalIndex: 0 }];
+        const validFallback = videos.find(v => v !== null && typeof v === 'object');
+        displayVideos = validFallback ? [{ ...validFallback, originalIndex: 0 }] : [];
     }
 
     // Ensure playingIndex is valid for displayVideos
@@ -391,7 +394,7 @@ export default function TikTokEmbed({
     }, [displayVideos.length, playingIndex]);
 
     // Carousel Logic
-    const visibleVideosString = filteredVideos.map(v => v.visible).join(',');
+    const visibleVideosString = filteredVideos.map(v => v?.visible).join(',');
 
     useEffect(() => {
         const calculatePages = () => {
@@ -479,6 +482,7 @@ export default function TikTokEmbed({
         "@context": "https://schema.org",
         "@type": "ItemList",
         "itemListElement": displayVideos.map((video, idx) => {
+            if (!video) return null;
             const vId = getTikTokVideoId(video.videoUrl);
             return {
                 "@type": "ListItem",
@@ -519,7 +523,7 @@ export default function TikTokEmbed({
                             className={styles.cardsWrapper}
                             style={{ justifyContent: totalPages === 1 ? 'center' : 'start' }}
                         >
-                            {displayVideos.map((item, index) => (
+                            {displayVideos.map((item, index) => item && (
                                 <TikTokCard
                                     key={item.originalIndex}
                                     item={item}

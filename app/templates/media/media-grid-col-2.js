@@ -8,12 +8,15 @@ import { componentDefaults } from "../content/data";
 import { createUpdateHandler } from "../utils/component-helpers";
 
 export default function MediaGridCol2({
-    images = componentDefaults["media-grid-col-2"].images,
+    images: rawImages = componentDefaults["media-grid-col-2"].images,
     onUpdate,
     sectionId,
     fullWidth,
     hasFloatingEffect = componentDefaults["media-grid-col-2"].hasFloatingEffect
 }) {
+    // Sanitize data
+    const images = (rawImages || []).filter(item => item !== null && typeof item === 'object');
+
     const [isVisible, setIsVisible] = useState(false);
     const containerRef = useRef(null);
 
@@ -43,7 +46,7 @@ export default function MediaGridCol2({
 
     // Filter only visible images for the layout
     const visibleImages = images.map((img, i) => ({ ...img, originalIndex: i }))
-        .filter(img => img.visible !== false);
+        .filter(img => img && img.visible !== false);
 
     return (
         <BuilderSection
