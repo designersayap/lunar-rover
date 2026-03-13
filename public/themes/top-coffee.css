@@ -139,7 +139,8 @@
 
     /* Stroke */
     --stroke-default: var(--grey-100);
-    --stroke-typography: transparent;
+    --stroke-typography-title: transparent;
+    --stroke-typography-body: transparent;
 
     /* Button */
     --text--primary-button: var(--base-white);
