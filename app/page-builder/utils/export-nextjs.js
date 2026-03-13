@@ -600,7 +600,7 @@ export async function POST(request) {
             if (!obj) return found;
             if (typeof obj === 'string') {
                 // Check normal paths & blobs (Include TikTok CDN as they expire)
-                if (obj.startsWith('blob:') || obj.match(/\.(png|jpg|jpeg|gif|svg|webp|ico|mp4|webm|ogv|mp3|wav|image)(\?.*)?$/i) || obj.includes('tiktokcdn.com')) {
+                if (obj.startsWith('blob:') || obj.match(/\.(png|jpg|jpeg|gif|svg|webp|ico|mp4|webm|ogv|mp3|wav|ttf|woff|woff2|image)(\?.*)?$/i) || obj.includes('tiktokcdn.com')) {
                     found.push(obj);
 
                     // Track parent video for TikTok thumbnails to enable auto-refresh on 403
@@ -612,7 +612,7 @@ export async function POST(request) {
                 const urlMatch = obj.match(/url\(['"]?([^'")]+)['"]?\)/);
                 if (urlMatch) {
                     const extracted = urlMatch[1];
-                    if (extracted.startsWith('blob:') || extracted.match(/\.(png|jpg|jpeg|gif|svg|webp|ico|mp4|webm|ogv|mp3|wav|image)(\?.*)?$/i) || extracted.includes('tiktokcdn.com')) {
+                    if (extracted.startsWith('blob:') || extracted.match(/\.(png|jpg|jpeg|gif|svg|webp|ico|mp4|webm|ogv|mp3|wav|ttf|woff|woff2|image)(\?.*)?$/i) || extracted.includes('tiktokcdn.com')) {
                         found.push(extracted);
 
                         if (extracted.includes('tiktokcdn.com') && parentVideoUrl) {
@@ -747,8 +747,8 @@ export async function POST(request) {
         }
     }
 
-    // --- 3b. Scan & Bundle Assets in Foundation CSS (e.g. social icons in global.css) ---
-    const cssUrlRegex = /url\(['"]?([^'")]+)['"]?\)/g;
+    // 3b. Scan & Bundle Assets in Foundation CSS (e.g. social icons in global.css)
+    const cssUrlRegex = /url\(\s*['"]?([^'")\s]+)['"]?\s*\)/g;
     const cssMatches = [...foundationCSS.matchAll(cssUrlRegex)];
     // Deduplicate to avoid processing same URL multiple times
     const uniqueCssAssets = new Set(cssMatches.map(m => m[1]));
@@ -770,9 +770,9 @@ export async function POST(request) {
         }
     }
 
-    // Safety fallback: Strip any remaining unbundled /fonts/ or /themes/ URLs from foundationCSS 
+    // Safety fallback: Strip any remaining unbundled /themes/ URLs from foundationCSS
     // to prevent 404 errors in the exported app console.
-    foundationCSS = foundationCSS.replace(/url\(['"]?\/fonts\/[^)]+\)/g, "url('')");
+    // Note: /fonts/ are kept as they are processed by the asset bundler above.
     foundationCSS = foundationCSS.replace(/@import\s+url\(['"]?\/themes\/[^)]+\)[^;]*;/g, "");
 
     // --- 4. Generate Project Structure ---
