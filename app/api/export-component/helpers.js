@@ -534,8 +534,10 @@ const openDialog = (id) => {
     window.dispatchEvent(new CustomEvent('lunar:open-dialog', { detail: { id } }));
     
     // Runtime Fallback: If specific ID fails (e.g. timestamp from old data), try default dialogs
-    if (id && id !== 'dialog-item-list' && id !== 'dialog-accordion') {
+    if (id && id !== 'dialog-item-list' && id !== 'dialog-accordion' && id !== 'dialog-form') {
         window.dispatchEvent(new CustomEvent('lunar:open-dialog', { detail: { id: 'dialog-item-list' } }));
+        window.dispatchEvent(new CustomEvent('lunar:open-dialog', { detail: { id: 'dialog-form' } }));
+        window.dispatchEvent(new CustomEvent('lunar:open-dialog', { detail: { id: 'dialog-accordion' } }));
     }
   }
 };

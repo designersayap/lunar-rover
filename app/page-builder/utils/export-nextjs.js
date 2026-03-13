@@ -1056,19 +1056,21 @@ export default function RootLayout({ children }) {
             Object.keys(newProps).forEach(key => {
                 const val = newProps[key];
 
-                // 1. Strings: Check for Match
-                if (typeof val === 'string') {
+                // 1. Strings or Numbers: Check for Match
+                if (typeof val === 'string' || typeof val === 'number') {
+                    const valStr = String(val);
                     // Check if the value ITSELF is a key in the map (Direct ID match)
-                    if (sectionIdMap.has(val)) {
-                        newProps[key] = sectionIdMap.get(val);
+                    if (sectionIdMap.has(valStr)) {
+                        newProps[key] = sectionIdMap.get(valStr);
                     }
 
-                    // Special: TargetDialogId Logic
-                    if (key.includes('TargetDialogId')) {
-                        let resolvedId = sectionIdMap.get(val);
+                    // Special: targetDialogId Logic (Case-insensitive check)
+                    const lowerKey = key.toLowerCase();
+                    if (lowerKey.includes('targetdialogid')) {
+                        let resolvedId = sectionIdMap.get(valStr);
 
                         // Generic Fallback Logic: If target dialog is not found, find a valid default
-                        if (!resolvedId && val) {
+                        if (!resolvedId && valStr) {
                             // 1. Try to find 'dialog-item-list'
                             if (sectionIdMap.has('dialog-item-list')) {
                                 resolvedId = 'dialog-item-list';
@@ -1088,7 +1090,7 @@ export default function RootLayout({ children }) {
                             }
 
                             if (resolvedId) {
-                                console.warn(`[Export] Remapping missing dialog ID "${val}" to fallback "${resolvedId}"`);
+                                console.warn(`[Export] Remapping missing dialog ID "${valStr}" to fallback "${resolvedId}"`);
                             }
                         }
 
@@ -1097,18 +1099,48 @@ export default function RootLayout({ children }) {
                             newProps[key] = resolvedId;
                         }
 
-                        // Force Link Type unconditionally if we have a target dialog ID
+                        // Force Link Type and update associated props unconditionally if we have a target dialog ID
                         if (newProps[key]) {
-                            const linkTypeKey = key.replace('TargetDialogId', 'LinkType');
-                            const urlKey = key.replace('TargetDialogId', 'Url');
+                            // Helper to find associated keys with matching casing pattern
+                            const updateAssociatedProp = (suffix, newValue) => {
+                                const lowerSuffix = suffix.toLowerCase();
+                                const baseKey = key.replace(/targetdialogid/i, '');
+                                
+                                // 1. Try to update existing key
+                                let found = false;
+                                for (const k of Object.keys(newProps)) {
+                                    const lowerK = k.toLowerCase();
+                                    if (lowerK.startsWith(baseKey.toLowerCase())) {
+                                        const endK = lowerK.slice(baseKey.length);
+                                        if (endK === lowerSuffix) {
+                                            newProps[k] = newValue;
+                                            found = true;
+                                        } else if ((lowerSuffix === 'url' || lowerSuffix === 'href') && (endK === 'url' || endK === 'href')) {
+                                            newProps[k] = newValue;
+                                            // Still consider 'found' false for the primary suffix so we inject it if missing
+                                        }
+                                    }
+                                }
 
-                            // Always force dialog type if we have a target dialog ID
-                            newProps[linkTypeKey] = 'dialog';
+                                if (found) return;
 
-                            // Clear URL to prevent confusion
-                            if (newProps[urlKey] === '#' || !newProps[urlKey]) {
-                                newProps[urlKey] = '';
-                            }
+                                // 2. If not found, only inject LinkType (essential) OR root props (unprefixed)
+                                if (lowerSuffix !== 'linktype' && baseKey) {
+                                    return;
+                                }
+
+                                // Use casing of baseKey for the suffix
+                                const isBaseCapitalized = baseKey && baseKey.charAt(0) === baseKey.charAt(0).toUpperCase();
+                                const capitalizedSuffix = suffix.charAt(0).toUpperCase() + suffix.slice(1);
+                                const lowercaseSuffix = suffix.charAt(0).toLowerCase() + suffix.slice(1);
+                                
+                                const newKey = baseKey + (isBaseCapitalized ? capitalizedSuffix : lowercaseSuffix);
+                                newProps[newKey] = newValue;
+                            };
+
+                            updateAssociatedProp('LinkType', 'dialog');
+                            updateAssociatedProp('Url', '#');
+                            updateAssociatedProp('href', '#');
                         }
                     }
                 }
