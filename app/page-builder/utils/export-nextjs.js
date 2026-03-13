@@ -354,24 +354,31 @@ export async function POST(request) {
 
             // B. Fetch CSS Module (Optional)
             const cssPath = filePath.replace('.js', '.module.css');
-            try {
-                const cssRes = await fetch('/api/export-component', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ filePath: cssPath })
-                });
-                if (cssRes.ok) {
-                    const { content: cssContent } = await cssRes.json();
-                    if (cssContent) {
-                        componentsFolder.file(filename.replace('.js', '.module.css'), cssContent);
-                        previewMap.set(`components/${filename.replace('.js', '.module.css')}`, { path: `components/${filename.replace('.js', '.module.css')}`, content: cssContent });
+            if (cssPath.endsWith('.module.css') && !processedFiles.has(cssPath)) {
+                try {
+                    const cssRes = await fetch('/api/export-component', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ filePath: cssPath })
+                    });
+                    if (cssRes.ok) {
+                        const { content: cssContent } = await cssRes.json();
+                        if (cssContent) {
+                            processedFiles.add(cssPath);
+                            componentsFolder.file(filename.replace('.js', '.module.css'), cssContent);
+                            previewMap.set(`components/${filename.replace('.js', '.module.css')}`, { path: `components/${filename.replace('.js', '.module.css')}`, content: cssContent });
+                        }
                     }
-                }
-            } catch { /* CSS is optional */ }
+                } catch { /* CSS is optional */ }
+            }
 
             // C. Find and Process Dependencies (Recursive) - Match standard imports
-            const importRegex = /(?:import\s+([\w{},*\s]+)\s+from\s+['"]([^'"]+)['"]|import\(['"]([^'"]+)['"]\))/g;
+            if (!content || typeof content !== 'string') {
+                console.warn(`[Export] Skipping dependency analysis for ${filePath}: invalid content.`);
+                return;
+            }
 
+            const importRegex = /(?:import\s+([\w{},*\s]+)\s+from\s+['"]([^'"]+)['"]|import\(['"]([^'"]+)['"]\))/g;
             const matches = [...content.matchAll(importRegex)];
 
             for (const match of matches) {
@@ -437,11 +444,20 @@ export async function POST(request) {
                 const newImportName = isCssModule ? depFilename : depFilename.replace('.js', '');
                 const newImportPath = `./${newImportName}`;
 
-                content = content.replace(`from "${importPath}"`, `from "${newImportPath}"`);
-                content = content.replace(`from '${importPath}'`, `from '${newImportPath}'`);
-                // Fix: Also rewrite dynamic imports
-                content = content.replace(`import("${importPath}")`, `import("${newImportPath}")`);
-                content = content.replace(`import('${importPath}')`, `import('${newImportPath}')`);
+                // Robust replacement using Regex to handle variations in whitespace/quotes
+                const escapedImportPath = importPath.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+
+                // 1. Static Imports: from "PATH"
+                content = content.replace(
+                    new RegExp(`from\\s*['"]${escapedImportPath}['"]`, 'g'),
+                    `from "${newImportPath}"`
+                );
+
+                // 2. Dynamic Imports: import("PATH")
+                content = content.replace(
+                    new RegExp(`import\\s*\\(\\s*['"]${escapedImportPath}['"]\\s*\\)`, 'g'),
+                    `import("${newImportPath}")`
+                );
             }
 
             // Update file in zip with rewritten content
