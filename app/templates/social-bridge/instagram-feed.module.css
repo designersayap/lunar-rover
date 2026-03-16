@@ -122,7 +122,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 45%;
+    height: 60%;
     /* taller for smoother transition */
     z-index: -1;
     backdrop-filter: blur(12px);

@@ -273,7 +273,7 @@ export default function InstagramFeed({
                                                 />
                                                 <BuilderText
                                                     tagName="div"
-                                                    className={`h5 ${styles.title} truncate-2-lines`}
+                                                    className={`body-regular ${styles.title} truncate-2-lines`}
                                                     content={item.title}
                                                     onChange={(val) => updateItem(index, "title", val)}
                                                     sectionId={sectionId}
