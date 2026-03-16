@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
-    ChevronDoubleRightIcon,
-    ChevronDoubleLeftIcon,
+    Bars3Icon,
     SwatchIcon,
     RocketLaunchIcon,
     ChevronDownIcon,
@@ -67,31 +66,33 @@ export default function TopBar({
 
     return (
         <div className={`${styles.topBar} z-layout-topbar`} data-builder-ui="true">
-            {/* ... left part ... */}
-            <div className={styles.topBarLeft} onClick={handleReset} style={{ cursor: 'pointer' }}>
-                <Image
-                    src="https://space.lunaaar.site/assets-lunar/logo-lunar-white.svg"
-                    alt="Lunar Logo"
-                    width={24}
-                    height={24}
-                />
-                <h1 className={`${styles.logo}`}>Lunar</h1>
-            </div>
-            <div className={styles.topBarRight}>
-                {/* ... other buttons ... */}
+            {/* Left Part: Toggle and Logo */}
+            <div className={styles.topBarLeft}>
                 <Tooltip content="Toggle Sidebar" position="bottom">
                     <button
                         onClick={toggleSidebar}
                         className={`${styles.btn} ${styles.btnGhost} ${styles.btnIcon}`}
+                        style={{ marginRight: 'var(--pb-space-sm)' }}
                     >
-                        {isSidebarVisible ? (
-                            <ChevronDoubleRightIcon className={styles.iconWhite} />
-                        ) : (
-                            <ChevronDoubleLeftIcon className={styles.iconWhite} />
-                        )}
+                        <Bars3Icon className={styles.iconWhite} />
                     </button>
                 </Tooltip>
 
+                <div
+                    onClick={handleReset}
+                    style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 'var(--pb-space-xs)' }}
+                >
+                    <Image
+                        src="https://space.lunaaar.site/assets-lunar/logo-lunar-white.svg"
+                        alt="Lunar Logo"
+                        width={24}
+                        height={24}
+                    />
+                    <h1 className={`${styles.logo}`}>Lunar</h1>
+                </div>
+            </div>
+
+            <div className={styles.topBarRight}>
                 <Tooltip content="Notifications" position="bottom">
                     <button
                         className={`${styles.btn} ${styles.btnGhost} ${styles.btnIcon} ${isNotificationOpen ? styles.btnGhostActive : ''}`}
@@ -117,7 +118,9 @@ export default function TopBar({
                         className={`${styles.btn} ${styles.btnGhost} ${styles.btnIcon}`}
                         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        <SparklesIcon className={styles.iconWhite} />
+                        <span style={{ color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <SparklesIcon className={styles.iconWhite} />
+                        </span>
                     </a>
                 </Tooltip>
 
@@ -137,6 +140,7 @@ export default function TopBar({
                         </button>
                     </Tooltip>
                 )}
+
                 <Tooltip content={selectedThemeName} position="bottom">
                     <button
                         className={`${styles.btn} ${styles.btnSecondary} ${styles.topBarButtonWide} ${isThemePickerOpen ? styles.btnSecondaryActive : ''}`}
@@ -152,6 +156,7 @@ export default function TopBar({
                         <span className={`${styles.topBarButtonText} truncate-1-line`}>{selectedThemeName}</span>
                     </button>
                 </Tooltip>
+
                 <div className={styles.splitButtonContainer}>
                     <Tooltip content="Quick Export (ZIP)" position="bottom">
                         <button

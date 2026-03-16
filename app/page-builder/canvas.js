@@ -24,6 +24,18 @@ export default function Canvas({
 
     // Indicator visibility logic
     const [showIndicator, setShowIndicator] = useState(false);
+    
+    // Bottom margin visibility logic
+    const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+    const scrollContainerRef = useRef(null);
+
+    const checkScroll = () => {
+        if (scrollContainerRef.current) {
+            const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current;
+            // Allow a 2px threshold for rounding errors or sub-pixel positioning
+            setIsScrolledToBottom(scrollHeight - scrollTop - clientHeight <= 2);
+        }
+    };
 
     const deviceName = useMemo(() => {
         if (canvasWidth === '100%') return 'Desktop';
@@ -155,11 +167,29 @@ export default function Canvas({
         }
     }, [activeElementId, selectedElementIds, displayComponents]);
 
+    // Check scroll when components, selection, or width changes
+    useEffect(() => {
+        checkScroll();
+        // Also observe resize to recheck if content fits without scrolling
+        const observer = new ResizeObserver(checkScroll);
+        if (scrollContainerRef.current) {
+            observer.observe(scrollContainerRef.current);
+            if (scrollContainerRef.current.firstElementChild) {
+                observer.observe(scrollContainerRef.current.firstElementChild);
+            }
+        }
+        return () => observer.disconnect();
+    }, [displayComponents, canvasWidth]);
+
+    const handleScroll = (e) => {
+        checkScroll();
+    };
+
     // Default to desktop style
-    const canvasClassName = `${styles.canvas} ${styles.canvasDesktop}`;
+    const canvasClassName = `${styles.canvas} ${styles.canvasDesktop} ${isScrolledToBottom ? styles.canvasScrolledBottom : ''}`;
 
     return (
-        <div id="canvas-scroll-container" className={canvasClassName} onClick={() => setActiveElementId(null)}>
+        <div className={canvasClassName} onClick={() => setActiveElementId(null)}>
             <CanvasContext.Provider value={{ canvasWidth }}>
                 {/* Canvas Content */}
                 <div
@@ -169,7 +199,8 @@ export default function Canvas({
                     style={{
                         width: canvasWidth,
                         transition: isResizing ? 'none' : 'width 0.3s ease, max-width 0.3s ease',
-                        flex: 'none'
+                        flex: 'none',
+                        position: 'relative'
                     }}
                 >
                     {/* Resize Handle */}
@@ -182,85 +213,94 @@ export default function Canvas({
                         <div className={styles.resizeHandleBar} />
                     </div>
 
-                    <div id="canvas-background-root" className={styles.canvasBackgroundRoot} />
-                    {displayComponents.length === 0 ? (
-                        <div className={styles.emptyState}>
-                            <div className={styles.emptyStateText}>
-                                <div className={styles.canvasWrapper}>
-                                    <Image
-                                        src="https://space.lunaaar.site/assets-lunar/empty-state.svg"
-                                        alt="Empty state illustration"
-                                        fill
-                                        priority
-                                        style={{ objectFit: 'contain' }}
-                                    />
-                                </div>
-                                <p className={`body-regular ${styles.canvasText}`}>
-                                    Select components from the sidebar to build your template
-                                </p>
-                            </div>
-                        </div>
-                    ) : (
-                        <div data-canvas="true">
-                            {(() => {
-                                let hasSeenStacked = false;
-
-                                return displayComponents.map((item) => {
-                                    const Component = item.component || Object.values(componentLibrary).flat().find(c => c.id === item.id)?.component;
-                                    const stickyStyle = stickyStyles[item.uniqueId] || {};
-                                    const isSelected = selectedElementIds.includes(item.uniqueId);
-
-                                    const isStacked = item.props?.scrollEffect === 'stacked';
-
-                                    // This prevents the stacked item (which is stuck at top) from showing through transparent sections.
-                                    let forcedBgStyle = {};
-
-
-                                    if (hasSeenStacked && !isStacked) {
-                                        forcedBgStyle = { backgroundColor: 'var(--pb-white)', position: 'relative', zIndex: 1 };
-                                    }
-
-                                    if (isStacked) {
-                                        hasSeenStacked = true;
-                                    }
-
-                                    return (
-                                        <div
-                                            key={item.uniqueId}
-                                            className={`${styles.componentWrapper} ${isSelected ? styles.activeWrapper : ''} ${isSelected ? styles.componentSelected : ''}`}
-                                            style={{
-                                                ...forcedBgStyle,
-                                                ...stickyStyle,
-                                                backgroundColor: isSelected ? undefined : (forcedBgStyle.backgroundColor || "transparent"),
-                                            }}
-                                            ref={(el) => {
-                                                setRef(item.uniqueId, el);
-                                                if (el) scrollRefs.current.set(item.uniqueId, el);
-                                                else scrollRefs.current.delete(item.uniqueId);
-                                            }}
-                                            onClickCapture={(e) => {
-                                                if (e.metaKey || e.ctrlKey) {
-                                                    e.preventDefault();
-                                                    e.stopPropagation();
-                                                    toggleElementSelection(item.uniqueId, true);
-                                                }
-                                            }}
-                                        >
-                                            <Component
-                                                {...item.props}
-                                                sectionId={item.sectionId}
-                                                uniqueId={item.uniqueId}
-                                                brandName={brandName}
-                                                pageTitle={pageTitle}
-                                                onUpdate={(newProps) => updateComponent(item.uniqueId, newProps)}
-                                                updateComponent={updateComponent}
+                    <div 
+                        id="canvas-scroll-container" 
+                        className={styles.canvasScroll}
+                        ref={scrollContainerRef}
+                        onScroll={handleScroll}
+                    >
+                        <div className={styles.canvasContent}>
+                            <div id="canvas-background-root" className={styles.canvasBackgroundRoot} />
+                            {displayComponents.length === 0 ? (
+                                <div className={styles.emptyState}>
+                                    <div className={styles.emptyStateText}>
+                                        <div className={styles.canvasWrapper}>
+                                            <Image
+                                                src="https://space.lunaaar.site/assets-lunar/empty-state.svg"
+                                                alt="Empty state illustration"
+                                                fill
+                                                priority
+                                                style={{ objectFit: 'contain' }}
                                             />
                                         </div>
-                                    );
-                                });
-                            })()}
+                                        <p className={`body-regular ${styles.canvasText}`}>
+                                            Select components from the sidebar to build your template
+                                        </p>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div data-canvas="true">
+                                    {(() => {
+                                        let hasSeenStacked = false;
+
+                                        return displayComponents.map((item) => {
+                                            const Component = item.component || Object.values(componentLibrary).flat().find(c => c.id === item.id)?.component;
+                                            const stickyStyle = stickyStyles[item.uniqueId] || {};
+                                            const isSelected = selectedElementIds.includes(item.uniqueId);
+
+                                            const isStacked = item.props?.scrollEffect === 'stacked';
+
+                                            // This prevents the stacked item (which is stuck at top) from showing through transparent sections.
+                                            let forcedBgStyle = {};
+
+
+                                            if (hasSeenStacked && !isStacked) {
+                                                forcedBgStyle = { backgroundColor: 'var(--pb-white)', position: 'relative', zIndex: 1 };
+                                            }
+
+                                            if (isStacked) {
+                                                hasSeenStacked = true;
+                                            }
+
+                                            return (
+                                                <div
+                                                    key={item.uniqueId}
+                                                    className={`${styles.componentWrapper} ${isSelected ? styles.activeWrapper : ''} ${isSelected ? styles.componentSelected : ''}`}
+                                                    style={{
+                                                        ...forcedBgStyle,
+                                                        ...stickyStyle,
+                                                        backgroundColor: isSelected ? undefined : (forcedBgStyle.backgroundColor || "transparent"),
+                                                    }}
+                                                    ref={(el) => {
+                                                        setRef(item.uniqueId, el);
+                                                        if (el) scrollRefs.current.set(item.uniqueId, el);
+                                                        else scrollRefs.current.delete(item.uniqueId);
+                                                    }}
+                                                    onClickCapture={(e) => {
+                                                        if (e.metaKey || e.ctrlKey) {
+                                                            e.preventDefault();
+                                                            e.stopPropagation();
+                                                            toggleElementSelection(item.uniqueId, true);
+                                                        }
+                                                    }}
+                                                >
+                                                    <Component
+                                                        {...item.props}
+                                                        sectionId={item.sectionId}
+                                                        uniqueId={item.uniqueId}
+                                                        brandName={brandName}
+                                                        pageTitle={pageTitle}
+                                                        onUpdate={(newProps) => updateComponent(item.uniqueId, newProps)}
+                                                        updateComponent={updateComponent}
+                                                    />
+                                                </div>
+                                            );
+                                        });
+                                    })()}
+                                </div>
+                            )}
                         </div>
-                    )}
+                    </div>
                     {/* Resolution Indicator */}
                     {showIndicator && (
                         <div className={styles.resolutionIndicator}>

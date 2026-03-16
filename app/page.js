@@ -146,6 +146,33 @@ export default function TemplateGeneratorPage() {
 
         {/* Main Content */}
         <div className={styles.mainContent}>
+          <Sidebar
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            analyticsData={analyticsData}
+            setAnalyticsData={setAnalyticsData}
+            selectedComponents={selectedComponents}
+            updateSectionId={updateSectionId}
+            updateComponent={updateComponent}
+            removeComponent={removeComponent}
+            activeElementId={activeElementId}
+            setActiveElementId={setActiveElementId}
+            onAddClick={handleAddClick}
+            isAddPopoverOpen={activePopoverId === 'components'}
+            handleDragStart={handleDragStart}
+            handleDragOver={handleDragOver}
+            handleDrop={handleDrop}
+            handleDragEnd={handleDragEnd}
+            draggedIndex={draggedIndex}
+            dropTargetIndex={dropTargetIndex}
+            onGroup={handleGroup}
+            onUngroup={handleUngroup}
+            selectedElementIds={selectedElementIds}
+
+            toggleElementSelection={toggleElementSelection}
+            className={`${styles.desktopSidebar} ${!isSidebarVisible ? styles.sidebarCollapsed : ''}`}
+          />
+
           <Canvas
             selectedComponents={selectedComponents}
             handleDragStart={handleDragStart}
@@ -158,37 +185,6 @@ export default function TemplateGeneratorPage() {
             brandName={brandName}
             pageTitle={pageTitle}
           />
-
-
-          {isSidebarVisible && (
-            <Sidebar
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-              analyticsData={analyticsData}
-              setAnalyticsData={setAnalyticsData}
-              selectedComponents={selectedComponents}
-              updateSectionId={updateSectionId}
-              updateComponent={updateComponent}
-              removeComponent={removeComponent}
-              activeElementId={activeElementId}
-              setActiveElementId={setActiveElementId}
-              onAddClick={handleAddClick}
-              isAddPopoverOpen={activePopoverId === 'components'}
-              handleDragStart={handleDragStart}
-              handleDragOver={handleDragOver}
-              handleDrop={handleDrop}
-              handleDragEnd={handleDragEnd}
-              draggedIndex={draggedIndex}
-              dropTargetIndex={dropTargetIndex}
-              onGroup={handleGroup}
-              onUngroup={handleUngroup}
-              selectedElementIds={selectedElementIds}
-
-              toggleElementSelection={toggleElementSelection}
-              className={styles.desktopSidebar}
-            />
-
-          )}
         </div>
 
         {/* Mobile/Tablet Bottom Sheet Sidebar */}

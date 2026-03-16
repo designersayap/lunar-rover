@@ -524,6 +524,7 @@ export default function Sidebar({
     return (
         <div className={`${styles.sidebar} ${className}`} data-builder-ui="true">
             <div>
+                {/* Triggering HMR for CSS Module */}
                 <div className={styles.tabs}>
                     <Tooltip content="Layers" position="bottom">
                         <button
