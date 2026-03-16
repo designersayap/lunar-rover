@@ -262,7 +262,7 @@ export default function InstagramFeed({
 
                                         <div className={styles.overlay}>
                                             <div className={styles.blurLayer} />
-                                            <PlayIcon className={styles.playIcon} />
+                                            <PlayIcon className={`${styles.playIcon} shadow-md`} />
                                             <div className={styles.content}>
                                                 <BuilderText
                                                     tagName="div"

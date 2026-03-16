@@ -60,6 +60,12 @@
     scroll-snap-align: start;
     padding: var(--padding-sm);
     min-width: 0;
+    transition: transform 0.3s ease;
+}
+
+.itemWrapper:hover {
+    transform: scale(1.05);
+    z-index: 10;
 }
 
 @container (max-width: 400px) {
