@@ -20,24 +20,26 @@
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     padding-bottom: var(--padding-md);
-    will-change: transform;
 }
 
 .cardsWrapper.marquee {
     display: flex;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
     grid-auto-flow: unset;
     grid-auto-columns: unset;
     scroll-snap-type: none;
-    overflow: visible;
+    overflow: hidden;
     padding-bottom: 0;
     gap: 0;
     width: max-content;
     animation: marquee var(--marquee-duration, 120s) linear infinite;
+    contain: paint;
 }
 
 .cardsWrapper.marquee .itemWrapper {
-    flex: 0 0 340px;
-    width: 340px;
+    flex: 0 0 340px !important;
+    width: 340px !important;
 }
 
 .cardsWrapper.marquee[data-paused="true"] {
@@ -130,7 +132,6 @@
     background: rgba(0, 0, 0, 0.8);
     /* Added backdrop tint as requested */
     transform: translateZ(0);
-    will-change: transform, backdrop-filter;
     /* silky smooth multi-stop mask */
     mask-image: linear-gradient(to top,
             black 0%,

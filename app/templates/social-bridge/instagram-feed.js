@@ -191,7 +191,7 @@ export default function InstagramFeed({
     let repeatCount = 1;
 
     if (isAutoScroll && autoScrollEffect === 'marquee' && filteredItems.length > 0) {
-        repeatCount = Math.max(3, Math.ceil(24 / filteredItems.length));
+        repeatCount = Math.max(3, Math.ceil(16 / filteredItems.length));
         for (let i = 0; i < repeatCount; i++) {
             displayItems.push(...filteredItems);
         }

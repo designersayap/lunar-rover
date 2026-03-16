@@ -204,8 +204,8 @@ export default function TestimonyLandscape({
     }));
 
     if (isAutoScroll && autoScrollEffect === 'marquee' && mappedTestimonies.length > 0) {
-        // Aim for at least 15 items total (landscape cards are wider so we need enough buffer)
-        repeatCount = Math.max(3, Math.ceil(15 / mappedTestimonies.length));
+        // Aim for at least 10 items total (landscape cards are wider so we need enough buffer)
+        repeatCount = Math.max(3, Math.ceil(10 / mappedTestimonies.length));
         for (let i = 0; i < repeatCount; i++) {
             displayItems.push(...mappedTestimonies);
         }

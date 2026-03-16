@@ -204,8 +204,8 @@ export default function TestimonyPortrait({
     }));
 
     if (isAutoScroll && autoScrollEffect === 'marquee' && mappedTestimonies.length > 0) {
-        // Aim for at least 24 items total to ensure the screen is always filled (matching landscape's wide buffer)
-        repeatCount = Math.max(3, Math.ceil(24 / mappedTestimonies.length));
+        // Aim for at least 16 items total to ensure the screen is always filled (matching landscape's wide buffer)
+        repeatCount = Math.max(3, Math.ceil(16 / mappedTestimonies.length));
         for (let i = 0; i < repeatCount; i++) {
             displayItems.push(...mappedTestimonies);
         }
