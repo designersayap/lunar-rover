@@ -52,5 +52,7 @@
 
     .content {
         order: 1;
+        align-items: center;
+        text-align: center;
     }
 }
