@@ -260,11 +260,8 @@ export default function InstagramFeed({
                                             onTargetDialogIdChange={(val) => updateItem(index, "targetDialogId", val)}
                                         />
 
-                                        <div className={styles.blurLayer} />
-
-                                        <PlayIcon className={styles.playIcon} />
-
                                         <div className={styles.overlay}>
+                                            <div className={styles.blurLayer} />
                                             <div className={styles.content}>
                                                 <BuilderText
                                                     tagName="div"

@@ -20,6 +20,7 @@
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     padding-bottom: var(--padding-md);
+    will-change: transform;
 }
 
 .cardsWrapper.marquee {
@@ -97,6 +98,8 @@
     box-shadow: var(--shadow--md);
     background: var(--base-black);
     isolation: isolate;
+    transform: translateZ(0);
+    backface-visibility: hidden;
     /* Create a clean stacking context for the glass effect */
 }
 
@@ -121,11 +124,12 @@
     right: 0;
     height: 45%;
     /* taller for smoother transition */
-    z-index: 2;
+    z-index: -1;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    background: rgba(0, 0, 0, 0.1); /* Subtle tint prevents black-box fallback */
-    transform: translate3d(0, 0, 0); /* Force hardware acceleration */
+    background: transparent;
+    transform: translateZ(0);
+    will-change: transform, backdrop-filter;
     /* silky smooth multi-stop mask */
     mask-image: linear-gradient(to top,
             black 0%,
@@ -154,6 +158,7 @@
     justify-content: flex-end;
     /* Keep content at bottom */
     pointer-events: none;
+    isolation: isolate;
 }
 
 .content {
@@ -169,18 +174,20 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) translateZ(10px);
+    /* Extra push forward */
     width: 3rem;
     height: 3rem;
     color: var(--base-white);
-    z-index: 5;
+    z-index: 10;
     opacity: 0.9;
     filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
     pointer-events: none;
 }
 
 .hashtag {
-    color: var(--content-brand--brand);
+    color: var(--base-white);
+    opacity: 0.8;
     text-transform: uppercase;
 }
 
