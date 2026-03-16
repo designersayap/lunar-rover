@@ -1146,6 +1146,7 @@ export default function RootLayout({ children }) {
 
     // Generate robots.js (Dynamic Metadata)
     const robotsJs = `export const runtime = 'edge';
+export const dynamic = 'force-static'; // ✅ Compatible with output: 'export'
 
 export default function robots() {
   return {
