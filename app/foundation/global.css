@@ -3,6 +3,13 @@
   --size-icon-sm: 16px;
   --size-icon-md: 20px;
   --size-icon-lg: 24px;
+
+  /* Default Shadow Variables (Fallback for themes) */
+  --shadow-x-md: 0px;
+  --shadow-y-md: 4px;
+  --shadow-blur-md: 12px;
+  --shadow-spread-md: -2px;
+  --shadow-color-md: rgba(0, 0, 0, 0.15);
 }
 
 html {
