@@ -124,7 +124,8 @@
     z-index: 2;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.1); /* Subtle tint prevents black-box fallback */
+    transform: translate3d(0, 0, 0); /* Force hardware acceleration */
     /* silky smooth multi-stop mask */
     mask-image: linear-gradient(to top,
             black 0%,
@@ -145,8 +146,8 @@
     /* Full card coverage */
     z-index: 3;
     padding: var(--padding-md);
-    background: rgba(0, 0, 0, 0.05);
-    /* 15% solid dark overlay */
+    background: rgba(0, 0, 0, 0.3);
+    /* 30% solid dark overlay tint */
     color: var(--content-neutral--body-invert);
     display: flex;
     flex-direction: column;
@@ -169,19 +170,13 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 3rem;
+    height: 3rem;
     color: var(--base-white);
     z-index: 5;
-    opacity: 0.85;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    padding: 0.75rem;
-    box-shadow: var(--shadow--md);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    opacity: 0.9;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
     pointer-events: none;
-    transition: transform 0.3s ease;
 }
 
 .hashtag {

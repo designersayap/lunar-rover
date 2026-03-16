@@ -69,7 +69,7 @@ export default function FeatureImageRight({
                         {subtitleVisible && (
                             <BuilderText
                                 tagName="div"
-                                className={`subheader-h2 ${styles.description}`}
+                                className={`subheader-h1 ${styles.description}`}
                                 style={{ color: "var(--content-neutral--body)", marginBottom: "var(--gap-md)" }}
                                 content={subtitle}
                                 onChange={update('subtitle')}

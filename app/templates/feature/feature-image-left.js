@@ -91,7 +91,7 @@ export default function FeatureImageLeft({
                         {subtitleVisible && (
                             <BuilderText
                                 tagName="div"
-                                className="subheader-h2"
+                                className="subheader-h1"
                                 style={{ color: "var(--content-neutral--body)", marginBottom: "var(--gap-md)" }}
                                 content={subtitle}
                                 onChange={update('subtitle')}

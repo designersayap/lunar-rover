@@ -308,7 +308,7 @@ export default function TestimonyLandscape({
 
                                             <BuilderText
                                                 tagName="div"
-                                                className={`caption-regular ${styles.role}`}
+                                                className={`body-regular ${styles.role}`}
                                                 content={item.role || ""}
                                                 onChange={(val) => updateTestimony(originalIndex, "role", val)}
                                                 sectionId={sectionId}
@@ -317,7 +317,7 @@ export default function TestimonyLandscape({
 
                                             <BuilderText
                                                 tagName="div"
-                                                className={`caption-regular truncate-3-lines ${styles.description}`}
+                                                className={`body-regular truncate-3-lines ${styles.description}`}
                                                 content={item.description || ""}
                                                 onChange={(val) => updateTestimony(originalIndex, "description", val)}
                                                 sectionId={sectionId}
