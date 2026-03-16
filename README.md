@@ -1,115 +1,96 @@
-# Lunar: Page Builder & Template Generator
+<div align="center">
+  <h1>🌑 Lunar Page Builder</h1>
+  <p><strong>A Next.js 16 Visual Page Builder and Component Engine optimized for Cloudflare Edge.</strong></p>
+  
+  <p>
+    <a href="#-features">Features</a> •
+    <a href="#-getting-started">Getting Started</a> •
+    <a href="#-architecture">Architecture</a> •
+    <a href="#-component-guidelines">Components</a>
+  </p>
+</div>
 
-A powerful **Visual Page Builder** built with **Next.js 16**, designed to create, stage, and export production-ready landing pages. Optimized for **Cloudflare Pages** and **Edge Runtime**.
+<br />
 
-## 🚀 Key Features
+Lunar is a powerful, drag-and-drop visual page builder designed to create, stage, and export production-ready landing pages. It runs entirely on the **Edge Runtime** to ensure maximum performance, low latency, and native compatibility with **Cloudflare Pages**.
 
-- **Visual Editor**: Drag-and-drop canvas with inline text editing and real-time property updates.
-- **Cloudflare Edge Optimized**: Runs entirely on the Edge Runtime for maximum performance and low latency.
-- **Component Library**: A curated set of high-quality UI blocks (Headers, Heroes, Features, Testimonials).
-- **Theming Engine**: Instant theme switching (`Krim Ekonomi`, `Milku`, etc.) via CSS variable swaps.
-- **Staging Environment**: Generate live preview links (`/staging/[name]`) to share your work-in-progress.
-- **Production Export**: Export your page as a standalone Next.js project zip file, clean and ready to deploy.
+## ✨ Features
 
-## ✨ Latest Updates (v1.3 - Cloudflare & Refactoring)
+- **🎨 Visual Drag-and-Drop Editor**: Build complex pages using an intuitive canvas with inline text editing and real-time property updates.
+- **⚡ Edge Optimized**: Fully optimized for `workerd` (Cloudflare Workers) runtime. Node.js specific APIs have been replaced with standard web equivalents.
+- **🧱 Component Library**: Comes pre-loaded with high-quality, customizable UI blocks including Headers, Heroes, Features, and Testimonials.
+- **🌗 Theming Engine**: Switch design systems instantly via CSS variable overriding.
+- **🔗 Staging Environments**: Easily generate live preview links (`/staging/[name]`) to share work-in-progress.
+- **📦 Production Exports**: Export your completed page as a standalone, clean Next.js project zip file — completely decoupled from the editor and ready to deploy anywhere.
 
-We've modernized the architecture for the Edge:
-- **Cloudflare Compatibility**: Fully optimized for `workerd` (Cloudflare Workers) runtime. Node.js specific APIs have been replaced with web-standard equivalents.
-- **Custom S3 Client**: A lightweight, Edge-compatible S3 client (`app/lib/s3-manual.js`) replaces heavy AWS SDKs for faster uploads.
-- **Clean Architecture**: Refactored `page-builder` components for better organization (`popover-*.js` convention).
+## 🚀 Getting Started
 
-## 🛠️ Getting Started
+### Prerequisites
+Make sure you have Node.js and npm installed on your machine.
 
 ### Installation
 
+Clone the repository and install the dependencies:
+
 ```bash
+git clone git@github.com:designersayap/lunar.git
+cd lunar
 npm install
 ```
 
-### Development
+### Local Development
 
-Run the development server:
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) in your browser to access the Lunar builder interface.
 
-### Build for Cloudflare Pages
+### Cloudflare Pages Build
 
-To build the application for the Edge Runtime:
+To compile the application for the Cloudflare Edge Runtime, run the following:
 
 ```bash
 npm run pages:build
 ```
+This utilizes `@cloudflare/next-on-pages` to generate a lightweight `_worker.js` output.
 
-This uses `@cloudflare/next-on-pages` to generate the `_worker.js` output.
+## 📁 Architecture Overview
 
-## 📁 Project Architecture
-
-The project is strictly organized to separate the **Builder Core** from the **Content**.
+Lunar is strictly organized to separate the **Builder Application Logic** from the **Content/Components** being built.
 
 ```text
 lunar/
 ├── app/
-│   ├── foundation/               # 🎨 Design System (The "Truth")
-│   │   ├── tokens.css            # Semantic design tokens (Colors, Spacing)
-│   │   ├── global.css            # Base typography & UI utilities
-│   │   └── ...
-│   │
-│   ├── page-builder/             # ⚙️ The Application Core
-│   │   ├── content/              # Sidebar Configuration
-│   │   ├── utils/                # Logic (Export, Staging, Drag & Drop)
-│   │   ├── canvas.js             # The main editor workspace
-│   │   ├── popover-components.js # Component picker
-│   │   ├── popover-staging.js    # Staging deployment UI
-│   │   ├── popover-theme-picker.js # Theme switcher
-│   │   └── ...
-│   │
-│   ├── templates/                # 🧱 The Components (Building Blocks)
-│   │   ├── individual files...   # Actual component implementations
-│   │   └── ...
-│   │
-│   ├── api/                      # Backend routes (Edge Compatible)
-│   │   ├── uat-preview/          # S3 Uploads (Manual Client)
-│   │   └── ...
-│   │
-│   └── lib/
-│       └── s3-manual.js          # Lightweight S3 Client for Edge
-│
+│   ├── foundation/               # 🎨 Design Tokens & UI Utilities (global.css, tokens.css)
+│   ├── page-builder/             # ⚙️ The core application engine (Canvas, drag-and-drop, UI panels)
+│   ├── templates/                # 🧱 The Building Blocks (Reusable UI components)
+│   ├── api/                      # Backend Edge API routes (Exports, UAT previews)
+│   └── lib/                      # Edge-compatible utilities (e.g., custom S3 Client)
 ├── public/
 │   └── themes/                   # 🌗 CSS Theme Definitions
-└── ...
 ```
 
-## 🧩 Creating Components
+## 🧩 Component Guidelines
 
-We use a specific architecture to ensure components work in the Builder, Staging, and Export environments.
+To ensure components function seamlessly inside the Builder, the Staging environment, and the final Exported project, Lunar enforces a specific structural component architecture.
 
-> **Read the detailed guide:** [Component Guidelines](app/templates/component-guidelines.md)
+**Please read the detailed developer guide here:** [Component Guidelines](app/templates/component-guidelines.md)
 
 ### Core Primitives
-Do not use standard HTML elements for editable content. Use our "Builder" primitives:
+When building new blocks, do **not** use standard HTML elements for editable content. Rely on Lunar's core Builder primitives:
 
-- **`BuilderText`**: For editable headings, paragraphs, and spans. Supports bolding (`Cmd+B`) and prevents double-escaping.
-- **`BuilderButton`**: For buttons and links. Handles variants (`primary`, `ghost`, etc.) and interactions (Dialog triggers).
-- **`BuilderImage`**: For images. Supports uploading, replacement, and linking.
-
-## ⚠️ Known Issues / Warnings
-
-You may see the following warnings during development or build. These are known and safe to ignore:
-
-1.  **"The 'middleware' file convention is deprecated. Please use 'proxy' instead."**
-    -   *Reason*: Next.js 16 recommends `proxy.js` (Node.js runtime), but Cloudflare Pages requires the Edge Runtime. We must stick with `middleware.js` to remain compatible with the Edge.
-2.  **`baseline-browser-mapping` is old**
-    -   *Reason*: This is a false positive from the upstream library. We are using the absolute latest version.
+- **`BuilderText`**: Handles editable headings, paragraphs, and spans. Supports text formatting (e.g., `Cmd+B` for bold) and prevents double-escaping vulnerabilities.
+- **`BuilderButton`**: Standardizes interactive elements (buttons, links). Manages visual variants (`primary`, `ghost`) and onClick triggers (like Dialogs).
+- **`BuilderImage`**: A wrapper for images that supports drag-and-drop uploading, image replacement, and standard hyperlinking.
 
 ## 💻 Tech Stack
 
--   **Next.js 16** (App Router)
--   **React 19**
--   **Cloudflare Pages** (Hosting & Edge Runtime)
--   **S3 Compatible Storage** (via Custom Client)
--   **CSS Modules** (Scoped styling)
--   **Heroicons** (Iconography)
+- **Framework**: Next.js 16 (App Router)
+- **UI Library**: React 19
+- **Deployment**: Cloudflare Pages (Hosting & Edge Runtime)
+- **Storage**: S3-Compatible Storage via Lightweight Custom Client
+- **Styling**: Vanilla CSS Modules (Scoped)
+- **Icons**: Heroicons
