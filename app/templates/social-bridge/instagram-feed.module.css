@@ -188,7 +188,7 @@
 }
 
 .hashtag {
-    color: var(--content-brand--brand);
+    color: var(--content-brand--brand-mute);
     opacity: 0.8;
     text-transform: uppercase;
 }

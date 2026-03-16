@@ -61,6 +61,7 @@
     /* Brand Content */
     --content-brand--brand-strong: var(--brand-color-500);
     --content-brand--brand: var(--brand-color-300);
+    --content-brand--brand-mute: var(--brand-color-100);
     --content-brand--informative-strong: var(--system-color-blue-500);
     --content-brand--informative: var(--system-color-blue-300);
     --content-brand--positive-strong: var(--system-color-green-500);
