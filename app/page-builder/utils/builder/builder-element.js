@@ -15,7 +15,8 @@ export default function BuilderElement({
     elementProps,
     sectionId,
     onIdChange,
-    isVisible = true
+    isVisible = true,
+    ref
 }) {
     const { elementId } = useIdSync({
         id,
@@ -26,7 +27,6 @@ export default function BuilderElement({
 
     const { selectedComponents, toggleElementSelection } = useBuilderSelection();
     const isActive = selectedComponents?.some(c => c.uniqueId === elementId) || false;
-    const wrapperRef = useRef(null);
     const [overlayRect, setOverlayRect] = useState(null);
 
     // Use layout effect to prevent visual jitter on selection
@@ -79,7 +79,7 @@ export default function BuilderElement({
         <>
             <Tag
                 id={elementId}
-                ref={wrapperRef}
+                ref={ref}
                 className={`${className} ${isActive ? styles.activeWrapper : ''}`}
                 style={{ ...style, position: 'relative' }}
                 onClick={handleActivate}

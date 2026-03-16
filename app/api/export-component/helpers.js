@@ -46,23 +46,33 @@ export function cleanBuilderContent(src, componentName) {
 
   // Remove Builder imports (Absolute & Relative)
   // Matches: import ... from "@/app/page-builder/..." OR ".../page-builder/..."
-  src = src.replace(/import\s+.*?\s+from\s+['"](?:@\/app\/|.*\/)page-builder\/utils\/(?:builder\/|toast).*?['"];?\n?/g, '');
+  src = src.replace(/import\s+.*?\s+from\s+['"](?:@\/app\/|.*\/)page-builder\/utils\/(?:builder\/|toast|hooks|canvas-context).*?['"];?\n?/g, '');
 
-  // Strip relative imports of shimmed components to avoid redeclaration errors
-  src = src.replace(/import\s+.*?BuilderControlsPopover.*?\s+from\s+['"][^'"]+['"];?\n?/g, '');
+  // Strip componentDefaults imports
+  src = src.replace(/import\s+{[^}]*componentDefaults[^}]*}\s+from\s+['"][^'"]+['"];?\n?/g, '');
 
-  // Remove generic imports that are not needed (keep CSS imports)
-  // src = src.replace(/import\s+{[^}]*}\s+from\s+['"][^'\"]+['"];?\n?/g, '');
+  // Strip component-library imports (used in ScrollGroup)
+  src = src.replace(/import\s+{[^}]*componentLibrary[^}]*}\s+from\s+['"][^'"]+['"];?\n?/g, '');
 
   // Remove onUpdate props and update handler calls
   src = src.replace(/onUpdate\s*=\s*\{[^}]+\}/g, '');
   // Only replace actual calls, not definitions (const/let/var/function/async)
   src = src.replace(/(?<!\b(?:const|let|var|function|async)\s+)\bupdate[A-Za-z0-9_]*\([^)]*\)/g, 'undefined');
 
+  // Replace componentDefaults access with empty strings/nulls to strip "dummy data"
+  // 1. Handle arrays (items, images, links, etc.) -> []
+  src = src.replace(/=\s*componentDefaults\s*\[['"][^'"]+['"]\]\.(items|images|links|socialLinks|findUsOnLinks|resourceLinks|testimonies|categories|products|videos)/gi, '= []');
+  // 2. Handle booleans (Visible, is*, has*, fullWidth) -> true
+  src = src.replace(/=\s*componentDefaults\s*\[['"][^'"]+['"]\]\.([a-zA-Z0-9_]*(?:Visible|is[A-Z]|has[A-Z]|fullWidth|isSticky|isOverlay))/g, '= true');
+  // 3. Handle everything else -> ""
+  src = src.replace(/=\s*componentDefaults\s*\[['"][^'"]+['"]\]\.(?!.*(?:Visible|is[A-Z]|has[A-Z]|fullWidth|isSticky|isOverlay|items|images|links|socialLinks|findUsOnLinks|resourceLinks|testimonies|categories|products|videos))([a-zA-Z0-9_]+)/gi, '= ""');
+  src = src.replace(/componentDefaults\s*\[['"][^'"]+['"]\]/g, '{}');
+
   // Replace BuilderSelectionContext usages to avoid ReferenceErrors since import is removed
   src = src.replace(/useContext\s*\(\s*BuilderSelectionContext\s*\)/g, '{}');
   // Use a regex that ensures it's NOT a function declaration by checking the character before it
   src = src.replace(/([^a-zA-Z0-9_])useBuilderSelection\s*\(\s*\)/g, '$1{}');
+  src = src.replace(/const\s*{\s*([^}]*)\s*}\s*=\s*useContext\(BuilderSelectionContext\);?/g, '// Context removed\n  const $1 = {};');
 
   // Remove empty import lines left behind
   src = src.replace(/^\s*\n/gm, '\n');
@@ -451,14 +461,14 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
   if (hasBuilderElement) {
     shims.push(`
 // Shim for BuilderElement
-const BuilderElement = ({ tagName = 'div', className, style, children, id, sectionId, elementProps, isVisible = true }) => {
+const BuilderElement = ({ tagName = 'div', className, style, children, id, sectionId, elementProps, isVisible = true, ref }) => {
   if (!isVisible) return null;
   const Tag = tagName;
   const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   const suffix = elementProps || 'element';
   let finalId = id || (normalizedSectionId ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
-  return <Tag id={finalId} className={className} style={style}>{children}</Tag>;
+  return <Tag ref={ref} id={finalId} className={className} style={style}>{children}</Tag>;
 };`);
   }
 

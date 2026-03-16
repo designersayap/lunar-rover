@@ -60,26 +60,6 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         console.error("Error fetching sticky manager", e);
     }
 
-    // 1c. Fetch Builder Controls (Context)
-    try {
-        const controlsRes = await fetch('/api/export-component', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ filePath: 'app/page-builder/utils/builder/builder-controls.js' })
-        });
-        if (controlsRes.ok) {
-            const { content } = await controlsRes.json();
-            // Store as a component or utility? tiktok-embed imports from @/app/page-builder/utils/builder/builder-controls
-            // but rewrite logic will point to ./builder-controls.js
-            zip.folder("components").file("builder-controls.js", content);
-            previewMap.set("components/builder-controls.js", { path: "components/builder-controls.js", content });
-        } else {
-            console.warn("Could not fetch builder-controls.js");
-            errors.push("Missing components/builder-controls.js");
-        }
-    } catch (e) {
-        console.error("Error fetching builder controls", e);
-    }
 
     // 1d. Define API Routes (For Forms)
     const confluentApiContent = `export const runtime = 'edge';
@@ -157,18 +137,6 @@ export async function POST(request) {
 
     const bundledImages = new Map(); // Track bundled image paths -> unique filenames
 
-    // --- FIX: Export ALL defaults to prevent component-library.js crash ---
-    // component-library.js (which is bundled if ScrollGroup is used) accesses defaults for ALL components.
-    // Filtering causes "undefined is not an object" errors for unused components.
-    const dataJsContent = `export const componentDefaults = ${JSON.stringify(componentDefaults, null, 4)};`;
-
-    // Inject into Zip & Preview Map directly (Mocking the file)
-    // This prevents processComponent from fetching the original file from server
-    zip.folder("components").file("data.js", dataJsContent);
-    previewMap.set("components/data.js", { path: "components/data.js", content: dataJsContent });
-
-    // Mark as processed so it's skipped by fetch logic if referenced as dependency
-    processedFiles.add("data.js");
     // ----------------------------------------------------------------
 
     const bundleAsset = async (imgPath) => {
@@ -495,29 +463,12 @@ export async function POST(request) {
     };
 
     processedComponents.forEach(item => {
-        // 1. Merge missing image defaults
-        const compDefaults = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
-
-        Object.keys(compDefaults).forEach(key => {
-            const isImageKey = /image|logo|avatar|icon|background/i.test(key) && !/id$|url$|link$|ratio$|portrait$|visible$/i.test(key);
-            // If it's an image key AND it's missing from the item (undefined), copy it from defaults.
-            const valInItem = item[key];
-            const valInProps = item.props ? item.props[key] : undefined;
-
-            if (isImageKey && valInItem === undefined && valInProps === undefined) {
-                // If the default is empty string, injectPlaceholders will catch it.
-                // If it has a value, it will be used.
-                item[key] = compDefaults[key];
-            }
-        });
-
-        // Run injection on the root of the clone
+        // Run injection on the root of the clone (for essentials like placeholders)
         injectPlaceholders(item);
         // Ensure props object exists
         if (!item.props) item.props = {};
 
         // FIX: Revert placeholder for ScrollGroup/Stacked items if they are using the default
-        // We don't want a massive placeholder background if the user intended no image.
         if (item.id === 'scroll-group' || item.componentName === 'ScrollGroup') {
             if (item.props.image === defaultPlaceholder || (typeof item.props.image === 'string' && item.props.image.includes('assets-lunar/placeholder.svg'))) {
                 item.props.image = "";
@@ -526,7 +477,6 @@ export async function POST(request) {
                 item.props.mobileImage = "";
             }
         }
-
     });
 
     // Sort components: Sticky items first
@@ -631,13 +581,6 @@ export async function POST(request) {
 
         const imagesToBundle = findImagesToCheck(item);
 
-        // Bundle Defaults too (finding by item.id or componentName)
-        const compDefaults = componentDefaults[item.id] || componentDefaults[item.componentName] || {};
-
-        const defaultImages = findImagesToCheck(compDefaults);
-        defaultImages.forEach(img => {
-            if (!imagesToBundle.includes(img)) imagesToBundle.push(img);
-        });
 
         for (const imgPath of imagesToBundle) {
             const uniqueName = await bundleAsset(imgPath);
@@ -663,23 +606,6 @@ export async function POST(request) {
                 };
                 updateProps(item);
 
-                // Inject default prop into 'item' if it relies on default value
-                const injectDefaultProp = (defaults, currentProps) => {
-                    Object.keys(defaults).forEach(key => {
-                        const defVal = defaults[key];
-                        if (typeof defVal === 'string' && (defVal === imgPath || defVal.includes(imgPath))) {
-                            if (currentProps[key] === undefined || currentProps[key] === defVal) {
-                                let newVal = defVal;
-                                if (defVal === imgPath) newVal = `${targetPath}`;
-                                else newVal = defVal.replace(imgPath, `${targetPath}`);
-
-                                currentProps[key] = newVal;
-                            }
-                        } else if (typeof defVal === 'object' && defVal !== null) {
-                        }
-                    });
-                };
-                injectDefaultProp(compDefaults, item.props);
 
                 // 2. Update Hardcoded strings in the Component File 
                 const compFile = componentsFolder.file(filename);
@@ -958,15 +884,13 @@ export default function RootLayout({ children }) {
         const importPath = path.replace('./components', '@/components');
         pageContent += `import ${name} from "${importPath}";\n`;
     });
-    // Import Sticky Manager & Builder Context
+    // Import Sticky Manager
     pageContent += `import StickyManager from "@/utils/sticky-manager";\n`;
-    pageContent += `import { BuilderSelectionProvider } from "@/components/builder-controls";\n`;
 
     pageContent += `\nexport default function ExportedPage() {\n`;
     pageContent += `  return (\n`;
-    pageContent += `    <BuilderSelectionProvider>\n`;
     pageContent += `    <main style={{ position: 'relative', minHeight: '100vh', width: '100%', overflowX: 'clip', containerType: 'inline-size', containerName: 'root-container' }}>\n`;
-    pageContent += `      <div id="canvas-background-root" style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'auto', overflow: 'hidden' }} />\n`;
+    pageContent += `      <div id="canvas-background-root" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }} />\n`;
     pageContent += `      <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>\n`;
 
     // Map uniqueIds to sectionIds for resolving "Target Dialog" links
@@ -1215,7 +1139,6 @@ export default function RootLayout({ children }) {
     pageContent += `      </StickyManager>\n`;
     pageContent += `      </div>\n`;
     pageContent += `    </main>\n`;
-    pageContent += `    </BuilderSelectionProvider>\n`;
     pageContent += `  );\n`;
     pageContent += `}\n`;
 
@@ -1230,6 +1153,11 @@ export default function robots() {
       {
         userAgent: '*',
         allow: '/',
+        disallow: ['/api/', '/_next/'],
+      },
+      {
+        userAgent: '*',
+        allow: '/_next/static/',
       },
     ],
     ${canonicalUrl ? `sitemap: '${canonicalUrl}/sitemap.xml',` : ''}

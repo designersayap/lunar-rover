@@ -1,4 +1,4 @@
-import { useState, memo, useRef, useCallback } from 'react';
+import { useState, memo, useRef, useCallback, useEffect } from 'react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/solid';
 import BuilderText from "@/app/page-builder/utils/builder/builder-text";
 import BuilderElement from "@/app/page-builder/utils/builder/builder-element";
@@ -17,8 +17,24 @@ const AccordionItem = memo(({
     onUpdate,
     onIdChange
 }) => {
+    const itemRef = useRef(null);
+
+    useEffect(() => {
+        if (isOpen && itemRef.current) {
+            // Delay slightly to allow the grid transition to start or complete
+            const timer = setTimeout(() => {
+                itemRef.current?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [isOpen]);
+
     return (
         <BuilderElement
+            ref={itemRef}
             tagName="div"
             className={styles.accordionItem}
             sectionId={sectionId}
