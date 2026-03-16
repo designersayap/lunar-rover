@@ -9,6 +9,7 @@ import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
 import BuilderElement from "@/app/page-builder/utils/builder/builder-element";
 import BuilderLink from "@/app/page-builder/utils/builder/builder-link";
 import { componentDefaults } from "../content/data";
+import { PlayIcon } from "@heroicons/react/24/solid";
 
 export default function InstagramFeed({
     items: rawItems = componentDefaults["social-bridge-instagram-feed"].items,
@@ -260,6 +261,8 @@ export default function InstagramFeed({
                                         />
 
                                         <div className={styles.blurLayer} />
+
+                                        <PlayIcon className={styles.playIcon} />
 
                                         <div className={styles.overlay}>
                                             <div className={styles.content}>
