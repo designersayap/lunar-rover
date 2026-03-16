@@ -187,7 +187,12 @@ export default function ExportPopover({
                                 onClick={onExportClick}
                                 disabled={!isValid || isExporting}
                             >
-                                {isExporting ? "Exporting..." : "Export to ZIP"}
+                                {isExporting ? (
+                                    <>
+                                        <div className={styles.spinner} style={{ marginRight: 'var(--pb-space-xs)' }} />
+                                        Exporting...
+                                    </>
+                                ) : "Export to ZIP"}
                             </button>
                         </div>
                     </Tooltip>

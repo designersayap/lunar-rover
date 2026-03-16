@@ -274,8 +274,6 @@ export function useTemplateLogic() {
 
     const handleDirectExport = useCallback(async () => {
         try {
-            showToast("Preparing export...", "info");
-
             const selectedBrand = themes.find(t => t.id === selectedThemeId)?.name || "Lunar";
             const activeThemePath = themes.find(t => t.id === selectedThemeId)?.path || "/themes/theme.css";
 

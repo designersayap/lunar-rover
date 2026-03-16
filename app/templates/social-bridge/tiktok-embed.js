@@ -334,6 +334,7 @@ export default function TikTokEmbed({
     sectionId,
     fullWidth,
     allowAutoplay = true,
+    removePaddingLeft,
     removePaddingRight,
 }) {
     // Sanitize data
