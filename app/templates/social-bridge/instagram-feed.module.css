@@ -127,7 +127,8 @@
     z-index: -1;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    background: transparent;
+    background: rgba(0, 0, 0, 0.8);
+    /* Added backdrop tint as requested */
     transform: translateZ(0);
     will-change: transform, backdrop-filter;
     /* silky smooth multi-stop mask */
@@ -150,7 +151,7 @@
     /* Full card coverage */
     z-index: 3;
     padding: var(--padding-md);
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.15);
     /* 30% solid dark overlay tint */
     color: var(--content-neutral--body-invert);
     display: flex;
@@ -186,7 +187,7 @@
 }
 
 .hashtag {
-    color: var(--base-white);
+    color: var(--content-brand--brand);
     opacity: 0.8;
     text-transform: uppercase;
 }

@@ -262,6 +262,7 @@ export default function InstagramFeed({
 
                                         <div className={styles.overlay}>
                                             <div className={styles.blurLayer} />
+                                            <PlayIcon className={styles.playIcon} />
                                             <div className={styles.content}>
                                                 <BuilderText
                                                     tagName="div"
