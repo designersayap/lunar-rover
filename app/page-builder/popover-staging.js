@@ -5,6 +5,7 @@ import styles from '../page.module.css';
 import { handleStagePreview } from './utils/stage-preview';
 import BasePopover from './base-popover';
 import { componentLibrary } from './content/component-library';
+import { showToast } from './utils/toast';
 
 export default function StagingPopover({
     position,
@@ -93,6 +94,10 @@ export default function StagingPopover({
                 return [...prev, finalFolderName].sort((a, b) => a.localeCompare(b));
             });
             onClose();
+            showToast("Staging page created successfully!", "success", 8000, {
+                text: "open",
+                url: `/staging/${finalFolderName}`
+            });
         }
     };
 

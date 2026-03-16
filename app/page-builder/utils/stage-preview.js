@@ -172,7 +172,7 @@ export const handleStagePreview = async (selectedComponents, folderName, analyti
 
         // 3. Open Stage Page
         console.log(`[Stage Preview] Opening staging page: /staging/${folderName}`);
-        window.open(`/staging/${folderName}`, '_blank');
+        // window.open(`/staging/${folderName}`, '_blank');
         return true;
 
     } catch (e) {

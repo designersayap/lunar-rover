@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { CheckCircleIcon, XMarkIcon, ExclamationCircleIcon, InformationCircleIcon } from "@heroicons/react/24/solid";
 import styles from "./notification.module.css";
 
@@ -13,24 +13,18 @@ export default function Notification() {
         setNotifications((prev) => prev.filter((n) => n.id !== id));
     }, []);
 
-    const addNotification = useCallback((message, type = "success", duration = DEFAULT_DURATION) => {
+    const addNotification = useCallback((message, type = "success", duration = DEFAULT_DURATION, link = null) => {
         const id = Date.now() + Math.random().toString(36).substr(2, 9);
-        const newNotification = { id, message, type, duration };
+        const newNotification = { id, message, type, duration, link };
 
         setNotifications((prev) => [...prev, newNotification]);
-
-        if (duration !== Infinity) {
-            setTimeout(() => {
-                removeNotification(id);
-            }, duration);
-        }
-    }, [removeNotification]);
+    }, []);
 
     useEffect(() => {
         const handleToastEvent = (e) => {
-            const { message, type, duration } = e.detail || {};
+            const { message, type, duration, link } = e.detail || {};
             if (message) {
-                addNotification(message, type || "success", duration);
+                addNotification(message, type || "success", duration, link);
             }
         };
 
@@ -54,7 +48,26 @@ export default function Notification() {
 }
 
 function NotificationCard({ notification, onClose }) {
-    const { message, type } = notification;
+    const { message, type, duration } = notification;
+    const timeoutRef = useRef(null);
+
+    const startTimer = useCallback(() => {
+        if (duration !== Infinity) {
+            timeoutRef.current = setTimeout(onClose, duration);
+        }
+    }, [duration, onClose]);
+
+    const stopTimer = useCallback(() => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+            timeoutRef.current = null;
+        }
+    }, []);
+
+    useEffect(() => {
+        startTimer();
+        return stopTimer;
+    }, [startTimer, stopTimer]);
 
     const Icon = {
         success: CheckCircleIcon,
@@ -64,10 +77,28 @@ function NotificationCard({ notification, onClose }) {
     }[type] || CheckCircleIcon;
 
     return (
-        <div className={styles.notificationCard}>
+        <div 
+            className={styles.notificationCard}
+            onMouseEnter={stopTimer}
+            onMouseLeave={startTimer}
+        >
             <Icon className={styles.icon} />
             <div className={styles.notificationContent}>
                 {message}
+                {notification.link && (
+                    <>
+                        {" "}
+                        <a
+                            href={notification.link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.notificationLink}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {notification.link.text}
+                        </a>
+                    </>
+                )}
             </div>
             <button
                 type="button"

@@ -33,6 +33,18 @@
     word-break: break-word;
 }
 
+.notificationLink {
+    color: var(--content-neutral--body-invert, #ffffff);
+    text-decoration: underline;
+    font-size: inherit;
+    font-weight: 600;
+    margin-left: 2px;
+}
+
+.notificationLink:hover {
+    opacity: 0.8;
+}
+
 .icon {
     width: var(--size-icon-md, 20px);
     height: var(--size-icon-md, 20px);
