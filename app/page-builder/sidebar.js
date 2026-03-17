@@ -603,7 +603,20 @@ export default function Sidebar({
                                 const pinnedComps = uniqueComps.filter(c => isComponentSticky(c));
                                 const otherComps = uniqueComps.filter(c => !isComponentSticky(c));
 
-                                return { pinnedComps, otherComps };
+                                // Filter based on search query
+                                const filteredComps = uniqueComps.filter(comp => {
+                                    if (!layerSearch) return true;
+                                    const query = layerSearch.toLowerCase();
+                                    return (
+                                        (comp.sectionId || "").toLowerCase().includes(query) ||
+                                        (comp.name || "").toLowerCase().includes(query)
+                                    );
+                                });
+
+                                const finalPinned = filteredComps.filter(c => isComponentSticky(c));
+                                const finalOther = filteredComps.filter(c => !isComponentSticky(c));
+
+                                return { pinnedComps: finalPinned, otherComps: finalOther };
                             })();
 
                             if (selectedComponents.length === 0) return <div className={styles.sidebarEmptyState}>No layers added</div>;
