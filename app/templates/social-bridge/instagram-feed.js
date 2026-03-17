@@ -181,10 +181,11 @@ export default function InstagramFeed({
     }, [activeIndex, totalItems, isPaused, autoScroll, autoScrollEffect]);
 
     const visibleCount = items.filter(t => t.visible !== false).length;
-    let filteredItems = items;
+    let filteredItems = items.map((item, idx) => ({ ...item, _originalIndex: idx }));
+
     if (visibleCount === 0 && items.length > 0) {
-        const validFallback = items.find(t => t !== null && typeof t === 'object');
-        filteredItems = validFallback ? [validFallback] : [];
+        const validFallbackIdx = items.findIndex(t => t !== null && typeof t === 'object');
+        filteredItems = validFallbackIdx !== -1 ? [{ ...items[validFallbackIdx], _originalIndex: validFallbackIdx }] : [];
     }
 
     const displayItems = [];
@@ -238,26 +239,26 @@ export default function InstagramFeed({
                                     className={styles.itemWrapper}
                                     id={item.cardId}
                                     sectionId={sectionId}
-                                    onIdChange={(val) => updateCardId(index, val)}
+                                    onIdChange={(val) => updateCardId(item._originalIndex, val)}
                                     elementProps={`instagram-feed-${index}`}
                                     isVisible={item.visible !== false}
                                 >
                                     <div className={styles.card}>
                                         <BuilderImage
                                             src={item.image || DEFAULT_PLACEHOLDER_IMAGE}
-                                            onSrcChange={(val) => updateItem(index, "image", val)}
+                                            onSrcChange={(val) => updateItem(item._originalIndex, "image", val)}
                                             className={styles.backgroundImage}
                                             id={item.imageId}
                                             sectionId={sectionId}
                                             isVisible={true}
-                                            onIdChange={(val) => updateItem(index, "imageId", val)}
+                                            onIdChange={(val) => updateItem(item._originalIndex, "imageId", val)}
                                             suffix={`bg-${index}`}
                                             href={item.url}
-                                            onHrefChange={(val) => updateItem(index, "url", val)}
+                                            onHrefChange={(val) => updateItem(item._originalIndex, "url", val)}
                                             linkType={item.linkType}
-                                            onLinkTypeChange={(val) => updateItem(index, "linkType", val)}
+                                            onLinkTypeChange={(val) => updateItem(item._originalIndex, "linkType", val)}
                                             targetDialogId={item.targetDialogId}
-                                            onTargetDialogIdChange={(val) => updateItem(index, "targetDialogId", val)}
+                                            onTargetDialogIdChange={(val) => updateItem(item._originalIndex, "targetDialogId", val)}
                                         />
 
                                         <div className={styles.overlay}>
@@ -268,14 +269,14 @@ export default function InstagramFeed({
                                                     tagName="div"
                                                     className={`caption-bold ${styles.hashtag}`}
                                                     content={item.hashtag}
-                                                    onChange={(val) => updateItem(index, "hashtag", val)}
+                                                    onChange={(val) => updateItem(item._originalIndex, "hashtag", val)}
                                                     sectionId={sectionId}
                                                 />
                                                 <BuilderText
                                                     tagName="div"
                                                     className={`body-regular ${styles.title} truncate-2-lines`}
                                                     content={item.title}
-                                                    onChange={(val) => updateItem(index, "title", val)}
+                                                    onChange={(val) => updateItem(item._originalIndex, "title", val)}
                                                     sectionId={sectionId}
                                                 />
                                             </div>
