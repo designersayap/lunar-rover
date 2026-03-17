@@ -1,6 +1,6 @@
 .footer {
     width: 100%;
-    padding: var(--padding-2xl) 0 0;
+    padding: var(--padding-md) 0 0;
     color: var(--content-neutral--body-default);
     background-color: var(--background-default);
 }

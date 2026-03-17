@@ -8,7 +8,10 @@ import {
     ArrowUturnLeftIcon,
     FolderOpenIcon,
     FolderIcon,
-    ArrowLeftStartOnRectangleIcon
+    ArrowLeftStartOnRectangleIcon,
+    Square3Stack3DIcon,
+    PresentationChartBarIcon,
+    DocumentMagnifyingGlassIcon
 } from "@heroicons/react/24/outline";
 import { TrashIcon as TrashIconSolid, ArrowLeftStartOnRectangleIcon as ArrowLeftStartOnRectangleIconSolid } from "@heroicons/react/24/solid";
 import styles from "../page.module.css";
@@ -86,7 +89,7 @@ const ComponentTreeItem = memo(({
             }}
             style={{
                 opacity: draggedIndex?.index === index && draggedIndex?.parentId === parentId ? 0.5 : 1,
-                paddingLeft: depth * 4
+                paddingLeft: depth * 2
             }}
             className={`${styles.treeGroup} ${dropTargetIndex?.index === index && dropTargetIndex?.parentId === parentId ? styles.borderTopBrand : ''}`}
         >
@@ -262,7 +265,7 @@ const ComponentTreeItem = memo(({
                                 <div key={`${child.propId}-${childIndex}`}>
                                     <div
                                         className={`${styles.listItem} ${isChildActive ? styles.listItemActive : ''} ${styles.treeRowNested}`}
-                                        style={{ paddingLeft: currentDepth * 4 + 8 }}
+                                        style={{ paddingLeft: currentDepth * 2 + 4 }}
                                         onClick={() => setActiveElementId && setActiveElementId(currentId)}
                                     >
                                         <div
@@ -374,7 +377,7 @@ const ComponentTreeItem = memo(({
                                             {child.addAction && (
                                                 <div
                                                     className={styles.treeAddLink}
-                                                    style={{ paddingLeft: (currentDepth + 1) * 4 + 8 }}
+                                                    style={{ paddingLeft: (currentDepth + 1) * 2 + 4 }}
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         const { targetList, defaults, idPattern, label } = child.addAction;
@@ -424,7 +427,7 @@ const ComponentTreeItem = memo(({
                                 {def.addAction && (
                                     <div
                                         className={styles.treeAddLink}
-                                        style={{ paddingLeft: (depth + 1) * 4 + 8 }}
+                                        style={{ paddingLeft: (depth + 1) * 2 + 4 }}
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             const { targetList, defaults, idPattern, label } = def.addAction;
@@ -523,148 +526,154 @@ export default function Sidebar({
 
     return (
         <div className={`${styles.sidebar} ${className}`} data-builder-ui="true">
-            <div>
-                {/* Triggering HMR for CSS Module */}
-                <div className={styles.tabs}>
-                    <Tooltip content="Layers" position="bottom">
-                        <button
-                            className={`${styles.tab} ${activeTab === "elements" ? styles.tabActive : styles.tabInactive}`}
-                            onClick={() => setActiveTab("elements")}
-                        >
-                            Layers
-                        </button>
-                    </Tooltip>
-                    <Tooltip content="SEO Configuration" position="bottom">
-                        <button
-                            className={`${styles.tab} ${activeTab === "seo" ? styles.tabActive : styles.tabInactive}`}
-                            onClick={() => setActiveTab("seo")}
-                        >
-                            SEO
-                        </button>
-                    </Tooltip>
-                    <Tooltip content="Open Graph Settings" position="bottom">
-                        <button
-                            className={`${styles.tab} ${activeTab === "opengraph" ? styles.tabActive : styles.tabInactive}`}
-                            onClick={() => setActiveTab("opengraph")}
-                        >
-                            Open Graph
-                        </button>
-                    </Tooltip>
-                    <Tooltip content="Analytics" position="bottom">
-                        <button
-                            className={`${styles.tab} ${activeTab === "analytics" ? styles.tabActive : styles.tabInactive}`}
-                            onClick={() => setActiveTab("analytics")}
-                        >
-                            Analytics
-                        </button>
-                    </Tooltip>
+            <div className={styles.sidebarContainer}>
+                <div className={styles.sidebarRail}>
+                    <div 
+                        className={styles.sidebarRailIndicator} 
+                        style={{ 
+                            transform: `translateY(${(
+                                { elements: 0, seo: 1, opengraph: 2, analytics: 3 }[activeTab] || 0
+                            ) * 72}px)` 
+                        }} 
+                    />
+                    <button
+                        className={`${styles.sidebarRailItem} ${activeTab === "elements" ? styles.sidebarRailItemActive : ""}`}
+                        onClick={() => setActiveTab("elements")}
+                    >
+                        <Square3Stack3DIcon className={styles.sidebarRailIcon} />
+                        <span className={styles.sidebarRailLabel}>Layers</span>
+                    </button>
+                    <button
+                        className={`${styles.sidebarRailItem} ${activeTab === "seo" ? styles.sidebarRailItemActive : ""}`}
+                        onClick={() => setActiveTab("seo")}
+                    >
+                        <CursorArrowRaysIcon className={styles.sidebarRailIcon} />
+                        <span className={styles.sidebarRailLabel}>SEO</span>
+                    </button>
+                    <button
+                        className={`${styles.sidebarRailItem} ${activeTab === "opengraph" ? styles.sidebarRailItemActive : ""}`}
+                        onClick={() => setActiveTab("opengraph")}
+                    >
+                        <DocumentMagnifyingGlassIcon className={styles.sidebarRailIcon} />
+                        <span className={styles.sidebarRailLabel}>OpenGraph</span>
+                    </button>
+                    <button
+                        className={`${styles.sidebarRailItem} ${activeTab === "analytics" ? styles.sidebarRailItemActive : ""}`}
+                        onClick={() => setActiveTab("analytics")}
+                    >
+                        <PresentationChartBarIcon className={styles.sidebarRailIcon} />
+                        <span className={styles.sidebarRailLabel}>Analytics</span>
+                    </button>
+                </div>
+
+                <div className={styles.sidebarBody}>
+                    {activeTab === "elements" ? (
+                        <>
+                            {/* Search Bar + Actions */}
+                            <div className={styles.searchRow}>
+                                <div className={styles.searchInputWrapper}>
+                                    <MagnifyingGlassIcon className={styles.searchIcon} />
+                                    <input
+                                        type="text"
+                                        className={`${styles.formInput} ${styles.searchBar}`}
+                                        placeholder="Search layers"
+                                        value={layerSearch}
+                                        onChange={(e) => setLayerSearch(e.target.value)}
+                                    />
+                                </div>
+                                <Tooltip content="Add Layer" position="bottom">
+                                    <button
+                                        className={`${styles.btn} ${styles.btnSecondary} ${styles.btnIcon} ${isAddPopoverOpen ? styles.btnSecondaryActive : ''}`}
+                                        onClick={(e) => onAddClick(e.currentTarget.getBoundingClientRect())}
+                                    >
+                                        <PlusIcon className={styles.iconSmall} />
+                                    </button>
+                                </Tooltip>
+                            </div>
+
+                            <div className={styles.treeContainer}>
+                                {/* Logic to split pinned vs other, but using new renderer */}
+                                {(() => {
+                                    const { pinnedComps, otherComps } = (() => {
+                                        // Deduplicate components
+                                        const uniqueComps = [];
+                                        const seenIds = new Set();
+
+                                        selectedComponents.forEach(comp => {
+                                            if (comp.uniqueId && !seenIds.has(comp.uniqueId)) {
+                                                seenIds.add(comp.uniqueId);
+                                                uniqueComps.push(comp);
+                                            }
+                                        });
+
+                                        const pinnedComps = uniqueComps.filter(c => isComponentSticky(c));
+                                        const otherComps = uniqueComps.filter(c => !isComponentSticky(c));
+
+                                        // Filter based on search query
+                                        const filteredComps = uniqueComps.filter(comp => {
+                                            if (!layerSearch) return true;
+                                            const query = layerSearch.toLowerCase();
+                                            return (
+                                                (comp.sectionId || "").toLowerCase().includes(query) ||
+                                                (comp.name || "").toLowerCase().includes(query)
+                                            );
+                                        });
+
+                                        const finalPinned = filteredComps.filter(c => isComponentSticky(c));
+                                        const finalOther = filteredComps.filter(c => !isComponentSticky(c));
+
+                                        return { pinnedComps: finalPinned, otherComps: finalOther };
+                                    })();
+
+                                    if (selectedComponents.length === 0) return <div className={styles.sidebarEmptyState}>No layers added</div>;
+
+                                    return (
+                                        <>
+                                            {pinnedComps.length > 0 && (
+                                                <div className={styles.categoryWrapper} style={{ marginBottom: 'var(--pb-space-md)' }}>
+                                                    <div className={`${styles.captionRegular} ${styles.pinnedLayersHeader}`}>Pinned Layers</div>
+                                                    {pinnedComps.map((comp, i) => (
+                                                        <ComponentTreeItem
+                                                            key={comp.uniqueId}
+                                                            comp={comp}
+                                                            index={i}
+                                                            parentId="main"
+                                                            {...treeItemProps}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            {otherComps.length > 0 && (
+                                                <div className={styles.categoryWrapper}>
+                                                    <div className={`${styles.captionRegular} ${styles.pageLayersHeader}`}>Page Layers</div>
+                                                    {otherComps.map((comp, i) => (
+                                                        // Adjusted index for global DnD if needed, but keeping local index for now
+                                                        <ComponentTreeItem
+                                                            key={comp.uniqueId}
+                                                            comp={comp}
+                                                            index={pinnedComps.length + i}
+                                                            parentId="main"
+                                                            {...treeItemProps}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </>
+                                    )
+                                })()}
+                            </div>
+                        </>
+                    ) : (
+                        <SidebarAnalyticsTab
+                            analyticsData={analyticsData}
+                            setAnalyticsData={setAnalyticsData}
+                            tab={activeTab}
+                        />
+                    )}
                 </div>
             </div>
 
-            {activeTab === "elements" ? (
-                <>
-                    {/* Search Bar + Actions */}
-                    <div className={styles.searchRow}>
-                        <div className={styles.searchInputWrapper}>
-                            <MagnifyingGlassIcon className={styles.searchIcon} />
-                            <input
-                                type="text"
-                                className={`${styles.formInput} ${styles.searchBar}`}
-                                placeholder="Search layers"
-                                value={layerSearch}
-                                onChange={(e) => setLayerSearch(e.target.value)}
-                            />
-                        </div>
-                        <Tooltip content="Add Layer" position="bottom">
-                            <button
-                                className={`${styles.btn} ${styles.btnSecondary} ${styles.btnIcon} ${isAddPopoverOpen ? styles.btnSecondaryActive : ''}`}
-                                onClick={(e) => onAddClick(e.currentTarget.getBoundingClientRect())}
-                            >
-                                <PlusIcon className={styles.iconSmall} />
-                            </button>
-                        </Tooltip>
-                    </div>
-
-                    <div className={styles.treeContainer}>
-                        {/* Logic to split pinned vs other, but using new renderer */}
-                        {(() => {
-                            const { pinnedComps, otherComps } = (() => {
-                                // Deduplicate components
-                                const uniqueComps = [];
-                                const seenIds = new Set();
-
-                                selectedComponents.forEach(comp => {
-                                    if (comp.uniqueId && !seenIds.has(comp.uniqueId)) {
-                                        seenIds.add(comp.uniqueId);
-                                        uniqueComps.push(comp);
-                                    }
-                                });
-
-                                const pinnedComps = uniqueComps.filter(c => isComponentSticky(c));
-                                const otherComps = uniqueComps.filter(c => !isComponentSticky(c));
-
-                                // Filter based on search query
-                                const filteredComps = uniqueComps.filter(comp => {
-                                    if (!layerSearch) return true;
-                                    const query = layerSearch.toLowerCase();
-                                    return (
-                                        (comp.sectionId || "").toLowerCase().includes(query) ||
-                                        (comp.name || "").toLowerCase().includes(query)
-                                    );
-                                });
-
-                                const finalPinned = filteredComps.filter(c => isComponentSticky(c));
-                                const finalOther = filteredComps.filter(c => !isComponentSticky(c));
-
-                                return { pinnedComps: finalPinned, otherComps: finalOther };
-                            })();
-
-                            if (selectedComponents.length === 0) return <div className={styles.sidebarEmptyState}>No layers added</div>;
-
-                            return (
-                                <>
-                                    {pinnedComps.length > 0 && (
-                                        <div className={styles.categoryWrapper} style={{ marginBottom: 'var(--pb-space-md)' }}>
-                                            <div className={`${styles.captionRegular} ${styles.pinnedLayersHeader}`}>Pinned Layers</div>
-                                            {pinnedComps.map((comp, i) => (
-                                                <ComponentTreeItem
-                                                    key={comp.uniqueId}
-                                                    comp={comp}
-                                                    index={i}
-                                                    parentId="main"
-                                                    {...treeItemProps}
-                                                />
-                                            ))}
-                                        </div>
-                                    )}
-
-                                    {otherComps.length > 0 && (
-                                        <div className={styles.categoryWrapper}>
-                                            <div className={`${styles.captionRegular} ${styles.pageLayersHeader}`}>Page Layers</div>
-                                            {otherComps.map((comp, i) => (
-                                                // Adjusted index for global DnD if needed, but keeping local index for now
-                                                <ComponentTreeItem
-                                                    key={comp.uniqueId}
-                                                    comp={comp}
-                                                    index={pinnedComps.length + i}
-                                                    parentId="main"
-                                                    {...treeItemProps}
-                                                />
-                                            ))}
-                                        </div>
-                                    )}
-                                </>
-                            )
-                        })()}
-                    </div>
-                </>
-            ) : (
-                <SidebarAnalyticsTab
-                    analyticsData={analyticsData}
-                    setAnalyticsData={setAnalyticsData}
-                    tab={activeTab}
-                />
-            )}
             {/* Merge Button (Floats at bottom of sidebar) */}
             <FloatingMergeButton
                 selectedCount={selectedElementIds.length}

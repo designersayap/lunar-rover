@@ -275,7 +275,7 @@ export default function SidebarAnalyticsTab({ analyticsData, setAnalyticsData, t
                     */}
                     <div className={styles.accordionContentOpen}>
                         <div className={styles.accordionInner}>
-                            <div style={{ padding: 'var(--pb-space-lg) 0 0', display: 'flex', flexDirection: 'column', gap: 'var(--pb-space-lg)' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--pb-space-lg)' }}>
                                 {activeGroup.items.map((section) => (
                                     <div key={section.id} className={styles.analyticsRow}>
                                         <div className={styles.analyticsHeader}>
