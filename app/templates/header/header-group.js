@@ -45,7 +45,7 @@ export default function HeaderGroup({
                         {subtitleVisible && (
                             <BuilderText
                                 tagName="div"
-                                className={`subheader-h2 ${styles.category}`}
+                                className={`subheader-h1 ${styles.category}`}
                                 style={{ marginBottom: "var(--gap-md)" }}
                                 content={subtitle}
                                 onChange={update('subtitle')}
@@ -58,7 +58,7 @@ export default function HeaderGroup({
                         {titleVisible && (
                             <BuilderText
                                 tagName="h2"
-                                className={`h3 ${styles.title}`}
+                                className={`h2 ${styles.title}`}
                                 style={{ marginBottom: "var(--gap-lg)" }}
                                 content={title}
                                 onChange={update('title')}
