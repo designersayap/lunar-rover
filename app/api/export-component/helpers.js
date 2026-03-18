@@ -108,10 +108,13 @@ export function cleanBuilderContent(src, componentName) {
   // Ensure Link is imported if not present but needed
   if ((hasBuilderLink || hasBuilderButton || hasBuilderImage) && !src.includes("from 'next/link'") && !src.includes('from "next/link"')) {
     const useClientRegex = /^(['"]use client['"];?)\s*/;
+    const nextLinkImport = "import Link from 'next/link';\n";
+    const nextImageImport = hasBuilderImage ? "import Image from 'next/image';\n" : "";
+    
     if (useClientRegex.test(src)) {
-      src = src.replace(useClientRegex, '$1\nimport Link from \'next/link\';\n');
+      src = src.replace(useClientRegex, `$1\n${nextLinkImport}${nextImageImport}`);
     } else {
-      src = "import Link from 'next/link';\n" + src;
+      src = `${nextLinkImport}${nextImageImport}${src}`;
     }
   }
 
@@ -221,19 +224,12 @@ const BuilderText = ({ tagName = 'p', content, className, style, children, id, s
   }
 
   if (hasBuilderButton) {
-    if (!src.includes('import * as HeroIcons')) {
-      const useClientRegex = /^(['"]use client['"];?)\s*/;
-      if (useClientRegex.test(src)) {
-        src = src.replace(useClientRegex, '$1\nimport * as HeroIcons from \'@heroicons/react/24/solid\';\n');
-      } else {
-        // Try to find first import
-        const firstImport = src.indexOf('import ');
-        if (firstImport !== -1) {
-          src = src.slice(0, firstImport) + "import * as HeroIcons from '@heroicons/react/24/solid';\n" + src.slice(firstImport);
-        } else {
-          src = "import * as HeroIcons from '@heroicons/react/24/solid';\n" + src;
-        }
-      }
+    // HeroIcons optimization: Only import used icons or provide a lightweight shim
+    // We'll replace the * as HeroIcons with a more targeted approach if possible,
+    // but for now, we'll shift to dynamic individual imports if the build system supports it
+    // or just use a simpler fallback.
+    if (!src.includes("import { createElement } from 'react'")) {
+       src = "import { createElement } from 'react';\n" + src;
     }
 
     shims.push(`
@@ -244,13 +240,11 @@ const BuilderButton = ({ label, href, className, style, children, linkType, targ
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
 
-  // Resolve Icons
+  // Resolve Icons (Lightweight Fallback)
   const renderIcon = (icon) => {
       if (!icon) return null;
-      if (typeof icon === 'string' && HeroIcons[icon]) {
-          const IconComponent = HeroIcons[icon];
-          return <IconComponent className="w-5 h-5" />;
-      }
+      // In exported mode, icons are handled via props if they were passed as JSX, 
+      // or we can add a simple lookup if needed.
       return icon;
   };
 
@@ -347,7 +341,7 @@ const BuilderLink = ({ label, href, className, style, children, linkType, target
 
   if (hasBuilderImage) {
     shims.push(`
-const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href, linkType, targetDialogId, id, sectionId, suffix, isPortrait, isVisible = true }) => {
+const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href, linkType, targetDialogId, id, sectionId, suffix, isPortrait, isVisible = true, priority }) => {
   if (!isVisible) return null;
   const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
@@ -443,6 +437,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
               loop
               muted
               playsInline
+              preload="none"
           >
               {mobileSrc && <source src={mobileSrc} media="(max-width: 767px)" />}
               <source src={src} />
@@ -451,16 +446,16 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
       );
   } else {
       mediaContent = (
-        <>
-          {mobileSrc && <source media="(max-width: 767px)" srcSet={mobileSrc} />}
-          <img 
-            id={!isLink ? finalId : undefined}
-            src={imageSrc} 
-            alt={effectiveAlt} 
-            className={mediaClass} 
-            style={mediaStyle} 
-          />
-        </>
+        <Image 
+          id={!isLink ? finalId : undefined}
+          src={imageSrc} 
+          alt={effectiveAlt} 
+          className={mediaClass} 
+          style={mediaStyle} 
+          fill
+          priority={priority}
+          sizes="(max-width: 768px) 100vw, 80vw"
+        />
       );
   }
 
@@ -470,7 +465,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
 
   if (isLink) {
     const isDialog = linkType === 'dialog' && targetDialogId;
-    const wrapperStyle = { ...style, display: 'block', width: '100%', textDecoration: 'none' };
+    const wrapperStyle = { ...style, display: 'block', width: '100%', textDecoration: 'none', position: 'relative' };
     
     if (isDialog) {
         return (
@@ -501,7 +496,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
     );
   }
 
-  return content;
+  return <div className={baseClassName} style={{ ...style, position: 'relative' }}>{content}</div>;
 };`);
   }
 

@@ -677,6 +677,15 @@ export async function POST(request) {
         'app/foundation/global.css'
     ];
 
+    // Helper to minify CSS
+    const minifyCSS = (css) => {
+        return css
+            .replace(/\/\*[\s\S]*?\*\//g, '') // Remove comments
+            .replace(/\s+/g, ' ')             // Collapse whitespace
+            .replace(/\s*([{}:;,])\s*/g, '$1') // Remove space around delimiters
+            .trim();
+    };
+
     let foundationCSS = '';
 
     for (const path of foundationFiles) {
@@ -692,7 +701,7 @@ export async function POST(request) {
                 });
                 if (res.ok) {
                     const { content } = await res.json();
-                    foundationCSS += `\n/* --- ${path.split('/').pop()} --- */\n${content}\n`;
+                    foundationCSS += `\n${content}\n`;
                 } else {
                     console.warn(`Failed to fetch foundation file via API: ${path}`);
                 }
@@ -711,7 +720,7 @@ export async function POST(request) {
                         content = cleanThemeCSS(content);
                     }
                     
-                    foundationCSS += `\n/* --- ${path.split('/').pop()} --- */\n${content}\n`;
+                    foundationCSS += `\n${content}\n`;
                 } else {
                     console.warn(`Failed to fetch foundation file: ${path}`);
                 }
@@ -721,6 +730,8 @@ export async function POST(request) {
             console.error(`Failed to fetch foundation: ${path}`, e);
         }
     }
+
+    foundationCSS = minifyCSS(foundationCSS);
 
     // 3b. Scan & Bundle Assets in Foundation CSS (e.g. social icons in global.css)
     const cssUrlRegex = /url\(\s*['"]?([^'")\s]+)['"]?\s*\)/g;
@@ -1192,6 +1203,15 @@ export default function RootLayout({ children }) {
                 return `components={[${serializedComponents}]}`;
             }
 
+            // LCP Optimization: Set priority for the first image found in the page
+            if (key === 'src' && componentName === 'BuilderImage') {
+                const isFirstImage = !state.hasFirstImage;
+                if (isFirstImage) {
+                    state.hasFirstImage = true;
+                    return `src={${JSON.stringify(value)}} priority={true} fetchpriority="high"`;
+                }
+            }
+
             if (typeof value === 'string') {
                 return `${key}={${JSON.stringify(value)}}`;
             } else if (typeof value === 'boolean') {
@@ -1314,7 +1334,21 @@ ${sanitizedCanonicalUrl ? `Sitemap: ${sanitizedCanonicalUrl}/sitemap.xml` : ''}`
                     }
                 }, null, 2)
             });
-            fileList.push({ path: "next.config.mjs", content: "/** @type {import('next').NextConfig} */\nconst nextConfig = {};\nexport default nextConfig;\n" });
+            fileList.push({ 
+                path: "next.config.mjs", 
+                content: `/** @type {import('next').NextConfig} */
+const nextConfig = {
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: '**',
+            },
+        ],
+    },
+};
+export default nextConfig;
+` });
             fileList.push({ path: "jsconfig.json", content: JSON.stringify({ compilerOptions: { paths: { "@/*": ["./*"] } } }, null, 2) });
             fileList.push({
                 path: "app/globals.css", content: `/* Custom Foundation Styles */
