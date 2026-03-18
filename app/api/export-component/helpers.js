@@ -43,23 +43,26 @@ export function cleanBuilderContent(src, componentName) {
   const hasBuilderInput = src.includes('BuilderInput') && !hasShim('BuilderInput');
   const hasBuilderSelect = src.includes('BuilderSelect') && !hasShim('BuilderSelect');
   const hasBuilderControlsPopover = src.includes('BuilderControlsPopover') && !hasShim('BuilderControlsPopover');
+  const hasUseIdSync = src.includes('useIdSync') && !hasShim('useIdSync');
+  const hasUseActiveOverlay = src.includes('useActiveOverlayPosition') && !hasShim('useActiveOverlayPosition');
 
   // Remove Builder imports (Absolute & Relative)
   // Matches: import ... from "@/app/page-builder/..." OR ".../page-builder/..."
   src = src.replace(/import\s+.*?\s+from\s+['"](?:@\/app\/|.*\/)page-builder\/utils\/(?:builder\/|toast|hooks|canvas-context).*?['"];?\n?/g, '');
 
-  // Strip componentDefaults imports
-  src = src.replace(/import\s+{[^}]*componentDefaults[^}]*}\s+from\s+['"][^'"]+['"];?\n?/g, '');
+  // Strip componentDefaults imports (DISABLED: Preserving default data/text in export)
+  // src = src.replace(/import\s+{[^}]*componentDefaults[^}]*}\s+from\s+['"][^'"]+['"];?\n?/g, '');
 
-  // Strip component-library imports (used in ScrollGroup)
-  src = src.replace(/import\s+{[^}]*componentLibrary[^}]*}\s+from\s+['"][^'"]+['"];?\n?/g, '');
+  // Strip component-library imports (used in ScrollGroup) (DISABLED: Preserving registry for fallback logic)
+  // src = src.replace(/import\s+{[^}]*componentLibrary[^}]*}\s+from\s+['"][^'"]+['"];?\n?/g, '');
 
   // Remove onUpdate props and update handler calls
   src = src.replace(/onUpdate\s*=\s*\{[^}]+\}/g, '');
-  // Only replace actual calls, not definitions (const/let/var/function/async)
-  src = src.replace(/(?<!\b(?:const|let|var|function|async)\s+)\bupdate[A-Za-z0-9_]*\([^)]*\)/g, 'undefined');
+  // Only replace actual calls, not definitions (const/let/var/function/async) (DISABLED: Aggressive stripping can break non-builder logic)
+  // src = src.replace(/(?<!\b(?:const|let|var|function|async)\s+)\bupdate[A-Za-z0-9_]*\([^)]*\)/g, 'undefined');
 
-  // Replace componentDefaults access with empty strings/nulls to strip "dummy data"
+  // Replace componentDefaults access with empty strings/nulls to strip "dummy data" (DISABLED: Preserving default data/text in export)
+  /*
   // 1. Handle arrays (items, images, links, etc.) -> []
   src = src.replace(/=\s*componentDefaults\s*\[['"][^'"]+['"]\]\.(items|images|links|socialLinks|findUsOnLinks|resourceLinks|testimonies|categories|products|videos)/gi, '= []');
   // 2. Handle booleans (Visible, is*, has*, fullWidth) -> true
@@ -67,6 +70,7 @@ export function cleanBuilderContent(src, componentName) {
   // 3. Handle everything else -> ""
   src = src.replace(/=\s*componentDefaults\s*\[['"][^'"]+['"]\]\.(?!.*(?:Visible|is[A-Z]|has[A-Z]|fullWidth|isSticky|isOverlay|items|images|links|socialLinks|findUsOnLinks|resourceLinks|testimonies|categories|products|videos))([a-zA-Z0-9_]+)/gi, '= ""');
   src = src.replace(/componentDefaults\s*\[['"][^'"]+['"]\]/g, '{}');
+  */
 
   // Replace BuilderSelectionContext usages to avoid ReferenceErrors since import is removed
   src = src.replace(/useContext\s*\(\s*BuilderSelectionContext\s*\)/g, '{}');
@@ -89,12 +93,21 @@ export function cleanBuilderContent(src, componentName) {
     }
   }
 
-  if (hasBuilderText && !src.includes('useState')) {
+  if ((hasBuilderText || hasUseActiveOverlay) && !src.includes('useState')) {
     const useClientRegex = /^(['"]use client['"];?)\s*/;
     if (useClientRegex.test(src)) {
       src = src.replace(useClientRegex, '$1\nimport { useState } from \'react\';\n');
     } else {
       src = "import { useState } from 'react';\n" + src;
+    }
+  }
+
+  if (hasUseActiveOverlay && !src.includes('useMemo')) {
+    const useClientRegex = /^(['"]use client['"];?)\s*/;
+    if (useClientRegex.test(src)) {
+      src = src.replace(useClientRegex, '$1\nimport { useMemo } from \'react\';\n');
+    } else {
+      src = "import { useMemo } from 'react';\n" + src;
     }
   }
 
@@ -534,6 +547,41 @@ const BuilderSelect = ({ label, labelContent, onLabelChange, type = 'select', na
     shims.push(`
 // Shim for BuilderControlsPopover
 const BuilderControlsPopover = () => null;`);
+  }
+
+  if (hasUseIdSync) {
+    shims.push(`
+// Shim for useIdSync
+const useIdSync = ({ id, sectionId, suffix }) => {
+  const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
+  const generatedId = normalizedSectionId ? (suffix ? \`\${normalizedSectionId}-\${suffix}\` : \`\${normalizedSectionId}-element\`) : undefined;
+  const elementId = id || generatedId;
+  return { elementId: elementId ? elementId.replace(/-+/g, '-') : undefined };
+};`);
+  }
+
+  if (hasUseActiveOverlay) {
+    shims.push(`
+// Shim for useActiveOverlayPosition
+const useActiveOverlayPosition = (overlayRect) => {
+  return useMemo(() => {
+    if (!overlayRect) return {};
+    const cx = overlayRect.left + (overlayRect.width / 2);
+    const windowWidth = typeof window !== 'undefined' ? window.innerWidth : 1000;
+    let leftPos, rightPos, transform;
+    if (cx < 88) { leftPos = 8; rightPos = 'auto'; transform = 'none'; }
+    else if (cx > windowWidth - 88) { leftPos = 'auto'; rightPos = 8; transform = 'none'; }
+    else { leftPos = cx; rightPos = 'auto'; transform = 'translateX(-50%)'; }
+    return {
+      position: 'fixed',
+      top: Math.max(overlayRect.top - 24, 42),
+      left: leftPos,
+      right: rightPos,
+      zIndex: 10002,
+      transform: transform
+    };
+  }, [overlayRect]);
+};`);
   }
 
   if (shims.length > 0) {

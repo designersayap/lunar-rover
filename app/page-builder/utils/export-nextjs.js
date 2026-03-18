@@ -1144,29 +1144,10 @@ export default function RootLayout({ children }) {
 
     appFolder.file("page.js", pageContent);
 
-    // Generate robots.js (Dynamic Metadata)
-    const robotsJs = `export const runtime = 'edge';
-export const dynamic = 'force-static'; // ✅ Compatible with output: 'export'
-
-export default function robots() {
-  return {
-    rules: [
-      {
-        userAgent: '*',
-        allow: '/',
-        disallow: ['/api/', '/_next/'],
-      },
-      {
-        userAgent: '*',
-        allow: '/_next/static/',
-      },
-    ],
-    ${canonicalUrl ? `sitemap: '${canonicalUrl}/sitemap.xml',` : ''}
-  };
-}`;
-
-    appFolder.file("robots.js", robotsJs);
-    previewMap.set("app/robots.js", { path: "app/robots.js", content: robotsJs });
+    // Generate robots.txt
+    const robotsContent = analytics.robotsContent || `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /_next/\n\n${canonicalUrl ? `Sitemap: ${canonicalUrl}/sitemap.xml` : ''}`;
+    zip.folder("public").file("robots.txt", robotsContent);
+    previewMap.set("public/robots.txt", { path: "public/robots.txt", content: robotsContent });
 
     // Generate sitemap.xml
     if (canonicalUrl) {
@@ -1177,8 +1158,8 @@ export default function robots() {
     <lastmod>${new Date().toISOString()}</lastmod>
   </url>
 </urlset>`;
-        appFolder.file("sitemap.xml", sitemapXml);
-        previewMap.set("app/sitemap.xml", { path: "app/sitemap.xml", content: sitemapXml });
+        zip.folder("public").file("sitemap.xml", sitemapXml);
+        previewMap.set("public/sitemap.xml", { path: "public/sitemap.xml", content: sitemapXml });
     }
 
     // Generate safe title for naming (used for both ZIP and UAT folder)

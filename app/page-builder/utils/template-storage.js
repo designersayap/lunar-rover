@@ -15,7 +15,8 @@ export const DEFAULT_ANALYTICS = {
     googleTagManagerId: "",
     tikTokPixel: "",
     metaPixel: "",
-    microsoftClarityId: ""
+    microsoftClarityId: "",
+    robotsContent: ""
 };
 
 /**

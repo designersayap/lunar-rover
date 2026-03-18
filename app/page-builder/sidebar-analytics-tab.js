@@ -182,6 +182,14 @@ const ANALYTICS_GROUPS = [
                 key: 'metaTag',
                 placeholder: '<meta name="my-custom-tag" content="value" />',
                 tooltip: 'Additional custom meta tags. Must be valid HTML tags (e.g. <meta ... />).'
+            },
+            {
+                id: 'robots-content',
+                title: 'Robots.txt Content',
+                type: 'textarea',
+                key: 'robotsContent',
+                placeholder: 'User-agent: *\nAllow: /',
+                tooltip: 'The content of your robots.txt file for search engine crawlers.'
             }
         ]
     },
