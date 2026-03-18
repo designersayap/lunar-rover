@@ -1145,7 +1145,13 @@ export default function RootLayout({ children }) {
     appFolder.file("page.js", pageContent);
 
     // Generate robots.txt
-    const robotsContent = analytics.robotsContent || `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /_next/\n\n${canonicalUrl ? `Sitemap: ${canonicalUrl}/sitemap.xml` : ''}`;
+    const robotsContent = analytics.robotsContent || `User-agent: *
+Allow: /
+Allow: /_next/static/
+Disallow: /_next/
+Disallow: /api/
+
+${canonicalUrl ? `Sitemap: ${canonicalUrl}/sitemap.xml` : ''}`.trim();
     zip.folder("public").file("robots.txt", robotsContent);
     previewMap.set("public/robots.txt", { path: "public/robots.txt", content: robotsContent });
 

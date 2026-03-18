@@ -159,7 +159,7 @@ const ANALYTICS_GROUPS = [
                 inputType: 'url', // Explicit type
                 key: 'canonicalUrl',
                 placeholder: 'https://example.com',
-                tooltip: 'The authoritative URL of the page (link rel="canonical").'
+                tooltip: 'The authoritative URL of the page (link rel="canonical"). Required for generating a valid sitemap.xml and robots.txt sitemap entry.'
             },
             {
                 id: 'meta-description',
@@ -188,8 +188,8 @@ const ANALYTICS_GROUPS = [
                 title: 'Robots.txt Content',
                 type: 'textarea',
                 key: 'robotsContent',
-                placeholder: 'User-agent: *\nAllow: /',
-                tooltip: 'The content of your robots.txt file for search engine crawlers.'
+                placeholder: 'User-agent: *\nAllow: /\nAllow: /_next/static/\nDisallow: /_next/\nDisallow: /api/\n\nSitemap: https://example.com/sitemap.xml',
+                tooltip: 'The content of your robots.txt file. If left blank, a default SEO-friendly version will be generated. Note: A Canonical URL is required for the "Sitemap:" entry to work.'
             }
         ]
     },
