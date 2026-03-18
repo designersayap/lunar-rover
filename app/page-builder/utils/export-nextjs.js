@@ -637,6 +637,37 @@ export async function POST(request) {
     // --- 3. Bundle Fonts (Removed: Fonts referenced in CSS are handled by asset bundler, or served via Google Fonts) ---
     // (This block previously listed and fetched all fonts, which created duplicates in public/fonts when they were also bundled to public/assets)
     // --- 4. Fetch Foundation Styles ---
+    // Helper to clean theme CSS (Remove @font-face and redirect to next/font variables)
+    const cleanThemeCSS = (css) => {
+        let cleaned = css;
+        
+        // 1. Remove @font-face blocks
+        cleaned = cleaned.replace(/@font-face\s*{[\s\S]*?}/g, '');
+        
+        // 2. Map standard Google fonts to next/font variables
+        const fontMap = {
+            'Lato': 'var(--font-lato)',
+            'Poppins': 'var(--font-poppins)',
+            'Plus Jakarta Sans': 'var(--font-plus-jakarta)'
+        };
+        
+        Object.entries(fontMap).forEach(([name, variable]) => {
+            const regex = new RegExp(`(['"])${name}(['"])`, 'gi');
+            cleaned = cleaned.replace(regex, variable);
+        });
+        
+        // 3. Map detected local fonts
+        Object.keys(fontMetadata).forEach(family => {
+            const variableName = family.toLowerCase().replace(/[^a-z0-9]/g, '');
+            const variableCSS = `var(--font-${family.toLowerCase().replace(/\s+/g, '-')})`;
+            
+            const regex = new RegExp(`(['"])${family}(['"])`, 'gi');
+            cleaned = cleaned.replace(regex, variableCSS);
+        });
+        
+        return cleaned;
+    };
+
     // Note: The order matters for cascade.
     const foundationFiles = [
         `public${activeThemePath}`, // Theme (Primitives) must be loaded first
@@ -673,7 +704,13 @@ export async function POST(request) {
 
                 const res = await fetch(fetchPath);
                 if (res.ok) {
-                    const content = await res.text();
+                    let content = await res.text();
+                    
+                    // Clean theme CSS if it's the active theme
+                    if (path === `public${activeThemePath}`) {
+                        content = cleanThemeCSS(content);
+                    }
+                    
                     foundationCSS += `\n/* --- ${path.split('/').pop()} --- */\n${content}\n`;
                 } else {
                     console.warn(`Failed to fetch foundation file: ${path}`);
