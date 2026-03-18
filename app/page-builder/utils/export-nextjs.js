@@ -772,8 +772,9 @@ ${foundationCSS}
     const hasScripts = gtmId || clarityId || tiktokId || metaPixelId;
 
     // Generate Layout
-    // We use next/font/google for better performance (auto-self-hosting, font-display: swap)
+    // We use next/font/google and next/font/local for optimal performance
     const fontConfig = `import { Lato, Poppins, Plus_Jakarta_Sans } from "next/font/google";
+import localFont from "next/font/local";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -794,6 +795,22 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   weight: ["400", "600", "700"],
   variable: "--font-plus-jakarta",
   display: "swap",
+});
+
+const googleSans = localFont({
+  src: [
+    {
+      path: "../fonts/GoogleSans-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../fonts/GoogleSans-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-google-sans",
 });`;
 
     appFolder.file("layout.js", `import "./globals.css";
@@ -821,7 +838,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable}\`}>
+    <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable} \${googleSans.variable}\`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
@@ -1148,6 +1165,25 @@ export default function RootLayout({ children }) {
         pageContent += `      ${componentJSX}\n`;
     });
 
+    // 4b. Bundle Local Fonts
+    try {
+        const fontsFolder = zip.folder("fonts");
+        const fontFiles = [
+            "Google_Sans/GoogleSans-Regular.ttf",
+            "Google_Sans/GoogleSans-Bold.ttf"
+        ];
+        for (const fontFile of fontFiles) {
+            const fontRes = await fetch(`/fonts/${fontFile}`);
+            if (fontRes.ok) {
+                const blob = await fontRes.blob();
+                const filename = fontFile.split('/').pop();
+                fontsFolder.file(filename, blob);
+            }
+        }
+    } catch (e) {
+        console.warn("Could not bundle local fonts", e);
+    }
+
     pageContent += `      </StickyManager>\n`;
     pageContent += `      </div>\n`;
     pageContent += `    </main>\n`;
@@ -1264,7 +1300,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable}\`}>
+    <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable} \${googleSans.variable}\`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
