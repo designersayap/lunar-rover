@@ -45,6 +45,7 @@ export function cleanBuilderContent(src, componentName) {
   const hasBuilderControlsPopover = src.includes('BuilderControlsPopover') && !hasShim('BuilderControlsPopover');
   const hasUseIdSync = src.includes('useIdSync') && !hasShim('useIdSync');
   const hasUseActiveOverlay = src.includes('useActiveOverlayPosition') && !hasShim('useActiveOverlayPosition');
+  const hasGetContainerClasses = src.includes('getContainerClasses') && !hasShim('getContainerClasses');
 
   // Remove Builder imports (Absolute & Relative)
   src = src.replace(/import\s+.*?\s+from\s+['"](?:@\/app\/|.*\/)page-builder\/.*?['"];?\n?/g, '');
@@ -159,6 +160,18 @@ const BuilderSection = ({ tagName = 'div', className, innerContainer, fullWidth,
   }
 
   return <Tag id={finalId} className={\`\${containerClass} \${className || ''}\`} style={style}>{children}</Tag>;
+};`);
+  }
+
+  if (hasGetContainerClasses) {
+    shims.push(`
+// Shim for getContainerClasses
+const getContainerClasses = ({ removePaddingLeft, removePaddingRight, fullWidth }) => {
+  const classes = ["container-grid"];
+  if (removePaddingLeft) classes.push("pl-0");
+  if (removePaddingRight) classes.push("pr-0");
+  if (fullWidth) classes.push("container-full");
+  return classes.join(" ");
 };`);
   }
 
