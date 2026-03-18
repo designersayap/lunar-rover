@@ -888,7 +888,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable} \${localFontVariables.join(' ')}\`}>
+    <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable} ${localFontVariables.join(' ')}\`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
@@ -1348,7 +1348,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable} \${localFontVariables.join(' ')}\`}>
+    <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable} ${localFontVariables.join(' ')}\`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
