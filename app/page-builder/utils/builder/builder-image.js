@@ -373,6 +373,8 @@ export default function BuilderImage({
                     src={mobileSrc}
                     alt={(!alt || alt === "#") && sectionId ? sectionId : alt}
                     style={finalStyle}
+                    loading="lazy"
+                    decoding="async"
                 />
             );
         } else {
@@ -385,6 +387,8 @@ export default function BuilderImage({
                         src={imageSrc}
                         alt={(!alt || alt === "#") && sectionId ? sectionId : alt}
                         style={finalStyle}
+                        loading="lazy"
+                        decoding="async"
                     />
                 </>
             );

@@ -47,8 +47,8 @@ export function cleanBuilderContent(src, componentName) {
   const hasUseActiveOverlay = src.includes('useActiveOverlayPosition') && !hasShim('useActiveOverlayPosition');
 
   // Remove Builder imports (Absolute & Relative)
-  // Matches: import ... from "@/app/page-builder/..." OR ".../page-builder/..."
-  src = src.replace(/import\s+.*?\s+from\s+['"](?:@\/app\/|.*\/)page-builder\/utils\/(?:builder\/|toast|hooks|canvas-context).*?['"];?\n?/g, '');
+  src = src.replace(/import\s+.*?\s+from\s+['"](?:@\/app\/|.*\/)page-builder\/.*?['"];?\n?/g, '');
+  src = src.replace(/import\s+{[^}]*(?:BuilderSelectionContext|useCanvas|useActiveOverlayPosition|useIdSync)[^}]*}\s+from\s+['"][^'"]+['"];?\n?/g, '');
 
   // Strip componentDefaults imports (DISABLED: Preserving default data/text in export)
   // src = src.replace(/import\s+{[^}]*componentDefaults[^}]*}\s+from\s+['"][^'"]+['"];?\n?/g, '');
@@ -72,11 +72,32 @@ export function cleanBuilderContent(src, componentName) {
   src = src.replace(/componentDefaults\s*\[['"][^'"]+['"]\]/g, '{}');
   */
 
-  // Replace BuilderSelectionContext usages to avoid ReferenceErrors since import is removed
-  src = src.replace(/useContext\s*\(\s*BuilderSelectionContext\s*\)/g, '{}');
-  // Use a regex that ensures it's NOT a function declaration by checking the character before it
-  src = src.replace(/([^a-zA-Z0-9_])useBuilderSelection\s*\(\s*\)/g, '$1{}');
-  src = src.replace(/const\s*{\s*([^}]*)\s*}\s*=\s*useContext\(BuilderSelectionContext\);?/g, '// Context removed\n  const $1 = {};');
+  // Replace BuilderSelectionContext and useCanvas usages to avoid ReferenceErrors since import is removed
+  // Matches various destructuring patterns from both hooks
+  src = src.replace(/const\s*{\s*([^}]*(?:activeElementId|setActiveElementId|activePopoverId|setActivePopoverId|selectedComponents|updateComponent|isStaging|canvasWidth|canvasWidthSimulation)[^}]*)\s*}\s*=\s*(?:useContext\s*\(\s*BuilderSelectionContext\s*\)|useCanvas\s*\(\s*\)|useBuilderSelection\s*\(\s*\));?/g, (match, p1) => {
+    // Keep isStaging as true for exported components to ensure they render content correctly
+    const vars = p1.split(',').map(v => v.trim());
+    const replacements = vars.map(v => {
+      if (v === 'isStaging') return 'isStaging = true';
+      if (v === 'canvasWidth') return "canvasWidth = '100%'";
+      if (v === 'activeElementId') return "activeElementId = '__EXPORTED__'";
+      return v;
+    });
+    return `const { ${replacements.join(', ')} } = {};\n  // Context values mocked for export`;
+  });
+
+  // Remove renderActiveOverlay, renderOverlay, renderPopover functions and their calls
+  src = src.replace(/const\s+render(?:ActiveOverlay|Overlay|Popover)\s*=\s*\(\)\s*=>\s*{[\s\S]*?};/g, '');
+  src = src.replace(/{\s*render(?:ActiveOverlay|Overlay|Popover)\(\)\s*}/g, '');
+
+  // Remove Builder-only hooks and state (overlays, selection tracking)
+  src = src.replace(/const\s+overlayStyle\s*=\s*useActiveOverlayPosition\(overlayRect\);?/g, '');
+  src = src.replace(/const\s+isMobileSimulation\s*=\s*useMemo\([\s\S]*?canvasWidth === '100%'[\s\S]*?\]\);/g, 'const isMobileSimulation = false;');
+  src = src.replace(/const\s+\[(?:overlayRect|popoverPosition),\s*set(?:OverlayRect|PopoverPosition)\]\s*=\s*useState\(null\);?/g, '');
+  src = src.replace(/use(?:Layout)?Effect\(\(\)\s*=>\s*{[\s\S]*?requestAnimationFrame[\s\S]*?}\s*,\s*\[[\s\S]*?\]\);/g, '');
+  src = src.replace(/const\s+wrapperRef\s*=\s*useRef\(null\);?/g, '');
+  src = src.replace(/const\s+whiteOverlayRef\s*=\s*useRef\(null\);?/g, '');
+  src = src.replace(/const\s+blurContainerRef\s*=\s*useRef\(null\);?/g, '');
 
   // Remove empty import lines left behind
   src = src.replace(/^\s*\n/gm, '\n');

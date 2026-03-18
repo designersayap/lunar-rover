@@ -772,19 +772,32 @@ ${foundationCSS}
     const hasScripts = gtmId || clarityId || tiktokId || metaPixelId;
 
     // Generate Layout
-    // We need to inject the Google Fonts link here
-    const fontLink = `<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-<link
-  href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Poppins:wght@600;700&display=swap"
-  rel="stylesheet"
-/>
-<link
-  href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
-  rel="stylesheet"
-/>`;
+    // We use next/font/google for better performance (auto-self-hosting, font-display: swap)
+    const fontConfig = `import { Lato, Poppins, Plus_Jakarta_Sans } from "next/font/google";
+
+const lato = Lato({
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+  variable: "--font-lato",
+  display: "swap",
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  variable: "--font-poppins",
+  display: "swap",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-plus-jakarta",
+  display: "swap",
+});`;
 
     appFolder.file("layout.js", `import "./globals.css";
+${fontConfig}
 ${hasScripts ? 'import Script from "next/script";' : ''}
 
 export const metadata = {
@@ -808,10 +821,9 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable}\`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        ${fontLink}
         
         {/* Favicon */}
         ${favicon ? `<link rel="icon" href="${favicon}" />` : ''}

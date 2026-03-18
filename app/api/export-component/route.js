@@ -63,7 +63,9 @@ export async function POST(req) {
             const param = filename.replace('.js', '');
             const componentName = param.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join('');
 
-            const isTemplate = targetKey.startsWith('app/templates') || targetKey.startsWith('app/foundation');
+            const isTemplate = targetKey.startsWith('app/templates') || 
+                              targetKey.startsWith('app/foundation') || 
+                              targetKey.includes('page-builder/utils/builder');
 
             if (isTemplate) {
                 content = cleanBuilderContent(content, componentName);
