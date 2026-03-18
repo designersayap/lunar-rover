@@ -5,8 +5,42 @@ const path = require('path');
 const SOURCE_DIRS = [
     'app/templates',
     'app/page-builder',
-    'app/foundation'
+    'app/foundation',
+    'public/fonts'
 ];
+
+function getFontMetadata(allFiles) {
+    const fonts = {};
+    allFiles.forEach(file => {
+        if (file.path.startsWith('public/fonts/') && file.isBinary) {
+            const parts = file.path.split('/');
+            if (parts.length >= 4) {
+                const family = parts[2].replace(/_/g, ' ');
+                if (!fonts[family]) fonts[family] = [];
+                
+                const filename = parts[parts.length - 1];
+                let weight = "400";
+                let style = "normal";
+
+                if (filename.toLowerCase().includes('bold')) weight = "700";
+                if (filename.toLowerCase().includes('medium')) weight = "500";
+                if (filename.toLowerCase().includes('semibold')) weight = "600";
+                if (filename.toLowerCase().includes('light')) weight = "300";
+                if (filename.toLowerCase().includes('thin')) weight = "100";
+                if (filename.toLowerCase().includes('black')) weight = "900";
+                if (filename.toLowerCase().includes('italic')) style = "italic";
+
+                fonts[family].push({
+                    path: `../fonts/${filename}`,
+                    weight,
+                    style,
+                    originalPath: file.path
+                });
+            }
+        }
+    });
+    return fonts;
+}
 
 const OUTPUT_FILE = 'app/api/export-component/component-map.js';
 
@@ -66,6 +100,9 @@ function generateMap() {
             isBinary: file.isBinary
         };
     });
+
+    // Add Font Metadata
+    map['__fonts__'] = getFontMetadata(allFiles);
 
     // Ensure directory exists
     const outDir = path.dirname(OUTPUT_FILE);

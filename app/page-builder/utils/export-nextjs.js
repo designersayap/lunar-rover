@@ -60,6 +60,18 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
         console.error("Error fetching sticky manager", e);
     }
 
+    // 1c. Fetch Font Metadata
+    let fontMetadata = {};
+    try {
+        const fontRes = await fetch('/api/export-component', { method: 'GET' });
+        if (fontRes.ok) {
+            const data = await fontRes.json();
+            fontMetadata = data.fonts || {};
+        }
+    } catch (e) {
+        console.error("Error fetching font metadata", e);
+    }
+
 
     // 1d. Define API Routes (For Forms)
     const confluentApiContent = `export const runtime = 'edge';
@@ -773,9 +785,8 @@ ${foundationCSS}
 
     // Generate Layout
     // We use next/font/google and next/font/local for optimal performance
-    const fontConfig = `import { Lato, Poppins, Plus_Jakarta_Sans } from "next/font/google";
-import localFont from "next/font/local";
-
+    let fontImports = 'import { Lato, Poppins, Plus_Jakarta_Sans } from "next/font/google";\n';
+    let fontDeclarations = `
 const lato = Lato({
   subsets: ["latin"],
   weight: ["300", "400", "700"],
@@ -795,23 +806,25 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   weight: ["400", "600", "700"],
   variable: "--font-plus-jakarta",
   display: "swap",
-});
-
-const googleSans = localFont({
-  src: [
-    {
-      path: "../fonts/GoogleSans-Regular.ttf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../fonts/GoogleSans-Bold.ttf",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-  variable: "--font-google-sans",
 });`;
+
+    let localFontVariables = [];
+    const localFontEntries = Object.entries(fontMetadata);
+    
+    if (localFontEntries.length > 0) {
+        fontImports += 'import localFont from "next/font/local";\n';
+        localFontEntries.forEach(([family, variations]) => {
+            const variableName = family.toLowerCase().replace(/[^a-z0-9]/g, '');
+            localFontVariables.push(`\${${variableName}.variable}`);
+            
+            fontDeclarations += `\n\nconst \${variableName} = localFont({
+  src: \${JSON.stringify(variations.map(v => ({ path: v.path, weight: v.weight, style: v.style })), null, 2)},
+  variable: "--font-\${family.toLowerCase().replace(/\\s+/g, '-')}",
+});`;
+        });
+    }
+
+    const fontConfig = fontImports + fontDeclarations;
 
     appFolder.file("layout.js", `import "./globals.css";
 ${fontConfig}
@@ -838,7 +851,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable} \${googleSans.variable}\`}>
+    <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable} \${localFontVariables.join(' ')}\`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
@@ -1168,15 +1181,13 @@ export default function RootLayout({ children }) {
     // 4b. Bundle Local Fonts
     try {
         const fontsFolder = zip.folder("fonts");
-        const fontFiles = [
-            "Google_Sans/GoogleSans-Regular.ttf",
-            "Google_Sans/GoogleSans-Bold.ttf"
-        ];
-        for (const fontFile of fontFiles) {
-            const fontRes = await fetch(`/fonts/${fontFile}`);
+        const allFontFiles = Object.values(fontMetadata).flat();
+        
+        for (const fontInfo of allFontFiles) {
+            const fontRes = await fetch(`/\${fontInfo.originalPath}`);
             if (fontRes.ok) {
                 const blob = await fontRes.blob();
-                const filename = fontFile.split('/').pop();
+                const filename = fontInfo.path.split('/').pop();
                 fontsFolder.file(filename, blob);
             }
         }
@@ -1300,7 +1311,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable} \${googleSans.variable}\`}>
+    <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable} \${localFontVariables.join(' ')}\`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         

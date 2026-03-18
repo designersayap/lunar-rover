@@ -96,12 +96,14 @@ export async function POST(req) {
 
 export async function GET() {
     // DEBUG: return the content of feature-image-left to see what's in the map
-    const debugKey = 'app/templates/feature/feature-image-left.js';
     const entry = componentMap[debugKey];
+    const fonts = componentMap['__fonts__'] || {};
+    
     return NextResponse.json({
         status: 'Export API Ready (Edge Compatible)',
         debugKey,
         exists: !!entry,
-        preview: entry ? entry.content.substring(0, 500) : 'N/A'
+        preview: entry ? entry.content.substring(0, 500) : 'N/A',
+        fonts
     });
 }
