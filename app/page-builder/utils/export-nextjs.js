@@ -1240,6 +1240,7 @@ ${foundationCSS}
 ` });
             fileList.push({
                 path: "app/layout.js", content: `import "./globals.css";
+${fontConfig}
 ${hasScripts ? 'import Script from "next/script";' : ''}
 
 export const metadata = {
@@ -1263,10 +1264,9 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable}\`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        ${fontLink}
         
         {/* Favicon */}
         ${favicon ? `<link rel="icon" href="${favicon}" />` : ''}
