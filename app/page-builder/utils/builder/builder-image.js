@@ -138,6 +138,10 @@ export default function BuilderImage({
     // Lazy load logic for videos
     useEffect(() => {
         const isVideo = isVideoFile(src) || isYoutube(src) || isVimeo(src);
+        const hasSrc = src && src !== "";
+
+        if (!hasSrc) return; // Wait for source
+
         if (!isVideo || typeof window === 'undefined' || !window.IntersectionObserver) {
             setShouldLoad(true);
             return;
