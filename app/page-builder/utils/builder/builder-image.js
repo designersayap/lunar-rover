@@ -144,11 +144,20 @@ export default function BuilderImage({
         }
 
         const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                setShouldLoad(true);
-                observer.disconnect();
-            }
-        }, { threshold: 0.1 });
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    console.log(`[LazyLoad] Triggering for ${elementId}`, {
+                        top: entry.boundingClientRect.top,
+                        height: entry.boundingClientRect.height
+                    });
+                    setShouldLoad(true);
+                    observer.disconnect();
+                }
+            });
+        }, { 
+            threshold: 0.01,
+            rootMargin: '50px' 
+        });
 
         if (wrapperRef.current) {
             observer.observe(wrapperRef.current);
