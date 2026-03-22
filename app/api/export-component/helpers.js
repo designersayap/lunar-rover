@@ -411,6 +411,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
               style={{ ...mediaStyle, border: 'none' }}
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
+              loading="lazy"
               title="Vimeo video"
           />
       );

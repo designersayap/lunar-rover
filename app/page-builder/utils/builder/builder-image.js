@@ -66,6 +66,7 @@ export default function BuilderImage({
     const wrapperRef = useRef(null);
     const [overlayRect, setOverlayRect] = useState(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
+    const [shouldLoad, setShouldLoad] = useState(false);
 
     // Use layout effect to prevent visual jitter on selection
     const safeUseLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
@@ -102,6 +103,28 @@ export default function BuilderImage({
             };
         }
     }, [isActive, showSettings, readOnly]);
+
+    // Lazy load logic for videos
+    useEffect(() => {
+        // Always load immediately in the builder (staging) to avoid frustration
+        if (isStaging || !isVideoFile(src) || typeof window === 'undefined' || !window.IntersectionObserver) {
+            setShouldLoad(true);
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                setShouldLoad(true);
+                observer.disconnect();
+            }
+        }, { threshold: 0.1 });
+
+        if (wrapperRef.current) {
+            observer.observe(wrapperRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [src, isStaging]);
 
     // Context for canvas width simulation
     const { canvasWidth } = useCanvas();
@@ -345,7 +368,8 @@ export default function BuilderImage({
                 style={{ ...finalStyle, border: 'none' }}
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
-                title="Vimeo video"
+                loading="lazy"
+                title="video"
             />
         );
     } else if (isVideoFile(src)) {
@@ -353,13 +377,18 @@ export default function BuilderImage({
             <video
                 id={elementId}
                 style={finalStyle}
-                autoPlay
+                autoPlay={shouldLoad}
                 loop
                 muted
                 playsInline
+                preload={shouldLoad ? "auto" : "none"}
             >
-                {mobileSrc && <source src={mobileSrc} media="(max-width: 767px)" />}
-                <source src={src} />
+                {shouldLoad && (
+                    <>
+                        {mobileSrc && <source src={mobileSrc} media="(max-width: 767px)" />}
+                        <source src={src} />
+                    </>
+                )}
                 Your browser does not support the video tag.
             </video>
         );
