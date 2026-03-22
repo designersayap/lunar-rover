@@ -351,29 +351,29 @@ export default function BuilderImage({
 
     let mediaContent;
     if (isYoutube(src)) {
-        mediaContent = (
+        mediaContent = shouldLoad ? (
             <iframe
                 id={elementId}
-                src={shouldLoad ? getYoutubeEmbedUrl(src) : ""}
+                src={getYoutubeEmbedUrl(src)}
                 style={{ ...finalStyle, border: 'none' }}
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
                 loading="lazy"
                 title="video"
             />
-        );
+        ) : <div style={finalStyle} />;
     } else if (isVimeo(src)) {
-        mediaContent = (
+        mediaContent = shouldLoad ? (
             <iframe
                 id={elementId}
-                src={shouldLoad ? getVimeoEmbedUrl(src) : ""}
+                src={getVimeoEmbedUrl(src)}
                 style={{ ...finalStyle, border: 'none' }}
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
                 loading="lazy"
                 title="video"
             />
-        );
+        ) : <div style={finalStyle} />;
     } else if (isVideoFile(src)) {
         mediaContent = (
             <video
