@@ -137,9 +137,8 @@ export default function BuilderImage({
 
     // Lazy load logic for videos
     useEffect(() => {
-        // Always load immediately in the builder (staging) to avoid frustration
         const isVideo = isVideoFile(src) || isYoutube(src) || isVimeo(src);
-        if (isStaging || !isVideo || typeof window === 'undefined' || !window.IntersectionObserver) {
+        if (!isVideo || typeof window === 'undefined' || !window.IntersectionObserver) {
             setShouldLoad(true);
             return;
         }
