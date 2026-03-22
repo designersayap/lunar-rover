@@ -82,45 +82,56 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
     useEffect(() => {
         if (stackedIndices.length === 0) return;
 
+        // Cache for DOM elements to avoid querySelector in scroll handler
+        const elementCache = {};
+
         const handleScroll = () => {
             stackedIndices.forEach(index => {
                 const container = refs.current[index];
                 if (!container) return;
 
-                const overlay = container.querySelector('.stacked-white-overlay');
-                const content = container.querySelector('.stacked-content-blur');
+                if (!elementCache[index]) {
+                    elementCache[index] = {
+                        overlay: container.querySelector('.stacked-white-overlay'),
+                        content: container.querySelector('.stacked-content-blur'),
+                        next: container.nextElementSibling,
+                        lastProgress: -1
+                    };
+                }
+
+                const cache = elementCache[index];
+                const { overlay, content, next: nextElement } = cache;
                 const isBlurred = blurIndices.includes(index);
 
-                // Start searching for the next visible element (the one that slides over)
-                let nextElement = container.nextElementSibling;
-                // Skip if no next element found immediately
                 if (!nextElement) return;
 
-                // Logic for NON-BLURRED stacked items
                 if (!isBlurred) {
-                    // Reset effects if they were present
-                    if (overlay) overlay.style.opacity = 0;
-                    if (content) content.style.filter = 'none';
+                    // Logic for NON-BLURRED stacked items: Only run once or if cache invalidated
+                    if (cache.lastProgress === 0) return;
+                    
+                    if (overlay && overlay.style.opacity !== '0') overlay.style.opacity = '0';
+                    if (content && content.style.filter !== 'none') content.style.filter = 'none';
 
-                    // Enforce White Background on all subsequent siblings
                     let sibling = nextElement;
                     let count = 0;
-                    while (sibling && count < 20) {
+                    const targetBg = 'var(--background-neutral--default, #ffffff)';
+                    
+                    while (sibling && count < 8) { 
                         if (sibling.style) {
-                            sibling.style.setProperty('background-color', 'var(--background-neutral--default, #ffffff)', 'important');
-
-                            // Ensure the covering element is positioned and has higher z-index than the sticky element (zIndex: 0)
-                            // otherwise the sticky element might visually sit on top of the static sibling.
-                            const computed = getComputedStyle(sibling);
-                            if (computed.position === 'static') {
+                            if (sibling.style.backgroundColor !== targetBg) {
+                                sibling.style.setProperty('background-color', targetBg, 'important');
+                            }
+                            if (sibling.style.position !== 'relative') {
                                 sibling.style.setProperty('position', 'relative', 'important');
                             }
-                            // 10 is safe enough to be above 0 but below dropdowns/modals (usually 1000+)
-                            sibling.style.setProperty('z-index', '10', 'important');
+                            if (sibling.style.zIndex !== '10') {
+                                sibling.style.setProperty('z-index', '10', 'important');
+                            }
                         }
                         sibling = sibling.nextElementSibling;
                         count++;
                     }
+                    cache.lastProgress = 0;
                     return;
                 }
 
@@ -128,7 +139,6 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                 const rect = nextElement.getBoundingClientRect();
                 const winH = window.innerHeight;
 
-                // Effect range logic
                 const startPoint = winH;
                 const endPoint = winH * 0.5;
                 const current = rect.top;
@@ -139,33 +149,32 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
                 }
                 progress = Math.max(0, Math.min(1, progress));
 
-                // Apply Overlay & Blur
-                if (overlay) overlay.style.opacity = progress;
-                if (content) content.style.filter = `blur(${progress * 10}px)`;
+                // Throttling by progress change
+                if (Math.abs(progress - cache.lastProgress) < 0.005) return;
+                cache.lastProgress = progress;
 
-                // Apply Blur Reveal to Next Component (starts blurred 10px, becomes clear 0px)
-                if (nextElement && nextElement.style) {
-                    const inverseBlur = (1 - progress) * 10;
-                    nextElement.style.filter = `blur(${inverseBlur}px)`;
+                if (overlay) {
+                    overlay.style.opacity = progress.toFixed(3);
+                }
+                if (content) {
+                    content.style.filter = `blur(${progress * 10}px)`;
                 }
 
-                // Manage Next Element Background (Transparent -> White)
-                // When overlapping (progress < 1), it needs to be transparent to show the blur.
-                // When fully scrolled over (progress >= 1), it should be white (or opaque) to signify the end of the section.
-                const targetBg = progress >= 1 ? 'var(--background-neutral--default, #ffffff)' : 'transparent';
+                if (nextElement.style) {
+                    const inverseBlur = (1 - progress) * 10;
+                    nextElement.style.filter = `blur(${inverseBlur.toFixed(2)}px)`;
+                }
+
+                const targetBg = progress >= 0.99 ? 'var(--background-neutral--default, #ffffff)' : 'transparent';
 
                 let sibling = nextElement;
                 let count = 0;
-                while (sibling && count < 20) {
+                while (sibling && count < 5) { 
                     if (sibling.style) {
-                        // Only update if changed to minimize main-thread work
                         if (sibling.style.backgroundColor !== targetBg) {
                             sibling.style.setProperty('background-color', targetBg, 'important');
                         }
-
-                        // Ensure the covering element is positioned and has higher z-index than the sticky element (zIndex: 0)
-                        const computed = getComputedStyle(sibling);
-                        if (computed.position === 'static') {
+                        if (sibling.style.position !== 'relative') {
                             sibling.style.setProperty('position', 'relative', 'important');
                         }
                         if (sibling.style.zIndex !== '10') {
@@ -178,14 +187,24 @@ export default function StickyManager({ children, stickyIndices = [], stackedInd
             });
         };
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        window.addEventListener('resize', handleScroll);
+        let rafId = null;
+        const throttledScroll = () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(() => {
+                handleScroll();
+                rafId = null;
+            });
+        };
+
+        window.addEventListener('scroll', throttledScroll, { passive: true });
+        window.addEventListener('resize', throttledScroll);
         // Initial check
         handleScroll();
 
         return () => {
-            window.removeEventListener('scroll', handleScroll);
-            window.removeEventListener('resize', handleScroll);
+            window.removeEventListener('scroll', throttledScroll);
+            window.removeEventListener('resize', throttledScroll);
+            if (rafId) cancelAnimationFrame(rafId);
 
             // Cleanup phase: Reset backgrounds on unmount/update
             stackedIndices.forEach(index => {

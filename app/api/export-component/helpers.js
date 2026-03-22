@@ -109,7 +109,7 @@ export function cleanBuilderContent(src, componentName) {
   if ((hasBuilderLink || hasBuilderButton || hasBuilderImage) && !src.includes("from 'next/link'") && !src.includes('from "next/link"')) {
     const useClientRegex = /^(['"]use client['"];?)\s*/;
     const nextLinkImport = "import Link from 'next/link';\n";
-    const nextImageImport = hasBuilderImage ? "import Image from 'next/image';\n" : "";
+    const nextImageImport = "";
     
     if (useClientRegex.test(src)) {
       src = src.replace(useClientRegex, `$1\n${nextLinkImport}${nextImageImport}`);
@@ -190,32 +190,15 @@ const BuilderText = ({ tagName = 'p', content, className, style, children, id, s
   finalId = finalId ? finalId.replace(/-+/g, '-') : undefined;
 
   const finalClassName = \`builder-text \${className || ''} \${!content && !children ? 'empty-builder-text' : ''}\`.trim();
+  const title = tooltipIfTruncated ? content : undefined;
 
-  // Basic Truncation Tooltip Fallback
-  const [isHovered, setIsHovered] = useState(false);
-  const title = (tooltipIfTruncated && isHovered) ? content : undefined;
-
-  if (content) {
-    return (
-      <Tag 
-        id={finalId} 
-        className={finalClassName} 
-        style={style} 
-        dangerouslySetInnerHTML={{ __html: content }} 
-        title={title}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      />
-    );
-  }
   return (
-    <Tag 
-      id={finalId} 
-      className={finalClassName} 
+    <Tag
+      id={finalId}
+      className={finalClassName}
       style={style}
+      dangerouslySetInnerHTML={content ? { __html: content } : undefined}
       title={title}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       {children}
     </Tag>
@@ -267,6 +250,7 @@ const BuilderButton = ({ label, href, className, style, children, linkType, targ
         href="#"
         className={className}
         style={{ ...style, cursor: 'pointer', textDecoration: 'none' }}
+        rel="noopener"
         onClick={(e) => {
              e.preventDefault();
              openDialog(targetDialogId);
@@ -282,6 +266,7 @@ const BuilderButton = ({ label, href, className, style, children, linkType, targ
       href={href || '#'} 
       className={className} 
       style={style}
+      rel="noopener"
     >
         {content}
     </a>
@@ -317,6 +302,7 @@ const BuilderLink = ({ label, href, className, style, children, linkType, target
         href="#"
         className={className}
         style={style}
+        rel="noopener"
         onClick={(e) => {
             e.preventDefault();
             openDialog(targetDialogId);
@@ -332,6 +318,7 @@ const BuilderLink = ({ label, href, className, style, children, linkType, target
       href={href || '#'} 
       className={className} 
       style={style}
+      rel="noopener"
     >
       {content}
     </a>
@@ -446,15 +433,15 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
       );
   } else {
       mediaContent = (
-        <Image 
+        <img 
           id={!isLink ? finalId : undefined}
           src={imageSrc} 
           alt={effectiveAlt} 
           className={mediaClass} 
           style={mediaStyle} 
-          fill
-          priority={priority}
-          sizes="(max-width: 768px) 100vw, 80vw"
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : undefined}
+          decoding="async"
         />
       );
   }
@@ -474,6 +461,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
                 href="#"
                 className={baseClassName}
                 style={{ ...wrapperStyle, cursor: 'pointer' }}
+                rel="noopener"
                 onClick={(e) => {
                      e.preventDefault();
                      openDialog(targetDialogId);
@@ -490,6 +478,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
          href={href || '#'} 
          className={baseClassName} 
          style={wrapperStyle}
+         rel="noopener"
       >
         {content}
       </a>

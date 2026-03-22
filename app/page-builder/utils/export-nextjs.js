@@ -30,7 +30,12 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
             body: JSON.stringify({ filePath: 'app/page-builder/utils/section-utils.js' })
         });
         if (utilsRes.ok) {
-            const { content } = await utilsRes.json();
+            let { content } = await utilsRes.json();
+            if (content && typeof content === 'string' && /use(State|Effect|Context|Ref|Callback|Memo)/.test(content)) {
+                if (!content.trim().startsWith('"use client"') && !content.trim().startsWith("'use client'")) {
+                    content = `"use client";\n${content}`;
+                }
+            }
             zip.folder("utils").file("section-utils.js", content);
             previewMap.set("utils/section-utils.js", { path: "utils/section-utils.js", content });
         } else {
@@ -49,7 +54,12 @@ export const handleExportNextjs = async (selectedComponents, activeThemePath = '
             body: JSON.stringify({ filePath: 'app/page-builder/utils/sticky-manager.js' })
         });
         if (stickyRes.ok) {
-            const { content } = await stickyRes.json();
+            let { content } = await stickyRes.json();
+            if (content && typeof content === 'string' && /use(State|Effect|Context|Ref|Callback|Memo)/.test(content)) {
+                if (!content.trim().startsWith('"use client"') && !content.trim().startsWith("'use client'")) {
+                    content = `"use client";\n${content}`;
+                }
+            }
             zip.folder("utils").file("sticky-manager.js", content);
             previewMap.set("utils/sticky-manager.js", { path: "utils/sticky-manager.js", content });
         } else {
@@ -314,8 +324,15 @@ export async function POST(request) {
                 if (response.ok) {
                     const data = await response.json();
                     content = data.content;
-
-                    // Handle binary content
+                    
+                    // Auto-inject "use client" for components with hooks or interactivity
+                    if (!data.isBinary && typeof content === 'string') {
+                        const hasHooks = /use(State|Effect|Context|Ref|Callback|Memo|LayoutEffect|Id|Transition|DeferredValue|SyncExternalStore|ActionState|FormStatus|Optimistic|ImperativeHandle|InsertionEffect|DebugValue)|on[A-Z][a-zA-Z]*\s*=|openDialog|createUpdateHandler|update\(/.test(content);
+                        if (hasHooks && !content.trim().startsWith('"use client"') && !content.trim().startsWith("'use client'")) {
+                            content = `"use client";\n${content}`;
+                        }
+                    }
+                    
                     if (data.isBinary) {
                         componentsFolder.file(filename, content, { base64: true });
                         previewMap.set(`components/${filename}`, { path: `components/${filename}`, content, base64: true });
@@ -328,6 +345,13 @@ export async function POST(request) {
                     throw new Error(`Failed to fetch component: ${filePath}. Status: ${response.status}. Error: ${errText}`);
                 }
             } else {
+                // Auto-inject "use client" for components with hooks (for direct content provides)
+                if (content && typeof content === 'string') {
+                    const hasHooks = /use(State|Effect|Context|Ref|Callback|Memo|LayoutEffect|Id|Transition|DeferredValue|SyncExternalStore|ActionState|FormStatus|Optimistic|ImperativeHandle|InsertionEffect|DebugValue)/.test(content);
+                    if (hasHooks && !content.trim().startsWith('"use client"') && !content.trim().startsWith("'use client'")) {
+                        content = `"use client";\n${content}`;
+                    }
+                }
                 componentsFolder.file(filename, content);
                 previewMap.set(`components/${filename}`, { path: `components/${filename}`, content });
             }
@@ -440,6 +464,14 @@ export async function POST(request) {
                 );
             }
 
+            // Final "use client" injection check before writing to zip/preview
+            if (content && typeof content === 'string') {
+                const hasHooks = /use(State|Effect|Context|Ref|Callback|Memo|LayoutEffect|Id|Transition|DeferredValue|SyncExternalStore|ActionState|FormStatus|Optimistic|ImperativeHandle|InsertionEffect|DebugValue)|on[A-Z][a-zA-Z]*\s*=|openDialog|createUpdateHandler|update\(/.test(content);
+                if (hasHooks && !content.trim().startsWith('"use client"') && !content.trim().startsWith("'use client'")) {
+                    content = `"use client";\n${content}`;
+                }
+            }
+
             // Update file in zip with rewritten content
             componentsFolder.file(filename, content);
             previewMap.set(`components/${filename}`, { path: `components/${filename}`, content });
@@ -452,6 +484,8 @@ export async function POST(request) {
 
     // This allows both the bundler loop and the page generator loop to see the updated props.
     const processedComponents = JSON.parse(JSON.stringify(selectedComponents));
+    let lcpImageUrl = ""; // Capture LCP image URL for preloading in layout.js
+    let lcpImageUrl2 = ""; // Capture second candidate for LCP preload
 
     // --- Placeholders Injection (Do this upfront) ---
     const injectPlaceholders = (obj) => {
@@ -626,6 +660,15 @@ export async function POST(request) {
                     const escapedPath = imgPath.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
                     const regex = new RegExp(`(["'])${escapedPath}(["'])`, 'g');
                     tempContent = tempContent.replace(regex, `$1${targetPath}$2`);
+                    
+                    // Re-inject "use client" if mandatory after rewriting
+                    if (tempContent && typeof tempContent === 'string') {
+                        const hasHooks = /use(State|Effect|Context|Ref|Callback|Memo|LayoutEffect|Id|Transition|DeferredValue|SyncExternalStore|ActionState|FormStatus|Optimistic|ImperativeHandle|InsertionEffect|DebugValue)|on[A-Z][a-zA-Z]*\s*=|openDialog|createUpdateHandler|update\(/.test(tempContent);
+                        if (hasHooks && !tempContent.trim().startsWith('"use client"') && !tempContent.trim().startsWith("'use client'")) {
+                            tempContent = `"use client";\n${tempContent}`;
+                        }
+                    }
+
                     componentsFolder.file(filename, tempContent);
                     previewMap.set(`components/${filename}`, { path: `components/${filename}`, content: tempContent });
                 }
@@ -633,6 +676,77 @@ export async function POST(request) {
         }
     }
     // --- End Image Scanning ---
+    
+    // Capture LCP image URLs (first 2 images found, including backgrounds) to enable preloading in RootLayout
+    const lcpCandidates = [];
+    const findLcpCandidates = (obj) => {
+        if (!obj || lcpCandidates.length >= 2) return;
+        
+        if (typeof obj === 'object') {
+            const props = obj.props || {};
+            
+            // Helper to add candidate if valid
+            const addCandidate = (url) => {
+                if (typeof url === 'string' && url.length > 0 && !url.startsWith('data:') && !lcpCandidates.includes(url)) {
+                     // Check if it's an image or a path that likely contains one
+                     if (url.match(/\.(png|jpg|jpeg|gif|svg|webp|ico|image)(\?.*)?$/i) || url.includes('/assets/')) {
+                         if (lcpCandidates.length < 2) lcpCandidates.push(url);
+                     }
+                }
+            };
+
+            // 1. Check for BuilderImage src
+            if ((obj.id === 'image' || obj.componentName === 'BuilderImage') && props.src) {
+                addCandidate(props.src);
+            }
+            
+            // 2. Check for background images or images in standard keys (common for heroes/sections)
+            Object.entries(props).forEach(([key, val]) => {
+                const isImageKey = /image|logo|avatar|icon|background/i.test(key) && !/id$|url$|link$|ratio$|portrait$|visible$/i.test(key);
+                if (isImageKey && typeof val === 'string') {
+                    addCandidate(val);
+                }
+                
+                // Also check for background-image within style objects
+                if (key === 'style' && val && typeof val === 'object') {
+                    Object.entries(val).forEach(([sKey, sVal]) => {
+                        if (/backgroundImage|background/i.test(sKey) && typeof sVal === 'string') {
+                            const urlMatch = sVal.match(/url\(['"]?([^'")]+)['"]?\)/);
+                            if (urlMatch) addCandidate(urlMatch[1]);
+                        }
+                    });
+                }
+            });
+
+            // 3. Recurse into children/components
+            const children = obj.components || props.components || props.children;
+            if (Array.isArray(children)) {
+                children.forEach(findLcpCandidates);
+            } else if (typeof children === 'object' && children !== null) {
+                findLcpCandidates(children);
+            }
+            
+            // 4. Recurse into other sub-objects (including nested arrays) if we still need candidates
+            if (lcpCandidates.length < 2) {
+                Object.entries(obj).forEach(([key, val]) => {
+                    if (key !== 'components' && key !== 'props' && val && typeof val === 'object') {
+                        if (Array.isArray(val)) {
+                            val.forEach(findLcpCandidates);
+                        } else {
+                            findLcpCandidates(val);
+                        }
+                    }
+                });
+            }
+        }
+    };
+
+    processedComponents.forEach(findLcpCandidates);
+    // Ensure all candidates have a leading slash if they are in assets
+    const finalLcpCandidates = lcpCandidates.map(url => {
+        if (url.startsWith('assets/')) return '/' + url;
+        return url;
+    });
 
     // --- 3. Bundle Fonts (Removed: Fonts referenced in CSS are handled by asset bundler, or served via Google Fonts) ---
     // (This block previously listed and fetched all fonts, which created duplicates in public/fonts when they were also bundled to public/assets)
@@ -788,7 +902,7 @@ export async function POST(request) {
     }, null, 2));
 
     // Configs
-    zip.file("next.config.mjs", "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n  output: 'export',\n};\nexport default nextConfig;\n");
+    zip.file("next.config.mjs", "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n  output: 'export',\n  images: {\n    unoptimized: true,\n  },\n  productionBrowserSourceMaps: true,\n};\nexport default nextConfig;\n");
     zip.file("jsconfig.json", JSON.stringify({ compilerOptions: { paths: { "@/*": ["./*"] } } }, null, 2));
 
     // App Directory
@@ -804,15 +918,17 @@ ${foundationCSS}
 
     // layout.js
     const analytics = options.analytics || {};
-    const title = analytics.websiteTitle || "Lunar Export";
-    const description = analytics.metaDescription || "Exported from Lunar Page Builder";
+    const title = (analytics.websiteTitle?.trim() || "Lunar Export");
+    const description = (analytics.metaDescription?.trim() || "A premium web experience built with Lunar.");
     const keywords = analytics.metaKeywords || "";
     const favicon = analytics.favicon || "";
     const canonicalUrl = analytics.canonicalUrl || "";
     const ogTitle = analytics.ogTitle || "";
     const ogDescription = analytics.ogDescription || "";
     const ogImage = analytics.ogImage || "";
-    let customMetaTags = analytics.metaTag || "";
+    let customMetaTags = (analytics.metaTag || "")
+        .replace(/user-scalable=no/g, 'user-scalable=yes')
+        .replace(/maximum-scale=[0-4](\.[0-9]+)?/g, 'maximum-scale=5');
     // Safety check: specific field must contain HTML tags. if user enters raw text, wrap in comment to prevent build error.
     if (customMetaTags && !customMetaTags.trim().startsWith('<')) {
         customMetaTags = `{/* Invalid Meta Tag (Must be valid HTML): ${customMetaTags.replace(/\*\//g, '* /')} */}`;
@@ -881,38 +997,27 @@ ${hasScripts ? 'import Script from "next/script";' : ''}
 export const metadata = {
   title: "${title.replace(/"/g, '\\"')}",
   description: "${description.replace(/"/g, '\\"')}",
-  ${keywords ? `keywords: "${keywords.replace(/"/g, '\\"')}",` : ''}
-  ${favicon ? `icons: { icon: "${favicon.replace(/"/g, '\\"')}" },` : ''}
-  ${canonicalUrl ? `alternates: { canonical: "${canonicalUrl.replace(/"/g, '\\"')}" },` : ''}
-  openGraph: {
-    ${ogTitle ? `title: "${ogTitle.replace(/"/g, '\\"')}",` : ''}
-    ${ogDescription ? `description: "${ogDescription.replace(/"/g, '\\"')}",` : ''}
-    ${ogImage ? `images: [{ url: "${ogImage.replace(/"/g, '\\"')}" }],` : ''}
-  },
-};
-
-export const viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable} ${localFontVariables.join(' ')}\`}>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
-        {/* Favicon */}
-        ${favicon ? `<link rel="icon" href="${favicon}" />` : ''}
-        
-        {/* Open Graph */}
-        <meta property="og:title" content="${ogTitle.replace(/"/g, '\\"')}" />
-        <meta property="og:description" content="${ogDescription.replace(/"/g, '\\"')}" />
-        <meta property="og:image" content="${ogImage}" />
+        <title>${title.replace(/"/g, '\\"')}</title>
+        <meta name="description" content="${description.replace(/"/g, '\\"')}" />
+        <meta name="robots" content="index,follow" />
+        ${canonicalUrl ? `<link rel="canonical" href="${canonicalUrl.replace(/"/g, '\\"')}" />` : ''}
+        ${ogTitle ? `<meta property="og:title" content="${ogTitle.replace(/"/g, '\\"')}" />` : ''}
+        ${ogDescription ? `<meta property="og:description" content="${ogDescription.replace(/"/g, '\\"')}" />` : ''}
+        ${ogImage ? `<meta property="og:image" content="${ogImage.replace(/"/g, '\\"')}" />` : ''}
 
-        {/* Canonical URL */}
-        ${canonicalUrl ? `<link rel="canonical" href="${canonicalUrl}" />` : ''}
+        {/* Preconnect to Font domains */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+        {/* LCP Preload (Up to 2 candidates detected) */}
+        ${finalLcpCandidates.map(url => `<link rel="preload" as="image" href="${url}" fetchPriority="high" />`).join('\n        ')}
         ${customMetaTags}
       </head>
       <body>
@@ -920,7 +1025,7 @@ export default function RootLayout({ children }) {
         
         {/* Analytics Scripts */}
         ${gtmId ? `
-        <Script id="gtm" strategy="afterInteractive">
+        <Script id="gtm" strategy="afterInteractive" crossOrigin="anonymous">
           {\`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
           j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -930,7 +1035,7 @@ export default function RootLayout({ children }) {
         ` : ''}
 
         ${clarityId ? `
-        <Script id="microsoft-clarity" strategy="afterInteractive">
+        <Script id="microsoft-clarity" strategy="lazyOnload" crossOrigin="anonymous">
           {\`(function(c,l,a,r,i,t,y){
               c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
               t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
@@ -939,7 +1044,7 @@ export default function RootLayout({ children }) {
         </Script>` : ''}
 
         ${tiktokId ? `
-        <Script id="tiktok-pixel" strategy="afterInteractive">
+        <Script id="tiktok-pixel" strategy="lazyOnload" crossOrigin="anonymous">
           {\`!function (w, d, t) {
             w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t.align=2,ttq.push([t].concat(Array.prototype.slice.call(e,0)))};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq.setAndDefer(t,e),n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
             ttq.load('${tiktokId}');
@@ -948,7 +1053,7 @@ export default function RootLayout({ children }) {
         </Script>` : ''}
 
         ${metaPixelId ? `
-        <Script id="meta-pixel" strategy="afterInteractive">
+        <Script id="meta-pixel" strategy="lazyOnload" crossOrigin="anonymous">
           {\`!function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
           n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -967,15 +1072,62 @@ export default function RootLayout({ children }) {
 `);
 
     // page.js
-    let pageContent = `"use client";\n\n`;
+    let pageMetadata = `export const metadata = {
+  title: "${title.replace(/"/g, '\\"') || 'Lunar Export'}",
+  description: "${description.replace(/"/g, '\\"') || 'A premium web experience built with Lunar.'}",
+  robots: { index: true, follow: true },
+  ${keywords ? `keywords: "${keywords.replace(/"/g, '\\"')}",` : ''}
+  ${favicon ? `icons: { icon: "${favicon.replace(/"/g, '\\"')}" },` : ''}
+  ${canonicalUrl ? `alternates: { canonical: "${canonicalUrl.replace(/"/g, '\\"')}" },` : ''}
+  openGraph: {
+    ${ogTitle ? `title: "${ogTitle.replace(/"/g, '\\"')}",` : ''}
+    ${ogDescription ? `description: "${ogDescription.replace(/"/g, '\\"')}",` : ''}
+    ${ogImage ? `images: [{ url: "${ogImage.replace(/"/g, '\\"')}" }],` : ''}
+  },
+};
 
-    // Imports
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+\n\n`;
+
+    // Imports (Dynamic for components below the fold)
+    let pageImports = `import dynamic from "next/dynamic";\n`;
+    
+    // Sort components: keep first 3 static, others dynamic
+    const staticComponents = new Set();
+    processedComponents.slice(0, 3).forEach(item => {
+        const filePath = COMPONENT_PATHS[item.id];
+        if (filePath) staticComponents.add(getComponentName(filePath));
+        
+        // Also children of first 3 components and their props.components
+        const addChildren = (comp) => {
+            if (comp.components) comp.components.forEach(c => {
+                const p = COMPONENT_PATHS[c.id];
+                if (p) staticComponents.add(getComponentName(p));
+            });
+            if (comp.props?.components) comp.props.components.forEach(c => {
+                const p = COMPONENT_PATHS[c.id];
+                if (p) staticComponents.add(getComponentName(p));
+            });
+        };
+        addChildren(item);
+    });
+
     imports.forEach((path, name) => {
         const importPath = path.replace('./components', '@/components');
-        pageContent += `import ${name} from "${importPath}";\n`;
+        if (staticComponents.has(name)) {
+            pageImports += `import ${name} from "${importPath}";\n`;
+        } else {
+            pageImports += `const ${name} = dynamic(() => import("${importPath}"), { ssr: true });\n`;
+        }
     });
     // Import Sticky Manager
-    pageContent += `import StickyManager from "@/utils/sticky-manager";\n`;
+    pageImports += `import StickyManager from "@/utils/sticky-manager";\n`;
+
+    let pageContent = pageImports + '\n' + pageMetadata;
 
     pageContent += `\nexport default function ExportedPage() {\n`;
     pageContent += `  return (\n`;
@@ -1023,6 +1175,7 @@ export default function RootLayout({ children }) {
 
     pageContent += `      <StickyManager stickyIndices={[${stickyIndices.join(',')}]} stackedIndices={[${stackedIndices.join(',')}]} blurIndices={[${blurIndices.join(',')}]} overlayIndices={[${overlayIndices.join(',')}]}>\n`;
 
+    const state = { hasFirstImage: false };
     // Render Instances
     processedComponents.forEach((item, index) => {
         const filePath = COMPONENT_PATHS[item.id];
@@ -1049,6 +1202,7 @@ export default function RootLayout({ children }) {
         delete props.config; // Configuration specs
         delete props.isOpen; // Fix: Remove uncontrolled state prop
         delete props.thumbnail;
+        delete props.props; // Essential: Delete the original nested props object to avoid passing it as a "props" prop
 
         const finalSectionId = sectionIdMap.get(String(item.uniqueId));
         if (finalSectionId) {
@@ -1070,14 +1224,19 @@ export default function RootLayout({ children }) {
             Object.keys(newProps).forEach(key => {
                 const val = newProps[key];
 
-                // 1. Strings or Numbers: Check for Match
+                // 1. Remove Functions and Event Handlers (CRITICAL: Must be first to catch string-based handlers too)
+                if (typeof val === 'function' || (typeof key === 'string' && key.startsWith('on') && key.length > 2 && key[2] === key[2].toUpperCase())) {
+                    delete newProps[key];
+                    return;
+                }
+
+                // 2. Strings or Numbers: Check for Match
                 if (typeof val === 'string' || typeof val === 'number') {
                     const valStr = String(val);
                     // Check if the value ITSELF is a key in the map (Direct ID match)
                     if (sectionIdMap.has(valStr)) {
                         newProps[key] = sectionIdMap.get(valStr);
                     }
-
                     // Special: targetDialogId Logic (Case-insensitive check)
                     const lowerKey = key.toLowerCase();
                     if (lowerKey.includes('targetdialogid')) {
@@ -1162,6 +1321,10 @@ export default function RootLayout({ children }) {
                 else if (typeof val === 'object' && val !== null) {
                     newProps[key] = resolveProps(val);
                 }
+                // 3. Remove Functions and Event Handlers (Essential for Server Components)
+                else if (typeof val === 'function' || (typeof key === 'string' && key.startsWith('on') && key.length > 2 && key[2] === key[2].toUpperCase())) {
+                    delete newProps[key];
+                }
             });
             return newProps;
         };
@@ -1208,7 +1371,7 @@ export default function RootLayout({ children }) {
                 const isFirstImage = !state.hasFirstImage;
                 if (isFirstImage) {
                     state.hasFirstImage = true;
-                    return `src={${JSON.stringify(value)}} priority={true} fetchpriority="high"`;
+                    return `src={${JSON.stringify(value)}} priority={true} fetchPriority="high" loading="eager"`;
                 }
             }
 
@@ -1346,6 +1509,7 @@ const nextConfig = {
             },
         ],
     },
+    productionBrowserSourceMaps: true,
 };
 export default nextConfig;
 ` });
@@ -1364,38 +1528,27 @@ ${hasScripts ? 'import Script from "next/script";' : ''}
 export const metadata = {
   title: "${title.replace(/"/g, '\\"')}",
   description: "${description.replace(/"/g, '\\"')}",
-  ${keywords ? `keywords: "${keywords.replace(/"/g, '\\"')}",` : ''}
-  ${favicon ? `icons: { icon: "${favicon.replace(/"/g, '\\"')}" },` : ''}
-  ${canonicalUrl ? `alternates: { canonical: "${canonicalUrl.replace(/"/g, '\\"')}" },` : ''}
-  openGraph: {
-    ${ogTitle ? `title: "${ogTitle.replace(/"/g, '\\"')}",` : ''}
-    ${ogDescription ? `description: "${ogDescription.replace(/"/g, '\\"')}",` : ''}
-    ${ogImage ? `images: [{ url: "${ogImage.replace(/"/g, '\\"')}" }],` : ''}
-  },
-};
-
-export const viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={\`\${lato.variable} \${poppins.variable} \${plusJakartaSans.variable} ${localFontVariables.join(' ')}\`}>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
-        {/* Favicon */}
-        ${favicon ? `<link rel="icon" href="${favicon}" />` : ''}
-        
-        {/* Open Graph */}
-        <meta property="og:title" content="${ogTitle.replace(/"/g, '\\"')}" />
-        <meta property="og:description" content="${ogDescription.replace(/"/g, '\\"')}" />
-        <meta property="og:image" content="${ogImage}" />
+        <title>${title.replace(/"/g, '\\"')}</title>
+        <meta name="description" content="${description.replace(/"/g, '\\"')}" />
+        <meta name="robots" content="index,follow" />
+        ${canonicalUrl ? `<link rel="canonical" href="${canonicalUrl.replace(/"/g, '\\"')}" />` : ''}
+        ${ogTitle ? `<meta property="og:title" content="${ogTitle.replace(/"/g, '\\"')}" />` : ''}
+        ${ogDescription ? `<meta property="og:description" content="${ogDescription.replace(/"/g, '\\"')}" />` : ''}
+        ${ogImage ? `<meta property="og:image" content="${ogImage.replace(/"/g, '\\"')}" />` : ''}
 
-        {/* Canonical URL */}
-        ${canonicalUrl ? `<link rel="canonical" href="${canonicalUrl}" />` : ''}
+        {/* Preconnect to Font domains */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+        {/* LCP Preload (Up to 2 candidates detected) */}
+        ${finalLcpCandidates.map(url => `<link rel="preload" as="image" href="${url}" fetchPriority="high" />`).join('\n        ')}
         ${customMetaTags}
       </head>
       <body>
@@ -1403,7 +1556,7 @@ export default function RootLayout({ children }) {
         
         {/* Analytics Scripts */}
         ${gtmId ? `
-        <Script id="gtm" strategy="afterInteractive">
+        <Script id="gtm" strategy="afterInteractive" crossOrigin="anonymous">
           {\`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
           j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -1412,7 +1565,7 @@ export default function RootLayout({ children }) {
         </Script>` : ''}
 
         ${clarityId ? `
-        <Script id="microsoft-clarity" strategy="afterInteractive">
+        <Script id="microsoft-clarity" strategy="lazyOnload" crossOrigin="anonymous">
           {\`(function(c,l,a,r,i,t,y){
               c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
               t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
@@ -1421,7 +1574,7 @@ export default function RootLayout({ children }) {
         </Script>` : ''}
 
         ${tiktokId ? `
-        <Script id="tiktok-pixel" strategy="afterInteractive">
+        <Script id="tiktok-pixel" strategy="lazyOnload" crossOrigin="anonymous">
           {\`!function (w, d, t) {
             w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t.align=2,ttq.push([t].concat(Array.prototype.slice.call(e,0)))};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq.setAndDefer(t,e),n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
             ttq.load('${tiktokId}');
@@ -1430,7 +1583,7 @@ export default function RootLayout({ children }) {
         </Script>` : ''}
 
         ${metaPixelId ? `
-        <Script id="meta-pixel" strategy="afterInteractive">
+        <Script id="meta-pixel" strategy="lazyOnload" crossOrigin="anonymous">
           {\`!function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
           n.callMethod.apply(n,arguments):n.queue.push(arguments)};
