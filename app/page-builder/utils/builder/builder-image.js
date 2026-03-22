@@ -138,7 +138,8 @@ export default function BuilderImage({
     // Lazy load logic for videos
     useEffect(() => {
         // Always load immediately in the builder (staging) to avoid frustration
-        if (isStaging || !isVideoFile(src) || typeof window === 'undefined' || !window.IntersectionObserver) {
+        const isVideo = isVideoFile(src) || isYoutube(src) || isVimeo(src);
+        if (isStaging || !isVideo || typeof window === 'undefined' || !window.IntersectionObserver) {
             setShouldLoad(true);
             return;
         }
@@ -353,18 +354,19 @@ export default function BuilderImage({
         mediaContent = (
             <iframe
                 id={elementId}
-                src={getYoutubeEmbedUrl(src)}
+                src={shouldLoad ? getYoutubeEmbedUrl(src) : ""}
                 style={{ ...finalStyle, border: 'none' }}
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
-                title="YouTube video"
+                loading="lazy"
+                title="video"
             />
         );
     } else if (isVimeo(src)) {
         mediaContent = (
             <iframe
                 id={elementId}
-                src={getVimeoEmbedUrl(src)}
+                src={shouldLoad ? getVimeoEmbedUrl(src) : ""}
                 style={{ ...finalStyle, border: 'none' }}
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
