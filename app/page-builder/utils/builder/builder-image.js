@@ -14,6 +14,37 @@ import { useCanvas } from "@/app/page-builder/utils/canvas-context";
 
 export const defaultPlaceholder = DEFAULT_PLACEHOLDER_IMAGE;
 
+const isVideoFile = (url) => {
+    if (!url || typeof url !== 'string') return false;
+    return url.match(/\.(mp4|webm|ogg|mov)$/i);
+};
+
+const isYoutube = (url) => {
+    if (!url || typeof url !== 'string') return false;
+    return url.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/);
+};
+
+const isVimeo = (url) => {
+    if (!url || typeof url !== 'string') return false;
+    return url.match(/^(https?:\/\/)?(www\.)?(vimeo\.com)\/.+$/);
+};
+
+const getYoutubeEmbedUrl = (url) => {
+    if (!url) return '';
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    const id = (match && match[2].length === 11) ? match[2] : null;
+    return id ? `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0` : url;
+};
+
+const getVimeoEmbedUrl = (url) => {
+    if (!url) return '';
+    const regExp = /vimeo\.com\/(\d+)/;
+    const match = url.match(regExp);
+    const id = (match ? match[1] : null);
+    return id ? `https://player.vimeo.com/video/${id}?autoplay=1&loop=1&muted=1&background=1` : url;
+};
+
 
 export default function BuilderImage({
     src,
@@ -274,37 +305,6 @@ export default function BuilderImage({
             </div>,
             document.body
         );
-    };
-
-    const isVideoFile = (url) => {
-        if (!url || typeof url !== 'string') return false;
-        return url.match(/\.(mp4|webm|ogg|mov)$/i);
-    };
-
-    const isYoutube = (url) => {
-        if (!url || typeof url !== 'string') return false;
-        return url.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/);
-    };
-
-    const isVimeo = (url) => {
-        if (!url || typeof url !== 'string') return false;
-        return url.match(/^(https?:\/\/)?(www\.)?(vimeo\.com)\/.+$/);
-    };
-
-    const getYoutubeEmbedUrl = (url) => {
-        if (!url) return '';
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-        const match = url.match(regExp);
-        const id = (match && match[2].length === 11) ? match[2] : null;
-        return id ? `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0` : url;
-    };
-
-    const getVimeoEmbedUrl = (url) => {
-        if (!url) return '';
-        const regExp = /vimeo\.com\/(\d+)/;
-        const match = url.match(regExp);
-        const id = (match ? match[1] : null);
-        return id ? `https://player.vimeo.com/video/${id}?autoplay=1&loop=1&muted=1&background=1` : url;
     };
 
     const imageSrc = (src && src !== "") ? src : defaultPlaceholder;
