@@ -434,7 +434,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
   // Always merge passed styles (like aspect-ratio) to the internal media
   // to prevent layout collapse in flex/grid containers, especially for placeholders.
   const mediaStyle = { ...defaultStyle, ...style };
-  const mediaClass = isLink ? '' : baseClassName;
+  const mediaClass = baseClassName;
 
   let mediaContent;
   if (isYoutube(src)) {
@@ -484,7 +484,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
           </video>
       );
   } else {
-      const TRANSPARENT_PIXEL = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+      const TRANSPARENT_PIXEL = "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3C/svg%3E";
       const isPlaceholder = imageSrc === "https://space.lunaaar.site/assets-lunar/placeholder.svg";
       const isEmpty = !imageSrc;
       mediaContent = (shouldLoad || priority || isPlaceholder || isEmpty) ? (

@@ -414,7 +414,7 @@ export default function BuilderImage({
         );
     } else {
         // Fallback to Image
-        const TRANSPARENT_PIXEL = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+        const TRANSPARENT_PIXEL = "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3C/svg%3E";
         if (!shouldLoad && !priority) {
             mediaContent = (
                 <img
