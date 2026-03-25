@@ -142,11 +142,10 @@ export default function BuilderImage({
         const isVideo = isVideoFile(src) || isYoutube(src) || isVimeo(src);
         const hasSrc = src && src !== "";
 
-        if (!hasSrc) return; // Wait for source
-
-        // If it's a priority image, a placeholder, or we don't have IntersectionObserver, load immediately
         const isPlaceholder = src === defaultPlaceholder;
-        if (priority || isPlaceholder || typeof window === 'undefined' || !window.IntersectionObserver) {
+        
+        // If it's a priority image, a placeholder, an empty source, or no IntersectionObserver, load immediately
+        if (priority || isPlaceholder || !hasSrc || typeof window === 'undefined' || !window.IntersectionObserver) {
             setShouldLoad(true);
             return;
         }

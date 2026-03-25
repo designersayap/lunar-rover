@@ -485,15 +485,16 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
       );
   } else {
       const isPlaceholder = imageSrc === "https://space.lunaaar.site/assets-lunar/placeholder.svg";
-      mediaContent = (shouldLoad || priority || isPlaceholder) ? (
+      const isEmpty = !imageSrc;
+      mediaContent = (shouldLoad || priority || isPlaceholder || isEmpty) ? (
         <img 
           id={!isLink ? finalId : undefined}
-          src={imageSrc} 
+          src={imageSrc || "https://space.lunaaar.site/assets-lunar/placeholder.svg"} 
           alt={effectiveAlt} 
           className={mediaClass} 
           style={mediaStyle} 
-          loading={(priority || isPlaceholder) ? "eager" : "lazy"}
-          fetchPriority={(priority || isPlaceholder) ? "high" : undefined}
+          loading={(priority || isPlaceholder || isEmpty) ? "eager" : "lazy"}
+          fetchPriority={(priority || isPlaceholder || isEmpty) ? "high" : undefined}
           decoding="async"
         />
       ) : <div className={mediaClass} style={{ ...mediaStyle, backgroundColor: '#eee' }} />;
