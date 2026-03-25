@@ -484,6 +484,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
           </video>
       );
   } else {
+      const TRANSPARENT_PIXEL = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
       const isPlaceholder = imageSrc === "https://space.lunaaar.site/assets-lunar/placeholder.svg";
       const isEmpty = !imageSrc;
       mediaContent = (shouldLoad || priority || isPlaceholder || isEmpty) ? (
@@ -497,7 +498,15 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
           fetchPriority={(priority || isPlaceholder || isEmpty) ? "high" : undefined}
           decoding="async"
         />
-      ) : <div className={mediaClass} style={{ ...mediaStyle, backgroundColor: '#eee' }} />;
+      ) : (
+        <img
+          id={!isLink ? finalId : undefined}
+          src={TRANSPARENT_PIXEL}
+          alt=""
+          className={mediaClass}
+          style={{ ...mediaStyle, backgroundColor: '#eee' }}
+        />
+      );
   }
 
   const content = (mobileSrc && !isVideoFile(src) && !isYoutube(src) && !isVimeo(src)) ? (

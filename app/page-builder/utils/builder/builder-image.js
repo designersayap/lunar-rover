@@ -414,8 +414,17 @@ export default function BuilderImage({
         );
     } else {
         // Fallback to Image
+        const TRANSPARENT_PIXEL = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
         if (!shouldLoad && !priority) {
-            mediaContent = <div id={elementId} style={finalStyle} />;
+            mediaContent = (
+                <img
+                    id={elementId}
+                    src={TRANSPARENT_PIXEL}
+                    alt=""
+                    style={finalStyle}
+                    className={className}
+                />
+            );
         } else if (isMobileSimulation && mobileSrc) {
             // Force mobile source when simulating mobile in builder
             mediaContent = (
