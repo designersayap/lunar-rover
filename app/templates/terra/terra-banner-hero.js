@@ -91,6 +91,7 @@ export default function HeroTerraBanner({
                     onLinkTypeChange={update('imageLinkType')}
                     targetDialogId={imageTargetDialogId}
                     onTargetDialogIdChange={update('imageTargetDialogId')}
+                    priority={true}
                 />
             </div>
             <div className={styles.overlay}>

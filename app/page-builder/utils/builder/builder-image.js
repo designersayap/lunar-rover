@@ -144,8 +144,9 @@ export default function BuilderImage({
 
         if (!hasSrc) return; // Wait for source
 
-        // If it's a priority image, or we don't have IntersectionObserver, load immediately
-        if (priority || typeof window === 'undefined' || !window.IntersectionObserver) {
+        // If it's a priority image, a placeholder, or we don't have IntersectionObserver, load immediately
+        const isPlaceholder = src === defaultPlaceholder;
+        if (priority || isPlaceholder || typeof window === 'undefined' || !window.IntersectionObserver) {
             setShouldLoad(true);
             return;
         }
