@@ -87,6 +87,7 @@ export default function BuilderImage({
     });
 
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
+    const { canvasWidth } = useCanvas();
 
     const isSelfActive = activeElementId === elementId;
     const isActive = typeof isActiveProp !== 'undefined' ? isActiveProp : isSelfActive;
@@ -173,10 +174,10 @@ export default function BuilderImage({
         }
 
         return () => observer.disconnect();
+        // Dependency array size must be constant. src, isStaging, and priority are now stable dependencies.
     }, [src, isStaging, priority]);
 
-    // Context for canvas width simulation
-    const { canvasWidth } = useCanvas();
+    // Context for canvas width simulation moved to top
 
     const isMobileSimulation = useMemo(() => {
         if (!canvasWidth || canvasWidth === '100%') return false;
