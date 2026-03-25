@@ -431,9 +431,9 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
 
   const isLink = href || (linkType === 'dialog' && targetDialogId);
   
-  // If we have a link, we apply className and aspect-ratio to the <a> wrapper
-  // and keep internal media at 100%/100%
-  const mediaStyle = isLink ? { ...defaultStyle } : { ...defaultStyle, ...style };
+  // Always merge passed styles (like aspect-ratio) to the internal media
+  // to prevent layout collapse in flex/grid containers, especially for placeholders.
+  const mediaStyle = { ...defaultStyle, ...style };
   const mediaClass = isLink ? '' : baseClassName;
 
   let mediaContent;
