@@ -484,7 +484,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
           </video>
       );
   } else {
-      mediaContent = (
+      mediaContent = (shouldLoad || priority) ? (
         <img 
           id={!isLink ? finalId : undefined}
           src={imageSrc} 
@@ -495,7 +495,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
           fetchPriority={priority ? "high" : undefined}
           decoding="async"
         />
-      );
+      ) : <div className={mediaClass} style={{ ...mediaStyle, backgroundColor: '#eee' }} />;
   }
 
   const content = (mobileSrc && !isVideoFile(src) && !isYoutube(src) && !isVimeo(src)) ? (

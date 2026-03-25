@@ -251,6 +251,8 @@ const TikTokCard = memo(({
                                             <img
                                                 src={localMetadata.thumbnailUrl || item.thumbnailUrl}
                                                 style={{ display: 'none' }}
+                                                loading="lazy"
+                                                decoding="async"
                                                 onError={(e) => {
                                                     console.warn("[TikTokEmbed] Thumbnail expired, auto-refreshing...");
                                                     handleRefreshMetadata();

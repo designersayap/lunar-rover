@@ -142,10 +142,14 @@ export default function BuilderImage({
 
         if (!hasSrc) return; // Wait for source
 
-        if (!isVideo || typeof window === 'undefined' || !window.IntersectionObserver) {
+        // If it's a priority image, or we don't have IntersectionObserver, load immediately
+        if (priority || typeof window === 'undefined' || !window.IntersectionObserver) {
             setShouldLoad(true);
             return;
         }
+
+        // If it's a video, OR if we want to be aggressive with non-priority images
+        // We defer everything except priority assets
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -408,7 +412,9 @@ export default function BuilderImage({
         );
     } else {
         // Fallback to Image
-        if (isMobileSimulation && mobileSrc) {
+        if (!shouldLoad && !priority) {
+            mediaContent = <div id={elementId} style={finalStyle} />;
+        } else if (isMobileSimulation && mobileSrc) {
             // Force mobile source when simulating mobile in builder
             mediaContent = (
                 <img
@@ -430,7 +436,8 @@ export default function BuilderImage({
                         src={imageSrc}
                         alt={(!alt || alt === "#") && sectionId ? sectionId : alt}
                         style={finalStyle}
-                        loading="lazy"
+                        loading={priority ? "eager" : "lazy"}
+                        fetchPriority={priority ? "high" : undefined}
                         decoding="async"
                     />
                 </>
