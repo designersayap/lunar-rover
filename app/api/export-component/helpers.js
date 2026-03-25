@@ -118,21 +118,39 @@ export function cleanBuilderContent(src, componentName) {
     }
   }
 
-  if ((hasBuilderText || hasUseActiveOverlay) && !src.includes('useState')) {
+  if (hasBuilderImage || hasBuilderText || hasUseActiveOverlay) {
     const useClientRegex = /^(['"]use client['"];?)\s*/;
-    if (useClientRegex.test(src)) {
-      src = src.replace(useClientRegex, '$1\nimport { useState } from \'react\';\n');
-    } else {
-      src = "import { useState } from 'react';\n" + src;
+    const hooksNeeded = [];
+    if (hasBuilderImage || hasBuilderText || hasUseActiveOverlay) hooksNeeded.push('useState');
+    if (hasBuilderImage) {
+        hooksNeeded.push('useEffect');
+        hooksNeeded.push('useRef');
     }
-  }
-
-  if (hasUseActiveOverlay && !src.includes('useMemo')) {
-    const useClientRegex = /^(['"]use client['"];?)\s*/;
-    if (useClientRegex.test(src)) {
-      src = src.replace(useClientRegex, '$1\nimport { useMemo } from \'react\';\n');
-    } else {
-      src = "import { useMemo } from 'react';\n" + src;
+    if (hasUseActiveOverlay) hooksNeeded.push('useMemo');
+    
+    // Filter out hooks that are already imported literal strings
+    const missingHooks = hooksNeeded.filter(h => !src.includes(h));
+    
+    if (missingHooks.length > 0) {
+        if (src.includes('from \'react\'') || src.includes('from "react"')) {
+            // Attempt to add to existing import
+            missingHooks.forEach(hook => {
+                const reactImportRegex = /import\s*{([^}]*)}\s*from\s*['"]react['"]/;
+                const match = src.match(reactImportRegex);
+                if (match && !match[1].includes(hook)) {
+                    const newImport = `import { ${match[1].trim()}, ${hook} } from 'react'`;
+                    src = src.replace(reactImportRegex, newImport);
+                }
+            });
+        } else {
+            // Add new import
+            const newImport = `import { ${[...new Set(hooksNeeded)].join(', ')} } from 'react';\n`;
+            if (useClientRegex.test(src)) {
+                src = src.replace(useClientRegex, `$1\n${newImport}`);
+            } else {
+                src = newImport + src;
+            }
+        }
     }
   }
 
@@ -329,6 +347,39 @@ const BuilderLink = ({ label, href, className, style, children, linkType, target
   if (hasBuilderImage) {
     shims.push(`
 const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href, linkType, targetDialogId, id, sectionId, suffix, isPortrait, isVisible = true, priority }) => {
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const wrapperRef = useRef(null);
+
+  const isVideoFile = (url) => url && typeof url === 'string' && url.match(/\\.(mp4|webm|ogg|mov)$/i);
+  const isYoutube = (url) => url && typeof url === 'string' && url.match(/^(https?:\\/\\/)?(www\\.)?(youtube\\.com|youtu\\.be)\\/.*$/);
+  const isVimeo = (url) => url && typeof url === 'string' && url.match(/^(https?:\\/\\/)?(www\\.)?(vimeo\\.com)\\/.*$/);
+
+  useEffect(() => {
+    if (priority || !src || typeof window === 'undefined' || !window.IntersectionObserver) {
+      setShouldLoad(true);
+      return;
+    }
+
+    const isVideo = isVideoFile(src) || isYoutube(src) || isVimeo(src);
+    if (!isVideo) {
+      setShouldLoad(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setShouldLoad(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: '100px' });
+
+    if (wrapperRef.current) {
+      observer.observe(wrapperRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [src, priority]);
+
   if (!isVisible) return null;
   const normalizedSectionId = (sectionId && typeof sectionId === 'string') ? sectionId.replace(/-+$/, '') : '';
   let finalId = id || (normalizedSectionId && suffix ? normalizedSectionId + '-' + suffix : undefined);
@@ -359,10 +410,6 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
     display: "block",
   };
 
-  const isVideoFile = (url) => url && typeof url === 'string' && url.match(/\\.(mp4|webm|ogg|mov)$/i);
-  const isYoutube = (url) => url && typeof url === 'string' && url.match(/^(https?:\\/\\/)?(www\\.)?(youtube\\.com|youtu\\.be)\\/.*$/);
-  const isVimeo = (url) => url && typeof url === 'string' && url.match(/^(https?:\\/\\/)?(www\\.)?(vimeo\\.com)\\/.*$/);
-
   const getYoutubeEmbedUrl = (url) => {
       if (!url) return '';
       const regExp = /^.*(youtu.be\\/|v\\/|u\\/\\w\\/|embed\\/|watch\\?v=|&v=)([^#&?]*).*/;
@@ -391,7 +438,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
 
   let mediaContent;
   if (isYoutube(src)) {
-      mediaContent = (
+      mediaContent = shouldLoad ? (
           <iframe
               id={!isLink ? finalId : undefined}
               src={getYoutubeEmbedUrl(src)}
@@ -401,9 +448,9 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
               allowFullScreen
               title="YouTube video"
           />
-      );
+      ) : <div className={mediaClass} style={{ ...mediaStyle, backgroundColor: '#eee' }} />;
   } else if (isVimeo(src)) {
-      mediaContent = (
+      mediaContent = shouldLoad ? (
           <iframe
               id={!isLink ? finalId : undefined}
               src={getVimeoEmbedUrl(src)}
@@ -414,21 +461,25 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
               loading="lazy"
               title="Vimeo video"
           />
-      );
+      ) : <div className={mediaClass} style={{ ...mediaStyle, backgroundColor: '#eee' }} />;
   } else if (isVideoFile(src)) {
       mediaContent = (
           <video
               id={!isLink ? finalId : undefined}
               className={mediaClass}
               style={mediaStyle}
-              autoPlay
+              autoPlay={shouldLoad}
               loop
               muted
               playsInline
               preload="none"
           >
-              {mobileSrc && <source src={mobileSrc} media="(max-width: 767px)" />}
-              <source src={src} />
+              {shouldLoad && (
+                <>
+                  {mobileSrc && <source src={mobileSrc} media="(max-width: 767px)" />}
+                  <source src={src} />
+                </>
+              )}
               Your browser does not support the video tag.
           </video>
       );
@@ -458,6 +509,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
     if (isDialog) {
         return (
             <a
+                ref={wrapperRef}
                 id={finalId}
                 href="#"
                 className={baseClassName}
@@ -475,6 +527,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
 
     return (
       <a
+         ref={wrapperRef}
          id={finalId}
          href={href || '#'} 
          className={baseClassName} 
@@ -486,7 +539,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
     );
   }
 
-  return <div className={baseClassName} style={{ ...style, position: 'relative' }}>{content}</div>;
+  return <div ref={wrapperRef} className={baseClassName} style={{ ...style, position: 'relative' }}>{content}</div>;
 };`);
   }
 
