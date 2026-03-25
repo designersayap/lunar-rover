@@ -346,7 +346,7 @@ const BuilderLink = ({ label, href, className, style, children, linkType, target
 
   if (hasBuilderImage) {
     shims.push(`
-const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href, linkType, targetDialogId, id, sectionId, suffix, isPortrait, isVisible = true, priority }) => {
+const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href, linkType, targetDialogId, id, sectionId, suffix, isPortrait, isVisible = true, priority, aspectRatio: propAspectRatio }) => {
   const [shouldLoad, setShouldLoad] = useState(false);
   const wrapperRef = useRef(null);
 
@@ -354,14 +354,27 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
   const isYoutube = (url) => url && typeof url === 'string' && url.match(/^(https?:\\/\\/)?(www\\.)?(youtube\\.com|youtu\\.be)\\/.*$/);
   const isVimeo = (url) => url && typeof url === 'string' && url.match(/^(https?:\\/\\/)?(www\\.)?(vimeo\\.com)\\/.*$/);
 
+  const getPaddingTop = (ratio) => {
+    if (!ratio) return undefined;
+    const parts = ratio.includes(':') ? ratio.split(':') : ratio.split('-');
+    if (parts.length === 2) {
+      const w = parseFloat(parts[0]);
+      const h = parseFloat(parts[1]);
+      if (w > 0) return (h / w * 100).toFixed(2) + '%';
+    }
+    return undefined;
+  };
+
   useEffect(() => {
-    if (priority || !src || typeof window === 'undefined' || !window.IntersectionObserver) {
+    if (priority || typeof window === 'undefined' || !window.IntersectionObserver) {
       setShouldLoad(true);
       return;
     }
 
     const isVideo = isVideoFile(src) || isYoutube(src) || isVimeo(src);
-    if (!isVideo) {
+    const isPlaceholder = !src || src === "" || src === "https://space.lunaaar.site/assets-lunar/placeholder.svg" || (typeof src === 'string' && src.includes('assets-lunar/placeholder.svg'));
+
+    if (!isVideo && !isPlaceholder) {
       setShouldLoad(true);
       return;
     }
@@ -371,12 +384,9 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
         setShouldLoad(true);
         observer.disconnect();
       }
-    }, { rootMargin: '100px' });
+    }, { rootMargin: '200px' });
 
-    if (wrapperRef.current) {
-      observer.observe(wrapperRef.current);
-    }
-
+    if (wrapperRef.current) observer.observe(wrapperRef.current);
     return () => observer.disconnect();
   }, [src, priority]);
 
@@ -431,10 +441,21 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
 
   const isLink = href || (linkType === 'dialog' && targetDialogId);
   
-  // Always merge passed styles (like aspect-ratio) to the internal media
-  // to prevent layout collapse in flex/grid containers, especially for placeholders.
+  // MERGE PROP ASPECT RATIO
+  const effectiveRatio = propAspectRatio || style?.aspectRatio;
+  const paddingVal = getPaddingTop(effectiveRatio);
+
   const mediaStyle = { ...defaultStyle, ...style };
   const mediaClass = baseClassName;
+
+  const finalMediaStyle = paddingVal ? {
+    ...mediaStyle,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%'
+  } : mediaStyle;
 
   let mediaContent;
   if (isYoutube(src)) {
@@ -443,31 +464,31 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
               id={!isLink ? finalId : undefined}
               src={getYoutubeEmbedUrl(src)}
               className={mediaClass}
-              style={{ ...mediaStyle, border: 'none' }}
+              style={{ ...finalMediaStyle, border: 'none' }}
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
               title="YouTube video"
           />
-      ) : <div className={mediaClass} style={{ ...mediaStyle, backgroundColor: '#eee' }} />;
+      ) : <div className={mediaClass} style={{ ...finalMediaStyle, backgroundColor: '#eee' }} />;
   } else if (isVimeo(src)) {
       mediaContent = shouldLoad ? (
           <iframe
               id={!isLink ? finalId : undefined}
               src={getVimeoEmbedUrl(src)}
               className={mediaClass}
-              style={{ ...mediaStyle, border: 'none' }}
+              style={{ ...finalMediaStyle, border: 'none' }}
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
               loading="lazy"
               title="Vimeo video"
           />
-      ) : <div className={mediaClass} style={{ ...mediaStyle, backgroundColor: '#eee' }} />;
+      ) : <div className={mediaClass} style={{ ...finalMediaStyle, backgroundColor: '#eee' }} />;
   } else if (isVideoFile(src)) {
       mediaContent = (
           <video
               id={!isLink ? finalId : undefined}
               className={mediaClass}
-              style={mediaStyle}
+              style={finalMediaStyle}
               autoPlay={shouldLoad}
               loop
               muted
@@ -493,7 +514,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
           src={imageSrc || "https://space.lunaaar.site/assets-lunar/placeholder.svg"} 
           alt={effectiveAlt} 
           className={mediaClass} 
-          style={mediaStyle} 
+          style={finalMediaStyle} 
           loading={(priority || isPlaceholder || isEmpty) ? "eager" : "lazy"}
           fetchPriority={(priority || isPlaceholder || isEmpty) ? "high" : undefined}
           decoding="async"
@@ -504,7 +525,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
           src={TRANSPARENT_PIXEL}
           alt=""
           className={mediaClass}
-          style={{ ...mediaStyle, backgroundColor: '#eee' }}
+          style={{ ...finalMediaStyle, backgroundColor: '#eee' }}
         />
       );
   }
@@ -513,9 +534,17 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
      <picture style={{ display: 'contents' }}>{mediaContent}</picture>
   ) : mediaContent;
 
+  const wrapperStyle = { 
+    ...style, 
+    display: 'block', 
+    width: '100%', 
+    textDecoration: 'none', 
+    position: 'relative',
+    paddingTop: paddingVal,
+    overflow: 'hidden'
+  };
+
   if (isLink) {
-    const isDialog = linkType === 'dialog' && targetDialogId;
-    const wrapperStyle = { ...style, display: 'block', width: '100%', textDecoration: 'none', position: 'relative' };
     
     if (isDialog) {
         return (
@@ -550,7 +579,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
     );
   }
 
-  return <div ref={wrapperRef} className={baseClassName} style={{ ...style, position: 'relative' }}>{content}</div>;
+  return <div ref={wrapperRef} className={baseClassName} style={wrapperStyle}>{content}</div>;
 };`);
   }
 
