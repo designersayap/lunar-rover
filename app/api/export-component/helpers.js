@@ -430,8 +430,8 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
 
   const isLink = href || (linkType === 'dialog' && targetDialogId);
   
-  const mediaStyle = { ...defaultStyle, ...style };
-  const mediaClass = baseClassName;
+  const mediaStyle = { ...defaultStyle };
+  const mediaClass = 'builder-image-media';
   const finalMediaStyle = mediaStyle;
 
   let mediaContent;
@@ -515,6 +515,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
     ...style, 
     display: 'block', 
     width: '100%', 
+    height: '100%',
     textDecoration: 'none', 
     position: 'relative',
     overflow: 'hidden'
