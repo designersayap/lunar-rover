@@ -273,7 +273,6 @@ export default function TestimonyPortrait({
                                             onLinkTypeChange={(val) => updateTestimony(originalIndex, "imageLinkType", val)}
                                             targetDialogId={item.imageTargetDialogId}
                                             onTargetDialogIdChange={(val) => updateTestimony(originalIndex, "imageTargetDialogId", val)}
-                                            aspectRatio="5-4"
                                         />
 
                                         <div className={styles.contentCard}>
@@ -295,7 +294,6 @@ export default function TestimonyPortrait({
                                                     onLinkTypeChange={(val) => updateTestimony(originalIndex, "avatarLinkType", val)}
                                                     targetDialogId={item.avatarTargetDialogId}
                                                     onTargetDialogIdChange={(val) => updateTestimony(originalIndex, "avatarTargetDialogId", val)}
-                                                    aspectRatio="1-1"
                                                 />
                                             </div>
                                             <BuilderText
