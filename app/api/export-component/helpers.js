@@ -354,13 +354,24 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
   const isYoutube = (url) => url && typeof url === 'string' && url.match(/^(https?:\\/\\/)?(www\\.)?(youtube\\.com|youtu\\.be)\\/.*$/);
   const isVimeo = (url) => url && typeof url === 'string' && url.match(/^(https?:\\/\\/)?(www\\.)?(vimeo\\.com)\\/.*$/);
 
-  const getPaddingTop = (ratio) => {
-    if (!ratio) return undefined;
-    const parts = ratio.includes(':') ? ratio.split(':') : ratio.split('-');
-    if (parts.length === 2) {
-      const w = parseFloat(parts[0]);
-      const h = parseFloat(parts[1]);
-      if (w > 0) return (h / w * 100).toFixed(2) + '%';
+  const getPaddingTop = (ratio, classes) => {
+    if (ratio) {
+      const parts = ratio.includes(':') ? ratio.split(':') : ratio.split('-');
+      if (parts.length === 2) {
+        const w = parseFloat(parts[0]);
+        const h = parseFloat(parts[1]);
+        if (w > 0) return (h / w * 100).toFixed(2) + '%';
+      }
+    }
+    if (classes && typeof classes === 'string') {
+      if (classes.includes('imagePlaceholder-1-1')) return '100%';
+      if (classes.includes('imagePlaceholder-16-9')) return '56.25%';
+      if (classes.includes('imagePlaceholder-4-3')) return '75%';
+      if (classes.includes('imagePlaceholder-3-4')) return '133.33%';
+      if (classes.includes('imagePlaceholder-5-4')) return '80%';
+      if (classes.includes('imagePlaceholder-4-5')) return '125%';
+      if (classes.includes('imagePlaceholder-21-9')) return '42.85%';
+      if (classes.includes('imagePlaceholder-9-21')) return '233.33%';
     }
     return undefined;
   };
@@ -443,7 +454,7 @@ const BuilderImage = ({ src, mobileSrc, alt, className, style, mobileRatio, href
   
   // MERGE PROP ASPECT RATIO
   const effectiveRatio = propAspectRatio || style?.aspectRatio;
-  const paddingVal = getPaddingTop(effectiveRatio);
+  const paddingVal = getPaddingTop(effectiveRatio, baseClassName);
 
   const mediaStyle = { ...defaultStyle, ...style };
   const mediaClass = baseClassName;

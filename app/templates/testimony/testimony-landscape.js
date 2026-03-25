@@ -273,6 +273,7 @@ export default function TestimonyLandscape({
                                             onLinkTypeChange={(val) => updateTestimony(originalIndex, "imageLinkType", val)}
                                             targetDialogId={item.imageTargetDialogId}
                                             onTargetDialogIdChange={(val) => updateTestimony(originalIndex, "imageTargetDialogId", val)}
+                                            aspectRatio="4-5"
                                         />
 
                                         <div className={styles.terraTestimoniDescriptionCard}>
@@ -294,6 +295,7 @@ export default function TestimonyLandscape({
                                                     onLinkTypeChange={(val) => updateTestimony(originalIndex, "avatarLinkType", val)}
                                                     targetDialogId={item.avatarTargetDialogId}
                                                     onTargetDialogIdChange={(val) => updateTestimony(originalIndex, "avatarTargetDialogId", val)}
+                                                    aspectRatio="1-1"
                                                 />
                                             </div>
                                             <BuilderText
