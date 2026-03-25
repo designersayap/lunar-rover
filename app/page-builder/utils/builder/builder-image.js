@@ -76,7 +76,8 @@ export default function BuilderImage({
     readOnly = false,
     onVisibilityChange,
     aspectRatio,
-    onAspectRatioChange
+    onAspectRatioChange,
+    priority
 }) {
     const { elementId } = useIdSync({
         id: id ? String(id) : undefined,
@@ -172,7 +173,7 @@ export default function BuilderImage({
         }
 
         return () => observer.disconnect();
-    }, [src, isStaging]);
+    }, [src, isStaging, priority]);
 
     // Context for canvas width simulation
     const { canvasWidth } = useCanvas();
