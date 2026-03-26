@@ -65,10 +65,8 @@ function readDirRecursive(dir, fileList = []) {
             if (isBinary || isText) {
                 const relativePath = filePath.replace(/\\/g, '/'); // Normalize paths
 
-                let content;
-                if (isBinary) {
-                    content = fs.readFileSync(filePath, 'base64');
-                } else {
+                let content = null;
+                if (!isBinary) {
                     content = fs.readFileSync(filePath, 'utf8');
                 }
 
@@ -95,13 +93,16 @@ function generateMap() {
 
     const map = {};
     allFiles.forEach(file => {
-        map[file.path] = {
-            content: file.content,
-            isBinary: file.isBinary
-        };
+        // Only add to map if it's a text file (content is not null)
+        if (file.content !== null) {
+            map[file.path] = {
+                content: file.content,
+                isBinary: file.isBinary
+            };
+        }
     });
 
-    // Add Font Metadata
+    // Add Font Metadata (Always needed)
     map['__fonts__'] = getFontMetadata(allFiles);
 
     // Ensure directory exists
