@@ -322,6 +322,7 @@ const TikTokCard = memo(({
                     showFullWidthToggle={false}
                     position={popoverPosition}
                     onRefreshMetadata={handleRefreshMetadata}
+                    popoverTitle="Video Settings"
                 />
 
             )}

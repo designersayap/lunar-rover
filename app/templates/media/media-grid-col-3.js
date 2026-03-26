@@ -89,8 +89,10 @@ export default function MediaGridCol3({
                                 onTargetDialogIdChange={(val) => handleUpdateImage(item.originalIndex, 'imageTargetDialogId', val)}
                                 isPortrait={item.imageIsPortrait}
                                 onIsPortraitChange={(val) => handleUpdateImage(item.originalIndex, 'imageIsPortrait', val)}
+                                showPortraitToggle={false}
                                 mobileRatio={item.imageMobileRatio}
                                 onMobileRatioChange={(val) => handleUpdateImage(item.originalIndex, 'imageMobileRatio', val)}
+                                showMobileRatio={false}
                             />
                         </div>
                     </div>

@@ -44,6 +44,7 @@ export default function BuilderControlsPopover({
     onUrlChange,
     imageSrc,
     onImageSrcChange,
+    imageSrcLabel = "Media Source",
     showImageSrc = false,
     linkType = 'url',
     onLinkTypeChange,
@@ -68,6 +69,7 @@ export default function BuilderControlsPopover({
     onMobileRatioChange,
     mobileImageSrc,
     onMobileImageSrcChange,
+    mobileImageSrcLabel = "Mobile Media Source",
     showMobileImageSrc = false,
     iconLeft,
     onIconLeftChange,
@@ -108,7 +110,8 @@ export default function BuilderControlsPopover({
     onAutoScrollEffectChange, // Added prop
     marqueeDuration, // Added prop
     onMarqueeDurationChange, // Added prop
-    mode = 'all' // 'all', 'style', 'link'
+    mode = 'all', // 'all', 'style', 'link'
+    popoverTitle = "Section Settings" // New prop
 }) {
 
 
@@ -174,7 +177,7 @@ export default function BuilderControlsPopover({
                 }
             }
         }
-    }, [position, variants, linkType, isFlipped]);
+    }, [position, variants?.length, linkType, isFlipped]);
 
     if (position && typeof window !== 'undefined') {
         const popoverWidth = 320;
@@ -249,6 +252,11 @@ export default function BuilderControlsPopover({
             >
                 {/* Content */}
                 <div className={styles.popoverContent}>
+                    {mode === 'style' && (showFullWidthToggle || showAutoScrollToggle || showOverlayToggle || showMenuColorToggle || showFloatingToggle || showAspectRatio || showBlurToggle) && (
+                        <div className={styles.popoverHeader} style={{ marginBottom: 'var(--pb-space-sm)', borderBottom: '1px solid var(--pb-border-color)', paddingBottom: 'var(--pb-space-xs)' }}>
+                            <span className="caption-bold" style={{ color: 'var(--pb-white)', opacity: 0.8 }}>{popoverTitle}</span>
+                        </div>
+                    )}
                     <div className={styles.popoverProperties}>
 
                         {(mode === 'all' || mode === 'link') && showLinkType && (
@@ -426,7 +434,7 @@ export default function BuilderControlsPopover({
                         {/* IMAGE SOURCE INPUT (Only if showImageSrc is true) */}
                         {(mode === 'all' || mode === 'style') && showImageSrc && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`}>
-                                <label className={`caption-bold ${styles.formInputTitle}`}>Media Source</label>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>{imageSrcLabel}</label>
                                 <StopPropagationInput
                                     type="text"
                                     className={`${styles.formInput}`}
@@ -435,6 +443,21 @@ export default function BuilderControlsPopover({
                                     placeholder="https://example.com/image.jpg OR video.mp4"
                                     onFocus={(e) => e.target.select()}
                                 />
+                            </div>
+                        )}
+
+                        {(mode === 'all' || mode === 'style') && showPortraitToggle && (
+                            <div className={styles.propertyRow} style={{ marginTop: 'var(--pb-space-sm)' }}>
+                                <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Portrait</label>
+                                <label className={styles.toggleSwitch}>
+                                    <input
+                                        type="checkbox"
+                                        className={styles.toggleInput}
+                                        checked={isPortrait === true}
+                                        onChange={(e) => onIsPortraitChange && onIsPortraitChange(e.target.checked)}
+                                    />
+                                    <span className={styles.toggleSlider}></span>
+                                </label>
                             </div>
                         )}
 
@@ -493,7 +516,7 @@ export default function BuilderControlsPopover({
 
                         {(mode === 'all' || mode === 'style') && showMobileImageSrc && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: 'var(--pb-space-sm)' }}>
-                                <label className={`caption-bold ${styles.formInputTitle}`}>Mobile Media Source</label>
+                                <label className={`caption-bold ${styles.formInputTitle}`}>{mobileImageSrcLabel}</label>
                                 <StopPropagationInput
                                     type="text"
                                     className={`${styles.formInput}`}
@@ -654,41 +677,8 @@ export default function BuilderControlsPopover({
                             </>
                         )}
 
-                        {(mode === 'all' || mode === 'style') && showPortraitToggle && (
-                            <>
-                                <div className={styles.horizontalDivider} />
-                                <div className={styles.propertyRow} style={{ marginTop: '0' }}>
-                                    <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Portrait</label>
-                                    <label className={styles.toggleSwitch}>
-                                        <input
-                                            type="checkbox"
-                                            className={styles.toggleInput}
-                                            checked={isPortrait === true}
-                                            onChange={(e) => onIsPortraitChange && onIsPortraitChange(e.target.checked)}
-                                        />
-                                        <span className={styles.toggleSlider}></span>
-                                    </label>
-                                </div>
-                            </>
-                        )}
 
-                        {(mode === 'all' || mode === 'style') && onVisibilityChange && (
-                            <>
-                                <div className={styles.horizontalDivider} />
-                                <div className={styles.propertyRow} style={{ marginTop: '0' }}>
-                                    <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Visibility</label>
-                                    <label className={styles.toggleSwitch}>
-                                        <input
-                                            type="checkbox"
-                                            className={styles.toggleInput}
-                                            checked={isVisible !== false}
-                                            onChange={(e) => onVisibilityChange && onVisibilityChange(e.target.checked)}
-                                        />
-                                        <span className={styles.toggleSlider}></span>
-                                    </label>
-                                </div>
-                            </>
-                        )}
+
 
                     </div>
                 </div>
@@ -696,7 +686,11 @@ export default function BuilderControlsPopover({
         </div >
     );
 
-    if (!isOpen || typeof document === 'undefined') return null;
+    const hasVisibleStyleSettings = showFullWidthToggle || showAutoScrollToggle || showOverlayToggle || showMenuColorToggle || showFloatingToggle || showAspectRatio || showBlurToggle;
+    const hasVisibleLinkSettings = showUrl || showLinkType || showDialogSelector;
+    const hasVisibleSettings = mode === 'style' ? hasVisibleStyleSettings : (mode === 'link' ? hasVisibleLinkSettings : (hasVisibleStyleSettings || hasVisibleLinkSettings));
+
+    if (!isOpen || typeof document === 'undefined' || !hasVisibleSettings) return null;
 
     return createPortal(content, document.body);
 }

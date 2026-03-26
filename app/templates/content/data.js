@@ -513,7 +513,9 @@ export const componentDefaults = {
             visible: true,
             url: "",
             linkType: "url",
-            targetDialogId: ""
+            targetDialogId: "",
+            isVideo: true,
+            videoUrl: ""
         }),
         autoScroll: true,
         autoScrollEffect: 'slide',

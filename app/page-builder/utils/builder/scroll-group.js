@@ -21,7 +21,9 @@ export default function ScrollGroup({
     enableBlur = false, // Toggle for blur effect
     disableEffects = false, // New prop to disable internal effects (for Staging/Export)
     onUpdate,
-    updateComponent // passed from Canvas to render children
+    updateComponent, // passed from Canvas to render children
+    showScrollEffectOnStaging = false, // New prop
+    showSrcOnStaging = false // New prop
 }) {
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, localData, isStaging } = useContext(BuilderSelectionContext);
     const { canvasWidth } = useCanvas();
@@ -286,6 +288,9 @@ export default function ScrollGroup({
     const renderOverlay = () => {
         if (!isActive || !overlayRect || typeof document === 'undefined') return null;
 
+        const hasAnySettings = !isStaging || showScrollEffectOnStaging || showSrcOnStaging;
+        if (!hasAnySettings) return null;
+
         return createPortal(
             <div
                 className={styles.activeOverlay}
@@ -353,12 +358,12 @@ export default function ScrollGroup({
                 mode="style"
 
                 // Scroll Settings
-                showScrollEffect={!isStaging}
+                showScrollEffect={!isStaging || showScrollEffectOnStaging}
                 scrollEffect={scrollEffect}
                 onScrollEffectChange={(val) => onUpdate({ scrollEffect: val })}
 
-                // Image Settings (Staging Only)
-                showImageSrc={isStaging}
+                // Image Settings
+                showImageSrc={!isStaging || showSrcOnStaging}
                 imageSrc={image}
                 onImageSrcChange={(val) => onUpdate({ image: val })}
 
@@ -366,7 +371,7 @@ export default function ScrollGroup({
                 mobileRatio={imageMobileRatio}
                 onMobileRatioChange={(val) => onUpdate({ imageMobileRatio: val })}
 
-                showMobileImageSrc={isStaging}
+                showMobileImageSrc={!isStaging || showSrcOnStaging}
                 mobileImageSrc={mobileImage}
                 onMobileImageSrcChange={(val) => onUpdate({ mobileImage: val })}
 
@@ -375,9 +380,11 @@ export default function ScrollGroup({
                 showUrl={false}
 
                 // Blur Setting (Stacked Only)
-                showBlurToggle={scrollEffect === 'stacked'}
+                showBlurToggle={scrollEffect === 'stacked' && (!isStaging || showScrollEffectOnStaging)}
                 enableBlur={enableBlur}
                 onEnableBlurChange={(val) => onUpdate({ enableBlur: val })}
+                showFullWidthToggle={false}
+                popoverTitle="Scroll Settings"
             />
         )
     );
@@ -386,12 +393,6 @@ export default function ScrollGroup({
     const wrapperStart = isMobileSimulation ? '' : '@media (max-width: 768px) {';
     const wrapperEnd = isMobileSimulation ? '' : '}';
 
-    // Debugging (Restored)
-    useEffect(() => {
-        if (mobileImage) {
-            console.log(`[ScrollGroup Debug] ID: ${elementId} | MobileImage: ${mobileImage} | isStaging: ${isStaging}`);
-        }
-    }, [isStaging, mobileImage, elementId]);
 
     const mobileImageCss = mobileImage ? `
         ${wrapperStart}

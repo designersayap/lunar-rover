@@ -26,15 +26,17 @@ export default function BuilderSection({
     tagName = "div",
     innerContainer = false,
     isOverlay = false, // Added prop
-    showFullWidthControl = true, // Added prop
-    showMenuColorToggle = false, // Added prop
-    menuColor, // Added prop
-    showFloatingToggle = false, // Added prop
-    hasFloatingEffect = true, // Added prop
-    showAutoScrollToggle = false, // Added prop
-    autoScroll = true, // Added prop
-    autoScrollEffect = 'slide', // Added prop
-    marqueeDuration = 120 // Added prop
+    showFullWidthControl = true, 
+    showFullWidthOnStaging = false, // New prop
+    showMenuColorToggle = false, 
+    menuColor, 
+    showFloatingToggle = false, 
+    hasFloatingEffect = true, 
+    showAutoScrollToggle = false, 
+    showAutoScrollOnStaging = false, // New prop
+    autoScroll = true, 
+    autoScrollEffect = 'slide', 
+    marqueeDuration = 120 
 }) {
     const sectionRef = useRef(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
@@ -131,7 +133,12 @@ export default function BuilderSection({
 
     const Tag = tagName;
 
-
+    // Visibility Logic for Staging
+    const hasFullWidth = !isStaging || showFullWidthOnStaging;
+    const hasAutoScroll = !isStaging || showAutoScrollOnStaging;
+    const hasOverlayToggle = !isStaging && showOverlayToggle; // Usually hide section-level sticky/overlay on staging
+    const hasMenuColor = !isStaging && showMenuColorToggle;
+    const hasFloating = !isStaging && showFloatingToggle;
 
     return (
         <>
@@ -163,11 +170,11 @@ export default function BuilderSection({
                         <span className={styles.overlayIdText}>#{elementId}</span>
                     </div>
                     {!!onUpdate && (() => {
-                        const hasFullWidth = isStaging ? false : showFullWidthControl;
-                        const hasAutoScroll = isStaging ? false : showAutoScrollToggle;
-                        const hasAnyStyleSetting = hasFullWidth || hasAutoScroll || showOverlayToggle || showMenuColorToggle || showFloatingToggle;
+                        const showSettingsBtn = (hasFullWidth && showFullWidthControl) || 
+                                              (hasAutoScroll && showAutoScrollToggle) || 
+                                              hasOverlayToggle || hasMenuColor || hasFloating;
 
-                        if (!hasAnyStyleSetting) return null;
+                        if (!showSettingsBtn) return null;
 
                         return (
                             <button
@@ -194,35 +201,41 @@ export default function BuilderSection({
                     removePaddingLeft={removePaddingLeft}
                     removePaddingRight={removePaddingRight}
                     onLayoutChange={handleLayoutChange}
-                    showLinkType={false} // Section doesn't have link type
-                    showVariant={false} // Section doesn't have variant
-                    showUrl={false} // Section doesn't have URL
+                    showLinkType={false} 
+                    showVariant={false} 
+                    showUrl={false} 
                     url={""}
 
                     // Overlay Props
-                    showOverlayToggle={showOverlayToggle}
+                    showOverlayToggle={hasOverlayToggle}
                     isOverlay={isOverlay}
                     onOverlayChange={(val) => onUpdate && onUpdate({ isOverlay: val })}
-                    showFullWidthToggle={isStaging ? false : showFullWidthControl}
-
                     // Menu Color Props
-                    showMenuColorToggle={showMenuColorToggle}
+                    showMenuColorToggle={hasMenuColor}
                     menuColor={menuColor}
                     onMenuColorChange={(val) => onUpdate && onUpdate({ menuColor: val })}
 
                     // Floating Effect Props
-                    showFloatingToggle={showFloatingToggle}
+                    showFloatingToggle={hasFloating}
                     hasFloatingEffect={hasFloatingEffect}
                     onFloatingEffectChange={(val) => onUpdate && onUpdate({ hasFloatingEffect: val })}
 
                     // Auto Scroll Props
-                    showAutoScrollToggle={isStaging ? false : showAutoScrollToggle}
+                    // Auto Scroll Props
                     autoScroll={autoScroll}
                     onAutoScrollChange={(val) => onUpdate && onUpdate({ autoScroll: val })}
                     autoScrollEffect={autoScrollEffect}
                     onAutoScrollEffectChange={(val) => onUpdate && onUpdate({ autoScrollEffect: val })}
                     marqueeDuration={marqueeDuration}
                     onMarqueeDurationChange={(val) => onUpdate && onUpdate({ marqueeDuration: val })}
+
+                    // Staging Visibility Overrides
+                    showFullWidthToggle={(hasFullWidth && showFullWidthControl) && (!isStaging || showFullWidthOnStaging)}
+                    showAutoScrollToggle={(hasAutoScroll && showAutoScrollToggle) && (!isStaging || showAutoScrollOnStaging)}
+                    
+                    isVisible={isVisible}
+                    onVisibilityChange={(val) => onUpdate && onUpdate({ isVisible: val })}
+                    popoverTitle="Section Settings"
                 />
             )
             }

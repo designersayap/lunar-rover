@@ -34,10 +34,10 @@ export default function BuilderLink({
     onTargetDialogIdChange,
     tooltipIfTruncated,
     showLinkType = true,
+    showLinkOnStaging = false, // New prop
     hideLabel = false
 }) {
-    // Normalize linkType to 'url' if it is null or undefined or empty string
-    // This ensures legacy data or null props don't break the popover logic
+    // ... no changes to normalize step
     const safeLinkType = linkType || 'url';
 
     const { elementId } = useIdSync({ id, sectionId, suffix: suffix || "link", onIdChange });
@@ -136,7 +136,6 @@ export default function BuilderLink({
 
         let dialogComponent;
         if (targetDialogId) {
-            // Compare as strings to handle potential type mismatch (number vs string)
             dialogComponent = selectedComponents?.find(c => String(c.uniqueId) === String(targetDialogId));
         }
 
@@ -145,7 +144,6 @@ export default function BuilderLink({
         }
 
         if (dialogComponent) {
-            // Dispatch global event for immediate client-side handling (Staging/Live)
             if (dialogComponent.sectionId) {
                 window.dispatchEvent(new CustomEvent('lunar:open-dialog', {
                     detail: { id: dialogComponent.sectionId }
@@ -164,6 +162,8 @@ export default function BuilderLink({
 
     const renderActiveOverlay = () => {
         if (!isActive || !overlayRect) return null;
+
+        const hasLinkControls = !isStaging || showLinkOnStaging || (isStaging && (safeLinkType === 'url' || safeLinkType === 'dialog'));
 
         return createPortal(
             <div style={{
@@ -192,7 +192,7 @@ export default function BuilderLink({
                         </button>
                     )}
 
-                    {(true /* Always allow link settings */) && (
+                    {hasLinkControls && (
                         <>
                             {/* Cog Button for Link Settings */}
                             <button
@@ -264,19 +264,21 @@ export default function BuilderLink({
                     isOpen={showSettings}
                     onClose={() => setActivePopoverId(null)}
                     mode={isStyleOpen ? 'style' : (isLinkOpen ? 'link' : 'all')}
-                    url={href}
-                    showUrl={true}
                     onUrlChange={onHrefChange}
                     showVariant={false}
-                    showLinkType={showLinkType && !isStaging}
                     linkType={safeLinkType}
                     onLinkTypeChange={onLinkTypeChange}
+                    showLinkType={!isStaging || showLinkOnStaging}
                     targetDialogId={targetDialogId}
                     onTargetDialogIdChange={onTargetDialogIdChange}
                     isVisible={isVisible}
                     onVisibilityChange={onVisibilityChange}
+                    popoverTitle="Link Settings"
                     position={popoverPosition}
-                    dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion' || c.id === 'dialog-form').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
+                    dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion' || c.id === 'dialog-form').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.sectionId || c.uniqueId })) : []}
+                    url={href}
+                    showUrl={!isStaging || showLinkOnStaging || (isStaging && safeLinkType === 'url')}
+                    showDialogSelector={!isStaging || showLinkOnStaging || (isStaging && safeLinkType === 'dialog')}
                 />
             )}
         </>

@@ -10,7 +10,12 @@ export function useIdSync({ id, sectionId, suffix, onIdChange }) {
     const prefix = normalizedSectionId ? `${normalizedSectionId}-` : "";
     const generatedId = normalizedSectionId ? (suffix ? `${normalizedSectionId}-${suffix}` : `${normalizedSectionId}-element`) : undefined;
     const normalizedId = safeId.replace(/-+/g, '-') || '';
-    const elementId = normalizedId || generatedId;
+    
+    // ENSURE elementId is scoped to sectionId if prefix exists
+    let elementId = normalizedId || generatedId;
+    if (prefix && normalizedId && !normalizedId.startsWith(prefix)) {
+        elementId = `${prefix}${normalizedId}`;
+    }
 
     const [tempId, setTempId] = useState("");
     const prevSectionIdRef = useRef(sectionId);

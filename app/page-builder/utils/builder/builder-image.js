@@ -65,6 +65,8 @@ export default function BuilderImage({
     onTargetDialogIdChange,
     disableSettings = false,
     showLinkControls = true,
+    showSrcOnStaging = false, // New prop
+    showLinkOnStaging = false, // New prop
     isPortrait,
     onIsPortraitChange,
     mobileRatio,
@@ -72,13 +74,17 @@ export default function BuilderImage({
     mobileSrc,
     onMobileSrcChange,
     isActive: isActiveProp,
-    alwaysShowSrc = false,
+    alwaysShowSrc: alwaysShowSrcProp = false, // Rename internal use
     readOnly = false,
     onVisibilityChange,
     aspectRatio,
     onAspectRatioChange,
-    priority
+    priority,
+    showPortraitToggle: showPortraitProp = true, // New prop
+    showMobileRatio: showMobileRatioProp = true, // New prop
+    showAspectRatio: showAspectRatioProp = true // New prop
 }) {
+    // Merge for backward compatibility
     const { elementId } = useIdSync({
         id: id ? String(id) : undefined,
         sectionId: sectionId ? String(sectionId) : undefined,
@@ -89,12 +95,17 @@ export default function BuilderImage({
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
     const { canvasWidth } = useCanvas();
 
+    const shouldShowSrcOnStaging = showSrcOnStaging || alwaysShowSrcProp || (isStaging && elementId?.startsWith('navigation-'));
+
     const isSelfActive = activeElementId === elementId;
     const isActive = typeof isActiveProp !== 'undefined' ? isActiveProp : isSelfActive;
     const myPopoverBase = `popover-${elementId}`;
     const showSettings = activePopoverId && activePopoverId.startsWith(myPopoverBase);
     const isStyleOpen = activePopoverId === `${myPopoverBase}-style`;
     const isLinkOpen = activePopoverId === `${myPopoverBase}-link`;
+
+    // Detect media components (media-* but not media-grid-col-*)
+    const isMediaComponent = elementId && elementId.startsWith('media-') && !elementId.includes('grid-col');
 
     const wrapperRef = useRef(null);
     const [overlayRect, setOverlayRect] = useState(null);
@@ -282,12 +293,8 @@ export default function BuilderImage({
                 )}
 
                 {(() => {
-                    // Logic to determine if settings buttons should be visible
-                    // Style Settings (Src, Mobile Src, Portrait, Ratio, Visibility)
-                    const hasStyleControls = (isStaging || alwaysShowSrc) || (!isStaging && (!!onIsPortraitChange || !!onMobileRatioChange || !!onAspectRatioChange)) || (!!onVisibilityChange);
-
-                    // Link Settings
-                    const hasLinkControls = showLinkControls; // Always show link settings if enabled (includes URL input)
+                    const hasStyleControls = !isStaging || shouldShowSrcOnStaging;
+                    const hasLinkControls = showLinkControls && (!isStaging || showLinkOnStaging || (isStaging && (linkType === 'url' || linkType === 'dialog')));
 
                     const hasAnySettings = !disableSettings && (hasStyleControls || hasLinkControls);
 
@@ -295,7 +302,6 @@ export default function BuilderImage({
 
                     return (
                         <>
-                            {/* Sparkle Button for Style Settings */}
                             {(!disableSettings && hasStyleControls) && (
                                 <button
                                     type="button"
@@ -307,7 +313,6 @@ export default function BuilderImage({
                                 </button>
                             )}
 
-                            {/* Cog Icon for Link Settings */}
                             {(!disableSettings && hasLinkControls) && (
                                 <button
                                     type="button"
@@ -492,33 +497,41 @@ export default function BuilderImage({
                     onUrlChange={onHrefChange}
                     imageSrc={src}
                     onImageSrcChange={onSrcChange}
+                    imageSrcLabel="Media Source"
                     linkType={linkType}
                     onLinkTypeChange={onLinkTypeChange}
-                    showLinkType={!isStaging && showLinkControls}
-                    showUrl={showLinkControls}
-                    showImageSrc={isStaging || alwaysShowSrc}
+                    showLinkType={!isStaging || showLinkOnStaging}
+                    showUrl={!isStaging || showLinkOnStaging || (isStaging && linkType === 'url')}
+                    showImageSrc={!isStaging || shouldShowSrcOnStaging}
 
                     position={popoverPosition}
-                    dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion' || c.id === 'dialog-form').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
+                    dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion' || c.id === 'dialog-form').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.sectionId || c.uniqueId })) : []}
                     targetDialogId={targetDialogId}
                     onTargetDialogIdChange={onTargetDialogIdChange}
-                    showDialogSelector={showLinkControls}
+                    showDialogSelector={!isStaging || showLinkOnStaging || (isStaging && linkType === 'dialog')}
+
                     showVariant={false}
-                    showPortraitToggle={!isStaging && !!onIsPortraitChange}
+                    
+                    showPortraitToggle={(!isStaging && showPortraitProp)}
                     isPortrait={isPortrait}
                     onIsPortraitChange={onIsPortraitChange}
+                    
                     isVisible={isVisible}
                     onVisibilityChange={onVisibilityChange}
-                    showMobileRatio={!isStaging && !!onMobileRatioChange}
-                    mobileRatio={mobileRatio}
-                    onMobileRatioChange={onMobileRatioChange}
-                    showMobileImageSrc={!!onMobileSrcChange && ((isStaging && !!mobileRatio) || alwaysShowSrc)}
-                    mobileImageSrc={mobileSrc}
-                    onMobileImageSrcChange={onMobileSrcChange}
-                    showAspectRatio={!isStaging && !!onAspectRatioChange}
+                    
+                    showAspectRatio={isMediaComponent ? false : (!isStaging && showAspectRatioProp)}
                     aspectRatio={aspectRatio}
                     onAspectRatioChange={onAspectRatioChange}
 
+                    showMobileRatio={(!isStaging && showMobileRatioProp)}
+                    mobileRatio={mobileRatio}
+                    onMobileRatioChange={onMobileRatioChange}
+                    
+                    showMobileImageSrc={!isStaging && !!onMobileSrcChange}
+                    mobileImageSrc={mobileSrc}
+                    onMobileImageSrcChange={onMobileSrcChange}
+                    
+                    popoverTitle="Image Settings"
                 />
             )}
         </>

@@ -9,7 +9,7 @@ import BuilderSection from "@/app/page-builder/utils/builder/builder-section";
 import BuilderElement from "@/app/page-builder/utils/builder/builder-element";
 import BuilderLink from "@/app/page-builder/utils/builder/builder-link";
 import { componentDefaults } from "../content/data";
-import { PlayIcon } from "@heroicons/react/24/solid";
+import { PlayIcon, VideoCameraIcon, PhotoIcon } from "@heroicons/react/24/solid";
 
 export default function InstagramFeed({
     items: rawItems = componentDefaults["social-bridge-instagram-feed"].items,
@@ -33,6 +33,8 @@ export default function InstagramFeed({
     const [totalItems, setTotalItems] = useState(items.length);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
+    const [playingIndex, setPlayingIndex] = useState(-1);
+    const [isAutoplayPaused, setIsAutoplayPaused] = useState(false);
 
     const latestStateRef = useRef({ items, onUpdate });
     latestStateRef.current = { items, onUpdate };
@@ -180,6 +182,37 @@ export default function InstagramFeed({
         return () => clearInterval(timer);
     }, [activeIndex, totalItems, isPaused, autoScroll, autoScrollEffect]);
 
+    // Sequential Autoplay Effect (When autoScroll is OFF)
+    useEffect(() => {
+        // If autoScroll is ON, or it's paused, or no items, stop sequencer
+        if (isAutoScroll || isAutoplayPaused || items.length === 0) {
+            if (playingIndex !== -1 && !isAutoplayPaused) setPlayingIndex(-1);
+            return;
+        }
+
+        const interval = setInterval(() => {
+            setPlayingIndex((prev) => {
+                const next = (prev + 1) % items.length;
+                // Simple skip for hidden items
+                if (items[next]?.visible === false) {
+                    const nextNext = (next + 1) % items.length;
+                    return nextNext;
+                }
+                return next;
+            });
+        }, 8000); // 8 seconds per video in sequence
+
+        return () => clearInterval(interval);
+    }, [isAutoScroll, isAutoplayPaused, items.length]);
+
+    const getInstagramEmbedUrl = (url) => {
+        if (!url) return "";
+        const reelMatch = url.match(/instagram\.com\/reels\/([^\/\?#]+)/);
+        const postMatch = url.match(/instagram\.com\/p\/([^\/\?#]+)/);
+        const id = reelMatch ? reelMatch[1] : (postMatch ? postMatch[1] : null);
+        return id ? `https://www.instagram.com/p/${id}/embed/` : url;
+    };
+
     const visibleCount = items.filter(t => t.visible !== false).length;
     let filteredItems = items.map((item, idx) => ({ ...item, _originalIndex: idx }));
 
@@ -200,7 +233,7 @@ export default function InstagramFeed({
         displayItems.push(...filteredItems);
     }
 
-    const shouldCenter = !isAutoScroll || (totalPages <= 1 && autoScrollEffect !== 'marquee');
+    const shouldCenter = totalPages <= 1 && autoScrollEffect !== 'marquee';
 
     return (
         <BuilderSection
@@ -243,27 +276,82 @@ export default function InstagramFeed({
                                     elementProps={`instagram-feed-${index}`}
                                     isVisible={item.visible !== false}
                                 >
-                                    <div className={styles.card}>
-                                        <BuilderImage
-                                            src={item.image || DEFAULT_PLACEHOLDER_IMAGE}
-                                            onSrcChange={(val) => updateItem(item._originalIndex, "image", val)}
-                                            className={styles.backgroundImage}
-                                            id={item.imageId}
-                                            sectionId={sectionId}
-                                            isVisible={true}
-                                            onIdChange={(val) => updateItem(item._originalIndex, "imageId", val)}
-                                            suffix={`bg-${index}`}
-                                            href={item.url}
-                                            onHrefChange={(val) => updateItem(item._originalIndex, "url", val)}
-                                            linkType={item.linkType}
-                                            onLinkTypeChange={(val) => updateItem(item._originalIndex, "linkType", val)}
-                                            targetDialogId={item.targetDialogId}
-                                            onTargetDialogIdChange={(val) => updateItem(item._originalIndex, "targetDialogId", val)}
-                                        />
+                                        <div 
+                                            className={styles.card}
+                                            onClick={() => {
+                                                setIsAutoplayPaused(true);
+                                                setPlayingIndex(playingIndex === index ? -1 : index);
+                                            }}
+                                        >
+                                        {playingIndex === index && item.isVideo ? (
+                                            <div className={styles.videoPlayer}>
+                                                {item.videoUrl?.includes('instagram.com') ? (
+                                                    <iframe
+                                                        src={getInstagramEmbedUrl(item.videoUrl)}
+                                                        className={styles.iframe}
+                                                        allowFullScreen
+                                                        allow="autoplay"
+                                                        scrolling="no"
+                                                        frameBorder="0"
+                                                    />
+                                                ) : (
+                                                    <video
+                                                        src={item.videoUrl}
+                                                        autoPlay
+                                                        controls
+                                                        className={styles.video}
+                                                        onEnded={() => {
+                                                            if (!isAutoScroll) {
+                                                                setPlayingIndex((prev) => (prev + 1) % items.length);
+                                                            }
+                                                        }}
+                                                    />
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <BuilderImage
+                                                src={item.image || DEFAULT_PLACEHOLDER_IMAGE}
+                                                onSrcChange={(val) => updateItem(item._originalIndex, "image", val)}
+                                                className={styles.backgroundImage}
+                                                id={item.imageId}
+                                                sectionId={sectionId}
+                                                isVisible={true}
+                                                onIdChange={(val) => updateItem(item._originalIndex, "imageId", val)}
+                                                suffix={`bg-${index}`}
+                                                href={item.url}
+                                                onHrefChange={(val) => updateItem(item._originalIndex, "url", val)}
+                                                linkType={item.linkType}
+                                                onLinkTypeChange={(val) => updateItem(item._originalIndex, "linkType", val)}
+                                                targetDialogId={item.targetDialogId}
+                                                onTargetDialogIdChange={(val) => updateItem(item._originalIndex, "targetDialogId", val)}
+                                                showPortraitToggle={false}
+                                                showAspectRatio={false}
+                                                showMobileRatio={false}
+                                            />
+                                        )}
 
                                         <div className={styles.overlay}>
                                             <div className={styles.blurLayer} />
-                                            <PlayIcon className={`${styles.playIcon} shadow-md`} />
+                                            {item.isVideo && playingIndex !== index && <PlayIcon className={`${styles.playIcon} shadow-md`} />}
+                                            
+                                            {/* Builder-only toggle */}
+                                            {onUpdate && (
+                                                <div 
+                                                    className={styles.typeToggle}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        updateItem(item._originalIndex, "isVideo", !item.isVideo);
+                                                    }}
+                                                    title={item.isVideo ? "Change to Image" : "Change to Video"}
+                                                >
+                                                    {item.isVideo ? (
+                                                        <VideoCameraIcon className={styles.toggleIcon} />
+                                                    ) : (
+                                                        <PhotoIcon className={styles.toggleIcon} />
+                                                    )}
+                                                </div>
+                                            )}
+
                                             <div className={styles.content}>
                                                 <BuilderText
                                                     tagName="div"

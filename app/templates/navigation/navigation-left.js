@@ -209,6 +209,9 @@ export default function NavigationLeft({
                                 style={logoStyle}
                                 showLinkControls={false}
                                 alwaysShowSrc={false}
+                                showAspectRatio={false}
+                                showMobileRatio={false}
+                                showPortraitToggle={false}
                             />
                         </div>
                     </div>

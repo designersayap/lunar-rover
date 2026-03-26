@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import BuilderText from "./builder-text";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { useActiveOverlayPosition } from "../hooks/use-active-overlay";
+import { useIdSync } from "../hooks/use-id-sync";
 import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon, PaintBrushIcon } from "@heroicons/react/24/solid";
 import styles from "../../../page.module.css";
 import BuilderControlsPopover from "./builder-controls-popover";
@@ -33,16 +34,20 @@ export default function BuilderButton({
     onLinkTypeChange,
     targetDialogId,
     onTargetDialogIdChange,
-    disableSettings = false
+    disableSettings = false,
+    showLinkOnStaging = false, // New prop
+    showVariantOnStaging = false // New prop
 }) {
     const [popoverPosition, setPopoverPosition] = useState(null);
 
     const variantClass = className.split(' ').find(c => c.startsWith('btn-') && !['btn-lg', 'btn-md', 'btn-sm', 'btn-icon'].includes(c)) || 'btn-default';
 
-    const normalizedSectionId = sectionId ? String(sectionId).replace(/-+$/, '') : '';
-    const generatedId = normalizedSectionId ? (suffix ? `${normalizedSectionId}-${suffix}` : `${normalizedSectionId}-${variantClass}`) : undefined;
-    const normalizedId = id ? String(id).replace(/-+/g, '-') : '';
-    const buttonId = normalizedId || generatedId;
+    const { elementId: buttonId, tempId, setTempId } = useIdSync({
+        id,
+        sectionId,
+        suffix: suffix || variantClass.replace('btn-', ''),
+        onIdChange
+    });
 
     const {
         selectedComponents,
@@ -55,41 +60,13 @@ export default function BuilderButton({
         setActiveElementId,
         selectedElementIds
     } = useContext(BuilderSelectionContext);
+
     const myPopoverBase = `popover-${buttonId}`;
     const showSettings = activePopoverId && activePopoverId.startsWith(myPopoverBase);
 
     // Check SPECIFICALLY which mode is open
     const isStyleOpen = activePopoverId === `${myPopoverBase}-style`;
     const isLinkOpen = activePopoverId === `${myPopoverBase}-link`;
-
-    const prefix = normalizedSectionId ? `${normalizedSectionId}-` : "";
-    const [tempId, setTempId] = useState("");
-
-    useEffect(() => {
-        const newTempId = (buttonId && buttonId.startsWith(prefix))
-            ? buttonId.slice(prefix.length)
-            : buttonId;
-
-        if (newTempId !== tempId) {
-            setTempId(newTempId);
-        }
-    }, [buttonId, tempId, prefix]);
-
-    const prevSectionIdRef = useRef(sectionId);
-    useEffect(() => {
-        const prevSectionId = prevSectionIdRef.current;
-        if (prevSectionId && prevSectionId !== sectionId) {
-            const oldPrefix = `${prevSectionId}-`;
-            if (buttonId && buttonId.startsWith(oldPrefix)) {
-                const suffixPart = buttonId.slice(oldPrefix.length);
-                const newId = `${sectionId}-${suffixPart}`;
-                if (onIdChange) {
-                    onIdChange(newId);
-                }
-            }
-        }
-        prevSectionIdRef.current = sectionId;
-    }, [sectionId, buttonId, onIdChange]);
 
     const isSelfActive = activeElementId === buttonId;
     const isActive = isSelfActive || selectedElementIds?.includes(buttonId);
@@ -288,20 +265,15 @@ export default function BuilderButton({
                     )}
 
                     {(() => {
-                        const hasControls = (!isStaging && (
-                            true // Link settings are standard
-                            || !!onVariantChange
-                            || !!onIconLeftChange
-                            || !!onIconRightChange
-                        )) || isStaging;
+                        const hasStyleControls = !isStaging || showVariantOnStaging;
+                        const hasLinkControls = !isStaging || showLinkOnStaging || (isStaging && (linkType === 'url' || linkType === 'dialog'));
 
-                        const hasAvailableSettings = !disableSettings && hasControls;
+                        const hasAvailableSettings = !disableSettings && (hasStyleControls || hasLinkControls);
                         if (!hasAvailableSettings) return null;
 
                         return (
                             <>
-                                {/* Sparkle Button for Style Settings */}
-                                {(!isStaging && (onVariantChange || onIconLeftChange || onIconRightChange)) && (
+                                {hasStyleControls && (onVariantChange || onIconLeftChange || onIconRightChange) && (
                                     <button
                                         type="button"
                                         className={`${styles.settingsButton} ${isStyleOpen ? styles.settingsButtonActive : ''}`}
@@ -312,15 +284,16 @@ export default function BuilderButton({
                                     </button>
                                 )}
 
-                                {/* Cog Button for Link/Other Settings */}
-                                <button
-                                    type="button"
-                                    className={`${styles.settingsButton} ${isLinkOpen ? styles.settingsButtonActive : ''}`}
-                                    onClick={handleLinkSettingsClick}
-                                    data-tooltip="Link Settings"
-                                >
-                                    <Cog6ToothIcon className={styles.overlayIcon} />
-                                </button>
+                                {hasLinkControls && (
+                                    <button
+                                        type="button"
+                                        className={`${styles.settingsButton} ${isLinkOpen ? styles.settingsButtonActive : ''}`}
+                                        onClick={handleLinkSettingsClick}
+                                        data-tooltip="Link Settings"
+                                    >
+                                        <Cog6ToothIcon className={styles.overlayIcon} />
+                                    </button>
+                                )}
                             </>
                         );
                     })()}
@@ -344,16 +317,18 @@ export default function BuilderButton({
                         isVisible={isVisible}
                         onVisibilityChange={onVisibilityChange}
                         position={popoverPosition}
-                        dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion' || c.id === 'dialog-form').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.uniqueId })) : []}
+                        dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion' || c.id === 'dialog-form').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.sectionId || c.uniqueId })) : []}
                         targetDialogId={targetDialogId}
                         onTargetDialogIdChange={onTargetDialogIdChange}
-                        showLinkType={!isStaging}
-                        showVariant={!isStaging}
+                        showLinkType={!isStaging || showLinkOnStaging}
+                        showVariant={!isStaging || showVariantOnStaging}
                         iconLeft={iconLeft}
-                        onIconLeftChange={!isStaging ? onIconLeftChange : undefined}
+                        onIconLeftChange={(!isStaging || showVariantOnStaging) ? onIconLeftChange : undefined}
                         iconRight={iconRight}
-                        onIconRightChange={!isStaging ? onIconRightChange : undefined}
-                        showUrl={true}
+                        onIconRightChange={(!isStaging || showVariantOnStaging) ? onIconRightChange : undefined}
+                        showUrl={!isStaging || showLinkOnStaging || (isStaging && linkType === 'url')}
+                        showDialogSelector={!isStaging || showLinkOnStaging || (isStaging && linkType === 'dialog')}
+                        popoverTitle="Button Settings"
                     />
                 )
             }
