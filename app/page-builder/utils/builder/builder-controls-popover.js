@@ -252,11 +252,6 @@ export default function BuilderControlsPopover({
             >
                 {/* Content */}
                 <div className={styles.popoverContent}>
-                    {mode === 'style' && (showFullWidthToggle || showAutoScrollToggle || showOverlayToggle || showMenuColorToggle || showFloatingToggle || showAspectRatio || showBlurToggle) && (
-                        <div className={styles.popoverHeader} style={{ marginBottom: 'var(--pb-space-sm)', borderBottom: '1px solid var(--pb-border-color)', paddingBottom: 'var(--pb-space-xs)' }}>
-                            <span className="caption-bold" style={{ color: 'var(--pb-white)', opacity: 0.8 }}>{popoverTitle}</span>
-                        </div>
-                    )}
                     <div className={styles.popoverProperties}>
 
                         {(mode === 'all' || mode === 'link') && showLinkType && (
@@ -686,7 +681,7 @@ export default function BuilderControlsPopover({
         </div >
     );
 
-    const hasVisibleStyleSettings = showFullWidthToggle || showAutoScrollToggle || showOverlayToggle || showMenuColorToggle || showFloatingToggle || showAspectRatio || showBlurToggle;
+    const hasVisibleStyleSettings = showFullWidthToggle || showAutoScrollToggle || showOverlayToggle || showMenuColorToggle || showFloatingToggle || showAspectRatio || showBlurToggle || showImageSrc || showTitle || showSubtitle;
     const hasVisibleLinkSettings = showUrl || showLinkType || showDialogSelector;
     const hasVisibleSettings = mode === 'style' ? hasVisibleStyleSettings : (mode === 'link' ? hasVisibleLinkSettings : (hasVisibleStyleSettings || hasVisibleLinkSettings));
 

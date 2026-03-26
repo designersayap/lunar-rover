@@ -306,7 +306,7 @@ const TikTokCard = memo(({
                 <BuilderControlsPopover
                     isOpen={showSettings}
                     onClose={() => setActivePopoverId(null)}
-                    mode="style"
+                    mode="all"
                     imageSrc={item.videoUrl}
                     onImageSrcChange={(val) => updateVideo(index, 'videoUrl', val)}
                     showImageSrc={true}

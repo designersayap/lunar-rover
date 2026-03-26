@@ -95,7 +95,7 @@ export default function BuilderImage({
     const { activeElementId, setActiveElementId, activePopoverId, setActivePopoverId, selectedComponents, updateComponent, isStaging } = useContext(BuilderSelectionContext);
     const { canvasWidth } = useCanvas();
 
-    const shouldShowSrcOnStaging = showSrcOnStaging || alwaysShowSrcProp || (isStaging && elementId?.startsWith('navigation-'));
+    const shouldShowSrcOnStaging = true;
 
     const isSelfActive = activeElementId === elementId;
     const isActive = typeof isActiveProp !== 'undefined' ? isActiveProp : isSelfActive;
@@ -107,6 +107,23 @@ export default function BuilderImage({
     // Detect media components (media-* but not media-grid-col-*)
     const isMediaComponent = elementId && elementId.startsWith('media-') && !elementId.includes('grid-col');
 
+    // Detect feature components (feature-*)
+    const isFeatureComponent = elementId && elementId.startsWith('feature-');
+
+    // Detect testimonial components (testimonial-*)
+    const isTestimonialComponent = elementId && elementId.startsWith('testimonial-');
+
+    // Detect product components (products-*)
+    const isProductComponent = elementId && elementId.startsWith('products-');
+
+    // Detect footer components (footer-*)
+    const isFooterComponent = elementId && (elementId.startsWith('footer-'));
+
+    // Detect dialog components (dialog-*)
+    const isDialogComponent = elementId && elementId.startsWith('dialog-');
+
+    // Detect cta components (cta-*)
+    const isCtaComponent = elementId && elementId.startsWith('cta-');
     const wrapperRef = useRef(null);
     const [overlayRect, setOverlayRect] = useState(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
@@ -154,7 +171,7 @@ export default function BuilderImage({
         const hasSrc = src && src !== "";
 
         const isPlaceholder = src === defaultPlaceholder;
-        
+
         // If it's a priority image, a placeholder, an empty source, or no IntersectionObserver, load immediately
         if (priority || isPlaceholder || !hasSrc || typeof window === 'undefined' || !window.IntersectionObserver) {
             setShouldLoad(true);
@@ -175,9 +192,9 @@ export default function BuilderImage({
                     observer.disconnect();
                 }
             });
-        }, { 
+        }, {
             threshold: 0.01,
-            rootMargin: '50px' 
+            rootMargin: '50px'
         });
 
         if (wrapperRef.current) {
@@ -511,26 +528,23 @@ export default function BuilderImage({
                     showDialogSelector={!isStaging || showLinkOnStaging || (isStaging && linkType === 'dialog')}
 
                     showVariant={false}
-                    
-                    showPortraitToggle={(!isStaging && showPortraitProp)}
-                    isPortrait={isPortrait}
-                    onIsPortraitChange={onIsPortraitChange}
-                    
+
                     isVisible={isVisible}
-                    onVisibilityChange={onVisibilityChange}
-                    
-                    showAspectRatio={isMediaComponent ? false : (!isStaging && showAspectRatioProp)}
+                    showFullWidthToggle={false}
+                    showAspectRatio={(isMediaComponent || isTestimonialComponent || isProductComponent || isFooterComponent || isDialogComponent || isCtaComponent) ? false : (!isStaging && showAspectRatioProp)}
                     aspectRatio={aspectRatio}
                     onAspectRatioChange={onAspectRatioChange}
-
-                    showMobileRatio={(!isStaging && showMobileRatioProp)}
+                    showPortraitToggle={(!isStaging && showPortraitProp && !isFeatureComponent && !isTestimonialComponent && !isProductComponent && !isFooterComponent && !isDialogComponent && !isCtaComponent)}
+                    isPortrait={isPortrait}
+                    onIsPortraitChange={onIsPortraitChange}
+                    showMobileRatio={(!isStaging && showMobileRatioProp && !isFeatureComponent && !isTestimonialComponent && !isProductComponent && !isFooterComponent && !isDialogComponent && !isCtaComponent)}
                     mobileRatio={mobileRatio}
                     onMobileRatioChange={onMobileRatioChange}
-                    
-                    showMobileImageSrc={!isStaging && !!onMobileSrcChange}
+
+                    showMobileImageSrc={(!isFooterComponent && !!onMobileSrcChange)}
                     mobileImageSrc={mobileSrc}
                     onMobileImageSrcChange={onMobileSrcChange}
-                    
+
                     popoverTitle="Image Settings"
                 />
             )}
