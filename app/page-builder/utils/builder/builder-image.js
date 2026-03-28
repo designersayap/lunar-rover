@@ -4,7 +4,7 @@ import { useContext, useRef, useEffect, useState, useLayoutEffect, useMemo } fro
 import { createPortal } from "react-dom";
 import { BuilderSelectionContext } from "@/app/page-builder/utils/builder/builder-controls";
 import { useIdSync } from "../hooks/use-id-sync";
-import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon, PaintBrushIcon } from "@heroicons/react/24/solid";
+import { Cog6ToothIcon, ChatBubbleLeftEllipsisIcon, PaintBrushIcon, SpeakerWaveIcon, SpeakerXMarkIcon } from "@heroicons/react/24/solid";
 import BuilderControlsPopover from "./builder-controls-popover";
 import styles from "../../../page.module.css";
 
@@ -29,20 +29,20 @@ const isVimeo = (url) => {
     return url.match(/^(https?:\/\/)?(www\.)?(vimeo\.com)\/.+$/);
 };
 
-const getYoutubeEmbedUrl = (url) => {
+const getYoutubeEmbedUrl = (url, enableAudio = false) => {
     if (!url) return '';
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
     const id = (match && match[2].length === 11) ? match[2] : null;
-    return id ? `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0` : url;
+    return id ? `https://www.youtube.com/embed/${id}?autoplay=1&mute=${enableAudio ? 0 : 1}&loop=1&playlist=${id}&controls=0` : url;
 };
 
-const getVimeoEmbedUrl = (url) => {
+const getVimeoEmbedUrl = (url, enableAudio = false) => {
     if (!url) return '';
     const regExp = /vimeo\.com\/(\d+)/;
     const match = url.match(regExp);
     const id = (match ? match[1] : null);
-    return id ? `https://player.vimeo.com/video/${id}?autoplay=1&loop=1&muted=1&background=1` : url;
+    return id ? `https://player.vimeo.com/video/${id}?autoplay=1&loop=1&muted=${enableAudio ? 0 : 1}&background=1` : url;
 };
 
 
@@ -82,7 +82,9 @@ export default function BuilderImage({
     priority,
     showPortraitToggle: showPortraitProp = true, // New prop
     showMobileRatio: showMobileRatioProp = true, // New prop
-    showAspectRatio: showAspectRatioProp = true // New prop
+    showAspectRatio: showAspectRatioProp = true, // New prop
+    enableAudio = true,
+    onEnableAudioChange
 }) {
     // Merge for backward compatibility
     const { elementId } = useIdSync({
@@ -394,24 +396,26 @@ export default function BuilderImage({
         mediaContent = shouldLoad ? (
             <iframe
                 id={elementId}
-                src={getYoutubeEmbedUrl(src)}
+                src={getYoutubeEmbedUrl(src, enableAudio)}
                 style={{ ...finalStyle, border: 'none' }}
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
                 loading="lazy"
                 title="video"
+                key={enableAudio ? 'unmuted' : 'muted'}
             />
         ) : <div style={finalStyle} />;
     } else if (isVimeo(src)) {
         mediaContent = shouldLoad ? (
             <iframe
                 id={elementId}
-                src={getVimeoEmbedUrl(src)}
+                src={getVimeoEmbedUrl(src, enableAudio)}
                 style={{ ...finalStyle, border: 'none' }}
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
                 loading="lazy"
                 title="video"
+                key={enableAudio ? 'unmuted' : 'muted'}
             />
         ) : <div style={finalStyle} />;
     } else if (isVideoFile(src)) {
@@ -421,7 +425,7 @@ export default function BuilderImage({
                 style={finalStyle}
                 autoPlay={shouldLoad}
                 loop
-                muted
+                muted={!enableAudio}
                 playsInline
                 preload={shouldLoad ? "auto" : "none"}
             >
@@ -501,6 +505,24 @@ export default function BuilderImage({
                 ) : (
                     mediaContent
                 )}
+
+                {onEnableAudioChange && (isYoutube(src) || isVimeo(src) || isVideoFile(src)) && (
+                    <button
+                        type="button"
+                        className="media-mute-button"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onEnableAudioChange(!enableAudio);
+                        }}
+                    >
+                        {enableAudio ? (
+                            <SpeakerWaveIcon className="media-mute-icon" />
+                        ) : (
+                            <SpeakerXMarkIcon className="media-mute-icon" />
+                        )}
+                    </button>
+                )}
             </Wrapper>
 
             {renderActiveOverlay()}
@@ -541,8 +563,6 @@ export default function BuilderImage({
                     mobileRatio={mobileRatio}
                     onMobileRatioChange={onMobileRatioChange}
 
-                    showMobileImageSrc={(!isFooterComponent && !!onMobileSrcChange)}
-                    mobileImageSrc={mobileSrc}
                     onMobileImageSrcChange={onMobileSrcChange}
 
                     popoverTitle="Image Settings"

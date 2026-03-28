@@ -44,7 +44,8 @@ export default function FeatureImageLeft({
     subtitleVisible = true,
     titleId,
     subtitleId,
-    imageRatio
+    imageRatio,
+    imageEnableAudio
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -71,6 +72,8 @@ export default function FeatureImageLeft({
                             onTargetDialogIdChange={update('imageTargetDialogId')}
                             aspectRatio={imageRatio}
                             onAspectRatioChange={update('imageRatio')}
+                            enableAudio={imageEnableAudio}
+                            onEnableAudioChange={update('imageEnableAudio')}
                         />
                     </div>
 

@@ -29,6 +29,8 @@ export default function DialogSection({
     onTitleVisibleChange,
     onDescriptionVisibleChange,
     onImageVisibleChange,
+    imageEnableAudio,
+    onImageEnableAudioChange
 }) {
     const update = createUpdateHandler(onUpdate);
     const [internalIsOpen, setInternalIsOpen] = useState(false);
@@ -127,6 +129,8 @@ export default function DialogSection({
                                 onTargetDialogIdChange={update('imageTargetDialogId')}
                                 showLinkControls={false}
                                 alwaysShowSrc={true}
+                                enableAudio={imageEnableAudio}
+                                onEnableAudioChange={onImageEnableAudioChange || update('imageEnableAudio')}
                             />
 
                             {(title || description) && (

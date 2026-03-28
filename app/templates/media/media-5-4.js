@@ -19,7 +19,8 @@ export default function Media5x4({
     imageTargetDialogId,
     imageIsPortrait,
     imageMobileRatio,
-    imageMobileSrc
+    imageMobileSrc,
+    imageEnableAudio
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -58,6 +59,8 @@ export default function Media5x4({
                             onMobileRatioChange={update('imageMobileRatio')}
                             mobileSrc={imageMobileSrc}
                             onMobileSrcChange={update('imageMobileSrc')}
+                            enableAudio={imageEnableAudio}
+                            onEnableAudioChange={update('imageEnableAudio')}
                         />
                     </div>
                 </div>

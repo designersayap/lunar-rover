@@ -1096,3 +1096,35 @@ strong {
     bounceInDown 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
     floating-alt 7s ease-in-out 0.8s infinite !important;
 }
+
+/* ============================================
+   MEDIA MUTE BUTTON
+   ============================================ */
+
+.media-mute-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+  transition: all 0.2s ease;
+}
+
+.media-mute-button:hover {
+  background: rgba(0, 0, 0, 0.7);
+  transform: scale(1.1);
+}
+
+.media-mute-icon {
+  width: 16px;
+  height: 16px;
+}

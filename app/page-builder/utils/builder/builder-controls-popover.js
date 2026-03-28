@@ -456,6 +456,7 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
+
                         {(mode === 'all' || mode === 'style') && showTitle && (
                             <div className={`${styles.propertyRow} ${styles.propertyRowStacked}`} style={{ marginTop: 'var(--pb-space-sm)' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: 'var(--pb-space-xs)' }}>

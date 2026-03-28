@@ -263,6 +263,8 @@ export default function InstagramFeed({
                                                 showPortraitToggle={false}
                                                 showAspectRatio={false}
                                                 showMobileRatio={false}
+                                                enableAudio={item.enableAudio}
+                                                onEnableAudioChange={(val) => updateItem(item._originalIndex, "enableAudio", val)}
                                             />
 
                                             <div className={styles.overlay}>

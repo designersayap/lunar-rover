@@ -273,6 +273,8 @@ export default function TestimonyLandscape({
                                             onLinkTypeChange={(val) => updateTestimony(originalIndex, "imageLinkType", val)}
                                             targetDialogId={item.imageTargetDialogId}
                                             onTargetDialogIdChange={(val) => updateTestimony(originalIndex, "imageTargetDialogId", val)}
+                                            enableAudio={item.imageEnableAudio}
+                                            onEnableAudioChange={(val) => updateTestimony(originalIndex, "imageEnableAudio", val)}
                                         />
 
                                         <div className={styles.terraTestimoniDescriptionCard}>
@@ -294,6 +296,8 @@ export default function TestimonyLandscape({
                                                     onLinkTypeChange={(val) => updateTestimony(originalIndex, "avatarLinkType", val)}
                                                     targetDialogId={item.avatarTargetDialogId}
                                                     onTargetDialogIdChange={(val) => updateTestimony(originalIndex, "avatarTargetDialogId", val)}
+                                                    enableAudio={item.avatarEnableAudio}
+                                                    onEnableAudioChange={(val) => updateTestimony(originalIndex, "avatarEnableAudio", val)}
                                                 />
                                             </div>
                                             <BuilderText

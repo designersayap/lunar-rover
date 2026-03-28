@@ -43,7 +43,8 @@ export default function HeroTerraBanner({
     titleVisible = true,
     subtitleVisible = true,
     titleId,
-    subtitleId
+    subtitleId,
+    imageEnableAudio
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -91,6 +92,8 @@ export default function HeroTerraBanner({
                     onLinkTypeChange={update('imageLinkType')}
                     targetDialogId={imageTargetDialogId}
                     onTargetDialogIdChange={update('imageTargetDialogId')}
+                    enableAudio={imageEnableAudio}
+                    onEnableAudioChange={update('imageEnableAudio')}
                     priority={true}
                 />
             </div>

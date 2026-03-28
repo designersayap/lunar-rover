@@ -78,7 +78,10 @@ export default function DialogItemList({
                                     showLinkControls={false}
                                     isVisible={item.visible !== false}
                                     sectionId={sectionId}
-                                    suffix={`item-image-${i}`} />
+                                    suffix={`item-image-${i}`}
+                                    enableAudio={item.imageEnableAudio}
+                                    onEnableAudioChange={(val) => updateItem(i, 'imageEnableAudio', val)}
+                                />
                             </div>
                         }
                         iconRight={<ArrowRightIcon className={styles.itemArrow} />}

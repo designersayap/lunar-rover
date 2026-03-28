@@ -93,6 +93,8 @@ export default function MediaGridCol3({
                                 mobileRatio={item.imageMobileRatio}
                                 onMobileRatioChange={(val) => handleUpdateImage(item.originalIndex, 'imageMobileRatio', val)}
                                 showMobileRatio={false}
+                                enableAudio={item.imageEnableAudio}
+                                onEnableAudioChange={(val) => handleUpdateImage(item.originalIndex, 'imageEnableAudio', val)}
                             />
                         </div>
                     </div>
