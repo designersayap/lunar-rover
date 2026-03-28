@@ -83,7 +83,7 @@ export default function BuilderImage({
     showPortraitToggle: showPortraitProp = true, // New prop
     showMobileRatio: showMobileRatioProp = true, // New prop
     showAspectRatio: showAspectRatioProp = true, // New prop
-    enableAudio = true,
+    enableAudio = false,
     onEnableAudioChange
 }) {
     // Merge for backward compatibility
