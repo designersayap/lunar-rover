@@ -380,7 +380,7 @@ export default function BuilderImage({
         'data-dialog-target': linkType === 'dialog' ? targetDialogSectionId : undefined
     } : {};
 
-    let finalClassName = `${isActive ? styles.activeWrapper : ''} ${className}`;
+    let finalClassName = `${isActive ? styles.activeWrapper : ''} builder-image-container ${className}`;
     if (onIsPortraitChange && isPortrait) {
         Object.entries(IMAGE_PORTRAIT_RATIO_MAP).forEach(([landscape, portrait]) => {
             finalClassName = finalClassName.replace(landscape, portrait);

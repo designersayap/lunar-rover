@@ -1117,6 +1117,14 @@ strong {
   z-index: 100;
   backdrop-filter: blur(4px);
   transition: all 0.2s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.builder-image-container:hover .media-mute-button,
+.builder-image-container:focus-within .media-mute-button {
+  opacity: 1;
+  visibility: visible;
 }
 
 .media-mute-button:hover {
