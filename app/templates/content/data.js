@@ -514,8 +514,6 @@ export const componentDefaults = {
             url: "",
             linkType: "url",
             targetDialogId: "",
-            isVideo: true,
-            videoUrl: ""
         }),
         autoScroll: true,
         autoScrollEffect: 'slide',
