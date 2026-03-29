@@ -45,7 +45,8 @@ export default function FeatureImageRight({
     titleId,
     subtitleId,
     imageRatio,
-    imageEnableAudio
+    imageEnableAudio,
+    imageAutoplay = componentDefaults["feature-image-right"].imageAutoplay
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -153,6 +154,8 @@ export default function FeatureImageRight({
                             onAspectRatioChange={update('imageRatio')}
                             enableAudio={imageEnableAudio}
                             onEnableAudioChange={update('imageEnableAudio')}
+                            autoplay={imageAutoplay}
+                            onAutoplayChange={update('imageAutoplay')}
                         />
                     </div>
                 </div>

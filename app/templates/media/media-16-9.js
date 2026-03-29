@@ -20,7 +20,8 @@ export default function Media16x9({
     imageIsPortrait,
     imageMobileRatio,
     imageMobileSrc,
-    imageEnableAudio
+    imageEnableAudio,
+    imageAutoplay = componentDefaults["media-16-9"].imageAutoplay
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -61,6 +62,8 @@ export default function Media16x9({
                             onMobileSrcChange={update('imageMobileSrc')}
                             enableAudio={imageEnableAudio}
                             onEnableAudioChange={update('imageEnableAudio')}
+                            autoplay={imageAutoplay}
+                            onAutoplayChange={update('imageAutoplay')}
                         />
                     </div>
                 </div>

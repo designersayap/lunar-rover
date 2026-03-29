@@ -259,6 +259,8 @@ export default function TerraProductCarousel({
                                                                 onTargetDialogIdChange={(val) => updateProduct(originalIndex, "imageTargetDialogId", val)}
                                                                 enableAudio={item.imageEnableAudio}
                                                                 onEnableAudioChange={(val) => updateProduct(originalIndex, "imageEnableAudio", val)}
+                                                                autoplay={item.imageAutoplay}
+                                                                onAutoplayChange={(val) => updateProduct(originalIndex, "imageAutoplay", val)}
                                                             />
 
                                                             {/* The Action Button (Arrow) */}

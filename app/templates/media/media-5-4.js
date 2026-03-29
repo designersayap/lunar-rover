@@ -20,7 +20,8 @@ export default function Media5x4({
     imageIsPortrait,
     imageMobileRatio,
     imageMobileSrc,
-    imageEnableAudio
+    imageEnableAudio,
+    imageAutoplay = componentDefaults["media-5-4"].imageAutoplay
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -54,13 +55,15 @@ export default function Media5x4({
                             targetDialogId={imageTargetDialogId}
                             onTargetDialogIdChange={update('imageTargetDialogId')}
                             isPortrait={imageIsPortrait}
-                            onIsPortraitChange={update('imageIsPortrait')}
+                            onIsPortraitChange={imageMobileRatio ? undefined : update('imageIsPortrait')} // Only allow portrait toggle if mobile ratio is not set
                             mobileRatio={imageMobileRatio}
                             onMobileRatioChange={update('imageMobileRatio')}
                             mobileSrc={imageMobileSrc}
                             onMobileSrcChange={update('imageMobileSrc')}
                             enableAudio={imageEnableAudio}
                             onEnableAudioChange={update('imageEnableAudio')}
+                            autoplay={imageAutoplay}
+                            onAutoplayChange={update('imageAutoplay')}
                         />
                     </div>
                 </div>

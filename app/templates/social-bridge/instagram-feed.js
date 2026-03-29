@@ -264,7 +264,9 @@ export default function InstagramFeed({
                                                 showAspectRatio={false}
                                                 showMobileRatio={false}
                                                 enableAudio={item.enableAudio}
-                                                onEnableAudioChange={(val) => updateItem(item._originalIndex, "enableAudio", val)}
+                                                onEnableAudioChange={(val) => updateItem(index, 'enableAudio', val)}
+                                                autoplay={item.imageAutoplay}
+                                                onAutoplayChange={(val) => updateItem(index, 'imageAutoplay', val)}
                                             />
 
                                             <div className={styles.overlay}>

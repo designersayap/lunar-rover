@@ -274,7 +274,9 @@ export default function TestimonyPortrait({
                                             targetDialogId={item.imageTargetDialogId}
                                             onTargetDialogIdChange={(val) => updateTestimony(originalIndex, "imageTargetDialogId", val)}
                                             enableAudio={item.imageEnableAudio}
-                                            onEnableAudioChange={(val) => updateTestimony(originalIndex, "imageEnableAudio", val)}
+                                            onEnableAudioChange={(val) => handleUpdateTestimony(originalIndex, 'imageEnableAudio', val)}
+                                            autoplay={item.imageAutoplay}
+                                            onAutoplayChange={(val) => handleUpdateTestimony(originalIndex, 'imageAutoplay', val)}
                                         />
 
                                         <div className={styles.contentCard}>
@@ -297,7 +299,9 @@ export default function TestimonyPortrait({
                                                     targetDialogId={item.avatarTargetDialogId}
                                                     onTargetDialogIdChange={(val) => updateTestimony(originalIndex, "avatarTargetDialogId", val)}
                                                     enableAudio={item.avatarEnableAudio}
-                                                    onEnableAudioChange={(val) => updateTestimony(originalIndex, "avatarEnableAudio", val)}
+                                                    onEnableAudioChange={(val) => handleUpdateTestimony(originalIndex, 'avatarEnableAudio', val)}
+                                                    autoplay={item.avatarAutoplay}
+                                                    onAutoplayChange={(val) => handleUpdateTestimony(originalIndex, 'avatarAutoplay', val)}
                                                 />
                                             </div>
                                             <BuilderText

@@ -44,7 +44,8 @@ export default function HeroTerraBanner({
     subtitleVisible = true,
     titleId,
     subtitleId,
-    imageEnableAudio
+    imageEnableAudio,
+    imageAutoplay = componentDefaults["hero-terra-banner"].imageAutoplay
 }) {
     const update = createUpdateHandler(onUpdate);
 
@@ -94,6 +95,8 @@ export default function HeroTerraBanner({
                     onTargetDialogIdChange={update('imageTargetDialogId')}
                     enableAudio={imageEnableAudio}
                     onEnableAudioChange={update('imageEnableAudio')}
+                    autoplay={imageAutoplay}
+                    onAutoplayChange={update('imageAutoplay')}
                     priority={true}
                 />
             </div>

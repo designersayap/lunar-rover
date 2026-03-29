@@ -30,7 +30,9 @@ export default function DialogSection({
     onDescriptionVisibleChange,
     onImageVisibleChange,
     imageEnableAudio,
-    onImageEnableAudioChange
+    onImageEnableAudioChange,
+    imageAutoplay = true,
+    onImageAutoplayChange
 }) {
     const update = createUpdateHandler(onUpdate);
     const [internalIsOpen, setInternalIsOpen] = useState(false);
@@ -131,6 +133,8 @@ export default function DialogSection({
                                 alwaysShowSrc={true}
                                 enableAudio={imageEnableAudio}
                                 onEnableAudioChange={onImageEnableAudioChange || update('imageEnableAudio')}
+                                autoplay={imageAutoplay}
+                                onAutoplayChange={onImageAutoplayChange || update('imageAutoplay')}
                             />
 
                             {(title || description) && (

@@ -29,20 +29,20 @@ const isVimeo = (url) => {
     return url.match(/^(https?:\/\/)?(www\.)?(vimeo\.com)\/.+$/);
 };
 
-const getYoutubeEmbedUrl = (url, enableAudio = false) => {
+const getYoutubeEmbedUrl = (url, enableAudio = false, autoplay = true) => {
     if (!url) return '';
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
     const id = (match && match[2].length === 11) ? match[2] : null;
-    return id ? `https://www.youtube.com/embed/${id}?autoplay=1&mute=${enableAudio ? 0 : 1}&loop=1&playlist=${id}&controls=0` : url;
+    return id ? `https://www.youtube.com/embed/${id}?autoplay=${autoplay ? 1 : 0}&mute=${enableAudio ? 0 : 1}&loop=1&playlist=${id}&controls=0` : url;
 };
 
-const getVimeoEmbedUrl = (url, enableAudio = false) => {
+const getVimeoEmbedUrl = (url, enableAudio = false, autoplay = true) => {
     if (!url) return '';
     const regExp = /vimeo\.com\/(\d+)/;
     const match = url.match(regExp);
     const id = (match ? match[1] : null);
-    return id ? `https://player.vimeo.com/video/${id}?autoplay=1&loop=1&muted=${enableAudio ? 0 : 1}&background=1` : url;
+    return id ? `https://player.vimeo.com/video/${id}?autoplay=${autoplay ? 1 : 0}&loop=1&muted=${enableAudio ? 0 : 1}&background=${autoplay ? 1 : 0}` : url;
 };
 
 
@@ -84,7 +84,9 @@ export default function BuilderImage({
     showMobileRatio: showMobileRatioProp = true, // New prop
     showAspectRatio: showAspectRatioProp = true, // New prop
     enableAudio = false,
-    onEnableAudioChange
+    onEnableAudioChange,
+    autoplay = true,
+    onAutoplayChange
 }) {
     // Merge for backward compatibility
     const { elementId } = useIdSync({
@@ -396,26 +398,26 @@ export default function BuilderImage({
         mediaContent = shouldLoad ? (
             <iframe
                 id={elementId}
-                src={getYoutubeEmbedUrl(src, enableAudio)}
+                src={getYoutubeEmbedUrl(src, enableAudio, autoplay)}
                 style={{ ...finalStyle, border: 'none' }}
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
                 loading="lazy"
                 title="video"
-                key={enableAudio ? 'unmuted' : 'muted'}
+                key={`${enableAudio ? 'unmuted' : 'muted'}-${autoplay ? 'autoplay' : 'clicktoplay'}`}
             />
         ) : <div style={finalStyle} />;
     } else if (isVimeo(src)) {
         mediaContent = shouldLoad ? (
             <iframe
                 id={elementId}
-                src={getVimeoEmbedUrl(src, enableAudio)}
+                src={getVimeoEmbedUrl(src, enableAudio, autoplay)}
                 style={{ ...finalStyle, border: 'none' }}
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
                 loading="lazy"
                 title="video"
-                key={enableAudio ? 'unmuted' : 'muted'}
+                key={`${enableAudio ? 'unmuted' : 'muted'}-${autoplay ? 'autoplay' : 'clicktoplay'}`}
             />
         ) : <div style={finalStyle} />;
     } else if (isVideoFile(src)) {
@@ -423,7 +425,7 @@ export default function BuilderImage({
             <video
                 id={elementId}
                 style={finalStyle}
-                autoPlay={shouldLoad}
+                autoPlay={autoplay && shouldLoad}
                 loop
                 muted={!enableAudio}
                 playsInline
@@ -542,6 +544,10 @@ export default function BuilderImage({
                     showLinkType={!isStaging || showLinkOnStaging}
                     showUrl={!isStaging || showLinkOnStaging || (isStaging && linkType === 'url')}
                     showImageSrc={!isStaging || shouldShowSrcOnStaging}
+
+                    showAutoplayToggle={!!onAutoplayChange && (isYoutube(src) || isVimeo(src) || isVideoFile(src))}
+                    autoplay={autoplay}
+                    onAutoplayChange={onAutoplayChange}
 
                     position={popoverPosition}
                     dialogOptions={selectedComponents ? selectedComponents.filter(c => c.id === 'dialog-item-list' || c.id === 'dialog-accordion' || c.id === 'dialog-form').map(c => ({ label: c.sectionId || c.props?.title || 'Dialog', value: c.sectionId || c.uniqueId })) : []}

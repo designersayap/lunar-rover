@@ -81,6 +81,8 @@ export default function DialogItemList({
                                     suffix={`item-image-${i}`}
                                     enableAudio={item.imageEnableAudio}
                                     onEnableAudioChange={(val) => updateItem(i, 'imageEnableAudio', val)}
+                                    autoplay={item.imageAutoplay}
+                                    onAutoplayChange={(val) => updateItem(i, 'imageAutoplay', val)}
                                 />
                             </div>
                         }

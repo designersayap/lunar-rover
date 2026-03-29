@@ -57,7 +57,8 @@ export const componentDefaults = {
         image: "",
         imageUrl: "",
         imageLinkType: "url",
-        imageTargetDialogId: ""
+        imageTargetDialogId: "",
+        imageAutoplay: true
     },
     "footer-terra": {
         image: "",
@@ -135,7 +136,8 @@ export const componentDefaults = {
         image: "",
         imageUrl: "",
         imageLinkType: "url",
-        imageTargetDialogId: ""
+        imageTargetDialogId: "",
+        imageAutoplay: true
     },
     "feature-image-right": {
         title: "Title",
@@ -156,7 +158,8 @@ export const componentDefaults = {
         image: "",
         imageUrl: "",
         imageLinkType: "url",
-        imageTargetDialogId: ""
+        imageTargetDialogId: "",
+        imageAutoplay: true
     },
     "dialog-item-list": {
         title: "Title",
@@ -168,7 +171,8 @@ export const componentDefaults = {
         imageUrl: "",
         imageLinkType: "url",
         imageTargetDialogId: "",
-        items: Array(8).fill({ label: "Label", image: "", url: "", itemId: "", visible: true })
+        imageAutoplay: true,
+        items: Array(8).fill({ label: "Label", image: "", url: "", itemId: "", visible: true, imageAutoplay: true })
     },
     "dialog-accordion": {
         title: "Title",
@@ -179,6 +183,7 @@ export const componentDefaults = {
         imageUrl: "",
         imageLinkType: "url",
         imageTargetDialogId: "",
+        imageAutoplay: true,
         items: Array(8).fill({ title: "Accordion Title", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." })
     },
     "dialog-form": {
@@ -190,6 +195,7 @@ export const componentDefaults = {
         imageUrl: "",
         imageLinkType: "url",
         imageTargetDialogId: "",
+        imageAutoplay: true,
         marketingConsentLabel: "I agree to receive information about exciting offers, product updates, and other information from [brand_name] and other Wings brands.",
         collectionConsentLabel: "I agree to allow Wings to manage my personal data in accordance with the Wings Privacy Policy.",
         nameVisible: true,
@@ -241,7 +247,8 @@ export const componentDefaults = {
         imageTargetDialogId: "",
         fullWidth: false,
         imageIsPortrait: false,
-        imageMobileRatio: ""
+        imageMobileRatio: "",
+        imageAutoplay: true
     },
     "media-5-4": {
         image: "",
@@ -250,7 +257,8 @@ export const componentDefaults = {
         imageTargetDialogId: "",
         fullWidth: false,
         imageIsPortrait: false,
-        imageMobileRatio: ""
+        imageMobileRatio: "",
+        imageAutoplay: true
     },
     "media-4-3": {
         image: "",
@@ -259,7 +267,8 @@ export const componentDefaults = {
         imageTargetDialogId: "",
         fullWidth: false,
         imageIsPortrait: false,
-        imageMobileRatio: ""
+        imageMobileRatio: "",
+        imageAutoplay: true
     },
     "media-21-9": {
         image: "",
@@ -268,7 +277,8 @@ export const componentDefaults = {
         imageTargetDialogId: "",
         fullWidth: false,
         imageIsPortrait: false,
-        imageMobileRatio: ""
+        imageMobileRatio: "",
+        imageAutoplay: true
     },
     "media-grid-col-3": {
         images: Array.from({ length: 6 }, (_, i) => ({
@@ -278,6 +288,7 @@ export const componentDefaults = {
             imageTargetDialogId: "",
             imageIsPortrait: false,
             imageMobileRatio: "",
+            imageAutoplay: true,
             visible: true,
             cardId: `image-${i}`
         })),
@@ -292,6 +303,7 @@ export const componentDefaults = {
             imageTargetDialogId: "",
             imageIsPortrait: false,
             imageMobileRatio: "",
+            imageAutoplay: true,
             visible: true,
             cardId: `image-${i}`
         })),
@@ -409,6 +421,8 @@ export const componentDefaults = {
             avatarTargetDialogId: "",
             imageVisible: true,
             avatarVisible: true,
+            imageAutoplay: true,
+            avatarAutoplay: true,
             cardId: "",
             visible: true
         }),
@@ -432,6 +446,8 @@ export const componentDefaults = {
             avatarTargetDialogId: "",
             imageVisible: true,
             avatarVisible: true,
+            imageAutoplay: true,
+            avatarAutoplay: true,
             cardId: "",
             visible: true
         }),
@@ -463,7 +479,7 @@ export const componentDefaults = {
             ...Array(4).fill().map((_, i) => ({
                 name: "Product 1",
                 description: "Description 1",
-                image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true,
+                image: "", imageUrl: "", imageLinkType: "url", imageTargetDialogId: "", imageVisible: true, imageAutoplay: true,
                 buttonUrl: "", buttonLinkType: "url", buttonTargetDialogId: "", buttonVisible: true,
                 categoryId: "cat-1", cardId: `p1-${i}`, visible: true
             })),
@@ -509,6 +525,7 @@ export const componentDefaults = {
             hashtag: "#hashtag",
             image: "",
             imageId: "",
+            imageAutoplay: true,
             cardId: "",
             visible: true,
             url: "",

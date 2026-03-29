@@ -110,6 +110,9 @@ export default function BuilderControlsPopover({
     onAutoScrollEffectChange, // Added prop
     marqueeDuration, // Added prop
     onMarqueeDurationChange, // Added prop
+    showAutoplayToggle = false, // New prop
+    autoplay = true, // New prop
+    onAutoplayChange, // New prop
     mode = 'all', // 'all', 'style', 'link'
     popoverTitle = "Section Settings" // New prop
 }) {
@@ -336,6 +339,7 @@ export default function BuilderControlsPopover({
                             </div>
                         )}
 
+
                         {(mode === 'all' || mode === 'style') && showFloatingToggle && (
                             <div className={styles.propertyRow} style={{ marginTop: 'var(--pb-space-sm)' }}>
                                 <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Floating Animation</label>
@@ -438,6 +442,21 @@ export default function BuilderControlsPopover({
                                     placeholder="https://example.com/image.jpg OR video.mp4"
                                     onFocus={(e) => e.target.select()}
                                 />
+                            </div>
+                        )}
+
+                        {(mode === 'all' || mode === 'style') && showAutoplayToggle && (
+                            <div className={styles.propertyRow} style={{ marginTop: 'var(--pb-space-sm)' }}>
+                                <label className={`caption-bold ${styles.formInputTitle}`} style={{ marginBottom: 0 }}>Autoplay</label>
+                                <label className={styles.toggleSwitch}>
+                                    <input
+                                        type="checkbox"
+                                        className={styles.toggleInput}
+                                        checked={autoplay === true}
+                                        onChange={(e) => onAutoplayChange && onAutoplayChange(e.target.checked)}
+                                    />
+                                    <span className={styles.toggleSlider}></span>
+                                </label>
                             </div>
                         )}
 
