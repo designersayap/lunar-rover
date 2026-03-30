@@ -589,6 +589,13 @@
     pointer-events: none;
 }
 
+.rv-notificationHeader {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--rv-space-sm);
+    width: 100%;
+}
+
 .rv-notificationItem {
     display: flex;
     align-items: flex-start;
@@ -608,6 +615,23 @@
 
 .rv-notificationItemUnread {
     color: var(--rv-neutral-50);
+}
+
+.rv-treeActions {
+    display: flex;
+    align-items: center;
+    gap: var(--rv-space-xs);
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.rv-notificationItem:hover .rv-treeActions {
+    opacity: 1;
+}
+
+.rv-subItemName {
+    font-weight: 500;
+    color: var(--rv-white);
 }
 
 .rv-notificationDot {
