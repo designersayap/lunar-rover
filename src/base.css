@@ -1,4 +1,4 @@
-/* 3. TYPOGRAPHY & UTILITIES */
+/* 1. TYPOGRAPHY */
 
 .rv-fontBody {
     font-family: var(--rv-font-family-default);
@@ -37,11 +37,8 @@
 }
 
 
-/* =========================================
-   10. UTILITIES
-   ========================================= */
+/* 2. LAYOUT & FLEXBOX */
 
-/* --- Flexbox --- */
 .rv-flex {
     display: flex;
 }
@@ -49,6 +46,10 @@
 .rv-flexColumn {
     display: flex;
     flex-direction: column;
+}
+
+.rv-flex1 {
+    flex: 1;
 }
 
 .rv-itemsCenter {
@@ -75,9 +76,30 @@
     justify-content: flex-end;
 }
 
-.rv-flex1 {
-    flex: 1;
+.rv-wFull {
+    width: 100%;
 }
+
+.rv-hFull {
+    height: 100%;
+}
+
+.rv-relative {
+    position: relative;
+}
+
+.rv-absolute {
+    position: absolute;
+}
+
+.rv-overlayFixed {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+
+/* 3. SPACING */
 
 .rv-gapXs {
     gap: var(--rv-space-xs);
@@ -99,7 +121,6 @@
     gap: var(--rv-space-xl);
 }
 
-/* --- Spacing --- */
 .rv-m0 {
     margin: 0;
 }
@@ -149,7 +170,21 @@
     padding: var(--rv-space-lg);
 }
 
-/* --- Text --- */
+.rv-p12 {
+    padding: var(--rv-space-md);
+}
+
+.rv-wSidebar {
+    width: var(--rv-w-sidebar);
+}
+
+.rv-mb100 {
+    margin-bottom: var(--rv-space-xl);
+}
+
+
+/* 4. TEXT UTILITIES */
+
 .rv-textCenter {
     text-align: center;
 }
@@ -162,42 +197,17 @@
     text-align: right;
 }
 
+.rv-textSmall {
+    font-size: var(--rv-space-md);
+}
+
 .rv-textSubtle {
     color: var(--rv-neutral-200);
 }
 
-/* --- Layout --- */
-.rv-wFull {
-    width: 100%;
-}
 
-.rv-hFull {
-    height: 100%;
-}
+/* 5. VISUAL UTILITIES */
 
-.rv-relative {
-    position: relative;
-}
-
-.rv-absolute {
-    position: absolute;
-}
-
-
-/* Image Preview */
-.rv-imagePreviewContainer {
-    background-color: var(--rv-neutral-50);
-    border: 1px solid var(--rv-neutral-100);
-    margin-top: var(--rv-space-xs);
-    padding: var(--rv-space-sm);
-    border-radius: var(--rv-radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 40px;
-}
-
-/* Shadows & Radius */
 .rv-shadowMd {
     box-shadow: var(--rv-shadow-md);
 }
@@ -214,23 +224,6 @@
     border-radius: var(--rv-radius);
 }
 
-/* Spacing & Layout */
-.rv-wSidebar {
-    width: var(--rv-w-sidebar);
-}
-
-.rv-mb100 {
-    margin-bottom: var(--rv-space-xl);
-}
-
-.rv-p12 {
-    padding: var(--rv-space-md);
-}
-
-.rv-textSmall {
-    font-size: var(--rv-space-md);
-}
-
 .rv-horizontalDivider {
     border-top: 1px solid var(--rv-bdr);
     margin: var(--rv-space-sm) 0;
@@ -243,7 +236,9 @@
     background-color: var(--rv-bdr);
 }
 
-/* Icons */
+
+/* 6. ICON UTILITIES */
+
 .rv-iconWhite {
     width: var(--rv-space-lg);
     height: var(--rv-space-lg);
@@ -261,13 +256,21 @@
     height: var(--rv-space-md);
 }
 
-.rv-overlayFixed {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
+
+/* 7. SPECIALIZED COMPONENTS */
+
+.rv-imagePreviewContainer {
+    background-color: var(--rv-neutral-50);
+    border: 1px solid var(--rv-neutral-100);
+    margin-top: var(--rv-space-xs);
+    padding: var(--rv-space-sm);
+    border-radius: var(--rv-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
 }
 
-/* Analytics */
 .rv-analyticsContainer {
     flex: 1;
     overflow-y: auto;
@@ -290,7 +293,6 @@
     margin-bottom: var(--rv-space-xs);
 }
 
-/* Accordion */
 .rv-accordionContent {
     display: grid;
     grid-template-rows: 0fr;

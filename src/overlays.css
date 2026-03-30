@@ -1,6 +1,4 @@
-/* 5. FEEDBACK & OVERLAYS */
-
-/* --- Tooltip --- */
+/* 1. GENERIC OVERLAYS */
 
 .rv-tooltip {
     position: absolute;
@@ -32,8 +30,6 @@
     }
 }
 
-/* --- Spinner --- */
-
 .rv-spinner {
     width: var(--rv-space-lg);
     height: var(--rv-space-lg);
@@ -47,6 +43,9 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+
+/* 2. FEEDBACK MESSAGES */
 
 .rv-emptyStateMessage {
     padding: var(--rv-space-md);
@@ -63,11 +62,8 @@
 }
 
 
-/* =========================================
-   9. COMPONENT: POPOVERS
-   ========================================= */
+/* 3. POPOVER SYSTEM */
 
-/* Generic */
 .rv-popoverOverlay {
     position: fixed;
     inset: 0;
@@ -121,6 +117,9 @@
     background: var(--rv-neutral-500);
 }
 
+
+/* 4. SPECIFIC POPOVERS */
+
 /* Export Popover */
 .rv-exportPopover {
     position: absolute;
@@ -140,42 +139,6 @@
 .rv-exportHelperText {
     color: var(--rv-neutral-75);
     font-size: 10px;
-}
-
-/* Radio Option */
-.rv-radioOption {
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    flex: 1;
-    border: 1px solid var(--rv-bdr);
-    border-radius: var(--rv-radius);
-    padding: var(--rv-space-md);
-    cursor: pointer;
-    background: transparent;
-    transition: all 0.2s;
-    color: var(--rv-neutral-50);
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-font-size-90);
-    font-weight: var(--rv-font-weight-regular);
-    user-select: none;
-}
-
-.rv-radioOption:hover {
-    background: var(--rv-neutral-400);
-    border-color: var(--rv-neutral-300);
-}
-
-.rv-radioOptionSelected {
-    background: var(--rv-neutral-400);
-    border-color: var(--rv-neutral-300);
-    color: var(--rv-white);
-}
-
-.rv-radioOptionInput {
-    margin: 0;
-    margin-right: var(--rv-space-sm);
-    accent-color: var(--rv-lunar-300);
 }
 
 /* Theme Picker */
@@ -228,6 +191,9 @@
     flex-direction: column;
 }
 
+
+/* 5. CARDS & OPTIONS */
+
 .rv-popoverCard {
     border: none;
     border-bottom: 1px solid var(--rv-bdr);
@@ -261,4 +227,39 @@
     color: var(--rv-neutral-75);
     margin: 0;
     font-size: var(--rv-font-size-90);
+}
+
+.rv-radioOption {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    flex: 1;
+    border: 1px solid var(--rv-bdr);
+    border-radius: var(--rv-radius);
+    padding: var(--rv-space-md);
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.2s;
+    color: var(--rv-neutral-50);
+    font-family: var(--rv-font-family-default);
+    font-size: var(--rv-font-size-90);
+    font-weight: var(--rv-font-weight-regular);
+    user-select: none;
+}
+
+.rv-radioOption:hover {
+    background: var(--rv-neutral-400);
+    border-color: var(--rv-neutral-300);
+}
+
+.rv-radioOptionSelected {
+    background: var(--rv-neutral-400);
+    border-color: var(--rv-neutral-300);
+    color: var(--rv-white);
+}
+
+.rv-radioOptionInput {
+    margin: 0;
+    margin-right: var(--rv-space-sm);
+    accent-color: var(--rv-lunar-300);
 }

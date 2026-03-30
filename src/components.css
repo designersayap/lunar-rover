@@ -1,6 +1,4 @@
-/* 4. UI COMPONENTS */
-
-/* --- Buttons --- */
+/* 1. BUTTONS */
 
 .rv-btn {
     display: flex;
@@ -66,95 +64,6 @@
     width: var(--rv-h-btn);
 }
 
-/* --- List Items --- */
-
-.rv-listItem {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    cursor: pointer;
-    height: 32px;
-    padding: 0 var(--rv-space-sm);
-    margin-bottom: var(--rv-space-xs);
-    border-radius: var(--rv-radius);
-    transition: background 0.1s;
-    color: var(--rv-neutral-75);
-    background: transparent;
-    border: none;
-    text-align: left;
-    gap: var(--rv-space-sm);
-    font-size: var(--rv-font-size-90);
-}
-
-.rv-listItem:hover {
-    color: var(--rv-neutral-50);
-}
-
-.rv-listItemActive {
-    background: var(--rv-neutral-400);
-    color: var(--rv-white);
-}
-
-.rv-listItemIcon {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    color: var(--rv-neutral-200);
-}
-
-.rv-listItemLabel {
-    flex: 1;
-}
-
-.rv-listItemAction {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    color: var(--rv-neutral-200);
-}
-
-.rv-listItemActive .rv-listItemIcon,
-.rv-listItemActive .rv-listItemAction {
-    color: var(--rv-white);
-}
-
-/* States for Tree elements within ListItems */
-.rv-listItemActive .rv-treeIcon,
-.rv-listItemActive .rv-treeInputInline,
-.rv-listItemActive .rv-treeChevronIcon,
-.rv-listItemActive .rv-folderIcon {
-    color: var(--rv-white);
-}
-
-.rv-listItem:hover .rv-treeIcon,
-.rv-listItem:hover .rv-treeInputInline,
-.rv-listItem:hover .rv-folderIcon {
-    color: var(--rv-neutral-50);
-}
-
-/* --- Tree Specific --- */
-.rv-treeAddLink {
-    display: flex;
-    align-items: center;
-    gap: var(--rv-space-sm);
-    padding: var(--rv-space-md) var(--rv-space-sm);
-    color: var(--rv-neutral-100);
-    font-size: var(--rv-font-size-90);
-    cursor: pointer;
-    transition: color 0.2s, background 0.2s;
-    margin-top: var(--rv-space-xs);
-}
-
-.rv-treeAddLink:hover {
-    color: var(--rv-neutral-50);
-}
-
-.rv-treeAddIcon {
-    width: 12px;
-    height: 12px;
-}
-
-/* --- Buttons Misc --- */
 .rv-topBarButtonWide {
     max-width: 160px;
 }
@@ -247,7 +156,8 @@
     background: var(--rv-lunar-500);
 }
 
-/* --- Forms --- */
+
+/* 2. FORM CONTROLS */
 
 .rv-formInputTitle {
     color: var(--rv-neutral-100);
@@ -303,8 +213,6 @@
     height: var(--rv-space-lg);
 }
 
-/* --- Toggles --- */
-
 .rv-toggleSwitch {
     position: relative;
     display: inline-block;
@@ -348,9 +256,94 @@
 }
 
 
-/* =========================================
-   8. COMPONENT: CANVAS EDITOR
-   ========================================= */
+/* 3. NAVIGATION & LISTS */
+
+.rv-listItem {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    height: 32px;
+    padding: 0 var(--rv-space-sm);
+    margin-bottom: var(--rv-space-xs);
+    border-radius: var(--rv-radius);
+    transition: background 0.1s;
+    color: var(--rv-neutral-75);
+    background: transparent;
+    border: none;
+    text-align: left;
+    gap: var(--rv-space-sm);
+    font-size: var(--rv-font-size-90);
+}
+
+.rv-listItem:hover {
+    color: var(--rv-neutral-50);
+}
+
+.rv-listItemActive {
+    background: var(--rv-neutral-400);
+    color: var(--rv-white);
+}
+
+.rv-listItemIcon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--rv-neutral-200);
+}
+
+.rv-listItemLabel {
+    flex: 1;
+}
+
+.rv-listItemAction {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--rv-neutral-200);
+}
+
+.rv-listItemActive .rv-listItemIcon,
+.rv-listItemActive .rv-listItemAction {
+    color: var(--rv-white);
+}
+
+.rv-listItemActive .rv-treeIcon,
+.rv-listItemActive .rv-treeInputInline,
+.rv-listItemActive .rv-treeChevronIcon,
+.rv-listItemActive .rv-folderIcon {
+    color: var(--rv-white);
+}
+
+.rv-listItem:hover .rv-treeIcon,
+.rv-listItem:hover .rv-treeInputInline,
+.rv-listItem:hover .rv-folderIcon {
+    color: var(--rv-neutral-50);
+}
+
+.rv-treeAddLink {
+    display: flex;
+    align-items: center;
+    gap: var(--rv-space-sm);
+    padding: var(--rv-space-md) var(--rv-space-sm);
+    color: var(--rv-neutral-100);
+    font-size: var(--rv-font-size-90);
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+    margin-top: var(--rv-space-xs);
+}
+
+.rv-treeAddLink:hover {
+    color: var(--rv-neutral-50);
+}
+
+.rv-treeAddIcon {
+    width: 12px;
+    height: 12px;
+}
+
+
+/* 4. CANVAS EDITOR TOOLS */
 
 .rv-emptyState {
     min-height: 80vh;
@@ -387,7 +380,6 @@
     background-color: var(--rv-lunar-50);
 }
 
-/* Drag Image */
 .rv-dragImageContainer {
     height: 60px;
     width: 100%;
@@ -422,7 +414,6 @@
     flex-direction: column;
 }
 
-/* Builder Controls */
 .rv-activeWrapper {
     position: relative;
 }
@@ -494,7 +485,6 @@
     box-shadow: var(--rv-shadow-md);
 }
 
-/* Misc Canvas */
 .rv-canvasWrapper {
     position: relative;
     width: 200px;
@@ -535,7 +525,6 @@
     opacity: 0;
 }
 
-/* Floating Merge Button */
 .rv-floatingMergeContainer {
     position: fixed;
     bottom: var(--rv-space-xl);
@@ -574,9 +563,7 @@
 }
 
 
-/* =========================================
-   NOTIFICATION STYLES
-   ========================================= */
+/* 5. FEEDBACK & NOTIFICATIONS */
 
 .rv-notificationBadge {
     position: absolute;
