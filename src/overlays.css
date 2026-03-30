@@ -1,0 +1,264 @@
+/* 5. FEEDBACK & OVERLAYS */
+
+/* --- Tooltip --- */
+
+.tooltip {
+    position: absolute;
+    background-color: var(--pb-neutral-500);
+    color: var(--pb-white);
+    padding: var(--pb-space-xs) var(--pb-space-sm);
+    border-radius: var(--pb-radius);
+    font-family: var(--pb-font-family-default);
+    font-size: var(--pb-space-md);
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: normal;
+    max-width: 240px;
+    text-align: center;
+    box-shadow: var(--pb-shadow-md);
+    pointer-events: none;
+    z-index: 10000;
+    animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* --- Spinner --- */
+
+.spinner {
+    width: var(--pb-space-lg);
+    height: var(--pb-space-lg);
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.emptyStateMessage {
+    padding: var(--pb-space-md);
+    text-align: center;
+    font-size: var(--pb-font-size-90);
+    color: var(--pb-neutral-100);
+}
+
+.errorMessage {
+    padding: var(--pb-space-md);
+    text-align: center;
+    font-size: var(--pb-space-md);
+    color: var(--pb-danger);
+}
+
+
+/* =========================================
+   9. COMPONENT: POPOVERS
+   ========================================= */
+
+/* Generic */
+.popoverOverlay {
+    position: fixed;
+    inset: 0;
+}
+
+@keyframes popoverIn {
+    from {
+        opacity: 0;
+        transform: translateY(var(--pb-space-xs)) scale(0.99);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.popoverContainer {
+    background: var(--pb-neutral-500);
+    border: 1px solid var(--pb-bdr);
+    border-radius: var(--pb-space-sm);
+    width: var(--pb-w-pop);
+    max-width: 90%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--pb-shd-pop);
+    overflow: hidden;
+    animation: popoverIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.popoverContent {
+    padding: var(--pb-space-lg);
+    overflow-y: auto;
+    flex: 1;
+}
+
+.popoverHeader {
+    display: flex;
+    align-items: center;
+}
+
+.popoverProperties {
+    gap: var(--pb-space-lg);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.popoverCodeBlock {
+    border: 1px solid var(--pb-bdr);
+    background: var(--pb-neutral-500);
+}
+
+/* Export Popover */
+.exportPopover {
+    position: absolute;
+    top: 40px;
+    right: var(--pb-space-lg);
+    margin: 0;
+    width: var(--pb-w-pop);
+}
+
+.exportInputWrapper {
+    gap: var(--pb-space-xs);
+    padding-bottom: var(--pb-space-xl);
+    display: flex;
+    flex-direction: column;
+}
+
+.exportHelperText {
+    color: var(--pb-neutral-75);
+    font-size: 10px;
+}
+
+/* Radio Option */
+.radioOption {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    flex: 1;
+    border: 1px solid var(--pb-bdr);
+    border-radius: var(--pb-radius);
+    padding: var(--pb-space-md);
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.2s;
+    color: var(--pb-neutral-50);
+    font-family: var(--pb-font-family-default);
+    font-size: var(--pb-font-size-90);
+    font-weight: var(--pb-font-weight-regular);
+    user-select: none;
+}
+
+.radioOption:hover {
+    background: var(--pb-neutral-400);
+    border-color: var(--pb-neutral-300);
+}
+
+.radioOptionSelected {
+    background: var(--pb-neutral-400);
+    border-color: var(--pb-neutral-300);
+    color: var(--pb-white);
+}
+
+.radioOptionInput {
+    margin: 0;
+    margin-right: var(--pb-space-sm);
+    accent-color: var(--pb-lunar-300);
+}
+
+/* Theme Picker */
+.themePickerPopover {
+    position: absolute;
+    top: 40px;
+    right: var(--pb-space-lg);
+    margin: 0;
+    width: 260px;
+}
+
+.themePickerContent {
+    padding: var(--pb-space-lg);
+}
+
+/* Components Popover */
+.componentsPopover {
+    position: fixed;
+    background: var(--pb-neutral-500);
+    box-shadow: var(--pb-shd-pop);
+    z-index: 10001;
+}
+
+.popoverHeaderCustom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--pb-space-lg) var(--pb-space-lg) var(--pb-space-md);
+}
+
+.popoverTitleCustom {
+    font-size: var(--pb-space-lg);
+    font-weight: 600;
+    color: var(--pb-white);
+}
+
+.closeButtonCustom {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: var(--pb-neutral-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popoverList {
+    display: flex;
+    flex-direction: column;
+}
+
+.popoverCard {
+    border: none;
+    border-bottom: 1px solid var(--pb-bdr);
+    border-radius: 0;
+    text-align: left;
+    padding: var(--pb-space-md) 0;
+    transition: all .5s;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: var(--pb-space-lg);
+    width: 100%;
+    cursor: pointer;
+}
+
+.popoverCard:hover .cardTitle {
+    color: var(--pb-white);
+}
+
+.cardImageWrapper {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    background: var(--pb-neutral-400);
+    border-radius: var(--pb-radius-md);
+    border: 1px solid var(--pb-bdr);
+    padding: 6px;
+}
+
+.cardTitle {
+    color: var(--pb-neutral-75);
+    margin: 0;
+    font-size: var(--pb-font-size-90);
+}

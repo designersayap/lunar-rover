@@ -1,0 +1,57 @@
+/* 1. VARIABLES & GLOBAL */
+
+:root {
+    /* colors */
+    --pb-lunar-50: #e3f2fd;
+    --pb-lunar-100: #bbdefb;
+    --pb-lunar-200: #64b5f6;
+    --pb-lunar-300: #1976d2;
+    --pb-lunar-400: #1565c0;
+    --pb-lunar-500: #0d47a1;
+    --pb-neutral-50: #FFFFFF;
+    --pb-neutral-75: #D1D1D1;
+    --pb-neutral-100: #A0A0A0;
+    --pb-neutral-200: #404040;
+    --pb-neutral-300: #2B2B2B;
+    --pb-neutral-400: #1E1E1E;
+    --pb-neutral-500: #121212;
+    --pb-bdr: #1e1e1e;
+    --pb-white: #ffffff;
+    --pb-black: #000000;
+    --pb-danger: #ef4444;
+    --pb-success: #22c55e;
+
+    /* shadow */
+    --pb-shd-btn: 0 2px 4px rgba(0, 0, 0, .1), inset 0 1px 0 rgba(255, 255, 255, .05);
+    --pb-shd-active: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    --pb-shd-input: inset 0 2px 4px rgba(0, 0, 0, .1);
+    --pb-shd-pop: 0 12px 60px 8px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    --pb-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+    /* component size */
+    --pb-h-btn: 32px;
+    --pb-h-topbar: 64px;
+    --pb-w-sidebar: 360px;
+
+    --pb-w-pop: 362px;
+
+    /* spacing */
+    --pb-space-xs: 4px;
+    --pb-space-sm: 8px;
+    --pb-space-md: 12px;
+    --pb-space-lg: 16px;
+    --pb-space-xl: 24px;
+
+    /* radius */
+    --pb-radius: 4px;
+    --pb-radius-md: 8px;
+
+    /* font */
+    --pb-font-family-default: 'Plus Jakarta Sans', sans-serif;
+    --pb-font-family-mono: 'Ui-Monospace', 'SF Mono', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+    --pb-font-weight-regular: 400;
+    --pb-font-weight-bold: 700;
+    --pb-font-size-90: 14px;
+    --pb-font-size-80: 10px;
+    --pb-line-height-caption: 1.4;
+}

@@ -1,0 +1,317 @@
+/* 3. TYPOGRAPHY & UTILITIES */
+
+.fontBody {
+    font-family: var(--pb-font-family-default);
+}
+
+.fontSmallBold {
+    font-size: var(--pb-font-size-80);
+    font-weight: var(--pb-font-weight-bold);
+}
+
+.captionRegular {
+    font-family: var(--pb-font-family-default);
+    font-size: var(--pb-font-size-90);
+    font-weight: var(--pb-font-weight-regular);
+    line-height: var(--pb-line-height-caption);
+}
+
+.captionBold {
+    font-family: var(--pb-font-family-default);
+    font-size: var(--pb-font-size-90);
+    font-weight: var(--pb-font-weight-bold);
+    line-height: var(--pb-line-height-caption);
+}
+
+.sectionTitle {
+    font-size: 20px;
+    font-weight: var(--pb-font-weight-bold);
+    color: var(--pb-neutral-50);
+}
+
+.bodyRegular {
+    font-family: var(--pb-font-family-default);
+    font-size: var(--pb-space-lg);
+    font-weight: var(--pb-font-weight-regular);
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   10. UTILITIES
+   ========================================= */
+
+/* --- Flexbox --- */
+.flex {
+    display: flex;
+}
+
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.itemsCenter {
+    align-items: center;
+}
+
+.itemsStart {
+    align-items: flex-start;
+}
+
+.itemsEnd {
+    align-items: flex-end;
+}
+
+.justifyCenter {
+    justify-content: center;
+}
+
+.justifyBetween {
+    justify-content: space-between;
+}
+
+.justifyEnd {
+    justify-content: flex-end;
+}
+
+.flex1 {
+    flex: 1;
+}
+
+.gapXs {
+    gap: var(--pb-space-xs);
+}
+
+.gapSm {
+    gap: var(--pb-space-sm);
+}
+
+.gapMd {
+    gap: var(--pb-space-md);
+}
+
+.gapLg {
+    gap: var(--pb-space-lg);
+}
+
+.gapXl {
+    gap: var(--pb-space-xl);
+}
+
+/* --- Spacing --- */
+.m0 {
+    margin: 0;
+}
+
+.mtSm {
+    margin-top: var(--pb-space-sm);
+}
+
+.mtMd {
+    margin-top: var(--pb-space-md);
+}
+
+.mbSm {
+    margin-bottom: var(--pb-space-sm);
+}
+
+.mbMd {
+    margin-bottom: var(--pb-space-md);
+}
+
+.mlAuto {
+    margin-left: auto;
+}
+
+.mrAuto {
+    margin-right: auto;
+}
+
+.mxAuto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.p0 {
+    padding: 0;
+}
+
+.pSm {
+    padding: var(--pb-space-sm);
+}
+
+.pMd {
+    padding: var(--pb-space-md);
+}
+
+.pLg {
+    padding: var(--pb-space-lg);
+}
+
+/* --- Text --- */
+.textCenter {
+    text-align: center;
+}
+
+.textLeft {
+    text-align: left;
+}
+
+.textRight {
+    text-align: right;
+}
+
+.textSubtle {
+    color: var(--pb-neutral-200);
+}
+
+/* --- Layout --- */
+.wFull {
+    width: 100%;
+}
+
+.hFull {
+    height: 100%;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+
+/* Image Preview */
+.imagePreviewContainer {
+    background-color: var(--pb-neutral-50);
+    border: 1px solid var(--pb-neutral-100);
+    margin-top: var(--pb-space-xs);
+    padding: var(--pb-space-sm);
+    border-radius: var(--pb-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+}
+
+/* Shadows & Radius */
+.shadowMd {
+    box-shadow: var(--pb-shadow-md);
+}
+
+.shadowBtn {
+    box-shadow: var(--pb-shd-btn);
+}
+
+.roundedSm {
+    border-radius: var(--pb-radius);
+}
+
+.rounded80 {
+    border-radius: var(--pb-radius);
+}
+
+/* Spacing & Layout */
+.wSidebar {
+    width: var(--pb-w-sidebar);
+}
+
+.mb100 {
+    margin-bottom: var(--pb-space-xl);
+}
+
+.p12 {
+    padding: var(--pb-space-md);
+}
+
+.textSmall {
+    font-size: var(--pb-space-md);
+}
+
+.horizontalDivider {
+    border-top: 1px solid var(--pb-bdr);
+    margin: var(--pb-space-sm) 0;
+    width: 100%;
+}
+
+.verticalDivider {
+    width: 1px;
+    height: var(--pb-space-lg);
+    background-color: var(--pb-bdr);
+}
+
+/* Icons */
+.iconWhite {
+    width: var(--pb-space-lg);
+    height: var(--pb-space-lg);
+    color: var(--pb-white);
+}
+
+.iconSmall {
+    width: var(--pb-space-lg);
+    height: var(--pb-space-lg);
+    flex-shrink: 0;
+}
+
+.iconXs {
+    width: var(--pb-space-md);
+    height: var(--pb-space-md);
+}
+
+.overlayFixed {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* Analytics */
+.analyticsContainer {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: var(--pb-space-md) var(--pb-space-md) var(--pb-space-lg);
+}
+
+.analyticsSection {
+    gap: var(--pb-space-xs);
+    margin: var(--pb-space-sm) 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.analyticsHeader {
+    gap: var(--pb-space-xs);
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--pb-space-xs);
+}
+
+/* Accordion */
+.accordionContent {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .3s ease-out;
+}
+
+.accordionContentOpen {
+    grid-template-rows: 1fr;
+}
+
+.accordionInner {
+    overflow: hidden;
+}
+
+.propertyRow {
+    display: flex;
+    align-items: left;
+    justify-content: space-between;
+}
+
+.propertyRowStacked {
+    flex-direction: column;
+    align-items: flex-start;
+}

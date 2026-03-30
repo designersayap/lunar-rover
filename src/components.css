@@ -1,0 +1,686 @@
+/* 4. UI COMPONENTS */
+
+/* --- Buttons --- */
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    border-radius: var(--pb-radius-md);
+    transition: all 0.2s;
+    font-family: var(--pb-font-family-default);
+    font-size: var(--pb-font-size-90);
+    height: var(--pb-h-btn);
+    padding: 0 var(--pb-space-md);
+    gap: var(--pb-space-xs);
+    color: var(--pb-white);
+    background: transparent;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btnPrimary {
+    background-color: var(--pb-lunar-300);
+}
+
+.btnPrimary:hover:not(:disabled) {
+    background-color: var(--pb-lunar-400);
+}
+
+.btnSecondary {
+    background: var(--pb-neutral-300);
+    box-shadow: 0 2px var(--pb-space-xs) rgba(0, 0, 0, .1);
+}
+
+.btnSecondary:active:not(:disabled),
+.btnSecondaryActive {
+    background: var(--pb-neutral-300);
+    box-shadow: var(--pb-shd-active);
+    transform: translateY(1px);
+}
+
+.btnGhost {
+    background: transparent;
+    color: var(--pb-neutral-100);
+}
+
+.btnGhost:hover {
+    color: var(--pb-white);
+    background: var(--pb-neutral-400);
+}
+
+.btnGhost:active:not(:disabled),
+.btnGhostActive {
+    background: var(--pb-neutral-400);
+    box-shadow: inset 0 2px var(--pb-space-xs) 0 rgba(0, 0, 0, 0.25);
+    color: var(--pb-white);
+}
+
+.btnIcon {
+    padding: 0;
+    width: var(--pb-h-btn);
+}
+
+/* --- List Items --- */
+
+.listItem {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    height: 32px;
+    padding: 0 var(--pb-space-sm);
+    margin-bottom: var(--pb-space-xs);
+    border-radius: var(--pb-radius);
+    transition: background 0.1s;
+    color: var(--pb-neutral-75);
+    background: transparent;
+    border: none;
+    text-align: left;
+    gap: var(--pb-space-sm);
+    font-size: var(--pb-font-size-90);
+}
+
+.listItem:hover {
+    color: var(--pb-neutral-50);
+}
+
+.listItemActive {
+    background: var(--pb-neutral-400);
+    color: var(--pb-white);
+}
+
+.listItemIcon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--pb-neutral-200);
+}
+
+.listItemLabel {
+    flex: 1;
+}
+
+.listItemAction {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--pb-neutral-200);
+}
+
+.listItemActive .listItemIcon,
+.listItemActive .listItemAction {
+    color: var(--pb-white);
+}
+
+/* States for Tree elements within ListItems */
+.listItemActive .treeIcon,
+.listItemActive .treeInputInline,
+.listItemActive .treeChevronIcon,
+.listItemActive .folderIcon {
+    color: var(--pb-white);
+}
+
+.listItem:hover .treeIcon,
+.listItem:hover .treeInputInline,
+.listItem:hover .folderIcon {
+    color: var(--pb-neutral-50);
+}
+
+/* --- Tree Specific --- */
+.treeAddLink {
+    display: flex;
+    align-items: center;
+    gap: var(--pb-space-sm);
+    padding: var(--pb-space-md) var(--pb-space-sm);
+    color: var(--pb-neutral-100);
+    font-size: var(--pb-font-size-90);
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+    margin-top: var(--pb-space-xs);
+}
+
+.treeAddLink:hover {
+    color: var(--pb-neutral-50);
+}
+
+.treeAddIcon {
+    width: 12px;
+    height: 12px;
+}
+
+/* --- Buttons Misc --- */
+.topBarButtonWide {
+    max-width: 160px;
+}
+
+.splitButtonContainer {
+    display: flex;
+    align-items: center;
+    background: var(--pb-neutral-300);
+    border-radius: var(--pb-radius-md);
+    box-shadow: 0 2px var(--pb-space-xs) rgba(0, 0, 0, .1);
+    transition: background 0.2s;
+    height: var(--pb-h-btn);
+}
+
+.splitButtonActive {
+    background: var(--pb-neutral-300) !important;
+    box-shadow: var(--pb-shd-active) !important;
+    transform: translateY(1px) !important;
+}
+
+.splitButtonMain {
+    border-radius: var(--pb-radius-md) 0 0 6px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+    margin: 0;
+    background: transparent;
+    padding-right: var(--pb-space-sm);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.splitButtonDropdown {
+    border-radius: 0 6px 6px 0;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+    margin: 0;
+    background: transparent;
+    padding: 0 var(--pb-space-sm);
+    width: 28px;
+}
+
+.sidebarDeleteButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--pb-neutral-200);
+    padding: var(--pb-space-xs);
+    border-radius: var(--pb-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--pb-space-xl);
+    height: var(--pb-space-xl);
+}
+
+.sidebarDeleteButton:hover {
+    color: var(--pb-neutral-100);
+}
+
+.settingsButton {
+    justify-content: center;
+    width: 20px;
+    height: 100%;
+    flex-shrink: 0;
+    cursor: pointer;
+    border: none;
+    color: var(--pb-white);
+    padding: 0;
+    background: var(--pb-lunar-300);
+    box-shadow: var(--pb-shd-btn);
+    transition: background 0.2s;
+    border-radius: 0 var(--pb-space-xs) var(--pb-space-xs) 0;
+}
+
+.settingsButton h6 {
+    width: var(--pb-space-md);
+    height: var(--pb-space-md);
+}
+
+.settingsButton:hover {
+    background: var(--pb-lunar-500);
+}
+
+/* --- Forms --- */
+
+.formInputTitle {
+    color: var(--pb-neutral-100);
+    font-size: var(--pb-font-size-90);
+    font-weight: var(--pb-font-weight-regular);
+    margin-bottom: var(--pb-space-xs);
+    display: block;
+}
+
+.formInput {
+    width: 100%;
+    border-radius: var(--pb-radius-md);
+    font-size: var(--pb-font-size-90);
+    outline: none;
+    transition: all .2s;
+    background: var(--pb-neutral-500);
+    color: var(--pb-white);
+    border: 1px solid var(--pb-bdr);
+    padding: 0 var(--pb-space-md);
+    height: var(--pb-h-btn);
+}
+
+.formInput:focus {
+    border-color: var(--pb-neutral-300);
+}
+
+.formTextarea {
+    resize: none;
+    font-family: inherit;
+    padding: var(--pb-space-sm) var(--pb-space-md);
+    height: 100px;
+}
+
+.formSelect {
+    cursor: pointer;
+    appearance: none;
+    padding-right: 2.5em;
+}
+
+.selectWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.selectIcon {
+    position: absolute;
+    right: var(--pb-space-md);
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--pb-neutral-100);
+    width: var(--pb-space-lg);
+    height: var(--pb-space-lg);
+}
+
+/* --- Toggles --- */
+
+.toggleSwitch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: var(--pb-space-xl);
+}
+
+.toggleInput {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggleSlider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: var(--pb-neutral-100);
+    transition: .4s;
+    border-radius: var(--pb-space-xl);
+}
+
+.toggleSlider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.toggleInput:checked+.toggleSlider {
+    background: var(--pb-lunar-300);
+}
+
+.toggleInput:checked+.toggleSlider:before {
+    transform: translateX(20px);
+}
+
+
+/* =========================================
+   8. COMPONENT: CANVAS EDITOR
+   ========================================= */
+
+.emptyState {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--pb-white);
+}
+
+.emptyStateText {
+    text-align: center;
+}
+
+.canvasBackgroundRoot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.componentWrapper {
+    position: relative;
+    background: transparent;
+    transition: border-color .2s;
+    z-index: 1;
+}
+
+.componentSelected {
+    outline: 1px solid var(--pb-lunar-300);
+    background-color: var(--pb-lunar-50);
+}
+
+/* Drag Image */
+.dragImageContainer {
+    height: 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--pb-neutral-500);
+    border-radius: var(--pb-radius);
+    border: 1px solid var(--pb-bdr);
+    overflow: hidden;
+}
+
+.dragImageText {
+    font-size: 10px;
+    font-weight: var(--pb-font-weight-bold);
+    color: var(--pb-white);
+}
+
+.customDragImage {
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+    background: var(--pb-neutral-300);
+    padding: var(--pb-space-xs);
+    border-radius: var(--pb-space-sm);
+    box-shadow: 0 var(--pb-space-xs) var(--pb-space-md) rgba(0, 0, 0, .1);
+    border: 1px solid var(--pb-bdr);
+    align-items: center;
+    gap: var(--pb-space-xs);
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Builder Controls */
+.activeWrapper {
+    position: relative;
+}
+
+.activeBorderOutline {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--pb-lunar-300);
+    border-radius: 1px;
+    pointer-events: none;
+}
+
+.activeOverlay {
+    position: absolute;
+    top: -var(--pb-space-xl);
+    z-index: 20;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--pb-lunar-300);
+    color: white;
+    border-radius: var(--pb-radius);
+    font-size: var(--pb-space-md);
+    line-height: 1;
+    height: 20px;
+    white-space: nowrap;
+    border: 1px solid #fff3;
+    min-width: 100px;
+    box-shadow: var(--pb-shadow-md)
+}
+
+.overlayLabel {
+    gap: var(--pb-space-xs);
+    padding: 0 var(--pb-space-sm);
+    height: 100%;
+    font-family: var(--pb-font-family-default);
+    font-size: 10px;
+    font-weight: var(--pb-font-weight-regular);
+    border-right: 1px solid rgba(255, 255, 255, .2);
+    flex-grow: 1;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlayIdText {
+    color: white;
+    font-family: var(--pb-font-family-mono);
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.overlayIcon {
+    width: var(--pb-space-md);
+    height: var(--pb-space-md);
+}
+
+.builderTextOverlay {
+    background-color: var(--pb-neutral-500);
+    color: var(--pb-white);
+    border-radius: var(--pb-radius);
+    font-family: var(--pb-font-family-default);
+    box-shadow: var(--pb-shadow-md);
+}
+
+/* Misc Canvas */
+.canvasWrapper {
+    position: relative;
+    width: 200px;
+    height: 150px;
+    margin: 0 auto;
+    margin-bottom: var(--pb-space-xl);
+}
+
+.canvasText {
+    color: var(--pb-neutral-100);
+    font-family: var(--pb-font-family-default);
+}
+
+.resolutionIndicator {
+    font-size: 11px;
+    font-weight: 500;
+    position: sticky;
+    bottom: var(--pb-space-lg);
+    margin: var(--pb-space-xl) auto 0;
+    background: var(--pb-neutral-400);
+    color: var(--pb-white);
+    padding: var(--pb-space-xs) var(--pb-space-md);
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: var(--pb-space-xs);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    width: fit-content;
+    z-index: 10;
+}
+
+.scrollGroupOverlay {
+    position: absolute;
+    inset: 0;
+    background-color: var(--pb-white);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+}
+
+/* Floating Merge Button */
+.floatingMergeContainer {
+    position: fixed;
+    bottom: var(--pb-space-xl);
+    width: var(--pb-w-sidebar);
+    left: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.floatingMergeContent {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--pb-space-sm);
+    background-color: var(--pb-neutral-500);
+    padding: var(--pb-space-sm) var(--pb-space-lg);
+    border-radius: var(--pb-space-sm);
+    box-shadow: var(--pb-shd-btn);
+    color: var(--pb-white);
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floatingMergeButton {
+    width: var(--pb-w-sidebar);
+    background-color: var(--pb-neutral-500);
+    box-shadow: var(--pb-shd-btn);
+    color: var(--pb-white);
+}
+
+.floatingMergeText {
+    font-weight: 600;
+    font-size: var(--pb-font-size-90);
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   NOTIFICATION STYLES
+   ========================================= */
+
+.notificationBadge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--pb-danger);
+    pointer-events: none;
+}
+
+.notificationItem {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    padding: var(--pb-space-sm);
+    border-radius: var(--pb-radius);
+    transition: background 0.1s;
+    color: var(--pb-neutral-75);
+    cursor: default;
+    gap: var(--pb-space-sm);
+    font-size: var(--pb-font-size-90);
+}
+
+.notificationItem:hover {
+    background: var(--pb-neutral-400);
+}
+
+.notificationItemUnread {
+    color: var(--pb-neutral-50);
+}
+
+.notificationDot {
+    width: var(--pb-space-lg);
+    height: var(--pb-space-lg);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+}
+
+.notificationDotInner {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--pb-lunar-200);
+}
+
+.notificationBody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.notificationMessage {
+    font-size: var(--pb-font-size-90);
+    line-height: var(--pb-line-height-caption);
+}
+
+.notificationTime {
+    font-size: 10px;
+    color: var(--pb-neutral-100);
+    line-height: var(--pb-line-height-caption);
+}
+
+.notificationMarkAllBtn {
+    background: transparent;
+    border: none;
+    color: var(--pb-neutral-75);
+    font-size: var(--pb-font-size-90);
+    font-family: var(--pb-font-family-default);
+    cursor: pointer;
+    padding: var(--pb-space-sm) 0;
+    width: 100%;
+    text-align: center;
+    transition: color 0.15s;
+}
+
+.notificationMarkAllBtn:hover {
+    color: var(--pb-neutral-50);
+}
+
+.notificationSubList {
+    margin-top: 8px;
+    padding-left: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.notificationSubItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--pb-neutral-200);
+    padding: 4px 8px;
+    background-color: var(--pb-neutral-400);
+    border-radius: 4px;
+}
+
+.countBadge {
+    background-color: var(--pb-lunar-300);
+    color: white;
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 10px;
+    margin-left: 6px;
+    font-weight: 600;
+}
+
+.subItemTime {
+    font-size: 10px;
+    opacity: 0.7;
+}
