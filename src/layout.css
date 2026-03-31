@@ -413,6 +413,8 @@
 /* 5. SEARCH & LAYERS */
 
 .rv-searchRow {
+    display: flex;
+    align-items: center;
     gap: var(--rv-space-sm);
     padding: var(--rv-space-md) var(--rv-space-md) var(--rv-space-sm);
 }
