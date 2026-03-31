@@ -1,0 +1,163 @@
+/* ROVER STYLE - Login Page
+   Global styles for the private workspace login.
+*/
+
+.rv-login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: var(--rv-black);
+    background-image:
+        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.08) 0px, transparent 50%);
+    color: var(--rv-white);
+    font-family: var(--rv-font-family-default);
+}
+
+.rv-login-card {
+    width: 100%;
+    max-width: 320px;
+    padding: 48px var(--rv-space-xl);
+    border-radius: var(--rv-radius-md);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--rv-space-xl);
+}
+
+.rv-login-icon {
+    margin-bottom: -4px;
+}
+
+.rv-login-title {
+    font-size: var(--rv-space-xl);
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+    color: var(--rv-white);
+    margin-bottom: var(--rv-space-sm);
+}
+
+.rv-login-description {
+    font-size: var(--rv-font-size-90);
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.rv-login-form {
+    width: 100%;
+    max-width: 240px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--rv-space-md);
+}
+
+.rv-login-input-group {
+    position: relative;
+    width: 100%;
+}
+
+.rv-login-input {
+    width: 100%;
+    height: var(--rv-h-btn);
+    padding: 0 40px 0 var(--rv-space-md);
+    border-radius: 6px;
+    font-size: var(--rv-font-size-90);
+    outline: none;
+    transition: all .2s;
+    background: #0a0a0a;
+    color: var(--rv-white);
+    border: 1px solid var(--rv-neutral-400);
+    box-shadow: none;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.rv-login-input:focus {
+    border-color: var(--rv-neutral-300);
+}
+
+.rv-login-input::placeholder {
+    color: var(--rv-neutral-200);
+}
+
+.rv-login-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.rv-login-toggle-password {
+    position: absolute;
+    right: var(--rv-space-sm);
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--rv-space-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.2s;
+    border-radius: var(--rv-radius);
+}
+
+.rv-login-toggle-password:hover {
+    color: var(--rv-white);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.rv-login-eye-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.rv-login-button {
+    width: 100%;
+    height: var(--rv-h-btn);
+    padding: 0 var(--rv-space-md);
+    border-radius: 6px;
+    font-size: var(--rv-font-size-90);
+    font-weight: 300;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: var(--rv-neutral-300);
+    color: var(--rv-white);
+    transition: all 0.2s;
+    box-sizing: border-box;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rv-login-button:hover:not(:disabled) {
+    background: var(--rv-neutral-300);
+}
+
+.rv-login-button:active:not(:disabled) {
+    background: var(--rv-neutral-300);
+    box-shadow: var(--rv-shd-active);
+    transform: translateY(1px);
+}
+
+.rv-login-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.rv-login-error-message {
+    color: var(--rv-danger);
+    font-size: var(--rv-font-size-90);
+    margin-top: var(--rv-space-xs);
+}
