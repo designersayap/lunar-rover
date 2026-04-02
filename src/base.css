@@ -4,37 +4,69 @@
     font-family: var(--rv-font-family-default);
 }
 
-.rv-font-sm-bold {
-    font-size: var(--rv-font-size-80);
+/* Headings */
+.rv-text-h1 {
+    font-size: var(--rv-fs-3xl);
     font-weight: var(--rv-font-weight-bold);
+    line-height: var(--rv-lh-tight);
 }
 
-.rv-text-caption {
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-font-size-90);
-    font-weight: var(--rv-font-weight-regular);
-    line-height: var(--rv-line-height-caption);
+.rv-text-h2 {
+    font-size: var(--rv-fs-2xl);
+    font-weight: var(--rv-font-weight-bold);
+    line-height: var(--rv-lh-tight);
 }
 
-.rv-text-caption-bold {
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-font-size-90);
+.rv-text-h3 {
+    font-size: var(--rv-fs-xl);
     font-weight: var(--rv-font-weight-bold);
-    line-height: var(--rv-line-height-caption);
+    line-height: var(--rv-lh-tight);
 }
 
-.rv-title-section {
-    font-size: 20px;
+.rv-text-h4 {
+    font-size: var(--rv-fs-lg);
     font-weight: var(--rv-font-weight-bold);
-    color: var(--rv-neutral-50);
+    line-height: var(--rv-lh-tight);
+}
+
+.rv-text-h5 {
+    font-size: var(--rv-fs-md);
+    font-weight: var(--rv-font-weight-bold);
+    line-height: var(--rv-lh-tight);
+}
+
+.rv-text-h6 {
+    font-size: var(--rv-fs-sm);
+    font-weight: var(--rv-font-weight-bold);
+    line-height: var(--rv-lh-tight);
+}
+
+/* Body */
+.rv-text-body-lg {
+    font-size: var(--rv-fs-lg);
+    line-height: var(--rv-lh-base);
 }
 
 .rv-text-body {
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-space-lg);
-    font-weight: var(--rv-font-weight-regular);
-    line-height: 1.5;
+    font-size: var(--rv-fs-md);
+    line-height: var(--rv-lh-base);
 }
+
+.rv-text-body-sm {
+    font-size: var(--rv-fs-sm);
+    line-height: var(--rv-lh-base);
+}
+
+/* Caption */
+.rv-text-caption {
+    font-size: var(--rv-fs-xs);
+    line-height: var(--rv-lh-base);
+}
+
+/* Font Weights */
+.rv-font-regular { font-weight: var(--rv-font-weight-regular); }
+.rv-font-medium { font-weight: var(--rv-font-weight-medium); }
+.rv-font-bold { font-weight: var(--rv-font-weight-bold); }
 
 
 /* 2. LAYOUT & FLEXBOX */
