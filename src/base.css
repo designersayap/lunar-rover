@@ -213,11 +213,15 @@
 }
 
 .rv-rounded-sm {
-    border-radius: var(--rv-radius);
+    border-radius: var(--rv-radius-sm);
 }
 
 .rv-rounded-md {
-    border-radius: var(--rv-radius);
+    border-radius: var(--rv-radius-md);
+}
+
+.rv-rounded-lg {
+    border-radius: var(--rv-radius-lg);
 }
 
 .rv-divider-h {

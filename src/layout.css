@@ -225,7 +225,7 @@
     width: var(--rv-space-xs);
     height: 100%;
     background: var(--rv-neutral-100);
-    border-radius: var(--rv-radius);
+    border-radius: var(--rv-radius-sm);
     transition: background 0.2s;
 }
 
@@ -312,7 +312,7 @@
 .rv-tree-row {
     gap: var(--rv-space-sm);
     cursor: pointer;
-    border-radius: var(--rv-radius);
+    border-radius: var(--rv-radius-sm);
     transition: background .1s;
     height: var(--rv-h-btn);
     position: relative;
@@ -347,7 +347,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--rv-radius);
+    border-radius: var(--rv-radius-sm);
 }
 
 .rv-tree-chevron:hover {

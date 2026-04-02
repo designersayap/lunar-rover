@@ -32,7 +32,6 @@
     --rv-h-btn: 32px;
     --rv-h-topbar: 64px;
     --rv-w-sidebar: 360px;
-
     --rv-w-pop: 362px;
 
     /* spacing */
@@ -43,8 +42,9 @@
     --rv-space-xl: 24px;
 
     /* radius */
-    --rv-radius: 4px;
+    --rv-radius-sm: 4px;
     --rv-radius-md: 8px;
+    --rv-radius-lg: 12px;
 
     /* font */
     --rv-font-family-default: 'Plus Jakarta Sans', sans-serif;

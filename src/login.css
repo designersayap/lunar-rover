@@ -108,7 +108,7 @@
     justify-content: center;
     color: rgba(255, 255, 255, 0.5);
     transition: color 0.2s;
-    border-radius: var(--rv-radius);
+    border-radius: var(--rv-radius-sm);
 }
 
 .rv-login--toggle:hover {

@@ -5,7 +5,7 @@
     background-color: var(--rv-neutral-500);
     color: var(--rv-white);
     padding: var(--rv-space-xs) var(--rv-space-sm);
-    border-radius: var(--rv-radius);
+    border-radius: var(--rv-radius-sm);
     font-family: var(--rv-font-family-default);
     font-size: var(--rv-space-md);
     font-weight: 500;
@@ -235,7 +235,7 @@
     justify-content: left;
     flex: 1;
     border: 1px solid var(--rv-bdr);
-    border-radius: var(--rv-radius);
+    border-radius: var(--rv-radius-sm);
     padding: var(--rv-space-md);
     cursor: pointer;
     background: transparent;
