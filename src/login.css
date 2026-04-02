@@ -18,7 +18,7 @@
 .rv-login--card {
     width: 100%;
     max-width: 320px;
-    padding: 48px var(--rv-space-xl);
+    padding: 48px var(--rv-space-6);
     border-radius: var(--rv-radius-md);
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(20px);
@@ -28,7 +28,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--rv-space-xl);
+    gap: var(--rv-space-6);
 }
 
 .rv-login--icon {
@@ -36,7 +36,7 @@
 }
 
 .rv-login--title {
-    font-size: var(--rv-space-xl);
+    font-size: var(--rv-space-6);
     font-weight: 600;
     margin: 0;
     text-align: center;
@@ -57,7 +57,7 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: var(--rv-space-md);
+    gap: var(--rv-space-3);
 }
 
 .rv-login--group {
@@ -68,7 +68,7 @@
 .rv-login--input {
     width: 100%;
     height: var(--rv-h-btn);
-    padding: 0 40px 0 var(--rv-space-md);
+    padding: 0 40px 0 var(--rv-space-3);
     border-radius: 6px;
     font-size: var(--rv-font-size-90);
     outline: none;
@@ -124,7 +124,7 @@
 .rv-login--btn {
     width: 100%;
     height: var(--rv-h-btn);
-    padding: 0 var(--rv-space-md);
+    padding: 0 var(--rv-space-3);
     border-radius: 6px;
     font-size: var(--rv-font-size-90);
     font-weight: 300;

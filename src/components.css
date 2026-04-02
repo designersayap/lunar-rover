@@ -11,7 +11,7 @@
     font-family: var(--rv-font-family-default);
     font-size: var(--rv-font-size-90);
     height: var(--rv-h-btn);
-    padding: 0 var(--rv-space-md);
+    padding: 0 var(--rv-space-3);
     gap: var(--rv-space-xs);
     color: var(--rv-white);
     background: transparent;
@@ -148,8 +148,8 @@
 }
 
 .rv-sidebar-btn-settings h6 {
-    width: var(--rv-space-md);
-    height: var(--rv-space-md);
+    width: var(--rv-space-3);
+    height: var(--rv-space-3);
 }
 
 .rv-sidebar-btn-settings:hover {
@@ -176,7 +176,7 @@
     background: var(--rv-neutral-500);
     color: var(--rv-white);
     border: 1px solid var(--rv-bdr);
-    padding: 0 var(--rv-space-md);
+    padding: 0 var(--rv-space-3);
     height: var(--rv-h-btn);
 }
 
@@ -187,7 +187,7 @@
 .rv-textarea {
     resize: none;
     font-family: inherit;
-    padding: var(--rv-space-sm) var(--rv-space-md);
+    padding: var(--rv-space-sm) var(--rv-space-3);
     height: 100px;
 }
 
@@ -204,13 +204,13 @@
 
 .rv-select--icon {
     position: absolute;
-    right: var(--rv-space-md);
+    right: var(--rv-space-3);
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
     color: var(--rv-neutral-100);
-    width: var(--rv-space-lg);
-    height: var(--rv-space-lg);
+    width: var(--rv-space-4);
+    height: var(--rv-space-4);
 }
 
 .rv-toggle {
@@ -325,7 +325,7 @@
     display: flex;
     align-items: center;
     gap: var(--rv-space-sm);
-    padding: var(--rv-space-md) var(--rv-space-sm);
+    padding: var(--rv-space-3) var(--rv-space-sm);
     color: var(--rv-neutral-100);
     font-size: var(--rv-font-size-90);
     cursor: pointer;
@@ -405,7 +405,7 @@
     background: var(--rv-neutral-300);
     padding: var(--rv-space-xs);
     border-radius: var(--rv-space-sm);
-    box-shadow: 0 var(--rv-space-xs) var(--rv-space-md) rgba(0, 0, 0, .1);
+    box-shadow: 0 var(--rv-space-xs) var(--rv-space-3) rgba(0, 0, 0, .1);
     border: 1px solid var(--rv-bdr);
     align-items: center;
     gap: var(--rv-space-xs);
@@ -438,7 +438,7 @@
     background: var(--rv-lunar-300);
     color: white;
     border-radius: var(--rv-radius-sm);
-    font-size: var(--rv-space-md);
+    font-size: var(--rv-space-3);
     line-height: 1;
     height: 20px;
     white-space: nowrap;
@@ -473,8 +473,8 @@
 }
 
 .rv-overlay--icon {
-    width: var(--rv-space-md);
-    height: var(--rv-space-md);
+    width: var(--rv-space-3);
+    height: var(--rv-space-3);
 }
 
 .rv-builder-text--overlay {
@@ -502,11 +502,11 @@
     font-size: 11px;
     font-weight: 500;
     position: sticky;
-    bottom: var(--rv-space-lg);
+    bottom: var(--rv-space-4);
     margin: var(--rv-space-xl) auto 0;
     background: var(--rv-neutral-400);
     color: var(--rv-white);
-    padding: var(--rv-space-xs) var(--rv-space-md);
+    padding: var(--rv-space-xs) var(--rv-space-3);
     border-radius: 100px;
     display: flex;
     align-items: center;
@@ -542,7 +542,7 @@
     align-items: center;
     gap: var(--rv-space-sm);
     background-color: var(--rv-neutral-500);
-    padding: var(--rv-space-sm) var(--rv-space-lg);
+    padding: var(--rv-space-sm) var(--rv-space-4);
     border-radius: var(--rv-space-sm);
     box-shadow: var(--rv-shd-btn);
     color: var(--rv-white);
@@ -622,8 +622,8 @@
 }
 
 .rv-notification--dot {
-    width: var(--rv-space-lg);
-    height: var(--rv-space-lg);
+    width: var(--rv-space-4);
+    height: var(--rv-space-4);
     flex-shrink: 0;
     display: flex;
     align-items: center;

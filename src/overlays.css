@@ -7,7 +7,7 @@
     padding: var(--rv-space-xs) var(--rv-space-sm);
     border-radius: var(--rv-radius-sm);
     font-family: var(--rv-font-family-default);
-    font-size: var(--rv-space-md);
+    font-size: var(--rv-space-3);
     font-weight: 500;
     line-height: 1.4;
     white-space: normal;
@@ -31,8 +31,8 @@
 }
 
 .rv-spinner {
-    width: var(--rv-space-lg);
-    height: var(--rv-space-lg);
+    width: var(--rv-space-4);
+    height: var(--rv-space-4);
     border: 2px solid currentColor;
     border-top-color: transparent;
     border-radius: 50%;
@@ -48,16 +48,16 @@
 /* 2. FEEDBACK MESSAGES */
 
 .rv-emptyStateMessage {
-    padding: var(--rv-space-md);
+    padding: var(--rv-space-3);
     text-align: center;
     font-size: var(--rv-font-size-90);
     color: var(--rv-neutral-100);
 }
 
 .rv-errorMessage {
-    padding: var(--rv-space-md);
+    padding: var(--rv-space-3);
     text-align: center;
-    font-size: var(--rv-space-md);
+    font-size: var(--rv-space-3);
     color: var(--rv-danger);
 }
 
@@ -95,7 +95,7 @@
 }
 
 .rv-popoverContent {
-    padding: var(--rv-space-lg);
+    padding: var(--rv-space-4);
     overflow-y: auto;
     flex: 1;
 }
@@ -106,7 +106,7 @@
 }
 
 .rv-popoverProperties {
-    gap: var(--rv-space-lg);
+    gap: var(--rv-space-4);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -124,14 +124,14 @@
 .rv-exportPopover {
     position: absolute;
     top: 40px;
-    right: var(--rv-space-lg);
+    right: var(--rv-space-4);
     margin: 0;
     width: var(--rv-w-pop);
 }
 
 .rv-exportInputWrapper {
     gap: var(--rv-space-xs);
-    padding-bottom: var(--rv-space-xl);
+    padding-bottom: var(--rv-space-6);
     display: flex;
     flex-direction: column;
 }
@@ -145,13 +145,13 @@
 .rv-themePickerPopover {
     position: absolute;
     top: 40px;
-    right: var(--rv-space-lg);
+    right: var(--rv-space-4);
     margin: 0;
     width: 260px;
 }
 
 .rv-themePickerContent {
-    padding: var(--rv-space-lg);
+    padding: var(--rv-space-4);
 }
 
 /* Components Popover */
@@ -166,11 +166,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--rv-space-lg) var(--rv-space-lg) var(--rv-space-md);
+    padding: var(--rv-space-4) var(--rv-space-4) var(--rv-space-3);
 }
 
 .rv-popoverTitleCustom {
-    font-size: var(--rv-space-lg);
+    font-size: var(--rv-space-4);
     font-weight: 600;
     color: var(--rv-white);
 }
@@ -199,12 +199,12 @@
     border-bottom: 1px solid var(--rv-bdr);
     border-radius: 0;
     text-align: left;
-    padding: var(--rv-space-md) 0;
+    padding: var(--rv-space-3) 0;
     transition: all .5s;
     background: transparent;
     display: flex;
     align-items: center;
-    gap: var(--rv-space-lg);
+    gap: var(--rv-space-4);
     width: 100%;
     cursor: pointer;
 }
@@ -236,7 +236,7 @@
     flex: 1;
     border: 1px solid var(--rv-bdr);
     border-radius: var(--rv-radius-sm);
-    padding: var(--rv-space-md);
+    padding: var(--rv-space-3);
     cursor: pointer;
     background: transparent;
     transition: all 0.2s;

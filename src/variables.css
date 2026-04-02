@@ -35,11 +35,24 @@
     --rv-w-pop: 362px;
 
     /* spacing */
-    --rv-space-xs: 4px;
-    --rv-space-sm: 8px;
-    --rv-space-md: 12px;
-    --rv-space-lg: 16px;
-    --rv-space-xl: 24px;
+    --rv-space-0: 0;
+    --rv-space-1: 4px;
+    --rv-space-2: 8px;
+    --rv-space-3: 12px;
+    --rv-space-4: 16px;
+    --rv-space-5: 20px;
+    --rv-space-6: 24px;
+    --rv-space-8: 32px;
+    --rv-space-10: 40px;
+    --rv-space-12: 48px;
+    --rv-space-16: 64px;
+
+    /* Semantic Aliases */
+    --rv-space-xs: var(--rv-space-1);
+    --rv-space-sm: var(--rv-space-2);
+    --rv-space-md: var(--rv-space-4);
+    --rv-space-lg: var(--rv-space-6);
+    --rv-space-xl: var(--rv-space-8);
 
     /* radius */
     --rv-radius-sm: 4px;
