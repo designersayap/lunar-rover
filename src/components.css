@@ -22,53 +22,53 @@
     cursor: not-allowed;
 }
 
-.rv-btnPrimary {
+.rv-btn-primary {
     background-color: var(--rv-lunar-300);
 }
 
-.rv-btnPrimary:hover:not(:disabled) {
+.rv-btn-primary:hover:not(:disabled) {
     background-color: var(--rv-lunar-400);
 }
 
-.rv-btnSecondary {
+.rv-btn-secondary {
     background: var(--rv-neutral-300);
     box-shadow: 0 2px var(--rv-space-xs) rgba(0, 0, 0, .1);
 }
 
-.rv-btnSecondary:active:not(:disabled),
-.rv-btnSecondaryActive {
+.rv-btn-secondary:active:not(:disabled),
+.rv-btn-secondary-active {
     background: var(--rv-neutral-300);
     box-shadow: var(--rv-shd-active);
     transform: translateY(1px);
 }
 
-.rv-btnGhost {
+.rv-btn-ghost {
     background: transparent;
     color: var(--rv-neutral-100);
 }
 
-.rv-btnGhost:hover {
+.rv-btn-ghost:hover {
     color: var(--rv-white);
     background: var(--rv-neutral-400);
 }
 
-.rv-btnGhost:active:not(:disabled),
-.rv-btnGhostActive {
+.rv-btn-ghost:active:not(:disabled),
+.rv-btn-ghost-active {
     background: var(--rv-neutral-400);
     box-shadow: inset 0 2px var(--rv-space-xs) 0 rgba(0, 0, 0, 0.25);
     color: var(--rv-white);
 }
 
-.rv-btnIcon {
+.rv-btn--icon {
     padding: 0;
     width: var(--rv-h-btn);
 }
 
-.rv-topBarButtonWide {
+.rv-topbar-btn--wide {
     max-width: 160px;
 }
 
-.rv-splitButtonContainer {
+.rv-split-btn {
     display: flex;
     align-items: center;
     background: var(--rv-neutral-300);
@@ -78,13 +78,13 @@
     height: var(--rv-h-btn);
 }
 
-.rv-splitButtonActive {
+.rv-split-btn--active {
     background: var(--rv-neutral-300) !important;
     box-shadow: var(--rv-shd-active) !important;
     transform: translateY(1px) !important;
 }
 
-.rv-splitButtonMain {
+.rv-split-btn--main {
     border-radius: var(--rv-radius-md) 0 0 6px;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
     margin: 0;
@@ -93,7 +93,7 @@
     border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.rv-splitButtonDropdown {
+.rv-split-btn--dropdown {
     border-radius: 0 6px 6px 0;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
     margin: 0;
@@ -102,7 +102,7 @@
     width: 28px;
 }
 
-.rv-sidebarDeleteButton {
+.rv-sidebar-btn-delete {
     background: transparent;
     border: none;
     cursor: pointer;
@@ -116,23 +116,23 @@
     height: var(--rv-space-xl);
 }
 
-.rv-sidebarDeleteButton:hover {
+.rv-sidebar-btn-delete:hover {
     color: var(--rv-neutral-100);
 }
 
-.rv-sidebarDeleteButton .rv-iconSolid {
+.rv-sidebar-btn-delete .rv-icon-solid {
     display: none;
 }
 
-.rv-sidebarDeleteButton:hover .rv-iconOutline {
+.rv-sidebar-btn-delete:hover .rv-icon-outline {
     display: none;
 }
 
-.rv-sidebarDeleteButton:hover .rv-iconSolid {
+.rv-sidebar-btn-delete:hover .rv-icon-solid {
     display: block;
 }
 
-.rv-settingsButton {
+.rv-sidebar-btn-settings {
     justify-content: center;
     width: 20px;
     height: 100%;
@@ -147,19 +147,19 @@
     border-radius: 0 var(--rv-space-xs) var(--rv-space-xs) 0;
 }
 
-.rv-settingsButton h6 {
+.rv-sidebar-btn-settings h6 {
     width: var(--rv-space-md);
     height: var(--rv-space-md);
 }
 
-.rv-settingsButton:hover {
+.rv-sidebar-btn-settings:hover {
     background: var(--rv-lunar-500);
 }
 
 
 /* 2. FORM CONTROLS */
 
-.rv-formInputTitle {
+.rv-form-label {
     color: var(--rv-neutral-100);
     font-size: var(--rv-font-size-90);
     font-weight: var(--rv-font-weight-regular);
@@ -167,7 +167,7 @@
     display: block;
 }
 
-.rv-formInput {
+.rv-input {
     width: 100%;
     border-radius: var(--rv-radius-md);
     font-size: var(--rv-font-size-90);
@@ -180,29 +180,29 @@
     height: var(--rv-h-btn);
 }
 
-.rv-formInput:focus {
+.rv-input:focus {
     border-color: var(--rv-neutral-300);
 }
 
-.rv-formTextarea {
+.rv-textarea {
     resize: none;
     font-family: inherit;
     padding: var(--rv-space-sm) var(--rv-space-md);
     height: 100px;
 }
 
-.rv-formSelect {
+.rv-select {
     cursor: pointer;
     appearance: none;
     padding-right: 2.5em;
 }
 
-.rv-selectWrapper {
+.rv-select-group {
     position: relative;
     width: 100%;
 }
 
-.rv-selectIcon {
+.rv-select--icon {
     position: absolute;
     right: var(--rv-space-md);
     top: 50%;
@@ -213,20 +213,20 @@
     height: var(--rv-space-lg);
 }
 
-.rv-toggleSwitch {
+.rv-toggle {
     position: relative;
     display: inline-block;
     width: 44px;
     height: var(--rv-space-xl);
 }
 
-.rv-toggleInput {
+.rv-toggle--input {
     opacity: 0;
     width: 0;
     height: 0;
 }
 
-.rv-toggleSlider {
+.rv-toggle--slider {
     position: absolute;
     cursor: pointer;
     inset: 0;
@@ -235,7 +235,7 @@
     border-radius: var(--rv-space-xl);
 }
 
-.rv-toggleSlider:before {
+.rv-toggle--slider:before {
     position: absolute;
     content: "";
     height: 20px;
@@ -247,18 +247,18 @@
     border-radius: 50%;
 }
 
-.rv-toggleInput:checked+.rv-toggleSlider {
+.rv-toggle--input:checked+.rv-toggle--slider {
     background: var(--rv-lunar-300);
 }
 
-.rv-toggleInput:checked+.rv-toggleSlider:before {
+.rv-toggle--input:checked+.rv-toggle--slider:before {
     transform: translateX(20px);
 }
 
 
 /* 3. NAVIGATION & LISTS */
 
-.rv-listItem {
+.rv-list-item {
     display: flex;
     align-items: center;
     width: 100%;
@@ -276,52 +276,52 @@
     font-size: var(--rv-font-size-90);
 }
 
-.rv-listItem:hover {
+.rv-list-item:hover {
     color: var(--rv-neutral-50);
 }
 
-.rv-listItemActive {
+.rv-list-item--active {
     background: var(--rv-neutral-400);
     color: var(--rv-white);
 }
 
-.rv-listItemIcon {
+.rv-list-item--icon {
     width: 16px;
     height: 16px;
     flex-shrink: 0;
     color: var(--rv-neutral-200);
 }
 
-.rv-listItemLabel {
+.rv-list-item--label {
     flex: 1;
 }
 
-.rv-listItemAction {
+.rv-list-item--action {
     width: 16px;
     height: 16px;
     flex-shrink: 0;
     color: var(--rv-neutral-200);
 }
 
-.rv-listItemActive .rv-listItemIcon,
-.rv-listItemActive .rv-listItemAction {
+.rv-list-item--active .rv-list-item--icon,
+.rv-list-item--active .rv-list-item--action {
     color: var(--rv-white);
 }
 
-.rv-listItemActive .rv-treeIcon,
-.rv-listItemActive .rv-treeInputInline,
-.rv-listItemActive .rv-treeChevronIcon,
-.rv-listItemActive .rv-folderIcon {
+.rv-list-item--active .rv-tree-icon,
+.rv-list-item--active .rv-tree-input-inline,
+.rv-list-item--active .rv-tree-chevron-icon,
+.rv-list-item--active .rv-folder-icon {
     color: var(--rv-white);
 }
 
-.rv-listItem:hover .rv-treeIcon,
-.rv-listItem:hover .rv-treeInputInline,
-.rv-listItem:hover .rv-folderIcon {
+.rv-list-item:hover .rv-tree-icon,
+.rv-list-item:hover .rv-tree-input-inline,
+.rv-list-item:hover .rv-folder-icon {
     color: var(--rv-neutral-50);
 }
 
-.rv-treeAddLink {
+.rv-tree-add {
     display: flex;
     align-items: center;
     gap: var(--rv-space-sm);
@@ -333,11 +333,11 @@
     margin-top: var(--rv-space-xs);
 }
 
-.rv-treeAddLink:hover {
+.rv-tree-add:hover {
     color: var(--rv-neutral-50);
 }
 
-.rv-treeAddIcon {
+.rv-tree-add--icon {
     width: 12px;
     height: 12px;
 }
@@ -345,7 +345,7 @@
 
 /* 4. CANVAS EDITOR TOOLS */
 
-.rv-emptyState {
+.rv-empty {
     min-height: 80vh;
     display: flex;
     align-items: center;
@@ -353,11 +353,11 @@
     background: var(--rv-white);
 }
 
-.rv-emptyStateText {
+.rv-empty-text {
     text-align: center;
 }
 
-.rv-canvasBackgroundRoot {
+.rv-canvas-bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -368,19 +368,19 @@
     overflow: hidden;
 }
 
-.rv-componentWrapper {
+.rv-comp-wrap {
     position: relative;
     background: transparent;
     transition: border-color .2s;
     z-index: 1;
 }
 
-.rv-componentSelected {
+.rv-comp--selected {
     outline: 1px solid var(--rv-lunar-300);
     background-color: var(--rv-lunar-50);
 }
 
-.rv-dragImageContainer {
+.rv-drag-img {
     height: 60px;
     width: 100%;
     display: flex;
@@ -392,13 +392,13 @@
     overflow: hidden;
 }
 
-.rv-dragImageText {
+.rv-drag-img--text {
     font-size: 10px;
     font-weight: var(--rv-font-weight-bold);
     color: var(--rv-white);
 }
 
-.rv-customDragImage {
+.rv-drag-img--custom {
     position: absolute;
     top: -1000px;
     left: -1000px;
@@ -414,11 +414,11 @@
     flex-direction: column;
 }
 
-.rv-activeWrapper {
+.rv-active-wrap {
     position: relative;
 }
 
-.rv-activeBorderOutline {
+.rv-active--border {
     position: absolute;
     inset: 0;
     border: 2px solid var(--rv-lunar-300);
@@ -426,7 +426,7 @@
     pointer-events: none;
 }
 
-.rv-activeOverlay {
+.rv-active--overlay {
     position: absolute;
     top: -var(--rv-space-xl);
     z-index: 20;
@@ -447,7 +447,7 @@
     box-shadow: var(--rv-shadow-md)
 }
 
-.rv-overlayLabel {
+.rv-overlay--label {
     gap: var(--rv-space-xs);
     padding: 0 var(--rv-space-sm);
     height: 100%;
@@ -463,7 +463,7 @@
     justify-content: center;
 }
 
-.rv-overlayIdText {
+.rv-overlay--id {
     color: white;
     font-family: var(--rv-font-family-mono);
     font-size: 10px;
@@ -472,12 +472,12 @@
     text-overflow: ellipsis;
 }
 
-.rv-overlayIcon {
+.rv-overlay--icon {
     width: var(--rv-space-md);
     height: var(--rv-space-md);
 }
 
-.rv-builderTextOverlay {
+.rv-builder-text--overlay {
     background-color: var(--rv-neutral-500);
     color: var(--rv-white);
     border-radius: var(--rv-radius);
@@ -485,7 +485,7 @@
     box-shadow: var(--rv-shadow-md);
 }
 
-.rv-canvasWrapper {
+.rv-canvas-wrap {
     position: relative;
     width: 200px;
     height: 150px;
@@ -493,12 +493,12 @@
     margin-bottom: var(--rv-space-xl);
 }
 
-.rv-canvasText {
+.rv-canvas-text {
     color: var(--rv-neutral-100);
     font-family: var(--rv-font-family-default);
 }
 
-.rv-resolutionIndicator {
+.rv-resolution {
     font-size: 11px;
     font-weight: 500;
     position: sticky;
@@ -516,7 +516,7 @@
     z-index: 10;
 }
 
-.rv-scrollGroupOverlay {
+.rv-scroll-overlay {
     position: absolute;
     inset: 0;
     background-color: var(--rv-white);
@@ -525,7 +525,7 @@
     opacity: 0;
 }
 
-.rv-floatingMergeContainer {
+.rv-merge-group {
     position: fixed;
     bottom: var(--rv-space-xl);
     width: var(--rv-w-sidebar);
@@ -536,7 +536,7 @@
     pointer-events: none;
 }
 
-.rv-floatingMergeContent {
+.rv-merge-content {
     pointer-events: auto;
     display: flex;
     align-items: center;
@@ -549,14 +549,14 @@
     animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.rv-floatingMergeButton {
+.rv-merge-btn {
     width: var(--rv-w-sidebar);
     background-color: var(--rv-neutral-500);
     box-shadow: var(--rv-shd-btn);
     color: var(--rv-white);
 }
 
-.rv-floatingMergeText {
+.rv-merge-text {
     font-weight: 600;
     font-size: var(--rv-font-size-90);
     white-space: nowrap;
@@ -565,7 +565,7 @@
 
 /* 5. FEEDBACK & NOTIFICATIONS */
 
-.rv-notificationBadge {
+.rv-badge-unread {
     position: absolute;
     top: 6px;
     right: 6px;
@@ -576,14 +576,14 @@
     pointer-events: none;
 }
 
-.rv-notificationHeader {
+.rv-notification--header {
     display: flex;
     align-items: flex-start;
     gap: var(--rv-space-sm);
     width: 100%;
 }
 
-.rv-notificationItem {
+.rv-notification--item {
     display: flex;
     align-items: flex-start;
     width: 100%;
@@ -596,15 +596,15 @@
     font-size: var(--rv-font-size-90);
 }
 
-.rv-notificationItem:hover {
+.rv-notification--item:hover {
     background: var(--rv-neutral-400);
 }
 
-.rv-notificationItemUnread {
+.rv-notification--unread {
     color: var(--rv-neutral-50);
 }
 
-.rv-treeActions {
+.rv-tree-actions {
     display: flex;
     align-items: center;
     gap: var(--rv-space-xs);
@@ -612,16 +612,16 @@
     transition: opacity 0.15s;
 }
 
-.rv-notificationItem:hover .rv-treeActions {
+.rv-notification--item:hover .rv-tree-actions {
     opacity: 1;
 }
 
-.rv-subItemName {
+.rv-notification--sub-name {
     font-weight: 500;
     color: var(--rv-white);
 }
 
-.rv-notificationDot {
+.rv-notification--dot {
     width: var(--rv-space-lg);
     height: var(--rv-space-lg);
     flex-shrink: 0;
@@ -631,14 +631,14 @@
     margin-top: 2px;
 }
 
-.rv-notificationDotInner {
+.rv-notification--dot-inner {
     width: 8px;
     height: 8px;
     border-radius: 50%;
     background: var(--rv-lunar-200);
 }
 
-.rv-notificationBody {
+.rv-notification--body {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -646,18 +646,18 @@
     min-width: 0;
 }
 
-.rv-notificationMessage {
+.rv-notification--msg {
     font-size: var(--rv-font-size-90);
     line-height: var(--rv-line-height-caption);
 }
 
-.rv-notificationTime {
+.rv-notification--time {
     font-size: 10px;
     color: var(--rv-neutral-100);
     line-height: var(--rv-line-height-caption);
 }
 
-.rv-notificationMarkAllBtn {
+.rv-notification--mark-all {
     background: transparent;
     border: none;
     color: var(--rv-neutral-75);
@@ -670,11 +670,11 @@
     transition: color 0.15s;
 }
 
-.rv-notificationMarkAllBtn:hover {
+.rv-notification--mark-all:hover {
     color: var(--rv-neutral-50);
 }
 
-.rv-notificationSubList {
+.rv-notification--sub-list {
     margin-top: 8px;
     padding-left: 24px;
     display: flex;
@@ -682,7 +682,7 @@
     gap: 6px;
 }
 
-.rv-notificationSubItem {
+.rv-notification--sub-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -693,7 +693,7 @@
     border-radius: 4px;
 }
 
-.rv-countBadge {
+.rv-badge-count {
     background-color: var(--rv-lunar-300);
     color: white;
     font-size: 10px;
@@ -703,7 +703,7 @@
     font-weight: 600;
 }
 
-.rv-subItemTime {
+.rv-notification--sub-time {
     font-size: 10px;
     opacity: 0.7;
 }

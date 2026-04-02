@@ -1,6 +1,6 @@
 /* 1. APP CONTAINER & SHELL */
 
-.rv-container {
+.rv-layout-root {
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -9,14 +9,14 @@
     background: var(--rv-neutral-500);
 }
 
-.rv-mainContent {
+.rv-layout-main {
     display: flex;
     flex: 1;
     overflow: hidden;
     background: var(--rv-neutral-500);
 }
 
-.rv-topBar {
+.rv-layout-topbar {
     background: var(--rv-neutral-500);
     display: flex;
     justify-content: space-between;
@@ -25,13 +25,13 @@
     position: relative;
 }
 
-.rv-topBarLeft {
+.rv-layout-topbar--left {
     display: flex;
     align-items: center;
     padding: 0 var(--rv-space-lg);
 }
 
-.rv-topBarRight {
+.rv-layout-topbar--right {
     display: flex;
     align-items: center;
     gap: var(--rv-space-sm);
@@ -48,7 +48,7 @@
 
 /* 2. SIDEBAR SYSTEM */
 
-.rv-sidebar {
+.rv-layout-sidebar {
     width: var(--rv-w-sidebar);
     background: linear-gradient(to top, #111, var(--rv-neutral-500));
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -59,7 +59,7 @@
     overflow: hidden;
 }
 
-.rv-sidebarCollapsed {
+.rv-layout-sidebar--collapsed {
     width: 0 !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
@@ -69,7 +69,7 @@
     pointer-events: none;
 }
 
-.rv-sidebarContainer {
+.rv-sidebar-wrap {
     margin-top: 0;
     margin-right: 0;
     margin-bottom: var(--rv-space-md);
@@ -90,7 +90,7 @@
     z-index: 10;
 }
 
-.rv-sidebarRail {
+.rv-sidebar-rail {
     width: 80px;
     background: transparent;
     border-right: .5px solid var(--rv-bdr);
@@ -103,7 +103,7 @@
     position: relative;
 }
 
-.rv-sidebarRailItem {
+.rv-sidebar-rail--item {
     width: 68px;
     height: 68px;
     display: flex;
@@ -122,15 +122,15 @@
     z-index: 1;
 }
 
-.rv-sidebarRailItem:hover {
+.rv-sidebar-rail--item:hover {
     color: var(--rv-white);
 }
 
-.rv-sidebarRailItemActive {
+.rv-sidebar-rail--item-active {
     color: var(--rv-white);
 }
 
-.rv-sidebarRailIndicator {
+.rv-sidebar-rail--indicator {
     position: absolute;
     top: var(--rv-space-sm);
     left: 6px;
@@ -170,7 +170,7 @@
     z-index: 1;
 }
 
-.rv-sidebarBody {
+.rv-sidebar-body {
     flex: 1;
     overflow: hidden;
     background: transparent;
@@ -178,14 +178,14 @@
     flex-direction: column;
 }
 
-.rv-sidebarEmptyState {
+.rv-sidebar--empty {
     padding: var(--rv-space-lg) 0;
     text-align: center;
     color: var(--rv-neutral-100);
     font-size: var(--rv-font-size-90);
 }
 
-.rv-resizeHandle {
+.rv-resize-handle {
     position: absolute;
     top: 0;
     right: 0;
@@ -200,12 +200,12 @@
     user-select: none;
 }
 
-.rv-resizeHandle:hover,
-.rv-resizeHandleActive {
+.rv-resize-handle:hover,
+.rv-resize-handle--active {
     background: rgba(0, 0, 0, 0.05);
 }
 
-.rv-resizeHandleBar {
+.rv-resize-handle--bar {
     width: 6px;
     height: var(--rv-space-xl);
     background: transparent;
@@ -219,8 +219,8 @@
     transform: translateY(-50%);
 }
 
-.rv-resizeHandleBar::before,
-.rv-resizeHandleBar::after {
+.rv-resize-handle--bar::before,
+.rv-resize-handle--bar::after {
     content: '';
     width: var(--rv-space-xs);
     height: 100%;
@@ -229,17 +229,17 @@
     transition: background 0.2s;
 }
 
-.rv-resizeHandle:hover .rv-resizeHandleBar::before,
-.rv-resizeHandle:hover .rv-resizeHandleBar::after,
-.rv-resizeHandleActive .rv-resizeHandleBar::before,
-.rv-resizeHandleActive .rv-resizeHandleBar::after {
+.rv-resize-handle:hover .rv-resize-handle--bar::before,
+.rv-resize-handle:hover .rv-resize-handle--bar::after,
+.rv-resize-handle--active .rv-resize-handle--bar::before,
+.rv-resize-handle--active .rv-resize-handle--bar::after {
     background: var(--rv-neutral-300);
 }
 
 
 /* 3. CANVAS / WORKSPACE */
 
-.rv-canvas {
+.rv-layout-canvas {
     flex: 1;
     min-width: 0;
     overflow: hidden;
@@ -252,11 +252,11 @@
     transition: padding-bottom 0.3s ease;
 }
 
-.rv-canvasScrolledBottom {
+.rv-layout-canvas--scrolled-bottom {
     padding-bottom: var(--rv-space-lg);
 }
 
-.rv-canvasInner {
+.rv-canvas-inner {
     width: 100%;
     max-width: 100%;
     background: transparent;
@@ -275,7 +275,7 @@
     mask-image: radial-gradient(white, black);
 }
 
-.rv-canvasScroll {
+.rv-canvas--scroll {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
@@ -286,7 +286,7 @@
     flex-direction: column;
 }
 
-.rv-canvasContent {
+.rv-canvas--content {
     flex: 1;
     background: var(--rv-white);
     border-bottom-left-radius: var(--rv-radius-md);
@@ -295,7 +295,7 @@
     width: 100%;
 }
 
-.rv-canvasDesktop .rv-canvasInner {
+.rv-canvas--desktop .rv-canvas-inner {
     width: 100%;
     max-width: none;
 }
@@ -303,13 +303,13 @@
 
 /* 4. NAVIGATION & TREE */
 
-.rv-treeContainer {
+.rv-tree-wrap {
     flex: 1;
     overflow-y: auto;
     padding: 0 var(--rv-space-md) var(--rv-space-lg);
 }
 
-.rv-treeRow {
+.rv-tree-row {
     gap: var(--rv-space-sm);
     cursor: pointer;
     border-radius: var(--rv-radius);
@@ -322,21 +322,21 @@
     padding-right: var(--rv-space-sm);
 }
 
-.rv-treeRowActive {
+.rv-tree-row--active {
     background: var(--rv-neutral-400);
 }
 
-.rv-treeRowNested {
+.rv-tree-row--nested {
     padding-left: var(--rv-space-lg);
 }
 
-.rv-treeChildren {
+.rv-tree-children {
     margin-left: 18px;
     padding-left: 12px;
     border-left: 1px solid var(--rv-neutral-400);
 }
 
-.rv-treeChevron {
+.rv-tree-chevron {
     background: none;
     border: none;
     padding: 0;
@@ -350,36 +350,36 @@
     border-radius: var(--rv-radius);
 }
 
-.rv-treeChevron:hover {
+.rv-tree-chevron:hover {
     background: var(--rv-neutral-400);
     color: var(--rv-white);
 }
 
-.rv-treeChevronIcon {
+.rv-tree-chevron--icon {
     width: var(--rv-space-md);
     height: var(--rv-space-md);
     color: var(--rv-neutral-200);
     transition: transform .15s ease;
 }
 
-.rv-treeChevronExpanded {
+.rv-tree-chevron--expanded {
     transform: rotate(90deg);
 }
 
-.rv-treeIconWrapper {
+.rv-tree-icon-wrap {
     justify-content: center;
     width: var(--rv-space-lg);
     height: var(--rv-space-lg);
     opacity: .7;
 }
 
-.rv-treeIcon {
+.rv-tree-icon {
     width: 14px;
     height: 14px;
     color: var(--rv-neutral-200);
 }
 
-.rv-treeInputInline {
+.rv-tree-input {
     background: transparent;
     border: none;
     outline: none;
@@ -393,18 +393,18 @@
     overflow: hidden;
 }
 
-.rv-treeInputInline:focus {
+.rv-tree-input:focus {
     color: var(--rv-white);
 }
 
-.rv-treeActions {
+.rv-tree-actions {
     display: none;
     align-items: center;
     gap: var(--rv-space-xs);
     flex-shrink: 0;
 }
 
-.rv-treeDeleteIcon {
+.rv-tree-delete--icon {
     width: 20px;
     height: 20px;
 }
@@ -412,25 +412,25 @@
 
 /* 5. SEARCH & LAYERS */
 
-.rv-searchRow {
+.rv-search-row {
     display: flex;
     align-items: center;
     gap: var(--rv-space-sm);
     padding: var(--rv-space-md) var(--rv-space-md) var(--rv-space-sm);
 }
 
-.rv-searchInputWrapper {
+.rv-search-input-wrap {
     position: relative;
     flex: 1;
     display: flex;
     align-items: center;
 }
 
-.rv-searchInputWrapper .rv-searchBar {
+.rv-search-input-wrap .rv-search-input {
     padding-left: var(--rv-h-btn);
 }
 
-.rv-searchIcon {
+.rv-search-icon {
     position: absolute;
     left: var(--rv-space-sm);
     width: var(--rv-space-lg);
@@ -439,8 +439,8 @@
     pointer-events: none;
 }
 
-.rv-pinnedLayersHeader,
-.rv-pageLayersHeader {
+.rv-layers-header--pinned,
+.rv-layers-header--page {
     padding: var(--rv-space-sm) 0;
     color: var(--rv-neutral-200);
     font-family: var(--rv-font-family-default);
@@ -448,17 +448,17 @@
     font-weight: var(--rv-font-weight-regular);
 }
 
-.rv-categoryWrapper,
-.rv-treeGroup {
+.rv-category-wrap,
+.rv-tree-group {
     display: flex;
     flex-direction: column;
 }
 
-.rv-borderTopBrand {
+.rv-border-t-brand {
     border-top: 2px solid var(--rv-lunar-300);
 }
 
-.rv-categoryHeader {
+.rv-category-header {
     padding: var(--rv-space-sm) var(--rv-space-lg) 0;
     cursor: default;
     justify-content: space-between;
@@ -471,7 +471,7 @@
 
 /* 6. MOBILE NAVIGATION */
 
-.rv-mobileSidebarOverlay {
+.rv-mobile-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
@@ -483,11 +483,11 @@
     justify-content: center;
 }
 
-.rv-mobileSidebarOpen {
+.rv-mobile-overlay--open {
     opacity: 1;
 }
 
-.rv-mobileSidebarSheet {
+.rv-mobile-sheet {
     background: var(--rv-neutral-500);
     width: 100%;
     max-width: 100%;
@@ -504,11 +504,11 @@
     border-bottom: none;
 }
 
-.rv-mobileSidebarSheetOpen {
+.rv-mobile-sheet--open {
     transform: translateY(0);
 }
 
-.rv-mobileSidebarHeader {
+.rv-mobile-sheet--header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -517,13 +517,13 @@
     flex-shrink: 0;
 }
 
-.rv-mobileSidebarTitle {
+.rv-mobile-sheet--title {
     font-weight: 600;
     color: var(--rv-white);
     font-size: var(--rv-space-lg);
 }
 
-.rv-mobileSidebarCloseButton {
+.rv-mobile-sheet--close {
     background: transparent;
     border: none;
     color: var(--rv-neutral-100);
@@ -536,23 +536,23 @@
     transition: background 0.2s;
 }
 
-.rv-mobileSidebarCloseButton:hover {
+.rv-mobile-sheet--close:hover {
     background: var(--rv-neutral-400);
     color: var(--rv-white);
 }
 
-.rv-mobileSidebarContent {
+.rv-mobile-sheet--content {
     flex: 1;
     overflow-y: auto;
 }
 
 @media (max-width: 1023px) {
-    .rv-desktopSidebar {
+    .rv-sidebar-desktop {
         display: none !important;
     }
 }
 
-.rv-mobileSidebar {
+.rv-sidebar-mobile {
     width: 100% !important;
     border: none !important;
     background: transparent !important;

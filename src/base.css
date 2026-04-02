@@ -1,35 +1,35 @@
 /* 1. TYPOGRAPHY */
 
-.rv-fontBody {
+.rv-font-body {
     font-family: var(--rv-font-family-default);
 }
 
-.rv-fontSmallBold {
+.rv-font-sm-bold {
     font-size: var(--rv-font-size-80);
     font-weight: var(--rv-font-weight-bold);
 }
 
-.rv-captionRegular {
+.rv-text-caption {
     font-family: var(--rv-font-family-default);
     font-size: var(--rv-font-size-90);
     font-weight: var(--rv-font-weight-regular);
     line-height: var(--rv-line-height-caption);
 }
 
-.rv-captionBold {
+.rv-text-caption-bold {
     font-family: var(--rv-font-family-default);
     font-size: var(--rv-font-size-90);
     font-weight: var(--rv-font-weight-bold);
     line-height: var(--rv-line-height-caption);
 }
 
-.rv-sectionTitle {
+.rv-title-section {
     font-size: 20px;
     font-weight: var(--rv-font-weight-bold);
     color: var(--rv-neutral-50);
 }
 
-.rv-bodyRegular {
+.rv-text-body {
     font-family: var(--rv-font-family-default);
     font-size: var(--rv-space-lg);
     font-weight: var(--rv-font-weight-regular);
@@ -43,44 +43,44 @@
     display: flex;
 }
 
-.rv-flexColumn {
+.rv-flex-col {
     display: flex;
     flex-direction: column;
 }
 
-.rv-flex1 {
+.rv-flex-1 {
     flex: 1;
 }
 
-.rv-itemsCenter {
+.rv-items-center {
     align-items: center;
 }
 
-.rv-itemsStart {
+.rv-items-start {
     align-items: flex-start;
 }
 
-.rv-itemsEnd {
+.rv-items-end {
     align-items: flex-end;
 }
 
-.rv-justifyCenter {
+.rv-justify-center {
     justify-content: center;
 }
 
-.rv-justifyBetween {
+.rv-justify-between {
     justify-content: space-between;
 }
 
-.rv-justifyEnd {
+.rv-justify-end {
     justify-content: flex-end;
 }
 
-.rv-wFull {
+.rv-w-full {
     width: 100%;
 }
 
-.rv-hFull {
+.rv-h-full {
     height: 100%;
 }
 
@@ -92,7 +92,7 @@
     position: absolute;
 }
 
-.rv-overlayFixed {
+.rv-overlay-fixed {
     position: fixed;
     inset: 0;
     pointer-events: none;
@@ -101,136 +101,132 @@
 
 /* 3. SPACING */
 
-.rv-gapXs {
+.rv-gap-xs {
     gap: var(--rv-space-xs);
 }
 
-.rv-gapSm {
+.rv-gap-sm {
     gap: var(--rv-space-sm);
 }
 
-.rv-gapMd {
+.rv-gap-md {
     gap: var(--rv-space-md);
 }
 
-.rv-gapLg {
+.rv-gap-lg {
     gap: var(--rv-space-lg);
 }
 
-.rv-gapXl {
+.rv-gap-xl {
     gap: var(--rv-space-xl);
 }
 
-.rv-m0 {
+.rv-m-0 {
     margin: 0;
 }
 
-.rv-mtSm {
+.rv-mt-sm {
     margin-top: var(--rv-space-sm);
 }
 
-.rv-mtMd {
+.rv-mt-md {
     margin-top: var(--rv-space-md);
 }
 
-.rv-mbSm {
+.rv-mb-sm {
     margin-bottom: var(--rv-space-sm);
 }
 
-.rv-mbMd {
+.rv-mb-md {
     margin-bottom: var(--rv-space-md);
 }
 
-.rv-mlAuto {
+.rv-ml-auto {
     margin-left: auto;
 }
 
-.rv-mrAuto {
+.rv-mr-auto {
     margin-right: auto;
 }
 
-.rv-mxAuto {
+.rv-mx-auto {
     margin-left: auto;
     margin-right: auto;
 }
 
-.rv-p0 {
+.rv-p-0 {
     padding: 0;
 }
 
-.rv-pSm {
+.rv-p-sm {
     padding: var(--rv-space-sm);
 }
 
-.rv-pMd {
+.rv-p-md {
     padding: var(--rv-space-md);
 }
 
-.rv-pLg {
+.rv-p-lg {
     padding: var(--rv-space-lg);
 }
 
-.rv-p12 {
-    padding: var(--rv-space-md);
-}
-
-.rv-wSidebar {
+.rv-w-sidebar {
     width: var(--rv-w-sidebar);
 }
 
-.rv-mb100 {
+.rv-mb-xl {
     margin-bottom: var(--rv-space-xl);
 }
 
 
 /* 4. TEXT UTILITIES */
 
-.rv-textCenter {
+.rv-text-center {
     text-align: center;
 }
 
-.rv-textLeft {
+.rv-text-left {
     text-align: left;
 }
 
-.rv-textRight {
+.rv-text-right {
     text-align: right;
 }
 
-.rv-textSmall {
+.rv-text-sm {
     font-size: var(--rv-space-md);
 }
 
-.rv-textSubtle {
+.rv-text-subtle {
     color: var(--rv-neutral-200);
 }
 
 
 /* 5. VISUAL UTILITIES */
 
-.rv-shadowMd {
+.rv-shadow-md {
     box-shadow: var(--rv-shadow-md);
 }
 
-.rv-shadowBtn {
+.rv-shadow-btn {
     box-shadow: var(--rv-shd-btn);
 }
 
-.rv-roundedSm {
+.rv-rounded-sm {
     border-radius: var(--rv-radius);
 }
 
-.rv-rounded80 {
+.rv-rounded-md {
     border-radius: var(--rv-radius);
 }
 
-.rv-horizontalDivider {
+.rv-divider-h {
     border-top: 1px solid var(--rv-bdr);
     margin: var(--rv-space-sm) 0;
     width: 100%;
 }
 
-.rv-verticalDivider {
+.rv-divider-v {
     width: 1px;
     height: var(--rv-space-lg);
     background-color: var(--rv-bdr);
@@ -239,19 +235,19 @@
 
 /* 6. ICON UTILITIES */
 
-.rv-iconWhite {
+.rv-icon-white {
     width: var(--rv-space-lg);
     height: var(--rv-space-lg);
     color: var(--rv-white);
 }
 
-.rv-iconSmall {
+.rv-icon-sm {
     width: var(--rv-space-lg);
     height: var(--rv-space-lg);
     flex-shrink: 0;
 }
 
-.rv-iconXs {
+.rv-icon-xs {
     width: var(--rv-space-md);
     height: var(--rv-space-md);
 }
@@ -259,7 +255,7 @@
 
 /* 7. SPECIALIZED COMPONENTS */
 
-.rv-imagePreviewContainer {
+.rv-img-preview {
     background-color: var(--rv-neutral-50);
     border: 1px solid var(--rv-neutral-100);
     margin-top: var(--rv-space-xs);
@@ -271,7 +267,7 @@
     min-height: 40px;
 }
 
-.rv-analyticsContainer {
+.rv-analytics {
     flex: 1;
     overflow-y: auto;
     display: flex;
@@ -279,41 +275,40 @@
     padding: var(--rv-space-md) var(--rv-space-md) var(--rv-space-lg);
 }
 
-.rv-analyticsSection {
+.rv-analytics--section {
     gap: var(--rv-space-xs);
     margin: var(--rv-space-sm) 0;
     display: flex;
     flex-direction: column;
 }
 
-.rv-analyticsHeader {
+.rv-analytics--header {
     gap: var(--rv-space-xs);
     display: flex;
     align-items: center;
-    margin-bottom: var(--rv-space-xs);
 }
 
-.rv-accordionContent {
+.rv-accordion {
     display: grid;
     grid-template-rows: 0fr;
     transition: grid-template-rows .3s ease-out;
 }
 
-.rv-accordionContentOpen {
+.rv-accordion--open {
     grid-template-rows: 1fr;
 }
 
-.rv-accordionInner {
+.rv-accordion--inner {
     overflow: hidden;
 }
 
-.rv-propertyRow {
+.rv-prop-row {
     display: flex;
     align-items: left;
     justify-content: space-between;
 }
 
-.rv-propertyRowStacked {
+.rv-prop-row--stacked {
     flex-direction: column;
     align-items: flex-start;
 }
