@@ -47,6 +47,7 @@
     line-height: var(--rv-lh-base);
 }
 
+.rv-text-body-md,
 .rv-text-body {
     font-size: var(--rv-fs-md);
     line-height: var(--rv-lh-base);
@@ -57,10 +58,19 @@
     line-height: var(--rv-lh-base);
 }
 
-/* Caption */
+/* Caption & Overline */
 .rv-text-caption {
     font-size: var(--rv-fs-xs);
     line-height: var(--rv-lh-base);
+    letter-spacing: 0.01em;
+}
+
+.rv-text-overline {
+    font-size: var(--rv-fs-xs);
+    line-height: var(--rv-lh-none);
+    font-weight: var(--rv-font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 /* Font Weights */
