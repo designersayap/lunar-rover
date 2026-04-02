@@ -74,9 +74,17 @@
 }
 
 /* Font Weights */
-.rv-font-regular { font-weight: var(--rv-font-weight-regular); }
-.rv-font-medium { font-weight: var(--rv-font-weight-medium); }
-.rv-font-bold { font-weight: var(--rv-font-weight-bold); }
+.rv-font-regular {
+    font-weight: var(--rv-font-weight-regular);
+}
+
+.rv-font-medium {
+    font-weight: var(--rv-font-weight-medium);
+}
+
+.rv-font-bold {
+    font-weight: var(--rv-font-weight-bold);
+}
 
 
 /* 2. LAYOUT & FLEXBOX */
@@ -144,53 +152,191 @@
 /* 3. SPACING UTILITIES */
 
 /* Gaps */
-.rv-gap-0 { gap: var(--rv-space-0); }
-.rv-gap-1, .rv-gap-xs { gap: var(--rv-space-1); }
-.rv-gap-2, .rv-gap-sm { gap: var(--rv-space-2); }
-.rv-gap-3 { gap: var(--rv-space-3); }
-.rv-gap-4, .rv-gap-md { gap: var(--rv-space-4); }
-.rv-gap-5 { gap: var(--rv-space-5); }
-.rv-gap-6, .rv-gap-lg { gap: var(--rv-space-6); }
-.rv-gap-8, .rv-gap-xl { gap: var(--rv-space-8); }
-.rv-gap-10 { gap: var(--rv-space-10); }
-.rv-gap-12 { gap: var(--rv-space-12); }
-.rv-gap-16 { gap: var(--rv-space-16); }
+.rv-gap-0 {
+    gap: var(--rv-space-0);
+}
+
+.rv-gap-1,
+.rv-gap-xs {
+    gap: var(--rv-space-1);
+}
+
+.rv-gap-2,
+.rv-gap-sm {
+    gap: var(--rv-space-2);
+}
+
+.rv-gap-3 {
+    gap: var(--rv-space-3);
+}
+
+.rv-gap-4,
+.rv-gap-md {
+    gap: var(--rv-space-4);
+}
+
+.rv-gap-5 {
+    gap: var(--rv-space-5);
+}
+
+.rv-gap-6,
+.rv-gap-lg {
+    gap: var(--rv-space-6);
+}
+
+.rv-gap-8,
+.rv-gap-xl {
+    gap: var(--rv-space-8);
+}
+
+.rv-gap-10 {
+    gap: var(--rv-space-10);
+}
+
+.rv-gap-12 {
+    gap: var(--rv-space-12);
+}
+
+.rv-gap-16 {
+    gap: var(--rv-space-16);
+}
 
 /* Margins */
-.rv-m-0 { margin: var(--rv-space-0); }
-.rv-m-1, .rv-m-xs { margin: var(--rv-space-1); }
-.rv-m-2, .rv-m-sm { margin: var(--rv-space-2); }
-.rv-m-4, .rv-m-md { margin: var(--rv-space-4); }
+.rv-m-0 {
+    margin: var(--rv-space-0);
+}
 
-.rv-mt-0 { margin-top: var(--rv-space-0); }
-.rv-mt-1, .rv-mt-xs { margin-top: var(--rv-space-1); }
-.rv-mt-2, .rv-mt-sm { margin-top: var(--rv-space-2); }
-.rv-mt-4, .rv-mt-md { margin-top: var(--rv-space-4); }
+.rv-m-1,
+.rv-m-xs {
+    margin: var(--rv-space-1);
+}
 
-.rv-mb-0 { margin-bottom: var(--rv-space-0); }
-.rv-mb-1, .rv-mb-xs { margin-bottom: var(--rv-space-1); }
-.rv-mb-2, .rv-mb-sm { margin-bottom: var(--rv-space-2); }
-.rv-mb-4, .rv-mb-md { margin-bottom: var(--rv-space-4); }
-.rv-mb-8, .rv-mb-xl { margin-bottom: var(--rv-space-8); }
+.rv-m-2,
+.rv-m-sm {
+    margin: var(--rv-space-2);
+}
 
-.rv-ml-auto { margin-left: auto; }
-.rv-mr-auto { margin-right: auto; }
-.rv-mx-auto { margin-left: auto; margin-right: auto; }
+.rv-m-4,
+.rv-m-md {
+    margin: var(--rv-space-4);
+}
+
+.rv-mt-0 {
+    margin-top: var(--rv-space-0);
+}
+
+.rv-mt-1,
+.rv-mt-xs {
+    margin-top: var(--rv-space-1);
+}
+
+.rv-mt-2,
+.rv-mt-sm {
+    margin-top: var(--rv-space-2);
+}
+
+.rv-mt-4,
+.rv-mt-md {
+    margin-top: var(--rv-space-4);
+}
+
+.rv-mb-0 {
+    margin-bottom: var(--rv-space-0);
+}
+
+.rv-mb-1,
+.rv-mb-xs {
+    margin-bottom: var(--rv-space-1);
+}
+
+.rv-mb-2,
+.rv-mb-sm {
+    margin-bottom: var(--rv-space-2);
+}
+
+.rv-mb-4,
+.rv-mb-md {
+    margin-bottom: var(--rv-space-4);
+}
+
+.rv-mb-8,
+.rv-mb-xl {
+    margin-bottom: var(--rv-space-8);
+}
+
+.rv-ml-auto {
+    margin-left: auto;
+}
+
+.rv-mr-auto {
+    margin-right: auto;
+}
+
+.rv-mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
 
 /* Paddings */
-.rv-p-0 { padding: var(--rv-space-0); }
-.rv-p-1, .rv-p-xs { padding: var(--rv-space-1); }
-.rv-p-2, .rv-p-sm { padding: var(--rv-space-2); }
-.rv-p-4, .rv-p-md { padding: var(--rv-space-4); }
-.rv-p-6, .rv-p-lg { padding: var(--rv-space-6); }
+.rv-p-0 {
+    padding: var(--rv-space-0);
+}
 
-.rv-px-1, .rv-px-xs { padding-left: var(--rv-space-1); padding-right: var(--rv-space-1); }
-.rv-px-2, .rv-px-sm { padding-left: var(--rv-space-2); padding-right: var(--rv-space-2); }
-.rv-px-4, .rv-px-md { padding-left: var(--rv-space-4); padding-right: var(--rv-space-4); }
+.rv-p-1,
+.rv-p-xs {
+    padding: var(--rv-space-1);
+}
 
-.rv-py-1, .rv-py-xs { padding-top: var(--rv-space-1); padding-bottom: var(--rv-space-1); }
-.rv-py-2, .rv-py-sm { padding-top: var(--rv-space-2); padding-bottom: var(--rv-space-2); }
-.rv-py-4, .rv-py-md { padding-top: var(--rv-space-4); padding-bottom: var(--rv-space-4); }
+.rv-p-2,
+.rv-p-sm {
+    padding: var(--rv-space-2);
+}
+
+.rv-p-4,
+.rv-p-md {
+    padding: var(--rv-space-4);
+}
+
+.rv-p-6,
+.rv-p-lg {
+    padding: var(--rv-space-6);
+}
+
+.rv-px-1,
+.rv-px-xs {
+    padding-left: var(--rv-space-1);
+    padding-right: var(--rv-space-1);
+}
+
+.rv-px-2,
+.rv-px-sm {
+    padding-left: var(--rv-space-2);
+    padding-right: var(--rv-space-2);
+}
+
+.rv-px-4,
+.rv-px-md {
+    padding-left: var(--rv-space-4);
+    padding-right: var(--rv-space-4);
+}
+
+.rv-py-1,
+.rv-py-xs {
+    padding-top: var(--rv-space-1);
+    padding-bottom: var(--rv-space-1);
+}
+
+.rv-py-2,
+.rv-py-sm {
+    padding-top: var(--rv-space-2);
+    padding-bottom: var(--rv-space-2);
+}
+
+.rv-py-4,
+.rv-py-md {
+    padding-top: var(--rv-space-4);
+    padding-bottom: var(--rv-space-4);
+}
 
 .rv-w-sidebar {
     width: var(--rv-w-sidebar);
@@ -213,10 +359,6 @@
 
 .rv-text-sm {
     font-size: var(--rv-fs-sm);
-}
-
-.rv-text-subtle {
-    color: var(--rv-neutral-200);
 }
 
 
@@ -257,10 +399,11 @@
 
 /* 6. ICON UTILITIES */
 
-.rv-icon-white {
-    width: var(--rv-space-4);
-    height: var(--rv-space-4);
-    color: var(--rv-white);
+/* Sizes */
+.rv-icon-xs {
+    width: var(--rv-space-3);
+    height: var(--rv-space-3);
+    flex-shrink: 0;
 }
 
 .rv-icon-sm {
@@ -269,9 +412,36 @@
     flex-shrink: 0;
 }
 
-.rv-icon-xs {
-    width: var(--rv-space-3);
-    height: var(--rv-space-3);
+.rv-icon-md {
+    width: var(--rv-space-5);
+    height: var(--rv-space-5);
+    flex-shrink: 0;
+}
+
+.rv-icon-lg {
+    width: var(--rv-space-6);
+    height: var(--rv-space-6);
+    flex-shrink: 0;
+}
+
+.rv-icon-xl {
+    width: var(--rv-space-8);
+    height: var(--rv-space-8);
+    flex-shrink: 0;
+}
+
+/* Colors & States */
+.rv-icon--white,
+.rv-icon-white {
+    color: var(--rv-white);
+}
+
+.rv-icon--subtle {
+    color: var(--rv-neutral-100);
+}
+
+.rv-icon--brand {
+    color: var(--rv-lunar-300);
 }
 
 
