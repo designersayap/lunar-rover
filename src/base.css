@@ -21,6 +21,11 @@ textarea {
     font-family: var(--rv-font-family-default);
 }
 
+.rv-font-mono,
+.rv-overlay--id {
+    font-family: var(--rv-font-family-mono);
+}
+
 /* Headings */
 .rv-text-h1 {
     font-size: var(--rv-fs-3xl);
@@ -28,7 +33,8 @@ textarea {
     line-height: var(--rv-lh-tight);
 }
 
-.rv-text-h2 {
+.rv-text-h2,
+.rv-login--title {
     font-size: var(--rv-fs-2xl);
     font-weight: var(--rv-font-weight-bold);
     line-height: var(--rv-lh-tight);
@@ -40,7 +46,8 @@ textarea {
     line-height: var(--rv-lh-tight);
 }
 
-.rv-text-h4 {
+.rv-text-h4,
+.rv-popoverTitleCustom {
     font-size: var(--rv-fs-lg);
     font-weight: var(--rv-font-weight-bold);
     line-height: var(--rv-lh-tight);
@@ -65,18 +72,53 @@ textarea {
 }
 
 .rv-text-body-md,
-.rv-text-body {
+.rv-text-body,
+.rv-mobile-sheet--title {
     font-size: var(--rv-fs-md);
     line-height: var(--rv-lh-base);
 }
 
-.rv-text-body-sm {
+.rv-text-body-sm,
+.rv-btn,
+.rv-input,
+.rv-textarea,
+.rv-list-item,
+.rv-tree-add,
+.rv-notification--item,
+.rv-notification--msg,
+.rv-notification--mark-all,
+.rv-merge-text,
+.rv-tooltip,
+.rv-emptyStateMessage,
+.rv-errorMessage,
+.rv-cardTitle,
+.rv-radioOption,
+.rv-logo,
+.rv-sidebar--empty,
+.rv-tree-input,
+.rv-layers-header--pinned,
+.rv-layers-header--page,
+.rv-category-header,
+.rv-login--desc,
+.rv-login--input,
+.rv-login--btn,
+.rv-login--error {
     font-size: var(--rv-fs-sm);
     line-height: var(--rv-lh-base);
 }
 
 /* Caption & Overline */
-.rv-text-caption {
+.rv-text-caption,
+.rv-form-label,
+.rv-exportHelperText,
+.rv-notification--time,
+.rv-sidebarRailLabel,
+.rv-badge-count,
+.rv-notification--sub-time,
+.rv-overlay--label,
+.rv-drag-img--text,
+.rv-resolution,
+.rv-overlay--id {
     font-size: var(--rv-fs-xs);
     line-height: var(--rv-lh-base);
     letter-spacing: 0.01em;
@@ -91,15 +133,31 @@ textarea {
 }
 
 /* Font Weights */
+.rv-font-light,
+.rv-login--btn {
+    font-weight: var(--rv-font-weight-light);
+}
+
 .rv-font-regular {
     font-weight: var(--rv-font-weight-regular);
 }
 
-.rv-font-medium {
+.rv-font-medium,
+.rv-sidebarRailLabel,
+.rv-notification--sub-name,
+.rv-resolution {
     font-weight: var(--rv-font-weight-medium);
 }
 
-.rv-font-bold {
+.rv-font-semibold,
+.rv-merge-text,
+.rv-badge-count,
+.rv-mobile-sheet--title {
+    font-weight: var(--rv-font-weight-semibold);
+}
+
+.rv-font-bold,
+.rv-drag-img--text {
     font-weight: var(--rv-font-weight-bold);
 }
 

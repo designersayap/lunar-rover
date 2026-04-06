@@ -8,8 +8,6 @@
     border: none;
     border-radius: var(--rv-radius-md);
     transition: all 0.2s;
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-fs-sm);
     height: var(--rv-h-btn);
     padding: 0 var(--rv-space-3);
     gap: var(--rv-space-xs);
@@ -161,8 +159,6 @@
 
 .rv-form-label {
     color: var(--rv-neutral-100);
-    font-size: var(--rv-fs-sm);
-    font-weight: var(--rv-font-weight-regular);
     margin-bottom: var(--rv-space-xs);
     display: block;
 }
@@ -170,7 +166,6 @@
 .rv-input {
     width: 100%;
     border-radius: var(--rv-radius-md);
-    font-size: var(--rv-fs-sm);
     outline: none;
     transition: all .2s;
     background: var(--rv-neutral-500);
@@ -186,7 +181,6 @@
 
 .rv-textarea {
     resize: none;
-    font-family: inherit;
     padding: var(--rv-space-sm) var(--rv-space-3);
     height: 100px;
 }
@@ -273,7 +267,6 @@
     border: none;
     text-align: left;
     gap: var(--rv-space-sm);
-    font-size: var(--rv-fs-sm);
 }
 
 .rv-list-item:hover {
@@ -327,7 +320,6 @@
     gap: var(--rv-space-sm);
     padding: var(--rv-space-3) var(--rv-space-sm);
     color: var(--rv-neutral-100);
-    font-size: var(--rv-fs-sm);
     cursor: pointer;
     transition: color 0.2s, background 0.2s;
     margin-top: var(--rv-space-xs);
@@ -393,8 +385,6 @@
 }
 
 .rv-drag-img--text {
-    font-size: var(--rv-fs-xs);
-    font-weight: var(--rv-font-weight-bold);
     color: var(--rv-white);
 }
 
@@ -451,9 +441,6 @@
     gap: var(--rv-space-xs);
     padding: 0 var(--rv-space-sm);
     height: 100%;
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-fs-xs);
-    font-weight: var(--rv-font-weight-regular);
     border-right: 1px solid rgba(255, 255, 255, .2);
     flex-grow: 1;
     min-width: 0;
@@ -466,7 +453,6 @@
 .rv-overlay--id {
     color: white;
     font-family: var(--rv-font-family-mono);
-    font-size: var(--rv-fs-xs);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -481,7 +467,6 @@
     background-color: var(--rv-neutral-500);
     color: var(--rv-white);
     border-radius: var(--rv-radius-sm);
-    font-family: var(--rv-font-family-default);
     box-shadow: var(--rv-shadow-md);
 }
 
@@ -495,12 +480,9 @@
 
 .rv-canvas-text {
     color: var(--rv-neutral-100);
-    font-family: var(--rv-font-family-default);
 }
 
 .rv-resolution {
-    font-size: var(--rv-fs-xs);
-    font-weight: var(--rv-font-weight-medium);
     position: sticky;
     bottom: var(--rv-space-4);
     margin: var(--rv-space-xl) auto 0;
@@ -557,8 +539,6 @@
 }
 
 .rv-merge-text {
-    font-weight: var(--rv-font-weight-semibold);
-    font-size: var(--rv-fs-sm);
     white-space: nowrap;
 }
 
@@ -593,7 +573,6 @@
     color: var(--rv-neutral-75);
     cursor: default;
     gap: var(--rv-space-sm);
-    font-size: var(--rv-fs-sm);
 }
 
 .rv-notification--item:hover {
@@ -617,7 +596,6 @@
 }
 
 .rv-notification--sub-name {
-    font-weight: var(--rv-font-weight-medium);
     color: var(--rv-white);
 }
 
@@ -646,23 +624,15 @@
     min-width: 0;
 }
 
-.rv-notification--msg {
-    font-size: var(--rv-fs-sm);
-    line-height: var(--rv-lh-caption);
-}
 
 .rv-notification--time {
-    font-size: var(--rv-fs-xs);
     color: var(--rv-neutral-100);
-    line-height: var(--rv-lh-caption);
 }
 
 .rv-notification--mark-all {
     background: transparent;
     border: none;
     color: var(--rv-neutral-75);
-    font-size: var(--rv-fs-sm);
-    font-family: var(--rv-font-family-default);
     cursor: pointer;
     padding: var(--rv-space-sm) 0;
     width: 100%;
@@ -686,7 +656,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: var(--rv-fs-sm);
     color: var(--rv-neutral-200);
     padding: 4px 8px;
     background-color: var(--rv-neutral-400);
@@ -696,14 +665,11 @@
 .rv-badge-count {
     background-color: var(--rv-lunar-300);
     color: white;
-    font-size: var(--rv-fs-xs);
     padding: 1px 5px;
     border-radius: 10px;
     margin-left: 6px;
-    font-weight: var(--rv-font-weight-semibold);
 }
 
 .rv-notification--sub-time {
-    font-size: var(--rv-fs-xs);
     opacity: 0.7;
 }

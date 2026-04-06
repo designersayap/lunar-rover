@@ -5,7 +5,6 @@
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
-    font-family: var(--rv-font-family-default);
     background: var(--rv-neutral-500);
 }
 
@@ -41,8 +40,6 @@
 .rv-logo {
     padding: 0;
     color: var(--rv-white);
-    font-weight: var(--rv-font-weight-bold);
-    font-size: var(--rv-fs-sm);
 }
 
 
@@ -163,8 +160,6 @@
 }
 
 .rv-sidebarRailLabel {
-    font-size: var(--rv-fs-xs);
-    font-weight: var(--rv-font-weight-medium);
     text-align: center;
     position: relative;
     z-index: 1;
@@ -182,7 +177,6 @@
     padding: var(--rv-space-4) 0;
     text-align: center;
     color: var(--rv-neutral-100);
-    font-size: var(--rv-fs-sm);
 }
 
 .rv-resize-handle {
@@ -383,8 +377,6 @@
     background: transparent;
     border: none;
     outline: none;
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-fs-sm);
     color: var(--rv-neutral-75);
     flex: 1;
     min-width: 0;
@@ -443,9 +435,6 @@
 .rv-layers-header--page {
     padding: var(--rv-space-sm) 0;
     color: var(--rv-neutral-200);
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-fs-sm);
-    font-weight: var(--rv-font-weight-regular);
 }
 
 .rv-category-wrap,
@@ -464,7 +453,6 @@
     justify-content: space-between;
     user-select: none;
     color: var(--rv-neutral-200);
-    font-size: var(--rv-fs-sm);
     border-bottom: none;
 }
 
@@ -518,9 +506,7 @@
 }
 
 .rv-mobile-sheet--title {
-    font-weight: var(--rv-font-weight-semibold);
     color: var(--rv-white);
-    font-size: var(--rv-fs-md);
 }
 
 .rv-mobile-sheet--close {

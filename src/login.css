@@ -12,7 +12,6 @@
         radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
         radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.08) 0px, transparent 50%);
     color: var(--rv-white);
-    font-family: var(--rv-font-family-default);
 }
 
 .rv-login--card {
@@ -36,8 +35,6 @@
 }
 
 .rv-login--title {
-    font-size: var(--rv-fs-2xl);
-    font-weight: var(--rv-font-weight-semibold);
     margin: 0;
     text-align: center;
     color: var(--rv-white);
@@ -45,7 +42,6 @@
 }
 
 .rv-login--desc {
-    font-size: var(--rv-fs-sm);
     color: rgba(255, 255, 255, 0.6);
     text-align: center;
     margin-bottom: 32px;
@@ -70,14 +66,10 @@
     height: var(--rv-h-btn);
     padding: 0 40px 0 var(--rv-space-3);
     border-radius: 6px;
-    font-size: var(--rv-fs-sm);
-    outline: none;
-    transition: all .2s;
     background: #0a0a0a;
     color: var(--rv-white);
     border: 1px solid var(--rv-neutral-400);
     box-shadow: none;
-    font-family: inherit;
     box-sizing: border-box;
 }
 
@@ -126,9 +118,6 @@
     height: var(--rv-h-btn);
     padding: 0 var(--rv-space-3);
     border-radius: 6px;
-    font-size: var(--rv-fs-sm);
-    font-weight: var(--rv-font-weight-light);
-    font-family: inherit;
     cursor: pointer;
     border: none;
     background: var(--rv-neutral-300);
@@ -158,6 +147,5 @@
 
 .rv-login--error {
     color: var(--rv-danger);
-    font-size: var(--rv-fs-sm);
     margin-top: var(--rv-space-xs);
 }

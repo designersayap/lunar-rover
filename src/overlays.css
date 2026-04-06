@@ -6,9 +6,6 @@
     color: var(--rv-white);
     padding: var(--rv-space-xs) var(--rv-space-sm);
     border-radius: var(--rv-radius-sm);
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-fs-sm);
-    font-weight: var(--rv-font-weight-medium);
     line-height: 1.4;
     white-space: normal;
     max-width: 240px;
@@ -50,14 +47,12 @@
 .rv-emptyStateMessage {
     padding: var(--rv-space-3);
     text-align: center;
-    font-size: var(--rv-fs-sm);
     color: var(--rv-neutral-100);
 }
 
 .rv-errorMessage {
     padding: var(--rv-space-3);
     text-align: center;
-    font-size: var(--rv-fs-sm);
     color: var(--rv-danger);
 }
 
@@ -138,7 +133,6 @@
 
 .rv-exportHelperText {
     color: var(--rv-neutral-75);
-    font-size: var(--rv-fs-xs);
 }
 
 /* Theme Picker */
@@ -170,8 +164,6 @@
 }
 
 .rv-popoverTitleCustom {
-    font-size: var(--rv-fs-lg);
-    font-weight: var(--rv-font-weight-semibold);
     color: var(--rv-white);
 }
 
@@ -226,7 +218,6 @@
 .rv-cardTitle {
     color: var(--rv-neutral-75);
     margin: 0;
-    font-size: var(--rv-fs-sm);
 }
 
 .rv-radioOption {
@@ -241,9 +232,6 @@
     background: transparent;
     transition: all 0.2s;
     color: var(--rv-neutral-50);
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-fs-sm);
-    font-weight: var(--rv-font-weight-regular);
     user-select: none;
 }
 
