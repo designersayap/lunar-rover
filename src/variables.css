@@ -62,8 +62,10 @@
     /* font */
     --rv-font-family-default: 'Plus Jakarta Sans', sans-serif;
     --rv-font-family-mono: 'Ui-Monospace', 'SF Mono', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+    --rv-font-weight-light: 300;
     --rv-font-weight-regular: 400;
     --rv-font-weight-medium: 500;
+    --rv-font-weight-semibold: 600;
     --rv-font-weight-bold: 700;
 
     --rv-fs-xs: 10px;
@@ -74,6 +76,8 @@
     --rv-fs-2xl: 24px;
     --rv-fs-3xl: 32px;
 
+    --rv-lh-none: 1;
     --rv-lh-tight: 1.2;
+    --rv-lh-caption: 1.4;
     --rv-lh-base: 1.5;
 }

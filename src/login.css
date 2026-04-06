@@ -36,8 +36,8 @@
 }
 
 .rv-login--title {
-    font-size: var(--rv-space-6);
-    font-weight: 600;
+    font-size: var(--rv-fs-2xl);
+    font-weight: var(--rv-font-weight-semibold);
     margin: 0;
     text-align: center;
     color: var(--rv-white);
@@ -45,7 +45,7 @@
 }
 
 .rv-login--desc {
-    font-size: var(--rv-font-size-90);
+    font-size: var(--rv-fs-sm);
     color: rgba(255, 255, 255, 0.6);
     text-align: center;
     margin-bottom: 32px;
@@ -70,7 +70,7 @@
     height: var(--rv-h-btn);
     padding: 0 40px 0 var(--rv-space-3);
     border-radius: 6px;
-    font-size: var(--rv-font-size-90);
+    font-size: var(--rv-fs-sm);
     outline: none;
     transition: all .2s;
     background: #0a0a0a;
@@ -126,8 +126,8 @@
     height: var(--rv-h-btn);
     padding: 0 var(--rv-space-3);
     border-radius: 6px;
-    font-size: var(--rv-font-size-90);
-    font-weight: 300;
+    font-size: var(--rv-fs-sm);
+    font-weight: var(--rv-font-weight-light);
     font-family: inherit;
     cursor: pointer;
     border: none;
@@ -158,6 +158,6 @@
 
 .rv-login--error {
     color: var(--rv-danger);
-    font-size: var(--rv-font-size-90);
+    font-size: var(--rv-fs-sm);
     margin-top: var(--rv-space-xs);
 }
