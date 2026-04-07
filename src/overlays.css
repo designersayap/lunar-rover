@@ -6,14 +6,13 @@
     color: var(--rv-white);
     padding: var(--rv-space-xs) var(--rv-space-sm);
     border-radius: var(--rv-radius-sm);
-    line-height: 1.4;
     white-space: normal;
     max-width: 240px;
     text-align: center;
     box-shadow: var(--rv-shadow-md);
     pointer-events: none;
-    z-index: 10000;
-    animation: fadeIn 0.15s ease-out;
+    z-index: var(--rv-z-tooltip);
+    animation: fadeIn var(--rv-trans-fast) var(--rv-ease-out);
 }
 
 @keyframes fadeIn {
@@ -44,22 +43,24 @@
 
 /* 2. FEEDBACK MESSAGES */
 
-.rv-emptyStateMessage {
+.rv-empty-msg {
     padding: var(--rv-space-3);
     text-align: center;
+    font-size: var(--rv-fs-md);
     color: var(--rv-neutral-100);
 }
 
-.rv-errorMessage {
+.rv-error-msg {
     padding: var(--rv-space-3);
     text-align: center;
+    font-size: var(--rv-space-3);
     color: var(--rv-danger);
 }
 
 
 /* 3. POPOVER SYSTEM */
 
-.rv-popoverOverlay {
+.rv-popover-overlay {
     position: fixed;
     inset: 0;
 }
@@ -75,7 +76,7 @@
     }
 }
 
-.rv-popoverContainer {
+.rv-popover-wrap {
     background: var(--rv-neutral-500);
     border: 1px solid var(--rv-bdr);
     border-radius: var(--rv-space-sm);
@@ -86,28 +87,28 @@
     flex-direction: column;
     box-shadow: var(--rv-shd-pop);
     overflow: hidden;
-    animation: popoverIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: popoverIn var(--rv-trans-base) var(--rv-ease-out) forwards;
 }
 
-.rv-popoverContent {
+.rv-popover-content {
     padding: var(--rv-space-4);
     overflow-y: auto;
     flex: 1;
 }
 
-.rv-popoverHeader {
+.rv-popover-header {
     display: flex;
     align-items: center;
 }
 
-.rv-popoverProperties {
+.rv-popover-props {
     gap: var(--rv-space-4);
     position: relative;
     display: flex;
     flex-direction: column;
 }
 
-.rv-popoverCodeBlock {
+.rv-popover-code-block {
     border: 1px solid var(--rv-bdr);
     background: var(--rv-neutral-500);
 }
@@ -116,7 +117,7 @@
 /* 4. SPECIFIC POPOVERS */
 
 /* Export Popover */
-.rv-exportPopover {
+.rv-export-popover {
     position: absolute;
     top: 40px;
     right: var(--rv-space-4);
@@ -124,19 +125,19 @@
     width: var(--rv-w-pop);
 }
 
-.rv-exportInputWrapper {
+.rv-export-input-wrap {
     gap: var(--rv-space-xs);
     padding-bottom: var(--rv-space-6);
     display: flex;
     flex-direction: column;
 }
 
-.rv-exportHelperText {
+.rv-export-helper {
     color: var(--rv-neutral-75);
 }
 
 /* Theme Picker */
-.rv-themePickerPopover {
+.rv-theme-picker-popover {
     position: absolute;
     top: 40px;
     right: var(--rv-space-4);
@@ -144,30 +145,30 @@
     width: 260px;
 }
 
-.rv-themePickerContent {
+.rv-theme-picker-content {
     padding: var(--rv-space-4);
 }
 
 /* Components Popover */
-.rv-componentsPopover {
+.rv-components-popover {
     position: fixed;
     background: var(--rv-neutral-500);
     box-shadow: var(--rv-shd-pop);
-    z-index: 10001;
+    z-index: var(--rv-z-popover);
 }
 
-.rv-popoverHeaderCustom {
+.rv-popover-header-custom {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: var(--rv-space-4) var(--rv-space-4) var(--rv-space-3);
 }
 
-.rv-popoverTitleCustom {
+.rv-popover-title-custom {
     color: var(--rv-white);
 }
 
-.rv-closeButtonCustom {
+.rv-close-btn-custom {
     background: transparent;
     border: none;
     cursor: pointer;
@@ -178,7 +179,7 @@
     justify-content: center;
 }
 
-.rv-popoverList {
+.rv-popover-list {
     display: flex;
     flex-direction: column;
 }
@@ -186,7 +187,7 @@
 
 /* 5. CARDS & OPTIONS */
 
-.rv-popoverCard {
+.rv-popover-card {
     border: none;
     border-bottom: 1px solid var(--rv-bdr);
     border-radius: 0;
@@ -201,11 +202,11 @@
     cursor: pointer;
 }
 
-.rv-popoverCard:hover .rv-cardTitle {
+.rv-popover-card:hover .rv-card-title {
     color: var(--rv-white);
 }
 
-.rv-cardImageWrapper {
+.rv-card-img-wrap {
     width: 52px;
     height: 52px;
     flex-shrink: 0;
@@ -215,12 +216,13 @@
     padding: 6px;
 }
 
-.rv-cardTitle {
+.rv-card-title {
     color: var(--rv-neutral-75);
     margin: 0;
+    font-size: var(--rv-fs-sm);
 }
 
-.rv-radioOption {
+.rv-radio {
     display: flex;
     align-items: center;
     justify-content: left;
@@ -232,21 +234,24 @@
     background: transparent;
     transition: all 0.2s;
     color: var(--rv-neutral-50);
+    font-family: var(--rv-font-family-default);
+    font-size: var(--rv-fs-md);
+    font-weight: var(--rv-font-weight-regular);
     user-select: none;
 }
 
-.rv-radioOption:hover {
+.rv-radio:hover {
     background: var(--rv-neutral-400);
     border-color: var(--rv-neutral-300);
 }
 
-.rv-radioOptionSelected {
+.rv-radio--selected {
     background: var(--rv-neutral-400);
     border-color: var(--rv-neutral-300);
     color: var(--rv-white);
 }
 
-.rv-radioOptionInput {
+.rv-radio-input {
     margin: 0;
     margin-right: var(--rv-space-sm);
     accent-color: var(--rv-lunar-300);

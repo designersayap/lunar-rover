@@ -7,7 +7,7 @@
     cursor: pointer;
     border: none;
     border-radius: var(--rv-radius-md);
-    transition: all 0.2s;
+    transition: all var(--rv-trans-base);
     height: var(--rv-h-btn);
     padding: 0 var(--rv-space-3);
     gap: var(--rv-space-xs);
@@ -62,7 +62,7 @@
     width: var(--rv-h-btn);
 }
 
-.rv-topbar-btn--wide {
+.rv-layout-topbar-btn--wide {
     max-width: 160px;
 }
 
@@ -72,7 +72,7 @@
     background: var(--rv-neutral-300);
     border-radius: var(--rv-radius-md);
     box-shadow: 0 2px var(--rv-space-xs) rgba(0, 0, 0, .1);
-    transition: background 0.2s;
+    transition: background var(--rv-trans-base);
     height: var(--rv-h-btn);
 }
 
@@ -100,7 +100,7 @@
     width: 28px;
 }
 
-.rv-sidebar-btn-delete {
+.rv-layout-sidebar-btn-delete {
     background: transparent;
     border: none;
     cursor: pointer;
@@ -114,23 +114,23 @@
     height: var(--rv-space-xl);
 }
 
-.rv-sidebar-btn-delete:hover {
+.rv-layout-sidebar-btn-delete:hover {
     color: var(--rv-neutral-100);
 }
 
-.rv-sidebar-btn-delete .rv-icon-solid {
+.rv-layout-sidebar-btn-delete .rv-icon-solid {
     display: none;
 }
 
-.rv-sidebar-btn-delete:hover .rv-icon-outline {
+.rv-layout-sidebar-btn-delete:hover .rv-icon-outline {
     display: none;
 }
 
-.rv-sidebar-btn-delete:hover .rv-icon-solid {
+.rv-layout-sidebar-btn-delete:hover .rv-icon-solid {
     display: block;
 }
 
-.rv-sidebar-btn-settings {
+.rv-layout-sidebar-btn-settings {
     justify-content: center;
     width: 20px;
     height: 100%;
@@ -141,16 +141,16 @@
     padding: 0;
     background: var(--rv-lunar-300);
     box-shadow: var(--rv-shd-btn);
-    transition: background 0.2s;
+    transition: background var(--rv-trans-base);
     border-radius: 0 var(--rv-space-xs) var(--rv-space-xs) 0;
 }
 
-.rv-sidebar-btn-settings h6 {
+.rv-layout-sidebar-btn-settings h6 {
     width: var(--rv-space-3);
     height: var(--rv-space-3);
 }
 
-.rv-sidebar-btn-settings:hover {
+.rv-layout-sidebar-btn-settings:hover {
     background: var(--rv-lunar-500);
 }
 
@@ -181,6 +181,7 @@
 
 .rv-textarea {
     resize: none;
+    font-family: inherit;
     padding: var(--rv-space-sm) var(--rv-space-3);
     height: 100px;
 }
@@ -225,7 +226,7 @@
     cursor: pointer;
     inset: 0;
     background: var(--rv-neutral-100);
-    transition: .4s;
+    transition: var(--rv-trans-slow);
     border-radius: var(--rv-space-xl);
 }
 
@@ -237,7 +238,7 @@
     left: 2px;
     bottom: 2px;
     background: white;
-    transition: .4s;
+    transition: var(--rv-trans-slow);
     border-radius: 50%;
 }
 
@@ -261,7 +262,7 @@
     padding: 0 var(--rv-space-sm);
     margin-bottom: var(--rv-space-xs);
     border-radius: var(--rv-radius-sm);
-    transition: background 0.1s;
+    transition: background var(--rv-trans-fast);
     color: var(--rv-neutral-75);
     background: transparent;
     border: none;
@@ -349,7 +350,7 @@
     text-align: center;
 }
 
-.rv-canvas-bg {
+.rv-layout-canvas-bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -385,6 +386,8 @@
 }
 
 .rv-drag-img--text {
+    font-size: 10px;
+    font-weight: var(--rv-font-weight-bold);
     color: var(--rv-white);
 }
 
@@ -441,6 +444,9 @@
     gap: var(--rv-space-xs);
     padding: 0 var(--rv-space-sm);
     height: 100%;
+    font-family: var(--rv-font-family-default);
+    font-size: 10px;
+    font-weight: var(--rv-font-weight-regular);
     border-right: 1px solid rgba(255, 255, 255, .2);
     flex-grow: 1;
     min-width: 0;
@@ -453,6 +459,7 @@
 .rv-overlay--id {
     color: white;
     font-family: var(--rv-font-family-mono);
+    font-size: 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -467,10 +474,11 @@
     background-color: var(--rv-neutral-500);
     color: var(--rv-white);
     border-radius: var(--rv-radius-sm);
+    font-family: var(--rv-font-family-default);
     box-shadow: var(--rv-shadow-md);
 }
 
-.rv-canvas-wrap {
+.rv-layout-canvas-wrap {
     position: relative;
     width: 200px;
     height: 150px;
@@ -478,11 +486,14 @@
     margin-bottom: var(--rv-space-xl);
 }
 
-.rv-canvas-text {
+.rv-layout-canvas-text {
     color: var(--rv-neutral-100);
+    font-family: var(--rv-font-family-default);
 }
 
 .rv-resolution {
+    font-size: 11px;
+    font-weight: 500;
     position: sticky;
     bottom: var(--rv-space-4);
     margin: var(--rv-space-xl) auto 0;
@@ -539,6 +550,8 @@
 }
 
 .rv-merge-text {
+    font-weight: var(--rv-font-weight-bold);
+    font-size: var(--rv-fs-md);
     white-space: nowrap;
 }
 
@@ -588,7 +601,7 @@
     align-items: center;
     gap: var(--rv-space-xs);
     opacity: 0;
-    transition: opacity 0.15s;
+    transition: opacity var(--rv-trans-fast);
 }
 
 .rv-notification--item:hover .rv-tree-actions {
@@ -596,6 +609,7 @@
 }
 
 .rv-notification--sub-name {
+    font-weight: var(--rv-font-weight-medium);
     color: var(--rv-white);
 }
 
@@ -623,10 +637,13 @@
     gap: 2px;
     min-width: 0;
 }
-
+.rv-notification--msg {
+    line-height: var(--rv-lh-base);
+}
 
 .rv-notification--time {
     color: var(--rv-neutral-100);
+    line-height: var(--rv-lh-base);
 }
 
 .rv-notification--mark-all {
@@ -656,6 +673,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: var(--rv-fs-sm);
     color: var(--rv-neutral-200);
     padding: 4px 8px;
     background-color: var(--rv-neutral-400);
@@ -665,11 +683,14 @@
 .rv-badge-count {
     background-color: var(--rv-lunar-300);
     color: white;
+    font-size: var(--rv-fs-xs);
     padding: 1px 5px;
     border-radius: 10px;
     margin-left: 6px;
+    font-weight: var(--rv-font-weight-bold);
 }
 
 .rv-notification--sub-time {
+    font-size: var(--rv-fs-xs);
     opacity: 0.7;
 }
