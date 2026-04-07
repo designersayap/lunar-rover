@@ -69,35 +69,52 @@
 .rv-split-btn {
     display: flex;
     align-items: center;
-    background: var(--rv-neutral-300);
+    background: transparent;
     border-radius: var(--rv-radius-md);
     box-shadow: 0 2px var(--rv-space-xs) rgba(0, 0, 0, .1);
-    transition: background var(--rv-trans-base);
     height: var(--rv-h-btn);
+    position: relative;
+    overflow: hidden;
 }
 
 .rv-split-btn--active {
-    background: var(--rv-neutral-300) !important;
     box-shadow: var(--rv-shd-active) !important;
     transform: translateY(1px) !important;
 }
 
+.rv-split-btn--main,
+.rv-split-btn--dropdown {
+    background: var(--rv-neutral-300);
+    box-shadow: none !important;
+    transform: none !important;
+    transition: all var(--rv-trans-base);
+}
+
+.rv-split-btn--main:hover:not(:disabled),
+.rv-split-btn--dropdown:hover:not(:disabled) {
+    background: var(--rv-neutral-400);
+}
+
+.rv-split-btn--main:active:not(:disabled),
+.rv-split-btn--dropdown:active:not(:disabled) {
+    background: var(--rv-neutral-300);
+    transform: translateY(1px) !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
 .rv-split-btn--main {
-    border-radius: var(--rv-radius-md) 0 0 6px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+    border-radius: var(--rv-radius-md) 0 0 var(--rv-radius-md);
     margin: 0;
-    background: transparent;
     padding-right: var(--rv-space-sm);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
+    flex: 1;
 }
 
 .rv-split-btn--dropdown {
-    border-radius: 0 6px 6px 0;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+    border-radius: 0 var(--rv-radius-md) var(--rv-radius-md) 0;
     margin: 0;
-    background: transparent;
     padding: 0 var(--rv-space-sm);
-    width: 28px;
+    width: 32px;
 }
 
 .rv-layout-sidebar-btn-delete {
