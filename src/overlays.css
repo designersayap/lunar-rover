@@ -1,18 +1,27 @@
-/* 1. GENERIC OVERLAYS */
+/* =========================================
+   5. FEEDBACK & OVERLAYS
+   ========================================= */
+
+/* --- Tooltip --- */
 
 .rv-tooltip {
     position: absolute;
+    /* Default to absolute, but can be fixed by JS */
     background-color: var(--rv-neutral-500);
     color: var(--rv-white);
     padding: var(--rv-space-xs) var(--rv-space-sm);
-    border-radius: var(--rv-radius-sm);
+    border-radius: var(--rv-radius);
+    font-family: var(--rv-font-family-default);
+    font-size: var(--rv-space-md);
+    font-weight: 500;
+    line-height: 1.4;
     white-space: normal;
     max-width: 240px;
     text-align: center;
     box-shadow: var(--rv-shadow-md);
     pointer-events: none;
-    z-index: var(--rv-z-tooltip);
-    animation: fadeIn var(--rv-trans-fast) var(--rv-ease-out);
+    z-index: 10000;
+    animation: fadeIn 0.15s ease-out;
 }
 
 @keyframes fadeIn {
@@ -20,15 +29,18 @@
         opacity: 0;
         transform: scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
     }
 }
 
+/* --- Spinner --- */
+
 .rv-spinner {
-    width: var(--rv-space-4);
-    height: var(--rv-space-4);
+    width: var(--rv-space-lg);
+    height: var(--rv-space-lg);
     border: 2px solid currentColor;
     border-top-color: transparent;
     border-radius: 50%;
@@ -36,31 +48,35 @@
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-
-/* 2. FEEDBACK MESSAGES */
-
-.rv-empty-msg {
-    padding: var(--rv-space-3);
+.rv-emptyStateMessage {
+    padding: var(--rv-space-md);
     text-align: center;
-    font-size: var(--rv-fs-md);
+    font-size: var(--rv-font-size-90);
     color: var(--rv-neutral-100);
 }
 
-.rv-error-msg {
-    padding: var(--rv-space-3);
+.rv-errorMessage {
+    padding: var(--rv-space-md);
     text-align: center;
-    font-size: var(--rv-space-3);
+    font-size: var(--rv-space-md);
     color: var(--rv-danger);
 }
 
+/* =========================================
+   9. COMPONENT: POPOVERS
+   ========================================= */
 
-/* 3. POPOVER SYSTEM */
-
-.rv-popover-overlay {
+/* Generic */
+.rv-popoverOverlay {
     position: fixed;
     inset: 0;
 }
@@ -70,13 +86,14 @@
         opacity: 0;
         transform: translateY(var(--rv-space-xs)) scale(0.99);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
 }
 
-.rv-popover-wrap {
+.rv-popoverContainer {
     background: var(--rv-neutral-500);
     border: 1px solid var(--rv-bdr);
     border-radius: var(--rv-space-sm);
@@ -87,88 +104,140 @@
     flex-direction: column;
     box-shadow: var(--rv-shd-pop);
     overflow: hidden;
-    animation: popoverIn var(--rv-trans-base) var(--rv-ease-out) forwards;
+    animation: popoverIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.rv-popover-content {
-    padding: var(--rv-space-4);
+.rv-popoverContent {
+    padding: var(--rv-space-lg);
     overflow-y: auto;
     flex: 1;
 }
 
-.rv-popover-header {
+.rv-popoverHeader {
     display: flex;
     align-items: center;
 }
 
-.rv-popover-props {
-    gap: var(--rv-space-4);
+.rv-popoverProperties {
+    gap: var(--rv-space-lg);
+    color: var(--rv-white);
     position: relative;
     display: flex;
     flex-direction: column;
 }
 
-.rv-popover-code-block {
+.rv-popoverCodeBlock {
     border: 1px solid var(--rv-bdr);
     background: var(--rv-neutral-500);
 }
 
-
-/* 4. SPECIFIC POPOVERS */
-
 /* Export Popover */
-.rv-export-popover {
+.rv-exportPopover {
     position: absolute;
     top: 40px;
-    right: var(--rv-space-4);
+    right: var(--rv-space-lg);
     margin: 0;
     width: var(--rv-w-pop);
 }
 
-.rv-export-input-wrap {
+.rv-exportInputWrapper {
     gap: var(--rv-space-xs);
-    padding-bottom: var(--rv-space-6);
+    padding-bottom: var(--rv-space-xl);
     display: flex;
     flex-direction: column;
 }
 
-.rv-export-helper {
+.rv-exportHelperText {
     color: var(--rv-neutral-75);
+    font-size: var(--rv-font-size-80);
+}
+
+/* Radio Option */
+.rv-radioOption {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    flex: 1;
+    border: 1px solid var(--rv-bdr);
+    border-radius: var(--rv-radius);
+    padding: var(--rv-space-md);
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.2s;
+    color: var(--rv-neutral-50);
+    font-family: var(--rv-font-family-default);
+    font-size: var(--rv-font-size-90);
+    font-weight: var(--rv-font-weight-regular);
+    user-select: none;
+}
+
+.rv-radioOption:hover {
+    background: var(--rv-neutral-400);
+    border-color: var(--rv-neutral-300);
+}
+
+.rv-radioOptionSelected {
+    background: var(--rv-neutral-400);
+    border-color: var(--rv-neutral-300);
+    color: var(--rv-white);
+}
+
+.rv-radioOptionInput {
+    margin: 0;
+    margin-right: var(--rv-space-sm);
+    accent-color: var(--rv-lunar-300);
 }
 
 /* Theme Picker */
-.rv-theme-picker-popover {
+.rv-themePickerPopover {
     position: absolute;
     top: 40px;
-    right: var(--rv-space-4);
+    right: var(--rv-space-lg);
     margin: 0;
     width: 260px;
 }
 
-.rv-theme-picker-content {
-    padding: var(--rv-space-4);
+.rv-themePickerContent {
+    padding: var(--rv-space-lg);
+}
+
+.rv-themePickerSearchContainer {
+    margin-bottom: var(--rv-space-md);
+}
+
+.rv-popoverList {
+    gap: var(--rv-space-xs);
+    overflow-y: auto;
+    max-height: 240px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--rv-bdr);
+    border-radius: var(--rv-radius);
+    background: var(--rv-neutral-500);
 }
 
 /* Components Popover */
-.rv-components-popover {
+.rv-componentsPopover {
     position: fixed;
     background: var(--rv-neutral-500);
     box-shadow: var(--rv-shd-pop);
-    z-index: var(--rv-z-popover);
+    z-index: 10001;
 }
 
-.rv-popover-header-custom {
+.rv-popoverHeaderCustom {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--rv-space-4) var(--rv-space-4) var(--rv-space-3);
+    padding: var(--rv-space-lg) var(--rv-space-lg) var(--rv-space-md);
 }
 
-.rv-popover-title-custom {
+.rv-popoverTitleCustom {
+    font-size: var(--rv-space-lg);
+    font-weight: 600;
     color: var(--rv-white);
 }
 
-.rv-close-btn-custom {
+.rv-closeButtonCustom {
     background: transparent;
     border: none;
     cursor: pointer;
@@ -179,81 +248,70 @@
     justify-content: center;
 }
 
-.rv-popover-list {
+.rv-closeButtonCustom:hover {
+    color: var(--rv-white);
+}
+
+.rv-closeIconCustom {
+    width: 20px;
+    height: 20px;
+}
+
+.rv-popoverList {
     display: flex;
     flex-direction: column;
 }
 
-
-/* 5. CARDS & OPTIONS */
-
-.rv-popover-card {
+.rv-popoverCard {
     border: none;
     border-bottom: 1px solid var(--rv-bdr);
     border-radius: 0;
     text-align: left;
-    padding: var(--rv-space-3) 0;
+    padding: var(--rv-space-md) 0;
     transition: all .5s;
     background: transparent;
     display: flex;
     align-items: center;
-    gap: var(--rv-space-4);
+    gap: var(--rv-space-lg);
     width: 100%;
     cursor: pointer;
 }
 
-.rv-popover-card:hover .rv-card-title {
+.rv-popoverCard:last-child {
+    border-bottom: none;
+}
+
+.rv-popoverCard:hover {
+    background: transparent;
+}
+
+.rv-popoverCard:hover .rv-cardTitle {
     color: var(--rv-white);
 }
 
-.rv-card-img-wrap {
+.rv-cardImageWrapper {
     width: 52px;
     height: 52px;
     flex-shrink: 0;
+    position: relative;
     background: var(--rv-neutral-400);
     border-radius: var(--rv-radius-md);
     border: 1px solid var(--rv-bdr);
     padding: 6px;
 }
 
-.rv-card-title {
+.rv-cardContent {
+    padding: 0;
+    flex: 1;
+}
+
+.rv-cardTitle {
     color: var(--rv-neutral-75);
     margin: 0;
-    font-size: var(--rv-fs-sm);
+    font-size: var(--rv-font-size-90);
 }
 
-.rv-radio {
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    flex: 1;
-    border: 1px solid var(--rv-bdr);
-    border-radius: var(--rv-radius-sm);
-    padding: var(--rv-space-3);
-    cursor: pointer;
-    background: transparent;
-    transition: all 0.2s;
-    color: var(--rv-neutral-50);
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-fs-md);
-    font-weight: var(--rv-font-weight-regular);
-    user-select: none;
-}
+/* .rv-folderItem styles removed */
 
-.rv-radio:hover {
-    background: var(--rv-neutral-400);
-    border-color: var(--rv-neutral-300);
-}
 
-.rv-radio--selected {
-    background: var(--rv-neutral-400);
-    border-color: var(--rv-neutral-300);
-    color: var(--rv-white);
-}
-
-.rv-radio-input {
-    margin: 0;
-    margin-right: var(--rv-space-sm);
-    accent-color: var(--rv-lunar-300);
-}
 

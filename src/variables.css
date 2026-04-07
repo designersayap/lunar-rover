@@ -1,4 +1,10 @@
-/* 1. VARIABLES & GLOBAL */
+/* PAGE BUILDER STYLES - Dark theme UI
+   Refactored and Grouped by Function
+*/
+
+/* =========================================
+   1. VARIABLES & GLOBAL
+   ========================================= */
 
 :root {
     /* colors */
@@ -32,52 +38,36 @@
     --rv-h-btn: 32px;
     --rv-h-topbar: 64px;
     --rv-w-sidebar: 360px;
+
     --rv-w-pop: 362px;
 
     /* spacing */
-    --rv-space-0: 0;
-    --rv-space-1: 4px;
-    --rv-space-2: 8px;
-    --rv-space-3: 12px;
-    --rv-space-4: 16px;
-    --rv-space-5: 20px;
-    --rv-space-6: 24px;
-    --rv-space-8: 32px;
-    --rv-space-10: 40px;
-    --rv-space-12: 48px;
-    --rv-space-16: 64px;
-
-    /* Semantic Aliases */
-    --rv-space-xs: var(--rv-space-1);
-    --rv-space-sm: var(--rv-space-2);
-    --rv-space-md: var(--rv-space-4);
-    --rv-space-lg: var(--rv-space-6);
-    --rv-space-xl: var(--rv-space-8);
+    --rv-space-xs: 4px;
+    --rv-space-sm: 8px;
+    --rv-space-md: 12px;
+    --rv-space-lg: 16px;
+    --rv-space-xl: 24px;
 
     /* radius */
-    --rv-radius-sm: 4px;
+    --rv-radius: 4px;
     --rv-radius-md: 8px;
-    --rv-radius-lg: 12px;
 
     /* font */
     --rv-font-family-default: 'Plus Jakarta Sans', sans-serif;
     --rv-font-family-mono: 'Ui-Monospace', 'SF Mono', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
-    --rv-font-weight-light: 300;
     --rv-font-weight-regular: 400;
-    --rv-font-weight-medium: 500;
-    --rv-font-weight-semibold: 600;
     --rv-font-weight-bold: 700;
-
-    --rv-fs-xs: 10px;
-    --rv-fs-sm: 12px;
-    --rv-fs-md: 14px;
-    --rv-fs-lg: 16px;
-    --rv-fs-xl: 20px;
-    --rv-fs-2xl: 24px;
-    --rv-fs-3xl: 32px;
-
-    --rv-lh-none: 1;
-    --rv-lh-tight: 1.2;
-    --rv-lh-caption: 1.4;
-    --rv-lh-base: 1.5;
+    --rv-font-size-90: 14px;
+    --rv-font-size-80: 10px;
+    --rv-line-height-caption: 1.4;
 }
+
+.rv-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    font-family: var(--rv-font-family-default);
+    background: var(--rv-neutral-500);
+}
+

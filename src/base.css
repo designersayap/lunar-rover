@@ -1,157 +1,178 @@
-/* 1. TYPOGRAPHY */
+/* =========================================
+   3. TYPOGRAPHY
+   ========================================= */
 
-.rv-font-body {
+.rv-fontBody {
     font-family: var(--rv-font-family-default);
 }
 
-/* Headings */
-.rv-text-h1 {
-    font-size: var(--rv-fs-3xl);
+.rv-fontSmallBold {
+    font-size: var(--rv-font-size-80);
     font-weight: var(--rv-font-weight-bold);
-    line-height: var(--rv-lh-tight);
 }
 
-.rv-text-h2,
-.rv-login-title {
-    font-size: var(--rv-fs-2xl);
-    font-weight: var(--rv-font-weight-bold);
-    line-height: var(--rv-lh-tight);
-}
-
-.rv-text-h3 {
-    font-size: var(--rv-fs-xl);
-    font-weight: var(--rv-font-weight-bold);
-    line-height: var(--rv-lh-tight);
-}
-
-.rv-text-h4,
-.rv-popover-title-custom {
-    font-size: var(--rv-fs-lg);
-    font-weight: var(--rv-font-weight-bold);
-    line-height: var(--rv-lh-tight);
-}
-
-.rv-text-h5 {
-    font-size: var(--rv-fs-md);
-    font-weight: var(--rv-font-weight-bold);
-    line-height: var(--rv-lh-tight);
-}
-
-.rv-text-h6 {
-    font-size: var(--rv-fs-sm);
-    font-weight: var(--rv-font-weight-bold);
-    line-height: var(--rv-lh-tight);
-}
-
-/* Body */
-.rv-text-body-lg {
-    font-size: var(--rv-fs-lg);
-    line-height: var(--rv-lh-base);
-}
-
-.rv-text-body-md,
-.rv-text-body,
-.rv-login-description,
-.rv-login-input,
-.rv-login-button,
-.rv-login-error-message {
-    font-size: var(--rv-fs-md);
-    line-height: var(--rv-lh-base);
-}
-
-.rv-btn,
-.rv-input,
-.rv-list-item,
-.rv-tree-add,
-.rv-notification--item,
-.rv-notification--msg,
-.rv-notification--mark-all {
-    font-size: var(--rv-fs-md);
-    line-height: var(--rv-lh-base);
-}
-
-.rv-text-body-sm {
-    font-size: var(--rv-fs-sm);
-    line-height: var(--rv-lh-base);
-}
-
-/* Caption & Overline */
-.rv-text-caption,
-.rv-form-label,
-.rv-notification--time,
-.rv-tooltip,
-.rv-export-helper {
-    font-size: var(--rv-fs-xs);
-    line-height: var(--rv-lh-base);
-    letter-spacing: 0.01em;
-}
-
-.rv-text-overline {
-    font-size: var(--rv-fs-xs);
-    line-height: var(--rv-lh-none);
-    font-weight: var(--rv-font-weight-bold);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-/* Font Weights */
-.rv-font-regular {
+.rv-captionRegular {
+    font-family: var(--rv-font-family-default);
+    font-size: var(--rv-font-size-90);
     font-weight: var(--rv-font-weight-regular);
+    line-height: var(--rv-line-height-caption);
 }
 
-.rv-font-medium {
-    font-weight: var(--rv-font-weight-medium);
-}
-
-.rv-font-bold {
+.rv-captionBold {
+    font-family: var(--rv-font-family-default);
+    font-size: var(--rv-font-size-90);
     font-weight: var(--rv-font-weight-bold);
+    line-height: var(--rv-line-height-caption);
 }
 
+.rv-sectionTitle {
+    font-size: 20px;
+    font-weight: var(--rv-font-weight-bold);
+    color: var(--rv-neutral-50);
+}
 
-/* 2. LAYOUT & FLEXBOX */
+.rv-bodyRegular {
+    font-family: var(--rv-font-family-default);
+    font-size: var(--rv-space-lg);
+    font-weight: var(--rv-font-weight-regular);
+    line-height: 1.5;
+}
 
+/* =========================================
+   10. UTILITIES
+   ========================================= */
+
+/* --- Flexbox --- */
 .rv-flex {
     display: flex;
 }
 
-.rv-flex-col {
+.rv-flexColumn {
     display: flex;
     flex-direction: column;
 }
 
-.rv-flex-1 {
-    flex: 1;
-}
-
-.rv-items-center {
+.rv-itemsCenter {
     align-items: center;
 }
 
-.rv-items-start {
+.rv-itemsStart {
     align-items: flex-start;
 }
 
-.rv-items-end {
+.rv-itemsEnd {
     align-items: flex-end;
 }
 
-.rv-justify-center {
+.rv-justifyCenter {
     justify-content: center;
 }
 
-.rv-justify-between {
+.rv-justifyBetween {
     justify-content: space-between;
 }
 
-.rv-justify-end {
+.rv-justifyEnd {
     justify-content: flex-end;
 }
 
-.rv-w-full {
+.rv-flex1 {
+    flex: 1;
+}
+
+.rv-gapXs {
+    gap: var(--rv-space-xs);
+}
+
+.rv-gapSm {
+    gap: var(--rv-space-sm);
+}
+
+.rv-gapMd {
+    gap: var(--rv-space-md);
+}
+
+.rv-gapLg {
+    gap: var(--rv-space-lg);
+}
+
+.rv-gapXl {
+    gap: var(--rv-space-xl);
+}
+
+/* --- Spacing --- */
+.rv-m0 {
+    margin: 0;
+}
+
+.rv-mtSm {
+    margin-top: var(--rv-space-sm);
+}
+
+.rv-mtMd {
+    margin-top: var(--rv-space-md);
+}
+
+.rv-mbSm {
+    margin-bottom: var(--rv-space-sm);
+}
+
+.rv-mbMd {
+    margin-bottom: var(--rv-space-md);
+}
+
+.rv-mlAuto {
+    margin-left: auto;
+}
+
+.rv-mrAuto {
+    margin-right: auto;
+}
+
+.rv-mxAuto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.rv-p0 {
+    padding: 0;
+}
+
+.rv-pSm {
+    padding: var(--rv-space-sm);
+}
+
+.rv-pMd {
+    padding: var(--rv-space-md);
+}
+
+.rv-pLg {
+    padding: var(--rv-space-lg);
+}
+
+/* --- Text --- */
+.rv-textCenter {
+    text-align: center;
+}
+
+.rv-textLeft {
+    text-align: left;
+}
+
+.rv-textRight {
+    text-align: right;
+}
+
+.rv-textSubtle {
+    color: var(--rv-neutral-200);
+}
+
+/* --- Layout --- */
+.rv-wFull {
     width: 100%;
 }
 
-.rv-h-full {
+.rv-hFull {
     height: 100%;
 }
 
@@ -163,368 +184,158 @@
     position: absolute;
 }
 
-.rv-overlay-fixed {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-}
 
-
-/* 3. SPACING UTILITIES */
-
-/* Gaps */
-.rv-gap-0 {
-    gap: var(--rv-space-0);
-}
-
-.rv-gap-1,
-.rv-gap-xs {
-    gap: var(--rv-space-1);
-}
-
-.rv-gap-2,
-.rv-gap-sm {
-    gap: var(--rv-space-2);
-}
-
-.rv-gap-3 {
-    gap: var(--rv-space-3);
-}
-
-.rv-gap-4,
-.rv-gap-md {
-    gap: var(--rv-space-4);
-}
-
-.rv-gap-5 {
-    gap: var(--rv-space-5);
-}
-
-.rv-gap-6,
-.rv-gap-lg {
-    gap: var(--rv-space-6);
-}
-
-.rv-gap-8,
-.rv-gap-xl {
-    gap: var(--rv-space-8);
-}
-
-.rv-gap-10 {
-    gap: var(--rv-space-10);
-}
-
-.rv-gap-12 {
-    gap: var(--rv-space-12);
-}
-
-.rv-gap-16 {
-    gap: var(--rv-space-16);
-}
-
-/* Margins */
-.rv-m-0 {
-    margin: var(--rv-space-0);
-}
-
-.rv-m-1,
-.rv-m-xs {
-    margin: var(--rv-space-1);
-}
-
-.rv-m-2,
-.rv-m-sm {
-    margin: var(--rv-space-2);
-}
-
-.rv-m-4,
-.rv-m-md {
-    margin: var(--rv-space-4);
-}
-
-.rv-mt-0 {
-    margin-top: var(--rv-space-0);
-}
-
-.rv-mt-1,
-.rv-mt-xs {
-    margin-top: var(--rv-space-1);
-}
-
-.rv-mt-2,
-.rv-mt-sm {
-    margin-top: var(--rv-space-2);
-}
-
-.rv-mt-4,
-.rv-mt-md {
-    margin-top: var(--rv-space-4);
-}
-
-.rv-mb-0 {
-    margin-bottom: var(--rv-space-0);
-}
-
-.rv-mb-1,
-.rv-mb-xs {
-    margin-bottom: var(--rv-space-1);
-}
-
-.rv-mb-2,
-.rv-mb-sm {
-    margin-bottom: var(--rv-space-2);
-}
-
-.rv-mb-4,
-.rv-mb-md {
-    margin-bottom: var(--rv-space-4);
-}
-
-.rv-mb-8,
-.rv-mb-xl {
-    margin-bottom: var(--rv-space-8);
-}
-
-.rv-ml-auto {
-    margin-left: auto;
-}
-
-.rv-mr-auto {
-    margin-right: auto;
-}
-
-.rv-mx-auto {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Paddings */
-.rv-p-0 {
-    padding: var(--rv-space-0);
-}
-
-.rv-p-1,
-.rv-p-xs {
-    padding: var(--rv-space-1);
-}
-
-.rv-p-2,
-.rv-p-sm {
-    padding: var(--rv-space-2);
-}
-
-.rv-p-4,
-.rv-p-md {
-    padding: var(--rv-space-4);
-}
-
-.rv-p-6,
-.rv-p-lg {
-    padding: var(--rv-space-6);
-}
-
-.rv-px-1,
-.rv-px-xs {
-    padding-left: var(--rv-space-1);
-    padding-right: var(--rv-space-1);
-}
-
-.rv-px-2,
-.rv-px-sm {
-    padding-left: var(--rv-space-2);
-    padding-right: var(--rv-space-2);
-}
-
-.rv-px-4,
-.rv-px-md {
-    padding-left: var(--rv-space-4);
-    padding-right: var(--rv-space-4);
-}
-
-.rv-py-1,
-.rv-py-xs {
-    padding-top: var(--rv-space-1);
-    padding-bottom: var(--rv-space-1);
-}
-
-.rv-py-2,
-.rv-py-sm {
-    padding-top: var(--rv-space-2);
-    padding-bottom: var(--rv-space-2);
-}
-
-.rv-py-4,
-.rv-py-md {
-    padding-top: var(--rv-space-4);
-    padding-bottom: var(--rv-space-4);
-}
-
-.rv-w-sidebar {
-    width: var(--rv-w-sidebar);
-}
-
-
-/* 4. TEXT UTILITIES */
-
-.rv-text-center {
-    text-align: center;
-}
-
-.rv-text-left {
-    text-align: left;
-}
-
-.rv-text-right {
-    text-align: right;
-}
-
-.rv-text-sm {
-    font-size: var(--rv-fs-sm);
-}
-
-
-/* 5. VISUAL UTILITIES */
-
-.rv-shadow-md {
-    box-shadow: var(--rv-shadow-md);
-}
-
-.rv-shadow-btn {
-    box-shadow: var(--rv-shd-btn);
-}
-
-.rv-rounded-sm {
-    border-radius: var(--rv-radius-sm);
-}
-
-.rv-rounded-md {
-    border-radius: var(--rv-radius-md);
-}
-
-.rv-rounded-lg {
-    border-radius: var(--rv-radius-lg);
-}
-
-.rv-divider-h {
-    border-top: 1px solid var(--rv-bdr);
-    margin: var(--rv-space-2) 0;
-    width: 100%;
-}
-
-.rv-divider-v {
-    width: 1px;
-    height: var(--rv-space-lg);
-    background-color: var(--rv-bdr);
-}
-
-
-/* 6. ICON UTILITIES */
-
-/* Sizes */
-.rv-icon-xs {
-    width: var(--rv-space-3);
-    height: var(--rv-space-3);
-    flex-shrink: 0;
-}
-
-.rv-icon-sm {
-    width: var(--rv-space-4);
-    height: var(--rv-space-4);
-    flex-shrink: 0;
-}
-
-.rv-icon-md {
-    width: var(--rv-space-5);
-    height: var(--rv-space-5);
-    flex-shrink: 0;
-}
-
-.rv-icon-lg {
-    width: var(--rv-space-6);
-    height: var(--rv-space-6);
-    flex-shrink: 0;
-}
-
-.rv-icon-xl {
-    width: var(--rv-space-8);
-    height: var(--rv-space-8);
-    flex-shrink: 0;
-}
-
-/* Colors & States */
-.rv-icon--white,
-.rv-icon-white {
-    color: var(--rv-white);
-}
-
-.rv-icon--subtle {
-    color: var(--rv-neutral-100);
-}
-
-.rv-icon--brand {
-    color: var(--rv-lunar-300);
-}
-
-
-/* 7. SPECIALIZED COMPONENTS */
-
-.rv-img-preview {
+/* Image Preview */
+.rv-imagePreviewContainer {
     background-color: var(--rv-neutral-50);
     border: 1px solid var(--rv-neutral-100);
-    margin-top: var(--rv-space-1);
-    padding: var(--rv-space-2);
-    border-radius: var(--rv-radius-sm);
+    margin-top: var(--rv-space-xs);
+    padding: var(--rv-space-sm);
+    border-radius: var(--rv-radius);
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 40px;
 }
 
-.rv-analytics {
+/* Shadows & Radius */
+.rv-shadowMd {
+    box-shadow: var(--rv-shadow-md);
+}
+
+.rv-shadowBtn {
+    box-shadow: var(--rv-shd-btn);
+}
+
+.rv-roundedSm {
+    border-radius: var(--rv-radius);
+}
+
+.rv-rounded80 {
+    border-radius: var(--rv-radius);
+}
+
+/* Spacing & Layout */
+.rv-wSidebar {
+    width: var(--rv-w-sidebar);
+}
+
+.rv-mb100 {
+    margin-bottom: var(--rv-space-xl);
+}
+
+.rv-p12 {
+    padding: var(--rv-space-md);
+}
+
+.rv-textCenter {
+    text-align: center;
+}
+
+.rv-textSmall {
+    font-size: var(--rv-space-md);
+}
+
+.rv-horizontalDivider {
+    border-top: 1px solid var(--rv-bdr);
+    margin: var(--rv-space-sm) 0;
+    width: 100%;
+}
+
+.rv-verticalDivider {
+    width: 1px;
+    height: var(--rv-space-lg);
+    background-color: var(--rv-bdr);
+}
+
+/* Icons */
+.rv-iconWhite {
+    width: var(--rv-space-lg);
+    height: var(--rv-space-lg);
+    color: var(--rv-white);
+}
+
+.rv-iconSmall {
+    width: var(--rv-space-lg);
+    height: var(--rv-space-lg);
+    flex-shrink: 0;
+}
+
+.rv-iconXs {
+    width: var(--rv-space-md);
+    height: var(--rv-space-md);
+}
+
+.rv-overlayFixed {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* Analytics */
+.rv-analyticsContainer {
     flex: 1;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    padding: var(--rv-space-4) var(--rv-space-4) var(--rv-space-6);
+    padding: var(--rv-space-md) var(--rv-space-md) var(--rv-space-lg);
 }
 
-.rv-analytics--section {
-    gap: var(--rv-space-1);
-    margin: var(--rv-space-2) 0;
+.rv-analyticsSection {
+    gap: var(--rv-space-xs);
+    margin: var(--rv-space-sm) 0;
     display: flex;
     flex-direction: column;
 }
 
-.rv-analytics--header {
-    gap: var(--rv-space-1);
+.rv-analyticsHeader {
+    gap: var(--rv-space-xs);
     display: flex;
     align-items: center;
+    margin-bottom: var(--rv-space-xs);
 }
 
-.rv-accordion {
+/* Accordion */
+.rv-accordionContent {
     display: grid;
     grid-template-rows: 0fr;
     transition: grid-template-rows .3s ease-out;
 }
 
-.rv-accordion--open {
+.rv-accordionContentOpen {
     grid-template-rows: 1fr;
 }
 
-.rv-accordion--inner {
+.rv-accordionInner {
     overflow: hidden;
 }
 
-.rv-prop-row {
+/* Flex / Grid Helpers */
+.rv-topBarLeft,
+.rv-topBarRight,
+.rv-searchRow,
+.rv-treeRow,
+.rv-treeChevron,
+.rv-treeIconWrapper,
+.rv-settingsButton,
+.rv-categoryHeader {
+    display: flex;
+    align-items: center;
+}
+
+.rv-propertyRow {
     display: flex;
     align-items: left;
+    /* Typo in original file? Assuming left or flex-start */
     justify-content: space-between;
 }
 
-.rv-prop-row--stacked {
+.rv-propertyRowStacked {
     flex-direction: column;
     align-items: flex-start;
 }
+
+
 /* 8. GLOBAL SCROLLBAR */
 
 * {
@@ -549,41 +360,4 @@
 
 *::-webkit-scrollbar-thumb:hover {
     background-color: var(--rv-neutral-200);
-}
-
-
-/* 9. UTILITY CLASSES */
-
-.rv-truncate {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.rv-truncate-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    line-clamp: 2;
-    overflow: hidden;
-}
-
-.rv-no-select {
-    user-select: none;
-}
-
-.rv-hidden {
-    display: none !important;
-}
-
-.rv-sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
 }
