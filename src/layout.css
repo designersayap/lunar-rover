@@ -152,17 +152,18 @@
     border-radius: 4px 4px 0 0;
 }
 
-.rv-sidebarRailIcon {
+.rv-sidebar-rail--icon {
     width: 20px;
     height: 20px;
     position: relative;
     z-index: 1;
 }
 
-.rv-sidebarRailLabel {
+.rv-sidebar-rail--label {
     text-align: center;
     position: relative;
     z-index: 1;
+    font-size: var(--rv-fs-xs); /* 10px */
 }
 
 .rv-sidebar-body {

@@ -59,7 +59,6 @@
     line-height: var(--rv-lh-base);
 }
 
-.rv-text-body-sm,
 .rv-btn,
 .rv-input,
 .rv-list-item,
@@ -67,6 +66,11 @@
 .rv-notification--item,
 .rv-notification--msg,
 .rv-notification--mark-all {
+    font-size: var(--rv-fs-md);
+    line-height: var(--rv-lh-base);
+}
+
+.rv-text-body-sm {
     font-size: var(--rv-fs-sm);
     line-height: var(--rv-lh-base);
 }
