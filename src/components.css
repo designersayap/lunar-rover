@@ -34,9 +34,15 @@
 }
 
 .rv-btn-secondary:active:not(:disabled),
-.rv-btn-secondary-active {
+.rv-btn-secondary-active,
+.rv-split-btn--active {
     background: var(--rv-neutral-300);
     box-shadow: var(--rv-shd-active);
+}
+
+/* Specific active behavior for standard buttons (push down) */
+.rv-btn-secondary:active:not(:disabled),
+.rv-btn-secondary-active {
     transform: translateY(1px);
 }
 
@@ -79,7 +85,6 @@
 
 .rv-split-btn--active {
     box-shadow: var(--rv-shd-active) !important;
-    transform: translateY(1px) !important;
 }
 
 .rv-split-btn--main,
