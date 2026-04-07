@@ -384,6 +384,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    font-size: var(--rv-fs-md);
 }
 
 .rv-tree-input:focus {
