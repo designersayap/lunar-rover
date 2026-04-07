@@ -1,6 +1,6 @@
 {
   "name": "rover",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Core CSS library for the Rover interface.",
   "main": "src/index.css",
   "files": [
