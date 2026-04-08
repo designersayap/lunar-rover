@@ -49,8 +49,15 @@
     --rv-space-xl: 24px;
 
     /* radius */
-    --rv-radius: 4px;
+    --rv-radius-xs: 2px;
+    --rv-radius-sm: 4px;
     --rv-radius-md: 8px;
+    --rv-radius-lg: 12px;
+    --rv-radius-xl: 16px;
+    --rv-radius-full: 9999px;
+
+    /* Legacy Alias */
+    --rv-radius: var(--rv-radius-sm);
 
     /* font */
     --rv-font-family-default: 'Plus Jakarta Sans', sans-serif;

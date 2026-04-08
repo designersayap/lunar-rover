@@ -10,7 +10,7 @@
     background-color: var(--rv-neutral-500);
     color: var(--rv-white);
     padding: var(--rv-space-xs) var(--rv-space-sm);
-    border-radius: var(--rv-radius);
+    border-radius: var(--rv-radius-sm);
     font-family: var(--rv-font-family-default);
     font-size: var(--rv-space-md);
     font-weight: 500;
@@ -43,7 +43,7 @@
     height: var(--rv-space-lg);
     border: 2px solid currentColor;
     border-top-color: transparent;
-    border-radius: 50%;
+    border-radius: var(--rv-radius-full);
     animation: spin 1s linear infinite;
 }
 
@@ -96,7 +96,7 @@
 .rv-popoverContainer {
     background: var(--rv-neutral-500);
     border: 1px solid var(--rv-bdr);
-    border-radius: var(--rv-space-sm);
+    border-radius: var(--rv-radius-md);
     width: var(--rv-w-pop);
     max-width: 90%;
     max-height: 90vh;
@@ -214,7 +214,7 @@
     border: 1px solid var(--rv-bdr);
     border-radius: var(--rv-radius);
     background: var(--rv-neutral-500);
-    padding: var(--rv-space-xs) 0;
+    padding: var(--rv-space-sm) 0;
 }
 
 /* Components Popover */
@@ -291,6 +291,3 @@
 }
 
 /* .rv-folderItem styles removed */
-
-
-
