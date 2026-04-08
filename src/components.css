@@ -186,7 +186,8 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    opacity: 0.5;
+    opacity: 0;
+    transition: opacity 0.2s;
 }
 
 .rv-listItem:hover .rv-listItemAction,
