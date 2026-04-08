@@ -237,25 +237,7 @@
     color: var(--rv-white);
 }
 
-.rv-closeButtonCustom {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    color: var(--rv-neutral-200);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.rv-closeButtonCustom:hover {
-    color: var(--rv-white);
-}
-
-.rv-closeIconCustom {
-    width: 20px;
-    height: 20px;
-}
+/* .rv-folderItem styles removed */
 
 .rv-popoverList {
     display: flex;

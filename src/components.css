@@ -1,10 +1,4 @@
-/* =========================================
-   4. UI PRIMITIVES (Forms & Interaction)
-   ========================================= */
-
-/* --- Buttons --- */
-
-/* --- Buttons (New System) --- */
+/* --- Buttons (Standardized System) --- */
 
 .rv-btn {
     display: flex;
@@ -17,11 +11,11 @@
     font-family: var(--rv-font-family-default);
     font-size: var(--rv-font-size-90);
     height: var(--rv-h-btn);
-    /* var(--rv-h-btn) */
     padding: 0 var(--rv-space-md);
     gap: var(--rv-space-xs);
     color: var(--rv-white);
     background: transparent;
+    user-select: none;
 }
 
 .rv-btn:disabled {
@@ -29,28 +23,19 @@
     cursor: not-allowed;
 }
 
+/* Variants */
 .rv-btnPrimary {
-    background-color: var(--rv-lunar-300);
-}
-
-.rv-btnPrimary:hover:not(:disabled) {
-    background-color: var(--rv-lunar-400);
-}
-
-.rv-btnSecondary {
-    background: var(--rv-neutral-300);
+    background-color: var(--rv-neutral-300);
     box-shadow: 0 2px var(--rv-space-xs) rgba(0, 0, 0, .1);
 }
 
-.rv-btnSecondary:hover:not(:disabled) {
-    background: var(--rv-neutral-300);
-    /* Keep same, maybe lighten/darken? generatorButton kept same */
-    /* Using generic hover effect? generatorButton had none besides shadow change */
+.rv-btnPrimary:hover:not(:disabled) {
+    background-color: var(--rv-neutral-400);
 }
 
-.rv-btnSecondary:active:not(:disabled),
-.rv-btnSecondaryActive {
-    background: var(--rv-neutral-300);
+.rv-btnPrimary:active:not(:disabled),
+.rv-btnPrimaryActive {
+    background-color: var(--rv-neutral-400);
     box-shadow: var(--rv-shd-active);
     transform: translateY(1px);
 }
@@ -60,7 +45,7 @@
     color: var(--rv-neutral-100);
 }
 
-.rv-btnGhost:hover {
+.rv-btnGhost:hover:not(:disabled) {
     color: var(--rv-white);
     background: var(--rv-neutral-400);
 }
@@ -70,8 +55,10 @@
     background: var(--rv-neutral-400);
     box-shadow: inset 0 2px var(--rv-space-xs) 0 rgba(0, 0, 0, 0.25);
     color: var(--rv-white);
+    transform: translateY(1px);
 }
 
+/* Icon Support */
 .rv-btnIcon {
     padding: 0;
     width: var(--rv-h-btn);
@@ -87,142 +74,31 @@
     height: var(--rv-space-md);
 }
 
-/* --- List Items (New System) --- */
-
-.rv-listItem {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    cursor: pointer;
-    height: 32px;
-    padding: 0 var(--rv-space-sm);
-    margin-bottom: var(--rv-space-xs);
-    border-radius: var(--rv-radius);
-    transition: background 0.1s;
-    color: var(--rv-neutral-75);
-    background: transparent;
-    border: none;
-    text-align: left;
-    gap: var(--rv-space-sm);
-    font-size: var(--rv-font-size-90);
-}
-
-.rv-listItem:hover {
-    color: var(--rv-neutral-50);
-}
-
-.rv-listItemActive {
-    background: var(--rv-neutral-400);
-    color: var(--rv-white);
-}
-
-.rv-listItemIcon {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    color: var(--rv-neutral-200);
-}
-
-.rv-listItemLabel {
-    flex: 1;
-}
-
-.rv-listItemAction {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    color: var(--rv-neutral-200);
-}
-
-.rv-listItemActive .rv-listItemIcon,
-.rv-listItemActive .rv-listItemAction {
-    color: var(--rv-white);
-}
-
-/* --- Old Buttons (Deprecated) --- */
-
-
-/* --- Deprecated Classes (Removed) --- */
-/* .rv-generatorButton, .rv-primaryButton, .rv-topBarButton, .rv-treeRow, .rv-folderItem have been replaced by .rv-btn and .rv-listItem */
-
-/* We need to keep .rv-treeRowNested definition but updated to target .rv-listItem */
-.rv-treeRowNested {
-    padding-left: var(--rv-space-lg);
-}
-
-.rv-listItemActive .rv-treeIcon,
-.rv-listItemActive .rv-treeInputInline,
-.rv-listItemActive .rv-treeChevronIcon,
-.rv-listItemActive .rv-folderIcon {
-    color: var(--rv-white);
-}
-
-.rv-listItem:hover .rv-treeIcon,
-.rv-listItem:hover .rv-treeInputInline,
-.rv-listItem:hover .rv-folderIcon {
-    color: var(--rv-neutral-50);
-}
-
-.rv-treeChildren {
-    margin-left: 10px;
-    border-left: .75px solid var(--rv-neutral-200);
-}
-
-.rv-treeAddLink {
-    display: flex;
-    align-items: center;
-    gap: var(--rv-space-sm);
-    padding: var(--rv-space-md) var(--rv-space-sm);
-    color: var(--rv-neutral-100);
-    /* fallback */
-    color: var(--rv-neutral-100);
-    font-size: var(--rv-font-size-90);
-    cursor: pointer;
-    transition: color 0.2s, background 0.2s;
-    margin-top: var(--rv-space-xs);
-}
-
-.rv-treeAddLink:hover {
-    color: var(--rv-neutral-50);
-}
-
-.rv-treeAddIcon {
-    width: 12px;
-    height: 12px;
-}
-
-/* ... TopBar specific ... */
-.rv-topBarButtonWide {
-    max-width: 160px;
-}
-
-/* .rv-topBarButtonText removed */
-
+/* Split Button */
 .rv-splitButtonContainer {
     display: flex;
     align-items: center;
     background: var(--rv-neutral-300);
     border-radius: var(--rv-radius-md);
     box-shadow: 0 2px var(--rv-space-xs) rgba(0, 0, 0, .1);
-    /* Drop shadow only */
-    transition: background 0.2s;
+    transition: all 0.2s;
     height: var(--rv-h-btn);
 }
 
 .rv-splitButtonContainer:hover {
-    background: var(--rv-neutral-300);
+    background-color: var(--rv-neutral-400);
 }
 
+.rv-splitButtonContainer:active,
 .rv-splitButtonActive {
-    background: var(--rv-neutral-300) !important;
+    background-color: var(--rv-neutral-400) !important;
     box-shadow: var(--rv-shd-active) !important;
-    transform: translateY(1px) !important;
+    transform: translateY(1px);
 }
 
 .rv-splitButtonMain {
-    border-radius: var(--rv-radius-md) 0 0 6px;
+    border-radius: var(--rv-radius-md) 0 0 var(--rv-radius-md);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
-    /* Highlight only */
     margin: 0;
     background: transparent;
     padding-right: var(--rv-space-sm);
@@ -230,14 +106,12 @@
 }
 
 .rv-splitButtonMain:hover {
-    background: var(--rv-neutral-300);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+    background: rgba(255, 255, 255, 0.08); /* Subtle highlight when hovering this segment */
 }
 
 .rv-splitButtonDropdown {
-    border-radius: 0 6px 6px 0;
+    border-radius: 0 var(--rv-radius-md) var(--rv-radius-md) 0;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
-    /* Highlight only */
     margin: 0;
     background: transparent;
     padding: 0 var(--rv-space-sm);
@@ -245,82 +119,10 @@
 }
 
 .rv-splitButtonDropdown:hover {
-    background: var(--rv-neutral-300);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+    background: rgba(255, 255, 255, 0.08); /* Subtle highlight when hovering this segment */
 }
 
-.rv-splitButtonDropdown:active {
-    background: var(--rv-neutral-300) !important;
-    box-shadow: var(--rv-shd-active) !important;
-    transform: translateY(1px) !important;
-}
-
-.rv-sidebarDeleteButton {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--rv-neutral-200);
-    padding: var(--rv-space-xs);
-    border-radius: var(--rv-radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--rv-space-xl);
-    height: var(--rv-space-xl);
-}
-
-.rv-sidebarDeleteButton:disabled {
-    opacity: 0.25;
-    cursor: default;
-}
-
-.rv-sidebarDeleteButton:hover {
-    color: var(--rv-neutral-100);
-}
-
-.rv-sidebarDeleteButton .rv-iconSolid {
-    display: none;
-}
-
-.rv-sidebarDeleteButton:hover .rv-iconOutline {
-    display: none;
-}
-
-.rv-sidebarDeleteButton:hover .rv-iconSolid {
-    display: block;
-}
-
-.rv-settingsButton {
-    justify-content: center;
-    width: 20px;
-    height: 100%;
-    flex-shrink: 0;
-    cursor: pointer;
-    border: none;
-    color: var(--rv-white);
-    padding: 0;
-    background: var(--rv-lunar-300);
-    box-shadow: var(--rv-shd-btn);
-    transition: background 0.2s;
-    border-radius: 0 var(--rv-space-xs) var(--rv-space-xs) 0;
-}
-
-.rv-settingsButton svg {
-    width: var(--rv-space-md);
-    height: var(--rv-space-md);
-}
-
-.rv-settingsButton:hover {
-    background: var(--rv-lunar-500);
-}
-
-.rv-settingsButton:active,
-.rv-settingsButtonActive {
-    background: var(--rv-lunar-500);
-}
-
-
-/* --- Inputs --- */
+/* --- List Items (New System) --- */
 
 .rv-formInputTitle {
     color: var(--rv-neutral-100);
