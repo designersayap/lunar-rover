@@ -214,6 +214,7 @@
     border: 1px solid var(--rv-bdr);
     border-radius: var(--rv-radius);
     background: var(--rv-neutral-500);
+    padding: var(--rv-space-xs) 0;
 }
 
 /* Components Popover */
@@ -239,10 +240,6 @@
 
 /* .rv-folderItem styles removed */
 
-.rv-popoverList {
-    display: flex;
-    flex-direction: column;
-}
 
 .rv-popoverCard {
     border: none;
