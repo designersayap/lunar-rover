@@ -191,7 +191,7 @@
     border: 1px solid var(--rv-neutral-100);
     margin-top: var(--rv-space-xs);
     padding: var(--rv-space-sm);
-    border-radius: var(--rv-radius);
+    border-radius: var(--rv-radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;

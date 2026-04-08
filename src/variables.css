@@ -56,8 +56,6 @@
     --rv-radius-xl: 16px;
     --rv-radius-full: 9999px;
 
-    /* Legacy Alias */
-    --rv-radius: var(--rv-radius-xs);
 
     /* font */
     --rv-font-family-default: 'Plus Jakarta Sans', sans-serif;
