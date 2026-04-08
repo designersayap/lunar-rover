@@ -159,7 +159,10 @@
 
 .rv-listItemIcon {
     width: 16px;
-    height: 16px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
     color: inherit;
     opacity: 0.7;
@@ -178,8 +181,10 @@
 }
 
 .rv-listItemAction {
-    width: 16px;
-    height: 16px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
     opacity: 0.5;
 }
@@ -527,129 +532,20 @@
 
 
 /* =========================================
-   NOTIFICATION STYLES
+   NOTIFICATION DECORATORS
    ========================================= */
 
-/* Red dot badge on bell icon */
-.rv-notificationBadge {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--rv-danger);
-    pointer-events: none;
-}
-
-/* Notification list item */
-.rv-notificationItem {
-    display: flex;
-    align-items: flex-start;
-    width: 100%;
-    padding: var(--rv-space-sm);
-    border-radius: var(--rv-radius);
-    transition: background 0.1s;
-    color: var(--rv-neutral-75);
-    cursor: default;
-    gap: var(--rv-space-sm);
-    font-size: var(--rv-font-size-90);
-}
-
-.rv-notificationItem:hover {
-    background: var(--rv-neutral-400);
-}
-
+/* Unread state for list items */
 .rv-notificationItemUnread {
-    color: var(--rv-neutral-50);
-}
-
-/* Unread dot indicator */
-.rv-notificationDot {
-    width: var(--rv-space-lg);
-    height: var(--rv-space-lg);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 2px;
-}
-
-.rv-notificationDotInner {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--rv-lunar-200);
-}
-
-/* Notification body */
-.rv-notificationBody {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-}
-
-.rv-notificationMessage {
-    font-size: var(--rv-font-size-90);
-    line-height: var(--rv-line-height-caption);
-}
-
-.rv-notificationTime {
-    font-size: var(--rv-font-size-80);
-    color: var(--rv-neutral-100);
-    line-height: var(--rv-line-height-caption);
-}
-
-/* Mark all as read link */
-.rv-notificationMarkAllBtn {
-    background: transparent;
-    border: none;
-    color: var(--rv-neutral-75);
-    font-size: var(--rv-font-size-90);
-    font-family: var(--rv-font-family-default);
-    cursor: pointer;
-    padding: var(--rv-space-sm) 0;
-    width: 100%;
-    text-align: center;
-    transition: color 0.15s;
-}
-
-.rv-notificationMarkAllBtn:hover {
-    color: var(--rv-neutral-50);
-}
-
-/* Notifications */
-.rv-notificationItem {
-    display: flex;
-    flex-direction: column;
-    /* Changed to column to support sub-list */
-    padding: 12px;
-    border-bottom: 1px solid var(--rv-bdr);
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.rv-notificationHeader {
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-.rv-notificationItem:hover {
-    background-color: var(--rv-neutral-400);
-}
-
-.rv-notificationItemUnread {
-    background-color: var(--rv-neutral-500);
+    background-color: var(--rv-neutral-500) !important;
 }
 
 .rv-notificationDot {
     width: 16px;
+    height: 16px;
     display: flex;
     justify-content: center;
-    margin-right: 8px;
+    align-items: center;
 }
 
 .rv-notificationDotInner {
@@ -659,29 +555,17 @@
     background-color: var(--rv-lunar-300);
 }
 
-.rv-notificationBody {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.rv-notificationMessage {
-    font-size: 13px;
-    color: var(--rv-white);
-    margin-bottom: 2px;
-}
-
 .rv-notificationTime {
     font-size: 11px;
     color: var(--rv-neutral-100);
 }
 
 .rv-notificationSubList {
-    margin-top: 8px;
-    padding-left: 24px;
+    margin-top: 4px;
+    padding-left: 32px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
 }
 
 .rv-notificationSubItem {
@@ -690,8 +574,8 @@
     align-items: center;
     font-size: 12px;
     color: var(--rv-neutral-100);
-    padding: 4px 8px;
-    background-color: var(--rv-neutral-400);
+    padding: 2px 8px;
+    background-color: rgba(255, 255, 255, 0.05);
     border-radius: 4px;
 }
 
@@ -703,9 +587,4 @@
     border-radius: 10px;
     margin-left: 6px;
     font-weight: 600;
-}
-
-.rv-subItemTime {
-    font-size: 10px;
-    opacity: 0.7;
 }
