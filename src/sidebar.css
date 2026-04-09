@@ -99,6 +99,18 @@
     z-index: 0;
 }
 
+.rv-sidebarRailIndicator::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 3px;
+    background: var(--rv-lunar-300);
+    border-radius: 4px 4px 0 0;
+}
+
 .rv-sidebarRailIcon {
     width: 24px;
     height: 24px;
@@ -165,6 +177,13 @@
 
 .rv-searchBar {
     padding-left: 36px !important;
+}
+
+.rv-searchInputWrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
 }
 
 .rv-searchIcon {
