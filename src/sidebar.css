@@ -4,7 +4,7 @@
 
 .rv-sidebarShell {
     width: var(--rv-w-sidebar);
-    background: linear-gradient(to top, #111, var(--rv-neutral-500));
+    background: transparent;
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
         padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
         opacity 0.2s ease;
@@ -99,6 +99,17 @@
     z-index: 0;
 }
 
+.rv-sidebarRailIcon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 2px;
+}
+
+.rv-sidebarRailLabel {
+    font-size: 10px;
+    font-weight: 500;
+}
+
 .rv-sidebarBody {
     flex: 1;
     overflow: hidden;
@@ -137,26 +148,33 @@
     border-left: 1px solid var(--rv-neutral-400);
 }
 
+.rv-treeInputInline {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: inherit;
+    font-size: var(--rv-font-size-md);
+    width: 100%;
+}
+
 /* --- Search Bar --- */
 .rv-searchRow {
     gap: var(--rv-space-sm);
     padding: var(--rv-space-md) var(--rv-space-md) var(--rv-space-sm);
 }
 
-.rv-searchInputWrapper {
-    position: relative;
-    flex: 1;
-    display: flex;
-    align-items: center;
+.rv-searchBar {
+    padding-left: 36px !important;
 }
 
 .rv-searchIcon {
     position: absolute;
-    left: var(--rv-space-sm);
-    width: var(--rv-space-lg);
-    height: var(--rv-space-lg);
-    color: var(--rv-neutral-200);
+    left: var(--rv-space-md);
+    width: 18px;
+    height: 18px;
+    color: var(--rv-neutral-100);
     pointer-events: none;
+    opacity: 0.5;
 }
 
 /* --- Resize Handle --- */
