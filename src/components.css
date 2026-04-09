@@ -207,17 +207,18 @@
     stroke-width: 1.5;
 }
 
-div.rv-listItem svg.rv-iconSolid {
+.rv-iconSolid {
     display: none !important;
 }
 
-div.rv-listItem:hover svg.rv-iconSolid {
+.rv-listItem:hover .rv-iconSolid {
     display: block !important;
 }
 
-div.rv-listItem:hover svg.rv-iconOutline {
+.rv-listItem:hover .rv-iconOutline {
     display: none !important;
 }
+
 
 
 
