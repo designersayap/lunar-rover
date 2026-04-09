@@ -2,7 +2,7 @@
    SIDEBAR & NAVIGATION
    ========================================= */
 
-.rv-sidebar {
+.rv-sidebarShell {
     width: var(--rv-w-sidebar);
     background: linear-gradient(to top, #111, var(--rv-neutral-500));
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -23,8 +23,8 @@
     pointer-events: none;
 }
 
-/* --- Sidebar Container (Rail + Body) --- */
-.rv-sidebarContainer {
+/* --- Visual Sidebar Panel (Rail + Body) --- */
+.rv-sidebar {
     margin-top: 0;
     margin-right: 0;
     margin-bottom: var(--rv-space-md);
