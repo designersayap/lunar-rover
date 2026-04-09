@@ -200,6 +200,20 @@
     opacity: 1;
 }
 
+/* Icon Swap Logic (Global) */
+.rv-listItem .rv-iconSolid {
+    display: none !important;
+}
+
+.rv-listItem:hover .rv-iconSolid {
+    display: block !important;
+}
+
+.rv-listItem:hover .rv-iconOutline {
+    display: none !important;
+}
+
+
 .rv-formInputTitle {
     color: var(--rv-neutral-100);
     font-size: var(--rv-font-size-md);
