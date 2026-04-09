@@ -216,7 +216,7 @@
     border: 1px solid var(--rv-bdr);
     border-radius: var(--rv-radius-sm);
     background: var(--rv-neutral-500);
-    padding: var(--rv-space-sm) 0;
+    padding: var(--rv-space-sm);
 }
 
 /* Components Popover */

@@ -137,6 +137,21 @@
     padding: 0 var(--rv-space-md) var(--rv-space-lg);
 }
 
+.rv-categoryWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.rv-sidebarSectionHeader {
+    padding: var(--rv-space-md) 0 var(--rv-space-xs);
+    color: var(--rv-neutral-100);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 10px;
+    font-weight: var(--rv-font-weight-bold);
+    user-select: none;
+}
+
 .rv-treeRow {
     gap: var(--rv-space-sm);
     cursor: pointer;
