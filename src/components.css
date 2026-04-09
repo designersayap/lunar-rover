@@ -201,7 +201,13 @@
 }
 
 /* Icon Swap Logic (Global) */
-.rv-listItem .rv-iconSolid {
+.rv-iconOutline {
+    fill: none !important;
+    stroke: currentColor;
+    stroke-width: 1.5;
+}
+
+.rv-iconSolid {
     display: none !important;
 }
 
@@ -212,6 +218,7 @@
 .rv-listItem:hover .rv-iconOutline {
     display: none !important;
 }
+
 
 
 .rv-formInputTitle {
