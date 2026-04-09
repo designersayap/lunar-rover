@@ -1,0 +1,190 @@
+/* =========================================
+   SIDEBAR & NAVIGATION
+   ========================================= */
+
+.rv-sidebar {
+    width: var(--rv-w-sidebar);
+    background: linear-gradient(to top, #111, var(--rv-neutral-500));
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.2s ease;
+    white-space: nowrap;
+    display: flex;
+    overflow: hidden;
+}
+
+.rv-sidebarCollapsed {
+    width: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+    border: none !important;
+    pointer-events: none;
+}
+
+/* --- Sidebar Container (Rail + Body) --- */
+.rv-sidebarContainer {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: var(--rv-space-md);
+    margin-left: var(--rv-space-md);
+    background: rgba(20, 20, 20, 0.72);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--rv-radius-md);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 0.5px 0.5px rgba(255, 255, 255, 0.15),
+        inset 0 -0.5px 0.5px rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+}
+
+/* --- Vertical Rail --- */
+.rv-sidebarRail {
+    width: 80px;
+    background: transparent;
+    border-right: .5px solid var(--rv-bdr);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--rv-space-sm) 0;
+    gap: var(--rv-space-xs);
+    flex-shrink: 0;
+    position: relative;
+}
+
+.rv-sidebarRailItem {
+    width: 68px;
+    height: 68px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--rv-neutral-100);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    gap: 4px;
+    border-radius: var(--rv-radius-md);
+    position: relative;
+    z-index: 1;
+}
+
+.rv-sidebarRailItem:hover {
+    color: var(--rv-white);
+}
+
+.rv-sidebarRailItemActive {
+    color: var(--rv-white);
+}
+
+.rv-sidebarRailIndicator {
+    position: absolute;
+    top: var(--rv-space-sm);
+    left: 6px;
+    width: 68px;
+    height: 68px;
+    background: var(--rv-neutral-400);
+    border-radius: var(--rv-radius-md);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.rv-sidebarBody {
+    flex: 1;
+    overflow: hidden;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Tree Controls --- */
+.rv-treeContainer {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 var(--rv-space-md) var(--rv-space-lg);
+}
+
+.rv-treeRow {
+    gap: var(--rv-space-sm);
+    cursor: pointer;
+    border-radius: var(--rv-radius-sm);
+    transition: background .1s;
+    height: var(--rv-h-btn);
+    position: relative;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    padding-right: var(--rv-space-sm);
+}
+
+.rv-treeRowActive {
+    background: var(--rv-neutral-400);
+}
+
+.rv-treeChildren {
+    margin-left: 18px;
+    padding-left: 12px;
+    border-left: 1px solid var(--rv-neutral-400);
+}
+
+/* --- Search Bar --- */
+.rv-searchRow {
+    gap: var(--rv-space-sm);
+    padding: var(--rv-space-md) var(--rv-space-md) var(--rv-space-sm);
+}
+
+.rv-searchInputWrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.rv-searchIcon {
+    position: absolute;
+    left: var(--rv-space-sm);
+    width: var(--rv-space-lg);
+    height: var(--rv-space-lg);
+    color: var(--rv-neutral-200);
+    pointer-events: none;
+}
+
+/* --- Resize Handle --- */
+.rv-resizeHandle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 20px;
+    cursor: col-resize;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 100;
+    transition: background 0.2s;
+    user-select: none;
+}
+
+.rv-resizeHandleBar {
+    width: 6px;
+    height: var(--rv-space-xl);
+    background: transparent;
+    display: flex;
+    gap: 2px;
+    justify-content: center;
+    transition: all 0.2s;
+    opacity: 0.8;
+    position: sticky;
+    top: 50%;
+    transform: translateY(-50%);
+}

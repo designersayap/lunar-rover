@@ -1,0 +1,32 @@
+/* =========================================
+   TOP BAR COMPONENT
+   ========================================= */
+
+.rv-topBar {
+    background: var(--rv-neutral-500);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--rv-h-topbar);
+    position: relative;
+}
+
+.rv-topBarLeft {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--rv-space-lg);
+}
+
+.rv-topBarRight {
+    display: flex;
+    align-items: center;
+    gap: var(--rv-space-sm);
+    padding-right: var(--rv-space-lg);
+}
+
+.rv-logo {
+    padding: 0;
+    color: var(--rv-white);
+    font-weight: var(--rv-font-weight-bold);
+    font-size: var(--rv-font-size-md);
+}
