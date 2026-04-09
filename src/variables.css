@@ -62,7 +62,9 @@
     --rv-font-size-sm: 12px;
     --rv-font-size-md: 14px;
     --rv-font-size-lg: 16px;
-    --rv-line-height-caption: 1.4;
+    --rv-lh-tight: 1.2;
+    --rv-lh-md: 1.4;
+    --rv-lh-loose: 1.6;
 }
 
 .rv-container {

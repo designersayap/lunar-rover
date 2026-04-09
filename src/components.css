@@ -422,7 +422,7 @@
     height: 100%;
     font-family: var(--rv-font-family-default);
     font-size: 10px;
-    line-height: var(--rv-line-height-caption);
+    line-height: var(--rv-lh-md);
     font-weight: var(--rv-font-weight-regular);
     border-right: 1px solid rgba(255, 255, 255, .2);
     flex-grow: 1;

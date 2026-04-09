@@ -12,9 +12,9 @@
     padding: var(--rv-space-xs) var(--rv-space-sm);
     border-radius: var(--rv-radius-sm);
     font-family: var(--rv-font-family-default);
-    font-size: var(--rv-space-md);
+    font-size: var(--rv-font-size-md);
     font-weight: 500;
-    line-height: 1.4;
+    line-height: var(--rv-lh-loose);
     white-space: normal;
     max-width: 240px;
     text-align: center;
@@ -60,8 +60,9 @@
 .rv-emptyStateMessage {
     padding: var(--rv-space-md);
     text-align: center;
-    font-size: var(--rv-font-size-90);
+    font-size: var(--rv-font-size-sm);
     color: var(--rv-neutral-100);
+    line-height: var(--rv-lh-loose);
 }
 
 .rv-errorMessage {
@@ -104,6 +105,7 @@
     flex-direction: column;
     box-shadow: var(--rv-shd-pop);
     overflow: hidden;
+    line-height: var(--rv-lh-md);
     animation: popoverIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
