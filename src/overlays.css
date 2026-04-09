@@ -43,7 +43,7 @@
     height: var(--rv-space-lg);
     border: 2px solid currentColor;
     border-top-color: transparent;
-    border-radius: var(--rv-radius-full);
+    border-radius: var(--rv-radius-round);
     animation: spin 1s linear infinite;
 }
 
