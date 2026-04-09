@@ -67,12 +67,3 @@
     --rv-lh-loose: 1.6;
 }
 
-.rv-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
-    font-family: var(--rv-font-family-default);
-    background: var(--rv-neutral-500);
-}
-
