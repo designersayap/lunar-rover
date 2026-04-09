@@ -220,10 +220,6 @@
     color: var(--rv-neutral-100);
 }
 
-.rv-listItem:hover .rv-treeDeleteIcon {
-    color: var(--rv-danger);
-}
-
 .rv-formInputTitle {
     color: var(--rv-neutral-100);
     font-size: var(--rv-font-size-md);
