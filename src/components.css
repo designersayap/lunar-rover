@@ -186,38 +186,18 @@
 }
 
 .rv-listItemAction {
-    margin-left: auto;
+    height: 100%;
     display: flex;
     align-items: center;
-    gap: 4px;
+    justify-content: center;
+    flex-shrink: 0;
     opacity: 0;
     transition: opacity 0.2s;
-    pointer-events: none;
 }
 
 .rv-listItem:hover .rv-listItemAction,
 .rv-listItemActive .rv-listItemAction {
     opacity: 1;
-    pointer-events: auto;
-}
-
-/* Icon Swap Logic */
-.rv-iconSolid {
-    display: none !important;
-}
-
-.rv-listItem:hover .rv-iconSolid {
-    display: block !important;
-}
-
-.rv-listItem:hover .rv-iconOutline {
-    display: none !important;
-}
-
-.rv-treeDeleteIcon {
-    width: 16px;
-    height: 16px;
-    color: var(--rv-neutral-100);
 }
 
 .rv-formInputTitle {
