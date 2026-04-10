@@ -111,6 +111,14 @@
 .rv-popoverHeader {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    padding: var(--rv-space-lg) var(--rv-space-lg) var(--rv-space-sm);
+}
+
+.rv-popoverTitle {
+    font-size: var(--rv-font-size-lg);
+    font-weight: var(--rv-font-weight-bold);
+    color: var(--rv-white);
 }
 
 .rv-popoverProperties {
