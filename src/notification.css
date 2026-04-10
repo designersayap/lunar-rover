@@ -198,7 +198,7 @@
 
 .rv-notificationCardBody {
     font-size: var(--rv-font-size-md);
-    color: var(--rv-neutral-50);
+    color: var(--rv-neutral-75);
     margin: 0;
     line-height: 1.4;
     opacity: 0.8;
