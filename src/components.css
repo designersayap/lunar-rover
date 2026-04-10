@@ -25,33 +25,33 @@
 
 /* Variants */
 .rv-btnPrimary {
-    background-color: var(--rv-lunar-300);
-    box-shadow: 0 2px var(--rv-space-xs) rgba(0, 0, 100, .2);
-}
-
-.rv-btnPrimary:hover:not(:disabled) {
-    background-color: var(--rv-lunar-400);
-}
-
-.rv-btnPrimary:active:not(:disabled),
-.rv-btnPrimaryActive {
-    background-color: var(--rv-lunar-500);
-    box-shadow: var(--rv-shd-active);
-    transform: translateY(1px);
-}
-
-.rv-btnSecondary {
     background-color: var(--rv-neutral-300);
     box-shadow: 0 2px var(--rv-space-xs) rgba(0, 0, 0, .1);
 }
 
-.rv-btnSecondary:hover:not(:disabled) {
+.rv-btnPrimary:hover:not(:disabled) {
     background-color: var(--rv-neutral-400);
 }
 
-.rv-btnSecondary:active:not(:disabled),
-.rv-btnSecondaryActive {
+.rv-btnPrimary:active:not(:disabled),
+.rv-btnPrimaryActive {
     background-color: var(--rv-neutral-400);
+    box-shadow: var(--rv-shd-active);
+    transform: translateY(1px);
+}
+
+.rv-btnBrand {
+    background-color: var(--rv-lunar-300);
+    box-shadow: 0 2px var(--rv-space-xs) rgba(0, 0, 100, .2);
+}
+
+.rv-btnBrand:hover:not(:disabled) {
+    background-color: var(--rv-lunar-400);
+}
+
+.rv-btnBrand:active:not(:disabled),
+.rv-btnBrandActive {
+    background-color: var(--rv-lunar-500);
     box-shadow: var(--rv-shd-active);
     transform: translateY(1px);
 }
