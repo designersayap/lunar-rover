@@ -96,6 +96,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: var(--rv-space-xs);
+    position: relative;
+    padding-right: 24px; /* Space for the floating actions */
 }
 
 .rv-notificationCardStatus {
@@ -105,9 +107,13 @@
 }
 
 .rv-notificationCardActions {
+    position: absolute;
+    top: 0;
+    right: 0;
     display: flex;
     align-items: center;
-    gap: var(--rv-space-xs);
+    justify-content: flex-end;
+    height: 100%;
 }
 
 .rv-notificationCardAppIcon {
@@ -144,12 +150,17 @@
     justify-content: center;
     color: var(--rv-white);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
+    position: absolute;
+    right: 0;
+    transform: scale(0.8) rotate(45deg);
+    z-index: 2;
 }
 
 .rv-notificationCard:hover .rv-notificationCardAction {
     opacity: 0.6;
+    transform: scale(1) rotate(0deg);
 }
 
 .rv-notificationCardAction:hover {
@@ -167,16 +178,29 @@
     border-radius: var(--rv-radius-round);
     color: var(--rv-white);
     opacity: 0.6;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: absolute;
+    right: 0;
+    z-index: 1;
 }
 
 .rv-notificationCard:hover .rv-notificationExpandIcon {
-    opacity: 1;
+    opacity: 0.8;
     background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-24px);
+}
+
+.rv-notificationExpandIcon:hover {
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 1;
 }
 
 .rv-notificationStack--expanded .rv-notificationExpandIcon {
     transform: rotate(180deg);
+}
+
+.rv-notificationStack--expanded:hover .rv-notificationExpandIcon {
+    transform: translateX(-24px) rotate(180deg);
 }
 
 /* Card Content */
