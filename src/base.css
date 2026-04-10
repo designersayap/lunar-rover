@@ -1,57 +1,21 @@
 /* =========================================
-   3. TYPOGRAPHY
+   1. CORE LAYOUT
    ========================================= */
 
-.rv-fontBody {
-    font-family: var(--rv-font-family-default);
-}
-
-.rv-fontSmallBold {
-    font-size: var(--rv-font-size-80);
-    font-weight: var(--rv-font-weight-bold);
-}
-
-.rv-captionRegular {
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-font-size-sm);
-    font-weight: var(--rv-font-weight-regular);
-    line-height: var(--rv-lh-md);
-}
-
-.rv-captionBold {
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-font-size-sm);
-    font-weight: var(--rv-font-weight-bold);
-    line-height: var(--rv-lh-md);
-}
-
-.rv-sectionTitle {
-    font-size: 20px;
-    font-weight: var(--rv-font-weight-bold);
-    color: var(--rv-neutral-50);
-}
-
-.rv-bodyRegular {
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-font-size-md);
-    font-weight: var(--rv-font-weight-regular);
-    line-height: var(--rv-lh-md);
-}
-
-/* =========================================
-   10. UTILITIES
-   ========================================= */
-
-/* --- Flexbox --- */
 .rv-flex {
     display: flex;
 }
 
-.rv-flexColumn {
+.rv-flexCol {
     display: flex;
     flex-direction: column;
 }
 
+.rv-flex1 {
+    flex: 1;
+}
+
+/* Alignment */
 .rv-itemsCenter {
     align-items: center;
 }
@@ -76,10 +40,35 @@
     justify-content: flex-end;
 }
 
-.rv-flex1 {
-    flex: 1;
+/* Dimensions & Position */
+.rv-wFull {
+    width: 100%;
 }
 
+.rv-hFull {
+    height: 100%;
+}
+
+.rv-relative {
+    position: relative;
+}
+
+.rv-absolute {
+    position: absolute;
+}
+
+.rv-overlayFixed {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+
+/* =========================================
+   2. SPACING UTILITIES
+   ========================================= */
+
+/* Gaps */
 .rv-gapXs {
     gap: var(--rv-space-xs);
 }
@@ -100,7 +89,7 @@
     gap: var(--rv-space-xl);
 }
 
-/* --- Spacing --- */
+/* Margin */
 .rv-m0 {
     margin: 0;
 }
@@ -138,6 +127,7 @@
     margin-right: auto;
 }
 
+/* Padding */
 .rv-p0 {
     padding: 0;
 }
@@ -158,7 +148,47 @@
     padding: var(--rv-space-xl);
 }
 
-/* --- Text --- */
+
+/* =========================================
+   3. TYPOGRAPHY
+   ========================================= */
+
+.rv-fontBody {
+    font-family: var(--rv-font-family-default);
+}
+
+.rv-textTitle {
+    font-size: 20px;
+    font-weight: var(--rv-font-weight-bold);
+    color: var(--rv-neutral-50);
+}
+
+.rv-textBody {
+    font-family: var(--rv-font-family-default);
+    font-size: var(--rv-font-size-md);
+    font-weight: var(--rv-font-weight-regular);
+    line-height: var(--rv-lh-md);
+}
+
+.rv-textCaption {
+    font-family: var(--rv-font-family-default);
+    font-size: var(--rv-font-size-sm);
+    font-weight: var(--rv-font-weight-regular);
+    line-height: var(--rv-lh-md);
+}
+
+.rv-textCaptionBold {
+    font-family: var(--rv-font-family-default);
+    font-size: var(--rv-font-size-sm);
+    font-weight: var(--rv-font-weight-bold);
+    line-height: var(--rv-lh-md);
+}
+
+.rv-textSmBold {
+    font-size: var(--rv-font-size-80);
+    font-weight: var(--rv-font-weight-bold);
+}
+
 .rv-textCenter {
     text-align: center;
 }
@@ -175,38 +205,23 @@
     color: var(--rv-neutral-200);
 }
 
-/* --- Layout --- */
-.rv-wFull {
-    width: 100%;
-}
-
-.rv-hFull {
-    height: 100%;
-}
-
-.rv-relative {
-    position: relative;
-}
-
-.rv-absolute {
-    position: absolute;
+.rv-textSmall {
+    font-size: var(--rv-space-md);
 }
 
 
-/* Image Preview */
-.rv-imagePreviewContainer {
-    background-color: var(--rv-neutral-50);
-    border: 1px solid var(--rv-neutral-100);
-    margin-top: var(--rv-space-xs);
-    padding: var(--rv-space-sm);
+/* =========================================
+   4. APPEARANCE
+   ========================================= */
+
+.rv-radiusSm {
     border-radius: var(--rv-radius-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 40px;
 }
 
-/* Shadows & Radius */
+.rv-radiusLg {
+    border-radius: var(--rv-radius);
+}
+
 .rv-shadowMd {
     box-shadow: var(--rv-shadow-md);
 }
@@ -215,136 +230,10 @@
     box-shadow: var(--rv-shd-btn);
 }
 
-.rv-roundedSm {
-    border-radius: var(--rv-radius);
-}
 
-.rv-rounded80 {
-    border-radius: var(--rv-radius);
-}
-
-/* Spacing & Layout */
-.rv-wSidebar {
-    width: var(--rv-w-sidebar);
-}
-
-.rv-mb100 {
-    margin-bottom: var(--rv-space-xl);
-}
-
-.rv-p12 {
-    padding: var(--rv-space-md);
-}
-
-.rv-textCenter {
-    text-align: center;
-}
-
-.rv-textSmall {
-    font-size: var(--rv-space-md);
-}
-
-.rv-horizontalDivider {
-    border-top: 1px solid var(--rv-bdr);
-    margin: var(--rv-space-sm) 0;
-    width: 100%;
-}
-
-.rv-verticalDivider {
-    width: 1px;
-    height: var(--rv-space-lg);
-    background-color: var(--rv-bdr);
-}
-
-/* Icons */
-.rv-iconWhite {
-    width: var(--rv-space-lg);
-    height: var(--rv-space-lg);
-    color: var(--rv-white);
-}
-
-.rv-iconSmall {
-    width: var(--rv-space-lg);
-    height: var(--rv-space-lg);
-    flex-shrink: 0;
-}
-
-.rv-iconXs {
-    width: var(--rv-space-md);
-    height: var(--rv-space-md);
-}
-
-.rv-overlayFixed {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-}
-
-/* Analytics */
-.rv-analyticsContainer {
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    padding: var(--rv-space-md) var(--rv-space-md) var(--rv-space-lg);
-}
-
-.rv-analyticsSection {
-    gap: var(--rv-space-xs);
-    margin: var(--rv-space-sm) 0;
-    display: flex;
-    flex-direction: column;
-}
-
-.rv-analyticsHeader {
-    gap: var(--rv-space-xs);
-    display: flex;
-    align-items: center;
-    margin-bottom: var(--rv-space-xs);
-}
-
-/* Accordion */
-.rv-accordionContent {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows .3s ease-out;
-}
-
-.rv-accordionContentOpen {
-    grid-template-rows: 1fr;
-}
-
-.rv-accordionInner {
-    overflow: hidden;
-}
-
-/* Flex / Grid Helpers */
-.rv-topBarLeft,
-.rv-topBarRight,
-.rv-searchRow,
-.rv-treeRow,
-.rv-treeChevron,
-.rv-treeIconWrapper,
-.rv-settingsButton,
-.rv-categoryHeader {
-    display: flex;
-    align-items: center;
-}
-
-.rv-propertyRow {
-    display: flex;
-    align-items: left;
-    /* Typo in original file? Assuming left or flex-start */
-    justify-content: space-between;
-}
-
-.rv-propertyRowStacked {
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-
-/* 8. GLOBAL SCROLLBAR */
+/* =========================================
+   5. GLOBAL & ENVIRONMENT
+   ========================================= */
 
 * {
     scrollbar-width: thin;

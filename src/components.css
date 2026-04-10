@@ -679,3 +679,101 @@
     margin-left: 6px;
     font-weight: 600;
 }
+/* =========================================
+   ELEMENTS: DIVIDERS
+   ========================================= */
+
+.rv-horizontalDivider {
+    border-top: 1px solid var(--rv-bdr);
+    margin: var(--rv-space-sm) 0;
+    width: 100%;
+}
+
+.rv-verticalDivider {
+    width: 1px;
+    height: var(--rv-space-lg);
+    background-color: var(--rv-bdr);
+}
+
+
+/* =========================================
+   ELEMENTS: ICONS
+   ========================================= */
+
+.rv-iconSm {
+    width: var(--rv-space-lg);
+    height: var(--rv-space-lg);
+    flex-shrink: 0;
+}
+
+.rv-iconXs {
+    width: var(--rv-space-md);
+    height: var(--rv-space-md);
+}
+
+.rv-iconWhite {
+    color: var(--rv-white);
+}
+
+
+/* =========================================
+   MOLECULES: IMAGE PREVIEW
+   ========================================= */
+
+.rv-imagePreviewContainer {
+    background-color: var(--rv-neutral-50);
+    border: 1px solid var(--rv-neutral-100);
+    margin-top: var(--rv-space-xs);
+    padding: var(--rv-space-sm);
+    border-radius: var(--rv-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+}
+
+
+/* =========================================
+   MOLECULES: ANALYTICS
+   ========================================= */
+
+.rv-analyticsContainer {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: var(--rv-space-md) var(--rv-space-md) var(--rv-space-lg);
+}
+
+.rv-analyticsSection {
+    gap: var(--rv-space-xs);
+    margin: var(--rv-space-sm) 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.rv-analyticsHeader {
+    gap: var(--rv-space-xs);
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--rv-space-xs);
+}
+
+
+/* =========================================
+   MOLECULES: ACCORDION
+   ========================================= */
+
+.rv-accordionContent {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .3s ease-out;
+}
+
+.rv-accordionContentOpen {
+    grid-template-rows: 1fr;
+}
+
+.rv-accordionInner {
+    overflow: hidden;
+}

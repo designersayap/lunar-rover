@@ -241,3 +241,29 @@
     top: 50%;
     transform: translateY(-50%);
 }
+/* =========================================
+   SIDEBAR LAYOUT HELPERS
+   ========================================= */
+
+.rv-wSidebar {
+    width: var(--rv-w-sidebar);
+}
+
+.rv-topBarLeft,
+.rv-topBarRight,
+.rv-settingsButton,
+.rv-categoryHeader {
+    display: flex;
+    align-items: center;
+}
+
+.rv-propertyRow {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.rv-propertyRowStacked {
+    flex-direction: column;
+    align-items: flex-start;
+}
