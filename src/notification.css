@@ -19,7 +19,7 @@
     padding: var(--rv-space-md);
     display: flex;
     flex-direction: column;
-    gap: var(--rv-space-sm);
+    gap: var(--rv-space-xs); /* Tighter default gap */
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     z-index: 3;
@@ -32,6 +32,7 @@
     border-radius: 50%;
     background-color: var(--rv-lunar-200);
     box-shadow: 0 0 8px var(--rv-lunar-300);
+    flex-shrink: 0;
 }
 
 .rv-notificationCard:hover {
@@ -46,9 +47,7 @@
     content: '';
     position: absolute;
     top: 24px;
-    /* Start much lower to hide from top edge */
     bottom: -8px;
-    /* Show only at the bottom */
     left: 8px;
     right: 8px;
     background: var(--rv-neutral-400);
@@ -58,22 +57,18 @@
     pointer-events: none;
     transition: all 0.3s ease;
     opacity: 0.6;
-    /* Softer opacity */
 }
 
 .rv-notificationStack:not(.rv-notificationStack--expanded) .rv-notificationCard::after {
     top: 48px;
-    /* Start even lower */
     bottom: -16px;
-    /* Second layer peak */
     left: 16px;
     right: 16px;
     z-index: -2;
     opacity: 0.3;
-    /* Even softer */
 }
 
-/* Hover effect on the stack (Bottom-heavy extension) */
+/* Hover effect on the stack */
 .rv-notificationStack:not(.rv-notificationStack--expanded):hover .rv-notificationCard::before {
     bottom: -12px;
 }
@@ -97,6 +92,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .rv-notificationCardAppName {
@@ -112,6 +108,35 @@
     font-size: 10px;
     color: var(--rv-neutral-100);
     opacity: 0.6;
+    margin-right: 4px;
+}
+
+/* Actions - Now integrated into Header flow */
+.rv-notificationCardAction {
+    background: var(--rv-neutral-500);
+    border: 1px solid var(--rv-neutral-300);
+    border-radius: var(--rv-radius-round);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--rv-white);
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0;
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+.rv-notificationCard:hover .rv-notificationCardAction {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.rv-notificationCardAction:hover {
+    background: var(--rv-danger);
+    border-color: var(--rv-danger);
 }
 
 /* Card Content */
@@ -140,38 +165,17 @@
     font-size: 11px;
     color: var(--rv-lunar-200);
     font-weight: var(--rv-font-weight-medium);
-    margin-top: 2px;
-}
-
-/* Actions */
-.rv-notificationCardAction {
-    position: absolute;
-    top: var(--rv-space-sm);
-    right: var(--rv-space-sm);
-    opacity: 0;
-    transition: opacity 0.2s;
-    background: var(--rv-neutral-500);
-    border: 1px solid var(--rv-neutral-300);
-    border-radius: var(--rv-radius-round);
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--rv-white);
-    cursor: pointer;
-}
-
-.rv-notificationCard:hover .rv-notificationCardAction {
-    opacity: 1;
+    margin-top: var(--rv-space-xs);
+    padding-top: var(--rv-space-xs);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Expanded State / Sub-stack */
 .rv-notificationSubList {
     display: flex;
     flex-direction: column;
-    gap: var(--rv-space-sm);
-    margin-top: var(--rv-space-sm);
+    gap: var(--rv-space-xs);
+    margin-top: var(--rv-space-xs);
     padding: 0 4px;
     animation: rv-card-unpack 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -181,7 +185,6 @@
         opacity: 0;
         transform: translateY(-20px) scale(0.95);
     }
-
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
