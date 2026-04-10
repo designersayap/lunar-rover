@@ -242,3 +242,16 @@
     color: var(--rv-neutral-50);
     text-decoration: underline;
 }
+/* Top Bar Notification Badge */
+.rv-notificationBadge {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 7px;
+    height: 7px;
+    background-color: #ef4444; /* Alert Red */
+    border-radius: var(--rv-radius-round);
+    border: 1.5px solid var(--rv-neutral-500);
+    pointer-events: none;
+    box-shadow: 0 0 4px rgba(239, 68, 68, 0.4);
+}
