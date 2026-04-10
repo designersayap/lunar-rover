@@ -619,48 +619,10 @@
     grid-template-rows: 1fr;
 }
 
-/* Notification & Status Decorators */
-.rv-notificationItemUnread {
-    background-color: var(--rv-neutral-500) !important;
-}
-
-.rv-notificationDot {
-    width: 16px;
-    height: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.rv-notificationDotInner {
+.rv-statusDot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: var(--rv-lunar-300);
-}
-
-.rv-notificationTime {
-    font-size: 11px;
-    color: var(--rv-neutral-100);
-}
-
-.rv-notificationSubList {
-    margin-top: 4px;
-    padding-left: 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.rv-notificationSubItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    color: var(--rv-neutral-100);
-    padding: 2px 8px;
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: var(--rv-radius-sm);
 }
 
 .rv-countBadge {

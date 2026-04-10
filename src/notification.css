@@ -25,6 +25,15 @@
     z-index: 3;
 }
 
+/* Unread Indicator */
+.rv-notificationUnreadDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--rv-lunar-200);
+    box-shadow: 0 0 8px var(--rv-lunar-300);
+}
+
 .rv-notificationCard:hover {
     background: var(--rv-neutral-300);
     transform: translateY(-1px);
@@ -36,8 +45,10 @@
 .rv-notificationStack:not(.rv-notificationStack--expanded) .rv-notificationCard::after {
     content: '';
     position: absolute;
-    top: 24px;    /* Start much lower to hide from top edge */
-    bottom: -8px; /* Show only at the bottom */
+    top: 24px;
+    /* Start much lower to hide from top edge */
+    bottom: -8px;
+    /* Show only at the bottom */
     left: 8px;
     right: 8px;
     background: var(--rv-neutral-400);
@@ -46,22 +57,27 @@
     z-index: -1;
     pointer-events: none;
     transition: all 0.3s ease;
-    opacity: 0.6; /* Softer opacity */
+    opacity: 0.6;
+    /* Softer opacity */
 }
 
 .rv-notificationStack:not(.rv-notificationStack--expanded) .rv-notificationCard::after {
-    top: 48px;     /* Start even lower */
-    bottom: -16px; /* Second layer peak */
+    top: 48px;
+    /* Start even lower */
+    bottom: -16px;
+    /* Second layer peak */
     left: 16px;
     right: 16px;
     z-index: -2;
-    opacity: 0.3;  /* Even softer */
+    opacity: 0.3;
+    /* Even softer */
 }
 
 /* Hover effect on the stack (Bottom-heavy extension) */
 .rv-notificationStack:not(.rv-notificationStack--expanded):hover .rv-notificationCard::before {
     bottom: -12px;
 }
+
 .rv-notificationStack:not(.rv-notificationStack--expanded):hover .rv-notificationCard::after {
     bottom: -22px;
 }
@@ -165,6 +181,7 @@
         opacity: 0;
         transform: translateY(-20px) scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
