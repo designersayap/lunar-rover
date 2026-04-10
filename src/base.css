@@ -223,7 +223,7 @@
 }
 
 .rv-radiusLg {
-    border-radius: var(--rv-radius);
+    border-radius: var(--rv-radius-lg);
 }
 
 .rv-shadowMd {
