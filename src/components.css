@@ -310,9 +310,9 @@
     width: 100%;
     cursor: pointer;
     min-height: 32px;
-    padding: var(--rv-space-xs) var(--rv-space-sm);
+    padding: 2px var(--rv-space-md);
     margin-bottom: var(--rv-space-xs);
-    border-radius: var(--rv-radius-sm);
+    border-radius: var(--rv-radius-md);
     transition: all 0.2s;
     color: var(--rv-neutral-75);
     background: transparent;
