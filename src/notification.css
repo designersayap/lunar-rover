@@ -8,6 +8,7 @@
     padding-bottom: 4px;
     margin-bottom: var(--rv-space-lg);
     cursor: pointer;
+    z-index: 1; /* Establish stacking context for children */
 }
 
 /* The Unified Card Component */
@@ -22,7 +23,7 @@
     gap: var(--rv-space-xs);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    z-index: 2; /* Sits above background cards */
+    z-index: 10; /* Definitely above background layers */
     opacity: 1;
 }
 
@@ -47,15 +48,14 @@
 .rv-notificationStack:not(.rv-notificationStack--expanded)::after {
     content: '';
     position: absolute;
-    top: 12px;    /* Start a bit lower than the top card to simplify the stack */
+    top: 4px;    /* Hidden behind top card */
     bottom: -8px; /* Peaking at bottom */
     left: 8px;
     right: 8px;
     background: #1a1a1a;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-top: none; /* No top border to eliminate "noisy line" artifact */
     border-radius: var(--rv-radius-lg);
-    z-index: 0;
+    z-index: -1; /* Behind all content in the stack */
     pointer-events: none;
     transition: all 0.3s ease;
     opacity: 1;
@@ -63,11 +63,11 @@
 }
 
 .rv-notificationStack:not(.rv-notificationStack--expanded)::after {
-    top: 24px;     /* Start even lower */
+    top: 8px;      /* Hidden behind top card */
     bottom: -16px; /* Second layer peak */
     left: 16px;
     right: 16px;
-    z-index: -1;
+    z-index: -2;
     opacity: 0.8;
 }
 
