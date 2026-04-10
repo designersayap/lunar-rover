@@ -143,7 +143,7 @@
 }
 
 .rv-sidebarSectionHeader {
-    padding: var(--rv-space-md) 0 var(--rv-space-xs);
+    padding: var(--rv-space-xs) 0 var(--rv-space-md);
     color: var(--rv-neutral-100);
     text-transform: uppercase;
     letter-spacing: 0.05em;

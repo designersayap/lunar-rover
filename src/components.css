@@ -183,6 +183,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 0;
 }
 
 .rv-listItemAction {
@@ -191,6 +192,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    gap: var(--rv-space-xs);
     opacity: 0;
     transition: opacity 0.2s;
 }
@@ -200,27 +202,11 @@
     opacity: 1;
 }
 
-/* Icon Swap Logic (Global) */
 .rv-iconOutline {
     fill: none !important;
     stroke: currentColor;
     stroke-width: 1.5;
 }
-
-.rv-iconSolid {
-    display: none !important;
-}
-
-.rv-listItem:hover .rv-iconSolid {
-    display: block !important;
-}
-
-.rv-listItem:hover .rv-iconOutline {
-    display: none !important;
-}
-
-
-
 
 
 .rv-formInputTitle {
