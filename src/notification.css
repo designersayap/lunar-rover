@@ -158,8 +158,21 @@
 }
 
 .rv-notificationExpandIcon {
-    opacity: 0.4;
-    transition: transform 0.3s ease;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--rv-radius-round);
+    color: var(--rv-white);
+    opacity: 0.6;
+    transition: all 0.2s ease;
+}
+
+.rv-notificationCard:hover .rv-notificationExpandIcon {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .rv-notificationStack--expanded .rv-notificationExpandIcon {
