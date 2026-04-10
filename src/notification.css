@@ -31,13 +31,13 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* 3D Stacking Layers (Only visible at the BOTTOM when NOT expanded) */
+/* 3D Stacking Layers (Strictly BOTTOM-ONLY when NOT expanded) */
 .rv-notificationStack:not(.rv-notificationStack--expanded) .rv-notificationCard::before,
 .rv-notificationStack:not(.rv-notificationStack--expanded) .rv-notificationCard::after {
     content: '';
     position: absolute;
-    top: 10px; /* Hide from the top edge */
-    bottom: -6px;
+    top: 24px;    /* Start much lower to hide from top edge */
+    bottom: -8px; /* Show only at the bottom */
     left: 8px;
     right: 8px;
     background: var(--rv-neutral-400);
@@ -46,24 +46,24 @@
     z-index: -1;
     pointer-events: none;
     transition: all 0.3s ease;
-    opacity: 0.8;
+    opacity: 0.6; /* Softer opacity */
 }
 
 .rv-notificationStack:not(.rv-notificationStack--expanded) .rv-notificationCard::after {
-    top: 20px; /* Hide even further from the top */
-    bottom: -12px;
+    top: 48px;     /* Start even lower */
+    bottom: -16px; /* Second layer peak */
     left: 16px;
     right: 16px;
     z-index: -2;
-    opacity: 0.4;
+    opacity: 0.3;  /* Even softer */
 }
 
-/* Hover effect on the stack */
+/* Hover effect on the stack (Bottom-heavy extension) */
 .rv-notificationStack:not(.rv-notificationStack--expanded):hover .rv-notificationCard::before {
-    bottom: -10px;
+    bottom: -12px;
 }
 .rv-notificationStack:not(.rv-notificationStack--expanded):hover .rv-notificationCard::after {
-    bottom: -18px;
+    bottom: -22px;
 }
 
 /* Card Header (App Name Style) */
