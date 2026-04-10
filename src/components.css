@@ -202,6 +202,20 @@
     opacity: 1;
 }
 
+/* Icon Variants */
+.rv-listItemIconSm svg {
+    width: 12px;
+    height: 12px;
+}
+
+.rv-iconRotate {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rv-iconExpanded {
+    transform: rotate(90deg);
+}
+
 .rv-iconOutline {
     fill: none !important;
     stroke: currentColor;
