@@ -97,7 +97,8 @@
     align-items: center;
     margin-bottom: var(--rv-space-xs);
     position: relative;
-    padding-right: 24px; /* Space for the floating actions */
+    padding-right: 24px;
+    /* Space for the floating actions */
 }
 
 .rv-notificationCardStatus {
@@ -133,7 +134,8 @@
 .rv-notificationUnreadDot {
     width: 6px;
     height: 6px;
-    background-color: #3b82f6; /* Status blue dot */
+    background-color: #3b82f6;
+    /* Status blue dot */
     border-radius: var(--rv-radius-round);
     box-shadow: 0 0 4px rgba(59, 130, 246, 0.4);
 }
@@ -257,7 +259,7 @@
 .rv-notificationMarkAllBtn {
     background: none;
     border: none;
-    color: var(--rv-lunar-300);
+    color: var(--rv-neutral-100);
     font-size: var(--rv-font-size-sm);
     font-weight: var(--rv-font-weight-medium);
     cursor: pointer;
@@ -265,6 +267,6 @@
 }
 
 .rv-notificationMarkAllBtn:hover {
-    color: var(--rv-lunar-400);
+    color: var(--rv-neutral-200);
     text-decoration: underline;
 }
