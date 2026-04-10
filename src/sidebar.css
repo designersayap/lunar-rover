@@ -143,8 +143,8 @@
 }
 
 .rv-sidebarSectionHeader {
-    padding: var(--rv-space-xs) 0 var(--rv-space-md);
-    color: var(--rv-neutral-100);
+    padding: var(--rv-space-md) 0;
+    color: var(--rv-neutral-200);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-size: 10px;
@@ -182,6 +182,16 @@
     color: inherit;
     font-size: var(--rv-font-size-md);
     width: 100%;
+}
+
+.rv-treeChevronIcon {
+    width: 12px !important;
+    height: 12px !important;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rv-treeChevronExpanded {
+    transform: rotate(90deg);
 }
 
 
