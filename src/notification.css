@@ -22,7 +22,8 @@
     gap: var(--rv-space-xs);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    z-index: 10; /* Ensure top card is definitely on top */
+    z-index: 2; /* Sits above background cards */
+    opacity: 1;
 }
 
 /* Unread Indicator */
@@ -42,38 +43,39 @@
 }
 
 /* 3D Stacking Layers (Strictly BOTTOM-ONLY when NOT expanded) */
-.rv-notificationStack:not(.rv-notificationStack--expanded) .rv-notificationCard::before,
-.rv-notificationStack:not(.rv-notificationStack--expanded) .rv-notificationCard::after {
+.rv-notificationStack:not(.rv-notificationStack--expanded)::before,
+.rv-notificationStack:not(.rv-notificationStack--expanded)::after {
     content: '';
     position: absolute;
-    top: 40px;    /* Start very low to prevent any peaking at top */
+    top: 12px;    /* Start a bit lower than the top card to simplify the stack */
     bottom: -8px; /* Peaking at bottom */
     left: 8px;
     right: 8px;
     background: #1a1a1a;
-    border: 1px solid rgba(255, 255, 255, 0.05); /* Very subtle border */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: none; /* No top border to eliminate "noisy line" artifact */
     border-radius: var(--rv-radius-lg);
-    z-index: -1;
+    z-index: 0;
     pointer-events: none;
     transition: all 0.3s ease;
-    opacity: 1; /* Solid layers, no transparency */
+    opacity: 1;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.rv-notificationStack:not(.rv-notificationStack--expanded) .rv-notificationCard::after {
-    top: 60px;     /* Start even lower */
+.rv-notificationStack:not(.rv-notificationStack--expanded)::after {
+    top: 24px;     /* Start even lower */
     bottom: -16px; /* Second layer peak */
     left: 16px;
     right: 16px;
-    z-index: -2;
+    z-index: -1;
     opacity: 0.8;
 }
 
 /* Hover effect on stack */
-.rv-notificationStack:not(.rv-notificationStack--expanded):hover .rv-notificationCard::before {
+.rv-notificationStack:not(.rv-notificationStack--expanded):hover::before {
     bottom: -12px;
 }
-.rv-notificationStack:not(.rv-notificationStack--expanded):hover .rv-notificationCard::after {
+.rv-notificationStack:not(.rv-notificationStack--expanded):hover::after {
     bottom: -24px;
 }
 
