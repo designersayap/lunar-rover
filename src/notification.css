@@ -37,9 +37,9 @@
 .rv-notificationUnreadDot {
     width: 6px;
     height: 6px;
-    border-radius: 50%;
-    background-color: var(--rv-lunar-200);
-    box-shadow: 0 0 8px var(--rv-lunar-300);
+    background-color: #3b82f6; /* Status blue dot */
+    border-radius: var(--rv-radius-round);
+    box-shadow: 0 0 4px rgba(59, 130, 246, 0.4);
     flex-shrink: 0;
 }
 
@@ -116,28 +116,10 @@
     justify-content: flex-end;
     height: 100%;
 }
-
-.rv-notificationCardAppIcon {
-    display: none;
-}
-
-.rv-notificationCardAppName {
-    display: none;
-}
-
 .rv-notificationCardTime {
     font-size: 10px;
     color: var(--rv-neutral-100);
     opacity: 0.6;
-}
-
-.rv-notificationUnreadDot {
-    width: 6px;
-    height: 6px;
-    background-color: #3b82f6;
-    /* Status blue dot */
-    border-radius: var(--rv-radius-round);
-    box-shadow: 0 0 4px rgba(59, 130, 246, 0.4);
 }
 
 /* Actions */
@@ -221,9 +203,6 @@
     opacity: 0.8;
 }
 
-.rv-notificationCardFooter {
-    display: none;
-}
 
 /* Expanded State / Sub-stack */
 .rv-notificationSubList {
@@ -260,6 +239,6 @@
 }
 
 .rv-notificationMarkAllBtn:hover {
-    color: var(--rv-neutral-200);
+    color: var(--rv-neutral-50);
     text-decoration: underline;
 }
