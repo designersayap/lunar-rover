@@ -248,13 +248,6 @@
 }
 
 /* Global Actions */
-.rv-notificationMarkAllContainer {
-    padding-top: var(--rv-space-md);
-    margin-top: var(--rv-space-sm);
-    border-top: 1px solid var(--rv-neutral-400);
-    display: flex;
-    justify-content: center;
-}
 
 .rv-notificationMarkAllBtn {
     background: none;
