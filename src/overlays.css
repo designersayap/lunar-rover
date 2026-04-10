@@ -66,9 +66,6 @@
 }
 
 .rv-errorMessage {
-    padding: var(--rv-space-md);
-    text-align: center;
-    font-size: var(--rv-space-md);
     color: var(--rv-danger);
 }
 
