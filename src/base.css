@@ -113,6 +113,10 @@
     margin-top: var(--rv-space-md);
 }
 
+.rv-mtXl {
+    margin-top: var(--rv-space-xl);
+}
+
 .rv-mbSm {
     margin-bottom: var(--rv-space-sm);
 }
@@ -150,20 +154,8 @@
     padding: var(--rv-space-lg);
 }
 
-.rv-ptSm {
-    padding-top: var(--rv-space-sm);
-}
-
-.rv-ptMd {
-    padding-top: var(--rv-space-md);
-}
-
-.rv-ptLg {
-    padding-top: var(--rv-space-lg);
-}
-
-.rv-ptXl {
-    padding-top: var(--rv-space-xl);
+.rv-pXl {
+    padding: var(--rv-space-xl);
 }
 
 /* --- Text --- */
