@@ -309,9 +309,9 @@
     align-items: center;
     width: 100%;
     cursor: pointer;
-    height: 32px;
-    padding: 0 var(--rv-space-sm);
-    margin-bottom: var(--rv-space-sm);
+    min-height: 32px;
+    padding: var(--rv-space-xs) var(--rv-space-sm);
+    margin-bottom: var(--rv-space-xs);
     border-radius: var(--rv-radius-sm);
     transition: all 0.2s;
     color: var(--rv-neutral-75);
