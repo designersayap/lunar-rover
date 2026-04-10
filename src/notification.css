@@ -8,13 +8,18 @@
     padding-bottom: 4px;
     margin-bottom: var(--rv-space-lg);
     cursor: pointer;
-    z-index: 1; /* Establish stacking context for children */
+    z-index: 1;
+}
+
+.rv-notificationStack--expanded {
+    margin-bottom: var(--rv-space-xl);
 }
 
 /* The Unified Card Component */
 .rv-notificationCard {
     position: relative;
-    background: #1e1e1e; /* Solid background to prevent see-through */
+    background: #1e1e1e;
+    /* Solid background to prevent see-through */
     border: 1px solid var(--rv-neutral-300);
     border-radius: var(--rv-radius-lg);
     padding: var(--rv-space-md);
@@ -23,7 +28,8 @@
     gap: var(--rv-space-xs);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    z-index: 10; /* Definitely above background layers */
+    z-index: 10;
+    /* Definitely above background layers */
     opacity: 1;
 }
 
@@ -48,14 +54,17 @@
 .rv-notificationStack:not(.rv-notificationStack--expanded)::after {
     content: '';
     position: absolute;
-    top: 4px;    /* Hidden behind top card */
-    bottom: -8px; /* Peaking at bottom */
+    top: 4px;
+    /* Hidden behind top card */
+    bottom: -8px;
+    /* Peaking at bottom */
     left: 8px;
     right: 8px;
     background: #1a1a1a;
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: var(--rv-radius-lg);
-    z-index: -1; /* Behind all content in the stack */
+    z-index: -1;
+    /* Behind all content in the stack */
     pointer-events: none;
     transition: all 0.3s ease;
     opacity: 1;
@@ -63,8 +72,10 @@
 }
 
 .rv-notificationStack:not(.rv-notificationStack--expanded)::after {
-    top: 8px;      /* Hidden behind top card */
-    bottom: -16px; /* Second layer peak */
+    top: 8px;
+    /* Hidden behind top card */
+    bottom: -16px;
+    /* Second layer peak */
     left: 16px;
     right: 16px;
     z-index: -2;
@@ -75,51 +86,56 @@
 .rv-notificationStack:not(.rv-notificationStack--expanded):hover::before {
     bottom: -12px;
 }
+
 .rv-notificationStack:not(.rv-notificationStack--expanded):hover::after {
     bottom: -24px;
 }
 
-/* Card Header (App Name Style) */
 .rv-notificationCardHeader {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: var(--rv-space-sm);
-    margin-bottom: 2px;
-    position: relative;
-    z-index: 11;
+    margin-bottom: var(--rv-space-xs);
 }
 
-/* App Icon */
-.rv-notificationCardAppIcon {
-    width: 16px;
-    height: 16px;
-    color: var(--rv-lunar-300);
+.rv-notificationCardStatus {
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+    gap: var(--rv-space-xs);
+}
+
+.rv-notificationCardActions {
+    display: flex;
+    align-items: center;
+    gap: var(--rv-space-xs);
+}
+
+.rv-notificationCardAppIcon {
+    display: none;
 }
 
 .rv-notificationCardAppName {
-    font-size: 10px;
-    font-weight: var(--rv-font-weight-bold);
-    color: var(--rv-neutral-100);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    flex: 1;
+    display: none;
 }
 
 .rv-notificationCardTime {
     font-size: 10px;
     color: var(--rv-neutral-100);
     opacity: 0.6;
-    margin-right: 4px;
+}
+
+.rv-notificationUnreadDot {
+    width: 6px;
+    height: 6px;
+    background-color: #3b82f6; /* Status blue dot */
+    border-radius: var(--rv-radius-round);
+    box-shadow: 0 0 4px rgba(59, 130, 246, 0.4);
 }
 
 /* Actions */
 .rv-notificationCardAction {
-    background: var(--rv-neutral-500);
-    border: 1px solid var(--rv-neutral-300);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
     border-radius: var(--rv-radius-round);
     width: 20px;
     height: 20px;
@@ -130,38 +146,44 @@
     cursor: pointer;
     transition: all 0.2s;
     opacity: 0;
-    pointer-events: none;
 }
 
 .rv-notificationCard:hover .rv-notificationCardAction {
-    opacity: 1;
-    pointer-events: auto;
+    opacity: 0.6;
+}
+
+.rv-notificationCardAction:hover {
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 1 !important;
+}
+
+.rv-notificationExpandIcon {
+    opacity: 0.4;
+    transition: transform 0.3s ease;
+}
+
+.rv-notificationStack--expanded .rv-notificationExpandIcon {
+    transform: rotate(180deg);
 }
 
 /* Card Content */
 .rv-notificationCardTitle {
-    font-size: var(--rv-font-size-md);
-    font-weight: var(--rv-font-weight-bold);
+    font-size: 12px;
+    font-weight: 600;
     color: var(--rv-white);
-    margin: 0;
-    line-height: var(--rv-lh-tight);
+    margin: 0 0 2px 0;
 }
 
 .rv-notificationCardBody {
-    font-size: var(--rv-font-size-sm);
+    font-size: 11px;
     color: var(--rv-neutral-100);
     margin: 0;
-    opacity: 0.9;
-    line-height: var(--rv-lh-md);
+    line-height: 1.4;
+    opacity: 0.8;
 }
 
-/* Card Footer (X more updates) - Removed divider border */
 .rv-notificationCardFooter {
-    font-size: 11px;
-    color: var(--rv-lunar-200);
-    font-weight: var(--rv-font-weight-medium);
-    margin-top: var(--rv-space-xs);
-    padding-top: var(--rv-space-xs);
+    display: none;
 }
 
 /* Expanded State / Sub-stack */
@@ -179,6 +201,7 @@
         opacity: 0;
         transform: translateY(-20px) scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
