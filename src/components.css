@@ -292,7 +292,7 @@
     right: 0;
     top: 0;
     height: 100%;
-    width: 40px;
+    width: var(--rv-h-btn);
     padding: 0;
 }
 
@@ -317,7 +317,7 @@
     background: transparent !important;
     box-shadow: none !important;
     flex: 1;
-    padding-right: 40px;
+    padding-right: var(--rv-h-btn);
 }
 
 .rv-formTextarea {
