@@ -249,9 +249,9 @@
     position: absolute;
     top: 6px;
     right: 8px;
-    width: 7px;
-    height: 7px;
-    background-color: #ef4444;
+    width: 8px;
+    height: 8px;
+    background-color: var(--rv-danger);
     /* Alert Red */
     border-radius: var(--rv-radius-round);
     border: 1.5px solid var(--rv-neutral-500);
