@@ -288,12 +288,36 @@
 }
 
 .rv-formInputIconBtn {
-    position: absolute !important;
-    right: 0 !important;
-    top: 0 !important;
-    height: 100% !important;
-    width: 40px !important;
-    padding: 0 !important;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 40px;
+    padding: 0;
+}
+
+/* --- Integrated Input Groups --- */
+.rv-formInputGroup {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: var(--rv-neutral-500);
+    border: 1px solid var(--rv-bdr);
+    border-radius: var(--rv-radius-md);
+    transition: all .2s;
+}
+
+.rv-formInputGroup:focus-within {
+    border-color: var(--rv-neutral-300);
+}
+
+.rv-formInputGroup .rv-formInput {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    flex: 1;
+    padding-right: 40px;
 }
 
 .rv-formTextarea {
