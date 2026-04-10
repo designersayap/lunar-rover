@@ -113,6 +113,14 @@
     align-items: center;
 }
 
+.rv-popoverProperties {
+    gap: var(--rv-space-lg);
+    color: var(--rv-white);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
 .rv-popoverList {
     gap: var(--rv-space-xs);
     overflow-y: auto;
@@ -154,6 +162,10 @@
 
 .rv-themePickerContent {
     padding: var(--rv-space-lg);
+}
+
+.rv-themePickerSearchContainer {
+    margin-bottom: var(--rv-space-md);
 }
 
 /* Export Popover Modules */

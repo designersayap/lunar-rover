@@ -311,7 +311,7 @@
     cursor: pointer;
     height: 32px;
     padding: 0 var(--rv-space-sm);
-    margin-bottom: var(--rv-space-xs);
+    margin-bottom: var(--rv-space-sm);
     border-radius: var(--rv-radius-sm);
     transition: all 0.2s;
     color: var(--rv-neutral-75);
@@ -414,6 +414,17 @@
     text-align: center;
 }
 
+.rv-canvasBackgroundRoot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
 .rv-componentWrapper {
     position: relative;
     background: transparent;
@@ -443,6 +454,22 @@
     font-size: var(--rv-font-size-sm);
     font-weight: var(--rv-font-weight-bold);
     color: var(--rv-white);
+}
+
+.rv-customDragImage {
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+    background: var(--rv-neutral-300);
+    padding: var(--rv-space-xs);
+    border-radius: var(--rv-radius-md);
+    box-shadow: 0 var(--rv-space-xs) var(--rv-space-md) rgba(0, 0, 0, .1);
+    border: 1px solid var(--rv-bdr);
+    align-items: center;
+    gap: var(--rv-space-xs);
+    width: 100px;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Builder Interaction Overlays */
@@ -528,6 +555,30 @@
     z-index: 10;
 }
 
+/* Misc Canvas Utilities */
+.rv-canvasWrapper {
+    position: relative;
+    width: 200px;
+    height: 150px;
+    margin: 0 auto;
+    margin-bottom: var(--rv-space-xl);
+}
+
+.rv-canvasText {
+    color: var(--rv-neutral-100);
+    font-family: var(--rv-font-family-body);
+    font-size: var(--rv-font-md);
+}
+
+.rv-scrollGroupOverlay {
+    position: absolute;
+    inset: 0;
+    background-color: var(--rv-white);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+}
+
 
 /* ==========================================================================
    PURPOSE: Molecules & Decorators
@@ -548,6 +599,13 @@
     margin: var(--rv-space-sm) 0;
     display: flex;
     flex-direction: column;
+}
+
+.rv-analyticsHeader {
+    gap: var(--rv-space-xs);
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--rv-space-xs);
 }
 
 /* Accordion System */
@@ -579,6 +637,30 @@
     height: 8px;
     border-radius: 50%;
     background-color: var(--rv-lunar-300);
+}
+
+.rv-notificationTime {
+    font-size: 11px;
+    color: var(--rv-neutral-100);
+}
+
+.rv-notificationSubList {
+    margin-top: 4px;
+    padding-left: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.rv-notificationSubItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--rv-neutral-100);
+    padding: 2px 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: var(--rv-radius-sm);
 }
 
 .rv-countBadge {
