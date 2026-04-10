@@ -37,7 +37,7 @@
 .rv-notificationUnreadDot {
     width: 6px;
     height: 6px;
-    background-color: #3b82f6; /* Status blue dot */
+    background-color: var(--rv-danger);
     border-radius: var(--rv-radius-round);
     box-shadow: 0 0 4px rgba(59, 130, 246, 0.4);
     flex-shrink: 0;
@@ -116,6 +116,7 @@
     justify-content: flex-end;
     height: 100%;
 }
+
 .rv-notificationCardTime {
     font-size: 10px;
     color: var(--rv-neutral-100);
@@ -242,6 +243,7 @@
     color: var(--rv-neutral-50);
     text-decoration: underline;
 }
+
 /* Top Bar Notification Badge */
 .rv-notificationBadge {
     position: absolute;
@@ -249,7 +251,8 @@
     right: 8px;
     width: 7px;
     height: 7px;
-    background-color: #ef4444; /* Alert Red */
+    background-color: #ef4444;
+    /* Alert Red */
     border-radius: var(--rv-radius-round);
     border: 1.5px solid var(--rv-neutral-500);
     pointer-events: none;
