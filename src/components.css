@@ -149,9 +149,9 @@
     align-items: center;
     width: 100%;
     cursor: pointer;
-    height: 36px;
+    height: 32px;
     padding: 0 var(--rv-space-sm);
-    margin-bottom: var(--rv-space-xs);
+    margin-bottom: var(--rv-space-sm);
     border-radius: var(--rv-radius-sm);
     transition: all 0.2s;
     color: var(--rv-neutral-75);
@@ -213,8 +213,7 @@
     transition: opacity 0.2s;
 }
 
-.rv-listItem:hover .rv-listItemAction,
-.rv-listItemActive .rv-listItemAction {
+.rv-listItem:hover .rv-listItemAction {
     opacity: 1;
 }
 
