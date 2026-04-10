@@ -203,9 +203,17 @@
 }
 
 /* Icon Variants */
+.rv-listItemIconSm {
+    width: 12px !important;
+}
+
 .rv-listItemIconSm svg {
     width: 12px !important;
     height: 12px !important;
+}
+
+.rv-listItemIconMd {
+    width: 16px !important;
 }
 
 .rv-listItemIconMd svg {
