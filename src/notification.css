@@ -31,15 +31,15 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* 3D Stacking Layers (Only visible when NOT expanded) */
+/* 3D Stacking Layers (Only visible at the BOTTOM when NOT expanded) */
 .rv-notificationStack:not(.rv-notificationStack--expanded) .rv-notificationCard::before,
 .rv-notificationStack:not(.rv-notificationStack--expanded) .rv-notificationCard::after {
     content: '';
     position: absolute;
+    top: 10px; /* Hide from the top edge */
     bottom: -6px;
     left: 8px;
     right: 8px;
-    height: 100%;
     background: var(--rv-neutral-400);
     border: 1px solid var(--rv-neutral-300);
     border-radius: var(--rv-radius-lg);
@@ -50,6 +50,7 @@
 }
 
 .rv-notificationStack:not(.rv-notificationStack--expanded) .rv-notificationCard::after {
+    top: 20px; /* Hide even further from the top */
     bottom: -12px;
     left: 16px;
     right: 16px;
@@ -59,10 +60,10 @@
 
 /* Hover effect on the stack */
 .rv-notificationStack:not(.rv-notificationStack--expanded):hover .rv-notificationCard::before {
-    bottom: -8px;
+    bottom: -10px;
 }
 .rv-notificationStack:not(.rv-notificationStack--expanded):hover .rv-notificationCard::after {
-    bottom: -15px;
+    bottom: -18px;
 }
 
 /* Card Header (App Name Style) */
