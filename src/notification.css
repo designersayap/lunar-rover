@@ -61,6 +61,92 @@
     bottom: -10px;
 }
 
+/* Expanded State: Hide stack layers */
+.rv-notificationStack--expanded .rv-notificationCardMain::before,
+.rv-notificationStack--expanded .rv-notificationCardMain::after {
+    opacity: 0;
+    bottom: 0;
+    transform: scale(0.95);
+}
+
+.rv-notificationStack--expanded .rv-notificationCardMain {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    background: var(--rv-neutral-400);
+}
+
+/* Sub-items Container (The Unfurl) */
+.rv-notificationSubStack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 4px 4px 4px;
+    background: var(--rv-neutral-500);
+    border: 1px solid var(--rv-neutral-400);
+    border-top: none;
+    border-radius: 0 0 var(--rv-radius-md) var(--rv-radius-md);
+    margin-top: -1px;
+    animation: rv-unfurl 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes rv-unfurl {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+        max-height: 0;
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 500px;
+    }
+}
+
+/* Individual Notification Card */
+.rv-notificationItemCard {
+    background: var(--rv-neutral-400);
+    border: 1px solid var(--rv-neutral-300);
+    border-radius: var(--rv-radius-sm);
+    padding: var(--rv-space-sm) var(--rv-space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--rv-space-md);
+    position: relative;
+    transition: background 0.2s;
+}
+
+.rv-notificationItemCard:hover {
+    background: var(--rv-neutral-300);
+}
+
+.rv-notificationItemContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.rv-notificationItemTitle {
+    font-size: var(--rv-font-size-sm);
+    font-weight: var(--rv-font-weight-bold);
+    color: var(--rv-white);
+    margin: 0;
+}
+
+.rv-notificationItemTime {
+    font-size: 10px;
+    color: var(--rv-neutral-100);
+    opacity: 0.6;
+}
+
+.rv-notificationItemAction {
+    opacity: 0;
+    transition: opacity 0.2s;
+    color: var(--rv-neutral-100);
+}
+
+.rv-notificationItemCard:hover .rv-notificationItemAction {
+    opacity: 1;
+}
+
 /* Header & Content */
 .rv-notificationStackHeader {
     display: flex;
