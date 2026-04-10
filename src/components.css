@@ -287,6 +287,15 @@
     opacity: 0.5;
 }
 
+.rv-formInputIconBtn {
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+    height: 100% !important;
+    width: 40px !important;
+    padding: 0 !important;
+}
+
 .rv-formTextarea {
     resize: none;
     font-family: inherit;
