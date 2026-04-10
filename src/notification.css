@@ -13,16 +13,16 @@
 /* The Unified Card Component */
 .rv-notificationCard {
     position: relative;
-    background: var(--rv-neutral-400);
+    background: #1e1e1e; /* Solid background to prevent see-through */
     border: 1px solid var(--rv-neutral-300);
     border-radius: var(--rv-radius-lg);
     padding: var(--rv-space-md);
     display: flex;
     flex-direction: column;
-    gap: var(--rv-space-xs); /* Tighter default gap */
+    gap: var(--rv-space-xs);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    z-index: 3;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    z-index: 10; /* Ensure top card is definitely on top */
 }
 
 /* Unread Indicator */
@@ -36,9 +36,9 @@
 }
 
 .rv-notificationCard:hover {
-    background: var(--rv-neutral-300);
+    background: #252525;
     transform: translateY(-1px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
 }
 
 /* 3D Stacking Layers (Strictly BOTTOM-ONLY when NOT expanded) */
@@ -46,35 +46,35 @@
 .rv-notificationStack:not(.rv-notificationStack--expanded) .rv-notificationCard::after {
     content: '';
     position: absolute;
-    top: 24px;
-    bottom: -8px;
+    top: 40px;    /* Start very low to prevent any peaking at top */
+    bottom: -8px; /* Peaking at bottom */
     left: 8px;
     right: 8px;
-    background: var(--rv-neutral-400);
-    border: 1px solid var(--rv-neutral-300);
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Very subtle border */
     border-radius: var(--rv-radius-lg);
     z-index: -1;
     pointer-events: none;
     transition: all 0.3s ease;
-    opacity: 0.6;
+    opacity: 1; /* Solid layers, no transparency */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .rv-notificationStack:not(.rv-notificationStack--expanded) .rv-notificationCard::after {
-    top: 48px;
-    bottom: -16px;
+    top: 60px;     /* Start even lower */
+    bottom: -16px; /* Second layer peak */
     left: 16px;
     right: 16px;
     z-index: -2;
-    opacity: 0.3;
+    opacity: 0.8;
 }
 
-/* Hover effect on the stack */
+/* Hover effect on stack */
 .rv-notificationStack:not(.rv-notificationStack--expanded):hover .rv-notificationCard::before {
     bottom: -12px;
 }
-
 .rv-notificationStack:not(.rv-notificationStack--expanded):hover .rv-notificationCard::after {
-    bottom: -22px;
+    bottom: -24px;
 }
 
 /* Card Header (App Name Style) */
@@ -83,8 +83,11 @@
     align-items: center;
     gap: var(--rv-space-sm);
     margin-bottom: 2px;
+    position: relative;
+    z-index: 11;
 }
 
+/* App Icon */
 .rv-notificationCardAppIcon {
     width: 16px;
     height: 16px;
@@ -111,7 +114,7 @@
     margin-right: 4px;
 }
 
-/* Actions - Now integrated into Header flow */
+/* Actions */
 .rv-notificationCardAction {
     background: var(--rv-neutral-500);
     border: 1px solid var(--rv-neutral-300);
@@ -126,17 +129,11 @@
     transition: all 0.2s;
     opacity: 0;
     pointer-events: none;
-    flex-shrink: 0;
 }
 
 .rv-notificationCard:hover .rv-notificationCardAction {
     opacity: 1;
     pointer-events: auto;
-}
-
-.rv-notificationCardAction:hover {
-    background: var(--rv-danger);
-    border-color: var(--rv-danger);
 }
 
 /* Card Content */
@@ -145,29 +142,24 @@
     font-weight: var(--rv-font-weight-bold);
     color: var(--rv-white);
     margin: 0;
-    line-height: 1.2;
+    line-height: var(--rv-lh-tight);
 }
 
 .rv-notificationCardBody {
     font-size: var(--rv-font-size-sm);
     color: var(--rv-neutral-100);
     margin: 0;
-    opacity: 0.8;
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    opacity: 0.9;
+    line-height: var(--rv-lh-md);
 }
 
-/* Card Footer (X more updates) */
+/* Card Footer (X more updates) - Removed divider border */
 .rv-notificationCardFooter {
     font-size: 11px;
     color: var(--rv-lunar-200);
     font-weight: var(--rv-font-weight-medium);
     margin-top: var(--rv-space-xs);
     padding-top: var(--rv-space-xs);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Expanded State / Sub-stack */
@@ -191,7 +183,7 @@
     }
 }
 
-/* Global Footer Action */
+/* Global Actions */
 .rv-notificationMarkAllContainer {
     padding-top: var(--rv-space-md);
     margin-top: var(--rv-space-sm);
