@@ -150,6 +150,22 @@
     padding: var(--rv-space-lg);
 }
 
+.rv-ptSm {
+    padding-top: var(--rv-space-sm);
+}
+
+.rv-ptMd {
+    padding-top: var(--rv-space-md);
+}
+
+.rv-ptLg {
+    padding-top: var(--rv-space-lg);
+}
+
+.rv-ptXl {
+    padding-top: var(--rv-space-xl);
+}
+
 /* --- Text --- */
 .rv-textCenter {
     text-align: center;
