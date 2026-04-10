@@ -1,6 +1,7 @@
-/* =========================================
-   SHELL & VIEWPORT
-   ========================================= */
+/* ==========================================================================
+   PURPOSE: Main App Shell
+   High-level layout containers for the Page Builder application.
+   ========================================================================== */
 
 .rv-container {
     display: flex;
@@ -17,6 +18,12 @@
     overflow: hidden;
     background: var(--rv-neutral-500);
 }
+
+
+/* ==========================================================================
+   PURPOSE: Viewport & Canvas
+   Wrappers for the central editing area and the device-preview canvas.
+   ========================================================================== */
 
 .rv-canvas {
     flex: 1;
@@ -80,7 +87,12 @@
     max-width: none;
 }
 
-/* Mobile Sidebar / Bottom Sheet Overlay */
+
+/* ==========================================================================
+   PURPOSE: Mobile Layers
+   Specialized overlays and slide-out panels for small-viewport navigation.
+   ========================================================================== */
+
 .rv-mobileSidebarOverlay {
     position: fixed;
     inset: 0;

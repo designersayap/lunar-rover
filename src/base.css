@@ -1,6 +1,7 @@
-/* =========================================
-   1. CORE LAYOUT
-   ========================================= */
+/* ==========================================================================
+   PURPOSE: Layout Utilities
+   Core flexbox, alignment, and positioning helpers.
+   ========================================================================== */
 
 .rv-flex {
     display: flex;
@@ -64,9 +65,10 @@
 }
 
 
-/* =========================================
-   2. SPACING UTILITIES
-   ========================================= */
+/* ==========================================================================
+   PURPOSE: Spacing Utilities
+   Standardized gap and margin/padding helpers based on the design tokens.
+   ========================================================================== */
 
 /* Gaps */
 .rv-gapXs {
@@ -149,9 +151,10 @@
 }
 
 
-/* =========================================
-   3. TYPOGRAPHY
-   ========================================= */
+/* ==========================================================================
+   PURPOSE: Typography & Text
+   Text alignment, weight, and standardized font scale utilities.
+   ========================================================================== */
 
 .rv-fontBody {
     font-family: var(--rv-font-family-default);
@@ -210,9 +213,10 @@
 }
 
 
-/* =========================================
-   4. APPEARANCE
-   ========================================= */
+/* ==========================================================================
+   PURPOSE: Appearance & Environment
+   Borders, shadows, and global browser environment resets (like scrollbars).
+   ========================================================================== */
 
 .rv-radiusSm {
     border-radius: var(--rv-radius-sm);
@@ -230,11 +234,7 @@
     box-shadow: var(--rv-shd-btn);
 }
 
-
-/* =========================================
-   5. GLOBAL & ENVIRONMENT
-   ========================================= */
-
+/* Scrollbar Styling */
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--rv-neutral-300) transparent;

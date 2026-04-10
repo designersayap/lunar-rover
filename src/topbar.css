@@ -1,6 +1,7 @@
-/* =========================================
-   TOP BAR COMPONENT
-   ========================================= */
+/* ==========================================================================
+   PURPOSE: Main Navigation Bar
+   Global top-bar container and logic.
+   ========================================================================== */
 
 .rv-topBar {
     background: var(--rv-neutral-500);
@@ -10,6 +11,11 @@
     height: var(--rv-h-topbar);
     position: relative;
 }
+
+/* ==========================================================================
+   PURPOSE: TopBar Slots
+   Alignment and grouping helpers for Left (Logo/Toggle) and Right (Actions).
+   ========================================================================== */
 
 .rv-topBarLeft {
     display: flex;

@@ -1,12 +1,58 @@
-/* =========================================
-   5. FEEDBACK & OVERLAYS
-   ========================================= */
+/* ==========================================================================
+   PURPOSE: Global Portals & Overlays
+   Generic containers and background layers for floating UI elements.
+   ========================================================================== */
 
-/* --- Tooltip --- */
+.rv-popoverOverlay {
+    position: fixed;
+    inset: 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.rv-spinner {
+    width: var(--rv-space-lg);
+    height: var(--rv-space-lg);
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: var(--rv-radius-round);
+    animation: spin 1s linear infinite;
+}
+
+.rv-emptyStateMessage {
+    padding: var(--rv-space-md);
+    text-align: center;
+    font-size: var(--rv-font-size-sm);
+    color: var(--rv-neutral-100);
+    line-height: var(--rv-lh-loose);
+}
+
+.rv-errorMessage {
+    color: var(--rv-danger);
+}
+
+
+/* ==========================================================================
+   PURPOSE: Tooltips & Small Popovers
+   Contextual floating tips and small temporary windows.
+   ========================================================================== */
 
 .rv-tooltip {
     position: absolute;
-    /* Default to absolute, but can be fixed by JS */
     background-color: var(--rv-neutral-500);
     color: var(--rv-white);
     padding: var(--rv-space-xs) var(--rv-space-sm);
@@ -24,67 +70,17 @@
     animation: fadeIn 0.15s ease-out;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
 
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* --- Spinner --- */
-
-.rv-spinner {
-    width: var(--rv-space-lg);
-    height: var(--rv-space-lg);
-    border: 2px solid currentColor;
-    border-top-color: transparent;
-    border-radius: var(--rv-radius-round);
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.rv-emptyStateMessage {
-    padding: var(--rv-space-md);
-    text-align: center;
-    font-size: var(--rv-font-size-sm);
-    color: var(--rv-neutral-100);
-    line-height: var(--rv-lh-loose);
-}
-
-.rv-errorMessage {
-    color: var(--rv-danger);
-}
-
-/* =========================================
-   9. COMPONENT: POPOVERS
-   ========================================= */
-
-/* Generic */
-.rv-popoverOverlay {
-    position: fixed;
-    inset: 0;
-}
+/* ==========================================================================
+   PURPOSE: Global Popover System
+   Standard containers, headers, and animations for builder popovers.
+   ========================================================================== */
 
 @keyframes popoverIn {
     from {
         opacity: 0;
         transform: translateY(var(--rv-space-xs)) scale(0.99);
     }
-
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -117,12 +113,16 @@
     align-items: center;
 }
 
-.rv-popoverProperties {
-    gap: var(--rv-space-lg);
-    color: var(--rv-white);
-    position: relative;
+.rv-popoverList {
+    gap: var(--rv-space-xs);
+    overflow-y: auto;
+    max-height: 240px;
     display: flex;
     flex-direction: column;
+    border: 1px solid var(--rv-bdr);
+    border-radius: var(--rv-radius-sm);
+    background: var(--rv-neutral-500);
+    padding: var(--rv-space-sm);
 }
 
 .rv-popoverCodeBlock {
@@ -130,7 +130,33 @@
     background: var(--rv-neutral-500);
 }
 
-/* Export Popover */
+.rv-componentsPopover {
+    position: fixed;
+    background: var(--rv-neutral-500);
+    box-shadow: var(--rv-shd-pop);
+    z-index: 10001;
+}
+
+
+/* ==========================================================================
+   PURPOSE: Portal Content Modules
+   Specialized layouts for specific popover content (Themes, Export, Picker).
+   ========================================================================== */
+
+/* Theme Picker & Lists */
+.rv-themePickerPopover {
+    position: absolute;
+    top: 40px;
+    right: var(--rv-space-lg);
+    margin: 0;
+    width: 260px;
+}
+
+.rv-themePickerContent {
+    padding: var(--rv-space-lg);
+}
+
+/* Export Popover Modules */
 .rv-exportPopover {
     position: absolute;
     top: 40px;
@@ -146,100 +172,7 @@
     flex-direction: column;
 }
 
-.rv-exportHelperText {
-    color: var(--rv-neutral-75);
-    font-size: var(--rv-font-size-80);
-}
-
-/* Radio Option */
-.rv-radioOption {
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    flex: 1;
-    border: 1px solid var(--rv-bdr);
-    border-radius: var(--rv-radius-sm);
-    padding: var(--rv-space-md);
-    cursor: pointer;
-    background: transparent;
-    transition: all 0.2s;
-    color: var(--rv-neutral-50);
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-font-size-90);
-    font-weight: var(--rv-font-weight-regular);
-    user-select: none;
-}
-
-.rv-radioOption:hover {
-    background: var(--rv-neutral-400);
-    border-color: var(--rv-neutral-300);
-}
-
-.rv-radioOptionSelected {
-    background: var(--rv-neutral-400);
-    border-color: var(--rv-neutral-300);
-    color: var(--rv-white);
-}
-
-.rv-radioOptionInput {
-    margin: 0;
-    margin-right: var(--rv-space-sm);
-    accent-color: var(--rv-lunar-300);
-}
-
-/* Theme Picker */
-.rv-themePickerPopover {
-    position: absolute;
-    top: 40px;
-    right: var(--rv-space-lg);
-    margin: 0;
-    width: 260px;
-}
-
-.rv-themePickerContent {
-    padding: var(--rv-space-lg);
-}
-
-.rv-themePickerSearchContainer {
-    margin-bottom: var(--rv-space-md);
-}
-
-.rv-popoverList {
-    gap: var(--rv-space-xs);
-    overflow-y: auto;
-    max-height: 240px;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--rv-bdr);
-    border-radius: var(--rv-radius-sm);
-    background: var(--rv-neutral-500);
-    padding: var(--rv-space-sm);
-}
-
-/* Components Popover */
-.rv-componentsPopover {
-    position: fixed;
-    background: var(--rv-neutral-500);
-    box-shadow: var(--rv-shd-pop);
-    z-index: 10001;
-}
-
-.rv-popoverHeaderCustom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--rv-space-lg) var(--rv-space-lg) var(--rv-space-md);
-}
-
-.rv-popoverTitleCustom {
-    font-size: var(--rv-space-lg);
-    font-weight: 600;
-    color: var(--rv-white);
-}
-
-/* .rv-folderItem styles removed */
-
-
+/* Picker Cards & Items */
 .rv-popoverCard {
     border: none;
     border-bottom: 1px solid var(--rv-bdr);
@@ -259,14 +192,6 @@
     border-bottom: none;
 }
 
-.rv-popoverCard:hover {
-    background: transparent;
-}
-
-.rv-popoverCard:hover .rv-cardTitle {
-    color: var(--rv-white);
-}
-
 .rv-cardImageWrapper {
     width: 52px;
     height: 52px;
@@ -278,15 +203,27 @@
     padding: 6px;
 }
 
-.rv-cardContent {
-    padding: 0;
+/* Interaction: Radio Options */
+.rv-radioOption {
+    display: flex;
+    align-items: center;
+    justify-content: left;
     flex: 1;
-}
-
-.rv-cardTitle {
-    color: var(--rv-neutral-75);
-    margin: 0;
+    border: 1px solid var(--rv-bdr);
+    border-radius: var(--rv-radius-sm);
+    padding: var(--rv-space-md);
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.2s;
+    color: var(--rv-neutral-50);
+    font-family: var(--rv-font-family-default);
     font-size: var(--rv-font-size-90);
+    font-weight: var(--rv-font-weight-regular);
+    user-select: none;
 }
 
-/* .rv-folderItem styles removed */
+.rv-radioOption:hover,
+.rv-radioOptionSelected {
+    background: var(--rv-neutral-400);
+    border-color: var(--rv-neutral-300);
+}

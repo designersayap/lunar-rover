@@ -1,4 +1,7 @@
-/* --- Buttons (Standardized System) --- */
+/* ==========================================================================
+   PURPOSE: Buttons & Icons
+   Standardized styling for all button variants and icon utility sizes.
+   ========================================================================== */
 
 .rv-btn {
     display: flex;
@@ -23,7 +26,7 @@
     cursor: not-allowed;
 }
 
-/* Variants */
+/* Button Variants */
 .rv-btnPrimary {
     background-color: var(--rv-neutral-300);
     box-shadow: 0 2px var(--rv-space-xs) rgba(0, 0, 0, .1);
@@ -74,15 +77,16 @@
     transform: translateY(1px);
 }
 
-/* Icon Support */
+/* Button & Icon Helpers */
 .rv-btnIcon {
     padding: 0;
     width: var(--rv-h-btn);
 }
 
-.rv-iconSmall {
+.rv-iconSm {
     width: var(--rv-space-lg);
     height: var(--rv-space-lg);
+    flex-shrink: 0;
 }
 
 .rv-iconXs {
@@ -90,7 +94,25 @@
     height: var(--rv-space-md);
 }
 
-/* Split Button */
+.rv-iconWhite {
+    color: var(--rv-white);
+}
+
+.rv-iconRotate {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rv-iconExpanded {
+    transform: rotate(90deg);
+}
+
+.rv-iconOutline {
+    fill: none !important;
+    stroke: currentColor;
+    stroke-width: 1.5;
+}
+
+/* Split Button System */
 .rv-splitButtonContainer {
     display: flex;
     align-items: center;
@@ -143,7 +165,145 @@
     transform: translateY(1px);
 }
 
-/* --- List Items (Generic System) --- */
+
+/* ==========================================================================
+   PURPOSE: Forms & Inputs
+   Base styling for form elements, integrated inputs, and toggles.
+   ========================================================================== */
+
+.rv-formInputTitle {
+    color: var(--rv-neutral-100);
+    font-size: var(--rv-font-size-md);
+    font-weight: var(--rv-font-weight-regular);
+    margin-bottom: var(--rv-space-xs);
+    display: block;
+}
+
+.rv-formInput {
+    width: 100%;
+    border-radius: var(--rv-radius-md);
+    font-size: var(--rv-font-size-md);
+    outline: none;
+    transition: all .2s;
+    background: var(--rv-neutral-500);
+    color: var(--rv-white);
+    border: 1px solid var(--rv-bdr);
+    box-shadow: none;
+    padding: 0 var(--rv-space-md);
+    height: var(--rv-h-btn);
+}
+
+.rv-formInput:focus,
+.rv-formInput:focus-within {
+    border-color: var(--rv-neutral-300);
+}
+
+.rv-formInput::placeholder {
+    color: var(--rv-neutral-100);
+    opacity: 0.5;
+}
+
+.rv-formInputGroup {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: var(--rv-neutral-500);
+    border: 1px solid var(--rv-bdr);
+    border-radius: var(--rv-radius-md);
+    transition: all .2s;
+}
+
+.rv-formInputGroup:focus-within {
+    border-color: var(--rv-neutral-300);
+}
+
+.rv-formInputGroup .rv-formInput {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    flex: 1;
+    padding-right: var(--rv-h-btn);
+}
+
+.rv-formTextarea {
+    resize: none;
+    font-family: inherit;
+    padding: var(--rv-space-sm) var(--rv-space-md);
+    height: 100px;
+}
+
+.rv-formSelect {
+    cursor: pointer;
+    appearance: none;
+    padding-right: 2.5em;
+}
+
+.rv-selectWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.rv-selectIcon {
+    position: absolute;
+    right: var(--rv-space-md);
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--rv-neutral-100);
+    width: var(--rv-space-lg);
+    height: var(--rv-space-lg);
+}
+
+/* Toggle Switches */
+.rv-toggleSwitch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: var(--rv-space-xl);
+}
+
+.rv-toggleInput {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.rv-toggleSlider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: var(--rv-neutral-100);
+    transition: .4s;
+    border-radius: var(--rv-radius-round);
+}
+
+.rv-toggleSlider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background: white;
+    transition: .4s;
+    border-radius: var(--rv-radius-round);
+}
+
+.rv-toggleInput:checked+.toggleSlider {
+    background: var(--rv-lunar-300);
+}
+
+.rv-toggleInput:checked+.toggleSlider:before {
+    transform: translateX(20px);
+}
+
+
+/* ==========================================================================
+   PURPOSE: List Items
+   Standardized layout for list items, used for navigation and dropdowns.
+   ========================================================================== */
+
 .rv-listItem {
     display: flex;
     align-items: center;
@@ -151,7 +311,7 @@
     cursor: pointer;
     height: 32px;
     padding: 0 var(--rv-space-sm);
-    margin-bottom: var(--rv-space-sm);
+    margin-bottom: var(--rv-space-xs);
     border-radius: var(--rv-radius-sm);
     transition: all 0.2s;
     color: var(--rv-neutral-75);
@@ -217,7 +377,7 @@
     opacity: 1;
 }
 
-/* Icon Variants */
+/* List Item Icon Variants */
 .rv-listItemIconSm {
     width: 16px !important;
 }
@@ -236,165 +396,11 @@
     height: 16px !important;
 }
 
-.rv-iconRotate {
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
 
-.rv-iconExpanded {
-    transform: rotate(90deg);
-}
-
-.rv-iconOutline {
-    fill: none !important;
-    stroke: currentColor;
-    stroke-width: 1.5;
-}
-
-
-.rv-formInputTitle {
-    color: var(--rv-neutral-100);
-    font-size: var(--rv-font-size-md);
-    font-weight: var(--rv-font-weight-regular);
-    margin-bottom: var(--rv-space-xs);
-    display: block;
-}
-
-.rv-formInput {
-    width: 100%;
-    border-radius: var(--rv-radius-md);
-    font-size: var(--rv-font-size-md);
-    outline: none;
-    transition: all .2s;
-    background: var(--rv-neutral-500);
-    /* Darker background */
-    color: var(--rv-white);
-    border: 1px solid var(--rv-bdr);
-    box-shadow: none;
-    /* Removing inner shadow for flatter look */
-    padding: 0 var(--rv-space-md);
-    height: var(--rv-h-btn);
-    /* Slightly taller for better touch targets */
-}
-
-.rv-formInput:focus,
-.rv-formInput:focus-within {
-    border-color: var(--rv-neutral-300);
-}
-
-.rv-formInput::placeholder {
-    color: var(--rv-neutral-100);
-    opacity: 0.5;
-}
-
-.rv-formInputIconBtn {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: var(--rv-h-btn);
-    padding: 0;
-}
-
-/* --- Integrated Input Groups --- */
-.rv-formInputGroup {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    background: var(--rv-neutral-500);
-    border: 1px solid var(--rv-bdr);
-    border-radius: var(--rv-radius-md);
-    transition: all .2s;
-}
-
-.rv-formInputGroup:focus-within {
-    border-color: var(--rv-neutral-300);
-}
-
-.rv-formInputGroup .rv-formInput {
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    flex: 1;
-    padding-right: var(--rv-h-btn);
-}
-
-.rv-formTextarea {
-    resize: none;
-    font-family: inherit;
-    padding: var(--rv-space-sm) var(--rv-space-md);
-    height: 100px;
-}
-
-.rv-formSelect {
-    cursor: pointer;
-    appearance: none;
-    padding-right: 2.5em;
-}
-
-.rv-selectWrapper {
-    position: relative;
-    width: 100%;
-}
-
-.rv-selectIcon {
-    position: absolute;
-    right: var(--rv-space-md);
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    color: var(--rv-neutral-100);
-    width: var(--rv-space-lg);
-    height: var(--rv-space-lg);
-}
-
-/* --- Toggles --- */
-
-.rv-toggleSwitch {
-    position: relative;
-    display: inline-block;
-    width: 44px;
-    height: var(--rv-space-xl);
-}
-
-.rv-toggleInput {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.rv-toggleSlider {
-    position: absolute;
-    cursor: pointer;
-    inset: 0;
-    background: var(--rv-neutral-100);
-    transition: .4s;
-    border-radius: var(--rv-radius-round);
-}
-
-.rv-toggleSlider:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    left: 2px;
-    bottom: 2px;
-    background: white;
-    transition: .4s;
-    border-radius: var(--rv-radius-round);
-}
-
-.rv-toggleInput:checked+.toggleSlider {
-    background: var(--rv-lunar-300);
-}
-
-.rv-toggleInput:checked+.toggleSlider:before {
-    transform: translateX(20px);
-}
-
-/* =========================================
-   8. COMPONENT: CANVAS EDITOR
-   ========================================= */
+/* ==========================================================================
+   PURPOSE: Canvas & Editor
+   Classes used within the workspace/canvas area for builder interactions.
+   ========================================================================== */
 
 .rv-emptyState {
     min-height: 80vh;
@@ -406,17 +412,6 @@
 
 .rv-emptyStateText {
     text-align: center;
-}
-
-.rv-canvasBackgroundRoot {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
 }
 
 .rv-componentWrapper {
@@ -431,7 +426,7 @@
     background-color: var(--rv-lunar-50);
 }
 
-/* Drag Image */
+/* Drag & Drop Visuals */
 .rv-dragImageContainer {
     height: 60px;
     width: 100%;
@@ -450,23 +445,7 @@
     color: var(--rv-white);
 }
 
-.rv-customDragImage {
-    position: absolute;
-    top: -1000px;
-    left: -1000px;
-    background: var(--rv-neutral-300);
-    padding: var(--rv-space-xs);
-    border-radius: var(--rv-radius-md);
-    box-shadow: 0 var(--rv-space-xs) var(--rv-space-md) rgba(0, 0, 0, .1);
-    border: 1px solid var(--rv-bdr);
-    align-items: center;
-    gap: var(--rv-space-xs);
-    width: 100px;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Builder Controls */
+/* Builder Interaction Overlays */
 .rv-activeWrapper {
     position: relative;
 }
@@ -531,29 +510,6 @@
     height: var(--rv-space-md);
 }
 
-.rv-builderTextOverlay {
-    background-color: var(--rv-neutral-500);
-    color: var(--rv-white);
-    border-radius: var(--rv-radius-sm);
-    font-family: var(--rv-font-family-default);
-    box-shadow: var(--rv-shadow-md);
-}
-
-/* Misc Canvas */
-.rv-canvasWrapper {
-    position: relative;
-    width: 200px;
-    height: 150px;
-    margin: 0 auto;
-    margin-bottom: var(--rv-space-xl);
-}
-
-.rv-canvasText {
-    color: var(--rv-neutral-100);
-    font-family: var(--rv-font-family-body);
-    font-size: var(--rv-font-md);
-}
-
 .rv-resolutionIndicator {
     font-size: 11px;
     font-weight: 500;
@@ -572,60 +528,40 @@
     z-index: 10;
 }
 
-.rv-scrollGroupOverlay {
-    position: absolute;
-    inset: 0;
-    background-color: var(--rv-white);
-    z-index: 2;
-    pointer-events: none;
-    opacity: 0;
-}
 
-/* Floating Merge Button */
-.rv-floatingMergeContainer {
-    position: fixed;
-    bottom: var(--rv-space-xl);
-    width: var(--rv-w-sidebar);
-    left: 0;
+/* ==========================================================================
+   PURPOSE: Molecules & Decorators
+   Specialized complex components like analytics, and accordions.
+   ========================================================================== */
+
+/* Analytics Modules */
+.rv-analyticsContainer {
+    flex: 1;
+    overflow-y: auto;
     display: flex;
-    justify-content: center;
-    z-index: 100;
-    pointer-events: none;
+    flex-direction: column;
+    padding: var(--rv-space-md) var(--rv-space-md) var(--rv-space-lg);
 }
 
-.rv-floatingMergeContent {
-    pointer-events: auto;
+.rv-analyticsSection {
+    gap: var(--rv-space-xs);
+    margin: var(--rv-space-sm) 0;
     display: flex;
-    align-items: center;
-    gap: var(--rv-space-sm);
-    background-color: var(--rv-neutral-500);
-    padding: var(--rv-space-sm) var(--rv-space-lg);
-    border-radius: var(--rv-radius-md);
-    box-shadow: var(--rv-shd-btn);
-    color: var(--rv-white);
-    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-direction: column;
 }
 
-.rv-floatingMergeButton {
-    width: var(--rv-w-sidebar);
-    background-color: var(--rv-neutral-500);
-    box-shadow: var(--rv-shd-btn);
-    color: var(--rv-white);
+/* Accordion System */
+.rv-accordionContent {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .3s ease-out;
 }
 
-.rv-floatingMergeText {
-    font-weight: 600;
-    font-size: var(--rv-font-size-md);
-    white-space: nowrap;
+.rv-accordionContentOpen {
+    grid-template-rows: 1fr;
 }
 
-
-
-/* =========================================
-   NOTIFICATION DECORATORS
-   ========================================= */
-
-/* Unread state for list items */
+/* Notification & Status Decorators */
 .rv-notificationItemUnread {
     background-color: var(--rv-neutral-500) !important;
 }
@@ -645,30 +581,6 @@
     background-color: var(--rv-lunar-300);
 }
 
-.rv-notificationTime {
-    font-size: 11px;
-    color: var(--rv-neutral-100);
-}
-
-.rv-notificationSubList {
-    margin-top: 4px;
-    padding-left: 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.rv-notificationSubItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    color: var(--rv-neutral-100);
-    padding: 2px 8px;
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: var(--rv-radius-sm);
-}
-
 .rv-countBadge {
     background-color: var(--rv-lunar-300);
     color: white;
@@ -679,10 +591,7 @@
     font-weight: 600;
 }
 
-/* =========================================
-   ELEMENTS: DIVIDERS
-   ========================================= */
-
+/* Dividers */
 .rv-horizontalDivider {
     border-top: 1px solid var(--rv-bdr);
     margin: var(--rv-space-sm) 0;
@@ -693,87 +602,4 @@
     width: 1px;
     height: var(--rv-space-lg);
     background-color: var(--rv-bdr);
-}
-
-
-/* =========================================
-   ELEMENTS: ICONS
-   ========================================= */
-
-.rv-iconSm {
-    width: var(--rv-space-lg);
-    height: var(--rv-space-lg);
-    flex-shrink: 0;
-}
-
-.rv-iconXs {
-    width: var(--rv-space-md);
-    height: var(--rv-space-md);
-}
-
-.rv-iconWhite {
-    color: var(--rv-white);
-}
-
-
-/* =========================================
-   MOLECULES: IMAGE PREVIEW
-   ========================================= */
-
-.rv-imagePreviewContainer {
-    background-color: var(--rv-neutral-50);
-    border: 1px solid var(--rv-neutral-100);
-    margin-top: var(--rv-space-xs);
-    padding: var(--rv-space-sm);
-    border-radius: var(--rv-radius-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 40px;
-}
-
-
-/* =========================================
-   MOLECULES: ANALYTICS
-   ========================================= */
-
-.rv-analyticsContainer {
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    padding: var(--rv-space-md) var(--rv-space-md) var(--rv-space-lg);
-}
-
-.rv-analyticsSection {
-    gap: var(--rv-space-xs);
-    margin: var(--rv-space-sm) 0;
-    display: flex;
-    flex-direction: column;
-}
-
-.rv-analyticsHeader {
-    gap: var(--rv-space-xs);
-    display: flex;
-    align-items: center;
-    margin-bottom: var(--rv-space-xs);
-}
-
-
-/* =========================================
-   MOLECULES: ACCORDION
-   ========================================= */
-
-.rv-accordionContent {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows .3s ease-out;
-}
-
-.rv-accordionContentOpen {
-    grid-template-rows: 1fr;
-}
-
-.rv-accordionInner {
-    overflow: hidden;
 }

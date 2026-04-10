@@ -1,6 +1,7 @@
-/* =========================================
-   SIDEBAR & NAVIGATION
-   ========================================= */
+/* ==========================================================================
+   PURPOSE: Sidebar Structure
+   Layout logic for the main sidebar shell, rails, and bodies.
+   ========================================================================== */
 
 .rv-sidebarShell {
     width: var(--rv-w-sidebar);
@@ -23,7 +24,6 @@
     pointer-events: none;
 }
 
-/* --- Visual Sidebar Panel (Rail + Body) --- */
 .rv-sidebar {
     margin-top: 0;
     margin-right: 0;
@@ -45,7 +45,20 @@
     z-index: 10;
 }
 
-/* --- Vertical Rail --- */
+.rv-sidebarBody {
+    flex: 1;
+    overflow: hidden;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ==========================================================================
+   PURPOSE: Navigation Rails
+   The vertical icon rail used for switching main sidebar contexts.
+   ========================================================================== */
+
 .rv-sidebarRail {
     width: 80px;
     background: transparent;
@@ -122,15 +135,12 @@
     font-weight: 500;
 }
 
-.rv-sidebarBody {
-    flex: 1;
-    overflow: hidden;
-    background: transparent;
-    display: flex;
-    flex-direction: column;
-}
 
-/* --- Tree Controls --- */
+/* ==========================================================================
+   PURPOSE: Tree Navigation (Layers)
+   Logic for hierarchial tree views, layer rows, and nesting.
+   ========================================================================== */
+
 .rv-treeContainer {
     flex: 1;
     overflow-y: auto;
@@ -185,34 +195,22 @@
 }
 
 
-/* --- Search Bar --- */
-.rv-searchRow {
-    gap: var(--rv-space-sm);
-    padding: var(--rv-space-md) var(--rv-space-md) var(--rv-space-sm);
-}
+/* ==========================================================================
+   PURPOSE: Property Editor & Helpers
+   Layout patterns for the settings panels and resize controls.
+   ========================================================================== */
 
-.rv-searchBar {
-    padding-left: 36px !important;
-}
-
-.rv-searchInputWrapper {
-    position: relative;
-    flex: 1;
+.rv-propertyRow {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: space-between;
 }
 
-.rv-searchIcon {
-    position: absolute;
-    left: var(--rv-space-md);
-    width: 18px;
-    height: 18px;
-    color: var(--rv-neutral-100);
-    pointer-events: none;
-    opacity: 0.5;
+.rv-propertyRowStacked {
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-/* --- Resize Handle --- */
 .rv-resizeHandle {
     position: absolute;
     top: 0;
@@ -241,33 +239,35 @@
     top: 50%;
     transform: translateY(-50%);
 }
-/* =========================================
-   SIDEBAR LAYOUT HELPERS
-   ========================================= */
 
-.rv-wSidebar {
-    width: var(--rv-w-sidebar);
+
+/* ==========================================================================
+   PURPOSE: Sidebar Search
+   Components for the contextual search bars within the sidebar.
+   ========================================================================== */
+
+.rv-searchRow {
+    gap: var(--rv-space-sm);
+    padding: var(--rv-space-md) var(--rv-space-md) var(--rv-space-sm);
 }
 
-.rv-topBarLeft,
-.rv-topBarRight,
-.rv-settingsButton,
-.rv-categoryHeader,
-.rv-searchRow,
-.rv-treeRow,
-.rv-treeIconWrapper,
-.rv-treeChevron {
+.rv-searchBar {
+    padding-left: 36px !important;
+}
+
+.rv-searchInputWrapper {
+    position: relative;
+    flex: 1;
     display: flex;
     align-items: center;
 }
 
-.rv-propertyRow {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-}
-
-.rv-propertyRowStacked {
-    flex-direction: column;
-    align-items: flex-start;
+.rv-searchIcon {
+    position: absolute;
+    left: var(--rv-space-md);
+    width: 18px;
+    height: 18px;
+    color: var(--rv-neutral-100);
+    pointer-events: none;
+    opacity: 0.5;
 }

@@ -1,19 +1,19 @@
-/* PAGE BUILDER STYLES - Dark theme UI
-   Refactored and Grouped by Function
-*/
-
-/* =========================================
-   1. VARIABLES & GLOBAL
-   ========================================= */
+/* ==========================================================================
+   PURPOSE: Design Tokens & Variables
+   Global variables for colors, spacing, typography, and component dimensions.
+   ========================================================================== */
 
 :root {
-    /* colors */
+    /* --------------------------------------------------------------------------
+       COLORS: Brand palette (Lunar) and Neutral palette for dark UI.
+       -------------------------------------------------------------------------- */
     --rv-lunar-50: #e3f2fd;
     --rv-lunar-100: #bbdefb;
     --rv-lunar-200: #64b5f6;
     --rv-lunar-300: #1976d2;
     --rv-lunar-400: #1565c0;
     --rv-lunar-500: #0d47a1;
+
     --rv-neutral-50: #FFFFFF;
     --rv-neutral-75: #D1D1D1;
     --rv-neutral-100: #A0A0A0;
@@ -21,40 +21,50 @@
     --rv-neutral-300: #2B2B2B;
     --rv-neutral-400: #1E1E1E;
     --rv-neutral-500: #121212;
+
     --rv-bdr: #1e1e1e;
     --rv-white: #ffffff;
     --rv-black: #000000;
     --rv-danger: #ef4444;
     --rv-success: #22c55e;
 
-    /* shadow */
+    /* --------------------------------------------------------------------------
+       SHADOWS: Elevation levels for buttons, inputs, and popovers.
+       -------------------------------------------------------------------------- */
     --rv-shd-btn: 0 2px 4px rgba(0, 0, 0, .1), inset 0 1px 0 rgba(255, 255, 255, .05);
     --rv-shd-active: inset 0 2px 4px rgba(0, 0, 0, 0.4);
     --rv-shd-input: inset 0 2px 4px rgba(0, 0, 0, .1);
     --rv-shd-pop: 0 12px 60px 8px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05);
     --rv-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
-    /* component size */
+    /* --------------------------------------------------------------------------
+       DIMENSIONS: Standardized heights and widths for layout pieces.
+       -------------------------------------------------------------------------- */
     --rv-h-btn: 32px;
     --rv-h-topbar: 64px;
     --rv-w-sidebar: 360px;
-
     --rv-w-pop: 362px;
 
-    /* spacing */
+    /* --------------------------------------------------------------------------
+       SPACING: Consistent gap and margin system.
+       -------------------------------------------------------------------------- */
     --rv-space-xs: 4px;
     --rv-space-sm: 8px;
     --rv-space-md: 12px;
     --rv-space-lg: 16px;
     --rv-space-xl: 24px;
 
-    /* radius */
+    /* --------------------------------------------------------------------------
+       RADIUS: Corner rounding for cards and forms.
+       -------------------------------------------------------------------------- */
     --rv-radius-sm: 4px;
     --rv-radius-md: 8px;
     --rv-radius-lg: 12px;
     --rv-radius-round: 9999px;
 
-    /* font */
+    /* --------------------------------------------------------------------------
+       TYPOGRAPHY: Font families, weights, and line heights.
+       -------------------------------------------------------------------------- */
     --rv-font-family-default: 'Plus Jakarta Sans', sans-serif;
     --rv-font-family-mono: 'Ui-Monospace', 'SF Mono', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
     --rv-font-weight-regular: 400;
@@ -66,4 +76,3 @@
     --rv-lh-md: 1.4;
     --rv-lh-loose: 1.6;
 }
-
