@@ -118,7 +118,7 @@
 }
 
 .rv-notificationCardTime {
-    font-size: 10px;
+    font-size: var(--rv-font-size-sm);
     color: var(--rv-neutral-100);
     opacity: 0.6;
 }
@@ -193,12 +193,12 @@
     font-size: 12px;
     font-weight: 600;
     color: var(--rv-white);
-    margin: 0 0 2px 0;
+    margin: 8px 0 2px 0;
 }
 
 .rv-notificationCardBody {
-    font-size: 11px;
-    color: var(--rv-neutral-100);
+    font-size: var(--rv-font-size-md);
+    color: var(--rv-neutral-50);
     margin: 0;
     line-height: 1.4;
     opacity: 0.8;
