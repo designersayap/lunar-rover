@@ -620,7 +620,6 @@
 }
 
 /* Notification & Status Decorators */
-/* Notification & Status Decorators */
 .rv-notificationItemUnread {
     background-color: var(--rv-neutral-500) !important;
 }
