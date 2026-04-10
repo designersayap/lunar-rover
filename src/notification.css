@@ -6,7 +6,7 @@
 .rv-notificationStack {
     position: relative;
     padding-bottom: 4px;
-    margin-bottom: var(--rv-space-lg);
+    margin-bottom: var(--rv-space-xl);
     cursor: pointer;
     z-index: 1; /* Establish stacking context for children */
 }
