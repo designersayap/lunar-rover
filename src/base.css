@@ -92,67 +92,44 @@
 }
 
 /* Margin */
-.rv-m0 {
-    margin: 0;
-}
+.rv-m0 { margin: 0; }
 
-.rv-mtSm {
-    margin-top: var(--rv-space-sm);
-}
+.rv-mtXs { margin-top: var(--rv-space-xs); }
+.rv-mtSm { margin-top: var(--rv-space-sm); }
+.rv-mtMd { margin-top: var(--rv-space-md); }
+.rv-mtLg { margin-top: var(--rv-space-lg); }
+.rv-mtXl { margin-top: var(--rv-space-xl); }
 
-.rv-mtMd {
-    margin-top: var(--rv-space-md);
-}
+.rv-mbXs { margin-bottom: var(--rv-space-xs); }
+.rv-mbSm { margin-bottom: var(--rv-space-sm); }
+.rv-mbMd { margin-bottom: var(--rv-space-md); }
+.rv-mbLg { margin-bottom: var(--rv-space-lg); }
+.rv-mbXl { margin-bottom: var(--rv-space-xl); }
 
-.rv-mtXl {
-    margin-top: var(--rv-space-xl);
-}
-
-.rv-mbSm {
-    margin-bottom: var(--rv-space-sm);
-}
-
-.rv-mbMd {
-    margin-bottom: var(--rv-space-md);
-}
-
-.rv-mbXl {
-    margin-bottom: var(--rv-space-xl);
-}
-
-.rv-mlAuto {
-    margin-left: auto;
-}
-
-.rv-mrAuto {
-    margin-right: auto;
-}
-
-.rv-mxAuto {
-    margin-left: auto;
-    margin-right: auto;
-}
+.rv-mlAuto { margin-left: auto; }
+.rv-mrAuto { margin-right: auto; }
+.rv-mxAuto { margin-left: auto; margin-right: auto; }
 
 /* Padding */
-.rv-p0 {
-    padding: 0;
-}
+.rv-p0 { padding: 0; }
 
-.rv-pSm {
-    padding: var(--rv-space-sm);
-}
+.rv-pXs { padding: var(--rv-space-xs); }
+.rv-pSm { padding: var(--rv-space-sm); }
+.rv-pMd { padding: var(--rv-space-md); }
+.rv-pLg { padding: var(--rv-space-lg); }
+.rv-pXl { padding: var(--rv-space-xl); }
 
-.rv-pMd {
-    padding: var(--rv-space-md);
-}
+.rv-ptXs { padding-top: var(--rv-space-xs); }
+.rv-ptSm { padding-top: var(--rv-space-sm); }
+.rv-ptMd { padding-top: var(--rv-space-md); }
+.rv-ptLg { padding-top: var(--rv-space-lg); }
+.rv-ptXl { padding-top: var(--rv-space-xl); }
 
-.rv-pLg {
-    padding: var(--rv-space-lg);
-}
-
-.rv-pXl {
-    padding: var(--rv-space-xl);
-}
+.rv-pbXs { padding-bottom: var(--rv-space-xs); }
+.rv-pbSm { padding-bottom: var(--rv-space-sm); }
+.rv-pbMd { padding-bottom: var(--rv-space-md); }
+.rv-pbLg { padding-bottom: var(--rv-space-lg); }
+.rv-pbXl { padding-bottom: var(--rv-space-xl); }
 
 
 /* --- Text Scale --- */

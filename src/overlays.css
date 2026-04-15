@@ -112,23 +112,6 @@
     background: var(--rv-neutral-500);
 }
 
-/* Theme Picker & Lists */
-.rv-themePickerContent {
-    padding: var(--rv-space-lg);
-}
-
-.rv-themePickerSearchContainer {
-    margin-bottom: var(--rv-space-md);
-}
-
-/* Export Popover Modules */
-.rv-exportInputWrapper {
-    gap: var(--rv-space-xs);
-    padding-bottom: var(--rv-space-xl);
-    display: flex;
-    flex-direction: column;
-}
-
 /* Generic Builder Dropdown Popover */
 .rv-popoverDropdown {
     position: absolute;
@@ -137,5 +120,3 @@
     margin: 0;
     z-index: 10001;
 }
-
-/* Picker Cards & Items */
