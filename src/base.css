@@ -116,6 +116,10 @@
     margin-bottom: var(--rv-space-md);
 }
 
+.rv-mbXl {
+    margin-bottom: var(--rv-space-xl);
+}
+
 .rv-mlAuto {
     margin-left: auto;
 }
@@ -151,65 +155,84 @@
 }
 
 
-/* ==========================================================================
-   PURPOSE: Typography & Text
-   Text alignment, weight, and standardized font scale utilities.
-   ========================================================================== */
-
-.rv-fontBody {
-    font-family: var(--rv-font-family-default);
+/* --- Text Scale --- */
+.rv-textXs {
+    font-size: 10px;
 }
 
-.rv-textTitle {
-    font-size: 20px;
-    font-weight: var(--rv-font-weight-bold);
-    color: var(--rv-neutral-50);
+.rv-textSm {
+    font-size: var(--rv-font-size-sm);
 }
 
-.rv-textBody {
-    font-family: var(--rv-font-family-default);
+.rv-textMd {
     font-size: var(--rv-font-size-md);
+}
+
+.rv-textLg {
+    font-size: var(--rv-font-size-lg);
+}
+
+.rv-textXl {
+    font-size: 20px;
+}
+
+/* --- Font Weight --- */
+.rv-fontRegular {
     font-weight: var(--rv-font-weight-regular);
-    line-height: var(--rv-lh-md);
 }
 
-.rv-textCaption {
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-font-size-sm);
-    font-weight: var(--rv-font-weight-regular);
-    line-height: var(--rv-lh-md);
-}
-
-.rv-textCaptionBold {
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-font-size-sm);
+.rv-fontBold {
     font-weight: var(--rv-font-weight-bold);
+}
+
+.rv-lhMd {
     line-height: var(--rv-lh-md);
 }
 
-.rv-textSmBold {
-    font-size: var(--rv-font-size-80);
-    font-weight: var(--rv-font-weight-bold);
+/* --- Alignment --- */
+.rv-textLeft {
+    text-align: left;
 }
 
 .rv-textCenter {
     text-align: center;
 }
 
-.rv-textLeft {
-    text-align: left;
-}
-
 .rv-textRight {
     text-align: right;
 }
 
-.rv-textSubtle {
+/* --- Text Colors --- */
+.rv-clrWhite {
+    color: var(--rv-white);
+}
+
+.rv-clrNeutral50 {
+    color: var(--rv-neutral-50);
+}
+
+.rv-clrNeutral100 {
+    color: var(--rv-neutral-100);
+}
+
+.rv-clrNeutral200 {
     color: var(--rv-neutral-200);
 }
 
-.rv-textSmall {
-    font-size: var(--rv-space-md);
+.rv-clrBrand {
+    color: var(--rv-lunar-300);
+}
+
+.rv-clrSuccess {
+    color: var(--rv-success);
+}
+
+.rv-clrDanger {
+    color: var(--rv-danger);
+}
+
+.rv-fontMono {
+    font-family: var(--rv-font-family-mono);
 }
 
 
