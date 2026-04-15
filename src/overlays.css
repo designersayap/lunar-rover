@@ -8,48 +8,7 @@
     inset: 0;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
 
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.rv-spinner {
-    width: var(--rv-space-lg);
-    height: var(--rv-space-lg);
-    border: 2px solid currentColor;
-    border-top-color: transparent;
-    border-radius: var(--rv-radius-round);
-    animation: spin 1s linear infinite;
-}
-
-.rv-emptyStateMessage {
-    padding: var(--rv-space-md);
-    text-align: center;
-    font-size: var(--rv-font-size-sm);
-    color: var(--rv-neutral-100);
-    line-height: var(--rv-lh-loose);
-}
-
-.rv-errorMessage {
-    color: var(--rv-danger);
-}
 
 
 /* ==========================================================================
@@ -153,28 +112,7 @@
     background: var(--rv-neutral-500);
 }
 
-.rv-componentsPopover {
-    position: fixed;
-    background: var(--rv-neutral-500);
-    box-shadow: var(--rv-shd-pop);
-    z-index: 10001;
-}
-
-
-/* ==========================================================================
-   PURPOSE: Portal Content Modules
-   Specialized layouts for specific popover content (Themes, Export, Picker).
-   ========================================================================== */
-
 /* Theme Picker & Lists */
-.rv-themePickerPopover {
-    position: absolute;
-    top: 40px;
-    right: var(--rv-space-lg);
-    margin: 0;
-    width: 260px;
-}
-
 .rv-themePickerContent {
     padding: var(--rv-space-lg);
 }
@@ -184,14 +122,6 @@
 }
 
 /* Export Popover Modules */
-.rv-exportPopover {
-    position: absolute;
-    top: 40px;
-    right: var(--rv-space-lg);
-    margin: 0;
-    width: var(--rv-w-pop);
-}
-
 .rv-exportInputWrapper {
     gap: var(--rv-space-xs);
     padding-bottom: var(--rv-space-xl);
@@ -199,58 +129,13 @@
     flex-direction: column;
 }
 
+/* Generic Builder Dropdown Popover */
+.rv-popoverDropdown {
+    position: absolute;
+    top: 40px;
+    right: var(--rv-space-lg);
+    margin: 0;
+    z-index: 10001;
+}
+
 /* Picker Cards & Items */
-.rv-popoverCard {
-    border: none;
-    border-bottom: 1px solid var(--rv-bdr);
-    border-radius: 0;
-    text-align: left;
-    padding: var(--rv-space-md) 0;
-    transition: all .5s;
-    background: transparent;
-    display: flex;
-    align-items: center;
-    gap: var(--rv-space-lg);
-    width: 100%;
-    cursor: pointer;
-}
-
-.rv-popoverCard:last-child {
-    border-bottom: none;
-}
-
-.rv-cardImageWrapper {
-    width: 52px;
-    height: 52px;
-    flex-shrink: 0;
-    position: relative;
-    background: var(--rv-neutral-400);
-    border-radius: var(--rv-radius-md);
-    border: 1px solid var(--rv-bdr);
-    padding: 6px;
-}
-
-/* Interaction: Radio Options */
-.rv-radioOption {
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    flex: 1;
-    border: 1px solid var(--rv-bdr);
-    border-radius: var(--rv-radius-sm);
-    padding: var(--rv-space-md);
-    cursor: pointer;
-    background: transparent;
-    transition: all 0.2s;
-    color: var(--rv-neutral-50);
-    font-family: var(--rv-font-family-default);
-    font-size: var(--rv-font-size-90);
-    font-weight: var(--rv-font-weight-regular);
-    user-select: none;
-}
-
-.rv-radioOption:hover,
-.rv-radioOptionSelected {
-    background: var(--rv-neutral-400);
-    border-color: var(--rv-neutral-300);
-}
