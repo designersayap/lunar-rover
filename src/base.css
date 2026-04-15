@@ -203,31 +203,27 @@
 }
 
 /* --- Text Colors --- */
-.rv-clrWhite {
+.rv-textDefault {
     color: var(--rv-white);
 }
 
-.rv-clrNeutral50 {
-    color: var(--rv-neutral-50);
-}
-
-.rv-clrNeutral100 {
+.rv-textSubtle {
     color: var(--rv-neutral-100);
 }
 
-.rv-clrNeutral200 {
+.rv-textMuted {
     color: var(--rv-neutral-200);
 }
 
-.rv-clrBrand {
+.rv-textBrand {
     color: var(--rv-lunar-300);
 }
 
-.rv-clrSuccess {
+.rv-textSuccess {
     color: var(--rv-success);
 }
 
-.rv-clrDanger {
+.rv-textDanger {
     color: var(--rv-danger);
 }
 
