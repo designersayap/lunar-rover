@@ -54,6 +54,16 @@
 .rv-right0 { right: 0; }
 .rv-bottom0 { bottom: 0; }
 
+/* ==========================================================================
+   PURPOSE: Sizing Primitives
+   Helpers for common dimensions and constraints.
+   ========================================================================== */
+
+.rv-wFull { width: 100%; }
+.rv-hFull { height: 100%; }
+.rv-minW0 { min-width: 0; }
+.rv-hScreen { height: 100vh; }
+
 .rv-overlayFixed {
     position: fixed;
     inset: 0;
