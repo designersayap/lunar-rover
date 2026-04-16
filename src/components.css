@@ -195,7 +195,7 @@
 form {
     display: flex;
     flex-direction: column;
-    gap: var(--rv-space-sm);
+    gap: var(--rv-space-lg);
 }
 
 .rv-formInputTitle {

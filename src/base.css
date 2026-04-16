@@ -1,62 +1,58 @@
 /* ==========================================================================
-   PURPOSE: Layout Utilities
-   Core flexbox, alignment, and positioning helpers.
+   PURPOSE: Layout Primitives
+   Core flexbox and grid helpers for structural arrangement.
    ========================================================================== */
 
-.rv-flex {
-    display: flex;
-}
+.rv-flex { display: flex; }
+.rv-flexCol { display: flex; flex-direction: column; }
+.rv-flex1 { flex: 1; }
+.rv-flexShrink0 { flex-shrink: 0; }
 
-.rv-flexCol {
-    display: flex;
-    flex-direction: column;
-}
+.rv-grid { display: grid; }
+.rv-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.rv-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-.rv-flex1 {
-    flex: 1;
-}
+/* Alignment Hooks */
+.rv-itemsCenter { align-items: center; }
+.rv-itemsStart { align-items: flex-start; }
+.rv-itemsEnd { align-items: flex-end; }
+.rv-itemsStretch { align-items: stretch; }
 
-/* Alignment */
-.rv-itemsCenter {
-    align-items: center;
-}
+.rv-justifyCenter { justify-content: center; }
+.rv-justifyBetween { justify-content: space-between; }
+.rv-justifyEnd { justify-content: flex-end; }
+.rv-justifyStart { justify-content: flex-start; }
 
-.rv-itemsStart {
-    align-items: flex-start;
-}
 
-.rv-itemsEnd {
-    align-items: flex-end;
-}
+/* ==========================================================================
+   PURPOSE: Display & Flow
+   Helpers for toggling visibility and element behavior.
+   ========================================================================== */
 
-.rv-justifyCenter {
-    justify-content: center;
-}
+.rv-block { display: block; }
+.rv-inlineBlock { display: inline-block; }
+.rv-inlineFlex { display: inline-flex; }
+.rv-hidden { display: none !important; }
 
-.rv-justifyBetween {
-    justify-content: space-between;
-}
+.rv-overflowHidden { overflow: hidden; }
+.rv-overflowAuto { overflow: auto; }
+.rv-overflowVisible { overflow: visible; }
 
-.rv-justifyEnd {
-    justify-content: flex-end;
-}
 
-/* Dimensions & Position */
-.rv-wFull {
-    width: 100%;
-}
+/* ==========================================================================
+   PURPOSE: Positioning & Layers
+   Standardized depth and coordinate system.
+   ========================================================================== */
 
-.rv-hFull {
-    height: 100%;
-}
+.rv-relative { position: relative; }
+.rv-absolute { position: absolute; }
+.rv-fixed { position: fixed; }
 
-.rv-relative {
-    position: relative;
-}
-
-.rv-absolute {
-    position: absolute;
-}
+.rv-inset0 { inset: 0; }
+.rv-top0 { top: 0; }
+.rv-left0 { left: 0; }
+.rv-right0 { right: 0; }
+.rv-bottom0 { bottom: 0; }
 
 .rv-overlayFixed {
     position: fixed;
@@ -64,36 +60,34 @@
     pointer-events: none;
 }
 
+/* Z-Index Scale */
+.rv-z0 { z-index: 0; }
+.rv-zSticky { z-index: 100; }
+.rv-zOverlay { z-index: 1000; }
+.rv-zModal { z-index: 10000; }
+
 
 /* ==========================================================================
    PURPOSE: Spacing Utilities
-   Standardized gap and margin/padding helpers based on the design tokens.
+   Complete gap, margin, and padding system based on tokens.
    ========================================================================== */
 
 /* Gaps */
-.rv-gapXs {
-    gap: var(--rv-space-xs);
-}
+.rv-gapXs { gap: var(--rv-space-xs); }
+.rv-gapSm { gap: var(--rv-space-sm); }
+.rv-gapMd { gap: var(--rv-space-md); }
+.rv-gapLg { gap: var(--rv-space-lg); }
+.rv-gapXl { gap: var(--rv-space-xl); }
 
-.rv-gapSm {
-    gap: var(--rv-space-sm);
-}
-
-.rv-gapMd {
-    gap: var(--rv-space-md);
-}
-
-.rv-gapLg {
-    gap: var(--rv-space-lg);
-}
-
-.rv-gapXl {
-    gap: var(--rv-space-xl);
-}
-
-/* Margin */
+/* Margin - General */
 .rv-m0 { margin: 0; }
+.rv-mXs { margin: var(--rv-space-xs); }
+.rv-mSm { margin: var(--rv-space-sm); }
+.rv-mMd { margin: var(--rv-space-md); }
+.rv-mLg { margin: var(--rv-space-lg); }
+.rv-mXl { margin: var(--rv-space-xl); }
 
+/* Margin - Vertical */
 .rv-mtXs { margin-top: var(--rv-space-xs); }
 .rv-mtSm { margin-top: var(--rv-space-sm); }
 .rv-mtMd { margin-top: var(--rv-space-md); }
@@ -106,19 +100,34 @@
 .rv-mbLg { margin-bottom: var(--rv-space-lg); }
 .rv-mbXl { margin-bottom: var(--rv-space-xl); }
 
+.rv-myAuto { margin-top: auto; margin-bottom: auto; }
+
+/* Margin - Horizontal */
+.rv-mlXs { margin-left: var(--rv-space-xs); }
+.rv-mlSm { margin-left: var(--rv-space-sm); }
+.rv-mlMd { margin-left: var(--rv-space-md); }
+.rv-mlLg { margin-left: var(--rv-space-lg); }
+.rv-mlXl { margin-left: var(--rv-space-xl); }
+
+.rv-mrXs { margin-right: var(--rv-space-xs); }
+.rv-mrSm { margin-right: var(--rv-space-sm); }
+.rv-mrMd { margin-right: var(--rv-space-md); }
+.rv-mrLg { margin-right: var(--rv-space-lg); }
+.rv-mrXl { margin-right: var(--rv-space-xl); }
+
 .rv-mlAuto { margin-left: auto; }
 .rv-mrAuto { margin-right: auto; }
 .rv-mxAuto { margin-left: auto; margin-right: auto; }
 
-/* Padding */
+/* Padding - General */
 .rv-p0 { padding: 0; }
-
 .rv-pXs { padding: var(--rv-space-xs); }
 .rv-pSm { padding: var(--rv-space-sm); }
 .rv-pMd { padding: var(--rv-space-md); }
 .rv-pLg { padding: var(--rv-space-lg); }
 .rv-pXl { padding: var(--rv-space-xl); }
 
+/* Padding - Vertical */
 .rv-ptXs { padding-top: var(--rv-space-xs); }
 .rv-ptSm { padding-top: var(--rv-space-sm); }
 .rv-ptMd { padding-top: var(--rv-space-md); }
@@ -131,106 +140,80 @@
 .rv-pbLg { padding-bottom: var(--rv-space-lg); }
 .rv-pbXl { padding-bottom: var(--rv-space-xl); }
 
+/* Padding - Horizontal */
+.rv-plXs { padding-left: var(--rv-space-xs); }
+.rv-plSm { padding-left: var(--rv-space-sm); }
+.rv-plMd { padding-left: var(--rv-space-md); }
+.rv-plLg { padding-left: var(--rv-space-lg); }
+.rv-plXl { padding-left: var(--rv-space-xl); }
 
-/* --- Text Scale --- */
-.rv-textXs {
-    font-size: 10px;
-}
+.rv-prXs { padding-right: var(--rv-space-xs); }
+.rv-prSm { padding-right: var(--rv-space-sm); }
+.rv-prMd { padding-right: var(--rv-space-md); }
+.rv-prLg { padding-right: var(--rv-space-lg); }
+.rv-prXl { padding-right: var(--rv-space-xl); }
 
-.rv-textSm {
-    font-size: var(--rv-font-size-sm);
-}
-
-.rv-textMd {
-    font-size: var(--rv-font-size-md);
-}
-
-.rv-textLg {
-    font-size: var(--rv-font-size-lg);
-}
-
-.rv-textXl {
-    font-size: 20px;
-}
-
-/* --- Font Weight --- */
-.rv-fontRegular {
-    font-weight: var(--rv-font-weight-regular);
-}
-
-.rv-fontBold {
-    font-weight: var(--rv-font-weight-bold);
-}
-
-.rv-lhMd {
-    line-height: var(--rv-lh-md);
-}
-
-/* --- Alignment --- */
-.rv-textLeft {
-    text-align: left;
-}
-
-.rv-textCenter {
-    text-align: center;
-}
-
-.rv-textRight {
-    text-align: right;
-}
-
-/* --- Text Colors --- */
-.rv-textDefault {
-    color: var(--rv-white);
-}
-
-.rv-textSubtle {
-    color: var(--rv-neutral-100);
-}
-
-.rv-textMuted {
-    color: var(--rv-neutral-200);
-}
-
-.rv-textBrand {
-    color: var(--rv-lunar-300);
-}
-
-.rv-textSuccess {
-    color: var(--rv-success);
-}
-
-.rv-textDanger {
-    color: var(--rv-danger);
-}
-
-.rv-fontMono {
-    font-family: var(--rv-font-family-mono);
-}
+.rv-pxXs { padding-left: var(--rv-space-xs); padding-right: var(--rv-space-xs); }
+.rv-pxSm { padding-left: var(--rv-space-sm); padding-right: var(--rv-space-sm); }
+.rv-pxMd { padding-left: var(--rv-space-md); padding-right: var(--rv-space-md); }
+.rv-pxLg { padding-left: var(--rv-space-lg); padding-right: var(--rv-space-lg); }
+.rv-pxXl { padding-left: var(--rv-space-xl); padding-right: var(--rv-space-xl); }
 
 
 /* ==========================================================================
-   PURPOSE: Appearance & Environment
-   Borders, shadows, and global browser environment resets (like scrollbars).
+   PURPOSE: Typography & Scale
+   Helpers for standard text sizing and font weights.
    ========================================================================== */
 
-.rv-radiusSm {
-    border-radius: var(--rv-radius-sm);
-}
+.rv-textXs { font-size: 10px; }
+.rv-textSm { font-size: var(--rv-font-size-sm); }
+.rv-textMd { font-size: var(--rv-font-size-md); }
+.rv-textLg { font-size: var(--rv-font-size-lg); }
+.rv-textXl { font-size: 20px; }
 
-.rv-radiusLg {
-    border-radius: var(--rv-radius-lg);
-}
+.rv-fontRegular { font-weight: var(--rv-font-weight-regular); }
+.rv-fontBold { font-weight: var(--rv-font-weight-bold); }
+.rv-fontMono { font-family: var(--rv-font-family-mono); }
 
-.rv-shadowMd {
-    box-shadow: var(--rv-shadow-md);
-}
+.rv-lhMd { line-height: var(--rv-lh-md); }
+.rv-lhLoose { line-height: var(--rv-lh-loose); }
 
-.rv-shadowBtn {
-    box-shadow: var(--rv-shd-btn);
-}
+.rv-textLeft { text-align: left; }
+.rv-textCenter { text-align: center; }
+.rv-textRight { text-align: right; }
 
-/* Scrollbar Styling */
+/* Text Colors */
+.rv-textDefault { color: var(--rv-white); }
+.rv-textSubtle { color: var(--rv-neutral-100); }
+.rv-textMuted { color: var(--rv-neutral-200); }
+.rv-textBrand { color: var(--rv-lunar-300); }
+.rv-textSuccess { color: var(--rv-success); }
+.rv-textDanger { color: var(--rv-danger); }
+
+
+/* ==========================================================================
+   PURPOSE: Appearance & Details
+   Border radius, shadows, and content visibility adjustments.
+   ========================================================================== */
+
+.rv-radiusSm { border-radius: var(--rv-radius-sm); }
+.rv-radiusMd { border-radius: var(--rv-radius-md); }
+.rv-radiusLg { border-radius: var(--rv-radius-lg); }
+.rv-radiusRound { border-radius: var(--rv-radius-round); }
+
+.rv-shadowMd { box-shadow: var(--rv-shadow-md); }
+.rv-shadowBtn { box-shadow: var(--rv-shd-btn); }
+
+.rv-opacity70 { opacity: 0.7; }
+.rv-opacity50 { opacity: 0.5; }
+.rv-userSelectNone { user-select: none; }
+
+
+/* ==========================================================================
+   PURPOSE: Global Environment
+   Targeted overrides for browser states like scrollbars.
+   ========================================================================== */
+
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--rv-neutral-300) transparent;
