@@ -192,6 +192,12 @@
    Base styling for form elements, integrated inputs, and toggles.
    ========================================================================== */
 
+form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rv-space-sm);
+}
+
 .rv-formInputTitle {
     color: var(--rv-neutral-100);
     font-size: var(--rv-font-size-md);
@@ -743,7 +749,7 @@
 .rv-emptyStateMessage {
     padding: var(--rv-space-md);
     text-align: center;
-    font-size: var(--rv-font-size-sm);
+    font-size: var(--rv-font-size-md);
     color: var(--rv-neutral-100);
     line-height: var(--rv-lh-loose);
 }
