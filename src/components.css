@@ -580,14 +580,6 @@ form {
     position: relative;
 }
 
-.rv-activeBorderOutline {
-    position: absolute;
-    inset: 0;
-    border: 2px solid var(--rv-lunar-300);
-    border-radius: 1px;
-    pointer-events: none;
-}
-
 .rv-activeOverlay {
     position: absolute;
     top: -var(--rv-space-xl);
@@ -607,6 +599,14 @@ form {
     border: 1px solid #fff3;
     min-width: 100px;
     box-shadow: var(--rv-shadow-md)
+}
+
+.rv-activeBorderOutline {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--rv-lunar-300);
+    border-radius: 1px;
+    pointer-events: none;
 }
 
 .rv-overlayLabel {
