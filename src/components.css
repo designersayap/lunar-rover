@@ -334,12 +334,13 @@ form {
     border: 1px solid var(--rv-bdr);
     border-radius: var(--rv-radius-sm);
     padding: var(--rv-space-md);
+    gap: var(--rv-space-sm);
     cursor: pointer;
     background: transparent;
     transition: all 0.2s;
     color: var(--rv-neutral-50);
     font-family: var(--rv-font-family-default);
-    font-size: var(--rv-font-size-90);
+    font-size: var(--rv-font-size-md);
     font-weight: var(--rv-font-weight-regular);
     user-select: none;
 }
@@ -556,6 +557,24 @@ form {
     flex-direction: column;
 }
 
+.rv-resolutionIndicator {
+    font-size: 11px;
+    font-weight: 500;
+    position: sticky;
+    bottom: var(--rv-space-lg);
+    margin: var(--rv-space-xl) auto 0;
+    background: var(--rv-neutral-400);
+    color: var(--rv-white);
+    padding: var(--rv-space-xs) var(--rv-space-md);
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: var(--rv-space-xs);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    width: fit-content;
+    z-index: 10;
+}
+
 /* Builder Interaction Overlays */
 .rv-activeWrapper {
     position: relative;
@@ -621,23 +640,31 @@ form {
     height: var(--rv-space-md);
 }
 
-.rv-resolutionIndicator {
-    font-size: 11px;
-    font-weight: 500;
-    position: sticky;
-    bottom: var(--rv-space-lg);
-    margin: var(--rv-space-xl) auto 0;
-    background: var(--rv-neutral-400);
+.rv-overlayButton {
+    background: transparent;
+    border: none;
     color: var(--rv-white);
-    padding: var(--rv-space-xs) var(--rv-space-md);
-    border-radius: 100px;
+    width: 20px;
+    height: 100%;
     display: flex;
     align-items: center;
-    gap: var(--rv-space-xs);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    width: fit-content;
-    z-index: 10;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    opacity: 0.8;
 }
+
+.rv-overlayButton:hover {
+    background: rgba(255, 255, 255, 0.15);
+    opacity: 1;
+}
+
+.rv-overlayButtonActive {
+    background: rgba(255, 255, 255, 0.25);
+    opacity: 1;
+}
+
 
 /* Misc Canvas Utilities */
 .rv-canvasWrapper {
