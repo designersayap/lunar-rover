@@ -123,3 +123,58 @@
     margin: 0;
     z-index: 10001;
 }
+
+
+/* ==========================================================================
+   PURPOSE: Floating Action Bars (FAB)
+   Bottom-centered selection banners and action bars.
+   ========================================================================== */
+
+.rv-floatingActionBarContainer {
+    position: fixed;
+    bottom: var(--rv-space-xl);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    animation: rv-slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    pointer-events: auto;
+}
+
+.rv-floatingActionBar {
+    background: rgba(30, 30, 30, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--rv-radius-round);
+    padding: var(--rv-space-sm) var(--rv-space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--rv-space-md);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    min-width: 200px;
+}
+
+.rv-floatingActionBarText {
+    color: var(--rv-neutral-100);
+    font-size: var(--rv-font-size-md);
+    font-weight: 500;
+    padding-left: var(--rv-space-sm);
+    white-space: nowrap;
+}
+
+.rv-floatingActionBarDivider {
+    width: 1px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes rv-slideUpFade {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
