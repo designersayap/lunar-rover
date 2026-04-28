@@ -225,9 +225,9 @@
 .rv-resizeHandle {
     position: absolute;
     top: 0;
-    right: 0;
+    right: -12px; /* Pull it slightly out of the inner container to be more reachable */
     bottom: 0;
-    width: 24px;
+    width: 32px; /* Larger hit area */
     cursor: col-resize;
     display: flex;
     align-items: center;
@@ -235,30 +235,30 @@
     z-index: 100;
     transition: all 0.2s;
     user-select: none;
-    opacity: 0;
+    opacity: 1; /* Always visible */
 }
 
 .rv-resizeHandle:hover,
 .rv-resizeHandleActive {
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .rv-resizeHandleBar {
     width: 4px;
-    height: 24px;
+    height: 32px;
     background: var(--rv-neutral-100);
     border-radius: var(--rv-radius-round);
     transition: all 0.2s;
-    opacity: 0.5;
+    opacity: 0.4;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
 }
 
 .rv-resizeHandle:hover .rv-resizeHandleBar,
 .rv-resizeHandleActive .rv-resizeHandleBar {
     background: var(--rv-neutral-50);
-    height: 32px;
+    height: 48px;
     opacity: 1;
-    box-shadow: 0 0 12px var(--rv-neutral-50);
+    box-shadow: 0 0 15px var(--rv-neutral-50);
 }
 
 
