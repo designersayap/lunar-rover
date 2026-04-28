@@ -246,7 +246,7 @@
 
 .rv-resizeHandleBar {
     width: 4px;
-    height: 48px;
+    height: 24px;
     background: var(--rv-neutral-100);
     border-radius: var(--rv-radius-round);
     transition: all 0.2s;
