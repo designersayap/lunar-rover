@@ -255,10 +255,10 @@
 
 .rv-resizeHandle:hover .rv-resizeHandleBar,
 .rv-resizeHandleActive .rv-resizeHandleBar {
-    background: var(--rv-lunar-300);
-    height: 64px;
+    background: var(--rv-neutral-50);
+    height: 32px;
     opacity: 1;
-    box-shadow: 0 0 12px var(--rv-lunar-300);
+    box-shadow: 0 0 12px var(--rv-neutral-50);
 }
 
 
