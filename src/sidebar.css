@@ -227,28 +227,38 @@
     top: 0;
     right: 0;
     bottom: 0;
-    width: 20px;
+    width: 24px;
     cursor: col-resize;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     z-index: 100;
-    transition: background 0.2s;
+    transition: all 0.2s;
     user-select: none;
+    opacity: 0;
+}
+
+.rv-resizeHandle:hover,
+.rv-resizeHandleActive {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .rv-resizeHandleBar {
-    width: 6px;
-    height: var(--rv-space-xl);
-    background: transparent;
-    display: flex;
-    gap: 2px;
-    justify-content: center;
+    width: 4px;
+    height: 48px;
+    background: var(--rv-neutral-100);
+    border-radius: var(--rv-radius-round);
     transition: all 0.2s;
-    opacity: 0.8;
-    position: sticky;
-    top: 50%;
-    transform: translateY(-50%);
+    opacity: 0.5;
+}
+
+.rv-resizeHandle:hover .rv-resizeHandleBar,
+.rv-resizeHandleActive .rv-resizeHandleBar {
+    background: var(--rv-lunar-300);
+    height: 64px;
+    opacity: 1;
+    box-shadow: 0 0 12px var(--rv-lunar-300);
 }
 
 
