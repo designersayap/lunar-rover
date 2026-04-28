@@ -259,6 +259,22 @@
     opacity: 1;
 }
 
+/* Drag & Drop Indicators */
+.rv-borderTopBrand {
+    position: relative;
+}
+
+.rv-borderTopBrand::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--rv-lunar-300);
+    z-index: 10;
+}
+
 
 /* ==========================================================================
    PURPOSE: Sidebar Search
