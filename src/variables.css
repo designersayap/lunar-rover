@@ -40,7 +40,7 @@
    /* --------------------------------------------------------------------------
        DIMENSIONS: Standardized heights and widths for layout pieces.
        -------------------------------------------------------------------------- */
-   --rv-h-btn: 32px;
+   --rv-h-btn: 36px;
    --rv-h-topbar: 64px;
    --rv-w-sidebar: 360px;
    --rv-w-pop: 362px;
@@ -60,7 +60,7 @@
    --rv-radius-sm: 8px;
    --rv-radius-md: 12px;
    --rv-radius-lg: 20px;
-   --rv-radius-button: 8px;
+   --rv-radius-button: 12px;
    --rv-radius-round: 9999px;
 
    /* --------------------------------------------------------------------------

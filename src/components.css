@@ -208,7 +208,7 @@ form {
 
 .rv-formInput {
     width: 100%;
-    border-radius: var(--rv-radius-md);
+    border-radius: var(--rv-radius-button);
     font-size: var(--rv-font-size-md);
     outline: none;
     transition: all .2s;
