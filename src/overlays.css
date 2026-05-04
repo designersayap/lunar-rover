@@ -56,7 +56,7 @@
 .rv-popoverContainer {
     background: var(--rv-neutral-500);
     border: 1px solid var(--rv-bdr);
-    border-radius: var(--rv-radius-md);
+    border-radius: var(--rv-radius-lg);
     width: var(--rv-w-pop);
     max-width: 90%;
     max-height: 90vh;
