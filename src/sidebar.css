@@ -77,7 +77,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: var(--rv-space-sm) 0;
+    padding: var(--rv-space-md) 0;
     gap: var(--rv-space-xs);
     flex-shrink: 0;
     position: relative;
@@ -112,7 +112,7 @@
 
 .rv-sidebarRailIndicator {
     position: absolute;
-    top: var(--rv-space-sm);
+    top: var(--rv-space-md);
     left: 6px;
     width: 68px;
     height: 68px;
