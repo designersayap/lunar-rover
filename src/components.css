@@ -9,7 +9,7 @@
     justify-content: center;
     cursor: pointer;
     border: none;
-    border-radius: var(--rv-radius-md);
+    border-radius: var(--rv-radius-button);
     transition: all 0.2s;
     font-family: var(--rv-font-family-default);
     font-size: var(--rv-font-size-md);
