@@ -71,13 +71,13 @@
    ========================================================================== */
 
 .rv-sidebarRail {
-    width: 80px;
+    width: 92px;
     background: transparent;
     border-right: .5px solid var(--rv-bdr);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: var(--rv-space-md) 0;
+    padding: var(--rv-space-md);
     gap: var(--rv-space-xs);
     flex-shrink: 0;
     position: relative;
@@ -113,7 +113,7 @@
 .rv-sidebarRailIndicator {
     position: absolute;
     top: var(--rv-space-md);
-    left: 6px;
+    left: var(--rv-space-md);
     width: 68px;
     height: 68px;
     background: var(--rv-neutral-400);
