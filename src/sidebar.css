@@ -155,7 +155,7 @@
 .rv-treeContainer {
     flex: 1;
     overflow-y: auto;
-    padding: 0 var(--rv-space-md) var(--rv-space-lg);
+    padding: var(--rv-space-md) var(--rv-space-md);
 }
 
 .rv-categoryWrapper {
