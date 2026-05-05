@@ -150,7 +150,7 @@
     margin: 0;
     background: transparent;
     padding: 0 var(--rv-space-sm);
-    width: 28px;
+    width: 32px;
     transition: all 0.2s;
 }
 
