@@ -203,6 +203,7 @@
     color: inherit;
     font-size: var(--rv-font-size-md);
     width: 100%;
+    text-overflow: ellipsis;
 }
 
 
