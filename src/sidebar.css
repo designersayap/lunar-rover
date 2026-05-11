@@ -28,6 +28,20 @@
     pointer-events: none;
 }
 
+.rv-sidebarRailOnly {
+    width: var(--rv-w-sidebar-rail) !important;
+}
+
+.rv-sidebarRailOnly .rv-sidebarRail {
+    border-right: none;
+}
+
+.rv-sidebarRailOnly .rv-sidebarBody {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
 .rv-sidebar {
     margin-top: 0;
     margin-right: 0;
