@@ -806,29 +806,6 @@ form {
     animation: fadeIn 0.2s ease-out;
 }
 
-.rv-toolbarBtn {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    background: transparent;
-    color: var(--rv-neutral-100);
-    border-radius: var(--rv-radius-sm);
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.rv-toolbarBtn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--rv-white);
-}
-
-.rv-toolbarBtnActive {
-    background: var(--rv-lunar-300);
-    color: var(--rv-white);
-}
 
 .rv-toolbarDivider {
     width: 1px;
@@ -837,24 +814,7 @@ form {
     margin: 0 var(--rv-space-xs);
 }
 
-.rv-toolbarDropdown {
-    position: absolute;
-    bottom: calc(100% + var(--rv-space-sm));
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(30, 30, 30, 0.95);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: var(--rv-radius-md);
-    padding: var(--rv-space-sm);
-    box-shadow: var(--rv-shd-lg);
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: var(--rv-space-xs);
-    width: max-content;
-    max-content: 240px;
-    animation: fadeIn 0.15s ease-out;
-}
+
 
 .rv-colorSwatch {
     width: 20px;
