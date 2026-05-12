@@ -802,6 +802,7 @@ form {
     box-shadow: var(--rv-shd-lg);
     z-index: 10000;
     pointer-events: auto;
+    user-select: none;
     animation: fadeIn 0.2s ease-out;
 }
 
