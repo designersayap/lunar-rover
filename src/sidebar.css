@@ -327,3 +327,9 @@
     pointer-events: none;
     opacity: 0.5;
 }
+
+@media (max-width: 1023px) {
+    .rv-sidebarShell:not(.rv-mobileSidebar) {
+        display: none !important;
+    }
+}
