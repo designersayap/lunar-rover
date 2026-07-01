@@ -328,6 +328,18 @@
     opacity: 0.5;
 }
 
+.rv-mobileSidebar {
+    width: 100% !important;
+}
+
+.rv-mobileSidebar .rv-sidebar {
+    margin: 0;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+}
+
 @media (max-width: 1023px) {
     .rv-sidebarShell:not(.rv-mobileSidebar) {
         display: none !important;
