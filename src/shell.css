@@ -74,7 +74,7 @@
 }
 
 .rv-canvasContent {
-    flex: 1;
+    flex: 1 0 auto;
     background: var(--rv-white);
     border-bottom-left-radius: var(--rv-radius-lg);
     border-bottom-right-radius: var(--rv-radius-lg);
