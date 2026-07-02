@@ -80,6 +80,10 @@
     border-bottom-right-radius: var(--rv-radius-lg);
     position: relative;
     width: 100%;
+    overflow: hidden;
+    /* Fix for sub-pixel anti-aliasing fringes on rounded corners */
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: radial-gradient(white, black);
 }
 
 .rv-canvasDesktop .rv-canvasInner {
