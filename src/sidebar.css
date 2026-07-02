@@ -367,7 +367,7 @@
     left: 0;
     width: 100%;
     margin-bottom: 16px;
-    max-height: 85vh;
+    max-height: calc(100dvh - 120px);
     min-height: 50vh;
     border-radius: var(--rv-radius-lg);
     background: var(--rv-neutral-500);
