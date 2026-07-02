@@ -36,3 +36,9 @@
     font-weight: var(--rv-font-weight-bold);
     font-size: var(--rv-font-size-md);
 }
+
+@media (max-width: 1023px) {
+    .rv-sidebarToggle {
+        display: none !important;
+    }
+}
