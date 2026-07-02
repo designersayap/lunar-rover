@@ -15,7 +15,7 @@
     font-size: var(--rv-font-size-md);
     height: var(--rv-h-btn);
     padding: 0 var(--rv-space-md);
-    gap: var(--rv-space-xs);
+    gap: var(--rv-space-sm);
     color: var(--rv-white);
     background: transparent;
     user-select: none;
@@ -228,6 +228,11 @@ form {
 .rv-formInput::placeholder {
     color: var(--rv-neutral-100);
     opacity: 0.5;
+}
+
+.rv-formInputHelper {
+    color: var(--rv-neutral-200);
+    font-size: var(--rv-font-size-sm);
 }
 
 .rv-formInputGroup {
