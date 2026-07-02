@@ -435,7 +435,7 @@ form {
 
 .rv-listItem:hover .rv-listItemAction {
     opacity: 1;
-    width: 40px;
+    width: 52px;
     margin-left: var(--rv-space-sm);
 }
 
