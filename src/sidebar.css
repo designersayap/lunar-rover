@@ -335,6 +335,7 @@
     left: 0;
     right: 0;
     z-index: 1000;
+    overflow: visible !important;
 }
 
 .rv-mobileSidebar .rv-sidebar {
