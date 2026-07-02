@@ -28,6 +28,21 @@
     align-items: center;
     gap: var(--rv-space-sm);
     padding-right: var(--rv-space-lg);
+    
+    /* Enable horizontal scrolling for small screens */
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Ensure buttons don't shrink */
+.rv-topBarRight > * {
+    flex-shrink: 0;
+}
+
+/* Hide scrollbar for Chrome/Safari/Edge */
+.rv-topBarRight::-webkit-scrollbar {
+    display: none;
 }
 
 .rv-logo {
