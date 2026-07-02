@@ -338,6 +338,13 @@
     margin: 0 auto;
     z-index: 10000;
     overflow: visible !important;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+}
+
+.rv-mobileSidebarHidden {
+    transform: translateY(150%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
 .rv-mobileSidebar .rv-sidebar {
