@@ -35,8 +35,9 @@
     scrollbar-width: none; /* Firefox */
 }
 
-/* Ensure buttons don't shrink */
-.rv-topBarRight > * {
+/* Ensure buttons don't shrink (Tooltip wrapper uses display: contents, so we target .rv-btn directly) */
+.rv-topBarRight .rv-btn,
+.rv-topBarRight a {
     flex-shrink: 0;
 }
 
