@@ -334,7 +334,7 @@
 
 .rv-mobileSidebar .rv-sidebar {
     margin: 0;
-    border-radius: 0;
+    border-radius: var(--rv-radius-lg);
     border-left: none;
     border-right: none;
     border-bottom: none;

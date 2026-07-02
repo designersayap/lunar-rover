@@ -112,18 +112,17 @@
 .rv-mobileSidebarSheet {
     background: var(--rv-neutral-500);
     width: 100%;
-    max-width: 100%;
+    max-width: 328px;
     max-height: 85vh;
-    border-top-left-radius: var(--rv-radius-lg);
-    border-top-right-radius: var(--rv-radius-lg);
-    box-shadow: 0 -var(--rv-space-xs) 20px rgba(0, 0, 0, 0.3);
-    transform: translateY(100%);
+    border-radius: var(--rv-radius-lg);
+    margin-bottom: 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    transform: translateY(120%);
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     border: 1px solid var(--rv-bdr);
-    border-bottom: none;
 }
 
 .rv-mobileSidebarSheetOpen {
