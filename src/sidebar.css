@@ -344,6 +344,7 @@
     border-right: none;
     border-bottom: none;
     flex-direction: column-reverse;
+    overflow: visible;
 }
 
 .rv-mobileSidebar .rv-sidebarRail {
