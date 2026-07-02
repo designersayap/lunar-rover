@@ -430,11 +430,12 @@ form {
     opacity: 0;
     overflow: hidden;
     transition: width 0.2s ease, opacity 0.2s ease, margin 0.2s ease;
+    gap: var(--gap-sm);
 }
 
 .rv-listItem:hover .rv-listItemAction {
     opacity: 1;
-    width: 32px;
+    width: 40px;
     margin-left: var(--rv-space-sm);
 }
 
