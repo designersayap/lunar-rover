@@ -255,7 +255,7 @@ form {
     background: transparent !important;
     box-shadow: none !important;
     flex: 1;
-    padding-right: var(--rv-h-btn);
+    /*padding-right: var(--rv-h-btn);*/
 }
 
 .rv-formTextarea {
